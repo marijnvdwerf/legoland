@@ -73,3 +73,8 @@ unsigned int DAT_0079a89c;
 unsigned int DAT_0079a8a0;
 // GLOBAL: LEGOLAND 0x008119a4
 unsigned int DAT_008119a4;
+
+// GLOBAL: LEGOLAND 0x004b90fc
+unsigned int DAT_004b90fc;
+// GLOBAL: LEGOLAND 0x004b90f8
+unsigned int DAT_004b90f8;

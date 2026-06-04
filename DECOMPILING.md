@@ -15,12 +15,17 @@ cmake --build build              # compile + link (wibo + MSVC6)
 For each function in the TU: write C → build → `verify -v <addr>` → read the asm diff
 → adjust types/order/locals → repeat until `100% match`. Then move to the next.
 
+## Only do functions port2 already matched
+
+Only integrate functions port2 already got byte-perfect — `current_score == 0` in
+`port2/project/functions.csv`. Leave everything else as `STUB()`. **Do not try to match
+an unmatched function from scratch** — that's slow, separate work, not for these runs.
+
 ## Reference material (not the deliverable)
 
 - `port2/project/c/0x<ADDR>.c` — AI first-drafts; ~1,543 already byte-match. Great
   starting point, but they are raw (Ghidra names, `pad[0x14]`, `uVar1`). **Clean them.**
-- Ghidra MCP (see `../ghidra/CLAUDE.md`) — decompiler + disassembly for context and
-  for functions port2 didn't get.
+- Ghidra MCP (see `../ghidra/CLAUDE.md`) — for naming/struct context on the matched ones.
 - The original asm is the ground truth; the asm diff from `verify -v` is what you tune against.
 
 ## House style
