@@ -1,0 +1,52 @@
+#!/usr/bin/env python3
+"""CMake -> wibo + MSVC6 LINK.EXE shim. Rewrites unix paths to wibo `Z:\\...`."""
+import os
+import pathlib
+import subprocess
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+TC = ROOT / "toolchain"
+WIBO = str(TC / "wibo")
+LINK = str(TC / "msvc6" / "Bin" / "LINK.EXE")
+BIN = TC / "msvc6" / "Bin"
+DLLS = TC / "dlls"
+LIB = TC / "msvc6" / "Lib"
+
+# LINK flags whose value is a path glued after a colon, e.g. /OUT:Z:\a\b.exe
+COLON_FLAGS = ("/OUT:", "/PDB:", "/IMPLIB:", "/LIBPATH:", "/MAP:", "/DEF:")
+
+
+def to_win(p: str) -> str:
+    return "Z:" + p.replace("/", "\\")
+
+
+def is_abs_path(tok: str) -> bool:
+    if not tok.startswith("/"):
+        return False
+    first = tok[1:].split("/", 1)[0]
+    return first != "" and os.path.isdir("/" + first)
+
+
+def conv(tok: str) -> str:
+    for f in COLON_FLAGS:
+        if tok.upper().startswith(f):
+            rest = tok[len(f) :]
+            return tok[: len(f)] + (to_win(rest) if is_abs_path(rest) else rest)
+    if is_abs_path(tok):
+        return to_win(tok)
+    return tok
+
+
+def main() -> int:
+    args = [conv(a) for a in sys.argv[1:]]
+    env = dict(os.environ)
+    env["PATH"] = f"{BIN}:{DLLS}:" + env.get("PATH", "")
+    # LIB env points at the vendored libs (empty for now; see toolchain notes)
+    if LIB.exists():
+        env["LIB"] = to_win(str(LIB))
+    return subprocess.call([WIBO, LINK, *args], env=env)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

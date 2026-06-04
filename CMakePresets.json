@@ -1,0 +1,16 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": { "major": 3, "minor": 20, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "msvc6",
+      "displayName": "MSVC6 (wibo)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "toolchainFile": "${sourceDir}/cmake/msvc6-toolchain.cmake"
+    }
+  ],
+  "buildPresets": [
+    { "name": "msvc6", "configurePreset": "msvc6" }
+  ]
+}

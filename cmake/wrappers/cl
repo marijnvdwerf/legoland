@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+"""CMake -> wibo + MSVC6 CL.EXE shim.
+
+CMake invokes us with unix paths; wibo/CL want Windows `Z:\\...` paths (wibo maps
+Z: to the unix root). We rewrite path-bearing args, point INCLUDE at the vendored
+headers, and exec wibo CL.EXE.
+"""
+import os
+import pathlib
+import subprocess
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+TC = ROOT / "toolchain"
+WIBO = str(TC / "wibo")
+CL = str(TC / "msvc6" / "Bin" / "CL.EXE")
+BIN = TC / "msvc6" / "Bin"
+DLLS = TC / "dlls"
+INCLUDE = TC / "msvc6" / "Include"
+
+# MSVC flags whose value is a path glued to the flag, e.g. /FoZ:\a\b.obj
+PATH_FLAGS = ("/Fo", "/Fd", "/Fp", "/Fe", "/Fa", "/Fm", "/Fr", "/FR", "/I", "/FI")
+
+
+def to_win(p: str) -> str:
+    return "Z:" + p.replace("/", "\\")
+
+
+def is_abs_path(tok: str) -> bool:
+    """True for an absolute unix path, False for an MSVC flag like /O2 or /c.
+    Distinguishes them by whether the top-level component is a real directory."""
+    if not tok.startswith("/"):
+        return False
+    first = tok[1:].split("/", 1)[0]
+    return first != "" and os.path.isdir("/" + first)
+
+
+def conv(tok: str) -> str:
+    # path glued to a flag, e.g. /FoZ:\a.obj — convert only if the value is absolute
+    # (relative values like /FoCMakeFiles/... are left for wibo's cwd to resolve).
+    for f in PATH_FLAGS:
+        if tok.startswith(f) and len(tok) > len(f):
+            rest = tok[len(f) :]
+            return f + to_win(rest) if is_abs_path(rest) else tok
+    if is_abs_path(tok):
+        return to_win(tok)
+    return tok
+
+
+def main() -> int:
+    args = [conv(a) for a in sys.argv[1:]]
+    env = dict(os.environ)
+    env["INCLUDE"] = to_win(str(INCLUDE))
+    env["PATH"] = f"{BIN}:{DLLS}:" + env.get("PATH", "")
+    return subprocess.call([WIBO, CL, *args], env=env)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
