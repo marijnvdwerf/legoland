@@ -1,5 +1,3 @@
-#include "legoland.h"
-
 struct Sprite;
 
 // GLOBAL: LEGOLAND 0x00668958
@@ -69,3 +67,9 @@ unsigned int DAT_0079a890;
 unsigned int DAT_0079a894;
 // GLOBAL: LEGOLAND 0x0079a898
 unsigned int DAT_0079a898;
+// GLOBAL: LEGOLAND 0x0079a89c
+unsigned int DAT_0079a89c;
+// GLOBAL: LEGOLAND 0x0079a8a0
+unsigned int DAT_0079a8a0;
+// GLOBAL: LEGOLAND 0x008119a4
+unsigned int DAT_008119a4;
