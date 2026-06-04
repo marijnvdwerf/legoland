@@ -1,0 +1,10 @@
+# Build output
+build/
+
+# Downloaded toolchain (populated by `uv run setup.py`) — never committed
+toolchain/
+
+# Python / uv
+.venv/
+__pycache__/
+*.pyc
