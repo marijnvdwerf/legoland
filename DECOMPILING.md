@@ -47,6 +47,23 @@ For each function in the TU: write C → build → `verify -v <addr>` → read t
 - **Imports (Win32/DirectX):** include the real MSVC6 header (`#include <windows.h>`,
   `<ddraw.h>`, …) and call the API normally; the import libraries resolve it at link.
 
+## Gotchas (from real TUs)
+
+- **Missing functions / inventory gaps.** `ghidra/functions.csv` is not complete. If a
+  function `call`s an address that has no `// FUNCTION` annotation and isn't in the CSV
+  (often a small thunk in the gap between two listed functions), it's a real function
+  the inventory missed — add it to the right TU with its own
+  `// FUNCTION: LEGOLAND 0x<addr>` and decompile it too. (`GetTicks` at `0x00499450`
+  was found this way.)
+- **Imports vs. thunks.** Including a Win32/DirectX header makes that API
+  `__declspec(dllimport)`, which forces *every* call to it in the TU to the indirect
+  `call dword ptr [__imp_X]` (`ff 15`) form. If the original instead does a relative
+  `call` to a one-line wrapper (the compiler turned `return X();` into a `jmp [__imp_X]`
+  thunk), reproduce that wrapper as its own function and call it — you can't match both
+  forms from one dllimport declaration.
+- **Structs are per-TU for now.** Define the struct you need locally in the TU; a
+  shared, consolidated struct header is a later coordinated pass.
+
 ## Done criteria for a TU
 
 1. Every function in the TU has a real body (no `STUB()` left — `grep -n 'STUB()' src/legoland/<tu>.c`).
