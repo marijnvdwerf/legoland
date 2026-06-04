@@ -1,0 +1,65 @@
+#include "legoland.h"
+
+struct Sprite;
+
+/* Sprite-pointer globals (addresses encoded in the names). */
+// GLOBAL: LEGOLAND 0x00668958
+struct Sprite *DAT_00668958;
+// GLOBAL: LEGOLAND 0x006688e0
+struct Sprite *DAT_006688e0;
+// GLOBAL: LEGOLAND 0x006688e4
+struct Sprite *DAT_006688e4;
+// GLOBAL: LEGOLAND 0x006688e8
+struct Sprite *DAT_006688e8;
+// GLOBAL: LEGOLAND 0x006688f0
+struct Sprite *DAT_006688f0;
+// GLOBAL: LEGOLAND 0x006688ec
+struct Sprite *DAT_006688ec;
+// GLOBAL: LEGOLAND 0x006688f4
+struct Sprite *DAT_006688f4;
+// GLOBAL: LEGOLAND 0x006688f8
+struct Sprite *DAT_006688f8;
+// GLOBAL: LEGOLAND 0x006688fc
+struct Sprite *DAT_006688fc;
+// GLOBAL: LEGOLAND 0x00668900
+struct Sprite *DAT_00668900;
+// GLOBAL: LEGOLAND 0x007fe004
+struct Sprite *DAT_007fe004;
+// GLOBAL: LEGOLAND 0x007fdeb0
+struct Sprite *DAT_007fdeb0;
+// GLOBAL: LEGOLAND 0x00668914
+struct Sprite *DAT_00668914;
+// GLOBAL: LEGOLAND 0x00668918
+struct Sprite *DAT_00668918;
+// GLOBAL: LEGOLAND 0x0066891c
+struct Sprite *DAT_0066891c;
+// GLOBAL: LEGOLAND 0x00668920
+struct Sprite *DAT_00668920;
+// GLOBAL: LEGOLAND 0x00668928
+struct Sprite *DAT_00668928;
+// GLOBAL: LEGOLAND 0x00668924
+struct Sprite *DAT_00668924;
+// GLOBAL: LEGOLAND 0x00668930
+struct Sprite *DAT_00668930;
+// GLOBAL: LEGOLAND 0x0066892c
+struct Sprite *DAT_0066892c;
+// GLOBAL: LEGOLAND 0x00668944
+struct Sprite *DAT_00668944;
+// GLOBAL: LEGOLAND 0x00668948
+struct Sprite *DAT_00668948;
+// GLOBAL: LEGOLAND 0x0066894c
+struct Sprite *DAT_0066894c;
+// GLOBAL: LEGOLAND 0x00668950
+struct Sprite *DAT_00668950;
+// GLOBAL: LEGOLAND 0x007fdfc8
+struct Sprite *DAT_007fdfc8;
+// GLOBAL: LEGOLAND 0x007fdfe4
+struct Sprite *DAT_007fdfe4;
+// GLOBAL: LEGOLAND 0x007fe018
+struct Sprite *DAT_007fe018;
+// GLOBAL: LEGOLAND 0x007fdfd0
+struct Sprite *DAT_007fdfd0;
+// GLOBAL: LEGOLAND 0x007fe008
+struct Sprite *DAT_007fe008;
+// GLOBAL: LEGOLAND 0x007fdeac
+struct Sprite *DAT_007fdeac;

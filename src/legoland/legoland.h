@@ -5,4 +5,8 @@
    Find remaining work with:  grep -rn 'STUB()' src/ */
 #define STUB() ((void)0)
 
+#ifndef NULL
+#define NULL ((void *)0)
+#endif
+
 #endif /* LEGOLAND_H */
