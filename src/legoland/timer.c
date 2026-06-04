@@ -1,20 +1,20 @@
 #include <windows.h>
 #include "legoland.h"
 
-extern unsigned int DAT_0079a890;  /* nonzero while the timer is frozen/paused */
-extern unsigned int DAT_0079a894;  /* tick captured when it was frozen */
-extern unsigned int DAT_0079a898;  /* tick at timer start (the epoch) */
+extern unsigned int DAT_0079a890;
+extern unsigned int DAT_0079a894;
+extern unsigned int DAT_0079a898;
 
 // FUNCTION: LEGOLAND 0x00499430
 unsigned int GetGameTimer(void) {
     unsigned int now;
 
     if (DAT_0079a890 != 0) {
-        now = DAT_0079a894;     /* frozen: use the captured tick */
+        now = DAT_0079a894;
     } else {
-        now = GetTickCount();   /* running: current tick */
+        now = GetTickCount();
     }
-    return now - DAT_0079a898;  /* elapsed since start */
+    return now - DAT_0079a898;
 }
 
 // FUNCTION: LEGOLAND 0x00499460

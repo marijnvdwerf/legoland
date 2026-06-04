@@ -2,7 +2,6 @@
 
 struct Sprite;
 
-/* Sprite-pointer globals (addresses encoded in the names). */
 // GLOBAL: LEGOLAND 0x00668958
 struct Sprite *DAT_00668958;
 // GLOBAL: LEGOLAND 0x006688e0
@@ -64,7 +63,6 @@ struct Sprite *DAT_007fe008;
 // GLOBAL: LEGOLAND 0x007fdeac
 struct Sprite *DAT_007fdeac;
 
-/* timer state (timer.c) */
 // GLOBAL: LEGOLAND 0x0079a890
 unsigned int DAT_0079a890;
 // GLOBAL: LEGOLAND 0x0079a894

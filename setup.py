@@ -113,6 +113,23 @@ def step_wibo(force: bool) -> None:
     dest.chmod(0o755)
 
 
+def write_clangd() -> None:
+    """Write .clangd so the editor can parse the MSVC6 headers (machine-local path)."""
+    inc = TOOLCHAIN / "msvc6" / "Include"
+    (ROOT / ".clangd").write_text(
+        "CompileFlags:\n"
+        "  Compiler: clang\n"
+        "  Add:\n"
+        "    - --target=i686-pc-windows-msvc\n"
+        "    - -fms-extensions\n"
+        "    - -fms-compatibility\n"
+        "    - -fms-compatibility-version=12.00\n"
+        "    - -fdeclspec\n"
+        "    - -isystem\n"
+        f"    - {inc}\n"
+    )
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--force", action="store_true", help="re-download everything")
@@ -122,6 +139,7 @@ def main() -> None:
     step_msvc6(args.force)
     step_dlls(args.force)
     step_wibo(args.force)
+    write_clangd()
 
     print("\nToolchain ready under ./toolchain")
     for sub in ("msvc6", "dlls"):

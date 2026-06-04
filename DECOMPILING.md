@@ -29,16 +29,17 @@ For each function in the TU: write C → build → `verify -v <addr>` → read t
   name like `GetGameTimer`, or `FUN_<addr>`). Do **not** rename exported functions or
   globals yet — other TUs reference them by that name, and there is no shared
   declaration header to coordinate a rename. Renaming is a later, coordinated pass.
-  (You may add a `/* looks like: UpdateTimer */` comment.)
 - **Clean everything else:** real types (`uint32_t`, not `unk32_t`); named locals
   (not `uVar1`); real `struct` definitions with named fields when you understand the
-  layout (not `pad_0[0x14]`); correct signatures and calling conventions; a short
-  comment on what the function does.
+  layout (not `pad_0[0x14]`); correct signatures and calling conventions.
+- **Comments: the ONLY comments allowed in decomp source are the `// FUNCTION:` and
+  `// GLOBAL:` annotations.** Do **not** write comments explaining variables, types, or
+  logic — express intent through names. No exceptions.
 - **Annotations:** every function keeps `// FUNCTION: LEGOLAND 0x<addr>` directly above
   it. The address is how reccmp matches — never drop or change it.
 - **Globals** go in `src/legoland/globals.c`, one definition each, with
   `// GLOBAL: LEGOLAND 0x<addr>` above them (reccmp needs this to match data refs).
-  Name them `DAT_<addr>` for now (canonical), real type, real comment.
+  Name them `DAT_<addr>` for now (canonical), real type.
 - **Cross-TU calls / data:** declare what you use with `extern` at the top of the TU
   file, by canonical name. The callee already exists as a stub in its own TU, so the
   link resolves and reccmp matches the call by symbol. Confirm the target's address/name

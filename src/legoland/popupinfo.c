@@ -33,8 +33,8 @@ extern struct Sprite *DAT_007fdfd0;
 extern struct Sprite *DAT_007fe008;
 extern struct Sprite *DAT_007fdeac;
 
-extern void KillSprite(struct Sprite *sprite);  /* 0x00497bd0 */
-extern void FUN_00470b00(void);                 /* 0x00470b00 */
+extern void KillSprite(struct Sprite *sprite);
+extern void FUN_00470b00(void);
 
 // FUNCTION: LEGOLAND 0x00470bb0
 void InitPopUpInfo(void) { STUB(); }
