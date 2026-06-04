@@ -1,0 +1,100 @@
+#include "legoland.h"
+
+// FUNCTION: LEGOLAND 0x0043a7a0
+void FUN_0043a7a0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043a820
+void FUN_0043a820(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043a8c0
+void FUN_0043a8c0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043a940
+void FUN_0043a940(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043a9b0
+void FUN_0043a9b0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043aa10
+void FUN_0043aa10(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043aa50
+void FUN_0043aa50(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043aa90
+void FUN_0043aa90(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043aac0
+void FUN_0043aac0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043ab70
+void FUN_0043ab70(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043abc0
+void FUN_0043abc0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043ac20
+void FUN_0043ac20(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043ac40
+void FUN_0043ac40(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043ac70
+void FUN_0043ac70(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043acb0
+void FUN_0043acb0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043ad00
+void FUN_0043ad00(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043ad90
+void FUN_0043ad90(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043ae20
+void FUN_0043ae20(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043aee0
+void FUN_0043aee0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043af50
+void FUN_0043af50(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043b2b0
+void FUN_0043b2b0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043b420
+void FUN_0043b420(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043b460
+void FUN_0043b460(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043b4b0
+void FUN_0043b4b0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043b4e0
+void FUN_0043b4e0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043b570
+void FUN_0043b570(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043b5d0
+void SpaceTower_Save(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043b6a0
+void SpaceTower_Load(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043b780
+void FUN_0043b780(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043b810
+void FUN_0043b810(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043b990
+void FUN_0043b990(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043baa0
+void FUN_0043baa0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043bac0
+void FUN_0043bac0(void) { STUB(); }

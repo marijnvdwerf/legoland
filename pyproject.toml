@@ -1,0 +1,6 @@
+[project]
+name = "legoland"
+version = "0.0.0"
+description = "Matching decompilation of legoland.exe (MSVC6, reccmp-style)"
+requires-python = ">=3.11"
+dependencies = ["reccmp"]

@@ -1,0 +1,214 @@
+#include "legoland.h"
+
+// FUNCTION: LEGOLAND 0x00482b10
+void FUN_00482b10(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00482b20
+void FUN_00482b20(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00482b60
+void FUN_00482b60(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00482ba0
+void GetVisitorName(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00482c60
+void FUN_00482c60(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00482cb0
+void FUN_00482cb0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00482d30
+void FUN_00482d30(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00482d60
+void FUN_00482d60(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00482d70
+void FUN_00482d70(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00482df0
+void FUN_00482df0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00482e50
+void FUN_00482e50(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00482ec0
+void FUN_00482ec0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00482ef0
+void NewBloke(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00482f70
+void NewBlokeWOList(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00482fb0
+void GetBlokeNum(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00482fe0
+void GetBlokePtr(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483010
+void DestroyBloke(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483090
+void FUN_00483090(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004830c0
+void MakeBloke(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483130
+void RenderPeople(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483160
+void FUN_00483160(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004831a0
+void FUN_004831a0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004831d0
+void SetPathFlag(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483240
+void DoPendingAction(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483260
+void FUN_00483260(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483300
+void FUN_00483300(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004833d0
+void NewDirForAction(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483400
+void Random_Dir_From_Bits(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004834a0
+void HitPathEdge(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483510
+void HitObstacle(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483580
+void FUN_00483580(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483650
+void OverNewTile(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483680
+void FUN_00483680(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004837a0
+void FUN_004837a0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004837d0
+void CrossTileCentre(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483830
+void FUN_00483830(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483850
+void FUN_00483850(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483890
+void FUN_00483890(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004838a0
+void FUN_004838a0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004838c0
+void FUN_004838c0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004838e0
+void FUN_004838e0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483920
+void DoRndWalkPathTileAction(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483b10
+void Handle_RndWalk_TileSpecifics(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483b60
+void FUN_00483b60(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483c20
+void FUN_00483c20(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483d10
+void FUN_00483d10(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483d90
+void FUN_00483d90(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483e20
+void FUN_00483e20(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00483ef0
+void FUN_00483ef0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00484090
+void FUN_00484090(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004841a0
+void FUN_004841a0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004841e0
+void FUN_004841e0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00484220
+void FUN_00484220(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00484350
+void FUN_00484350(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00484470
+void FUN_00484470(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00484520
+void FUN_00484520(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004845d0
+void FUN_004845d0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00484630
+void FUN_00484630(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004846a0
+void GetTileInDir(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00484790
+void FUN_00484790(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004848e0
+void FUN_004848e0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00484910
+void Bloke_DoNothing(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00484920
+void DoLowLevelAI(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00484950
+void ApplyObjectOrientationToPerson(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00484a70
+void SetBlokePositionFromBNV(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00484c20
+void NewBNVPath(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00484cd0
+void UpdateBlokeFromBNVPath(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00484ff0
+void BNVPath_GetDFrame(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00485000
+void BNVPath_GetBINVScreenCoords(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004850b0
+void BNVPath_SetDFrame(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00485260
+void CheckForPeople(void) { STUB(); }

@@ -1,0 +1,49 @@
+#include "legoland.h"
+
+// FUNCTION: LEGOLAND 0x00407970
+void FUN_00407970(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004079e0
+void FUN_004079e0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00407a20
+void FUN_00407a20(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00407a50
+void FUN_00407a50(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00407ab0
+void FUN_00407ab0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00407ad0
+void FUN_00407ad0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00407b50
+void FUN_00407b50(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00407c20
+void FUN_00407c20(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00407c30
+void FUN_00407c30(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00408580
+void FUN_00408580(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00408bc0
+void FUN_00408bc0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00408c00
+void FUN_00408c00(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00408c50
+void FUN_00408c50(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00408c90
+void SaveJoust(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00408d00
+void LoadJoust(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00408db0
+void Joust_GetInterfaces(void) { STUB(); }

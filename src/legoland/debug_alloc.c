@@ -1,0 +1,22 @@
+#include "legoland.h"
+
+// FUNCTION: LEGOLAND 0x00453a20
+void DBPrintf(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00453a30
+void __DEBUG_TAG(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00453a80
+void __DEBUG_MALLOC(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00453b00
+void __DEBUG_SMALLOC(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00453b70
+void __DEBUG_REALLOC(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00453bb0
+void __DEBUG_CALLOC(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00453bf0
+void __DEBUG_FREE(void) { STUB(); }

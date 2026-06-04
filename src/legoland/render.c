@@ -1,0 +1,88 @@
+#include "legoland.h"
+
+// FUNCTION: LEGOLAND 0x004860f0
+void FUN_004860f0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00486190
+void FUN_00486190(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004861d0
+void FUN_004861d0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00486220
+void FUN_00486220(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00486250
+void FUN_00486250(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00486280
+void FUN_00486280(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004864e0
+void FUN_004864e0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00486540
+void FUN_00486540(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00486590
+void FUN_00486590(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00486c70
+void FUN_00486c70(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004877b0
+void FUN_004877b0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00487d40
+void FUN_00487d40(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00488670
+void FUN_00488670(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004886a0
+void FUN_004886a0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004886e0
+void FUN_004886e0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00488700
+void FUN_00488700(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00488730
+void FUN_00488730(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004887a0
+void FUN_004887a0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00488820
+void FUN_00488820(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00488840
+void GenerateNewImageFromZBuffer(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00488a10
+void RenderSprite(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00488b90
+void RenderSpriteX(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00488c50
+void RenderTiledSprite(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00488c80
+void FUN_00488c80(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00489080
+void RenderScaledSprite(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004890c0
+void RenderBlock(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00489190
+void RenderTransSprite(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00489390
+void RenderThickBox(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00489410
+void RenderBox(void) { STUB(); }

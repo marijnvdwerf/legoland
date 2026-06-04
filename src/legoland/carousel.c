@@ -1,0 +1,58 @@
+#include "legoland.h"
+
+// FUNCTION: LEGOLAND 0x0042bbc0
+void FUN_0042bbc0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042bc00
+void FUN_0042bc00(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042bc40
+void FUN_0042bc40(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042bc60
+void FUN_0042bc60(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042bc90
+void FUN_0042bc90(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042bcf0
+void FUN_0042bcf0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042c210
+void FUN_0042c210(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042c280
+void FUN_0042c280(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042c3f0
+void FUN_0042c3f0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042c460
+void FUN_0042c460(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042c4a0
+void FUN_0042c4a0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042c520
+void FUN_0042c520(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042c550
+void FUN_0042c550(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042c590
+void FUN_0042c590(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042c600
+void FUN_0042c600(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042c6d0
+void FUN_0042c6d0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042c800
+void FUN_0042c800(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042c820
+void FUN_0042c820(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0042cd20
+void FUN_0042cd20(void) { STUB(); }

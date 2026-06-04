@@ -8,3 +8,7 @@ toolchain/
 .venv/
 __pycache__/
 *.pyc
+
+# reccmp machine-local config (paths/build artifacts)
+reccmp-user.yml
+reccmp-build.yml

@@ -1,0 +1,61 @@
+#include "legoland.h"
+
+// FUNCTION: LEGOLAND 0x0043d880
+void FUN_0043d880(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043d8c0
+void FUN_0043d8c0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043d940
+void FUN_0043d940(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043d960
+void FUN_0043d960(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043d990
+void FUN_0043d990(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043d9f0
+void FUN_0043d9f0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043da60
+void FUN_0043da60(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043dda0
+void FUN_0043dda0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043dee0
+void FUN_0043dee0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043df50
+void FUN_0043df50(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043df90
+void FUN_0043df90(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043dfe0
+void FUN_0043dfe0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043e010
+void FUN_0043e010(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043e050
+void FUN_0043e050(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043e0a0
+void SaveZoomer(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043e110
+void LoadZoomer(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043e220
+void FUN_0043e220(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043e2b0
+void FUN_0043e2b0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043e3f0
+void FUN_0043e3f0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x0043e410
+void FUN_0043e410(void) { STUB(); }

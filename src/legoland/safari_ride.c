@@ -1,0 +1,61 @@
+#include "legoland.h"
+
+// FUNCTION: LEGOLAND 0x004149c0
+void FUN_004149c0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00414a00
+void FUN_00414a00(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00414a60
+void FUN_00414a60(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00414a80
+void FUN_00414a80(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00414ab0
+void FUN_00414ab0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00414b10
+void FUN_00414b10(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00414b80
+void FUN_00414b80(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00414d90
+void FUN_00414d90(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00414ea0
+void FUN_00414ea0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00414f00
+void FUN_00414f00(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00414f40
+void FUN_00414f40(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00414fc0
+void FUN_00414fc0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00414ff0
+void FUN_00414ff0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00415030
+void FUN_00415030(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004150c0
+void FUN_004150c0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00415200
+void FUN_00415200(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00415220
+void FUN_00415220(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00415760
+void FUN_00415760(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004157b0
+void SaveSafariRide(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00415820
+void LoadSafariRide(void) { STUB(); }

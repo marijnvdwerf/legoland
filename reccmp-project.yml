@@ -1,0 +1,14 @@
+targets:
+  LEGOLAND:
+    filename: legoland.exe
+    source_root: src/legoland
+    hash:
+      sha256: c50865b60bfcb26c0a7329a75fb772b10ae234af324f669901906e5abb0e2bd9
+    data_sources: []
+    ghidra:
+      ignore_types: []
+      ignore_functions: []
+      name_substitutions: []
+      allow_hash_mismatch: false
+    report:
+      ignore_functions: []

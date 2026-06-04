@@ -1,0 +1,14 @@
+#!/bin/sh
+# Verify the recompiled binary against the original, per function (reccmp).
+# Build first with: cmake --build build
+# Usage: tools/verify [extra reccmp args, e.g. --html report.html -v 0x4015c0]
+set -e
+cd "$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
+export PATH="$PWD/tools:$PATH"   # wine + winepath shims for reccmp's cvdump (PDB reader)
+exec uv run reccmp-reccmp \
+  --paths \
+    "$PWD/external/legoland.exe" \
+    "$PWD/build/legoland.exe" \
+    "$PWD/build/legoland.pdb" \
+    "$PWD/src/legoland" \
+  "$@"

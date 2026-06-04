@@ -1,0 +1,265 @@
+#include "legoland.h"
+
+// FUNCTION: LEGOLAND 0x004741f0
+void Load_Interface_ControlIcons(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004743b0
+void UnLoad_Interface_ControlIcons(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00474590
+void FUN_00474590(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004745c0
+void Load_Interface_ThemeIcons(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00474670
+void UnLoad_Interface_ThemeIcons(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00474750
+void FUN_00474750(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00474800
+void UnLoad_Interface_Icons(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00474820
+void FUN_00474820(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00474830
+void FUN_00474830(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00474880
+void FUN_00474880(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004748a0
+void FUN_004748a0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00474920
+void FUN_00474920(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00474970
+void FUN_00474970(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00474990
+void FUN_00474990(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004749d0
+void InitGameInterface(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00474ed0
+void FUN_00474ed0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00474f40
+void FUN_00474f40(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00474f80
+void FUN_00474f80(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00474fa0
+void FUN_00474fa0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00474fc0
+void FUN_00474fc0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475000
+void FUN_00475000(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475040
+void FUN_00475040(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475080
+void FUN_00475080(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475120
+void FUN_00475120(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004751a0
+void FUN_004751a0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004752a0
+void FUN_004752a0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004753a0
+void FUN_004753a0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004754b0
+void FUN_004754b0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004755c0
+void FUN_004755c0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475630
+void InsertChildIntoList(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004756e0
+void DelObjectList(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475710
+void TestMenu(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475720
+void ObjectLinkedList(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004758c0
+void UpdateMenu(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004758e0
+void RedrawObjectList(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475960
+void MakeUpObjectList(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475bb0
+void ListChildrenBar(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475c00
+void CloseChildrenBar(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475c50
+void FUN_00475c50(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475c90
+void FUN_00475c90(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475cd0
+void RAndDLinkedList(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475e90
+void DisableSidePanelIcons(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475ed0
+void EnableSidePanelIcons(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475f10
+void FUN_00475f10(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475f40
+void FUN_00475f40(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00475fe0
+void FUN_00475fe0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476000
+void FUN_00476000(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476020
+void FUN_00476020(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476030
+void FUN_00476030(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476050
+void FUN_00476050(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476070
+void FUN_00476070(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004760a0
+void FUN_004760a0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476140
+void FUN_00476140(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476180
+void FUN_00476180(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004761c0
+void InitRAndDCheckBox(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004761d0
+void Unload_RAndDCheckBox(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004761f0
+void RenderRAndDCheckBox(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476200
+void CloseCheckBoxRAndD(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476210
+void DisableRAndDIcons(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476220
+void FUN_00476220(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476230
+void FUN_00476230(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476240
+void FUN_00476240(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476250
+void FUN_00476250(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004762f0
+void FUN_004762f0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004763d0
+void CleanUpReseachList(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476420
+void DeleteReseachList(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476460
+void FUN_00476460(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476630
+void FUN_00476630(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476680
+void FUN_00476680(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004766f0
+void FUN_004766f0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476910
+void FUN_00476910(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476bf0
+void FUN_00476bf0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476c90
+void FUN_00476c90(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00476d20
+void FUN_00476d20(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004771f0
+void FUN_004771f0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00477400
+void FUN_00477400(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00477410
+void FUN_00477410(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00477440
+void FUN_00477440(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004775b0
+void FUN_004775b0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004775d0
+void FUN_004775d0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004775f0
+void FUN_004775f0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00477600
+void FUN_00477600(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00477680
+void FUN_00477680(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004776c0
+void FUN_004776c0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004776e0
+void FUN_004776e0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00477730
+void FUN_00477730(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00477760
+void FUN_00477760(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00477790
+void FUN_00477790(void) { STUB(); }

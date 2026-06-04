@@ -1,0 +1,34 @@
+#include "legoland.h"
+
+// FUNCTION: LEGOLAND 0x00452990
+void FUN_00452990(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004529c0
+void FUN_004529c0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004529e0
+void FUN_004529e0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00452a30
+void RemoveSoundObject(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00452a80
+void FUN_00452a80(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00452ab0
+void FUN_00452ab0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00452ad0
+void FUN_00452ad0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00452b20
+void FUN_00452b20(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00452b70
+void FUN_00452b70(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00452ba0
+void FUN_00452ba0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00452bc0
+void FUN_00452bc0(void) { STUB(); }

@@ -1,0 +1,25 @@
+#include "legoland.h"
+
+// FUNCTION: LEGOLAND 0x00480200
+void LoadMIDIFile(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004802c0
+void FUN_004802c0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004802f0
+void FUN_004802f0(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00480330
+void FUN_00480330(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00480570
+void FUN_00480570(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x004805d0
+void PlayMIDI(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00480630
+void InitMIDIManager(void) { STUB(); }
+
+// FUNCTION: LEGOLAND 0x00480670
+void KillMIDIManager(void) { STUB(); }
