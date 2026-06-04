@@ -2,7 +2,9 @@
 build/
 
 # Downloaded toolchain (populated by `uv run setup.py`) — never committed
+# (also covers toolchain/wibo-src, the wibo build-from-source clone tree)
 toolchain/
+toolchain/wibo-src/
 
 # Python / uv
 .venv/

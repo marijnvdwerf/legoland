@@ -18,6 +18,7 @@ import argparse
 import os
 import platform
 import shutil
+import subprocess
 import sys
 import tarfile
 import tempfile
@@ -31,8 +32,15 @@ TOOLCHAIN = ROOT / "toolchain"
 # --- Pinned URLs (sourced once from decompme/compilers values.yaml; not fetched at runtime) ---
 MSVC6_URL = "https://github.com/OmniBlade/decomp.me/releases/download/msvcwin9x/msvc6.0.tar.gz"
 MSVCRT_DLLS_URL = "https://files.decomp.dev/msvcrt_20251015.zip"
-WIBO_RELEASE = "https://github.com/decompals/wibo/releases/download/1.1.0"
-WIBO_ASSET = {"Darwin": "wibo-macos", "Linux": "wibo-x86_64"}
+
+# --- wibo: built from source so our kernel32 patch (string-literal compile support) is applied. ---
+WIBO_REPO = "https://github.com/decompals/wibo"
+WIBO_TAG = "1.1.0"
+WIBO_PATCH = ROOT / "tools" / "wibo.patch"
+WIBO_BUILD_DIR = TOOLCHAIN / "wibo-src"  # gitignored clone/build tree
+# cmake preset (configure + build) and resulting binary path within WIBO_BUILD_DIR, per platform.
+WIBO_PRESET = {"Darwin": "release-macos", "Linux": "release"}
+WIBO_BUILT = {"Darwin": "build/release/wibo", "Linux": "build/release/wibo"}
 
 
 def download(url: str, dest: Path) -> None:
@@ -100,16 +108,49 @@ def step_dlls(force: bool) -> None:
         archive.unlink(missing_ok=True)
 
 
+def run(cmd: list[str], cwd: Path | None = None) -> None:
+    print("  $ " + " ".join(cmd))
+    subprocess.run(cmd, cwd=cwd, check=True)
+
+
 def step_wibo(force: bool) -> None:
+    """Build wibo from source at WIBO_TAG with tools/wibo.patch applied.
+
+    The patch adds kernel32 lstrcpynA/lstrcpynW (so the MSVC6 cl.exe can compile
+    string literals) plus GetTempFileNameW. We build instead of downloading the
+    release asset because that prebuilt binary lacks these imports.
+    """
     dest = TOOLCHAIN / "wibo"
     if dest.exists() and not force:
         print("wibo: present, skipping")
         return
-    asset = WIBO_ASSET.get(platform.system())
-    if asset is None:
-        sys.exit(f"wibo: no asset for platform {platform.system()!r}")
-    print(f"wibo: downloading {asset}")
-    download(f"{WIBO_RELEASE}/{asset}", dest)
+
+    system = platform.system()
+    preset = WIBO_PRESET.get(system)
+    built = WIBO_BUILT.get(system)
+    if preset is None or built is None:
+        sys.exit(f"wibo: no build preset for platform {system!r}")
+    for tool in ("git", "cmake", "ninja"):
+        if shutil.which(tool) is None:
+            sys.exit(f"wibo: required build tool {tool!r} not found on PATH")
+
+    # Fresh clone every build so the patch applies cleanly and is reproducible.
+    if WIBO_BUILD_DIR.exists():
+        shutil.rmtree(WIBO_BUILD_DIR)
+    print(f"wibo: cloning {WIBO_REPO} @ {WIBO_TAG}")
+    run(["git", "clone", "--quiet", "--depth", "1", "--branch", WIBO_TAG, WIBO_REPO, str(WIBO_BUILD_DIR)])
+
+    print(f"wibo: applying {WIBO_PATCH.relative_to(ROOT)}")
+    run(["git", "apply", str(WIBO_PATCH)], cwd=WIBO_BUILD_DIR)
+
+    print(f"wibo: building (preset {preset})")
+    run(["cmake", "--preset", preset], cwd=WIBO_BUILD_DIR)
+    run(["cmake", "--build", "--preset", preset], cwd=WIBO_BUILD_DIR)
+
+    binary = WIBO_BUILD_DIR / built
+    if not binary.exists():
+        sys.exit(f"wibo: build finished but binary missing at {binary}")
+    shutil.copy2(binary, dest)
     dest.chmod(0o755)
 
 
