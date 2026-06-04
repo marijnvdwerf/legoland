@@ -15,8 +15,20 @@ per-function by `reccmp`. We do **not** reproduce the binary's layout — reccmp
 
 ```sh
 cmake --preset msvc6 && cmake --build build   # -> build/legoland.exe + PDB
-uv run reccmp ...                              # per-function + aggregate match %
+./tools/verify                                 # per-function + aggregate match %
+./tools/verify -v 0x004015c0                   # asm diff for one function
 ```
+
+`tools/verify` wraps `reccmp --paths`. reccmp's `cvdump.exe` (PDB reader) runs via
+CrossOver wine (`tools/wine`, bottle from `CX_BOTTLE`); `tools/winepath` is a
+`Z:`-root transform matching wibo's PDB paths. Compile/link use wibo only.
+
+When you decompile a function: replace its `void name(void) { STUB(); }` body with
+real C and the correct signature, rebuild, and run `./tools/verify -v <addr>` to
+iterate the asm diff to 100%. A few empty/trivial functions already match the bare
+stub. To link, the image still needs a single `/ENTRY` (the dummy `legoland_entry`
+in `bootstrap.c`) and `/NODEFAULTLIB` — both set in the toolchain file; once a
+function calls an imported API, import libs will be needed (not yet wired).
 
 ## Conventions
 

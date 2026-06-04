@@ -16,9 +16,16 @@ proprietary binaries are committed.
 ```sh
 uv run setup.py          # download MSVC6 + wibo + DLLs into toolchain/
 cmake --preset msvc6     # configure (uses cmake/msvc6-toolchain.cmake)
-cmake --build build      # build legoland.exe + PDB
-uv run reccmp ...        # report per-function match %
+cmake --build build      # build legoland.exe + PDB (all 99 TUs)
+./tools/verify           # per-function match % vs the original
+./tools/verify --html report.html        # searchable HTML report
+./tools/verify -v 0x004015c0             # asm diff for one function
 ```
+
+`tools/verify` runs `reccmp`, whose bundled `cvdump.exe` (PDB reader) is executed
+through **CrossOver wine** in a bottle (set via `CX_BOTTLE`, default
+`Visual C++ 6.0 SP6`) — see `tools/wine`. Everything else (compile + link) runs
+through `wibo`, no wine.
 
 ## Layout
 
