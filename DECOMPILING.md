@@ -57,10 +57,13 @@ For each function in the TU: write C → build → `verify -v <addr>` → read t
   was found this way.)
 - **Imports vs. thunks.** Including a Win32/DirectX header makes that API
   `__declspec(dllimport)`, which forces *every* call to it in the TU to the indirect
-  `call dword ptr [__imp_X]` (`ff 15`) form. If the original instead does a relative
-  `call` to a one-line wrapper (the compiler turned `return X();` into a `jmp [__imp_X]`
-  thunk), reproduce that wrapper as its own function and call it — you can't match both
-  forms from one dllimport declaration.
+  `call dword ptr [__imp_X]` (`ff 15`) form. A relative `call` to a **lone**,
+  16-byte-aligned, NOP-padded `jmp dword ptr [__imp_X]` sitting in source order among a
+  module's functions is a **real one-line wrapper** (`return X();` tail-call-optimized)
+  — reproduce it as its own function with its own `// FUNCTION` and call it. (`GetTicks`
+  at `0x00499450` is one.) Do **not** confuse it with the linker's own import-thunk
+  *tables*: dense packed runs of `jmp [__imp_*]` grouped away from user code (e.g.
+  `0x49d050`, `0x49e3a0`) are linker-generated, not source — don't hand-write those.
 - **Structs are per-TU for now.** Define the struct you need locally in the TU; a
   shared, consolidated struct header is a later coordinated pass.
 
