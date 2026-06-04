@@ -63,3 +63,11 @@ struct Sprite *DAT_007fdfd0;
 struct Sprite *DAT_007fe008;
 // GLOBAL: LEGOLAND 0x007fdeac
 struct Sprite *DAT_007fdeac;
+
+/* timer state (timer.c) */
+// GLOBAL: LEGOLAND 0x0079a890
+unsigned int DAT_0079a890;
+// GLOBAL: LEGOLAND 0x0079a894
+unsigned int DAT_0079a894;
+// GLOBAL: LEGOLAND 0x0079a898
+unsigned int DAT_0079a898;

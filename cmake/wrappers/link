@@ -1,17 +1,28 @@
 #!/usr/bin/env python3
-"""CMake -> wibo + MSVC6 LINK.EXE shim. Rewrites unix paths to wibo `Z:\\...`."""
+"""CMake -> MSVC6 LINK.EXE shim.
+
+wibo (1.1.0) can't build a PE import section — it lacks kernel32!GetTempFileNameW,
+which LINK calls whenever an object references a DLL import. So LINK runs through
+CrossOver wine in a bottle (the same wine reccmp uses). Compilation still uses wibo
+(see the `cl` wrapper); linking is once per build, so wine's overhead is fine.
+
+Override the wine binary / bottle with LEGOLAND_WINE / CX_BOTTLE.
+"""
 import os
 import pathlib
 import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
-TC = ROOT / "toolchain"
-WIBO = str(TC / "wibo")
-LINK = str(TC / "msvc6" / "Bin" / "LINK.EXE")
-BIN = TC / "msvc6" / "Bin"
-DLLS = TC / "dlls"
-LIB = TC / "msvc6" / "Lib"
+LINK = str(ROOT / "toolchain" / "msvc6" / "Bin" / "LINK.EXE")
+LIBS = ROOT / "libs"  # committed system import libs (not downloadable)
+
+_default_wine = pathlib.Path.home() / (
+    "Applications/CrossOver.app/Contents/SharedSupport/CrossOver/bin/wine"
+)
+WINE = os.environ.get("LEGOLAND_WINE") or str(_default_wine)
+if not os.path.exists(WINE):
+    WINE = "/Applications/CrossOver.app/Contents/SharedSupport/CrossOver/bin/wine"
 
 # LINK flags whose value is a path glued after a colon, e.g. /OUT:Z:\a\b.exe
 COLON_FLAGS = ("/OUT:", "/PDB:", "/IMPLIB:", "/LIBPATH:", "/MAP:", "/DEF:")
@@ -40,12 +51,12 @@ def conv(tok: str) -> str:
 
 def main() -> int:
     args = [conv(a) for a in sys.argv[1:]]
+    # Append the committed system import libs (LINK pulls only referenced symbols).
+    import_libs = sorted(p.name for p in LIBS.glob("*.lib"))
     env = dict(os.environ)
-    env["PATH"] = f"{BIN}:{DLLS}:" + env.get("PATH", "")
-    # LIB env points at the vendored libs (empty for now; see toolchain notes)
-    if LIB.exists():
-        env["LIB"] = to_win(str(LIB))
-    return subprocess.call([WIBO, LINK, *args], env=env)
+    env.setdefault("CX_BOTTLE", "Visual C++ 6.0 SP6")
+    env["LIB"] = to_win(str(LIBS))
+    return subprocess.call([WINE, LINK, *args, *import_libs], env=env)
 
 
 if __name__ == "__main__":
