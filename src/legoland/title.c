@@ -293,7 +293,6 @@ void FUN_00490800(const char *param_1) {
 
     FUN_00490770(param_1);
     FUN_00490880();
-    // STRING: LEGOLAND 0x004bf678
     FUN_0049e573(buffer, "Intervals\\%s", param_1);
     DAT_00798880 = FUN_00490680(buffer, &DAT_007cb140, 32);
 }
@@ -390,7 +389,6 @@ void FUN_00490a20(unsigned int param_1) {
 void FUN_00490a60(unsigned int param_1) {
     char buffer[256];
 
-    // STRING: LEGOLAND 0x004bf688
     FUN_0049e573(buffer, "%s%02d.wav", DAT_007cb1e0, param_1 + 1);
     FUN_00498920();
     FUN_00498630(buffer);

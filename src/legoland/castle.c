@@ -944,11 +944,8 @@ void FUN_0041eb70(void) {
     DAT_0082add4 = FUN_004206b0("coastertrain.midcar");
     // STRING: LEGOLAND 0x004b55ac
     DAT_0082add8 = FUN_004206b0("coastertrain.tailcar");
-    // STRING: LEGOLAND 0x004b55d8
     DAT_0082ade0 = FUN_00420710("coastertrain.headcar");
-    // STRING: LEGOLAND 0x004b55c4
     DAT_0082ade4 = FUN_00420710("coastertrain.midcar");
-    // STRING: LEGOLAND 0x004b55ac
     DAT_0082ade8 = FUN_00420710("coastertrain.tailcar");
 }
 

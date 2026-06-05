@@ -76,6 +76,12 @@ an unmatched function from scratch** — that's slow, separate work, not for the
     (A non-void stub will warn `-Wreturn-type` — that's fine.)
 - **Imports (Win32/DirectX):** include the real MSVC6 header (`#include <windows.h>`,
   `<ddraw.h>`, …) and call the API normally; the import libraries resolve it at link.
+- **One `// STRING:` annotation per address, globally.** MSVC6 pools identical string
+  literals, so a string referenced by several functions exists once in the binary. reccmp
+  wants it annotated exactly once — a second `// STRING: LEGOLAND 0x<addr>` for the same
+  address (same file or another TU) triggers `[ERROR] Dropped duplicate address … on STRING
+  annotation`. Before adding a `// STRING:`, grep the tree for that address; if it already
+  has one, just write the literal with no annotation.
 - **CRT mem/str helpers (`memset`, `memcpy`, `memmove`, `strlen`, …):** leave them
   IMPLICITLY declared — do **not** `#include <string.h>`. An explicit prototype lets `/O2`
   treat them as intrinsics and emit inline `rep movs`/`stos`, which breaks the original's
