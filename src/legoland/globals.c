@@ -3,6 +3,8 @@
 struct Sprite;
 struct Building;
 struct JailCell;
+struct LegoConfig;
+struct RideQueueEntry;
 
 struct ObjTableEntry {
     unsigned short key;
@@ -455,3 +457,7 @@ unsigned int DAT_0082c6a8;
 unsigned short DAT_0082c6ac;
 // GLOBAL: LEGOLAND 0x0062fd3c
 struct JailCell *DAT_0062fd3c;
+// GLOBAL: LEGOLAND 0x004bcbf4
+struct LegoConfig *lpConfig;
+// GLOBAL: LEGOLAND 0x004cbeac
+struct RideQueueEntry *DAT_004cbeac;
