@@ -1565,3 +1565,18 @@ int renderEngineTargetIdx;
 void *renderEngineTargets[1];
 // GLOBAL: LEGOLAND 0x0066869b
 unsigned char DAT_0066869b;
+
+// GLOBAL: LEGOLAND 0x00667c88
+unsigned int DAT_00667c88;
+// GLOBAL: LEGOLAND 0x00667c8c
+unsigned int DAT_00667c8c;
+// GLOBAL: LEGOLAND 0x00667c90
+unsigned int DAT_00667c90;
+// GLOBAL: LEGOLAND 0x00667c94
+unsigned int DAT_00667c94;
+// GLOBAL: LEGOLAND 0x00667c9c
+void *DAT_00667c9c;
+// GLOBAL: LEGOLAND 0x004b9550
+unsigned char DAT_004b9550[8];
+// GLOBAL: LEGOLAND 0x00832bf0
+void *PathSprite;
