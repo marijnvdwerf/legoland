@@ -1,6 +1,8 @@
 #include <windows.h>
 
 struct Sprite;
+struct Building;
+struct JailCell;
 
 struct ObjTableEntry {
     unsigned short key;
@@ -402,3 +404,28 @@ unsigned int DAT_0062fed4[6];
 unsigned int DAT_0062feec[1];
 // GLOBAL: LEGOLAND 0x0062fef4
 void *DAT_0062fef4;
+
+// GLOBAL: LEGOLAND 0x0081cb00
+unsigned int DAT_0081cb00;
+// GLOBAL: LEGOLAND 0x0081cb04
+unsigned int DAT_0081cb04;
+// GLOBAL: LEGOLAND 0x0081cb08
+unsigned int DAT_0081cb08;
+// GLOBAL: LEGOLAND 0x0081cb0c
+unsigned int DAT_0081cb0c;
+// GLOBAL: LEGOLAND 0x0081cb14
+struct Building *DAT_0081cb14;
+// GLOBAL: LEGOLAND 0x0081cb1c
+struct Building *DAT_0081cb1c;
+// GLOBAL: LEGOLAND 0x0081cb24
+unsigned int DAT_0081cb24;
+// GLOBAL: LEGOLAND 0x0081cb2c
+struct Building *DAT_0081cb2c;
+// GLOBAL: LEGOLAND 0x0081cb30
+struct Building *DAT_0081cb30;
+// GLOBAL: LEGOLAND 0x0081cb34
+unsigned int DAT_0081cb34;
+// GLOBAL: LEGOLAND 0x0081cb38
+unsigned int DAT_0081cb38;
+// GLOBAL: LEGOLAND 0x0062fd3c
+struct JailCell *DAT_0062fd3c;
