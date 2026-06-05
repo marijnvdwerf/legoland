@@ -19,6 +19,7 @@ struct JungleFish;
 struct JungleScore;
 struct CatapultNode;
 struct Position;
+struct RinData;
 struct CopterNode;
 struct GoldNode;
 
@@ -1846,3 +1847,64 @@ struct Sprite *DAT_004c11f4;
 struct Sprite *DAT_004c11e4;
 // GLOBAL: LEGOLAND 0x004c11f0
 void *DAT_004c11f0;
+
+// GLOBAL: LEGOLAND 0x0066b5a4
+void *DAT_0066b5a4;
+// GLOBAL: LEGOLAND 0x0066b5a8
+unsigned int DAT_0066b5a8;
+// GLOBAL: LEGOLAND 0x007cb600
+unsigned char DAT_007cb600[1];
+// GLOBAL: LEGOLAND 0x0066b630
+unsigned int DAT_0066b630;
+// GLOBAL: LEGOLAND 0x00797e68
+unsigned int DAT_00797e68;
+// GLOBAL: LEGOLAND 0x00701e60
+unsigned int DAT_00701e60;
+// GLOBAL: LEGOLAND 0x0066be48
+unsigned int DAT_0066be48;
+// GLOBAL: LEGOLAND 0x0066be40
+unsigned int DAT_0066be40;
+// GLOBAL: LEGOLAND 0x0066be44
+unsigned int DAT_0066be44;
+
+// GLOBAL: LEGOLAND 0x004cbf58
+void *DAT_004cbf58;
+// GLOBAL: LEGOLAND 0x004b4d88
+unsigned char SpiderRide_SFX[8];
+// GLOBAL: LEGOLAND 0x004b4d90
+unsigned int DAT_004b4d90;
+// GLOBAL: LEGOLAND 0x0082c668
+struct Sprite *DAT_0082c668;
+// GLOBAL: LEGOLAND 0x004cbf20
+unsigned int DAT_004cbf20;
+// GLOBAL: LEGOLAND 0x004cbf10
+unsigned int DAT_004cbf10;
+// GLOBAL: LEGOLAND 0x004cbf24
+unsigned int DAT_004cbf24;
+// GLOBAL: LEGOLAND 0x004cbf18
+unsigned int DAT_004cbf18;
+// GLOBAL: LEGOLAND 0x004cbf14
+struct Sprite *DAT_004cbf14;
+// GLOBAL: LEGOLAND 0x004cbf1c
+struct Sprite *DAT_004cbf1c;
+// GLOBAL: LEGOLAND 0x004cbf40
+unsigned int DAT_004cbf40;
+// GLOBAL: LEGOLAND 0x004cbf44
+unsigned int DAT_004cbf44;
+// GLOBAL: LEGOLAND 0x004cbf48
+unsigned int DAT_004cbf48;
+// GLOBAL: LEGOLAND 0x004cbf4c
+unsigned short DAT_004cbf4c;
+
+// GLOBAL: LEGOLAND 0x006160e8
+void *DAT_006160e8;
+// GLOBAL: LEGOLAND 0x006160d0
+unsigned int DAT_006160d0;
+// GLOBAL: LEGOLAND 0x006160d4
+struct RinData *DAT_006160d4;
+// GLOBAL: LEGOLAND 0x006160e4
+struct Position *DAT_006160e4;
+// GLOBAL: LEGOLAND 0x006160d8
+struct Sprite *DAT_006160d8;
+// GLOBAL: LEGOLAND 0x006160e0
+struct Sprite *DAT_006160e0;
