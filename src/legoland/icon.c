@@ -1,43 +1,249 @@
 #include "legoland.h"
 
+struct Sprite;
+
+struct IconNode {
+    struct IconNode *next;
+    struct Sprite *sprite;
+    unsigned char pad_8[0x10 - 0x8];
+    short field_10;
+    short field_12;
+    unsigned short field_14;
+    unsigned char pad_16[0x28 - 0x16];
+    void *field_28;
+    void *field_2c;
+    void *field_30;
+    unsigned int field_34;
+};
+
+struct IconGroupRef {
+    unsigned char pad_0[3];
+    unsigned char field_3;
+    unsigned char field_4;
+    unsigned char field_5;
+    unsigned char field_6;
+};
+
+struct Rect16 {
+    unsigned char pad_0[0xc];
+    short field_c;
+    short field_e;
+    short field_10;
+    short field_12;
+};
+
+struct Rect32 {
+    int field_0;
+    int field_4;
+    int field_8;
+    int field_c;
+};
+
+struct Config {
+    unsigned short field_0;
+    unsigned short field_2;
+};
+
+struct Point {
+    int x;
+    int y;
+};
+
+struct Bbox {
+    int min_x;
+    int min_y;
+    int max_x;
+    int max_y;
+};
+
+struct Indicator {
+    struct Indicator *next;
+    unsigned char field_4;
+    unsigned char pad_5[0x8 - 0x5];
+    unsigned int field_8;
+    unsigned int field_c;
+    unsigned int field_10;
+    struct IconNode *field_14;
+    unsigned int field_18;
+    void (*field_1c)(struct Indicator *);
+};
+
+struct CtrlBuffer {
+    unsigned char pad_0[8];
+    int field_8;
+};
+
+struct IndicatorFuncs {
+    unsigned char pad_0[4];
+    unsigned int field_4;
+    unsigned char pad_8[0x18 - 0x8];
+    unsigned int field_18;
+    unsigned int field_1c;
+};
+
+struct TimedIndicator {
+    struct Indicator *next;
+    unsigned int field_4;
+    unsigned int field_8;
+    unsigned int field_c;
+    unsigned int field_10;
+    struct IconNode *field_14;
+    unsigned int field_18;
+    unsigned int field_1c;
+};
+
+struct InterfaceIconNode;
+
+extern unsigned int DAT_006687a4;
+extern struct IconNode *DAT_006687c8;
+extern struct IconNode *DAT_006687cc;
+extern struct IconNode *FocussedIconPtr;
+extern struct IconNode *PTR_some_list_head_004ba87c;
+extern struct CtrlBuffer *CONTROLLERBUFFER;
+extern struct Config *lpConfig;
+extern unsigned int DAT_004bdd00;
+extern struct IconNode *DAT_004bdd04;
+extern void *DAT_006688a8;
+extern void *DAT_006688ac;
+extern void *DAT_006688b0;
+extern unsigned int DAT_006688d0;
+extern void *DAT_00668828;
+extern void *DAT_0066882c;
+extern void *DAT_00668830;
+extern void *DAT_00668834;
+extern struct Indicator *DAT_006688d4;
+extern struct Indicator *DAT_006688d8;
+extern unsigned int DAT_008119b4;
+extern unsigned int DAT_0080ff88;
+extern unsigned int DAT_007fe020[];
+
+extern void KillSprite(struct Sprite *sprite);
+extern void ReferenceSprite(struct Sprite *sprite);
+extern void FUN_0049e4d0(void *ptr);
+extern void *_malloc(unsigned int size);
+extern unsigned int GetGameTimer(void);
+extern void *LoadSprite(const char *name, unsigned int flags);
+extern void SetClipping(int *rect);
+
+int FUN_0046df60(void);
+
 // FUNCTION: LEGOLAND 0x0046d3a0
-void FUN_0046d3a0(void) { STUB(); }
+void FUN_0046d3a0(void) { DAT_006687a4 = 4; }
 
 // FUNCTION: LEGOLAND 0x0046d3c0
-void FUN_0046d3c0(void) { STUB(); }
+void FUN_0046d3c0(struct IconNode *node) {
+    if (!node) {
+        return;
+    }
+    if (node->sprite) {
+        KillSprite(node->sprite);
+        node->sprite = NULL;
+    }
+    if (node->field_34 & 0x80) {
+        if (node->field_30) {
+            FUN_0049e4d0(node->field_30);
+        }
+    }
+    FUN_0049e4d0(node);
+    if (FocussedIconPtr == node) {
+        FocussedIconPtr = NULL;
+    }
+    if (DAT_004bdd00 == 2 && DAT_004bdd04 == node) {
+        DAT_004bdd04 = NULL;
+        DAT_004bdd00 = 0x100;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046d440
-void FUN_0046d440(void) { STUB(); }
+void FUN_0046d440(struct IconNode *node) {
+    PTR_some_list_head_004ba87c->next = node;
+    PTR_some_list_head_004ba87c = node;
+}
 
 // FUNCTION: LEGOLAND 0x0046d460
-void FUN_0046d460(void) { STUB(); }
+void FUN_0046d460(struct IconNode **slot) {
+    struct IconNode *node = *slot;
+    struct IconNode *next;
+    if (FocussedIconPtr == node->next) {
+        FocussedIconPtr = NULL;
+    }
+    if (PTR_some_list_head_004ba87c == *slot) {
+        PTR_some_list_head_004ba87c = (struct IconNode *)slot;
+    }
+    node = *slot;
+    next = node->next;
+    FUN_0046d3c0(node);
+    *slot = next;
+}
 
 // FUNCTION: LEGOLAND 0x0046d4a0
 void FUN_0046d4a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d4e0
-void FUN_0046d4e0(void) { STUB(); }
+void FUN_0046d4e0(struct IconNode *node) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d520
-void RemoveIconGroup(void) { STUB(); }
+void RemoveIconGroup(struct IconGroupRef *group) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d590
-void FUN_0046d590(void) { STUB(); }
+void FUN_0046d590(unsigned short val) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d630
-void FindIcon(void) { STUB(); }
+struct IconNode *FindIcon(unsigned short id) {
+    struct IconNode *node = DAT_006687c8;
+    while (node) {
+        if (node->field_14 == id && (node->field_34 & 0x100) == 0) {
+            return node;
+        }
+        node = node->next;
+    }
+    node = DAT_006687cc;
+    while (node) {
+        if (node->field_14 == id && (node->field_34 & 0x100) == 0) {
+            return node;
+        }
+        node = node->next;
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x0046d680
-void FUN_0046d680(void) { STUB(); }
+void FUN_0046d680(struct IconNode *node, struct Sprite *sprite) {
+    if (node) {
+        struct Sprite *old = node->sprite;
+        if (sprite != old) {
+            if (old) {
+                KillSprite(old);
+            }
+            if (sprite) {
+                ReferenceSprite(sprite);
+            }
+            node->sprite = sprite;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046d6c0
-void InsertIcon(void) { STUB(); }
+struct IconNode *InsertIcon(int a1, int a2, int a3, void *a4) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d740
-void SetNewGroup_Callbacks(void) { STUB(); }
+void SetNewGroup_Callbacks(void *param_1, void *param_2, void *param_3) {
+    DAT_006688a8 = param_1;
+    DAT_006688ac = param_2;
+    DAT_006688b0 = param_3;
+}
 
 // FUNCTION: LEGOLAND 0x0046d760
-void AddFullScreenIcon(void) { STUB(); }
+struct IconNode *AddFullScreenIcon(void *icon) {
+    struct IconNode *result = InsertIcon(0, 0, (int)icon, 0);
+    if (result) {
+        result->field_10 = lpConfig->field_0;
+        result->field_12 = lpConfig->field_2;
+        result->field_28 = (void *)FUN_0046df60;
+        result->field_34 = result->field_34 | 0x29;
+    }
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x0046d7b0
 void LoadSpriteIcon(void) { STUB(); }
@@ -49,13 +255,36 @@ void FUN_0046d850(void) { STUB(); }
 void FUN_0046d980(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046da20
-void FUN_0046da20(void) { STUB(); }
+void FUN_0046da20(struct IconNode *icon, int a2, int a3, int a4) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046dac0
 void FUN_0046dac0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046db40
-void FUN_0046db40(void) { STUB(); }
+void FUN_0046db40(void) {
+    unsigned int v;
+    struct IconNode *icon;
+    if (DAT_008119b4 == 2 && DAT_0080ff88 == 3) {
+        int field = CONTROLLERBUFFER->field_8;
+        if (field < 0xb2) {
+            v = 0xc8;
+        } else if (field < 0x143) {
+            v = 0x1f4;
+        } else {
+            unsigned int ecx = (field >= 0x1d4) ? 1 : 0;
+            ecx = ecx - 1;
+            ecx = ecx & 0x64;
+            v = ecx + 0x12c;
+        }
+    } else {
+        v = 0xd2;
+    }
+    v = v + 4;
+    icon = FindIcon((unsigned short)v);
+    if (icon) {
+        FUN_0046da20(icon, 1, 0, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046dbc0
 void AddGBarIcons(void) { STUB(); }
@@ -67,16 +296,29 @@ void MoveIcons(void) { STUB(); }
 void FUN_0046dd10(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046de50
-void FUN_0046de50(void) { STUB(); }
+void FUN_0046de50(struct Rect16 *src, struct Rect32 *dst) {
+    dst->field_0 = src->field_c;
+    dst->field_4 = src->field_e;
+    dst->field_8 = src->field_10 + src->field_c;
+    dst->field_c = src->field_12 + src->field_e;
+}
 
 // FUNCTION: LEGOLAND 0x0046de90
 void FUN_0046de90(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046df30
-void FUN_0046df30(void) { STUB(); }
+int FUN_0046df30(struct Rect16 *src) {
+    int rect[4];
+    FUN_0046de50(src, (struct Rect32 *)&rect[0]);
+    SetClipping(&rect[0]);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046df60
-void FUN_0046df60(void) { STUB(); }
+int FUN_0046df60(void) {
+    SetClipping((int *)DAT_007fe020);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046df70
 void RenderBoxIcon(void) { STUB(); }
@@ -148,7 +390,10 @@ void RenderHelpIcons(void) { STUB(); }
 void FUN_0046f2e0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046f300
-void FUN_0046f300(void) { STUB(); }
+int FUN_0046f300(struct Point *point, struct Bbox *bbox) {
+    return point->x >= bbox->min_x && point->x <= bbox->max_x &&
+           point->y >= bbox->min_y && point->y <= bbox->max_y;
+}
 
 // FUNCTION: LEGOLAND 0x0046f330
 void FUN_0046f330(void) { STUB(); }
@@ -166,31 +411,141 @@ void AddGBarClassIcon(void) { STUB(); }
 void AddFreePlayIcon(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046f890
-void FUN_0046f890(void) { STUB(); }
+void FUN_0046f890(void) {
+    if (DAT_006688d0 != 0) {
+        return;
+    }
+    if (DAT_00668828 == 0) {
+        // STRING: LEGOLAND 0x004ba8c8
+        DAT_00668828 = LoadSprite("GBarFrame.lls", 4);
+    }
+    if (DAT_0066882c == 0) {
+        // STRING: LEGOLAND 0x004ba8b8
+        DAT_0066882c = LoadSprite("IF_Side_BUp.lls", 4);
+    }
+    if (DAT_00668830 == 0) {
+        // STRING: LEGOLAND 0x004ba8a4
+        DAT_00668830 = LoadSprite("IF_Side_BDown.lls", 4);
+    }
+    if (DAT_00668834 == 0) {
+        // STRING: LEGOLAND 0x004ba894
+        DAT_00668834 = LoadSprite("IF_Sidebar1.lls", 4);
+    }
+    DAT_006688d0 = 1;
+}
 
 // FUNCTION: LEGOLAND 0x0046f920
-void FUN_0046f920(void) { STUB(); }
+void FUN_0046f920(void) {
+    if (DAT_006688d0 != 0) {
+        DAT_006688d0 = 0;
+        if (DAT_00668828 != 0) {
+            KillSprite(DAT_00668828);
+            DAT_00668828 = 0;
+        }
+        if (DAT_0066882c != 0) {
+            KillSprite(DAT_0066882c);
+            DAT_0066882c = 0;
+        }
+        if (DAT_00668830 != 0) {
+            KillSprite(DAT_00668830);
+            DAT_00668830 = 0;
+        }
+        if (DAT_00668834 != 0) {
+            KillSprite(DAT_00668834);
+            DAT_00668834 = 0;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046f9a0
 void FUN_0046f9a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046fb40
-void FUN_0046fb40(void) { STUB(); }
+void FUN_0046fb40(struct IconGroupRef *group) {
+    struct IconNode *icon1;
+    struct IconNode *icon2;
+    struct IconNode *icon3;
+    struct IconNode *icon4;
+
+    icon1 = FindIcon(&group->field_5);
+    if (icon1) {
+        icon2 = FindIcon(&group->field_3);
+        if (icon2) {
+            FUN_0046d4e0(icon2);
+        }
+        icon3 = FindIcon(&group->field_4);
+        if (icon3) {
+            FUN_0046d4e0(icon3);
+        }
+        icon4 = FindIcon(&group->field_6);
+        if (icon4) {
+            FUN_0046d4e0(icon4);
+        }
+        FUN_0049e4d0(icon1->field_30);
+        FUN_0046d4e0(icon1);
+        RemoveIconGroup(group);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046fbc0
-void FUN_0046fbc0(void) { STUB(); }
+unsigned char FUN_0046fbc0(struct IconNode *icon, unsigned char flag) {
+    struct Indicator *ind = (struct Indicator *)icon->field_30;
+    if (flag & 0x5) {
+        if (ind->field_4 & 0x4) {
+            ind->field_1c(ind);
+        }
+        return 2;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0046fbf0
-void AllocateTimedIndicator(void) { STUB(); }
+struct TimedIndicator *AllocateTimedIndicator(struct Sprite *sprite, unsigned int a2, unsigned int a3) {
+    struct TimedIndicator *ind;
+    struct IconNode *icon;
+
+    ind = _malloc(40);
+    ind->next = DAT_006688d4;
+    ind->field_4 = 0;
+    ind->field_8 = GetGameTimer();
+    ind->field_c = a2;
+    ind->field_10 = a3;
+
+    ReferenceSprite(sprite);
+    icon = InsertIcon(0, 0, 0xe000, sprite);
+    ind->field_14 = icon;
+    icon->field_28 = (void *)FUN_0046eaa0;
+
+    icon = ind->field_14;
+    icon->field_2c = (void *)FUN_0046fbc0;
+
+    icon = ind->field_14;
+    icon->field_34 = icon->field_34 | 0x40a;
+
+    icon = ind->field_14;
+    icon->field_30 = ind;
+
+    ind->field_18 = 0;
+    ind->field_1c = 0;
+
+    DAT_006688d4 = (struct Indicator *)ind;
+    return ind;
+}
 
 // FUNCTION: LEGOLAND 0x0046fc80
 void AllocatePermanentIndicator(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046fd00
-void SetCheckFunc(void) { STUB(); }
+void SetCheckFunc(struct IndicatorFuncs *ind, unsigned int func) {
+    ind->field_18 = func;
+    ind->field_4 |= 0x4;
+}
 
 // FUNCTION: LEGOLAND 0x0046fd20
-void SetClickFunc(void) { STUB(); }
+void SetClickFunc(struct IndicatorFuncs *ind, unsigned int func) {
+    ind->field_1c = func;
+    ind->field_4 |= 0x4;
+}
 
 // FUNCTION: LEGOLAND 0x0046fd40
 void AddIndicator(void) { STUB(); }
@@ -199,7 +554,46 @@ void AddIndicator(void) { STUB(); }
 void RemoveIndicator(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046fe00
-void DeleteIndicator(void) { STUB(); }
+void DeleteIndicator(struct Indicator *ind) {
+    struct Indicator *cur;
+
+    FUN_0046d4e0(ind->field_14);
+
+    if ((ind->field_4 & 0x8) != 0) {
+        if (DAT_006688d8 == ind) {
+            DAT_006688d8 = DAT_006688d8->next;
+            FUN_0049e4d0(ind);
+            return;
+        }
+        cur = DAT_006688d8;
+        while (cur != 0) {
+            if (cur->next == ind) {
+                cur->next = ind->next;
+                FUN_0049e4d0(ind);
+                return;
+            }
+            cur = cur->next;
+        }
+        FUN_0049e4d0(ind);
+        return;
+    }
+
+    if (DAT_006688d4 == ind) {
+        DAT_006688d4 = DAT_006688d4->next;
+        FUN_0049e4d0(ind);
+        return;
+    }
+    cur = DAT_006688d4;
+    while (cur != 0) {
+        if (cur->next == ind) {
+            cur->next = ind->next;
+            FUN_0049e4d0(ind);
+            return;
+        }
+        cur = cur->next;
+    }
+    FUN_0049e4d0(ind);
+}
 
 // FUNCTION: LEGOLAND 0x0046feb0
 void ControlIndicators(void) { STUB(); }
@@ -208,4 +602,10 @@ void ControlIndicators(void) { STUB(); }
 void FUN_00470000(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004700a0
-void UpdateFocussedIconPtr(void) { STUB(); }
+void UpdateFocussedIconPtr(void) {
+    if (DAT_004bdd00 == 2) {
+        FocussedIconPtr = DAT_004bdd04;
+    } else {
+        FocussedIconPtr = NULL;
+    }
+}
