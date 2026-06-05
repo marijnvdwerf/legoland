@@ -685,3 +685,127 @@ unsigned int DAT_007fffc4;
 unsigned int DAT_007fffd4[5];
 // GLOBAL: LEGOLAND 0x008003f0
 unsigned int DAT_008003f0;
+
+struct InterfaceIconNode;
+struct InterfaceProfileObj;
+struct InterfaceListNode;
+struct InterfaceQueryNode;
+struct InterfaceEventNode;
+struct InterfaceResearchNode;
+
+// GLOBAL: LEGOLAND 0x00668ea4
+unsigned int DAT_00668ea4;
+// GLOBAL: LEGOLAND 0x00668e68
+unsigned int DAT_00668e68;
+// GLOBAL: LEGOLAND 0x00668e6c
+unsigned int DAT_00668e6c;
+// GLOBAL: LEGOLAND 0x00668e70
+unsigned int DAT_00668e70;
+// GLOBAL: LEGOLAND 0x007fdcd0
+unsigned int DAT_007fdcd0;
+// GLOBAL: LEGOLAND 0x007fdd50
+unsigned int DAT_007fdd50;
+// GLOBAL: LEGOLAND 0x007fdcd4
+unsigned int DAT_007fdcd4;
+// GLOBAL: LEGOLAND 0x007fdd54
+unsigned int DAT_007fdd54;
+// GLOBAL: LEGOLAND 0x007fdcd8
+unsigned int DAT_007fdcd8;
+// GLOBAL: LEGOLAND 0x007fdd58
+unsigned int DAT_007fdd58;
+// GLOBAL: LEGOLAND 0x007fdcdc
+unsigned int DAT_007fdcdc;
+// GLOBAL: LEGOLAND 0x007fdd5c
+unsigned int DAT_007fdd5c;
+// GLOBAL: LEGOLAND 0x007fdce0
+unsigned int DAT_007fdce0;
+// GLOBAL: LEGOLAND 0x007fdd60
+unsigned int DAT_007fdd60;
+// GLOBAL: LEGOLAND 0x00668e74
+unsigned int DAT_00668e74;
+// GLOBAL: LEGOLAND 0x00668e78
+unsigned int DAT_00668e78;
+// GLOBAL: LEGOLAND 0x00668e7c
+unsigned int DAT_00668e7c;
+// GLOBAL: LEGOLAND 0x00668e80
+unsigned int DAT_00668e80;
+// GLOBAL: LEGOLAND 0x00668e84
+unsigned int DAT_00668e84;
+// GLOBAL: LEGOLAND 0x00668e88
+unsigned int DAT_00668e88;
+// GLOBAL: LEGOLAND 0x00668e8c
+unsigned int DAT_00668e8c;
+// GLOBAL: LEGOLAND 0x00668e90
+unsigned int DAT_00668e90;
+// GLOBAL: LEGOLAND 0x00668e94
+unsigned int DAT_00668e94;
+// GLOBAL: LEGOLAND 0x00668e98
+unsigned int DAT_00668e98;
+// GLOBAL: LEGOLAND 0x00668ea0
+unsigned int DAT_00668ea0;
+// GLOBAL: LEGOLAND 0x00668eb0
+unsigned int DAT_00668eb0;
+// GLOBAL: LEGOLAND 0x004bb0a0
+unsigned int DAT_004bb0a0;
+// GLOBAL: LEGOLAND 0x004bb09c
+unsigned int DAT_004bb09c;
+// GLOBAL: LEGOLAND 0x004bb098
+unsigned int DAT_004bb098;
+// GLOBAL: LEGOLAND 0x004bb094
+unsigned int DAT_004bb094;
+// GLOBAL: LEGOLAND 0x00668eb4
+unsigned int DAT_00668eb4;
+// GLOBAL: LEGOLAND 0x007fdcc0
+unsigned int DAT_007fdcc0;
+// GLOBAL: LEGOLAND 0x007fdd40
+unsigned int DAT_007fdd40;
+// GLOBAL: LEGOLAND 0x007fdcc8
+unsigned int DAT_007fdcc8;
+// GLOBAL: LEGOLAND 0x007fdd48
+unsigned int DAT_007fdd48;
+// GLOBAL: LEGOLAND 0x007fdcc4
+unsigned int DAT_007fdcc4;
+// GLOBAL: LEGOLAND 0x007fdd44
+unsigned int DAT_007fdd44;
+// GLOBAL: LEGOLAND 0x007fdccc
+unsigned int DAT_007fdccc;
+// GLOBAL: LEGOLAND 0x007fdd4c
+unsigned int DAT_007fdd4c;
+// GLOBAL: LEGOLAND 0x00668eb8
+unsigned int DAT_00668eb8;
+// GLOBAL: LEGOLAND 0x007fdd70
+struct InterfaceProfileObj *DAT_007fdd70[4];
+// GLOBAL: LEGOLAND 0x00668e20
+unsigned int DAT_00668e20[4];
+// GLOBAL: LEGOLAND 0x00668ebc
+unsigned int DAT_00668ebc;
+// GLOBAL: LEGOLAND 0x007fdd80
+unsigned char DAT_007fdd80;
+// GLOBAL: LEGOLAND 0x007fdd84
+unsigned int DAT_007fdd84;
+// GLOBAL: LEGOLAND 0x007fdd88
+unsigned int DAT_007fdd88;
+// GLOBAL: LEGOLAND 0x007fdd8c
+unsigned char DAT_007fdd8c;
+// GLOBAL: LEGOLAND 0x00668954
+unsigned int DAT_00668954;
+// GLOBAL: LEGOLAND 0x0080ff84
+unsigned int DAT_0080ff84;
+// GLOBAL: LEGOLAND 0x00668e40
+struct InterfaceListNode *DAT_00668e40;
+// GLOBAL: LEGOLAND 0x004baff8
+unsigned int DAT_004baff8;
+// GLOBAL: LEGOLAND 0x004bafa8
+unsigned int DAT_004bafa8[20];
+// GLOBAL: LEGOLAND 0x004bb18c
+unsigned int DAT_004bb18c[4];
+// GLOBAL: LEGOLAND 0x007fdd00
+unsigned int DAT_007fdd00[9];
+// GLOBAL: LEGOLAND 0x0080ffd0
+unsigned char DAT_0080ffd0[4];
+// GLOBAL: LEGOLAND 0x00668ed8
+struct InterfaceResearchNode *DAT_00668ed8;
+// GLOBAL: LEGOLAND 0x006687c8
+struct InterfaceIconNode *DAT_006687c8;
+// GLOBAL: LEGOLAND 0x00668fc4
+struct InterfaceQueryNode *DAT_00668fc4;
