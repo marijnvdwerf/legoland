@@ -140,3 +140,31 @@ unsigned int DAT_007cad48;
 
 // GLOBAL: LEGOLAND 0x004ab8b0
 GUID DAT_004ab8b0 = {0xd2ac2893, 0xb39b, 0x11d1, {0x87, 0x04, 0x00, 0x60, 0x08, 0x93, 0xb1, 0xbd}};
+
+// GLOBAL: LEGOLAND 0x00669240
+void *ObjectClassList;
+
+// GLOBAL: LEGOLAND 0x00669248
+void *DAT_00669248;
+// GLOBAL: LEGOLAND 0x0066924c
+unsigned int DAT_0066924c;
+
+// GLOBAL: LEGOLAND 0x0066b44c
+void *DAT_0066b44c;
+
+// GLOBAL: LEGOLAND 0x008119a0
+unsigned int NEWFLC_CheckDuplicate;
+// GLOBAL: LEGOLAND 0x008119a8
+unsigned int NEWFLC_BuffSize;
+// GLOBAL: LEGOLAND 0x008119ac
+unsigned short NEWFLC_Repeat;
+// GLOBAL: LEGOLAND 0x008119b0
+unsigned int EditMode;
+// GLOBAL: LEGOLAND 0x008119b8
+void *DAT_008119b8;
+
+// GLOBAL: LEGOLAND 0x00813a40
+unsigned int GamePad;
+
+// GLOBAL: LEGOLAND 0x007febc0
+unsigned int EditCursor;

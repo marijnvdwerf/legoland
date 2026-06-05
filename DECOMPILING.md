@@ -37,9 +37,12 @@ an unmatched function from scratch** — that's slow, separate work, not for the
 - **Clean everything else:** real types (`uint32_t`, not `unk32_t`); named locals
   (not `uVar1`); real `struct` definitions with named fields when you understand the
   layout (not `pad_0[0x14]`); correct signatures and calling conventions.
-- **Comments: the ONLY comments allowed in decomp source are the `// FUNCTION:` and
-  `// GLOBAL:` annotations.** Do **not** write comments explaining variables, types, or
-  logic — express intent through names. No exceptions.
+- **Comments: the ONLY comments allowed are reccmp annotations** — `// FUNCTION:`,
+  `// GLOBAL:`, and `// STRING:`. The last goes directly above a function that references
+  a pooled string constant: `// STRING: LEGOLAND 0x<addr>` (one per literal, the address
+  of the string in the original), so reccmp matches the string reference. Write the
+  literal normally in the C (`"PATH CONTROL"`) — it compiles now. Do **not** write any
+  explanatory comments about variables, types, or logic — express intent through names.
 - **Annotations:** every function keeps `// FUNCTION: LEGOLAND 0x<addr>` directly above
   it. The address is how reccmp matches — never drop or change it.
 - **Globals** go in `src/legoland/globals.c`, one definition each, with
