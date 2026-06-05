@@ -5,6 +5,8 @@ struct Building;
 struct JailCell;
 struct LegoConfig;
 struct RideQueueEntry;
+struct ObjectiveEvent;
+struct MapElement;
 
 struct ObjTableEntry {
     unsigned short key;
@@ -602,3 +604,34 @@ unsigned int DAT_00832980;
 unsigned int DAT_00832994;
 // GLOBAL: LEGOLAND 0x00832ba8
 unsigned int DAT_00832ba8;
+
+// GLOBAL: LEGOLAND 0x0066869c
+char DAT_0066869c[128];
+// GLOBAL: LEGOLAND 0x0066871b
+unsigned char DAT_0066871b;
+// GLOBAL: LEGOLAND 0x0066861c
+unsigned char DAT_0066861c;
+// GLOBAL: LEGOLAND 0x007fe930
+unsigned char DAT_007fe930[10];
+// GLOBAL: LEGOLAND 0x00668724
+struct ObjectiveEvent *DAT_00668724;
+// GLOBAL: LEGOLAND 0x00668728
+struct ObjectiveEvent *DAT_00668728;
+// GLOBAL: LEGOLAND 0x0066872c
+unsigned int DAT_0066872c[64];
+// GLOBAL: LEGOLAND 0x00668780
+unsigned int DAT_00668780;
+// GLOBAL: LEGOLAND 0x0066871c
+unsigned int DAT_0066871c;
+// GLOBAL: LEGOLAND 0x007fe114
+unsigned char DAT_007fe114;
+// GLOBAL: LEGOLAND 0x007fe115
+unsigned char DAT_007fe115;
+// GLOBAL: LEGOLAND 0x007fe116
+unsigned char DAT_007fe116;
+// GLOBAL: LEGOLAND 0x007fe117
+unsigned char DAT_007fe117;
+// GLOBAL: LEGOLAND 0x007fe120
+unsigned int DAT_007fe120[256];
+// GLOBAL: LEGOLAND 0x00801400
+struct MapElement **DAT_00801400;
