@@ -28,9 +28,15 @@ an unmatched function from scratch** — that's slow, separate work, not for the
 
 ## Reference material (not the deliverable)
 
-- `port2/project/c/0x<ADDR>.c` — AI first-drafts; ~1,543 already byte-match. Great
-  starting point, but they are raw (Ghidra names, `pad[0x14]`, `uVar1`). **Clean them.**
-- Ghidra MCP (see `../ghidra/CLAUDE.md`) — for naming/struct context on the matched ones.
+- **`port2/project/c/0x00<ADDR>.c` is the START for every function — read it FIRST.**
+  Filename is UPPERCASE hex: address `0x0041cc50` → `port2/project/c/0x0041CC50.c`. These
+  are already byte-matched in port2, so the logic is correct — you are **translating and
+  cleaning** (raw Ghidra names, `pad[0x14]`, `uVar1` → real types, named locals, real
+  structs), **not reverse-engineering**. Do not write a body from scratch.
+- **Do NOT call Ghidra to derive a function body.** The port2 C already has it. Ghidra MCP
+  (see `../ghidra/CLAUDE.md`) is a last resort *only* to look up a single struct field
+  name/type when the port2 draft is genuinely unclear — and even that is optional. Re-deriving
+  from disassembly when a byte-matched port2 draft exists is wasted, off-task work.
 - The original asm is the ground truth; the asm diff from `verify -v` is what you tune against.
 
 ## House style
