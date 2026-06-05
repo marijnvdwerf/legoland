@@ -461,3 +461,48 @@ struct JailCell *DAT_0062fd3c;
 struct LegoConfig *lpConfig;
 // GLOBAL: LEGOLAND 0x004cbeac
 struct RideQueueEntry *DAT_004cbeac;
+
+// GLOBAL: LEGOLAND 0x00798740
+unsigned int DAT_00798740;
+// GLOBAL: LEGOLAND 0x0079873c
+unsigned int DAT_0079873c;
+// GLOBAL: LEGOLAND 0x006687bc
+unsigned int DAT_006687bc;
+// GLOBAL: LEGOLAND 0x006687c0
+unsigned int DAT_006687c0;
+// GLOBAL: LEGOLAND 0x0080ffc4
+unsigned int DAT_0080ffc4;
+// GLOBAL: LEGOLAND 0x0080ffc8
+unsigned int DAT_0080ffc8;
+// GLOBAL: LEGOLAND 0x0080ffcc
+unsigned int DAT_0080ffcc;
+// GLOBAL: LEGOLAND 0x007cb314
+char DAT_007cb314;
+// GLOBAL: LEGOLAND 0x007cb315
+char DAT_007cb315;
+// GLOBAL: LEGOLAND 0x007cb31c
+char DAT_007cb31c;
+// GLOBAL: LEGOLAND 0x0080ffe4
+unsigned char DAT_0080ffe4;
+// GLOBAL: LEGOLAND 0x0080ffd9
+unsigned char DAT_0080ffd9;
+// GLOBAL: LEGOLAND 0x007cb320
+unsigned int DAT_007cb320;
+// GLOBAL: LEGOLAND 0x007cb310
+unsigned int DAT_007cb310;
+// GLOBAL: LEGOLAND 0x00832ba0
+unsigned int DAT_00832ba0;
+// GLOBAL: LEGOLAND 0x0080ff80
+unsigned int DAT_0080ff80;
+// GLOBAL: LEGOLAND 0x004b929c
+void *DAT_004b929c;
+// GLOBAL: LEGOLAND 0x007986b8
+unsigned int DAT_007986b8;
+// GLOBAL: LEGOLAND 0x007986d8
+unsigned int DAT_007986d8;
+// GLOBAL: LEGOLAND 0x007986dc
+unsigned int DAT_007986dc;
+// GLOBAL: LEGOLAND 0x007986e0
+unsigned int DAT_007986e0;
+// GLOBAL: LEGOLAND 0x007cb360
+unsigned int DAT_007cb360;
