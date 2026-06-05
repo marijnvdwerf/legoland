@@ -13,6 +13,10 @@ struct WaterSub;
 struct EateryFX;
 struct BlokeNode;
 struct SaveBlock;
+struct JungleNode;
+struct JungleCursor;
+struct JungleFish;
+struct JungleScore;
 
 struct ObjTableEntry {
     unsigned short key;
@@ -1505,3 +1509,34 @@ void *DAT_0081cdd4;
 void *DAT_0081cdd8;
 // GLOBAL: LEGOLAND 0x0081cddc
 void *DAT_0081cddc;
+
+// GLOBAL: LEGOLAND 0x00616164
+struct JungleNode *DAT_00616164;
+// GLOBAL: LEGOLAND 0x0081cb70
+struct JungleCursor *DAT_0081cb70;
+// GLOBAL: LEGOLAND 0x0081cb68
+unsigned int DAT_0081cb68;
+// GLOBAL: LEGOLAND 0x0081cb74
+unsigned int DAT_0081cb74;
+// GLOBAL: LEGOLAND 0x0081cb6c
+unsigned int DAT_0081cb6c;
+// GLOBAL: LEGOLAND 0x0081cb60
+void *DAT_0081cb60;
+// GLOBAL: LEGOLAND 0x0081cb54
+unsigned int DAT_0081cb54;
+// GLOBAL: LEGOLAND 0x00629c30
+struct JungleFish *DAT_00629c30;
+// GLOBAL: LEGOLAND 0x00629c3c
+struct JungleScore *DAT_00629c3c;
+// GLOBAL: LEGOLAND 0x0062fd2c
+unsigned int DAT_0062fd2c;
+// GLOBAL: LEGOLAND 0x00629c40
+unsigned char DAT_00629c40[16];
+// GLOBAL: LEGOLAND 0x00629c50
+void *DAT_00629c50;
+// GLOBAL: LEGOLAND 0x004b7260
+unsigned char DAT_004b7260[0x18];
+// GLOBAL: LEGOLAND 0x004b7278
+unsigned char DAT_004b7278[0x10];
+// GLOBAL: LEGOLAND 0x004b7288
+void *DAT_004b7288;
