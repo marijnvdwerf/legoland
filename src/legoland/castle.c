@@ -36,7 +36,8 @@ void FUN_0041e500(void *obj);
 void FUN_0041e6a0(unsigned int *param, unsigned int value);
 void FUN_0041e420(struct CastleObj *self, unsigned int flag);
 extern struct CastleObj *FUN_004775b0(unsigned int size, unsigned int a, unsigned int b, unsigned int c);
-void FUN_00421540(unsigned int *param, unsigned int value);
+void FUN_00421540(void *dest, unsigned int value);
+unsigned int FUN_00426750(void *ptr, unsigned int a, unsigned int b, unsigned int c);
 struct LookupResult *FUN_0041d3b0(const unsigned char *key, unsigned int param2);
 unsigned int FUN_0041d630(unsigned int param0, const unsigned char *key, unsigned int param2, const unsigned char *param3);
 unsigned int FUN_0041d5b0(unsigned int param0, const unsigned char *key, unsigned int param2, const unsigned char *param3);
@@ -65,6 +66,7 @@ extern unsigned char DAT_004d88f4[];
 extern unsigned char DAT_004d8934[];
 extern unsigned char DAT_004d8974[];
 extern void *DAT_004d89c4;
+extern char DAT_004d8bb0[];
 
 struct FlagWord {
     unsigned int field_0;
@@ -1293,10 +1295,12 @@ void FUN_00420a20(void) { STUB(); }
 void FUN_00420c40(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00420e90
-void FUN_00420e90(void) { STUB(); }
+unsigned int FUN_00420e90(unsigned int a, unsigned int b, void *c, void *d, unsigned int e) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00420fb0
-void FUN_00420fb0(void) { STUB(); }
+unsigned int FUN_00420fb0(unsigned char *param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
+    return FUN_00426750(param_1 + 0x30, param_2, param_3, param_4);
+}
 
 // FUNCTION: LEGOLAND 0x00420fd0
 void FUN_00420fd0(void) { STUB(); }
@@ -1308,10 +1312,22 @@ void FUN_004212a0(void) { STUB(); }
 void FUN_004212e0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00421320
-void FUN_00421320(void) { STUB(); }
+void FUN_00421320(void *src, void *dst) {
+    memcpy(dst, src, 84);
+}
+
+struct FloatArray {
+    int count;
+    float data[1];
+};
 
 // FUNCTION: LEGOLAND 0x00421340
-void FUN_00421340(void) { STUB(); }
+void FUN_00421340(struct FloatArray *arr, float f) {
+    int i;
+    for (i = 0; i < arr->count; i++) {
+        arr->data[i] = f * arr->data[i];
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00421360
 void FUN_00421360(void) { STUB(); }
@@ -1319,65 +1335,279 @@ void FUN_00421360(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x004213a0
 void FUN_004213a0(void) { STUB(); }
 
+struct IntBuffer {
+    int size;
+    int data[1];
+};
+
 // FUNCTION: LEGOLAND 0x00421400
-void FUN_00421400(void) { STUB(); }
+void FUN_00421400(struct IntBuffer *buf, int size) {
+    int i;
+    if (size > 0) {
+        for (i = 0; i < size; i++) {
+            buf->data[i] = 0;
+        }
+    }
+    buf->size = size;
+}
 
 // FUNCTION: LEGOLAND 0x00421430
 void FUN_00421430(void) { STUB(); }
 
+extern void *DAT_004dcbd0[10];
+extern unsigned int DAT_004dcbf8;
+extern unsigned char DAT_004dcc00[];
+extern unsigned int DAT_004dd5d8;
+extern void *DAT_0082ac60[];
+void **FUN_004214f0(unsigned int param_1);
+void FUN_00421510(unsigned int param_1, unsigned int param_2);
+
 // FUNCTION: LEGOLAND 0x00421470
-void FUN_00421470(void) { STUB(); }
+void FUN_00421470(void) {
+    void **table;
+    unsigned char *cur;
+
+    DAT_004dcbd0[0] = FUN_004212a0;
+    DAT_004dcbd0[1] = FUN_004212e0;
+    DAT_004dcbd0[2] = FUN_00421320;
+    DAT_004dcbd0[3] = FUN_00421340;
+    DAT_004dcbd0[4] = FUN_00421360;
+    DAT_004dcbd0[5] = FUN_004213a0;
+    DAT_004dcbd0[6] = FUN_00421400;
+    DAT_004dcbd0[7] = FUN_00421430;
+    DAT_004dcbd0[8] = FUN_004214f0;
+    DAT_004dcbd0[9] = FUN_00421510;
+
+    table = DAT_0082ac60;
+    cur = DAT_004dcc00;
+    while ((int)cur < (int)&DAT_004dd5d8) {
+        *table = cur;
+        cur += 0x54;
+        table += 1;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004214f0
-void FUN_004214f0(void) { STUB(); }
+void **FUN_004214f0(unsigned int param_1) {
+    unsigned int index = DAT_004dd5d8;
+    DAT_004dd5d8 = DAT_004dd5d8 + param_1;
+    return &DAT_0082ac60[index];
+}
 
 // FUNCTION: LEGOLAND 0x00421510
-void FUN_00421510(void) { STUB(); }
+void FUN_00421510(unsigned int param_1, unsigned int param_2) {
+    DAT_004dd5d8 = DAT_004dd5d8 - param_2;
+}
 
 // FUNCTION: LEGOLAND 0x00421540
-void FUN_00421540(unsigned int *param, unsigned int value) { STUB(); }
+void FUN_00421540(void *dest, unsigned int value) {
+    DAT_004dcbf8 = value;
+    memcpy(dest, DAT_004dcbd0, 11 * sizeof(unsigned int));
+}
+
+struct Struct1560A {
+    unsigned char pad_0[0xc];
+    unsigned int field_c;
+};
+
+struct Struct1560B {
+    unsigned char pad_0[4];
+    unsigned int field_4;
+    unsigned int field_8;
+};
+
+void FUN_00425c40(void);
 
 // FUNCTION: LEGOLAND 0x00421560
-void FUN_00421560(void) { STUB(); }
+unsigned int FUN_00421560(struct Struct1560B *param_2, struct Struct1560A *param_1) {
+    FUN_00425c40();
+    return FUN_00420e90(param_2->field_4, param_2->field_8, param_1, &param_1->field_c, 0);
+}
+
+struct Struct1590 {
+    unsigned char pad_0[0x18];
+    unsigned int field_18;
+};
+
+void FUN_004273d0(unsigned int param_1, void *param_2);
 
 // FUNCTION: LEGOLAND 0x00421590
-void FUN_00421590(void) { STUB(); }
+void FUN_00421590(struct Struct1590 *arg1, unsigned int arg2) {
+    FUN_004273d0(arg2, arg1);
+    arg1->field_18 = arg2;
+}
 
 // FUNCTION: LEGOLAND 0x004215b0
-void FUN_004215b0(void) { STUB(); }
+void FUN_004215b0(struct Struct1590 *param_1) {
+    unsigned int temp = param_1->field_18;
+    FUN_004273e0((void *)temp);
+    param_1->field_18 = 0;
+}
+
+struct TimerNode;
 
 // FUNCTION: LEGOLAND 0x004215d0
-void FUN_004215d0(void) { STUB(); }
+struct TimerNode *FUN_004215d0(struct TimerNode *a1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00421660
 void FUN_00421660(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00421890
-void FUN_00421890(void) { STUB(); }
+struct TimerNode *FUN_00421890(unsigned int a1) { STUB(); }
+
+struct TimerNode {
+    unsigned int field_0;
+    unsigned char pad_4[0x10 - 0x4];
+    struct TimerNode *field_10;
+    struct TimerNode *field_14;
+    unsigned char pad_18[0x1c - 0x18];
+    unsigned int field_1c;
+};
+
+struct Timer {
+    unsigned char pad_0[0xe4];
+    struct TimerNode *field_e4;
+    unsigned char pad_e8[0xf4 - 0xe8];
+    struct TimerNode *field_f4;
+};
 
 // FUNCTION: LEGOLAND 0x00421930
-void FUN_00421930(void) { STUB(); }
+struct TimerNode *FUN_00421930(unsigned int param, struct Timer *timer) {
+    struct TimerNode *node;
+    struct TimerNode *old_head;
+
+    node = FUN_00421890(param);
+    node = FUN_004215d0(node);
+
+    old_head = timer->field_f4;
+    old_head->field_14 = node;
+    old_head = timer->field_f4;
+    node->field_10 = old_head;
+    node->field_14 = (struct TimerNode *)&timer->field_e4;
+    timer->field_f4 = node;
+
+    node->field_1c = GetGameTimer();
+    node->field_0 = 1;
+
+    return node;
+}
+
+struct LinkPrev {
+    unsigned char pad_0[0x14];
+    void *field_14;
+};
+
+struct LinkNext {
+    unsigned char pad_0[0x10];
+    void *field_10;
+};
+
+struct LinkInput {
+    unsigned char field_0;
+    unsigned char pad_1[0x7];
+    void *field_8;
+    unsigned char pad_c[0x4];
+    struct LinkPrev *field_10;
+    struct LinkNext *field_14;
+};
 
 // FUNCTION: LEGOLAND 0x00421980
-void FUN_00421980(void) { STUB(); }
+void FUN_00421980(struct LinkInput *p) {
+    p->field_10->field_14 = p->field_14;
+    p->field_14->field_10 = p->field_10;
+
+    if ((p->field_0 & 1U) == 0U) {
+        FUN_004775d0((unsigned int)p->field_8);
+    }
+
+    FUN_004775d0((unsigned int)p);
+}
+
+struct Vec5 {
+    float field_0;
+    float field_4;
+    unsigned int field_8;
+    float field_c;
+    float field_10;
+};
+
+struct Vec3 {
+    float field_0;
+    float field_4;
+    unsigned int field_8;
+};
 
 // FUNCTION: LEGOLAND 0x004219c0
-void FUN_004219c0(void) { STUB(); }
+void FUN_004219c0(struct Vec5 *arg1, float float_arg, struct Vec3 *arg3) {
+    arg3->field_0 = arg1->field_0 + (float_arg * arg1->field_c);
+    arg3->field_4 = arg1->field_4 + (float_arg * arg1->field_10);
+    arg3->field_8 = arg1->field_8;
+}
+
+struct Words3 {
+    unsigned int field_0;
+    unsigned int field_4;
+    unsigned int field_8;
+};
 
 // FUNCTION: LEGOLAND 0x004219f0
-void FUN_004219f0(void) { STUB(); }
+void FUN_004219f0(unsigned char *param_1, unsigned int param_2, struct Words3 *param_3) {
+    param_1 = param_1 + 12;
+    param_3->field_0 = *(unsigned int *)param_1;
+    param_3->field_4 = *(unsigned int *)(param_1 + 4);
+    param_3->field_8 = *(unsigned int *)(param_1 + 8);
+}
+
+struct Vec7 {
+    float field_0;
+    float field_4;
+    unsigned int field_8;
+    float field_c;
+    float field_10;
+    unsigned char pad_14[4];
+    float field_18;
+    float field_1c;
+};
 
 // FUNCTION: LEGOLAND 0x00421a10
-void FUN_00421a10(void) { STUB(); }
+void FUN_00421a10(struct Vec7 *s1, float arg2, struct Vec3 *s2) {
+    s2->field_0 = arg2 * s1->field_c + s1->field_18 + s1->field_0;
+    s2->field_4 = arg2 * s1->field_10 + s1->field_1c + s1->field_4;
+    s2->field_8 = s1->field_8;
+}
 
 // FUNCTION: LEGOLAND 0x00421a40
-void FUN_00421a40(void) { STUB(); }
+void FUN_00421a40(struct Vec7 *a, float c, struct Vec3 *b) {
+    b->field_0 = c * a->field_c + a->field_0 - a->field_18;
+    b->field_4 = c * a->field_10 + a->field_4 - a->field_1c;
+    b->field_8 = a->field_8;
+}
+
+struct Struct1a70A {
+    unsigned char pad_0[0x44];
+    unsigned int field_44;
+    unsigned int field_48;
+};
 
 // FUNCTION: LEGOLAND 0x00421a70
-void FUN_00421a70(void) { STUB(); }
+int FUN_00421a70(struct Struct1a70A *param_1, struct Pair *param_2) {
+    param_2->field_0 = param_1->field_44;
+    param_2->field_4 = param_1->field_48;
+    return 2;
+}
+
+struct Struct1a90 {
+    unsigned int field_0;
+    unsigned int field_4;
+    float field_8;
+};
 
 // FUNCTION: LEGOLAND 0x00421a90
-void FUN_00421a90(void) { STUB(); }
+void FUN_00421a90(unsigned int param_1, unsigned int param_2, struct Struct1a90 *param_3) {
+    param_3->field_0 = 0;
+    param_3->field_4 = 0;
+    param_3->field_8 = 1.0f;
+}
 
 // FUNCTION: LEGOLAND 0x00421ab0
 void FUN_00421ab0(void) { STUB(); }
@@ -1394,26 +1624,100 @@ void FUN_00421be0(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00421c30
 void FUN_00421c30(void) { STUB(); }
 
+struct Floats6 {
+    float field_0;
+    float field_4;
+    float field_8;
+    float field_c;
+    float field_10;
+    float field_14;
+};
+
 // FUNCTION: LEGOLAND 0x00421c80
-void FUN_00421c80(void) { STUB(); }
+unsigned int FUN_00421c80(unsigned int param_1, struct Floats6 *ptr_0) {
+    ptr_0->field_0 = 0.0f;
+    ptr_0->field_4 = 0.31415900588035583f;
+    ptr_0->field_8 = 0.6283180117607117f;
+    ptr_0->field_c = 0.9424769878387451f;
+    ptr_0->field_10 = 1.2566360235214233f;
+    ptr_0->field_14 = 1.5707950592041016f;
+    return 6;
+}
 
 // FUNCTION: LEGOLAND 0x00421cc0
-void FUN_00421cc0(void) { STUB(); }
+void FUN_00421cc0(int param_1, int param_2, struct Struct1a90 *param_3) {
+    param_3->field_0 = 0;
+    param_3->field_4 = 0;
+    param_3->field_8 = 1.0f;
+}
 
 // FUNCTION: LEGOLAND 0x00421ce0
 void FUN_00421ce0(void) { STUB(); }
 
+struct Struct1d60 {
+    float field_0;
+    float field_4;
+    unsigned char pad_8[4];
+    float field_c;
+    float field_10;
+    unsigned char pad_14[16];
+    float field_24;
+    float field_28;
+    float field_2c;
+    float field_30;
+};
+
+struct Floats3 {
+    float field_0;
+    float field_4;
+    float field_8;
+};
+
 // FUNCTION: LEGOLAND 0x00421d60
-void FUN_00421d60(void) { STUB(); }
+void FUN_00421d60(struct Struct1d60 *a, float b, struct Floats3 *out) {
+    out->field_0 = a->field_0 + b * a->field_c;
+    out->field_4 = a->field_4 + b * a->field_10;
+    out->field_8 = a->field_30 + b * (a->field_2c + b * (a->field_28 + b * a->field_24));
+}
 
 // FUNCTION: LEGOLAND 0x00421da0
 void FUN_00421da0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00421df0
-void FUN_00421df0(void) { STUB(); }
+void FUN_00421df0(float *a, float x, float *out) {
+    out[0] = x * a[3] + a[6] + a[0];
+    out[1] = x * a[4] + a[7] + a[1];
+    out[2] = ((x * a[9] + a[10]) * x + a[11]) * x + a[12];
+}
+
+struct Struct1e40 {
+    float field_0;
+    float field_4;
+    float pad_8;
+    float field_c;
+    float field_10;
+    float pad_14;
+    float field_18;
+    float field_1c;
+    float pad_20;
+    float field_24;
+    float field_28;
+    float field_2c;
+    float field_30;
+};
 
 // FUNCTION: LEGOLAND 0x00421e40
-void FUN_00421e40(void) { STUB(); }
+void FUN_00421e40(struct Struct1e40 *ptr1, float multiplier, struct Floats3 *ptr2) {
+    float temp;
+
+    ptr2->field_0 = multiplier * ptr1->field_c + ptr1->field_0 - ptr1->field_18;
+    ptr2->field_4 = multiplier * ptr1->field_10 + ptr1->field_4 - ptr1->field_1c;
+
+    temp = multiplier * ptr1->field_24 + ptr1->field_28;
+    temp = temp * multiplier + ptr1->field_2c;
+    temp = temp * multiplier + ptr1->field_30;
+    ptr2->field_8 = temp;
+}
 
 // FUNCTION: LEGOLAND 0x00421e90
 void FUN_00421e90(void) { STUB(); }
@@ -1427,53 +1731,155 @@ void FUN_004220e0(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00422180
 void FUN_00422180(void) { STUB(); }
 
+extern void *DAT_004dd5e0[24];
+
 // FUNCTION: LEGOLAND 0x00422210
-void FUN_00422210(void) { STUB(); }
+void FUN_00422210(void) {
+    DAT_004dd5e0[0] = FUN_00421df0;
+    DAT_004dd5e0[1] = FUN_00421da0;
+    DAT_004dd5e0[3] = FUN_00421da0;
+    DAT_004dd5e0[5] = FUN_00421da0;
+    DAT_004dd5e0[9] = FUN_004219f0;
+    DAT_004dd5e0[11] = FUN_004219f0;
+    DAT_004dd5e0[13] = FUN_004219f0;
+    DAT_004dd5e0[2] = FUN_00421d60;
+    DAT_004dd5e0[4] = FUN_00421e40;
+    DAT_004dd5e0[6] = FUN_00422000;
+    DAT_004dd5e0[7] = FUN_004220e0;
+    DAT_004dd5e0[8] = FUN_00421a10;
+    DAT_004dd5e0[10] = FUN_004219c0;
+    DAT_004dd5e0[12] = FUN_00421a40;
+    DAT_004dd5e0[14] = FUN_00421a70;
+    DAT_004dd5e0[15] = FUN_00421a90;
+    DAT_004dd5e0[16] = FUN_00421be0;
+    DAT_004dd5e0[17] = FUN_00421b90;
+    DAT_004dd5e0[18] = FUN_00421b40;
+    DAT_004dd5e0[19] = FUN_00421b90;
+    DAT_004dd5e0[20] = FUN_00421c30;
+    DAT_004dd5e0[21] = FUN_00421b90;
+    DAT_004dd5e0[22] = FUN_00421c80;
+    DAT_004dd5e0[23] = FUN_00421cc0;
+}
 
 // FUNCTION: LEGOLAND 0x004222f0
-void FUN_004222f0(void) { STUB(); }
+int FUN_004222f0(unsigned short *param_1) {
+    return param_1[0] == 0xa0d;
+}
 
 // FUNCTION: LEGOLAND 0x00422300
-void FUN_00422300(void) { STUB(); }
+unsigned char *FUN_00422300(unsigned char *src, unsigned char *dst) {
+    if (FUN_004222f0((unsigned short *)src) == 0) {
+        do {
+            *dst = *src;
+            dst++;
+            src++;
+        } while (FUN_004222f0((unsigned short *)src) == 0);
+        return dst;
+    }
+    return dst;
+}
 
 // FUNCTION: LEGOLAND 0x00422340
-void FUN_00422340(void) { STUB(); }
+unsigned char *FUN_00422340(unsigned int a, unsigned int b) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00422390
-void FUN_00422390(void) { STUB(); }
+unsigned int FUN_00422390(unsigned int a1, unsigned int a2, unsigned int a3) {
+    unsigned char *result1 = FUN_00422340(a1, a3);
+    if (result1 == 0)
+        return 0;
+    {
+        unsigned char *p = FUN_00422300(result1, (unsigned char *)a2);
+        p[0] = 0;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004223c0
 void FUN_004223c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00422400
-void FUN_00422400(void) { STUB(); }
+unsigned int FUN_00422400(unsigned int *param_1, unsigned int param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00422470
-void FUN_00422470(void) { STUB(); }
+void *FUN_00422470(const char *fileName, unsigned int *bytesReadPtr) {
+    HANDLE hFile;
+    unsigned int fileSize;
+    void *buffer;
+    unsigned int bytesRead;
+
+    if (fileName == 0) {
+        return 0;
+    }
+
+    hFile = CreateFileA(fileName, 0x80000000, 0x1, 0, 0x3, 0x8000000, 0);
+    if (hFile == (HANDLE)-1) {
+        return 0;
+    }
+
+    fileSize = GetFileSize(hFile, 0);
+    buffer = FUN_004775b0(fileSize, 0, (unsigned int)DAT_004d8bb0, 0);
+    if (buffer == 0) {
+        CloseHandle(hFile);
+        return 0;
+    }
+
+    ReadFile(hFile, buffer, fileSize, &bytesRead, 0);
+    if (bytesRead != fileSize) {
+        FUN_004775d0((unsigned int)buffer);
+        CloseHandle(hFile);
+        return 0;
+    }
+
+    CloseHandle(hFile);
+    *bytesReadPtr = fileSize;
+    return buffer;
+}
+
+extern unsigned int DAT_004dd758;
+extern char DAT_004dd760[];
+extern unsigned int DAT_004dd860;
+extern unsigned int DAT_004dd868;
+extern unsigned int DAT_004dd86c;
 
 // FUNCTION: LEGOLAND 0x00422590
-unsigned int FUN_00422590(const char *s) { STUB(); }
+unsigned int FUN_00422590(const char *s) {
+    return FUN_00422400(&DAT_004dd860, (unsigned int)s);
+}
 
 // FUNCTION: LEGOLAND 0x004225b0
-void FUN_004225b0(void) { STUB(); }
+void FUN_004225b0(unsigned int param_1, unsigned int param_2) {
+    FUN_00422390((unsigned int)&DAT_004dd860, param_2, param_1);
+}
 
 // FUNCTION: LEGOLAND 0x004225d0
-void FUN_004225d0(void) { STUB(); }
+unsigned int FUN_004225d0(void) {
+    return DAT_004dd868;
+}
 
 // FUNCTION: LEGOLAND 0x00422600
-unsigned int FUN_00422600(unsigned int param) { STUB(); }
+unsigned int FUN_00422600(unsigned int param) {
+    return FUN_00422400(&DAT_004dd758, param);
+}
 
 // FUNCTION: LEGOLAND 0x00422620
-void FUN_00422620(void) { STUB(); }
+void FUN_00422620(int value, char *buffer) {
+    // STRING: LEGOLAND 0x004b5afc
+    wsprintfA(buffer, "%s%04d", DAT_004dd760, value);
+}
 
 // FUNCTION: LEGOLAND 0x00422640
-void FUN_00422640(void) { STUB(); }
+unsigned int FUN_00422640(void) {
+    return DAT_004dd86c;
+}
 
 // FUNCTION: LEGOLAND 0x004226c0
 void FUN_004226c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004227a0
-void FUN_004227a0(void) { STUB(); }
+void FUN_004227a0(void) {
+    FUN_004775d0(DAT_004dd758);
+    FUN_004775d0(DAT_004dd860);
+}
 
 // FUNCTION: LEGOLAND 0x004227c0
 void FUN_004227c0(void) { STUB(); }
@@ -1512,13 +1918,39 @@ void FUN_004236f0(void) { STUB(); }
 void FUN_00423730(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00423740
-void FUN_00423740(void) { STUB(); }
+void FUN_00423740(void) {
+    FUN_00422fe0();
+    FUN_0041fd30();
+}
+
+struct VideoArg {
+    int field_0;
+    unsigned char pad_4[8];
+    void *field_c;
+};
+
+extern int GetVideoSurface(struct VideoArg *arg);
+extern void *DAT_004b5b20;
+extern int DAT_004b5b28;
+extern int DAT_004b5b4c;
+extern int DAT_004b5b50;
+extern unsigned int DAT_00610a04;
+extern unsigned int DAT_006102f8;
 
 // FUNCTION: LEGOLAND 0x00423760
-void FUN_00423760(void) { STUB(); }
+int FUN_00423760(struct VideoArg *arg) {
+    int result = GetVideoSurface(arg);
+    if (result == 0) {
+        return 0;
+    }
+    DAT_004b5b20 = arg->field_c;
+    DAT_004b5b28 = arg->field_0 >> 1;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00423790
-void FUN_00423790(void) { STUB(); }
+void FUN_00423790(void) {
+}
 
 // FUNCTION: LEGOLAND 0x004237a0
 void FUN_004237a0(void) { STUB(); }
@@ -1530,16 +1962,37 @@ void FUN_004237f0(void) { STUB(); }
 void FUN_004238a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00423930
-void FUN_00423930(void) { STUB(); }
+unsigned int FUN_00423930(void) {
+    return DAT_00610a04;
+}
+
+struct Struct3940 {
+    unsigned char pad_0[0x14];
+    unsigned int field_14;
+    float field_18;
+    unsigned char pad_1c[4];
+    unsigned int field_20;
+    float field_24;
+};
 
 // FUNCTION: LEGOLAND 0x00423940
-void FUN_00423940(void) { STUB(); }
+void FUN_00423940(struct Struct3940 *arg1) {
+    arg1->field_14 = 2;
+    arg1->field_18 = (float)DAT_004b5b50;
+    arg1->field_20 = 8;
+    arg1->field_24 = (float)DAT_004b5b4c;
+}
 
 // FUNCTION: LEGOLAND 0x00423970
-void FUN_00423970(void) { STUB(); }
+void FUN_00423970(unsigned char *param_1) {
+    *(float *)(param_1 + 0x18) = (float)DAT_004b5b50;
+    *(float *)(param_1 + 0x24) = (float)DAT_004b5b4c;
+}
 
 // FUNCTION: LEGOLAND 0x00423990
-void FUN_00423990(void) { STUB(); }
+unsigned int *FUN_00423990(void) {
+    return &DAT_006102f8;
+}
 
 // FUNCTION: LEGOLAND 0x004239a0
 void FUN_004239a0(void) { STUB(); }
@@ -1800,7 +2253,7 @@ void FUN_00426700(void) { STUB(); }
 void FUN_00426740(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00426750
-void FUN_00426750(void) { STUB(); }
+unsigned int FUN_00426750(void *ptr, unsigned int a, unsigned int b, unsigned int c) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004267b0
 void FUN_004267b0(void) { STUB(); }
@@ -1905,7 +2358,7 @@ void FUN_004272a0(void) { STUB(); }
 void FUN_004273c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004273d0
-void FUN_004273d0(void) { STUB(); }
+void FUN_004273d0(unsigned int param_1, void *param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004273e0
 void FUN_004273e0(void *obj) { STUB(); }
