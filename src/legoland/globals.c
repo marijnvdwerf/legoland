@@ -223,6 +223,11 @@ GUID GUID_PerfMasterGrooveLevel = {0xd2ac28b2, 0xb39b, 0x11d1, {0x87, 0x04, 0x00
 // GLOBAL: LEGOLAND 0x004ab8b0
 GUID DAT_004ab8b0 = {0xd2ac2893, 0xb39b, 0x11d1, {0x87, 0x04, 0x00, 0x60, 0x08, 0x93, 0xb1, 0xbd}};
 
+// GLOBAL: LEGOLAND 0x00669208
+void *g_hInstance;
+// GLOBAL: LEGOLAND 0x00669210
+void *DAT_00669210;
+
 // GLOBAL: LEGOLAND 0x00669240
 void *ObjectClassList;
 
@@ -258,6 +263,32 @@ unsigned short NEWFLC_Repeat;
 unsigned int EditMode;
 // GLOBAL: LEGOLAND 0x008119b8
 void *DAT_008119b8;
+// GLOBAL: LEGOLAND 0x0061615c
+unsigned int DAT_0061615c;
+// GLOBAL: LEGOLAND 0x0081cd08
+unsigned int DAT_0081cd08;
+// GLOBAL: LEGOLAND 0x0061614c
+unsigned int DAT_0061614c;
+// GLOBAL: LEGOLAND 0x00616150
+unsigned int DAT_00616150;
+// GLOBAL: LEGOLAND 0x00616158
+unsigned int DAT_00616158;
+// GLOBAL: LEGOLAND 0x0081cd04
+void *DAT_0081cd04;
+// GLOBAL: LEGOLAND 0x0081caf0
+void *DAT_0081caf0;
+// GLOBAL: LEGOLAND 0x0062fe48
+unsigned int DAT_0062fe48;
+// GLOBAL: LEGOLAND 0x0062fe4c
+unsigned int DAT_0062fe4c;
+// GLOBAL: LEGOLAND 0x0062fe10
+unsigned int DAT_0062fe10;
+// GLOBAL: LEGOLAND 0x0062fe14
+unsigned int DAT_0062fe14;
+// GLOBAL: LEGOLAND 0x0062fe18
+unsigned int DAT_0062fe18;
+// GLOBAL: LEGOLAND 0x0062fe1c
+unsigned short DAT_0062fe1c;
 
 // GLOBAL: LEGOLAND 0x00813a40
 unsigned int GamePad;
@@ -563,6 +594,12 @@ struct JailCell *DAT_0062fd3c;
 struct LegoConfig *lpConfig;
 // GLOBAL: LEGOLAND 0x004cbeac
 struct RideQueueEntry *DAT_004cbeac;
+// GLOBAL: LEGOLAND 0x004cbf68
+unsigned int DAT_004cbf68;
+// GLOBAL: LEGOLAND 0x004cbf6c
+unsigned int DAT_004cbf6c;
+// GLOBAL: LEGOLAND 0x004cbf5c
+void *DAT_004cbf5c;
 
 // GLOBAL: LEGOLAND 0x00798740
 unsigned int DAT_00798740;
@@ -572,6 +609,16 @@ unsigned int DAT_0079873c;
 unsigned int DAT_006687bc;
 // GLOBAL: LEGOLAND 0x006687c0
 unsigned int DAT_006687c0;
+// GLOBAL: LEGOLAND 0x00667c10
+unsigned int DAT_00667c10;
+// GLOBAL: LEGOLAND 0x00667c28
+unsigned int DAT_00667c28;
+// GLOBAL: LEGOLAND 0x00667c2c
+struct Sprite *DAT_00667c2c;
+// GLOBAL: LEGOLAND 0x00667c30
+unsigned int DAT_00667c30;
+// GLOBAL: LEGOLAND 0x00667c34
+unsigned int DAT_00667c34;
 // GLOBAL: LEGOLAND 0x0080ffc4
 unsigned int DAT_0080ffc4;
 // GLOBAL: LEGOLAND 0x0080ffc8
@@ -1816,6 +1863,8 @@ char DAT_00832a98[256];
 
 // GLOBAL: LEGOLAND 0x004b40c8
 unsigned char Catapult_SFX[0x70];
+// GLOBAL: LEGOLAND 0x004b43f8
+unsigned char DRIVING_SCHOOL_SFX[0xa8];
 // GLOBAL: LEGOLAND 0x004c1118
 struct CatapultNode *DAT_004c1118;
 // GLOBAL: LEGOLAND 0x004c10f4
@@ -2086,6 +2135,16 @@ unsigned int DAT_0082c6bc;
 unsigned int DAT_00830f94;
 // GLOBAL: LEGOLAND 0x004c10d4
 void *DAT_004c10d4;
+// GLOBAL: LEGOLAND 0x004c11c4
+unsigned int DAT_004c11c4;
+// GLOBAL: LEGOLAND 0x004c11c8
+unsigned int DAT_004c11c8;
+// GLOBAL: LEGOLAND 0x004c11bc
+void *DAT_004c11bc;
+// GLOBAL: LEGOLAND 0x0082c6c0
+unsigned int DAT_0082c6c0;
+// GLOBAL: LEGOLAND 0x0082c694
+unsigned int DAT_0082c694;
 
 // GLOBAL: LEGOLAND 0x004cbf0c
 void *DAT_004cbf0c;
