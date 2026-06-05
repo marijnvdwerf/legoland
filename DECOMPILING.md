@@ -21,6 +21,11 @@ Only integrate functions port2 already got byte-perfect — `current_score == 0`
 `port2/project/functions.csv`. Leave everything else as `STUB()`. **Do not try to match
 an unmatched function from scratch** — that's slow, separate work, not for these runs.
 
+**Don't get stuck.** A few port2-matched functions still won't reach 100% under reccmp
+(objdiff hid relocations reccmp checks — e.g. an unpairable `call`, or reccmp prints
+"Failed to find a match"). After a few honest attempts on one function, revert it to
+`<its signature> { STUB(); }` and move on. Never loop on a single function.
+
 ## Reference material (not the deliverable)
 
 - `port2/project/c/0x<ADDR>.c` — AI first-drafts; ~1,543 already byte-match. Great
