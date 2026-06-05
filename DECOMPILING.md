@@ -62,6 +62,10 @@ an unmatched function from scratch** — that's slow, separate work, not for the
 
 ## Gotchas (from real TUs)
 
+- **Keep every function signature on ONE line.** reccmp's source parser drops a function
+  with a multi-line signature (it gets stuck waiting for the `{`) — AND silently swallows
+  the functions after it until it recovers. They show as "Failed to find a match". Long
+  parameter lists go on a single line, even if it's wide.
 - **Missing functions / inventory gaps.** `ghidra/functions.csv` is not complete. If a
   function `call`s an address that has no `// FUNCTION` annotation and isn't in the CSV
   (often a small thunk in the gap between two listed functions), it's a real function

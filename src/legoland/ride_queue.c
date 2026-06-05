@@ -135,8 +135,7 @@ void FUN_00411f00(struct Queue *queue) {
 void FUN_00411f20(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00411fa0
-void FUN_00411fa0(struct Queue *queue, unsigned int param_2, unsigned int param_3,
-                  struct QueueItemInner *param_4) { STUB(); }
+void FUN_00411fa0(struct Queue *queue, unsigned int param_2, unsigned int param_3, struct QueueItemInner *param_4) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00412060
 void FUN_00412060(void) { STUB(); }
