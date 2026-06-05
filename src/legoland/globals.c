@@ -1,3 +1,5 @@
+#include <windows.h>
+
 struct Sprite;
 
 struct ObjTableEntry {
@@ -95,3 +97,46 @@ unsigned int DAT_004b90f8;
 void *DAT_00798624;
 // GLOBAL: LEGOLAND 0x00798628
 void *DAT_00798628;
+
+// GLOBAL: LEGOLAND 0x007988c0
+unsigned int DAT_007988c0;
+// GLOBAL: LEGOLAND 0x007988c4
+unsigned int DAT_007988c4;
+// GLOBAL: LEGOLAND 0x007988c8
+unsigned int DAT_007988c8;
+// GLOBAL: LEGOLAND 0x007988cc
+void *DAT_007988cc;
+// GLOBAL: LEGOLAND 0x007988bc
+unsigned int DAT_007988bc;
+
+// GLOBAL: LEGOLAND 0x004bf774
+unsigned int DAT_004bf774;
+// GLOBAL: LEGOLAND 0x004bf778
+unsigned int DAT_004bf778;
+
+// GLOBAL: LEGOLAND 0x0079a694
+unsigned int DAT_0079a694;
+// GLOBAL: LEGOLAND 0x0079a698
+void *DAT_0079a698;
+// GLOBAL: LEGOLAND 0x0079a6a0
+void *DAT_0079a6a0;
+// GLOBAL: LEGOLAND 0x0079a6a4
+unsigned int DAT_0079a6a4;
+// GLOBAL: LEGOLAND 0x0079a6a8
+unsigned int DAT_0079a6a8;
+// GLOBAL: LEGOLAND 0x0079a6ac
+unsigned int DAT_0079a6ac;
+
+// GLOBAL: LEGOLAND 0x007cad40
+void *DAT_007cad40;
+// GLOBAL: LEGOLAND 0x007cacd8
+void *DAT_007cacd8;
+// GLOBAL: LEGOLAND 0x007cacdc
+void *DAT_007cacdc;
+// GLOBAL: LEGOLAND 0x007cad44
+void *DAT_007cad44;
+// GLOBAL: LEGOLAND 0x007cad48
+unsigned int DAT_007cad48;
+
+// GLOBAL: LEGOLAND 0x004ab8b0
+GUID DAT_004ab8b0 = {0xd2ac2893, 0xb39b, 0x11d1, {0x87, 0x04, 0x00, 0x60, 0x08, 0x93, 0xb1, 0xbd}};
