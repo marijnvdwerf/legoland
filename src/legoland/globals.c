@@ -7,6 +7,8 @@ struct LegoConfig;
 struct RideQueueEntry;
 struct ObjectiveEvent;
 struct MapElement;
+struct WaterContext;
+struct WaterSub;
 
 struct ObjTableEntry {
     unsigned short key;
@@ -635,3 +637,51 @@ unsigned char DAT_007fe117;
 unsigned int DAT_007fe120[256];
 // GLOBAL: LEGOLAND 0x00801400
 struct MapElement **DAT_00801400;
+
+// GLOBAL: LEGOLAND 0x004b4fa8
+unsigned char WATERWORKS_SFX[28];
+
+// GLOBAL: LEGOLAND 0x004cbfd8
+unsigned int DAT_004cbfd8;
+// GLOBAL: LEGOLAND 0x004cbfdc
+struct WaterContext *DAT_004cbfdc;
+// GLOBAL: LEGOLAND 0x004cbfe0
+struct WaterSub *DAT_004cbfe0;
+// GLOBAL: LEGOLAND 0x004cbfe4
+unsigned int DAT_004cbfe4;
+// GLOBAL: LEGOLAND 0x004cbfe8
+unsigned int DAT_004cbfe8;
+// GLOBAL: LEGOLAND 0x004cbfec
+unsigned int DAT_004cbfec;
+// GLOBAL: LEGOLAND 0x004cbff0
+unsigned int DAT_004cbff0;
+// GLOBAL: LEGOLAND 0x004cbff4
+unsigned int DAT_004cbff4;
+// GLOBAL: LEGOLAND 0x004cbff8
+unsigned int DAT_004cbff8;
+// GLOBAL: LEGOLAND 0x004cbffc
+unsigned short DAT_004cbffc;
+// GLOBAL: LEGOLAND 0x004cc000
+unsigned int DAT_004cc000;
+// GLOBAL: LEGOLAND 0x004cc014
+unsigned int DAT_004cc014;
+// GLOBAL: LEGOLAND 0x004cc01c
+unsigned int DAT_004cc01c;
+// GLOBAL: LEGOLAND 0x004cc020
+unsigned int DAT_004cc020;
+// GLOBAL: LEGOLAND 0x004cc024
+struct WaterContext *DAT_004cc024;
+// GLOBAL: LEGOLAND 0x004cc028
+unsigned int DAT_004cc028;
+// GLOBAL: LEGOLAND 0x004cc02c
+void *DAT_004cc02c;
+// GLOBAL: LEGOLAND 0x004cc030
+void *DAT_004cc030;
+// GLOBAL: LEGOLAND 0x004cc034
+void *DAT_004cc034;
+// GLOBAL: LEGOLAND 0x007fffc4
+unsigned int DAT_007fffc4;
+// GLOBAL: LEGOLAND 0x007fffd4
+unsigned int DAT_007fffd4[5];
+// GLOBAL: LEGOLAND 0x008003f0
+unsigned int DAT_008003f0;
