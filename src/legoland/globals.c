@@ -427,5 +427,31 @@ struct Building *DAT_0081cb30;
 unsigned int DAT_0081cb34;
 // GLOBAL: LEGOLAND 0x0081cb38
 unsigned int DAT_0081cb38;
+// GLOBAL: LEGOLAND 0x0081cb18
+unsigned int DAT_0081cb18;
+// GLOBAL: LEGOLAND 0x0081cb20
+unsigned int DAT_0081cb20;
+// GLOBAL: LEGOLAND 0x0081cb28
+unsigned int DAT_0081cb28;
+// GLOBAL: LEGOLAND 0x0081cb48
+unsigned int DAT_0081cb48;
+// GLOBAL: LEGOLAND 0x0081cb50
+unsigned int DAT_0081cb50;
+// GLOBAL: LEGOLAND 0x0081cb3c
+struct Building *DAT_0081cb3c;
+// GLOBAL: LEGOLAND 0x0081cb4c
+struct Building *DAT_0081cb4c;
+// GLOBAL: LEGOLAND 0x0081cb40
+struct Building *DAT_0081cb40;
+// GLOBAL: LEGOLAND 0x0081cb44
+struct Building *DAT_0081cb44;
+// GLOBAL: LEGOLAND 0x0082c6a0
+unsigned int DAT_0082c6a0;
+// GLOBAL: LEGOLAND 0x0082c6a4
+unsigned int DAT_0082c6a4;
+// GLOBAL: LEGOLAND 0x0082c6a8
+unsigned int DAT_0082c6a8;
+// GLOBAL: LEGOLAND 0x0082c6ac
+unsigned short DAT_0082c6ac;
 // GLOBAL: LEGOLAND 0x0062fd3c
 struct JailCell *DAT_0062fd3c;
