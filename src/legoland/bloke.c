@@ -1,19 +1,157 @@
 #include "legoland.h"
 
+struct InstancePos;
+
+struct BestNode {
+    unsigned char pad_0[0x20];
+    unsigned char flags_20;
+};
+
+struct BlokeWOList {
+    unsigned char pad_0[0x62];
+    unsigned short field_62;
+    unsigned char field_64;
+    unsigned char pad_65[0xac - 0x65];
+};
+
+struct Bloke {
+    struct Bloke *next;
+    unsigned char pad_4[0x62 - 0x4];
+    unsigned char flag;
+};
+
+struct LegoConfig {
+    unsigned char pad_0[0x14];
+    unsigned short field_14;
+    unsigned short field_16;
+};
+
+struct PendingObject {
+    unsigned char pad_0[0xe];
+    unsigned short field_e;
+    unsigned short field_10;
+};
+
+struct ActionState {
+    unsigned char pad_0[0xe];
+    unsigned short field_e;
+    unsigned short field_10;
+    unsigned char pad_12[0x72 - 0x12];
+    unsigned char field_72;
+    unsigned char field_73;
+    unsigned char pad_74;
+    unsigned char field_75;
+};
+
+struct OverTile {
+    unsigned char pad_0[0x68];
+    unsigned int field_68;
+    unsigned int field_6c;
+};
+
+struct Walker {
+    unsigned char pad_0[0x62];
+    unsigned short field_62;
+    unsigned char pad_64[0x72 - 0x64];
+    unsigned char field_72;
+    unsigned char field_73;
+    unsigned char field_74;
+    unsigned char field_75;
+};
+
+struct BlokeDist {
+    unsigned char pad_0[0x24];
+    int field_24;
+    int field_28;
+    unsigned char pad_2c[0x98 - 0x2c];
+    int field_98;
+    int field_9c;
+};
+
+struct BNVPath {
+    unsigned char pad_0[0x40];
+    unsigned int field_40;
+};
+
+extern unsigned int DAT_0066b460;
+extern unsigned int DAT_0066b468;
+extern unsigned int DAT_0066b46c;
+extern void *DAT_0066b57c;
+extern int DAT_0083293c[13];
+extern void *FirstBloke;
+extern unsigned int DAT_006661bc;
+
+extern unsigned int GetGameTimer(void);
+extern void FUN_00482a40(unsigned int *bnv);
+extern void FUN_00482a90(void);
+extern struct BestNode *FUN_00481790(struct InstancePos *pos);
+extern int FUN_0049e4b2(void);
+extern void *_malloc(unsigned int size);
+extern void FUN_0049e4d0(void *ptr);
+extern void Add3DBlokeToList(struct BlokeWOList *bloke, void *param_2);
+extern void ClearBlokeCounters(unsigned int bloke_num, struct Bloke *bloke);
+extern void Control3DPeople(void);
+extern void SortBlokeIn3D(struct Bloke *bloke);
+extern struct LegoConfig *lpConfig;
+extern unsigned int DAT_008119a4;
+extern void DBPrintf(const char *format, ...);
+extern unsigned int DAT_004bdd00;
+extern unsigned int DAT_004bdd04;
+
+struct Person {
+    unsigned int field_0;
+    struct PersonAnim *field_4;
+    unsigned char pad_8[0x83 - 0x8];
+    unsigned char field_83;
+    unsigned char field_84;
+};
+
+struct PersonAnim {
+    unsigned char pad_0[0x84];
+    unsigned int field_84;
+};
+
 // FUNCTION: LEGOLAND 0x00482b10
-void FUN_00482b10(void) { STUB(); }
+void FUN_00482b10(void) {
+    DAT_0066b468 = GetGameTimer();
+}
 
 // FUNCTION: LEGOLAND 0x00482b20
-void FUN_00482b20(void) { STUB(); }
+void FUN_00482b20(int force) {
+    unsigned int now = GetGameTimer();
+    if ((int)(now - DAT_0066b468) <= 0xfa0 && force == 0) {
+        return;
+    }
+    DAT_0066b468 = now;
+    FUN_00482a90();
+    FUN_00482a40(&DAT_0066b460);
+}
 
 // FUNCTION: LEGOLAND 0x00482b60
-void FUN_00482b60(void) { STUB(); }
+int FUN_00482b60(struct InstancePos *pos) {
+    struct BestNode *node = FUN_00481790(pos);
+    if (node != NULL) {
+        FUN_00482b20(DAT_0066b46c);
+        DAT_0066b46c = 0;
+        if (node->flags_20 & 0x2) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00482ba0
 void GetVisitorName(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482c60
-void FUN_00482c60(void) { STUB(); }
+void FUN_00482c60(struct Person *person) {
+    if (person->field_4->field_84 != 0) {
+        person->field_83 = (unsigned char)((unsigned int)FUN_0049e4b2() % 0x5a);
+    } else {
+        person->field_83 = (unsigned char)((unsigned int)FUN_0049e4b2() % 0x53);
+    }
+    person->field_84 = (unsigned char)((unsigned int)FUN_0049e4b2() % 0x6b);
+}
 
 // FUNCTION: LEGOLAND 0x00482cb0
 void FUN_00482cb0(void) { STUB(); }
@@ -22,10 +160,26 @@ void FUN_00482cb0(void) { STUB(); }
 void FUN_00482d30(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482d60
-void FUN_00482d60(void) { STUB(); }
+void FUN_00482d60(unsigned int index, int value) {
+    DAT_0083293c[index] = value;
+}
 
 // FUNCTION: LEGOLAND 0x00482d70
-void FUN_00482d70(void) { STUB(); }
+void FUN_00482d70(void) {
+    DAT_0083293c[4] = 5;
+    DAT_0083293c[5] = 5;
+    DAT_0083293c[6] = 5;
+    DAT_0083293c[0] = -100;
+    DAT_0083293c[1] = -400;
+    DAT_0083293c[2] = 33;
+    DAT_0083293c[3] = 20;
+    DAT_0083293c[7] = -200;
+    DAT_0083293c[8] = -1600;
+    DAT_0083293c[9] = 400;
+    DAT_0083293c[10] = 100;
+    DAT_0083293c[11] = 400;
+    DAT_0083293c[12] = 100;
+}
 
 // FUNCTION: LEGOLAND 0x00482df0
 void FUN_00482df0(void) { STUB(); }
@@ -34,34 +188,86 @@ void FUN_00482df0(void) { STUB(); }
 void FUN_00482e50(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482ec0
-void FUN_00482ec0(void) { STUB(); }
+void FUN_00482ec0(void) {
+    if (DAT_0066b57c != NULL) {
+        FUN_0049e4d0(DAT_0066b57c);
+    }
+    FirstBloke = NULL;
+    DAT_0066b57c = NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00482ef0
-void NewBloke(void) { STUB(); }
+struct Bloke *NewBloke(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482f70
-void NewBlokeWOList(void) { STUB(); }
+struct BlokeWOList *NewBlokeWOList(void *param_2) {
+    struct BlokeWOList *bloke = (struct BlokeWOList *)_malloc(0xac);
+    if (bloke != NULL) {
+        memset(bloke, 0, 0xac);
+        bloke->field_62 = 1;
+        bloke->field_64 = 0;
+        Add3DBlokeToList(bloke, param_2);
+    }
+    return bloke;
+}
 
 // FUNCTION: LEGOLAND 0x00482fb0
-void GetBlokeNum(void) { STUB(); }
+unsigned int GetBlokeNum(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482fe0
-void GetBlokePtr(void) { STUB(); }
+struct BlokeWOList *GetBlokePtr(int index) {
+    if (index == -1) {
+        return NULL;
+    }
+    return &((struct BlokeWOList *)DAT_0066b57c)[index];
+}
 
 // FUNCTION: LEGOLAND 0x00483010
-void DestroyBloke(void) { STUB(); }
+void DestroyBloke(struct Bloke *bloke) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00483090
-void FUN_00483090(void) { STUB(); }
+void FUN_00483090(void) {
+    while (FirstBloke != NULL) {
+        DestroyBloke((struct Bloke *)FirstBloke);
+    }
+    DAT_006661bc = 0;
+}
 
 // FUNCTION: LEGOLAND 0x004830c0
-void MakeBloke(void) { STUB(); }
+struct Bloke *MakeBloke(void) {
+    struct Bloke *bloke = NewBloke();
+    if (bloke != NULL) {
+        ClearBlokeCounters(GetBlokeNum(), bloke);
+    }
+    return bloke;
+}
 
 // FUNCTION: LEGOLAND 0x00483130
-void RenderPeople(void) { STUB(); }
+void RenderPeople(void) {
+    struct Bloke *current;
+    Control3DPeople();
+    for (current = (struct Bloke *)FirstBloke; current != NULL; current = current->next) {
+        if ((current->flag & 0xa0) == 0) {
+            SortBlokeIn3D(current);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00483160
-void FUN_00483160(void) { STUB(); }
+int FUN_00483160(int x, int y) {
+    if (x <= 0) {
+        return 0;
+    }
+    if (x < (lpConfig->field_14 << 8)) {
+        if (y <= 0) {
+            return 0;
+        }
+        if (y < (lpConfig->field_16 << 8)) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x004831a0
 void FUN_004831a0(void) { STUB(); }
@@ -70,7 +276,11 @@ void FUN_004831a0(void) { STUB(); }
 void SetPathFlag(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00483240
-void DoPendingAction(void) { STUB(); }
+unsigned short DoPendingAction(struct PendingObject *obj) {
+    obj->field_e = obj->field_10;
+    obj->field_10 = 0;
+    return obj->field_e;
+}
 
 // FUNCTION: LEGOLAND 0x00483260
 void FUN_00483260(void) { STUB(); }
@@ -79,7 +289,17 @@ void FUN_00483260(void) { STUB(); }
 void FUN_00483300(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004833d0
-void NewDirForAction(void) { STUB(); }
+int NewDirForAction(struct ActionState *state, unsigned char dir) {
+    unsigned char masked = dir & 0x7;
+    if (state->field_72 != masked) {
+        state->field_10 = state->field_e;
+        state->field_73 = masked;
+        state->field_e = 5;
+        state->field_75 = 1;
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00483400
 void Random_Dir_From_Bits(void) { STUB(); }
@@ -94,34 +314,70 @@ void HitObstacle(void) { STUB(); }
 void FUN_00483580(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00483650
-void OverNewTile(void) { STUB(); }
+int OverNewTile(struct OverTile *tile, unsigned int x, unsigned int y) {
+    if (((tile->field_68 ^ x) & 0xffffff00) || ((tile->field_6c ^ y) & 0xffffff00)) {
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00483680
 void FUN_00483680(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004837a0
-void FUN_004837a0(void) { STUB(); }
+int FUN_004837a0(struct Walker *walker, unsigned int x, unsigned int y) {
+    if (OverNewTile((struct OverTile *)walker, x, y) != 0) {
+        walker->field_62 &= 0xfffb;
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x004837d0
 void CrossTileCentre(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00483830
-void FUN_00483830(void) { STUB(); }
+void FUN_00483830(struct Walker *walker) {
+    walker->field_75 = walker->field_75 - 1;
+    if (walker->field_75 == 0) {
+        walker->field_75 = 2;
+        walker->field_74 = (walker->field_74 + 1) & 7;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00483850
-void FUN_00483850(void) { STUB(); }
+void FUN_00483850(struct Walker *walker) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00483890
-void FUN_00483890(void) { STUB(); }
+void FUN_00483890(struct Walker *walker) {
+    walker->field_74 = 2;
+}
 
 // FUNCTION: LEGOLAND 0x004838a0
-void FUN_004838a0(void) { STUB(); }
+void FUN_004838a0(unsigned int frame) {
+    // STRING: LEGOLAND 0x004bdcd8
+    DBPrintf("Frame %d.. Bloke %d rethinking\n", DAT_008119a4, frame);
+}
 
 // FUNCTION: LEGOLAND 0x004838c0
-void FUN_004838c0(void) { STUB(); }
+void FUN_004838c0(struct Walker *walker) {
+    walker->field_75--;
+    if (walker->field_75 == 0) {
+        walker->field_75 = 1;
+        DoPendingAction((struct PendingObject *)walker);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004838e0
-void FUN_004838e0(void) { STUB(); }
+void FUN_004838e0(struct Walker *walker) {
+    if (walker->field_72 != walker->field_73) {
+        FUN_00483850(walker);
+    }
+    if (walker->field_72 == walker->field_73) {
+        walker->field_75 = 1;
+        DoPendingAction((struct PendingObject *)walker);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00483920
 void DoRndWalkPathTileAction(void) { STUB(); }
@@ -154,7 +410,11 @@ void FUN_00484090(void) { STUB(); }
 void FUN_004841a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004841e0
-void FUN_004841e0(void) { STUB(); }
+unsigned char FUN_004841e0(struct BlokeDist *bloke) {
+    int dx = bloke->field_24 - bloke->field_98;
+    int dy = bloke->field_28 - bloke->field_9c;
+    return (dx * dx + dy * dy) <= 0x400;
+}
 
 // FUNCTION: LEGOLAND 0x00484220
 void FUN_00484220(void) { STUB(); }
@@ -181,10 +441,16 @@ void GetTileInDir(void) { STUB(); }
 void FUN_00484790(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004848e0
-void FUN_004848e0(void) { STUB(); }
+void FUN_004848e0(struct Walker *walker) {
+    if (!((DAT_004bdd00 >> 8) & 0x2) || DAT_004bdd04 != (unsigned int)walker) {
+        walker->field_62 &= 0xfff7;
+        DoPendingAction((struct PendingObject *)walker);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00484910
-void Bloke_DoNothing(void) { STUB(); }
+void Bloke_DoNothing(void) {
+}
 
 // FUNCTION: LEGOLAND 0x00484920
 void DoLowLevelAI(void) { STUB(); }
@@ -202,7 +468,9 @@ void NewBNVPath(void) { STUB(); }
 void UpdateBlokeFromBNVPath(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00484ff0
-void BNVPath_GetDFrame(void) { STUB(); }
+unsigned int BNVPath_GetDFrame(struct BNVPath *path) {
+    return path->field_40;
+}
 
 // FUNCTION: LEGOLAND 0x00485000
 void BNVPath_GetBINVScreenCoords(void) { STUB(); }
