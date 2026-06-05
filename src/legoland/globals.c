@@ -22,10 +22,19 @@ struct Position;
 struct RinData;
 struct CopterNode;
 struct GoldNode;
+struct CarouselNode;
+struct JoustNode;
 
 struct ObjTableEntry {
     unsigned short key;
     unsigned short value;
+};
+
+struct ClipRect {
+    int left;
+    int top;
+    int right;
+    int bottom;
 };
 
 // GLOBAL: LEGOLAND 0x007cb3e0
@@ -1963,3 +1972,89 @@ unsigned int DAT_004cbfa0;
 unsigned short DAT_004cbfa4;
 // GLOBAL: LEGOLAND 0x004cbfd4
 void *DAT_004cbfd4;
+
+// GLOBAL: LEGOLAND 0x0061606c
+unsigned int DAT_0061606c;
+// GLOBAL: LEGOLAND 0x00616070
+unsigned int DAT_00616070;
+// GLOBAL: LEGOLAND 0x00616090
+unsigned int DAT_00616090;
+// GLOBAL: LEGOLAND 0x00616094
+unsigned int DAT_00616094;
+// GLOBAL: LEGOLAND 0x00616098
+unsigned int DAT_00616098;
+// GLOBAL: LEGOLAND 0x006160a0
+unsigned int DAT_006160a0;
+// GLOBAL: LEGOLAND 0x006160a4
+unsigned int DAT_006160a4;
+// GLOBAL: LEGOLAND 0x006160a8
+unsigned int DAT_006160a8;
+// GLOBAL: LEGOLAND 0x006160ac
+unsigned short DAT_006160ac;
+// GLOBAL: LEGOLAND 0x006160bc
+unsigned int DAT_006160bc;
+// GLOBAL: LEGOLAND 0x006160c0
+unsigned int DAT_006160c0;
+// GLOBAL: LEGOLAND 0x006160c4
+struct CarouselNode *DAT_006160c4;
+// GLOBAL: LEGOLAND 0x004b64d8
+unsigned char CAROUSSEL_SFX[12];
+
+// GLOBAL: LEGOLAND 0x004bdea0
+struct ClipRect SPRITE_ClipRect;
+// GLOBAL: LEGOLAND 0x00798630
+unsigned int DAT_00798630;
+// GLOBAL: LEGOLAND 0x00798634
+unsigned int DAT_00798634;
+// GLOBAL: LEGOLAND 0x00798638
+unsigned int DAT_00798638;
+// GLOBAL: LEGOLAND 0x0079863c
+unsigned int DAT_0079863c;
+// GLOBAL: LEGOLAND 0x00798648
+unsigned int DAT_00798648;
+
+// GLOBAL: LEGOLAND 0x007fe040
+unsigned int DAT_007fe040;
+// GLOBAL: LEGOLAND 0x007fe044
+unsigned int DAT_007fe044;
+// GLOBAL: LEGOLAND 0x007fe048
+unsigned int DAT_007fe048;
+// GLOBAL: LEGOLAND 0x007fe04c
+unsigned int DAT_007fe04c;
+// GLOBAL: LEGOLAND 0x007fe920
+unsigned int DAT_007fe920;
+// GLOBAL: LEGOLAND 0x004b9f78
+unsigned int DAT_004b9f78[4] = {0x1f4, 0x190, 0x280, 0x1e0};
+// GLOBAL: LEGOLAND 0x004b9f88
+unsigned int DAT_004b9f88;
+// GLOBAL: LEGOLAND 0x004b9f8c
+unsigned int DAT_004b9f8c;
+// GLOBAL: LEGOLAND 0x006687a8
+unsigned int DAT_006687a8;
+// GLOBAL: LEGOLAND 0x006687ac
+unsigned int DAT_006687ac;
+
+// GLOBAL: LEGOLAND 0x004c1218
+unsigned int DAT_004c1218;
+// GLOBAL: LEGOLAND 0x004c121c
+unsigned int DAT_004c121c;
+// GLOBAL: LEGOLAND 0x004c1228
+unsigned int DAT_004c1228;
+// GLOBAL: LEGOLAND 0x004c122c
+unsigned int DAT_004c122c;
+// GLOBAL: LEGOLAND 0x004c1230
+unsigned int DAT_004c1230;
+// GLOBAL: LEGOLAND 0x004c1234
+unsigned short DAT_004c1234;
+// GLOBAL: LEGOLAND 0x004c1240
+unsigned int DAT_004c1240;
+// GLOBAL: LEGOLAND 0x004c1244
+unsigned int DAT_004c1244;
+// GLOBAL: LEGOLAND 0x004c1248
+unsigned int DAT_004c1248;
+// GLOBAL: LEGOLAND 0x004c124c
+unsigned int DAT_004c124c;
+// GLOBAL: LEGOLAND 0x004c1250
+struct JoustNode *DAT_004c1250;
+// GLOBAL: LEGOLAND 0x004b4688
+unsigned char JOUST_SFX[12];
