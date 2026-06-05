@@ -1,13 +1,95 @@
+#include <windows.h>
 #include "legoland.h"
 
+struct ResFile;
+struct ResVolume;
+
+struct ResVolume {
+    unsigned char pad_0[0x1c];
+    HANDLE handle;
+    struct ResFile *current;
+    unsigned int refcount;
+};
+
+struct ResFile {
+    int size;
+    int base;
+    struct ResVolume *volume;
+    int position;
+};
+
+struct ResVolumeEntry {
+    unsigned char pad_0[8];
+    unsigned char name[1];
+};
+
+struct MasterDirNode {
+    struct MasterDirNode *next;
+    unsigned int pad_4;
+    char *name;
+};
+
+struct MasterVolNode {
+    struct MasterVolNode *next;
+    unsigned int pad_4;
+    char name[1];
+};
+
+extern void FUN_0049e4d0(void *block);
+extern void *_malloc(unsigned int size);
+extern int __strcmpi(const char *s1, const char *s2);
+extern unsigned int strlen(const char *s);
+extern char *strcpy(char *dst, const char *src);
+
+extern struct MasterDirNode *DAT_00798624;
+extern struct MasterVolNode *DAT_00798628;
+
 // FUNCTION: LEGOLAND 0x00489440
-void FUN_00489440(void) { STUB(); }
+struct MasterDirNode *FUN_00489440(char *name) {
+    struct MasterDirNode *node;
+    struct MasterDirNode *new_node;
+    char *copy;
+
+    for (node = DAT_00798624; node != 0; node = node->next) {
+        if (__strcmpi(name, node->name) == 0) {
+            return node;
+        }
+    }
+
+    new_node = (struct MasterDirNode *)_malloc(0xc);
+    copy = (char *)_malloc(strlen(name) + 1);
+    new_node->name = copy;
+    strcpy(copy, name);
+
+    new_node->next = DAT_00798624;
+    new_node->pad_4 = 0;
+    DAT_00798624 = new_node;
+    return new_node;
+}
 
 // FUNCTION: LEGOLAND 0x004894d0
-void GetMasterDirPtr(void) { STUB(); }
+struct MasterDirNode *GetMasterDirPtr(const char *name) {
+    struct MasterDirNode *node;
+
+    for (node = DAT_00798624; node != 0; node = node->next) {
+        if (__strcmpi(name, node->name) == 0) {
+            return node;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00489510
-void GetMasterVolPtr(void) { STUB(); }
+struct MasterVolNode *GetMasterVolPtr(const char *name) {
+    struct MasterVolNode *node;
+
+    for (node = DAT_00798628; node != 0; node = node->next) {
+        if (__strcmpi(name, node->name) == 0) {
+            return node;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00489550
 void FUN_00489550(void) { STUB(); }
@@ -16,37 +98,125 @@ void FUN_00489550(void) { STUB(); }
 void FUN_004895a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489740
-void RES_GetResourcePath(void) { STUB(); }
+unsigned int RES_GetResourcePath(void) {
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00489750
 void RES_OpenVolume(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489a00
-void RES_OpenFileFromVolume(void) { STUB(); }
+struct ResFile *RES_OpenFileFromVolume(void *param_1, void *name) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489b60
-void RES_OpenFile(void) { STUB(); }
+struct ResFile *RES_OpenFile(const char *path) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489ce0
-void RES_GetFileSize(void) { STUB(); }
+unsigned int RES_GetFileSize(unsigned int *file) {
+    if (file == 0) {
+        return 0xffffffff;
+    }
+    return *file;
+}
 
 // FUNCTION: LEGOLAND 0x00489cf0
-void RES_ReadFile(void) { STUB(); }
+int RES_ReadFile(struct ResFile *file, void *buffer, int count) {
+    int remaining;
+    int bytes_read;
+    struct ResVolume *volume;
+
+    if (file == 0) {
+        return -1;
+    }
+
+    volume = file->volume;
+    if (file != volume->current) {
+        volume->current = file;
+        SetFilePointer(volume->handle, file->position + file->base, 0, 0);
+    }
+
+    remaining = file->size - file->position;
+    if (count > remaining) {
+        count = remaining;
+    }
+    if (count == 0) {
+        return 0;
+    }
+
+    ReadFile(volume->handle, buffer, count, &bytes_read, 0);
+    file->position += bytes_read;
+    return bytes_read;
+}
 
 // FUNCTION: LEGOLAND 0x00489d70
-void RES_SetFilePointer(void) { STUB(); }
+int RES_SetFilePointer(struct ResFile *file, int offset, int param_3) {
+    struct ResVolume *volume;
+
+    if (file != 0) {
+        if (offset >= 0) {
+            if (offset < file->size) {
+                file->position = offset;
+                volume = file->volume;
+                volume->current = file;
+                SetFilePointer(volume->handle, file->base + file->position, 0, 0);
+                return offset;
+            }
+        }
+    }
+    return -1;
+}
 
 // FUNCTION: LEGOLAND 0x00489db0
-void RES_GetFilePointer(void) { STUB(); }
+int RES_GetFilePointer(struct ResFile *file) {
+    if (file == 0) {
+        return -1;
+    }
+    return file->position;
+}
 
 // FUNCTION: LEGOLAND 0x00489dc0
-void RES_CloseVolume(void) { STUB(); }
+unsigned int RES_CloseVolume(struct ResVolume *volume) {
+    if (volume == 0) {
+        return 0xffffffff;
+    }
+    volume->refcount--;
+    return volume->refcount;
+}
 
 // FUNCTION: LEGOLAND 0x00489de0
-void RES_CloseFile(void) { STUB(); }
+int RES_CloseFile(struct ResFile *file) {
+    struct ResVolume *volume;
+
+    if (file == 0) {
+        return -1;
+    }
+
+    volume = file->volume;
+    if (volume->current == file) {
+        volume->current = 0;
+    }
+
+    RES_CloseVolume(volume);
+    FUN_0049e4d0(file);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00489e10
-void RES_OpenFileFromVolumePtr(void) { STUB(); }
+struct ResFile *RES_OpenFileFromVolumePtr(void *param_1, struct ResVolumeEntry *entry) {
+    if (entry == 0) {
+        return 0;
+    }
+    return RES_OpenFileFromVolume(param_1, &entry->name);
+}
 
 // FUNCTION: LEGOLAND 0x00489e30
-void RES_FileExists(void) { STUB(); }
+int RES_FileExists(const char *path) {
+    struct ResFile *file;
+
+    file = RES_OpenFile(path);
+    if (file == 0) {
+        return 0;
+    }
+    RES_CloseFile(file);
+    return 1;
+}
