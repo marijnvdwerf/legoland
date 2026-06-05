@@ -1,19 +1,77 @@
 #include "legoland.h"
 
+extern unsigned int DAT_0080ff64;
+extern const unsigned char DAT_004b9228[1];
+extern int DAT_00667ce0;
+extern int DAT_00667ce4;
+extern int DAT_00667ce8;
+extern int DAT_00667cec;
+extern int DAT_00667cf0;
+extern int DAT_00667cf4;
+extern int DAT_00667cf8;
+extern int DAT_00667cfc;
+extern unsigned int DAT_00667d10;
+extern int DAT_00832bd0;
+extern int DAT_00832bd4;
+extern int DAT_00832bd8;
+extern int DAT_00832bdc;
+
+extern unsigned int ElemID(const char *name);
+extern void Load_FXList(const unsigned char *list, unsigned int count);
+extern void Kill_FXList(const unsigned char *list, unsigned int count);
+extern unsigned int GetGameTimer(void);
+
+typedef int (*PowerFunc)(void);
+
+struct RenderObjectVtable {
+    unsigned char pad_0[0xc];
+    PowerFunc get_power;
+};
+
+struct RenderObject {
+    struct RenderObjectVtable *vtable;
+    unsigned char pad_4[8];
+    union {
+        unsigned short word;
+        unsigned char bytes[2];
+    } flags;
+    unsigned char pad_e[2];
+};
+
+struct RenderObject *GetFirstRenderObject(void);
+struct RenderObject *GetNextRenderObject(struct RenderObject *object);
+
 // FUNCTION: LEGOLAND 0x00459850
-void InitGameMap(void) { STUB(); }
+void InitGameMap(void) {
+    // STRING: LEGOLAND 0x004b5c0c
+    DAT_0080ff64 = ElemID("CASTLE OBJ");
+    Load_FXList(DAT_004b9228, 0x17);
+}
 
 // FUNCTION: LEGOLAND 0x00459870
-void KillGameMap(void) { STUB(); }
+void KillGameMap(void) {
+    Kill_FXList(DAT_004b9228, 0x17);
+}
 
 // FUNCTION: LEGOLAND 0x00459880
-void FUN_00459880(void) { STUB(); }
+void FUN_00459880(void) {
+    DAT_00667ce0 = 0;
+    DAT_00667ce4 = 0;
+    DAT_00667ce8 = 0;
+    DAT_00667cec = 0;
+    DAT_00667cf0 = 0;
+    DAT_00667cf4 = 0;
+    DAT_00667cf8 = 0;
+    DAT_00667cfc = 0;
+}
 
 // FUNCTION: LEGOLAND 0x004598d0
 void FUN_004598d0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00459960
-void FUN_00459960(void) { STUB(); }
+void FUN_00459960(void) {
+    DAT_00667d10 = GetGameTimer();
+}
 
 // FUNCTION: LEGOLAND 0x00459970
 void FUN_00459970(void) { STUB(); }
@@ -25,19 +83,56 @@ void PutObjOnMap(void) { STUB(); }
 void RemObjFromMap(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00459fa0
-void FindObjectsPower(void) { STUB(); }
+int FindObjectsPower(PowerFunc func) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a000
-void FUN_0045a000(void) { STUB(); }
+void FUN_0045a000(int power, struct RenderObject *object) {
+    object->flags.word &= 0xfeff;
+    DAT_00832bd8 = DAT_00832bd8 - power;
+    DAT_00832bdc = DAT_00832bdc - 1;
+}
 
 // FUNCTION: LEGOLAND 0x0045a030
-void FUN_0045a030(void) { STUB(); }
+void FUN_0045a030(int power, struct RenderObject *object) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a060
-void FUN_0045a060(void) { STUB(); }
+void FUN_0045a060(void) {
+    struct RenderObject *object = GetFirstRenderObject();
+    int power;
+    if (object == NULL) {
+        return;
+    }
+    while (object != NULL) {
+        if (object->flags.bytes[1] & 1) {
+            power = -FindObjectsPower(object->vtable->get_power);
+            if (DAT_00832bd4 - DAT_00832bd8 + power <= DAT_00832bd0) {
+                FUN_0045a000(power, object);
+                if (DAT_00832bd4 - DAT_00832bd8 == DAT_00832bd0) {
+                    return;
+                }
+            }
+        }
+        object = GetNextRenderObject(object);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045a0d0
-void FUN_0045a0d0(void) { STUB(); }
+void FUN_0045a0d0(void) {
+    struct RenderObject *object = GetFirstRenderObject();
+    int power;
+    while (object != NULL) {
+        if ((object->flags.bytes[1] & 1) == 0) {
+            power = -FindObjectsPower(object->vtable->get_power);
+            if (power > 0) {
+                FUN_0045a030(power, object);
+                if (DAT_00832bd4 - DAT_00832bd8 <= DAT_00832bd0) {
+                    break;
+                }
+            }
+        }
+        object = GetNextRenderObject(object);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045a130
 void AddObjectsPowerStats(void) { STUB(); }
@@ -45,8 +140,27 @@ void AddObjectsPowerStats(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0045a230
 void RemoveObjectsPowerStats(void) { STUB(); }
 
+struct Cursor {
+    unsigned char pad_0[0x1404];
+    unsigned int field_1404;
+    unsigned int field_1408;
+    unsigned char pad_140c[0x41c];
+    unsigned int field_1828;
+    unsigned char pad_182c[8];
+};
+
+extern void FUN_0045f460(struct Cursor *cursor);
+
 // FUNCTION: LEGOLAND 0x0045a390
-void DefaultCursor(void) { STUB(); }
+void DefaultCursor(struct Cursor *cursor) {
+    unsigned int saved_1404 = cursor->field_1404;
+    unsigned int saved_1408 = cursor->field_1408;
+    memset(cursor, 0, 0x1834);
+    cursor->field_1404 = saved_1404;
+    cursor->field_1828 = 0xc00;
+    cursor->field_1408 = saved_1408;
+    FUN_0045f460(cursor);
+}
 
 // FUNCTION: LEGOLAND 0x0045a3e0
 void FUN_0045a3e0(void) { STUB(); }
@@ -61,16 +175,34 @@ void CalculateMapRenderOrder(void) { STUB(); }
 void FUN_0045a660(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a850
-void GetFirstRenderObject(void) { STUB(); }
+struct RenderObject *GetFirstRenderObject(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a8b0
-void GetNextRenderObject(void) { STUB(); }
+struct RenderObject *GetNextRenderObject(struct RenderObject *object) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a910
-void GetFirstObjectMatching(void) { STUB(); }
+struct RenderObject *GetFirstObjectMatching(struct RenderObjectVtable *vtable) {
+    struct RenderObject *object = GetFirstRenderObject();
+    while (object != NULL) {
+        if (object->vtable == vtable) {
+            return object;
+        }
+        object = GetNextRenderObject(object);
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x0045a940
-void GetNextObjectMatching(void) { STUB(); }
+struct RenderObject *GetNextObjectMatching(struct RenderObject *object, struct RenderObjectVtable *vtable) {
+    object = GetNextRenderObject(object);
+    while (object != NULL) {
+        if (object->vtable == vtable) {
+            return object;
+        }
+        object = GetNextRenderObject(object);
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x0045a970
 void PlayfieldToMap(void) { STUB(); }
