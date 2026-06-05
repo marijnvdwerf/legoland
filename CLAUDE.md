@@ -39,14 +39,16 @@ stub. The image links with `/NODEFAULTLIB` and a dummy `/ENTRY` (`legoland_entry
 - **Unmatched** functions have a `STUB();` body (macro in `legoland.h`). Remaining work: `grep -rn 'STUB()' src/`.
 - When you decompile a function: replace its `STUB()` body with real C, build, run reccmp, iterate to 100%.
 - No `ctx.h` — include real MSVC6 headers; shared decls go in `src/legoland/legoland.h`.
-- **`TU_CRT` and `TU_IMPORTS` are NOT decompiled.** They're the static C runtime and the linker's
-  import-thunk table — library/linker code, not game source. There are no `crt.c`/`imports.c`; don't
-  regenerate them. They'll be satisfied later by linking the real CRT lib + the linker's own import
-  thunks. Skip them in any stub regeneration.
+- **`TU_CRT` and `TU_IMPORTS` are NOT decompiled, but they exist as stub symbol files**
+  (`src/legoland/crt.c`, `imports.c`) using `// STUB: LEGOLAND 0x<addr>` annotations. Game functions
+  call into them (CRT helpers like `memcpy`/`__ftol`/heap routines, and import thunks), so the symbols
+  must be present for callers to *link* and for reccmp to *match* the call. **Leave every function in
+  them as `STUB()` — never integrate them.** `// STUB:` keeps them out of the accuracy denominator
+  (so the % reflects game functions only). One day they could be satisfied by a real CRT lib instead.
 
 ## Don't
 
 - Don't edit `external/legoland.exe` (the match target) or anything in `toolchain/`.
 - Don't try to make the binary *runnable* — that's a non-goal; it only needs to link + carry symbols.
 - Don't commit downloaded toolchain binaries.
-- Don't recreate `crt.c` / `imports.c` (see above).
+- Don't integrate/decompile `crt.c` / `imports.c` functions — they stay `STUB()` (symbols only; see above).
