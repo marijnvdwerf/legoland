@@ -1908,3 +1908,58 @@ struct Position *DAT_006160e4;
 struct Sprite *DAT_006160d8;
 // GLOBAL: LEGOLAND 0x006160e0
 struct Sprite *DAT_006160e0;
+
+// GLOBAL: LEGOLAND 0x00668d8c
+void *dinput_keyboard;
+// GLOBAL: LEGOLAND 0x00668d90
+void *dintput_mouse;
+// GLOBAL: LEGOLAND 0x00668d88
+void *dinput;
+// GLOBAL: LEGOLAND 0x007fdda0
+unsigned char DAT_007fdda0[256];
+// GLOBAL: LEGOLAND 0x00668d78
+unsigned char DAT_00668d78[16];
+// GLOBAL: LEGOLAND 0x004bad54
+int mouse_granularity;
+// GLOBAL: LEGOLAND 0x00668d80
+int DAT_00668d80;
+// GLOBAL: LEGOLAND 0x007fddca
+unsigned char DAT_007fddca;
+// GLOBAL: LEGOLAND 0x007fddd6
+unsigned char DAT_007fddd6;
+
+// GLOBAL: LEGOLAND 0x004b7618
+const unsigned char SPACE_TOWER_SFX[15] = {0};
+// GLOBAL: LEGOLAND 0x004b7620
+unsigned int DAT_004b7620;
+// GLOBAL: LEGOLAND 0x0062fd74
+void *DAT_0062fd74;
+// GLOBAL: LEGOLAND 0x0062fda8
+void *DAT_0062fda8;
+// GLOBAL: LEGOLAND 0x0062fd80
+void *DAT_0062fd80;
+// GLOBAL: LEGOLAND 0x0062fd7c
+void *DAT_0062fd7c;
+// GLOBAL: LEGOLAND 0x0062fd68
+void *DAT_0062fd68;
+// GLOBAL: LEGOLAND 0x0062fd6c
+void *DAT_0062fd6c;
+
+// GLOBAL: LEGOLAND 0x004cbf78
+unsigned int DAT_004cbf78;
+// GLOBAL: LEGOLAND 0x004cbf80
+unsigned int DAT_004cbf80;
+// GLOBAL: LEGOLAND 0x004cbfd0
+unsigned int DAT_004cbfd0;
+// GLOBAL: LEGOLAND 0x004cbfc4
+unsigned int DAT_004cbfc4;
+// GLOBAL: LEGOLAND 0x004cbf98
+unsigned int DAT_004cbf98;
+// GLOBAL: LEGOLAND 0x004cbf9c
+unsigned int DAT_004cbf9c;
+// GLOBAL: LEGOLAND 0x004cbfa0
+unsigned int DAT_004cbfa0;
+// GLOBAL: LEGOLAND 0x004cbfa4
+unsigned short DAT_004cbfa4;
+// GLOBAL: LEGOLAND 0x004cbfd4
+void *DAT_004cbfd4;
