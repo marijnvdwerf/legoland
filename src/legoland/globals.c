@@ -161,6 +161,8 @@ unsigned int DAT_007988c8;
 void *DAT_007988cc;
 // GLOBAL: LEGOLAND 0x007988bc
 unsigned int DAT_007988bc;
+// GLOBAL: LEGOLAND 0x007988a0
+unsigned int DAT_007988a0;
 
 // GLOBAL: LEGOLAND 0x004bf774
 unsigned int DAT_004bf774;
@@ -190,6 +192,9 @@ void *DAT_007cacdc;
 void *DAT_007cad44;
 // GLOBAL: LEGOLAND 0x007cad48
 unsigned int DAT_007cad48;
+
+// GLOBAL: LEGOLAND 0x004ab6d0
+GUID GUID_PerfMasterGrooveLevel = {0xd2ac28b2, 0xb39b, 0x11d1, {0x87, 0x04, 0x00, 0x60, 0x08, 0x93, 0xb1, 0xbd}};
 
 // GLOBAL: LEGOLAND 0x004ab8b0
 GUID DAT_004ab8b0 = {0xd2ac2893, 0xb39b, 0x11d1, {0x87, 0x04, 0x00, 0x60, 0x08, 0x93, 0xb1, 0xbd}};
