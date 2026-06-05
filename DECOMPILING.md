@@ -63,6 +63,17 @@ an unmatched function from scratch** — that's slow, separate work, not for the
   file, by canonical name. The callee already exists as a stub in its own TU, so the
   link resolves and reccmp matches the call by symbol. Confirm the target's address/name
   in `ghidra/functions.csv`.
+- **Calling a not-yet-integrated function with arguments — NO function-pointer casts.**
+  When a function you're integrating calls one that's still a `STUB()`, give the call its
+  real signature the clean way, never `((ret(*)(args))FUN_x)(...)`:
+  - **Callee in *another* TU:** `extern <ret> FUN_<addr>(<args>);` at the top of your file.
+    Leave the other TU's stub alone — the linker doesn't check signatures, so it still
+    links and matches.
+  - **Callee in the *same* TU (e.g. an off-limits stub in your range):** change that
+    stub's signature in place to the real one, keeping the `STUB();` body —
+    `void FUN_x(void) { STUB(); }` → `<ret> FUN_x(<args>) { STUB(); }`. This is the one
+    allowed edit to an off-limits function; do not give it a body. Then call it normally.
+    (A non-void stub will warn `-Wreturn-type` — that's fine.)
 - **Imports (Win32/DirectX):** include the real MSVC6 header (`#include <windows.h>`,
   `<ddraw.h>`, …) and call the API normally; the import libraries resolve it at link.
 
