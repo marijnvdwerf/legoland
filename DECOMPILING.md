@@ -76,6 +76,11 @@ an unmatched function from scratch** — that's slow, separate work, not for the
     (A non-void stub will warn `-Wreturn-type` — that's fine.)
 - **Imports (Win32/DirectX):** include the real MSVC6 header (`#include <windows.h>`,
   `<ddraw.h>`, …) and call the API normally; the import libraries resolve it at link.
+- **CRT mem/str helpers (`memset`, `memcpy`, `memmove`, `strlen`, …):** leave them
+  IMPLICITLY declared — do **not** `#include <string.h>`. An explicit prototype lets `/O2`
+  treat them as intrinsics and emit inline `rep movs`/`stos`, which breaks the original's
+  `call _memset` form. Implicit declaration keeps the call and links against the `crt.c`
+  stub. clang's LSP flags `-Wimplicit-function-declaration`; ignore it — MSVC6 (C89) is fine.
 
 ## Gotchas (from real TUs)
 
