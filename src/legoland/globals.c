@@ -1,5 +1,17 @@
 struct Sprite;
 
+struct ObjTableEntry {
+    unsigned short key;
+    unsigned short value;
+};
+
+// GLOBAL: LEGOLAND 0x007cb3e0
+struct ObjTableEntry DAT_007cb3e0[128];
+// GLOBAL: LEGOLAND 0x007cb3e2
+struct ObjTableEntry DAT_007cb3e2[128];
+// GLOBAL: LEGOLAND 0x007cb5e0
+struct ObjTableEntry DAT_007cb5e0;
+
 // GLOBAL: LEGOLAND 0x00668958
 struct Sprite *DAT_00668958;
 // GLOBAL: LEGOLAND 0x006688e0
