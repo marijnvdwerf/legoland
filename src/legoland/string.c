@@ -1,7 +1,32 @@
+#include <windows.h>
 #include "legoland.h"
 
+struct StringNode {
+    int key;
+    char *text;
+    struct StringNode *next;
+};
+
+extern struct StringNode *strings[10];
+extern unsigned int DAT_0079a890;
+extern unsigned int DAT_0079a894;
+extern unsigned int DAT_0079a898;
+extern unsigned int DAT_0079a89c;
+extern unsigned int DAT_0079a8a0;
+extern unsigned int DAT_008119a4;
+extern unsigned long GetTicks(void);
+
 // FUNCTION: LEGOLAND 0x00498f50
-void GetString(void) { STUB(); }
+char *GetString(int n) {
+    struct StringNode *node = strings[n % 10];
+    while (node != NULL) {
+        if (node->key == n) {
+            return node->text;
+        }
+        node = node->next;
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00498f80
 void FUN_00498f80(void) { STUB(); }
@@ -28,10 +53,25 @@ void FUN_00499240(void) { STUB(); }
 void FUN_00499300(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00499380
-void FUN_00499380(void) { STUB(); }
+unsigned int FUN_00499380(void) {
+    if (DAT_0079a890 == 0) {
+        DAT_0079a890 = 1;
+        DAT_0079a894 = GetTickCount();
+        DAT_0079a89c = DAT_008119a4;
+        return 0;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004993c0
-void FUN_004993c0(void) { STUB(); }
+void FUN_004993c0(void) {
+    if (DAT_0079a890 == 0) {
+        return;
+    }
+    DAT_0079a890 = 0;
+    DAT_0079a898 += GetTickCount() - DAT_0079a894;
+    DAT_0079a8a0 += DAT_008119a4 - DAT_0079a89c;
+}
 
 // FUNCTION: LEGOLAND 0x00499410
 void FUN_00499410(void) { STUB(); }

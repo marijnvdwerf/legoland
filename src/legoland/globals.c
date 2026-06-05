@@ -152,6 +152,8 @@ unsigned int DAT_007cacac;
 // GLOBAL: LEGOLAND 0x007cacb4
 unsigned int DAT_007cacb4;
 
+// GLOBAL: LEGOLAND 0x0079a850
+void *strings[10];
 // GLOBAL: LEGOLAND 0x0079a890
 unsigned int DAT_0079a890;
 // GLOBAL: LEGOLAND 0x0079a894
@@ -2298,3 +2300,17 @@ void *DAT_00616060;
 void *DAT_0081cde4;
 // GLOBAL: LEGOLAND 0x0081cde8
 unsigned int DAT_0081cde8;
+// GLOBAL: LEGOLAND 0x004c10dc
+void *DAT_004c10dc;
+// GLOBAL: LEGOLAND 0x004c10e4
+unsigned int DAT_004c10e4;
+// GLOBAL: LEGOLAND 0x004c11cc
+unsigned int DAT_004c11cc;
+// GLOBAL: LEGOLAND 0x004c11dc
+unsigned int DAT_004c11dc;
+// GLOBAL: LEGOLAND 0x0081caf4
+void *DAT_0081caf4;
+// GLOBAL: LEGOLAND 0x0062fe50
+unsigned int DAT_0062fe50;
+// GLOBAL: LEGOLAND 0x0062fe54
+unsigned int DAT_0062fe54;
