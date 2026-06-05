@@ -17,6 +17,10 @@ struct JungleNode;
 struct JungleCursor;
 struct JungleFish;
 struct JungleScore;
+struct CatapultNode;
+struct Position;
+struct CopterNode;
+struct GoldNode;
 
 struct ObjTableEntry {
     unsigned short key;
@@ -1793,3 +1797,52 @@ unsigned int DAT_0080ffa0[68];
 char DAT_00832998[256];
 // GLOBAL: LEGOLAND 0x00832a98
 char DAT_00832a98[256];
+
+// GLOBAL: LEGOLAND 0x004b40c8
+unsigned char Catapult_SFX[0x70];
+// GLOBAL: LEGOLAND 0x004c1118
+struct CatapultNode *DAT_004c1118;
+// GLOBAL: LEGOLAND 0x004c10f4
+void *DAT_004c10f4;
+// GLOBAL: LEGOLAND 0x004c10f0
+void *DAT_004c10f0;
+// GLOBAL: LEGOLAND 0x004c1100
+void *DAT_004c1100;
+// GLOBAL: LEGOLAND 0x004c1104
+unsigned int DAT_004c1104;
+// GLOBAL: LEGOLAND 0x004c1108
+unsigned int DAT_004c1108;
+// GLOBAL: LEGOLAND 0x004c110c
+unsigned short DAT_004c110c;
+
+// GLOBAL: LEGOLAND 0x004b4140
+unsigned char Helicopter_SFX[0x70];
+// GLOBAL: LEGOLAND 0x004c11b4
+struct CopterNode *DAT_004c11b4;
+// GLOBAL: LEGOLAND 0x004c1120
+struct Sprite *DAT_004c1120;
+// GLOBAL: LEGOLAND 0x004c1124
+int DAT_004c1124[6];
+// GLOBAL: LEGOLAND 0x004c113c
+struct Sprite *DAT_004c113c[10];
+// GLOBAL: LEGOLAND 0x004c1164
+struct Sprite *DAT_004c1164;
+// GLOBAL: LEGOLAND 0x004c1198
+void *DAT_004c1198;
+// GLOBAL: LEGOLAND 0x00830f98
+struct Position *DAT_00830f98;
+
+// GLOBAL: LEGOLAND 0x004c1204
+struct GoldNode *DAT_004c1204;
+// GLOBAL: LEGOLAND 0x004c11f8
+struct Sprite *DAT_004c11f8;
+// GLOBAL: LEGOLAND 0x004c11fc
+struct Sprite *DAT_004c11fc;
+// GLOBAL: LEGOLAND 0x004c1200
+struct Sprite *DAT_004c1200;
+// GLOBAL: LEGOLAND 0x004c11f4
+struct Sprite *DAT_004c11f4;
+// GLOBAL: LEGOLAND 0x004c11e4
+struct Sprite *DAT_004c11e4;
+// GLOBAL: LEGOLAND 0x004c11f0
+void *DAT_004c11f0;
