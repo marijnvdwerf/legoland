@@ -861,3 +861,19 @@ unsigned int DAT_007fe050;
 unsigned int DAT_007fe054;
 // GLOBAL: LEGOLAND 0x00810140
 unsigned int DAT_00810140;
+// GLOBAL: LEGOLAND 0x004d8268
+unsigned int DAT_004d8268;
+// GLOBAL: LEGOLAND 0x00829ae0
+unsigned int DAT_00829ae0;
+// GLOBAL: LEGOLAND 0x00829b88
+unsigned int DAT_00829b88;
+// GLOBAL: LEGOLAND 0x00829ba0
+unsigned int DAT_00829ba0;
+// GLOBAL: LEGOLAND 0x004ab3d0
+float DAT_004ab3d0;
+// GLOBAL: LEGOLAND 0x0082adec
+unsigned int DAT_0082adec;
+// GLOBAL: LEGOLAND 0x004d8270
+unsigned int DAT_004d8270;
+// GLOBAL: LEGOLAND 0x004d8250
+const unsigned char DAT_004d8250[1];
