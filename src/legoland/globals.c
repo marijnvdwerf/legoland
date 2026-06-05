@@ -1,6 +1,7 @@
 #include <windows.h>
 
 struct Sprite;
+struct CursorSource;
 struct Building;
 struct JailCell;
 struct LegoConfig;
@@ -1056,3 +1057,87 @@ unsigned int DAT_00616004;
 unsigned int DAT_004b62f0;
 // GLOBAL: LEGOLAND 0x004b6300
 unsigned int DAT_004b6300;
+// GLOBAL: LEGOLAND 0x004cbe20
+unsigned int DAT_004cbe20;
+// GLOBAL: LEGOLAND 0x004cbe24
+unsigned int DAT_004cbe24;
+// GLOBAL: LEGOLAND 0x004cbe28
+unsigned int DAT_004cbe28;
+// GLOBAL: LEGOLAND 0x004cbe2c
+unsigned int DAT_004cbe2c;
+// GLOBAL: LEGOLAND 0x004cbe4c
+struct Sprite *DAT_004cbe4c;
+// GLOBAL: LEGOLAND 0x004cbe74
+struct Sprite *DAT_004cbe74;
+// GLOBAL: LEGOLAND 0x004cbe78
+struct Sprite *DAT_004cbe78;
+// GLOBAL: LEGOLAND 0x004cbe7c
+struct Sprite *DAT_004cbe7c;
+// GLOBAL: LEGOLAND 0x004cbe80
+struct Sprite *DAT_004cbe80;
+// GLOBAL: LEGOLAND 0x004cbe84
+void *DAT_004cbe84;
+// GLOBAL: LEGOLAND 0x004cbe88
+struct Sprite *DAT_004cbe88;
+// GLOBAL: LEGOLAND 0x004cbe8c
+struct Sprite *DAT_004cbe8c;
+// GLOBAL: LEGOLAND 0x004cbe90
+struct Sprite *DAT_004cbe90;
+// GLOBAL: LEGOLAND 0x004cbe94
+struct Sprite *DAT_004cbe94;
+// GLOBAL: LEGOLAND 0x004cbe98
+struct Sprite *DAT_004cbe98;
+// GLOBAL: LEGOLAND 0x004c2ae8
+void *DAT_004c2ae8;
+// GLOBAL: LEGOLAND 0x004c2af8
+void *DAT_004c2af8;
+// GLOBAL: LEGOLAND 0x004c2b9c
+unsigned int DAT_004c2b9c;
+// GLOBAL: LEGOLAND 0x004c2afc
+unsigned int DAT_004c2afc;
+// GLOBAL: LEGOLAND 0x004c2abc
+struct Sprite *DAT_004c2abc;
+// GLOBAL: LEGOLAND 0x004c2ae4
+struct Sprite *DAT_004c2ae4;
+// GLOBAL: LEGOLAND 0x004cbe1c
+struct Sprite *DAT_004cbe1c;
+// GLOBAL: LEGOLAND 0x004c8d68
+struct Sprite *DAT_004c8d68;
+// GLOBAL: LEGOLAND 0x004c2b10
+unsigned int DAT_004c2b10;
+// GLOBAL: LEGOLAND 0x004b4728
+unsigned int DAT_004b4728;
+// GLOBAL: LEGOLAND 0x004b472c
+unsigned int DAT_004b472c;
+// GLOBAL: LEGOLAND 0x004b4730
+unsigned int DAT_004b4730;
+// GLOBAL: LEGOLAND 0x004b4734
+unsigned int DAT_004b4734;
+// GLOBAL: LEGOLAND 0x008003e8
+unsigned int DAT_008003e8;
+// GLOBAL: LEGOLAND 0x004cbdd8
+unsigned int DAT_004cbdd8;
+// GLOBAL: LEGOLAND 0x004c2a88
+unsigned int DAT_004c2a88;
+// GLOBAL: LEGOLAND 0x004c5c90
+unsigned int DAT_004c5c90;
+// GLOBAL: LEGOLAND 0x004c74c8
+unsigned int DAT_004c74c8;
+// GLOBAL: LEGOLAND 0x004c445c
+struct CursorSource *DAT_004c445c;
+// GLOBAL: LEGOLAND 0x004c2aa0
+struct CursorSource *DAT_004c2aa0;
+// GLOBAL: LEGOLAND 0x004c2b0c
+struct CursorSource *DAT_004c2b0c;
+// GLOBAL: LEGOLAND 0x004c2af4
+unsigned int DAT_004c2af4;
+// GLOBAL: LEGOLAND 0x004c2b98
+unsigned int DAT_004c2b98;
+// GLOBAL: LEGOLAND 0x004c2b6c
+unsigned int DAT_004c2b6c;
+// GLOBAL: LEGOLAND 0x004c2b70
+unsigned int DAT_004c2b70;
+// GLOBAL: LEGOLAND 0x004b47f8
+unsigned int DAT_004b47f8;
+// GLOBAL: LEGOLAND 0x004b4804
+unsigned int DAT_004b4804;
