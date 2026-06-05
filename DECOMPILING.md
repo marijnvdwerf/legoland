@@ -38,11 +38,11 @@ an unmatched function from scratch** — that's slow, separate work, not for the
   (not `uVar1`); real `struct` definitions with named fields when you understand the
   layout (not `pad_0[0x14]`); correct signatures and calling conventions.
 - **Comments: the ONLY comments allowed are reccmp annotations** — `// FUNCTION:`,
-  `// GLOBAL:`, and `// STRING:`. The last goes directly above a function that references
-  a pooled string constant: `// STRING: LEGOLAND 0x<addr>` (one per literal, the address
-  of the string in the original), so reccmp matches the string reference. Write the
-  literal normally in the C (`"PATH CONTROL"`) — it compiles now. Do **not** write any
-  explanatory comments about variables, types, or logic — express intent through names.
+  `// GLOBAL:`, and `// STRING:`. For a pooled string constant, put `// STRING: LEGOLAND
+  0x<addr>` directly above the **source line that contains the string literal** (inside the
+  body — NOT above `// FUNCTION:`; a STRING marker above FUNCTION makes reccmp drop the
+  function). One per literal; write the literal normally (`"PATH CONTROL"`) — it compiles
+  now. Do **not** write explanatory comments about variables, types, or logic — names only.
 - **Annotations:** every function keeps `// FUNCTION: LEGOLAND 0x<addr>` directly above
   it. The address is how reccmp matches — never drop or change it.
 - **Globals** go in `src/legoland/globals.c`, one definition each, with
