@@ -861,7 +861,21 @@ void FUN_004776e0(struct EventNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00477730
-struct QueryNode *FUN_00477730(struct QueryNode *ctx) { STUB(); }
+struct QueryNode *FUN_00477730(struct QueryNode *ctx) {
+    struct QueryNode *node;
+
+    node = DAT_00668fc4;
+    if (node == NULL) {
+        return NULL;
+    }
+    while (node != NULL) {
+        if (node->field_8 == *(unsigned int *)ctx && node->field_c == *((unsigned int *)ctx + 1)) {
+            return node;
+        }
+        node = node->next;
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00477760
 void FUN_00477760(struct QueryNode *ctx) {

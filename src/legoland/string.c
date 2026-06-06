@@ -74,4 +74,14 @@ void FUN_004993c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00499410
-void FUN_00499410(void) { STUB(); }
+void FUN_00499410(void) {
+    unsigned int ticks;
+    unsigned int counter;
+
+    ticks = GetTicks();
+    DAT_0079a894 = ticks;
+    DAT_0079a898 = ticks;
+    counter = DAT_008119a4;
+    DAT_0079a89c = counter;
+    DAT_0079a8a0 = counter;
+}
