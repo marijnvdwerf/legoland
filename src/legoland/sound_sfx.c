@@ -4,7 +4,6 @@
 
 struct SampleBufferVtbl;
 struct SampleBuffer;
-struct Sample;
 struct SampleDef;
 struct DirectSoundObj;
 struct DirectMusicObj;
@@ -24,17 +23,6 @@ struct SampleBufferVtbl {
 
 struct SampleBuffer {
     struct SampleBufferVtbl *vtable;
-};
-
-struct Sample {
-    struct Sample *next;
-    unsigned char pad_4[0x8 - 0x4];
-    unsigned int fade;
-    unsigned char pad_c[0x1c - 0xc];
-    unsigned short flags;
-    unsigned char pad_1e[0x28 - 0x1e];
-    unsigned int active;
-    struct SampleBuffer *buffer;
 };
 
 struct SampleCounter {

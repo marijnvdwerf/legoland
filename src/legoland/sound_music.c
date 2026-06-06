@@ -5,8 +5,6 @@
 #include "sound_music.h"
 #include "timer.h"
 
-struct PlayableSample;
-struct PlayableSampleVtbl;
 struct AVISoundBuffer;
 struct AVISoundBufferVtbl;
 struct MusicPerformance;
@@ -73,18 +71,6 @@ struct SampleSink {
     struct SampleSinkVtbl *vtable;
 };
 
-struct PlayableSample {
-    unsigned char pad_0[0xc];
-    unsigned int field_c;
-    unsigned int field_10;
-    unsigned int field_14;
-    unsigned int field_18;
-    unsigned char flags_1c;
-    unsigned char pad_1d[0x28 - 0x1d];
-    unsigned int active;
-    struct SampleSink *sink;
-};
-
 struct SampleConfig {
     unsigned int field_0;
     unsigned int field_4;
@@ -109,7 +95,7 @@ extern GUID GUID_PerfMasterGrooveLevel;
 extern unsigned int DAT_007988a0;
 extern unsigned int DAT_007988c0;
 extern unsigned int DAT_007988c8;
-extern struct PlayableSample *DAT_007988cc;
+extern struct Sample *DAT_007988cc;
 
 
 // FUNCTION: LEGOLAND 0x00495b90
@@ -244,7 +230,7 @@ int FUN_00496570(int value) {
 void FUN_004965a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496660
-int FUN_00496660(struct PlayableSample *sample) {
+int FUN_00496660(struct Sample *sample) {
     if (DAT_007988c0 == 0) {
         return 0;
     }
@@ -259,7 +245,7 @@ int FUN_00496660(struct PlayableSample *sample) {
 }
 
 // FUNCTION: LEGOLAND 0x004966a0
-void FUN_004966a0(struct PlayableSample *sample) { STUB(); }
+void FUN_004966a0(struct Sample *sample) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496760
 void FUN_00496760(void) { STUB(); }
@@ -304,7 +290,7 @@ void FUN_004969d0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004969f0
-unsigned int UnSourcePlayableSample(struct PlayableSample *sample) {
+unsigned int UnSourcePlayableSample(struct Sample *sample) {
     if (DAT_007988c0 == 0) {
         return 0;
     }
@@ -320,7 +306,7 @@ unsigned int UnSourcePlayableSample(struct PlayableSample *sample) {
 }
 
 // FUNCTION: LEGOLAND 0x00496a30
-unsigned int SourcePlayableSampleToBloke(struct PlayableSample *sample, unsigned int bloke) {
+unsigned int SourcePlayableSampleToBloke(struct Sample *sample, unsigned int bloke) {
     if (DAT_007988c0 == 0) {
         return 0;
     }
@@ -355,16 +341,15 @@ void UnSourceAndFadeSample(void) { STUB(); }
 void UnSourceAndFadeAllSamplesFromSource(void *source, int fade) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496d10
-void FUN_00496d10(struct PlayableSample *sample) {
+void FUN_00496d10(struct Sample *sample) {
     sample->flags_1c |= 0x20;
 }
 
 // FUNCTION: LEGOLAND 0x00496d20
-struct PlayableSample *PlayInstanceOfSample(void *def, unsigned int looping, unsigned int oneshot, void *config) {
-    struct PlayableSample *sample;
+struct Sample *PlayInstanceOfSample(void *def, unsigned int looping, unsigned int oneshot, void *config) {
+    struct Sample *sample;
 
-    /* TODO: fold struct Sample and struct PlayableSample — same object, different field view */
-    sample = (struct PlayableSample *)CreatePlayableSample((unsigned int)def);
+    sample = CreatePlayableSample((unsigned int)def);
     if (sample == 0) {
         return 0;
     }
@@ -374,12 +359,12 @@ struct PlayableSample *PlayInstanceOfSample(void *def, unsigned int looping, uns
     } else {
         FUN_00496660(sample);
     }
-    if (PlaySample((struct Sample *)sample, looping, oneshot) == 0) {
-        KillPlayableSample((struct Sample *)sample);
+    if (PlaySample(sample, looping, oneshot) == 0) {
+        KillPlayableSample(sample);
         return 0;
     }
     if (DAT_007988c8 != 0) {
-        PauseSingleSample((struct Sample *)sample);
+        PauseSingleSample(sample);
     }
     return sample;
 }
@@ -397,8 +382,7 @@ void Kill_FXList(const unsigned char *list, int count) {
     if (count <= 0) {
         return;
     }
-    /* TODO: fold — callers pass raw SFX byte arrays viewed here as struct FXList */
-    item = (struct FXItem *)((unsigned char *)list + 8);
+    item = (struct FXItem *)((unsigned char *)list + 8); /* SFX arrays are raw byte buffers (varied sizes per TU); not a struct view to fold */
     do {
         if (item->sample != 0) {
             DeleteSampleDef(item->sample);
