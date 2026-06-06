@@ -7,6 +7,7 @@
 #include "timer.h"
 #include "draw.h"
 #include "challenge.h"
+#include "icon.h"
 
 struct AnimHandle;
 struct RideElem;
@@ -53,7 +54,6 @@ extern unsigned int SaveGameRead(void *data, unsigned int size);
 extern struct RideElem *ElemID(const char *name);
 extern void PlayInstanceOfSample(void *sample, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 extern void KillSprite(unsigned int sprite);
-extern void RemoveIconGroup(unsigned int group);
 
 extern unsigned int DAT_00665e8c;
 extern unsigned int DAT_004b7d74;

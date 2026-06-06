@@ -2,6 +2,7 @@
 
 #include "clipping.h"
 #include "freeplay.h"
+#include "icon.h"
 
 struct FreePlaySpriteSlot {
     struct Sprite *field_0;
@@ -16,9 +17,7 @@ struct ElemRecord {
 
 extern struct ElemRecord *ElemID(const char *name);
 extern int KillSprite(struct Sprite *sprite);
-extern void FUN_0046fb40(unsigned int group);
 extern void ReferenceSprite(int sprite);
-extern void RemoveIconGroup(unsigned int group);
 
 extern unsigned int DAT_007cb3a0;
 extern unsigned int DAT_007cb394;

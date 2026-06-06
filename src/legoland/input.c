@@ -2,6 +2,8 @@
 #include <windows.h>
 #include <dinput.h>
 
+#include "icon.h"
+
 struct DInputDeviceVtbl {
     void *pad_0[2];
     void(__stdcall *Release)(void *self);
@@ -26,8 +28,6 @@ extern unsigned int DAT_004baff8;
 extern unsigned int DAT_00668e34;
 extern unsigned char DAT_007fdd80;
 
-extern void FUN_0046db40(void);
-extern void FUN_0046dac0(void);
 extern void SaveGameWrite(void *data, unsigned int size);
 extern void SaveGameRead(void *data, unsigned int size);
 

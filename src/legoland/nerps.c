@@ -10,6 +10,7 @@
 #include "objclass.h"
 #include "objectives.h"
 #include "worker.h"
+#include "interface.h"
 
 struct NerpsArg {
     unsigned char pad_0[0x4];
@@ -116,7 +117,6 @@ extern int DAT_00667ce0;
 
 extern void FUN_00462e50(unsigned int param_1, unsigned int param_2);
 extern void FUN_00462e70(unsigned int param_1, unsigned int param_2);
-extern void FUN_00476070(unsigned int param_1, unsigned int param_2);
 
 extern struct EventList *DAT_0066879c;
 extern unsigned int DAT_00668614;
@@ -144,7 +144,6 @@ extern unsigned int DAT_007fd624;
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *block);
 extern unsigned int DAT_00832ba8;
-extern void FUN_004748a0(unsigned int param_1);
 extern void FUN_004629e0(void);
 extern void FUN_0046ce20(void);
 extern unsigned int DAT_00810140;
@@ -676,7 +675,7 @@ unsigned int FUN_0046b200(struct TimedEvent *event) {
 // FUNCTION: LEGOLAND 0x0046b240
 void FUN_0046b240(unsigned int param_1) {
     DAT_00832ba4 = param_1;
-    FUN_004748a0(1);
+    FUN_004748a0((void *)1);
     if (param_1 != 0) {
         FUN_00458be0();
         if (DAT_00832ba8 != 0) {

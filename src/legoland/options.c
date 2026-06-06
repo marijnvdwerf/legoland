@@ -4,13 +4,12 @@
 #include "profile_io.h"
 #include "savegame_ui.h"
 #include "options.h"
+#include "icon.h"
+#include "interface.h"
 
 extern void PlayInstanceOfSample(void *sample, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 extern void KillSprite(unsigned int sprite);
-extern void RemoveIconGroup(unsigned int group);
 extern void FUN_00498920(void);
-extern void FUN_00474880(void);
-extern void FUN_0046fb40(unsigned int param_1);
 extern unsigned int FUN_0046d280(unsigned int param_1);
 
 extern void *PTR_004b92c0;

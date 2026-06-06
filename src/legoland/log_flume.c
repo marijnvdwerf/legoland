@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "ride_queue.h"
+#include "log_flume.h"
 
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e5c5(const char *msg);
@@ -85,7 +86,6 @@ extern unsigned int DAT_004c2b64;
 extern unsigned int DAT_0082c688;
 extern int __strcmpi(const char *s1, const char *s2);
 extern void GetTileDimensions(int *param1, int *param2);
-void FUN_004119c0(void);
 extern void FUN_0049e4d0(void *block);
 extern void SetEditCursorFootPrint(unsigned int param);
 extern void LLIDB_UnLoadData(unsigned int handle);

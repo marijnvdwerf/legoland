@@ -7,6 +7,8 @@
 #include "popupinfo.h"
 #include "objectives.h"
 #include "challenge.h"
+#include "icon.h"
+#include "interface.h"
 
 struct HelpAdvisor {
     unsigned char pad_0[0xc];
@@ -30,17 +32,14 @@ extern unsigned int DAT_006687ac;
 extern unsigned int DAT_004b9f78[4];
 
 extern void FUN_0049e4d0(void *block);
-extern void FUN_004748a0(unsigned int arg);
-extern void FUN_00476000(void);
 extern void FUN_004988c0(void);
-extern void RenderHelpIcons(void);
 extern unsigned int FUN_00498cf0(void);
 
 // FUNCTION: LEGOLAND 0x0046ce20
 void FUN_0046ce20(void) {
     if ((DAT_007fe040 & 0x3) != 0) {
         FUN_0049e4d0((void *)DAT_007fe048);
-        FUN_004748a0(1);
+        FUN_004748a0((void *)1);
     }
     DAT_007fe040 &= ~0x3;
     FUN_00476000();

@@ -7,6 +7,8 @@
 #include "nerps.h"
 #include "popupinfo.h"
 #include "objclass.h"
+#include "icon.h"
+#include "interface.h"
 
 struct IconNode {
     struct IconNode *next;
@@ -132,26 +134,11 @@ struct LegoConfig {
 
 extern unsigned int LoadSprite(const char *name, unsigned int flags);
 extern void KillSprite(unsigned int sprite);
-extern void FUN_0046d680(unsigned int a, unsigned int b);
-extern void UnLoad_Interface_ControlIcons(void);
-extern void FUN_0046fb40(unsigned int a);
 extern unsigned int SaveGameWrite(unsigned int *data, unsigned int size);
 extern unsigned int SaveGameRead(void *data, unsigned int size);
-extern unsigned int RemoveIconGroup(unsigned int group);
-extern unsigned int FUN_0046d590(unsigned int a);
 extern void PlayInstanceOfSample(void *sample, int a, int b, int c);
 extern void FUN_00498920(void);
 extern void FUN_0049e4d0(void *block);
-extern unsigned int ObjectLinkedList(unsigned int *entry);
-extern unsigned int TestMenu(unsigned int *entry);
-
-unsigned char FUN_00474820(unsigned int dummy, unsigned char flags);
-unsigned char FUN_00474830(unsigned int a, unsigned int flags, unsigned int c, unsigned int d);
-unsigned char FUN_00474f80(unsigned int a, unsigned int flags);
-unsigned char FUN_00475120(unsigned int a, unsigned int flags, unsigned int c, unsigned int d);
-void FUN_00475fe0(int index, unsigned int value);
-void FUN_00476030(int index, unsigned int value);
-void FUN_00476140(int index, int value);
 
 // FUNCTION: LEGOLAND 0x004741f0
 void Load_Interface_ControlIcons(void) {
@@ -293,16 +280,16 @@ void UnLoad_Interface_ThemeIcons(void) {
 void FUN_00474750(void) {
     if (DAT_004bb094 == 0) {
         DAT_004bb094 = 1;
-        FUN_0046d680(DAT_00668eb0, DAT_007fdd40);
+        FUN_0046d680((struct IconNode *)DAT_00668eb0, (struct Sprite *)DAT_007fdd40);
     } else if (DAT_004bb098 == 0) {
         DAT_004bb098 = 1;
-        FUN_0046d680(DAT_00668eb0, DAT_007fdd48);
+        FUN_0046d680((struct IconNode *)DAT_00668eb0, (struct Sprite *)DAT_007fdd48);
     } else if (DAT_004bb09c == 0) {
         DAT_004bb09c = 1;
-        FUN_0046d680(DAT_00668eb0, DAT_007fdd44);
+        FUN_0046d680((struct IconNode *)DAT_00668eb0, (struct Sprite *)DAT_007fdd44);
     } else if (DAT_004bb0a0 == 0) {
         DAT_004bb0a0 = 1;
-        FUN_0046d680(DAT_00668eb0, DAT_007fdd4c);
+        FUN_0046d680((struct IconNode *)DAT_00668eb0, (struct Sprite *)DAT_007fdd4c);
     }
 }
 
@@ -393,7 +380,7 @@ void FUN_00474990(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004749d0
-void InitGameInterface(void) { STUB(); }
+int InitGameInterface(int a) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00474ed0
 void FUN_00474ed0(void) {
@@ -782,7 +769,7 @@ void FUN_00476c90(void) { STUB(); }
 void FUN_00476d20(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004771f0
-void FUN_004771f0(void) { STUB(); }
+void FUN_004771f0(const char *filename, unsigned int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00477400
 void FUN_00477400(void) { STUB(); }
@@ -794,10 +781,10 @@ void FUN_00477410(void) { STUB(); }
 void FUN_00477440(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004775b0
-void FUN_004775b0(void) { STUB(); }
+struct CastleObj *FUN_004775b0(unsigned int size, unsigned int a, unsigned int b, unsigned int c) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004775d0
-void FUN_004775d0(void) { STUB(); }
+void FUN_004775d0(unsigned int param) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004775f0
 void FUN_004775f0(void) { STUB(); }

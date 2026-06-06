@@ -2,6 +2,7 @@
 
 #include "clipping.h"
 #include "timer.h"
+#include "icon.h"
 
 struct Sprite;
 
@@ -126,8 +127,6 @@ extern void FUN_0049e4d0(void *ptr);
 extern void *_malloc(unsigned int size);
 extern void *LoadSprite(const char *name, unsigned int flags);
 
-int FUN_0046df60(void);
-
 // FUNCTION: LEGOLAND 0x0046d3a0
 void FUN_0046d3a0(void) { DAT_006687a4 = 4; }
 
@@ -184,10 +183,10 @@ void FUN_0046d4a0(void) { STUB(); }
 void FUN_0046d4e0(struct IconNode *node) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d520
-void RemoveIconGroup(struct IconGroupRef *group) { STUB(); }
+void RemoveIconGroup(unsigned int group) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d590
-void FUN_0046d590(unsigned short val) { STUB(); }
+void FUN_0046d590(unsigned int val) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d630
 struct IconNode *FindIcon(unsigned short id) {
@@ -247,7 +246,7 @@ struct IconNode *AddFullScreenIcon(void *icon) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d7b0
-void LoadSpriteIcon(void) { STUB(); }
+struct SpriteIcon *LoadSpriteIcon(const char *filename, unsigned int param_2, unsigned int param_3, unsigned int param_4, unsigned int param_5) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d850
 void FUN_0046d850(void) { STUB(); }
@@ -462,23 +461,25 @@ void FUN_0046f920(void) {
 void FUN_0046f9a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046fb40
-void FUN_0046fb40(struct IconGroupRef *group) {
+void FUN_0046fb40(unsigned int group) {
+    /* TODO: fold group id into IconGroupRef; Ghidra models the id base as a struct pointer */
+    struct IconGroupRef *g = (struct IconGroupRef *)group;
     struct IconNode *icon1;
     struct IconNode *icon2;
     struct IconNode *icon3;
     struct IconNode *icon4;
 
-    icon1 = FindIcon(&group->field_5);
+    icon1 = FindIcon(&g->field_5);
     if (icon1) {
-        icon2 = FindIcon(&group->field_3);
+        icon2 = FindIcon(&g->field_3);
         if (icon2) {
             FUN_0046d4e0(icon2);
         }
-        icon3 = FindIcon(&group->field_4);
+        icon3 = FindIcon(&g->field_4);
         if (icon3) {
             FUN_0046d4e0(icon3);
         }
-        icon4 = FindIcon(&group->field_6);
+        icon4 = FindIcon(&g->field_6);
         if (icon4) {
             FUN_0046d4e0(icon4);
         }

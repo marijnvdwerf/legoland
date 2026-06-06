@@ -3,6 +3,7 @@
 #include "profile.h"
 #include "profile_io.h"
 #include "savegame_ui.h"
+#include "icon.h"
 
 struct Sprite;
 
@@ -43,7 +44,6 @@ extern int FUN_0049efee(void *stream);
 extern void FUN_0049e4d0(void *ptr);
 extern void PlayInstanceOfSample(void *sample, int a, int b, void *instance);
 extern void KillSprite(struct Sprite *sprite);
-extern void FUN_0046d680(unsigned int a, struct Sprite *b);
 
 struct SaveNode {
     struct SaveNode *next;
@@ -178,8 +178,8 @@ void FUN_0048e3d0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048e420
 void FUN_0048e420(void) {
-    FUN_0046d680(DAT_007986d8, DAT_00798678);
-    FUN_0046d680(DAT_007986dc, DAT_0079867c);
+    FUN_0046d680((struct IconNode *)DAT_007986d8, DAT_00798678);
+    FUN_0046d680((struct IconNode *)DAT_007986dc, DAT_0079867c);
 }
 
 // FUNCTION: LEGOLAND 0x0048e450

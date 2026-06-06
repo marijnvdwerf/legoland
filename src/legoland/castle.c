@@ -7,6 +7,8 @@
 #include "timer.h"
 #include "obj_instance.h"
 #include "draw.h"
+#include "castle.h"
+#include "interface.h"
 #include <math.h>
 
 extern unsigned int DAT_004d8268;
@@ -19,44 +21,12 @@ extern unsigned int DAT_0082adec;
 extern unsigned int DAT_004d8270;
 extern const unsigned char DAT_004d8250[];
 
-struct Indexed;
 struct LookupResult;
 struct CastleObj;
 struct Anim;
 
-unsigned int FUN_0041ee40(unsigned int a, unsigned int b);
-unsigned int FUN_004273e0(void *obj);
-unsigned int FUN_0042a640(void *ptr, unsigned int a, unsigned int b);
-unsigned int FUN_0041d1d0(struct Indexed *obj, unsigned int param2, unsigned int param3);
-float FUN_0041dca0(float param);
-void FUN_0041dd00(float param, float result);
-float FUN_0041dd70(float param);
-void FUN_00420410(void *param, unsigned int count);
-void FUN_0041ddd0(void);
-void FUN_0041de10(void);
-struct ObjAtC8;
-void FUN_0041e950(struct ObjAtC8 *obj);
-struct ListLink;
-void FUN_004266b0(struct ListLink *param);
-void FUN_0041e970(void);
-void FUN_0041e990(void);
-unsigned int FUN_0041eaf0(unsigned int a, unsigned int b);
-void FUN_0041e500(void *obj);
-void FUN_0041e6a0(unsigned int *param, unsigned int value);
-void FUN_0041e420(struct CastleObj *self, unsigned int flag);
-extern struct CastleObj *FUN_004775b0(unsigned int size, unsigned int a, unsigned int b, unsigned int c);
-void FUN_00421540(void *dest, unsigned int value);
-unsigned int FUN_00426750(void *ptr, unsigned int a, unsigned int b, unsigned int c);
-struct LookupResult *FUN_0041d3b0(const unsigned char *key, unsigned int param2);
-unsigned int FUN_0041d630(unsigned int param0, const unsigned char *key, unsigned int param2, const unsigned char *param3);
-unsigned int FUN_0041d5b0(unsigned int param0, const unsigned char *key, unsigned int param2, const unsigned char *param3);
-unsigned int FUN_004206b0(const char *s);
-unsigned int FUN_00420710(const char *s);
-unsigned int FUN_00422590(const char *s);
-unsigned int FUN_00422600(unsigned int param);
 extern void AddBasicObject(unsigned int param1, unsigned int param2);
 extern void StandardRemoveObject(unsigned int param1, unsigned int param2, unsigned int param3);
-extern void FUN_004775d0(unsigned int param);
 extern unsigned int DAT_004d8a40[];
 extern unsigned int DAT_004d8abc[];
 extern unsigned int DAT_004d8b34[];
@@ -81,16 +51,10 @@ struct FlagWord {
     unsigned int field_0;
 };
 
-void FUN_0041e630(struct FlagWord *obj);
-
 extern unsigned int DAT_00829bf8;
 extern void *DAT_00829bec;
 extern void *DAT_00829bf0;
 extern void *DAT_00829bf4;
-
-void FUN_00424850(void);
-unsigned int FUN_00424890(unsigned int param_1, unsigned int param_2);
-void FUN_00424990(void);
 
 extern unsigned int DAT_0060f924[];
 extern unsigned int DAT_0060f938;
@@ -129,9 +93,6 @@ extern struct ListLink DAT_00829a3c;
 extern struct ListLink *DAT_00829a50;
 extern struct ListLink *DAT_00829a54;
 extern void SaveGameWrite(unsigned int *data, unsigned int value);
-unsigned int FUN_00426650(void);
-struct ListHost;
-void FUN_00424d80(struct ListHost *list);
 // FUNCTION: LEGOLAND 0x0041cc50
 unsigned int FUN_0041cc50(unsigned int dir) {
     if (dir == 1) return 4;
@@ -1412,8 +1373,6 @@ extern unsigned int DAT_004dcbf8;
 extern unsigned char DAT_004dcc00[];
 extern unsigned int DAT_004dd5d8;
 extern void *DAT_0082ac60[];
-void **FUN_004214f0(unsigned int param_1);
-void FUN_00421510(unsigned int param_1, unsigned int param_2);
 
 // FUNCTION: LEGOLAND 0x00421470
 void FUN_00421470(void) {
@@ -1469,8 +1428,6 @@ struct Struct1560B {
     unsigned int field_8;
 };
 
-void FUN_00425c40(void);
-
 // FUNCTION: LEGOLAND 0x00421560
 unsigned int FUN_00421560(struct Struct1560B *param_2, struct Struct1560A *param_1) {
     FUN_00425c40();
@@ -1481,8 +1438,6 @@ struct Struct1590 {
     unsigned char pad_0[0x18];
     unsigned int field_18;
 };
-
-void FUN_004273d0(unsigned int param_1, void *param_2);
 
 // FUNCTION: LEGOLAND 0x00421590
 void FUN_00421590(struct Struct1590 *arg1, unsigned int arg2) {
@@ -2559,8 +2514,6 @@ void FUN_00426190(struct Mat4x4 *param_2, struct Mat4x4 *param_1) {
 // FUNCTION: LEGOLAND 0x004261c0
 void FUN_004261c0(void) { STUB(); }
 
-unsigned int FUN_00426250(unsigned int param_1, unsigned int param_2, unsigned int *param_3, unsigned int param_4, unsigned int param_5);
-
 // FUNCTION: LEGOLAND 0x00426230
 unsigned int FUN_00426230(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
     return FUN_00426250(param_1, param_2, &DAT_008299fc, 0x10, param_3);
@@ -2755,10 +2708,6 @@ struct Struct426d80X {
     unsigned int field_c;
     unsigned int field_10;
 };
-
-struct Struct427130Main;
-unsigned int FUN_00427150(struct Struct426d80Y *arg);
-unsigned int FUN_00427130(struct Struct427130Main *main);
 
 // FUNCTION: LEGOLAND 0x00426d80
 void FUN_00426d80(struct Struct426d80Y *param1, struct Struct426d80X *param2) {
@@ -3330,10 +3279,6 @@ unsigned int FUN_00428840(unsigned int param_1) {
 // FUNCTION: LEGOLAND 0x00428860
 void FUN_00428860(void) { STUB(); }
 
-void FUN_00428f00(void);
-void FUN_00429270(void);
-void FUN_004294b0(void);
-
 // FUNCTION: LEGOLAND 0x00428b70
 void FUN_00428b70(void) {
     FUN_00428f00();
@@ -3400,8 +3345,6 @@ void FUN_00429560(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00429690
 void FUN_00429690(void) { STUB(); }
-
-unsigned int FUN_00429910(unsigned int *s, unsigned int v, unsigned int c);
 
 struct Struct4296f0Node {
     unsigned char pad_0[0xc];

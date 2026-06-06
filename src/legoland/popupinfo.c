@@ -1,6 +1,7 @@
 #include "legoland.h"
 #include "worker_mouse.h"
 #include "popupinfo.h"
+#include "icon.h"
 
 struct Sprite;
 
@@ -74,8 +75,6 @@ extern unsigned int DAT_00668d68;
 extern unsigned int DAT_004ba9ac[];
 
 extern void KillSprite(struct Sprite *sprite);
-extern int RemoveIconGroup(unsigned int group);
-extern void FUN_0046d680(void *a, struct Sprite *b);
 extern unsigned int FUN_00498cf0(void);
 
 // FUNCTION: LEGOLAND 0x00470bb0
@@ -282,13 +281,13 @@ void DisableInfoPopUPIcons(void) {
 
 // FUNCTION: LEGOLAND 0x00471610
 void FUN_00471610(void) {
-    FUN_0046d680(DAT_007fdfdc, DAT_00668918);
-    FUN_0046d680(DAT_007fdfe8, DAT_00668930);
-    FUN_0046d680(DAT_007fdfc4, DAT_00668928);
-    FUN_0046d680(DAT_007fdfc0, DAT_00668920);
-    FUN_0046d680(DAT_007fdfe0, DAT_00668948);
-    FUN_0046d680(DAT_007fdea4, DAT_00668950);
-    FUN_0046d680(DAT_007fdfcc, DAT_00668918);
+    FUN_0046d680((struct IconNode *)DAT_007fdfdc, DAT_00668918);
+    FUN_0046d680((struct IconNode *)DAT_007fdfe8, DAT_00668930);
+    FUN_0046d680((struct IconNode *)DAT_007fdfc4, DAT_00668928);
+    FUN_0046d680((struct IconNode *)DAT_007fdfc0, DAT_00668920);
+    FUN_0046d680((struct IconNode *)DAT_007fdfe0, DAT_00668948);
+    FUN_0046d680((struct IconNode *)DAT_007fdea4, DAT_00668950);
+    FUN_0046d680((struct IconNode *)DAT_007fdfcc, DAT_00668918);
 }
 
 // FUNCTION: LEGOLAND 0x004716a0
@@ -330,8 +329,8 @@ void FUN_00471d40(void) {
 
 // FUNCTION: LEGOLAND 0x00471d60
 void FUN_00471d60(void) {
-    FUN_0046d680(DAT_007fdea8, DAT_00668938);
-    FUN_0046d680(DAT_007fe000, DAT_0066893c);
+    FUN_0046d680((struct IconNode *)DAT_007fdea8, DAT_00668938);
+    FUN_0046d680((struct IconNode *)DAT_007fe000, DAT_0066893c);
 }
 
 // FUNCTION: LEGOLAND 0x00471d90

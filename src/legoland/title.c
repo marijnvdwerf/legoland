@@ -6,6 +6,8 @@
 #include "title.h"
 #include "draw.h"
 #include "nerps.h"
+#include "icon.h"
+#include "interface.h"
 
 struct SpriteIcon {
     unsigned char pad_0[0x2c];
@@ -23,15 +25,10 @@ struct PopUp {
 
 extern void PlayInstanceOfSample(void *sample, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 extern void KillSprite(unsigned int sprite);
-extern void RemoveIconGroup(unsigned int group);
 extern unsigned int LoadSprite(const char *filename, unsigned int param_2);
-extern struct SpriteIcon *LoadSpriteIcon(const char *filename, unsigned int param_2, unsigned int param_3, unsigned int param_4, unsigned int param_5);
 extern void FUN_00498920(void);
-extern void FUN_004771f0(const char *filename, unsigned int param_2, unsigned int param_3);
 extern void FUN_00498630(const char *param_1);
 extern void FUN_00498b00(void);
-extern void FUN_0046d680(unsigned int param_1, unsigned int param_2);
-extern void FUN_00474880(void);
 extern void FUN_0046ce20(void);
 extern void FUN_0049e4d0(void *ptr);
 extern int FUN_0049e573(char *buffer, const char *format, ...);
@@ -389,7 +386,7 @@ void FUN_00490b20(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00490b90
 unsigned char FUN_00490b90(unsigned int param_1, unsigned int param_2) {
-    FUN_0046d680(DAT_007cb2e0, DAT_0081c084);
+    FUN_0046d680((struct IconNode *)DAT_007cb2e0, (struct Sprite *)DAT_0081c084);
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         DAT_004bf670 -= 14;

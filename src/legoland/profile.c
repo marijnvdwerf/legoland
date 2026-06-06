@@ -4,6 +4,7 @@
 #include "profile.h"
 #include "profile_io.h"
 #include "title.h"
+#include "icon.h"
 
 struct Sprite;
 
@@ -58,7 +59,6 @@ struct Profile {
 };
 
 extern void KillSprite(struct Sprite *sprite);
-extern void RemoveIconGroup(unsigned int group);
 extern void PlayInstanceOfSample(void *sample, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 extern void FUN_00498920(void);
 

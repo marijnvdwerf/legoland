@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "mapscreen.h"
+#include "interface.h"
 
 struct Sprite {
     unsigned char pad_0[0x18];
@@ -24,7 +25,6 @@ extern unsigned int DAT_00667c34;
 extern struct Sprite *CreateFunctionBasedSprite(unsigned int source, unsigned short a, unsigned short b);
 extern unsigned int LoadSprite(const char *filename, int flags);
 extern void KillSprite(unsigned int sprite);
-extern void FUN_00475080(void);
 
 // FUNCTION: LEGOLAND 0x004562c0
 void FUN_004562c0(void) {

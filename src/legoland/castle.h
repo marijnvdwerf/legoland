@@ -1,0 +1,45 @@
+#pragma once
+
+struct Indexed;
+struct FlagWord;
+struct ObjAtC8;
+struct ListLink;
+struct ListHost;
+struct Struct426d80Y;
+struct Struct427130Main;
+
+unsigned int FUN_0041d1d0(struct Indexed *obj, unsigned int param2, unsigned int param3);
+void FUN_0041e500(void *obj);
+void FUN_0041e630(struct FlagWord *obj);
+void FUN_0041e6a0(unsigned int *param, unsigned int value);
+void FUN_0041e950(struct ObjAtC8 *obj);
+void FUN_0041e970(void);
+void FUN_0041e990(void);
+unsigned int FUN_0041eaf0(unsigned int a, unsigned int b);
+unsigned int FUN_0041ee40(unsigned int a, unsigned int b);
+void FUN_00420410(void *param, unsigned int count);
+unsigned int FUN_004206b0(const char *s);
+unsigned int FUN_00420710(const char *s);
+void **FUN_004214f0(unsigned int param_1);
+void FUN_00421510(unsigned int param_1, unsigned int param_2);
+void FUN_00421540(void *dest, unsigned int value);
+unsigned int FUN_00422590(const char *s);
+unsigned int FUN_00422600(unsigned int param);
+void FUN_00424850(void);
+unsigned int FUN_00424890(unsigned int param_1, unsigned int param_2);
+void FUN_00424990(void);
+void FUN_00424d80(struct ListHost *list);
+void FUN_00425c40(void);
+unsigned int FUN_00426250(unsigned int param_1, unsigned int param_2, unsigned int *param_3, unsigned int param_4, unsigned int param_5);
+unsigned int FUN_00426650(void);
+void FUN_004266b0(struct ListLink *param_1);
+unsigned int FUN_00426750(void *ptr, unsigned int a, unsigned int b, unsigned int c);
+unsigned int FUN_00427130(struct Struct427130Main *main);
+unsigned int FUN_00427150(struct Struct426d80Y *arg);
+void FUN_004273d0(unsigned int param_1, void *param_2);
+unsigned int FUN_004273e0(void *obj);
+void FUN_00428f00(void);
+void FUN_00429270(void);
+void FUN_004294b0(void);
+unsigned int FUN_00429910(unsigned int *s, unsigned int v, unsigned int c);
+unsigned int FUN_0042a640(void *ptr, unsigned int a, unsigned int b);

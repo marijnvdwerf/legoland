@@ -7,6 +7,7 @@
 #include "bloke.h"
 #include "objectives.h"
 #include "challenge.h"
+#include "interface.h"
 
 struct GameMainNode {
     struct GameMainNode *next;
@@ -60,8 +61,6 @@ extern int FUN_004a04b9(const char *str);
 extern char *strcpy(char *dst, const char *src);
 
 extern void FUN_00462e90(void);
-extern void FUN_00476000(void);
-extern void FUN_00476050(void);
 extern void FUN_00463560(void);
 
 extern char DAT_004d8bb0[0x100];

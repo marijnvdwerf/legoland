@@ -5,6 +5,7 @@
 #include "timer.h"
 #include "sound_sfx.h"
 #include "objectives.h"
+#include "interface.h"
 
 struct ObjectiveEvent {
     struct ObjectiveEvent *next;
@@ -70,7 +71,6 @@ extern struct MapElement **DAT_00801400;
 extern void *FUN_004a020e(unsigned int count, unsigned int size);
 extern char *_strncpy(char *dest, const char *src, unsigned int count);
 extern void FUN_0049e4d0(void *block);
-extern void FUN_00476140(int index, int value);
 extern void FUN_00460560(int index);
 extern int LLIDB_FindElement(const char *name, unsigned int *out, int zero);
 
