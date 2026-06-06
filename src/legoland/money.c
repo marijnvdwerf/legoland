@@ -1,14 +1,5 @@
 #include "legoland.h"
-
-struct BuyItemArg {
-    unsigned char pad_0[0xc];
-    struct ShopItem *field_c;
-};
-
-struct ShopItem {
-    unsigned char pad_0[0x28];
-    short field_28;
-};
+#include "money.h"
 
 extern unsigned int DAT_00667120;
 extern unsigned char MONEY_SFX[12];

@@ -1,7 +1,6 @@
 #include "legoland.h"
+#include "money.h"
 
-extern void LoadMoneySFX(void);
-extern void KillMoneySFX(void);
 extern void IP_RenderBlokeIn3DNow(unsigned int fn);
 extern void GetScreenCoordsForObject(unsigned short *value, void *obj);
 extern void LLIDB_UnLoadData(void *param_1);

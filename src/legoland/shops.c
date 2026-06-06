@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "money.h"
 
 struct Building {
     unsigned char pad_0[0x1c];
@@ -26,8 +27,6 @@ struct RideObject {
 
 extern unsigned int LoadSprite(const char *filename, unsigned int param_2);
 extern void KillSprite(unsigned int sprite);
-extern void LoadMoneySFX(void);
-extern void KillMoneySFX(void);
 extern void DefaultCursor(void **cursor);
 extern void SetEditCursorFootPrint(void *param_1);
 extern void AddBasicObject(struct MapObject *obj, void *param_2);

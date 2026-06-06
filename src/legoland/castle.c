@@ -1,5 +1,6 @@
 #include <windows.h>
 #include "legoland.h"
+#include "path_control.h"
 #include <math.h>
 
 extern unsigned int DAT_004d8268;
@@ -3219,13 +3220,6 @@ struct Struct427f70Arg {
     short field_6;
 };
 
-struct Struct427f70Tmp {
-    int field_0;
-    int field_4;
-};
-
-extern void RemoveRollerCoasterPath(const struct Struct427f70Tmp *tmp);
-
 // FUNCTION: LEGOLAND 0x00427f70
 void FUN_00427f70(const struct Struct427f70Arg *arg) {
     struct Struct427f70Tmp tmp;
@@ -3253,8 +3247,6 @@ struct Struct427ff0Point {
     short x;
     short y;
 };
-
-extern void AddRollerCoasterPath(int *coords);
 
 // FUNCTION: LEGOLAND 0x00427ff0
 void FUN_00427ff0(struct Struct427ff0Point *point) {
