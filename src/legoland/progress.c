@@ -4,6 +4,7 @@
 #include "options.h"
 #include "draw.h"
 #include "interface.h"
+#include "sound_music.h"
 
 struct LegoConfig {
     unsigned char pad_0[0x28];
@@ -23,7 +24,6 @@ extern unsigned int DAT_0080ff84;
 extern struct LegoConfig *lpConfig;
 
 extern void FUN_00498920(void);
-extern void PlayInstanceOfSample(void *sample, int a, int b, int c);
 
 // FUNCTION: LEGOLAND 0x0048b7e0
 void InitProgressScreen(void) { STUB(); }

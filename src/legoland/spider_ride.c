@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "binv.h"
+#include "sound_music.h"
 #include "spider_ride.h"
 
 struct Sprite;
@@ -62,7 +63,7 @@ struct RideObject {
 };
 
 extern void *DAT_004cbf58;
-extern unsigned int DAT_004b4d90;
+extern void *DAT_004b4d90;
 extern struct Sprite *DAT_0082c668;
 extern unsigned int DAT_004cbf20;
 extern void *DAT_004cbf10;
@@ -77,10 +78,7 @@ extern unsigned short DAT_004cbf4c;
 extern unsigned char SpiderRide_SFX[8];
 
 extern void *_malloc(unsigned int size);
-extern void PlayInstanceOfSample(unsigned int sample, int param_2, int param_3, struct SampleParams *params);
-extern void UnSourceAndFadeAllSamplesFromSource(struct FadeParams *params, int fade);
 extern void KillSprite(struct Sprite *sprite);
-extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern int __strcmpi(const char *a, const char *b);
 
 // FUNCTION: LEGOLAND 0x004158f0

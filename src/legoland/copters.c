@@ -5,6 +5,7 @@
 #include "copters.h"
 #include "man3d.h"
 #include "sound_sfx.h"
+#include "sound_music.h"
 
 typedef void (*CopterVtblFn)(void);
 
@@ -63,7 +64,6 @@ extern struct Cursor EditCursor;
 extern void *_malloc(unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);
 extern void KillSprite(struct Sprite *sprite);
-extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern void SetEditCursorFootPrint(void *footprint);
 
 // FUNCTION: LEGOLAND 0x00403c40

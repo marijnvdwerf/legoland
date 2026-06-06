@@ -6,8 +6,8 @@
 #include "options.h"
 #include "icon.h"
 #include "interface.h"
+#include "sound_music.h"
 
-extern void PlayInstanceOfSample(void *sample, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 extern void KillSprite(unsigned int sprite);
 extern void FUN_00498920(void);
 extern unsigned int FUN_0046d280(unsigned int param_1);

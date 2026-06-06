@@ -8,6 +8,7 @@
 #include "draw.h"
 #include "challenge.h"
 #include "icon.h"
+#include "sound_music.h"
 
 struct AnimHandle;
 struct RideElem;
@@ -52,7 +53,6 @@ extern void KillImage(unsigned int image);
 extern unsigned int SaveGameWrite(const void *data, unsigned int size);
 extern unsigned int SaveGameRead(void *data, unsigned int size);
 extern struct RideElem *ElemID(const char *name);
-extern void PlayInstanceOfSample(void *sample, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 extern void KillSprite(unsigned int sprite);
 
 extern unsigned int DAT_00665e8c;

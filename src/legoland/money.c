@@ -2,6 +2,7 @@
 #include "money.h"
 
 #include "bricks.h"
+#include "sound_music.h"
 
 struct ShopItem {
     unsigned char pad_0[0x28];
@@ -16,7 +17,6 @@ struct BuyItemArg {
 extern unsigned int DAT_00667120;
 extern unsigned char MONEY_SFX[12];
 
-extern void Kill_FXList(unsigned char *list, unsigned int count);
 
 // FUNCTION: LEGOLAND 0x00453900
 void LoadMoneySFX(void) { STUB(); }

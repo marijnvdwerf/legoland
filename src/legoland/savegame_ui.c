@@ -4,6 +4,7 @@
 #include "profile_io.h"
 #include "savegame_ui.h"
 #include "icon.h"
+#include "sound_music.h"
 
 struct Sprite;
 
@@ -42,7 +43,6 @@ extern void *FUN_0049f330(const char *filename, const char *mode);
 extern unsigned int FUN_0049f044(void *ptr, unsigned int size, unsigned int count, void *stream);
 extern int FUN_0049efee(void *stream);
 extern void FUN_0049e4d0(void *ptr);
-extern void PlayInstanceOfSample(void *sample, int a, int b, void *instance);
 extern void KillSprite(struct Sprite *sprite);
 
 struct SaveNode {

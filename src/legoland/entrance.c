@@ -1,5 +1,6 @@
 #include "legoland.h"
 #include "money.h"
+#include "sound_music.h"
 
 struct EntranceParam {
     unsigned char pad_0[0xc];
@@ -14,7 +15,6 @@ extern unsigned int DAT_00616100;
 extern unsigned int DAT_00616104;
 extern unsigned int DAT_00616108;
 
-extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern void KillSprite(unsigned int sprite);
 
 // FUNCTION: LEGOLAND 0x0042d970

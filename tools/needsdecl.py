@@ -36,6 +36,10 @@ def referenced(name, text, exclude_def_line=None, lines=None, before=None):
         # skip the definition line itself
         if exclude_def_line is not None and ln == exclude_def_line:
             continue
+        # skip struct member access (->name / .name) — that's a field, not the free fn
+        head2 = text[max(0, m.start()-2):m.start()]
+        if head2.endswith("->") or text[max(0, m.start()-1):m.start()] == ".":
+            continue
         # context: a real use is followed by ( or , or ; or ) or is &name
         tail = text[m.end():m.end()+1]
         head = text[max(0, m.start()-1):m.start()]

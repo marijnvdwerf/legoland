@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "binv.h"
+#include "sound_music.h"
 
 struct JoustNode {
     unsigned char pad_0[4];
@@ -66,7 +67,6 @@ extern void *DAT_008119b8;
 extern struct Cursor EditCursor;
 
 extern void KillSprite(unsigned int sprite);
-extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern void SetEditCursorFootPrint(void *foot_print);
 extern int SaveGameWrite(void *data, unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);

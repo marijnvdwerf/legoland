@@ -1948,7 +1948,7 @@ void *DAT_004cbf58;
 // GLOBAL: LEGOLAND 0x004b4d88
 unsigned char SpiderRide_SFX[8];
 // GLOBAL: LEGOLAND 0x004b4d90
-unsigned int DAT_004b4d90;
+void *DAT_004b4d90;
 // GLOBAL: LEGOLAND 0x0082c668
 struct Sprite *DAT_0082c668;
 // GLOBAL: LEGOLAND 0x004cbf20
@@ -2007,7 +2007,7 @@ unsigned char DAT_007fddd6;
 // GLOBAL: LEGOLAND 0x004b7618
 const unsigned char SPACE_TOWER_SFX[15] = {0};
 // GLOBAL: LEGOLAND 0x004b7620
-unsigned int DAT_004b7620;
+void *DAT_004b7620;
 // GLOBAL: LEGOLAND 0x0062fd74
 void *DAT_0062fd74;
 // GLOBAL: LEGOLAND 0x0062fda8

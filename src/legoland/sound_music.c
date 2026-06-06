@@ -2,6 +2,7 @@
 #include "legoland.h"
 
 #include "sound_sfx.h"
+#include "sound_music.h"
 #include "timer.h"
 
 struct PlayableSample;
@@ -351,7 +352,7 @@ void KillAllSamplesFromSource(void) { STUB(); }
 void UnSourceAndFadeSample(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496c80
-void UnSourceAndFadeAllSamplesFromSource(void) { STUB(); }
+void UnSourceAndFadeAllSamplesFromSource(void *source, int fade) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496d10
 void FUN_00496d10(struct PlayableSample *sample) {
@@ -359,16 +360,16 @@ void FUN_00496d10(struct PlayableSample *sample) {
 }
 
 // FUNCTION: LEGOLAND 0x00496d20
-struct PlayableSample *PlayInstanceOfSample(unsigned int def, unsigned int looping, unsigned int oneshot, struct SampleConfig *config) {
+struct PlayableSample *PlayInstanceOfSample(void *def, unsigned int looping, unsigned int oneshot, void *config) {
     struct PlayableSample *sample;
 
     /* TODO: fold struct Sample and struct PlayableSample — same object, different field view */
-    sample = (struct PlayableSample *)CreatePlayableSample(def);
+    sample = (struct PlayableSample *)CreatePlayableSample((unsigned int)def);
     if (sample == 0) {
         return 0;
     }
     if (config != 0) {
-        memcpy(&sample->field_c, &config->field_0, 16);
+        memcpy(&sample->field_c, &((struct SampleConfig *)config)->field_0, 16);
         FUN_004966a0(sample);
     } else {
         FUN_00496660(sample);
@@ -387,15 +388,16 @@ struct PlayableSample *PlayInstanceOfSample(unsigned int def, unsigned int loopi
 void AddSFX_Callback(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496dd0
-void Load_FXList(void) { STUB(); }
+void Load_FXList(const unsigned char *list, unsigned int count) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496e30
-void Kill_FXList(struct FXList *list, int count) {
+void Kill_FXList(const unsigned char *list, int count) {
     struct FXItem *item;
 
     if (count <= 0) {
         return;
     }
+    /* TODO: fold — callers pass raw SFX byte arrays viewed here as struct FXList */
     item = (struct FXItem *)((unsigned char *)list + 8);
     do {
         if (item->sample != 0) {

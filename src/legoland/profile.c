@@ -5,6 +5,7 @@
 #include "profile_io.h"
 #include "title.h"
 #include "icon.h"
+#include "sound_music.h"
 
 struct Sprite;
 
@@ -59,7 +60,6 @@ struct Profile {
 };
 
 extern void KillSprite(struct Sprite *sprite);
-extern void PlayInstanceOfSample(void *sample, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 extern void FUN_00498920(void);
 
 // FUNCTION: LEGOLAND 0x0048c260

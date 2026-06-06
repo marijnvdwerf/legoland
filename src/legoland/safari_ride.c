@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "binv.h"
+#include "sound_music.h"
 
 extern void *DAT_004cbf0c;
 extern unsigned int DAT_004cbec4;
@@ -19,7 +20,6 @@ extern void *DAT_008119b8;
 extern struct Cursor EditCursor;
 
 extern void KillSprite(unsigned int sprite);
-extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern void SetEditCursorFootPrint(void *foot_print);
 extern int SaveGameWrite(void *data, unsigned int size);
 extern void *_malloc(unsigned int size);

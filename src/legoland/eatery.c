@@ -5,11 +5,10 @@
 #include "money.h"
 #include "obj_instance.h"
 #include "render3d.h"
+#include "sound_music.h"
 
 extern void LLIDB_UnLoadData(void *param_1);
 extern void SetEditCursorFootPrint(unsigned int param);
-extern void Load_FXList(unsigned char *list, unsigned int count);
-extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern void KillSprite(void *sprite);
 extern void *LoadSprite(const char *name, int param);
 extern void AddBasicObject(unsigned int self, void *param);

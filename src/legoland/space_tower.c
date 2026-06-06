@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "obj_instance.h"
+#include "sound_music.h"
 #include "space_tower.h"
 #include "render3d.h"
 
@@ -58,7 +59,7 @@ struct ListNode {
     struct ListNode *next;
 };
 
-extern unsigned int DAT_004b7620;
+extern void *DAT_004b7620;
 extern struct RideObject *DAT_0062fd74;
 extern struct ListNode *DAT_0062fda8;
 extern void *DAT_0062fd80;
@@ -70,9 +71,7 @@ extern unsigned int DAT_008119b8;
 extern struct Cursor EditCursor;
 extern const unsigned char SPACE_TOWER_SFX[15];
 
-extern void PlayInstanceOfSample(unsigned int sample, unsigned int a, unsigned int b, void *data);
 extern void KillSprite(void *sprite);
-extern void Kill_FXList(const unsigned char *list, int flag);
 extern int __strcmpi(const char *s1, const char *s2);
 extern void SetEditCursorFootPrint(unsigned int arg);
 

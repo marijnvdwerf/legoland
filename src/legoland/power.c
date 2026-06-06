@@ -1,7 +1,6 @@
 #include "legoland.h"
+#include "sound_music.h"
 
-extern void Load_FXList(const unsigned char *list, unsigned int count);
-extern void Kill_FXList(const unsigned char *list, unsigned int count);
 
 extern unsigned int DAT_00667114;
 extern unsigned int DAT_00667118;

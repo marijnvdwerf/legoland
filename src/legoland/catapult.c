@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "render3d.h"
+#include "sound_music.h"
 
 typedef void (*CatapultVtblFn)(void);
 
@@ -66,8 +67,6 @@ extern unsigned int EditMode;
 extern struct Cursor EditCursor;
 
 extern void HideLayer(void *layer, unsigned int flag);
-extern void Load_FXList(unsigned char *list, unsigned int count);
-extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern void SetEditCursorFootPrint(void *footprint);
 extern int __strcmpi(const char *s1, const char *s2);
 

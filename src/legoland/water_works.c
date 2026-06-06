@@ -5,6 +5,7 @@
 #include "man3d.h"
 #include "tilemap.h"
 #include "draw.h"
+#include "sound_music.h"
 
 struct WaterNode {
     struct WaterNode *next;
@@ -115,9 +116,6 @@ extern unsigned int DAT_004cbff8;
 extern unsigned int DAT_004cc000;
 extern struct Cursor EditCursor;
 
-extern void Load_FXList(unsigned char *list, unsigned int count);
-extern void Kill_FXList(unsigned char *list, unsigned int count);
-extern void UnSourceAndFadeAllSamplesFromSource(struct FxSource *source, int fade);
 extern void RemoveSoundObject(unsigned int a, unsigned int b, unsigned int c);
 extern void KillSprite(unsigned int sprite);
 extern void LLIDB_UnLoadData(unsigned int handle);
