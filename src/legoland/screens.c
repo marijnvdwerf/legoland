@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "build.h"
+
 struct ScreenConfig {
     unsigned short width;
     unsigned short height;
@@ -46,7 +48,6 @@ extern void FUN_00489ee0(void);
 extern void FUN_00483090(void);
 extern void FUN_004714e0(void);
 extern void ResetInfoStruct(void);
-extern void ClearBuildObjList(void);
 extern void FUN_0049cfc0(void);
 extern void FUN_00474ed0(void);
 extern void FUN_0048a750(void);

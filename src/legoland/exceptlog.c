@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "exceptlog.h"
+
 struct ExceptionEntry {
     unsigned int code;
     const char *message;

@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "build.h"
+
 extern int GetObjCost(int objClass);
 
 extern unsigned int DAT_006664f8[768];

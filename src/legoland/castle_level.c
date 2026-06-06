@@ -1,20 +1,6 @@
 #include "legoland.h"
 
-typedef void (*CastleVtblFn)(void);
-
-struct CastleLevelInterface {
-    unsigned char pad_0[0x8c];
-    CastleVtblFn field_8c;
-    CastleVtblFn field_90;
-    CastleVtblFn field_94;
-    CastleVtblFn field_98;
-    CastleVtblFn field_9c;
-    CastleVtblFn field_a0;
-    CastleVtblFn field_a4;
-    CastleVtblFn field_a8;
-    CastleVtblFn field_ac;
-    CastleVtblFn field_b0;
-};
+#include "castle_level.h"
 
 struct EditCursorData {
     unsigned char pad_0[0x3c];

@@ -2,6 +2,8 @@
 #include <windows.h>
 #include <mmsystem.h>
 
+#include "midi.h"
+
 extern unsigned int DAT_007fd630;
 extern void *DAT_007fd634;
 extern unsigned int DAT_007fd638;
