@@ -292,6 +292,8 @@ unsigned int DAT_0062fe18;
 // GLOBAL: LEGOLAND 0x0062fe1c
 unsigned short DAT_0062fe1c;
 
+// GLOBAL: LEGOLAND 0x00813a10
+unsigned int DAT_00813a10;
 // GLOBAL: LEGOLAND 0x00813a40
 unsigned int GamePad;
 
@@ -611,6 +613,8 @@ unsigned int DAT_0079873c;
 unsigned int DAT_006687bc;
 // GLOBAL: LEGOLAND 0x006687c0
 unsigned int DAT_006687c0;
+// GLOBAL: LEGOLAND 0x00667128
+char DAT_00667128[512];
 // GLOBAL: LEGOLAND 0x00667c10
 unsigned int DAT_00667c10;
 // GLOBAL: LEGOLAND 0x00667c28
@@ -2056,6 +2060,10 @@ unsigned int DAT_006160c0;
 struct CarouselNode *DAT_006160c4;
 // GLOBAL: LEGOLAND 0x004b64d8
 unsigned char CAROUSSEL_SFX[12];
+// GLOBAL: LEGOLAND 0x004b87a8
+unsigned char MONEY_SFX[12];
+// GLOBAL: LEGOLAND 0x00667120
+unsigned int DAT_00667120;
 
 // GLOBAL: LEGOLAND 0x004bdea0
 struct ClipRect SPRITE_ClipRect;
