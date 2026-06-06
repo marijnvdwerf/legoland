@@ -1,6 +1,8 @@
 #include <windows.h>
 #include "legoland.h"
 
+#include "timer.h"
+
 struct PlayableSample;
 struct PlayableSampleVtbl;
 struct AVISoundBuffer;
@@ -107,7 +109,6 @@ extern unsigned int DAT_007988c0;
 extern unsigned int DAT_007988c8;
 extern struct PlayableSample *DAT_007988cc;
 
-extern unsigned long GetTicks(void);
 extern int KillSoundSampleSystem(void);
 extern int FUN_00495b00(void);
 extern struct PlayableSample *CreatePlayableSample(unsigned int def);

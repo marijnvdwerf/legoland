@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "debug_alloc.h"
+
 struct LegoConfig;
 
 struct Worker {
@@ -62,7 +64,6 @@ extern float FLOAT_004ab480;
 extern struct LegoConfig *lpConfig;
 
 extern void *ElemID(const char *name);
-extern void DBPrintf(const char *format, ...);
 extern void *FUN_004a020e(unsigned int count, unsigned int size);
 extern void FUN_0049e4d0(void *block);
 extern void SortBlokeIn3D(struct Worker *worker);

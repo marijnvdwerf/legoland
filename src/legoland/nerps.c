@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "debug_alloc.h"
+
 struct NerpsArg {
     unsigned char pad_0[0x4];
     unsigned int field_4;
@@ -151,7 +153,6 @@ extern int FUN_00469ae0(unsigned int param_1);
 extern int FUN_00469b00(unsigned int param_1);
 extern void FUN_00459970(void);
 extern int GetBrickCount(void);
-extern int DBPrintf(const char *format, ...);
 
 extern struct EventList *DAT_0066879c;
 extern struct EventNode *FUN_00468910(unsigned int type, int sort_key);

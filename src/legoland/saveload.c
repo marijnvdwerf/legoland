@@ -1,7 +1,8 @@
 #include "legoland.h"
 
+#include "timer.h"
+
 extern int SaveGameRead(void *data, unsigned int size);
-extern unsigned int GetGameTimer(void);
 
 extern unsigned int *DAT_00669200;
 extern unsigned int DAT_00669204;

@@ -1,6 +1,8 @@
 #include "legoland.h"
 #include <windows.h>
 
+#include "timer.h"
+
 struct HelpAdvisor {
     unsigned char pad_0[0xc];
     unsigned int field_c;
@@ -22,7 +24,6 @@ extern unsigned int DAT_006687a8;
 extern unsigned int DAT_006687ac;
 extern unsigned int DAT_004b9f78[4];
 
-extern unsigned int GetGameTimer(void);
 extern void FUN_0049e4d0(void *block);
 extern void FUN_004748a0(unsigned int arg);
 extern void FUN_00476000(void);

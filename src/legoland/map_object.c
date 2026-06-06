@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "timer.h"
+
 struct ObjInfo {
     unsigned char pad_c[12];
     int field_c;
@@ -119,8 +121,6 @@ extern void ScreenToMapRef(unsigned int x, unsigned int *out, unsigned int y);
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *block);
 extern int FUN_0045ce10(struct MapTile *tile);
-extern unsigned int FUN_00499460(void);
-extern unsigned int GetGameTimer(void);
 
 // FUNCTION: LEGOLAND 0x0045dd80
 void AddObjectToMap(void) { STUB(); }

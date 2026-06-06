@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "dialog.h"
+
 // FUNCTION: LEGOLAND 0x0043e930
 void FUN_0043e930(void) { STUB(); }
 

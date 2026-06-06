@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "timer.h"
+
 struct AnimHandle;
 struct RideElem;
 struct RideObj;
@@ -40,7 +42,6 @@ struct Bloke {
 
 extern unsigned int CreateSourceImage(unsigned int param_1, unsigned int param_2);
 extern void KillImage(unsigned int image);
-extern unsigned int GetGameTimer(void);
 extern unsigned int SaveGameWrite(const void *data, unsigned int size);
 extern unsigned int SaveGameRead(void *data, unsigned int size);
 extern struct RideElem *ElemID(const char *name);

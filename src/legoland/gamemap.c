@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "timer.h"
+
 extern unsigned int DAT_0080ff64;
 extern const unsigned char DAT_004b9228[1];
 extern int DAT_00667ce0;
@@ -19,7 +21,6 @@ extern int DAT_00832bdc;
 extern unsigned int ElemID(const char *name);
 extern void Load_FXList(const unsigned char *list, unsigned int count);
 extern void Kill_FXList(const unsigned char *list, unsigned int count);
-extern unsigned int GetGameTimer(void);
 
 typedef int (*PowerFunc)(void);
 

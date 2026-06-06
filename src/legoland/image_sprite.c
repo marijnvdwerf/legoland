@@ -1,6 +1,8 @@
 #include <windows.h>
 #include "legoland.h"
 
+#include "gfx.h"
+
 struct Sprite;
 struct Image;
 struct SpriteListNode;
@@ -101,7 +103,6 @@ extern unsigned int DAT_0079ac04;
 extern struct KLIBAUDIO_Object *DAT_0079a848;
 
 extern void LLSStop(unsigned int handle);
-extern struct Image *__BMPLoader(struct Image *image);
 extern void FUN_0049e4d0(void *block);
 extern void *_malloc(unsigned int size);
 extern unsigned int FUN_004a56c3(unsigned int a, unsigned int b, unsigned int c);

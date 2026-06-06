@@ -1,5 +1,7 @@
 #include <windows.h>
 
+#include "timer.h"
+
 struct Sprite {
     unsigned char pad_0[0x10];
     unsigned char flags;

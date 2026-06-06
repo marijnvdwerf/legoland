@@ -1,10 +1,7 @@
 #include "legoland.h"
 #include "money.h"
 
-struct EntranceParam {
-    unsigned char pad_0[0xc];
-    unsigned int field_c;
-};
+#include "entrance.h"
 
 extern unsigned char ENTRANCE_SFX[0x1c];
 extern unsigned int DAT_0061610c;

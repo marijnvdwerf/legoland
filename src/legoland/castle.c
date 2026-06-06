@@ -1,6 +1,8 @@
 #include <windows.h>
 #include "legoland.h"
+#include "debug_alloc.h"
 #include "path_control.h"
+#include "timer.h"
 #include <math.h>
 
 extern unsigned int DAT_004d8268;
@@ -77,8 +79,6 @@ struct FlagWord {
 
 void FUN_0041e630(struct FlagWord *obj);
 
-extern int GetGameTimer(void);
-
 extern unsigned int DAT_00829bf8;
 extern void *DAT_00829bec;
 extern void *DAT_00829bf0;
@@ -125,7 +125,6 @@ extern unsigned int DAT_008299fc;
 extern struct ListLink DAT_00829a3c;
 extern struct ListLink *DAT_00829a50;
 extern struct ListLink *DAT_00829a54;
-extern void DBPrintf(const char *format, ...);
 extern void SaveGameWrite(unsigned int *data, unsigned int value);
 unsigned int FUN_00426650(void);
 struct ListHost;

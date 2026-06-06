@@ -1,5 +1,8 @@
 #include "legoland.h"
 
+#include "debug_alloc.h"
+#include "timer.h"
+
 struct ObjectiveEvent {
     struct ObjectiveEvent *next;
     unsigned int field_4;
@@ -73,11 +76,9 @@ extern char *_strncpy(char *dest, const char *src, unsigned int count);
 extern void FUN_0049e4d0(void *block);
 extern void FUN_00476140(int index, int value);
 extern void FUN_00460560(int index);
-extern unsigned int GetGameTimer(void);
 extern unsigned int GetBrickCount(void);
 extern void FUN_00457900(unsigned int count);
 extern int LLIDB_FindElement(const char *name, unsigned int *out, int zero);
-extern int DBPrintf(const char *format, ...);
 extern void SetSampleFade(unsigned int handle, int fade);
 
 void FUN_00468860(int index, signed char value);

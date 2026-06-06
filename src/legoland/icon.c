@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "timer.h"
+
 struct Sprite;
 
 struct IconNode {
@@ -121,7 +123,6 @@ extern void KillSprite(struct Sprite *sprite);
 extern void ReferenceSprite(struct Sprite *sprite);
 extern void FUN_0049e4d0(void *ptr);
 extern void *_malloc(unsigned int size);
-extern unsigned int GetGameTimer(void);
 extern void *LoadSprite(const char *name, unsigned int flags);
 extern void SetClipping(int *rect);
 

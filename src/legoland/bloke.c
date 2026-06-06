@@ -1,5 +1,8 @@
 #include "legoland.h"
 
+#include "debug_alloc.h"
+#include "timer.h"
+
 struct InstancePos;
 
 struct BestNode {
@@ -81,7 +84,6 @@ extern int DAT_0083293c[13];
 extern void *FirstBloke;
 extern unsigned int DAT_006661bc;
 
-extern unsigned int GetGameTimer(void);
 extern void FUN_00482a40(unsigned int *bnv);
 extern void FUN_00482a90(void);
 extern struct BestNode *FUN_00481790(struct InstancePos *pos);
@@ -94,7 +96,6 @@ extern void Control3DPeople(void);
 extern void SortBlokeIn3D(struct Bloke *bloke);
 extern struct LegoConfig *lpConfig;
 extern unsigned int DAT_008119a4;
-extern void DBPrintf(const char *format, ...);
 extern unsigned int DAT_004bdd00;
 extern unsigned int DAT_004bdd04;
 

@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "controller.h"
+
 extern unsigned int DAT_00667104;
 extern void *CONTROLLERBUFFER;
 

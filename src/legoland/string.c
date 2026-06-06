@@ -1,6 +1,8 @@
 #include <windows.h>
 #include "legoland.h"
 
+#include "timer.h"
+
 struct StringNode {
     int key;
     char *text;
@@ -14,7 +16,6 @@ extern unsigned int DAT_0079a898;
 extern unsigned int DAT_0079a89c;
 extern unsigned int DAT_0079a8a0;
 extern unsigned int DAT_008119a4;
-extern unsigned long GetTicks(void);
 
 // FUNCTION: LEGOLAND 0x00498f50
 char *GetString(int n) {

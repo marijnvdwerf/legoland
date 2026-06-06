@@ -1,6 +1,8 @@
 #include "legoland.h"
 #include <ddraw.h>
 
+#include "gfx.h"
+
 extern unsigned int DAT_00668088;
 extern void *DAT_00668070;
 extern unsigned int DAT_00668084;
@@ -10,7 +12,7 @@ extern unsigned char DAT_00814020[];
 void GetGFXFName(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044e010
-void __BMPLoader(void) { STUB(); }
+struct Image *__BMPLoader(struct Image *image) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044e580
 void LoadColourTable(void) { STUB(); }
