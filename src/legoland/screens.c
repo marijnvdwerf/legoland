@@ -45,8 +45,8 @@ extern unsigned int DAT_00832ba0;
 extern char DAT_00832998[256];
 extern char DAT_00832a98[256];
 
-extern unsigned int LoadSprite(const char *name, unsigned int flags);
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
+
 extern char *_strncpy(char *dest, const char *src, unsigned int count);
 
 // FUNCTION: LEGOLAND 0x004585c0

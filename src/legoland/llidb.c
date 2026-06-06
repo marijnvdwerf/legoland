@@ -8,7 +8,7 @@ extern unsigned int **DAT_006691a8;
 extern int DAT_006691b0;
 
 extern void FUN_0049e4d0(void *block);
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 extern unsigned int FUN_0049f4ca(int fd, void *buffer, unsigned int count);
 extern int FUN_004a63e4(int fd, void *buffer, unsigned int count);
 

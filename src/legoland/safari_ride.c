@@ -21,7 +21,7 @@ extern unsigned int EditMode;
 extern void *DAT_008119b8;
 extern struct Cursor EditCursor;
 
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 extern void *_malloc(unsigned int size);
 
 struct SafariNode {

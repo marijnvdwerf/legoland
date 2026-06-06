@@ -71,7 +71,7 @@ extern struct Cursor EditCursor;
 
 extern void *_malloc(unsigned int size);
 extern int FUN_0049e4b2(void);
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 extern int __strcmpi(const char *s1, const char *s2);
 
 void FUN_0043d9f0(void *param_1);

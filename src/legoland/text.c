@@ -28,7 +28,7 @@ extern void *PTR_00668090;
 extern void *PTR_00668094;
 extern void *PTR_00668098;
 
-extern void *LoadSprite(const char *name, int flags);
+#include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x00454910
 void LoadBubbleHelpGFX(void) {

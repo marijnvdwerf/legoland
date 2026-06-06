@@ -72,7 +72,7 @@ extern unsigned short DAT_0082c6ac;
 extern char DRIVING_SCHOOL_SFX[];
 
 extern void FUN_00411bd0(void);
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 extern void FUN_0049e4d0(unsigned int ptr);
 
 // FUNCTION: LEGOLAND 0x004051a0

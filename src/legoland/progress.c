@@ -23,7 +23,7 @@ extern unsigned int DAT_00798668;
 extern unsigned int DAT_0080ff84;
 extern struct LegoConfig *lpConfig;
 
-extern void FUN_00498920(void);
+#include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0048b7e0
 void InitProgressScreen(void) { STUB(); }

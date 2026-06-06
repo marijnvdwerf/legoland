@@ -33,7 +33,7 @@ struct CursorState {
     unsigned int var_3c;
 };
 
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 
 extern void *DAT_00616060;
 extern void *DAT_00616018;

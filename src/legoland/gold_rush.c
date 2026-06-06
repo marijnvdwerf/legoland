@@ -63,7 +63,7 @@ extern struct Cursor EditCursor;
 
 extern int __strcmpi(const char *s1, const char *s2);
 extern int FUN_0049e4b2(void);
-extern void KillSprite(struct Sprite *sprite);
+#include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x00406920
 void FUN_00406920(void) { STUB(); }

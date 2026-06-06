@@ -31,7 +31,7 @@ extern unsigned int EditMode;
 extern struct Cursor EditCursor;
 extern void *DAT_008119b8;
 
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 extern int __strcmpi(const char *a, const char *b);
 
 // FUNCTION: LEGOLAND 0x004169c0

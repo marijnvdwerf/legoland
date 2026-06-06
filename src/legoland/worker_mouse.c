@@ -20,7 +20,7 @@ struct WorkerOuter {
     unsigned int var_6c;
 };
 
-extern void KillSprite(struct Sprite *sprite);
+#include "image_sprite.h"
 
 extern unsigned int DAT_007fdf9c;
 extern unsigned int DAT_007fdf8c;

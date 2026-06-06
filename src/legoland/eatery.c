@@ -9,8 +9,8 @@
 #include "llidb.h"
 #include "map_object.h"
 
-extern void KillSprite(void *sprite);
-extern void *LoadSprite(const char *name, int param);
+#include "image_sprite.h"
+
 extern void FUN_0049e4d0(void *ptr);
 extern void *_malloc(unsigned int size);
 

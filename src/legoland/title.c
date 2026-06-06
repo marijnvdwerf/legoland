@@ -24,11 +24,8 @@ struct PopUp {
     unsigned int field_34;
 };
 
-extern void KillSprite(unsigned int sprite);
-extern unsigned int LoadSprite(const char *filename, unsigned int param_2);
-extern void FUN_00498920(void);
-extern void FUN_00498630(const char *param_1);
-extern void FUN_00498b00(void);
+#include "image_sprite.h"
+
 extern void FUN_0046ce20(void);
 extern void FUN_0049e4d0(void *ptr);
 extern int FUN_0049e573(char *buffer, const char *format, ...);

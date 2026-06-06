@@ -90,7 +90,7 @@ extern struct Cursor EditCursor;
 extern void *DAT_008119b8;
 
 extern void *_malloc(unsigned int size);
-extern void KillSprite(struct Sprite *sprite);
+#include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0042cd70
 void FUN_0042cd70(unsigned short *a1)

@@ -67,7 +67,8 @@ extern void *DAT_008119b8;
 extern unsigned int EditMode;
 extern struct Cursor EditCursor;
 
-extern void HideLayer(void *layer, unsigned int flag);
+#include "image_sprite.h"
+
 extern int __strcmpi(const char *s1, const char *s2);
 
 // FUNCTION: LEGOLAND 0x004030f0

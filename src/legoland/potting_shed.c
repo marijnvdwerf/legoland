@@ -46,8 +46,7 @@ extern unsigned int EditMode;
 extern struct Cursor EditCursor;
 extern void *DAT_008119b8;
 
-extern unsigned int LoadSprite(const char *lpFileName, unsigned int flags);
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0043ce60
 int FUN_0043ce60(int a1) {

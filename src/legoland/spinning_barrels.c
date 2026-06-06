@@ -60,7 +60,7 @@ extern void *DAT_0062fdc8;
 
 extern void *_malloc(unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);
-extern void KillSprite(void *sprite);
+#include "image_sprite.h"
 extern int FUN_0049e4b2(void);
 
 void FUN_0043c2f0(struct BarrelNode *node);

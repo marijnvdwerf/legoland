@@ -1,11 +1,10 @@
 #include <windows.h>
 #include "legoland.h"
 
+#include "image_sprite.h"
 #include "gfx.h"
 #include "llidb.h"
 
-struct Sprite;
-struct Image;
 struct SpriteListNode;
 struct Layer;
 struct LayerHost;
@@ -106,20 +105,6 @@ extern struct KLIBAUDIO_Object *DAT_0079a848;
 extern void FUN_0049e4d0(void *block);
 extern void *_malloc(unsigned int size);
 extern unsigned int FUN_004a56c3(unsigned int a, unsigned int b, unsigned int c);
-
-void ReloadImageBitmapAndBuildSprites(struct Image *image);
-struct Sprite *FUN_00497580(void);
-void KillSprite(struct Sprite *sprite);
-void SetLayerAnimatingState(struct LayerOwner *owner, int index, int state);
-void FUN_00498120(void);
-void FUN_00498870(void);
-void FUN_004989b0(void);
-unsigned int CreateSourceImage(unsigned int a, unsigned int b);
-int KillImage(struct Image *image);
-void FreeBitmapResources(struct Image *image);
-int FUN_00497020(unsigned int value);
-unsigned int *FUN_00496f30(void);
-unsigned int *FUN_00496ff0(unsigned int value);
 
 // FUNCTION: LEGOLAND 0x00496f20
 unsigned int GetVRAMAddress(unsigned int address) {
@@ -377,7 +362,7 @@ struct Sprite *CreateSysmemSprite(struct Image *image) {
     sprite->field_c = DAT_008119a4 - 1;
     if (image->field_0 == 0) {
         if (__BMPLoader(image) == NULL) {
-            KillSprite(sprite);
+            KillSprite((unsigned int)sprite);
             return NULL;
         }
     }
@@ -404,7 +389,7 @@ struct Sprite *CreatePartialSprite(struct Image *image, unsigned short a, unsign
     sprite->field_c = DAT_008119a4 - 1;
     if (image->field_0 == 0) {
         if (__BMPLoader(image) == NULL) {
-            KillSprite(sprite);
+            KillSprite((unsigned int)sprite);
             return NULL;
         }
     }
@@ -420,10 +405,10 @@ void RecreatePartialSprite(void) { STUB(); }
 void FUN_004978b0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497ab0
-void LoadSprite(void) { STUB(); }
+unsigned int LoadSprite(const char *name, int flags) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497b70
-void MakeSprite(void) { STUB(); }
+void MakeSprite(unsigned int sprite) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497bb0
 short ReferenceSprite(struct Sprite *sprite) {
@@ -435,7 +420,7 @@ short ReferenceSprite(struct Sprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x00497bd0
-void KillSprite(struct Sprite *sprite) { STUB(); }
+int KillSprite(unsigned int sprite) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497c30
 void GetSprite(void) { STUB(); }
@@ -459,7 +444,7 @@ void ReleaseSprite(struct Sprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x00497de0
-void HideLayer(void) { STUB(); }
+void HideLayer(void *layer, unsigned int flag) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497e10
 void ShowLayer(void) { STUB(); }
@@ -617,7 +602,7 @@ void FUN_004983a0(void) { STUB(); }
 void FUN_00498420(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00498630
-void FUN_00498630(void) { STUB(); }
+void FUN_00498630(const char *param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00498870
 void FUN_00498870(void) { STUB(); }

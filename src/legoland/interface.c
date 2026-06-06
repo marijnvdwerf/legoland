@@ -134,9 +134,8 @@ struct LegoConfig {
     unsigned short height;
 };
 
-extern unsigned int LoadSprite(const char *name, unsigned int flags);
-extern void KillSprite(unsigned int sprite);
-extern void FUN_00498920(void);
+#include "image_sprite.h"
+
 extern void FUN_0049e4d0(void *block);
 
 // FUNCTION: LEGOLAND 0x004741f0

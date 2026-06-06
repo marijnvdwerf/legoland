@@ -55,7 +55,7 @@ extern unsigned int EditMode;
 extern void *DAT_008119b8;
 extern struct Cursor EditCursor;
 
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 extern int FUN_0049e4b2(void);
 
 // FUNCTION: LEGOLAND 0x0042bbc0

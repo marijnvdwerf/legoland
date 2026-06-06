@@ -16,8 +16,7 @@ struct ElemRecord {
     unsigned char flags;
 };
 
-extern int KillSprite(struct Sprite *sprite);
-extern void ReferenceSprite(int sprite);
+#include "image_sprite.h"
 
 extern unsigned int DAT_007cb3a0;
 extern unsigned int DAT_007cb394;
@@ -169,8 +168,8 @@ void FUN_0048b740(void) {
 
     esi = (int *)&DAT_004beb94[0].field_4;
     do {
-        ReferenceSprite(esi[-1]);
-        ReferenceSprite(esi[0]);
+        ReferenceSprite((struct Sprite *)esi[-1]); /* TODO-fold: esi walks the slot array as int*; ReferenceSprite's canonical param is struct Sprite* */
+        ReferenceSprite((struct Sprite *)esi[0]);
         esi += 7;
     } while ((long)esi < (long)DAT_004becb0);
 }

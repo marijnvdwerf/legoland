@@ -66,7 +66,7 @@ extern unsigned int DAT_00829b8c;
 extern unsigned int DAT_00829ba4;
 extern struct Anim DAT_00829af8;
 extern struct Anim DAT_00829b04;
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 extern unsigned int DAT_008119b8;
 extern unsigned int EditMode;
 extern struct Cursor EditCursor;

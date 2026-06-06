@@ -61,7 +61,7 @@ extern unsigned int DAT_004cbfa0;
 extern unsigned short DAT_004cbfa4;
 extern struct SaveNode *DAT_004cbfd4;
 
-extern unsigned int KillSprite(unsigned int handle);
+#include "image_sprite.h"
 extern int __strcmpi(const char *s1, const char *s2);
 
 void FUN_00417150(void);

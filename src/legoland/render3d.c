@@ -21,7 +21,7 @@ extern unsigned int DAT_00655a50;
 extern unsigned int DAT_00638218[];
 
 extern void FUN_0049e4d0(void *block);
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 
 struct Viewport {
     unsigned int field_0;

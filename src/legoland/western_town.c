@@ -20,8 +20,8 @@ struct JailCell {
     unsigned char pad_4[0x1c - 0x4];
 };
 
-extern unsigned int LoadSprite(const char *filename, unsigned int param_2);
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
+
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *ptr);
 

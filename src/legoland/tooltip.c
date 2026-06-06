@@ -8,7 +8,7 @@ extern unsigned int DAT_007fe920;
 extern unsigned int DAT_006687a4;
 extern unsigned int DAT_006687a8;
 
-extern int FUN_00498cf0(void);
+#include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0046d340
 void FUN_0046d340(unsigned int param_1) {

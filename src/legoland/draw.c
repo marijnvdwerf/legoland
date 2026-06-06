@@ -17,7 +17,7 @@ extern void *renderEngineTargets[1];
 extern char DAT_0066861c[128];
 extern unsigned char DAT_0066869b;
 
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 extern char *_strncpy(char *dest, const char *src, unsigned int count);
 extern __declspec(noreturn) void FUN_004a02b8(int status);
 

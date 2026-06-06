@@ -74,8 +74,7 @@ extern unsigned int DAT_00668960;
 extern unsigned int DAT_00668d68;
 extern unsigned int DAT_004ba9ac[];
 
-extern void KillSprite(struct Sprite *sprite);
-extern unsigned int FUN_00498cf0(void);
+#include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x00470bb0
 void InitPopUpInfo(void) { STUB(); }

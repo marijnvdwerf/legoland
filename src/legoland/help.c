@@ -32,8 +32,8 @@ extern unsigned int DAT_006687ac;
 extern unsigned int DAT_004b9f78[4];
 
 extern void FUN_0049e4d0(void *block);
-extern void FUN_004988c0(void);
-extern unsigned int FUN_00498cf0(void);
+
+#include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0046ce20
 void FUN_0046ce20(void) {

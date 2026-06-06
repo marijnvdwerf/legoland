@@ -68,7 +68,7 @@ extern unsigned int EditMode;
 extern void *DAT_008119b8;
 extern struct Cursor EditCursor;
 
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 extern int __strcmpi(const char *s1, const char *s2);
 
 // FUNCTION: LEGOLAND 0x00407970

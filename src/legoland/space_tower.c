@@ -72,7 +72,7 @@ extern unsigned int DAT_008119b8;
 extern struct Cursor EditCursor;
 extern const unsigned char SPACE_TOWER_SFX[15];
 
-extern void KillSprite(void *sprite);
+#include "image_sprite.h"
 extern int __strcmpi(const char *s1, const char *s2);
 
 // FUNCTION: LEGOLAND 0x0043a7a0

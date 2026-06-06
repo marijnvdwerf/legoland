@@ -15,7 +15,7 @@ extern unsigned int DAT_00616100;
 extern unsigned int DAT_00616104;
 extern unsigned int DAT_00616108;
 
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0042d970
 void FUN_0042d970(void) { STUB(); }

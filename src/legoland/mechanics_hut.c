@@ -26,8 +26,7 @@ extern unsigned int DAT_0062fe54;
 extern unsigned int EditMode;
 extern struct Cursor EditCursor;
 extern struct EditCursorData *DAT_008119b8;
-extern unsigned int LoadSprite(const char *name, int flags);
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0043d250
 unsigned int FUN_0043d250(struct HutContext *ctx) {

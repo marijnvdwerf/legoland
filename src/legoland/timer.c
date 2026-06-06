@@ -8,7 +8,7 @@ struct Sprite {
     unsigned char flags;
 };
 
-extern void MakeSprite(struct Sprite *sprite);
+#include "image_sprite.h"
 
 extern unsigned int DAT_0079a890;
 extern unsigned int DAT_0079a894;
@@ -58,6 +58,6 @@ int FUN_00499500(struct Sprite *sprite) {
             return 0;
         }
     }
-    MakeSprite(sprite);
+    MakeSprite((unsigned int)sprite); /* TODO-fold: timer.c keeps its own struct Sprite view; MakeSprite's canonical param is the uint sprite handle */
     return 1;
 }

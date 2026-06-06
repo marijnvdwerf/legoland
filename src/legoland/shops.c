@@ -29,8 +29,7 @@ struct RideObject {
     struct RideBuilding *building;
 };
 
-extern unsigned int LoadSprite(const char *filename, unsigned int param_2);
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 
 extern unsigned int DAT_0081cb18;
 extern unsigned int DAT_0081cb20;

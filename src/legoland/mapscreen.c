@@ -22,9 +22,7 @@ extern struct Sprite *DAT_00667c2c;
 extern unsigned int DAT_00667c30;
 extern unsigned int DAT_00667c34;
 
-extern struct Sprite *CreateFunctionBasedSprite(unsigned int source, unsigned short a, unsigned short b);
-extern unsigned int LoadSprite(const char *filename, int flags);
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x004562c0
 void FUN_004562c0(void) {

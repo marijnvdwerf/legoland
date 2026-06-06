@@ -30,7 +30,7 @@ extern unsigned int EditMode;
 extern struct Cursor EditCursor;
 extern struct EditCursorData *DAT_008119b8;
 extern int __strcmpi(const char *s1, const char *s2);
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x00402ca0
 void FUN_00402ca0(void) { STUB(); }

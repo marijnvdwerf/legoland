@@ -47,7 +47,7 @@ extern unsigned int DAT_004c2b70;
 extern unsigned int DAT_004b47f8;
 extern unsigned int DAT_004b4804;
 
-extern unsigned int LoadSprite(const char *name, int flags);
+#include "image_sprite.h"
 
 extern unsigned int DAT_004b4728;
 extern unsigned int DAT_004b472c;
@@ -60,7 +60,6 @@ extern struct Sprite *DAT_004cbe1c;
 extern struct Sprite *DAT_004c8d68;
 extern unsigned int DAT_004c2b10;
 
-extern void KillSprite(struct Sprite *sprite);
 extern void *DAT_004cbe10;
 extern struct Sprite *DAT_004c8d2c;
 extern struct CursorSource *DAT_004c74d4;

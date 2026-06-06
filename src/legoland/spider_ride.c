@@ -78,7 +78,7 @@ extern unsigned short DAT_004cbf4c;
 extern unsigned char SpiderRide_SFX[8];
 
 extern void *_malloc(unsigned int size);
-extern void KillSprite(struct Sprite *sprite);
+#include "image_sprite.h"
 extern int __strcmpi(const char *a, const char *b);
 
 // FUNCTION: LEGOLAND 0x004158f0

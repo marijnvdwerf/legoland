@@ -59,8 +59,7 @@ struct Profile {
     unsigned char var_1c;
 };
 
-extern void KillSprite(struct Sprite *sprite);
-extern void FUN_00498920(void);
+#include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0048c260
 void InitListProfiles(void) { STUB(); }

@@ -49,9 +49,7 @@ struct Bloke {
     short field_7a;
 };
 
-extern unsigned int CreateSourceImage(unsigned int param_1, unsigned int param_2);
-extern void KillImage(unsigned int image);
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 
 extern unsigned int DAT_00665e8c;
 extern unsigned int DAT_004b7d74;
@@ -143,7 +141,7 @@ unsigned int FUN_004436d0(unsigned int param_1, unsigned int param_2) {
         return 0;
     }
     if (FUN_004434d0(image) == 0) {
-        KillImage(image);
+        KillImage((struct Image *)image); /* TODO-fold: local `image` is a uint handle here; KillImage's canonical param is struct Image* */
         return 0;
     }
     return image;

@@ -93,8 +93,7 @@ extern void *DAT_008119b8;
 extern unsigned int EditMode;
 extern struct Cursor EditCursor;
 
-extern unsigned int LoadSprite(const char *name, int flags);
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 
 extern unsigned int DAT_0082c6a0;
 extern unsigned int DAT_0082c6a4;

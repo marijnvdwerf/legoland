@@ -36,7 +36,7 @@ extern unsigned int DAT_00667c94;
 extern void *DAT_00667c9c;
 
 extern void FUN_0049e4d0(void *block);
-extern void KillSprite(unsigned int sprite);
+#include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0045a9b0
 void AllocTileSpace(void) { STUB(); }

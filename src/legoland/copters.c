@@ -64,7 +64,7 @@ extern struct Cursor EditCursor;
 
 extern void *_malloc(unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);
-extern void KillSprite(struct Sprite *sprite);
+#include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x00403c40
 void FUN_00403c40(struct CopterSource *src) {

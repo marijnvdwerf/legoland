@@ -121,11 +121,10 @@ extern unsigned int DAT_008119b4;
 extern unsigned int DAT_0080ff88;
 extern unsigned int DAT_007fe020[];
 
-extern void KillSprite(struct Sprite *sprite);
-extern void ReferenceSprite(struct Sprite *sprite);
+#include "image_sprite.h"
+
 extern void FUN_0049e4d0(void *ptr);
 extern void *_malloc(unsigned int size);
-extern void *LoadSprite(const char *name, unsigned int flags);
 
 // FUNCTION: LEGOLAND 0x0046d3a0
 void FUN_0046d3a0(void) { DAT_006687a4 = 4; }
