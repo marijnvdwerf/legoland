@@ -3063,10 +3063,10 @@ void FUN_004274f0(struct Struct4274f0Coord *coord) {
 }
 
 // FUNCTION: LEGOLAND 0x004275b0
-void FUN_004275b0(void) { STUB(); }
+void FUN_004275b0(void) {}
 
 // FUNCTION: LEGOLAND 0x004275c0
-void FUN_004275c0(void) { STUB(); }
+void FUN_004275c0(void) {}
 
 // FUNCTION: LEGOLAND 0x004275d0
 void FUN_004275d0(void) { STUB(); }

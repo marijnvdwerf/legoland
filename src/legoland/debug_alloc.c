@@ -6,7 +6,7 @@ extern unsigned int FUN_0049fdc2(void *block);
 extern void FUN_0049e4d0(void *block);
 
 // FUNCTION: LEGOLAND 0x00453a20
-void DBPrintf(void) { STUB(); }
+void DBPrintf(void) {}
 
 // FUNCTION: LEGOLAND 0x00453a30
 void __DEBUG_TAG(void) { STUB(); }

@@ -1,7 +1,7 @@
 #include "legoland.h"
 
 // FUNCTION: LEGOLAND 0x0047f870
-void FUN_0047f870(void) { STUB(); }
+void FUN_0047f870(void) {}
 
 // FUNCTION: LEGOLAND 0x0047f880
 void FUN_0047f880(void) { STUB(); }
