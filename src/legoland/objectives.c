@@ -9,22 +9,6 @@
 #include "llidb.h"
 #include "map_object.h"
 
-struct ObjectiveEvent {
-    struct ObjectiveEvent *next;
-    unsigned int field_4;
-    unsigned int field_8;
-    unsigned int type;
-    unsigned char flags_10;
-    unsigned char pad_11[0x14 - 0x11];
-    unsigned int field_14;
-    unsigned int field_18;
-    unsigned int field_1c;
-    unsigned char pad_20[0x38 - 0x20];
-    int sort_key;
-    unsigned int timestamp;
-    unsigned int field_40;
-};
-
 struct ThemeQueryArg {
     unsigned char pad_0[0xc];
     struct ThemeData *theme;
@@ -131,7 +115,7 @@ void FUN_004688f0(int index, unsigned char param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00468910
-struct EventNode *FUN_00468910(unsigned int type, int sort_key) {
+struct ObjectiveEvent *FUN_00468910(unsigned int type, int sort_key) {
     struct ObjectiveEvent *event;
 
     event = (struct ObjectiveEvent *)FUN_004a020e(1, 0x44);
@@ -141,13 +125,11 @@ struct EventNode *FUN_00468910(unsigned int type, int sort_key) {
         event->type = type;
         event->sort_key = sort_key;
     }
-    /* objectives owns this as ObjectiveEvent; nerps sees the same object as EventNode */
-    return (struct EventNode *)event;
+    return event;
 }
 
 // FUNCTION: LEGOLAND 0x00468940
-void FUN_00468940(struct EventNode *node) {
-    struct ObjectiveEvent *event = (struct ObjectiveEvent *)node;
+void FUN_00468940(struct ObjectiveEvent *event) {
     if (event->flags_10 & 0x20) {
         if (event->field_8 != 0) {
             FUN_0049e4d0((void *)event->field_8);
@@ -157,13 +139,12 @@ void FUN_00468940(struct EventNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00468970
-void FUN_00468970(struct EventNode *node) {
-    struct ObjectiveEvent *event = (struct ObjectiveEvent *)node;
+void FUN_00468970(struct ObjectiveEvent *event) {
     if (event != NULL) {
         if (event->next != NULL) {
-            FUN_00468970((struct EventNode *)event->next);
+            FUN_00468970(event->next);
         }
-        FUN_00468940(node);
+        FUN_00468940(event);
     }
 }
 
@@ -174,8 +155,7 @@ void FUN_004689a0(void) { STUB(); }
 unsigned int FUN_004689f0(unsigned int param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00468b00
-void FUN_00468b00(struct EventNode *param) {
-    struct ObjectiveEvent *event = (struct ObjectiveEvent *)param;
+void FUN_00468b00(struct ObjectiveEvent *event) {
     struct ObjectiveEvent *node;
     struct ObjectiveEvent *prev;
     int key;
@@ -203,7 +183,7 @@ void FUN_00468b00(struct EventNode *param) {
 }
 
 // FUNCTION: LEGOLAND 0x00468b40
-void FUN_00468b40(struct EventNode *node, unsigned int param_2, unsigned int param_3) { STUB(); }
+void FUN_00468b40(struct ObjectiveEvent *node, unsigned int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00468bb0
 void FUN_00468bb0(void *param_1, unsigned int param_2) { STUB(); }
@@ -218,7 +198,7 @@ void FUN_00468c80(struct ObjectiveEvent *event) { STUB(); }
 struct ObjectiveEvent *FUN_00468cd0(unsigned int type, int sort_key) {
     struct ObjectiveEvent *event;
 
-    event = (struct ObjectiveEvent *)FUN_00468910(type, sort_key);
+    event = FUN_00468910(type, sort_key);
     if (event != NULL) {
         event->timestamp = GetGameTimer();
     }
