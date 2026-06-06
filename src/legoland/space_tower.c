@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "obj_instance.h"
+#include "space_tower.h"
 
 struct RideObject {
     unsigned short var_0;
@@ -75,8 +76,6 @@ extern int __strcmpi(const char *s1, const char *s2);
 extern void SetEditCursorFootPrint(unsigned int arg);
 extern void Put3DBlokesOnRide2(struct RideObject *ride, struct RideObject *obj);
 extern void Ride_SetFlagToNotLetAnyoneOn(struct RideObject *ride);
-
-void FUN_0043bac0(void);
 
 // FUNCTION: LEGOLAND 0x0043a7a0
 void FUN_0043a7a0(void) { STUB(); }

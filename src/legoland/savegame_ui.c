@@ -2,6 +2,7 @@
 
 #include "profile.h"
 #include "profile_io.h"
+#include "savegame_ui.h"
 
 struct Sprite;
 
@@ -47,8 +48,6 @@ extern void FUN_0046d680(unsigned int a, struct Sprite *b);
 struct SaveNode {
     struct SaveNode *next;
 };
-
-void RemoveSaveGame(unsigned char slot);
 
 // FUNCTION: LEGOLAND 0x0048d4b0
 void InitSavedGameScreen(void) { STUB(); }

@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "ride_queue.h"
+#include "ride_bloke.h"
 
 struct DrivingSchoolNode {
     struct DrivingSchoolNode *next;
@@ -70,7 +71,6 @@ extern char DRIVING_SCHOOL_SFX[];
 
 extern unsigned int LLIDB_FindElement(char *name, unsigned int *out, unsigned int param_3);
 extern void LLIDB_UnLoadData(unsigned int data);
-extern void FUN_00401c60(unsigned int node);
 extern void FUN_00411bd0(void);
 extern void Kill_FXList(char *list, unsigned int count);
 extern void KillSprite(unsigned int sprite);
@@ -131,7 +131,7 @@ void FUN_00405460(void) {
     }
 
     while (DAT_004c10d4 != NULL) {
-        FUN_00401c60((unsigned int)DAT_004c10d4);
+        FUN_00401c60(DAT_004c10d4);
     }
 
     FUN_00411bd0();

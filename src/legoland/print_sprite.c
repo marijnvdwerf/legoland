@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "print_sprite.h"
+#include "render.h"
 
 struct PrintListNode {
     unsigned int field_0;
@@ -32,8 +33,6 @@ extern unsigned int DAT_007cb5e0;
 
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *ptr);
-extern void FUN_004860f0(void);
-extern void FUN_00486540(void);
 
 // FUNCTION: LEGOLAND 0x004853a0
 void PrintSprite(unsigned int sprite, unsigned int x, unsigned int y, unsigned int param_4, unsigned int param_5) { STUB(); }

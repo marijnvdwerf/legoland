@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "print_sprite.h"
+#include "render.h"
 
 struct CursorCacheNode {
     struct CursorCacheNode *next;

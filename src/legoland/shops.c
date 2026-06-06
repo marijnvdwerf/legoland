@@ -52,8 +52,6 @@ extern unsigned int EditMode;
 extern void *DAT_008119b8;
 extern struct Cursor EditCursor;
 
-void FUN_00439230(unsigned int param_1, void *param_2);
-
 // FUNCTION: LEGOLAND 0x00439200
 void FUN_00439200(struct MapObject *obj) {
     struct Building *building = obj->building;

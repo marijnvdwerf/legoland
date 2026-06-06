@@ -1,6 +1,7 @@
 #include "legoland.h"
 #include "tooltip.h"
 #include "string.h"
+#include "options.h"
 
 struct SpriteIcon {
     unsigned char pad_0[0x2c];
@@ -22,7 +23,6 @@ extern void RemoveIconGroup(unsigned int group);
 extern void SetPointer(unsigned int index);
 extern unsigned int LoadSprite(const char *filename, unsigned int param_2);
 extern struct SpriteIcon *LoadSpriteIcon(const char *filename, unsigned int param_2, unsigned int param_3, unsigned int param_4, unsigned int param_5);
-extern void FUN_0048fa40(const char *param_1, const char *param_2, const char *param_3);
 extern void FUN_00498920(void);
 extern void FUN_004771f0(const char *filename, unsigned int param_2, unsigned int param_3);
 extern void FUN_00498630(const char *param_1);

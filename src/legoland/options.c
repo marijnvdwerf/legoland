@@ -2,11 +2,12 @@
 #include "string.h"
 #include "profile.h"
 #include "profile_io.h"
+#include "savegame_ui.h"
+#include "options.h"
 
 extern void PlayInstanceOfSample(void *sample, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 extern void KillSprite(unsigned int sprite);
 extern void RemoveIconGroup(unsigned int group);
-extern void StoreNewSaveGameToDisk(void);
 extern void FUN_00498920(void);
 extern void FUN_00474880(void);
 extern void FUN_0046fb40(unsigned int param_1);
@@ -43,10 +44,6 @@ extern unsigned int DAT_007986b8;
 extern unsigned int DAT_007986d8;
 extern unsigned int DAT_007986dc;
 extern unsigned int DAT_007986e0;
-
-void InitExitCheckBox(unsigned int param_1, unsigned int param_2);
-void KillTitleScreenSprites(void);
-void FUN_0048eb40(void);
 
 // FUNCTION: LEGOLAND 0x0048eb40
 void FUN_0048eb40(void) {
@@ -222,7 +219,7 @@ void FUN_0048f8d0(void) { STUB(); }
 void FUN_0048f9f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048fa40
-void FUN_0048fa40(void) { STUB(); }
+void FUN_0048fa40(const char *param_1, const char *param_2, const char *param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048faa0
 void KillTitleScreenSprites(void) {
@@ -244,7 +241,7 @@ void KillTitleScreenSprites(void) {
 void RenderScreen(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048fb80
-unsigned char FUN_0048fb80(unsigned int param_1, unsigned int param_2) {
+unsigned char FUN_0048fb80(unsigned int param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         if (DAT_00668e38 != 0) {

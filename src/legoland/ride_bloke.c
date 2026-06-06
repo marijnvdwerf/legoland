@@ -2,6 +2,7 @@
 
 #include "print_sprite.h"
 #include "ride_queue.h"
+#include "ride_bloke.h"
 
 extern void *DAT_004c10d4;
 extern int DAT_004cbeb0;
@@ -119,7 +120,7 @@ unsigned int FUN_00401c40(unsigned short arg0) {
 }
 
 // FUNCTION: LEGOLAND 0x00401c60
-void FUN_00401c60(void) { STUB(); }
+void FUN_00401c60(void *node) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00401cd0
 void FUN_00401cd0(struct TimerStruct *p) {

@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "ride_queue.h"
+#include "copters.h"
 
 typedef void (*CopterVtblFn)(void);
 
@@ -64,10 +65,6 @@ extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern void UnloadPos(struct Position *pos);
 extern void ResumeSinglyPausedSample(unsigned int param);
 extern void SetEditCursorFootPrint(void *footprint);
-
-void FUN_00403c80(struct CopterNode *node);
-void FUN_00403e90(struct CopterNode *node);
-void FUN_00404a90(struct CopterNode *node);
 
 // FUNCTION: LEGOLAND 0x00403c40
 void FUN_00403c40(struct CopterSource *src) {
