@@ -6,15 +6,14 @@
 #include "obj_instance.h"
 #include "render3d.h"
 #include "sound_music.h"
+#include "llidb.h"
 
-extern void LLIDB_UnLoadData(void *param_1);
 extern void SetEditCursorFootPrint(unsigned int param);
 extern void KillSprite(void *sprite);
 extern void *LoadSprite(const char *name, int param);
 extern void AddBasicObject(unsigned int self, void *param);
 extern void StandardRemoveObject(unsigned int self, unsigned int a, unsigned int b);
 extern void Set_UserFlags(int x, int y, unsigned short value);
-extern unsigned int SaveGameRead(void *data, unsigned int size);
 extern void FUN_0049e4d0(void *ptr);
 extern void *_malloc(unsigned int size);
 
@@ -170,7 +169,7 @@ void FUN_0042e460(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0042e4b0
 void FUN_0042e4b0(void) {
-    LLIDB_UnLoadData((void *)DAT_0061613c);
+    LLIDB_UnLoadData(DAT_0061613c);
 }
 
 // FUNCTION: LEGOLAND 0x0042e4c0

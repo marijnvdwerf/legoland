@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "binv.h"
+#include "llidb.h"
 
 struct BalloonC {
     unsigned char pad_0[0x10];
@@ -32,7 +33,6 @@ struct CursorState {
 };
 
 extern void KillSprite(unsigned int sprite);
-extern int SaveGameWrite(void *data, unsigned int size);
 extern void SetEditCursorFootPrint(unsigned int *foot_print);
 
 extern void *DAT_00616060;

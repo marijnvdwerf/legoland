@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "binv.h"
 #include "sound_music.h"
+#include "llidb.h"
 
 extern void *DAT_004cbf0c;
 extern unsigned int DAT_004cbec4;
@@ -21,7 +22,6 @@ extern struct Cursor EditCursor;
 
 extern void KillSprite(unsigned int sprite);
 extern void SetEditCursorFootPrint(void *foot_print);
-extern int SaveGameWrite(void *data, unsigned int size);
 extern void *_malloc(unsigned int size);
 
 struct SafariNode {

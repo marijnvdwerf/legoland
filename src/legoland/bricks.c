@@ -1,12 +1,10 @@
 #include "legoland.h"
 
 #include "bricks.h"
+#include "llidb.h"
 
 extern unsigned int DAT_004b90fc;
 extern unsigned int DAT_004b90f8;
-
-extern int SaveGameWrite(const void *data, unsigned int size);
-extern int SaveGameRead(void *data, unsigned int size);
 
 // FUNCTION: LEGOLAND 0x00457870
 void FUN_00457870(int param_1) {

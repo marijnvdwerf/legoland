@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "timer.h"
 #include "sound_music.h"
+#include "llidb.h"
 
 extern unsigned int DAT_0080ff64;
 extern const unsigned char DAT_004b9228[1];
@@ -19,8 +20,6 @@ extern int DAT_00832bd0;
 extern int DAT_00832bd4;
 extern int DAT_00832bd8;
 extern int DAT_00832bdc;
-
-extern unsigned int ElemID(const char *name);
 
 struct RenderObjectVtable {
     unsigned char pad_0[0xc];

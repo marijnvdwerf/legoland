@@ -3,6 +3,7 @@
 
 #include "print_sprite.h"
 #include "text.h"
+#include "llidb.h"
 
 struct TextSprite {
     unsigned char pad_0[0x1c];
@@ -27,8 +28,6 @@ extern void *PTR_00668090;
 extern void *PTR_00668094;
 extern void *PTR_00668098;
 
-extern int LLIDB_FindElement(const char *name, void *out, int zero);
-extern void *LLIDB_LoadData(void *id);
 extern void *LoadSprite(const char *name, int flags);
 
 // FUNCTION: LEGOLAND 0x00454910
@@ -40,7 +39,7 @@ void LoadBubbleHelpGFX(void) {
     }
 
     // STRING: LEGOLAND 0x004b9064
-    if (LLIDB_FindElement("SPEECH BUBBLE", &element, 0) == 0) {
+    if (LLIDB_FindElement("SPEECH BUBBLE", (unsigned int *)&element, 0) == 0) {
         DAT_00813a0c = LLIDB_LoadData(element);
     }
 

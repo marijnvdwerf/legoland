@@ -9,6 +9,7 @@
 #include "draw.h"
 #include "castle.h"
 #include "interface.h"
+#include "llidb.h"
 #include <math.h>
 
 extern unsigned int DAT_004d8268;
@@ -92,7 +93,6 @@ extern unsigned int DAT_008299fc;
 extern struct ListLink DAT_00829a3c;
 extern struct ListLink *DAT_00829a50;
 extern struct ListLink *DAT_00829a54;
-extern void SaveGameWrite(unsigned int *data, unsigned int value);
 // FUNCTION: LEGOLAND 0x0041cc50
 unsigned int FUN_0041cc50(unsigned int dir) {
     if (dir == 1) return 4;
@@ -3080,9 +3080,6 @@ void FUN_00427a80(struct Struct427a80 *param_1, float param_2) {
 
 // FUNCTION: LEGOLAND 0x00427aa0
 void FUN_00427aa0(void) { STUB(); }
-
-extern unsigned int LLIDB_FindElement(const char *name, unsigned int *out_handle, unsigned int zero);
-extern void LLIDB_UnLoadData(unsigned int handle);
 
 // FUNCTION: LEGOLAND 0x00427af0
 void FUN_00427af0(void) {

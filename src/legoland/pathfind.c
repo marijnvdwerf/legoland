@@ -2,6 +2,7 @@
 
 #include "pathfind.h"
 #include "objclass.h"
+#include "llidb.h"
 
 struct BestNode {
     struct BestNode *next;
@@ -46,7 +47,6 @@ extern unsigned int DAT_00669258[1152];
 
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *block);
-extern unsigned int SaveGameWrite(void *data, unsigned int size);
 
 // FUNCTION: LEGOLAND 0x00481c50
 void AddPathSquare(struct InstancePos *pos) {

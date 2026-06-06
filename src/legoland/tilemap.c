@@ -2,6 +2,7 @@
 
 #include "pathfind.h"
 #include "tilemap.h"
+#include "llidb.h"
 
 struct MapTile {
     unsigned char pad_0[8];
@@ -35,8 +36,6 @@ extern unsigned int DAT_00667c94;
 extern void *DAT_00667c9c;
 
 extern void FUN_0049e4d0(void *block);
-extern unsigned int LLIDB_FindElement(const char *name, void *out, unsigned int zero);
-extern void LLIDB_UnLoadData(unsigned int handle);
 extern void KillSprite(unsigned int sprite);
 
 // FUNCTION: LEGOLAND 0x0045a9b0

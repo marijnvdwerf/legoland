@@ -6,6 +6,7 @@
 #include "tilemap.h"
 #include "draw.h"
 #include "sound_music.h"
+#include "llidb.h"
 
 struct WaterNode {
     struct WaterNode *next;
@@ -118,12 +119,9 @@ extern struct Cursor EditCursor;
 
 extern void RemoveSoundObject(unsigned int a, unsigned int b, unsigned int c);
 extern void KillSprite(unsigned int sprite);
-extern void LLIDB_UnLoadData(unsigned int handle);
 extern unsigned int LoadSprite(const char *name, int flags);
 extern void StandardRemoveObject(unsigned int a, unsigned int b, unsigned int c);
 extern void ValidateCursor(struct Cursor *cursor, void *data);
-extern int SaveGameWrite(void *buffer, unsigned int size);
-extern int SaveGameRead(void *buffer, unsigned int size);
 extern void FUN_0049e4d0(void *block);
 extern void *_malloc(unsigned int size);
 extern void FUN_0045f480(struct Cursor *cursor, unsigned int a);

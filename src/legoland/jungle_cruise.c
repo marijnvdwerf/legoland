@@ -4,6 +4,7 @@
 #include "jungle_cruise.h"
 #include "objclass.h"
 #include "render3d.h"
+#include "llidb.h"
 
 struct JungleNode {
     unsigned short field_0;
@@ -77,7 +78,6 @@ extern struct JungleScore *DAT_00629c3c;
 extern unsigned int DAT_0062fd2c;
 extern struct JungleFishNode *DAT_00629c30;
 
-extern void LLSSetFrame(struct JungleLLS *lls, int frame);
 extern int FUN_0049e4b2(void);
 
 extern void *DAT_0081cb60;
@@ -262,7 +262,7 @@ unsigned int *FUN_00434740(struct JungleFishHolder *param_1, unsigned short para
     if (node->field_4 != 0) {
         lls2 = (struct JungleLLS *)GetLLSForSprite((struct SpriteLLS *)DAT_0081cb6c);
         frame = lls1->field_0;
-        LLSSetFrame(lls2, frame);
+        LLSSetFrame((struct LLS *)lls2, frame); /* TODO: fold struct JungleLLS into struct LLS */
         DAT_0082c6a0 = DAT_0081cb6c;
     } else {
         DAT_0082c6a0 = obj->field_64;

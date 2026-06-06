@@ -6,6 +6,7 @@
 #include "sound_sfx.h"
 #include "objectives.h"
 #include "interface.h"
+#include "llidb.h"
 
 struct ObjectiveEvent {
     struct ObjectiveEvent *next;
@@ -72,7 +73,6 @@ extern void *FUN_004a020e(unsigned int count, unsigned int size);
 extern char *_strncpy(char *dest, const char *src, unsigned int count);
 extern void FUN_0049e4d0(void *block);
 extern void FUN_00460560(int index);
-extern int LLIDB_FindElement(const char *name, unsigned int *out, int zero);
 
 // FUNCTION: LEGOLAND 0x00468810
 void FUN_00468810(char *name) {

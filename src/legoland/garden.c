@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "gamemap.h"
+#include "llidb.h"
 
 struct GardenLayer {
     unsigned char pad_0[0xc];
@@ -30,9 +31,6 @@ extern unsigned int EditMode;
 extern struct Cursor EditCursor;
 extern void *DAT_008119b8;
 
-extern int LLIDB_FindElement(const char *name, unsigned int *out, int param_3);
-extern unsigned int LLIDB_LoadData(unsigned int id);
-extern void LLIDB_UnLoadData(unsigned int id);
 extern void SetEditCursorFootPrint(struct EditFootprint *src);
 
 // FUNCTION: LEGOLAND 0x00432480
@@ -44,7 +42,7 @@ void FUN_00432480(struct GardenLayer *arg0) {
     if (LLIDB_FindElement("HEDGE IMAGES", &DAT_0061615c, 0) != 0) {
         return;
     }
-    DAT_0061614c = LLIDB_LoadData(DAT_0061615c);
+    DAT_0061614c = (unsigned int)LLIDB_LoadData((void *)DAT_0061615c); /* TODO: fold — LLIDB_LoadData handle stored as uint global */
 }
 
 // FUNCTION: LEGOLAND 0x004324c0
@@ -76,7 +74,7 @@ void FUN_00432870(struct GardenLayer *param) {
     if (LLIDB_FindElement("FLOWERS 1", &DAT_00616150, 0) != 0) {
         return;
     }
-    DAT_00616158 = LLIDB_LoadData(DAT_00616150);
+    DAT_00616158 = (unsigned int)LLIDB_LoadData((void *)DAT_00616150);
 }
 
 // FUNCTION: LEGOLAND 0x004328b0

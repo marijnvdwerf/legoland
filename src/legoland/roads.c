@@ -5,6 +5,7 @@
 #include "ride_queue.h"
 #include "tilemap.h"
 #include "objclass.h"
+#include "llidb.h"
 
 struct RoadQueueEntry {
     struct RoadQueueEntry *next;
@@ -58,9 +59,6 @@ extern void *DAT_008119b8;
 extern struct Cursor EditCursor;
 extern struct Cursor QueryCursor;
 
-extern unsigned int LLIDB_FindElement(const char *name, unsigned int *out_handle, unsigned int zero);
-extern void *LLIDB_LoadData(struct LLIDB_Head *head);
-extern void LLIDB_UnLoadData(unsigned int handle);
 extern void FUN_0049e4d0(void *block);
 extern void SetEditCursorFootPrint(void *footprint);
 extern void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, unsigned int param_3);

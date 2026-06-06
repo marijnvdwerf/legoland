@@ -10,6 +10,7 @@
 #include "icon.h"
 #include "interface.h"
 #include "sound_music.h"
+#include "llidb.h"
 
 struct IconNode {
     struct IconNode *next;
@@ -135,8 +136,6 @@ struct LegoConfig {
 
 extern unsigned int LoadSprite(const char *name, unsigned int flags);
 extern void KillSprite(unsigned int sprite);
-extern unsigned int SaveGameWrite(unsigned int *data, unsigned int size);
-extern unsigned int SaveGameRead(void *data, unsigned int size);
 extern void FUN_00498920(void);
 extern void FUN_0049e4d0(void *block);
 

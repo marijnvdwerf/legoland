@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "llidb.h"
 #include "tilemap.h"
 
 extern unsigned int DAT_006691a4;
@@ -29,15 +30,6 @@ struct SpriteManager {
     void *data_14;
 };
 
-struct LLS {
-    short frame;
-    unsigned short delay;
-    unsigned char pad_4[0x10 - 0x4];
-    short frame_count;
-    short loop_delay;
-    unsigned int flags;
-};
-
 struct LLSImage {
     unsigned char pad_0[0xc];
     unsigned int format;
@@ -45,12 +37,6 @@ struct LLSImage {
     unsigned char pad_12[0x2];
     unsigned char flags;
 };
-
-void LLIDB_FindElement(unsigned int param_1, unsigned int *param_2, unsigned int param_3);
-unsigned int LLIDB_RegisterNewElement(unsigned int param_1, unsigned int param_2, unsigned int param_3);
-void FUN_0047b7b0(unsigned int param_1);
-void LLIDB_UnLoadData(void *param_1);
-void LLSPlay(struct LLS *param_1, unsigned int param_2);
 
 // FUNCTION: LEGOLAND 0x0047aff0
 void LLIDB_LoadICM(void) { STUB(); }
@@ -75,12 +61,12 @@ int LLIDB_GetElement(unsigned int index, unsigned int *output) {
 }
 
 // FUNCTION: LEGOLAND 0x0047b330
-void LLIDB_FindElement(unsigned int param_1, unsigned int *param_2, unsigned int param_3) { STUB(); }
+int LLIDB_FindElement(const char *name, unsigned int *out, int zero) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047b3f0
-unsigned int ElemID(unsigned int id) {
-    LLIDB_FindElement(id, &id, 0);
-    return id;
+unsigned int ElemID(const char *name) {
+    LLIDB_FindElement(name, (unsigned int *)&name, 0);
+    return (unsigned int)name;
 }
 
 // FUNCTION: LEGOLAND 0x0047b410
@@ -191,7 +177,7 @@ void FUN_0047cdd0(struct SpriteManager *param_1) {
 
     FreeTileSpace(si->var_0, si->count);
     if (si->data_14 != NULL) {
-        LLIDB_UnLoadData(si->data_14);
+        LLIDB_UnLoadData((unsigned int)si->data_14);
     }
 
     FUN_0049e4d0(si);
@@ -210,13 +196,13 @@ void LLIDB_LoadILFData(void) { STUB(); }
 void LLIDB_LoadCSPData(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d3a0
-void LLIDB_LoadData(void) { STUB(); }
+void *LLIDB_LoadData(void *head) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d450
-void LLIDB_UnLoadData(void *param_1) { STUB(); }
+void LLIDB_UnLoadData(unsigned int handle) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d4c0
-void LLSStop(void) { STUB(); }
+void LLSStop(unsigned int handle) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d520
 void LLSPlay(struct LLS *param_1, unsigned int param_2) { STUB(); }

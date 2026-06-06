@@ -3,6 +3,7 @@
 #include "clipping.h"
 #include "freeplay.h"
 #include "icon.h"
+#include "llidb.h"
 
 struct FreePlaySpriteSlot {
     struct Sprite *field_0;
@@ -15,7 +16,6 @@ struct ElemRecord {
     unsigned char flags;
 };
 
-extern struct ElemRecord *ElemID(const char *name);
 extern int KillSprite(struct Sprite *sprite);
 extern void ReferenceSprite(int sprite);
 
@@ -60,7 +60,7 @@ unsigned int FUN_0048aef0(unsigned int arg1, struct ElemRecord *arg2) {
     if ((int)(DAT_007cb3a0 + result) <= 0x4e20) {
         if (arg2) {
             // STRING: LEGOLAND 0x004bb49c
-            elem = ElemID("BUILD MENU");
+            elem = (struct ElemRecord *)ElemID("BUILD MENU"); /* TODO: fold — ElemID handle (uint) viewed as ElemRecord* */
             if (arg2 != elem) {
                 if ((arg2->flags & 0x4) == 0) {
                     return 0;

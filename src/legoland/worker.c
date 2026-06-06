@@ -7,6 +7,7 @@
 #include "man3d.h"
 #include "bloke.h"
 #include "worker.h"
+#include "llidb.h"
 
 struct LegoConfig;
 
@@ -55,7 +56,6 @@ extern unsigned int DAT_00832bd8;
 extern float FLOAT_004ab480;
 extern struct LegoConfig *lpConfig;
 
-extern void *ElemID(const char *name);
 extern void *FUN_004a020e(unsigned int count, unsigned int size);
 extern void FUN_0049e4d0(void *block);
 extern void FUN_0045e4a0(int element, void *data);
@@ -63,7 +63,7 @@ extern void FUN_0045e4a0(int element, void *data);
 // FUNCTION: LEGOLAND 0x00499530
 void LoadWorkerInterfaceGFX(void) {
     // STRING: LEGOLAND 0x004b9bd0
-    DAT_0079abfc = ElemID("NORMAL PATH TILES");
+    DAT_0079abfc = (void *)ElemID("NORMAL PATH TILES"); /* TODO: fold — ElemID handle (uint) stored as void* */
 }
 
 // FUNCTION: LEGOLAND 0x00499550

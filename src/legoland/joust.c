@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "binv.h"
 #include "sound_music.h"
+#include "llidb.h"
 
 struct JoustNode {
     unsigned char pad_0[4];
@@ -68,7 +69,6 @@ extern struct Cursor EditCursor;
 
 extern void KillSprite(unsigned int sprite);
 extern void SetEditCursorFootPrint(void *foot_print);
-extern int SaveGameWrite(void *data, unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);
 
 // FUNCTION: LEGOLAND 0x00407970

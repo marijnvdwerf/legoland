@@ -9,6 +9,7 @@
 #include "objclass.h"
 #include "bloke.h"
 #include "objectives.h"
+#include "llidb.h"
 
 extern unsigned int DAT_00669098;
 extern unsigned int DAT_0066879c;
@@ -16,10 +17,8 @@ extern unsigned int DAT_007fdca4;
 
 extern unsigned int DAT_004bb5b0;
 
-extern unsigned int ElemID(unsigned int id);
 extern unsigned int LoadBaseMap(unsigned int param_1);
 extern void FUN_00462e50(unsigned int param_1, int param_2);
-extern void LLIDB_ClearOnLevel(void);
 extern int __strcmpi(const char *s1, const char *s2);
 extern int FUN_004a04b9(const char *str);
 
@@ -220,7 +219,7 @@ int FUN_004791f0(struct CommandArgs *arg, int argc) {
     if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
         return 0;
     }
-    id = ElemID(arg->field_4);
+    id = ElemID((const char *)arg->field_4);
     if (argc <= 1) {
         count = 1;
     } else {
@@ -259,7 +258,7 @@ int FUN_00479450(struct CommandArgs *arg, int argc) {
     if (FUN_004786c0((unsigned int)arg, argc, 2, 2) == 0) {
         return 0;
     }
-    id = ElemID(arg->field_4);
+    id = ElemID((const char *)arg->field_4);
     v1 = FUN_004a04b9(arg->field_8);
     if (argc >= 3) {
         v2 = FUN_004a04b9(arg->field_c);
@@ -295,7 +294,7 @@ int FUN_004796d0(struct CommandArgs *arg, int argc) {
     if (FUN_004786c0((unsigned int)arg, argc, 2, 2) == 0) {
         return 0;
     }
-    id = ElemID(arg->field_4);
+    id = ElemID((const char *)arg->field_4);
     count = FUN_004a04b9(arg->field_8);
     if (count == 0) {
         count = 1;
@@ -335,7 +334,7 @@ int FUN_00479850(struct CommandArgs *arg, int argc) {
     if (FUN_004786c0((unsigned int)arg, argc, 2, 2) == 0) {
         return 0;
     }
-    id = ElemID(arg->field_4);
+    id = ElemID((const char *)arg->field_4);
     value = FUN_004a04b9(arg->field_8);
     if (id != 0) {
         FUN_0046c0c0(DAT_00669050, id, value);
@@ -534,7 +533,7 @@ int FUN_0047a480(struct CommandArgs *arg, int argc) {
     if (FUN_004786c0((unsigned int)arg, argc, 4, 1) == 0) {
         return 0;
     }
-    id = ElemID(arg->field_4);
+    id = ElemID((const char *)arg->field_4);
     if (argc >= 2) {
         // STRING: LEGOLAND 0x004bc0c4
         if (__strcmpi(arg->field_8, "NOPOPUP") == 0) {
@@ -557,7 +556,7 @@ int FUN_0047a500(struct CommandArgs *arg, int argc) {
     if (FUN_004786c0((unsigned int)arg, argc, 4, 1) == 0) {
         return 0;
     }
-    id = ElemID(arg->field_4);
+    id = ElemID((const char *)arg->field_4);
     if (id != 0) {
         FUN_0046b7f0(id);
     }

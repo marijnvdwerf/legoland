@@ -3,6 +3,7 @@
 #include "ride_queue.h"
 #include "ride_bloke.h"
 #include "sound_music.h"
+#include "llidb.h"
 
 struct DrivingSchoolNode {
     struct DrivingSchoolNode *next;
@@ -70,8 +71,6 @@ extern unsigned int DAT_0082c6a8;
 extern unsigned short DAT_0082c6ac;
 extern char DRIVING_SCHOOL_SFX[];
 
-extern unsigned int LLIDB_FindElement(char *name, unsigned int *out, unsigned int param_3);
-extern void LLIDB_UnLoadData(unsigned int data);
 extern void FUN_00411bd0(void);
 extern void KillSprite(unsigned int sprite);
 extern void FUN_0049e4d0(unsigned int ptr);

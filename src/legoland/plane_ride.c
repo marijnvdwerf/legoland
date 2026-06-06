@@ -4,6 +4,7 @@
 #include "binv.h"
 #include "obj_instance.h"
 #include "sound_music.h"
+#include "llidb.h"
 
 struct PlaneRideNode {
     unsigned char pad_0[0x20];
@@ -72,7 +73,6 @@ extern int FUN_0049e4b2(void);
 extern void KillSprite(unsigned int sprite);
 extern void SetEditCursorFootPrint(void *foot_print);
 extern void StandardRemoveObject(struct PlaneRideObject *a1, struct PlaneRideObject *a2, struct PlaneRideObject *a3);
-extern int SaveGameWrite(void *data, unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);
 
 void FUN_0043d9f0(void *param_1);

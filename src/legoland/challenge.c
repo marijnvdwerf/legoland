@@ -9,6 +9,7 @@
 #include "challenge.h"
 #include "icon.h"
 #include "sound_music.h"
+#include "llidb.h"
 
 struct AnimHandle;
 struct RideElem;
@@ -50,9 +51,6 @@ struct Bloke {
 
 extern unsigned int CreateSourceImage(unsigned int param_1, unsigned int param_2);
 extern void KillImage(unsigned int image);
-extern unsigned int SaveGameWrite(const void *data, unsigned int size);
-extern unsigned int SaveGameRead(void *data, unsigned int size);
-extern struct RideElem *ElemID(const char *name);
 extern void KillSprite(unsigned int sprite);
 
 extern unsigned int DAT_00665e8c;
@@ -318,7 +316,7 @@ unsigned int FUN_004442c0(void) {
     struct RideElem *elem;
 
     // STRING: LEGOLAND 0x004b80b0
-    elem = ElemID("DRIVING SCHOOL");
+    elem = (struct RideElem *)ElemID("DRIVING SCHOOL"); /* TODO: fold — ElemID handle (uint) viewed as RideElem* */
     if ((elem->flags & 1) != 0) {
         return elem->obj->func(elem->obj->arg, 0);
     }
@@ -330,7 +328,7 @@ unsigned int FUN_004442f0(void) {
     struct RideElem *elem;
 
     // STRING: LEGOLAND 0x004b536c
-    elem = ElemID("BOATING SCHOOL");
+    elem = (struct RideElem *)ElemID("BOATING SCHOOL");
     if ((elem->flags & 1) != 0) {
         return elem->obj->func(elem->obj->arg, 0);
     }
@@ -345,7 +343,7 @@ unsigned int FUN_00444350(void) {
     struct RideElem *elem;
 
     // STRING: LEGOLAND 0x004b4bb4
-    elem = ElemID("LOG FLUME ENTRANCE");
+    elem = (struct RideElem *)ElemID("LOG FLUME ENTRANCE");
     if ((elem->flags & 1) != 0) {
         return elem->obj->func(elem->obj->arg, 0);
     }
@@ -357,7 +355,7 @@ unsigned int FUN_00444380(void) {
     struct RideElem *elem;
 
     // STRING: LEGOLAND 0x004b80c0
-    elem = ElemID("JUNGLE CRUISE");
+    elem = (struct RideElem *)ElemID("JUNGLE CRUISE");
     if ((elem->flags & 1) != 0) {
         return elem->obj->func(elem->obj->arg, 0);
     }

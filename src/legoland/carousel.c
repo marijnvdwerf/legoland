@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "binv.h"
 #include "sound_music.h"
+#include "llidb.h"
 
 struct CarouselNode {
     struct CarouselNode *next;
@@ -55,7 +56,6 @@ extern struct Cursor EditCursor;
 
 extern void KillSprite(unsigned int sprite);
 extern void SetEditCursorFootPrint(void *foot_print);
-extern int SaveGameWrite(void *data, unsigned int size);
 extern int FUN_0049e4b2(void);
 
 // FUNCTION: LEGOLAND 0x0042bbc0

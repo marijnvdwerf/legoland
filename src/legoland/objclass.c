@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "objclass.h"
+#include "llidb.h"
 
 struct ObjectClass {
     struct ObjectClass *next;
@@ -103,7 +104,6 @@ struct ObjInstance {
     unsigned int field_10;
 };
 
-extern unsigned int LLIDB_LoadData(struct ObjectClass *cls);
 extern void SetEditCursorFootPrint(unsigned int param);
 extern void CalcBasicObjectCursor(void);
 extern void AddBasicObject(void);
@@ -177,7 +177,7 @@ void FUN_00480aa0(struct ObjClassNames *names, struct ObjectInfo *info) {
 unsigned int LoadObjectClass(struct ObjectClass *cls) {
     unsigned int result;
 
-    result = LLIDB_LoadData(cls);
+    result = (unsigned int)LLIDB_LoadData(cls); /* TODO: fold — LLIDB_LoadData handle as uint */
     if (result != 0) {
         cls->field_8 |= 0x4;
     }

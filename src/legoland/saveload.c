@@ -2,8 +2,7 @@
 
 #include "timer.h"
 #include "saveload.h"
-
-extern int SaveGameRead(void *data, unsigned int size);
+#include "llidb.h"
 
 extern unsigned int *DAT_00669200;
 extern unsigned int DAT_00669204;

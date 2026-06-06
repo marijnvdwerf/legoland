@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "ride_queue.h"
 #include "log_flume.h"
+#include "llidb.h"
 
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e5c5(const char *msg);
@@ -88,7 +89,6 @@ extern int __strcmpi(const char *s1, const char *s2);
 extern void GetTileDimensions(int *param1, int *param2);
 extern void FUN_0049e4d0(void *block);
 extern void SetEditCursorFootPrint(unsigned int param);
-extern void LLIDB_UnLoadData(unsigned int handle);
 extern void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, unsigned int param_3);
 
 struct ChainNode {

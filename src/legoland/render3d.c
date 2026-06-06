@@ -1,6 +1,7 @@
 #include "legoland.h"
 #include "man3d.h"
 #include "render3d.h"
+#include "llidb.h"
 #include <math.h>
 
 extern void *DAT_0081c8cc;
@@ -21,7 +22,6 @@ extern unsigned int DAT_00638218[];
 
 extern void FUN_0049e4d0(void *block);
 extern void KillSprite(unsigned int sprite);
-extern void LLSStop(unsigned int handle);
 
 struct Viewport {
     unsigned int field_0;

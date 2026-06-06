@@ -3,6 +3,7 @@
 #include <dinput.h>
 
 #include "icon.h"
+#include "llidb.h"
 
 struct DInputDeviceVtbl {
     void *pad_0[2];
@@ -27,9 +28,6 @@ extern unsigned char DAT_007fddd6;
 extern unsigned int DAT_004baff8;
 extern unsigned int DAT_00668e34;
 extern unsigned char DAT_007fdd80;
-
-extern void SaveGameWrite(void *data, unsigned int size);
-extern void SaveGameRead(void *data, unsigned int size);
 
 // FUNCTION: LEGOLAND 0x00473870
 void InitInputSystem(void) { STUB(); }
