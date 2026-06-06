@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "objclass.h"
+#include "map_object.h"
 
 struct NameNode {
     unsigned short value;
@@ -10,8 +11,6 @@ struct NameNode {
 };
 
 extern struct NameNode *DAT_004cc03c;
-
-extern void SetEditCursorFootPrint(unsigned int *footprint);
 
 extern unsigned int EditMode;
 extern struct Cursor EditCursor;

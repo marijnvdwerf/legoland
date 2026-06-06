@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "money.h"
 #include "llidb.h"
+#include "map_object.h"
 
 struct Building {
     unsigned char pad_0[0x1c];
@@ -21,7 +22,6 @@ struct JailCell {
 
 extern unsigned int LoadSprite(const char *filename, unsigned int param_2);
 extern void KillSprite(unsigned int sprite);
-extern void SetEditCursorFootPrint(void *param_1);
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *ptr);
 

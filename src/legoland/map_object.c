@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "gamemap.h"
+#include "map_object.h"
 #include "timer.h"
 #include "tilemap.h"
 
@@ -32,14 +33,6 @@ struct ObjFlags {
 struct ObjState {
     unsigned char pad_0[0x20];
     unsigned short state;
-};
-
-struct EditFootprint {
-    unsigned int field_0;
-    unsigned int field_4;
-    unsigned int field_8;
-    unsigned int field_c;
-    unsigned int field_10;
 };
 
 struct CursorObj {
@@ -105,11 +98,6 @@ extern unsigned int DAT_00667d54;
 extern int DAT_00667d58;
 extern int DAT_00832980;
 
-void FUN_00460f50(int *coord, unsigned int a, unsigned int b, unsigned int c);
-void FUN_004610f0(int *a, int *b);
-void FUN_00461290(unsigned int a, unsigned int b, unsigned int c, unsigned int d);
-void ValidateCursor(struct Cursor *cursor, unsigned int param);
-
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *block);
 
@@ -126,7 +114,7 @@ void FUN_0045e080(void) { STUB(); }
 void FUN_0045e300(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045e4a0
-void FUN_0045e4a0(void) { STUB(); }
+void FUN_0045e4a0(int element, void *data) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045e620
 void FUN_0045e620(void) { STUB(); }
@@ -210,16 +198,16 @@ void ApplyDestrTileMap(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0045efe0
-void AddBasicObject(void) { STUB(); }
+unsigned int AddBasicObject(unsigned int param1, unsigned int param2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045f100
 void RemoveObjectFromMap(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045f220
-void StandardRemoveObject(void) { STUB(); }
+void StandardRemoveObject(unsigned int a, unsigned int b, unsigned int c) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045f440
-void SetEditCursorFootPrint(struct EditFootprint *src) {
+void SetEditCursorFootPrint(void *src) {
     memcpy(EditCursor.field_1414, src, 20);
 }
 
@@ -293,7 +281,7 @@ void GetTileDimensions(int *width, int *height) {
 }
 
 // FUNCTION: LEGOLAND 0x00460560
-void FUN_00460560(void) { STUB(); }
+void FUN_00460560(int index) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004608c0
 void FUN_004608c0(void) { STUB(); }
@@ -452,7 +440,7 @@ void GetObjectClassAndInstance(void) { STUB(); }
 void FUN_004618d0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00461a50
-void LoadBaseMap(void) { STUB(); }
+unsigned int LoadBaseMap(unsigned int param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004629e0
 void FUN_004629e0(void) { STUB(); }

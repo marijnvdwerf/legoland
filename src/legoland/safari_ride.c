@@ -4,6 +4,7 @@
 #include "binv.h"
 #include "sound_music.h"
 #include "llidb.h"
+#include "map_object.h"
 
 extern void *DAT_004cbf0c;
 extern unsigned int DAT_004cbec4;
@@ -21,7 +22,6 @@ extern void *DAT_008119b8;
 extern struct Cursor EditCursor;
 
 extern void KillSprite(unsigned int sprite);
-extern void SetEditCursorFootPrint(void *foot_print);
 extern void *_malloc(unsigned int size);
 
 struct SafariNode {

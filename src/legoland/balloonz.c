@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "binv.h"
 #include "llidb.h"
+#include "map_object.h"
 
 struct BalloonC {
     unsigned char pad_0[0x10];
@@ -33,7 +34,6 @@ struct CursorState {
 };
 
 extern void KillSprite(unsigned int sprite);
-extern void SetEditCursorFootPrint(unsigned int *foot_print);
 
 extern void *DAT_00616060;
 extern void *DAT_00616018;

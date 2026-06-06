@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "binv.h"
 #include "llidb.h"
+#include "map_object.h"
 
 typedef void (*BarrelVtblFn)(void);
 
@@ -59,7 +60,6 @@ extern void *DAT_0062fdc8;
 
 extern void *_malloc(unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);
-extern void SetEditCursorFootPrint(unsigned int *arg);
 extern void KillSprite(void *sprite);
 extern int FUN_0049e4b2(void);
 

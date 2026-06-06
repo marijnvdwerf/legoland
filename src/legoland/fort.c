@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "gamemap.h"
+#include "map_object.h"
 
 typedef void (*FortVtblFn)(void);
 
@@ -30,8 +31,6 @@ extern struct Cursor EditCursor;
 extern struct EditCursorData *DAT_008119b8;
 extern int __strcmpi(const char *s1, const char *s2);
 extern void KillSprite(unsigned int sprite);
-extern void SetEditCursorFootPrint(unsigned char *footprint);
-extern unsigned int AddBasicObject(unsigned int param1, unsigned int param2);
 
 // FUNCTION: LEGOLAND 0x00406240
 void FUN_00406240(void) { STUB(); }

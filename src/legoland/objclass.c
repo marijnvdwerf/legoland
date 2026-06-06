@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "objclass.h"
 #include "llidb.h"
+#include "map_object.h"
 
 struct ObjectClass {
     struct ObjectClass *next;
@@ -104,11 +105,6 @@ struct ObjInstance {
     unsigned int field_10;
 };
 
-extern void SetEditCursorFootPrint(unsigned int param);
-extern void CalcBasicObjectCursor(void);
-extern void AddBasicObject(void);
-extern void StandardRemoveObject(void);
-
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *block);
 extern int __strcmpi(const char *s1, const char *s2);
@@ -193,7 +189,7 @@ void FUN_00480b70(struct ObjClassNames *param) {
     EditMode = 1;
     DAT_008119b8 = value;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((unsigned int)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((void *)((unsigned int)DAT_008119b8 + 0x3c));
 }
 
 // FUNCTION: LEGOLAND 0x00480bb0

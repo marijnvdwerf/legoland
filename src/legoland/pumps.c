@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "gamemap.h"
+#include "map_object.h"
 
 struct PumpNode {
     unsigned char pad_0[2];
@@ -15,8 +16,6 @@ struct PumpSource {
     unsigned int var_c;
 };
 
-extern void SetEditCursorFootPrint(void *foot_print);
-extern void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, unsigned int param_3);
 extern void FUN_0049e4d0(void *block);
 
 extern unsigned int DAT_004cbe9c;

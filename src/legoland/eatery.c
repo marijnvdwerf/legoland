@@ -7,13 +7,10 @@
 #include "render3d.h"
 #include "sound_music.h"
 #include "llidb.h"
+#include "map_object.h"
 
-extern void SetEditCursorFootPrint(unsigned int param);
 extern void KillSprite(void *sprite);
 extern void *LoadSprite(const char *name, int param);
-extern void AddBasicObject(unsigned int self, void *param);
-extern void StandardRemoveObject(unsigned int self, unsigned int a, unsigned int b);
-extern void Set_UserFlags(int x, int y, unsigned short value);
 extern void FUN_0049e4d0(void *ptr);
 extern void *_malloc(unsigned int size);
 
@@ -178,7 +175,7 @@ void FUN_0042e4c0(void) {
     EditMode = 1;
     DAT_008119b8 = (void *)temp;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((unsigned int)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((void *)((unsigned int)DAT_008119b8 + 0x3c));
 }
 
 // FUNCTION: LEGOLAND 0x0042e500
@@ -272,7 +269,7 @@ void FUN_0042e8d0(struct EditArg *arg) {
     EditMode = 1;
     DAT_008119b8 = (void *)temp;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((unsigned int)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((void *)((unsigned int)DAT_008119b8 + 0x3c));
 }
 
 // FUNCTION: LEGOLAND 0x0042e910
@@ -480,7 +477,7 @@ void FUN_00431300(struct EateryObj *obj) {
 
 // FUNCTION: LEGOLAND 0x004314f0
 void FUN_004314f0(unsigned int param_1, struct UserFlagsArg *param_2) {
-    AddBasicObject(param_1, param_2);
+    AddBasicObject(param_1, (unsigned int)param_2);
     Set_UserFlags(param_2->var_0, param_2->var_4, 0);
 }
 

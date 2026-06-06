@@ -4,6 +4,7 @@
 #include "binv.h"
 #include "sound_music.h"
 #include "llidb.h"
+#include "map_object.h"
 
 struct CarouselNode {
     struct CarouselNode *next;
@@ -55,7 +56,6 @@ extern void *DAT_008119b8;
 extern struct Cursor EditCursor;
 
 extern void KillSprite(unsigned int sprite);
-extern void SetEditCursorFootPrint(void *foot_print);
 extern int FUN_0049e4b2(void);
 
 // FUNCTION: LEGOLAND 0x0042bbc0

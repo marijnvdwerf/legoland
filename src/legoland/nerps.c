@@ -11,6 +11,7 @@
 #include "objectives.h"
 #include "worker.h"
 #include "interface.h"
+#include "map_object.h"
 
 struct NerpsArg {
     unsigned char pad_0[0x4];
@@ -115,9 +116,6 @@ extern int DAT_00667ce8;
 extern int DAT_00667cec;
 extern int DAT_00667ce0;
 
-extern void FUN_00462e50(unsigned int param_1, unsigned int param_2);
-extern void FUN_00462e70(unsigned int param_1, unsigned int param_2);
-
 extern struct EventList *DAT_0066879c;
 extern unsigned int DAT_00668614;
 extern unsigned int DAT_00668618;
@@ -144,7 +142,6 @@ extern unsigned int DAT_007fd624;
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *block);
 extern unsigned int DAT_00832ba8;
-extern void FUN_004629e0(void);
 extern void FUN_0046ce20(void);
 extern unsigned int DAT_00810140;
 extern unsigned int DAT_007fe050;

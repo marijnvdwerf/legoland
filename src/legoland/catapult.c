@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "render3d.h"
 #include "sound_music.h"
+#include "map_object.h"
 
 typedef void (*CatapultVtblFn)(void);
 
@@ -67,7 +68,6 @@ extern unsigned int EditMode;
 extern struct Cursor EditCursor;
 
 extern void HideLayer(void *layer, unsigned int flag);
-extern void SetEditCursorFootPrint(void *footprint);
 extern int __strcmpi(const char *s1, const char *s2);
 
 // FUNCTION: LEGOLAND 0x004030f0

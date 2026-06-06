@@ -5,6 +5,7 @@
 #include "obj_instance.h"
 #include "sound_music.h"
 #include "llidb.h"
+#include "map_object.h"
 
 struct PlaneRideNode {
     unsigned char pad_0[0x20];
@@ -71,8 +72,6 @@ extern struct Cursor EditCursor;
 extern void *_malloc(unsigned int size);
 extern int FUN_0049e4b2(void);
 extern void KillSprite(unsigned int sprite);
-extern void SetEditCursorFootPrint(void *foot_print);
-extern void StandardRemoveObject(struct PlaneRideObject *a1, struct PlaneRideObject *a2, struct PlaneRideObject *a3);
 extern int __strcmpi(const char *s1, const char *s2);
 
 void FUN_0043d9f0(void *param_1);
@@ -149,7 +148,7 @@ void FUN_0043df90(struct PlaneRideObject *a1, struct PlaneRideObject *a2, struct
     if (temp != 0) {
         FUN_0043d8c0((void *)temp);
     }
-    StandardRemoveObject(a1, a2, a3);
+    StandardRemoveObject((unsigned int)a1, (unsigned int)a2, (unsigned int)a3);
     RemoveAllBlokesFromRide(a1->field_c, a2);
 }
 

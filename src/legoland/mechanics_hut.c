@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "gamemap.h"
+#include "map_object.h"
 
 struct HutObject {
     unsigned char pad_0[0x1c];
@@ -27,8 +28,6 @@ extern struct Cursor EditCursor;
 extern struct EditCursorData *DAT_008119b8;
 extern unsigned int LoadSprite(const char *name, int flags);
 extern void KillSprite(unsigned int sprite);
-extern void SetEditCursorFootPrint(unsigned char *footprint);
-extern unsigned int AddBasicObject(unsigned int param1, unsigned int param2);
 
 // FUNCTION: LEGOLAND 0x0043d250
 unsigned int FUN_0043d250(struct HutContext *ctx) {

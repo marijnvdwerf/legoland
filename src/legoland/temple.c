@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "obj_instance.h"
+#include "map_object.h"
 
 typedef void (*TempleHandler)(void);
 
@@ -31,9 +32,6 @@ extern struct Cursor EditCursor;
 extern void *DAT_008119b8;
 
 extern void KillSprite(unsigned int sprite);
-extern void SetEditCursorFootPrint(unsigned int src);
-extern void AddBasicObject(unsigned int param_1, unsigned int param_2);
-extern void StandardRemoveObject(struct TempleObject *a1, void *a2, unsigned int a3);
 extern int __strcmpi(const char *a, const char *b);
 
 // FUNCTION: LEGOLAND 0x004169c0
@@ -61,7 +59,7 @@ void FUN_00416dc0(void) {
     EditMode = 1;
     DAT_008119b8 = temp;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((unsigned int)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((void *)((unsigned int)DAT_008119b8 + 0x3c));
 }
 
 // FUNCTION: LEGOLAND 0x00416e00
@@ -71,7 +69,7 @@ void FUN_00416e00(unsigned int param_1, unsigned int param_2) {
 
 // FUNCTION: LEGOLAND 0x00416e20
 void FUN_00416e20(struct TempleObject *a1, void *a2, unsigned int a3) {
-    StandardRemoveObject(a1, a2, a3);
+    StandardRemoveObject((unsigned int)a1, (unsigned int)a2, a3);
     RemoveAllBlokesFromRide(a1->field_c, a2);
 }
 

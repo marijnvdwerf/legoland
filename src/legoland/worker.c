@@ -8,6 +8,7 @@
 #include "bloke.h"
 #include "worker.h"
 #include "llidb.h"
+#include "map_object.h"
 
 struct LegoConfig;
 
@@ -58,7 +59,6 @@ extern struct LegoConfig *lpConfig;
 
 extern void *FUN_004a020e(unsigned int count, unsigned int size);
 extern void FUN_0049e4d0(void *block);
-extern void FUN_0045e4a0(int element, void *data);
 
 // FUNCTION: LEGOLAND 0x00499530
 void LoadWorkerInterfaceGFX(void) {

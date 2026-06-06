@@ -6,6 +6,7 @@
 #include "tilemap.h"
 #include "objclass.h"
 #include "llidb.h"
+#include "map_object.h"
 
 struct RoadQueueEntry {
     struct RoadQueueEntry *next;
@@ -60,10 +61,6 @@ extern struct Cursor EditCursor;
 extern struct Cursor QueryCursor;
 
 extern void FUN_0049e4d0(void *block);
-extern void SetEditCursorFootPrint(void *footprint);
-extern void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, unsigned int param_3);
-extern void FUN_0045f480(struct Cursor *cursor, unsigned int a);
-extern void FUN_0045f460(struct Cursor *cursor);
 extern unsigned int FUN_00411aa0(unsigned int a, unsigned int b);
 
 // FUNCTION: LEGOLAND 0x004132a0

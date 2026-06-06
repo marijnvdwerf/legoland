@@ -4,6 +4,7 @@
 #include "ride_queue.h"
 #include "log_flume.h"
 #include "llidb.h"
+#include "map_object.h"
 
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e5c5(const char *msg);
@@ -86,10 +87,7 @@ extern unsigned int DAT_004c2aec;
 extern unsigned int DAT_004c2b64;
 extern unsigned int DAT_0082c688;
 extern int __strcmpi(const char *s1, const char *s2);
-extern void GetTileDimensions(int *param1, int *param2);
 extern void FUN_0049e4d0(void *block);
-extern void SetEditCursorFootPrint(unsigned int param);
-extern void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, unsigned int param_3);
 
 struct ChainNode {
     struct ChainNode *next;
@@ -802,7 +800,7 @@ void FUN_0040a540(void) {
     EditMode = 1;
     DAT_008119b8 = (void *)DAT_004c2b9c;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((unsigned int)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((void *)((unsigned int)DAT_008119b8 + 0x3c));
 }
 
 // FUNCTION: LEGOLAND 0x0040a580
@@ -1114,7 +1112,7 @@ unsigned int FUN_0040d3b0(void *param_1, unsigned int *param_2) {
     DefaultCursor(&EditCursor);
     EditCursor.field_1828 |= 8;
     BuildCursorPtr(&EditCursor, 0x8f8, 0);
-    SetEditCursorFootPrint((unsigned int)param_2);
+    SetEditCursorFootPrint((void *)param_2);
     DAT_004cbdd8 = 0x2034;
     DAT_004c2a88 = 0x2034;
     DAT_004c5c90 = 0x2034;

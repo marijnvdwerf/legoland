@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "man3d.h"
 #include "render3d.h"
+#include "map_object.h"
 
 struct Sprite;
 struct RinData;
@@ -90,7 +91,6 @@ extern void *DAT_008119b8;
 
 extern void *_malloc(unsigned int size);
 extern void KillSprite(struct Sprite *sprite);
-extern void SetEditCursorFootPrint(unsigned int *footprint);
 
 // FUNCTION: LEGOLAND 0x0042cd70
 void FUN_0042cd70(unsigned short *a1)

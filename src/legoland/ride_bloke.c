@@ -5,6 +5,7 @@
 #include "ride_queue.h"
 #include "ride_bloke.h"
 #include "draw.h"
+#include "map_object.h"
 
 extern void *DAT_004c10d4;
 extern int DAT_004cbeb0;
@@ -13,8 +14,6 @@ extern unsigned int DAT_0082c690;
 extern unsigned int DAT_0082c6b8;
 extern unsigned int DAT_0082c6bc;
 extern unsigned int DAT_00830f94;
-
-extern unsigned char Get_RFFlags(int x, int y);
 
 struct Sprite {
     unsigned char pad_0[0x14];

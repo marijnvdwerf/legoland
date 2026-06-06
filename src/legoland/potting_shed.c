@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "gamemap.h"
+#include "map_object.h"
 
 struct PSCarInner {
     unsigned char pad_0[0x10];
@@ -34,9 +35,6 @@ struct EditTarget {
     unsigned char field_3c;
 };
 
-struct Cursor;
-struct EditFootprint;
-
 extern void *DAT_0081caf0;
 extern unsigned int DAT_0062fe48;
 extern unsigned int DAT_0062fe4c;
@@ -49,9 +47,7 @@ extern struct Cursor EditCursor;
 extern void *DAT_008119b8;
 
 extern unsigned int LoadSprite(const char *lpFileName, unsigned int flags);
-extern unsigned int AddBasicObject(unsigned int param_1, unsigned int param_2);
 extern void KillSprite(unsigned int sprite);
-extern void SetEditCursorFootPrint(struct EditFootprint *src);
 
 // FUNCTION: LEGOLAND 0x0043ce60
 int FUN_0043ce60(int a1) {
@@ -93,7 +89,7 @@ void FUN_0043d1d0(void) {
     EditMode = 1;
     DAT_008119b8 = p;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((struct EditFootprint *)&((struct EditTarget *)DAT_008119b8)->field_3c);
+    SetEditCursorFootPrint(&((struct EditTarget *)DAT_008119b8)->field_3c);
 }
 
 // FUNCTION: LEGOLAND 0x0043d210

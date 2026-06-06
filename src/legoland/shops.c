@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "money.h"
 #include "obj_instance.h"
+#include "map_object.h"
 
 struct Building {
     unsigned char pad_0[0x1c];
@@ -30,9 +31,6 @@ struct RideObject {
 
 extern unsigned int LoadSprite(const char *filename, unsigned int param_2);
 extern void KillSprite(unsigned int sprite);
-extern void SetEditCursorFootPrint(void *param_1);
-extern void AddBasicObject(struct MapObject *obj, void *param_2);
-extern void StandardRemoveObject(struct RideObject *obj, void *param_2, void *param_3);
 
 extern unsigned int DAT_0081cb18;
 extern unsigned int DAT_0081cb20;
@@ -71,7 +69,7 @@ void FUN_004392b0(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00439320
 void FUN_00439320(struct MapObject *obj, void *param_2) {
     struct Building *building = obj->building;
-    AddBasicObject(obj, param_2);
+    AddBasicObject((unsigned int)obj, (unsigned int)param_2);
     FUN_00439230((unsigned int)building, param_2);
 }
 
@@ -142,7 +140,7 @@ void FUN_00439c20(struct MapObject *obj) {
 // FUNCTION: LEGOLAND 0x00439c60
 void FUN_00439c60(struct MapObject *obj, void *param_2) {
     struct Building *building = obj->building;
-    AddBasicObject(obj, param_2);
+    AddBasicObject((unsigned int)obj, (unsigned int)param_2);
     FUN_00439230((unsigned int)building, param_2);
 }
 
@@ -213,7 +211,7 @@ unsigned int *FUN_0043a390(struct RideObject *obj, unsigned short param_2) {
 
 // FUNCTION: LEGOLAND 0x0043a3d0
 void FUN_0043a3d0(struct RideObject *obj, void *param_2, void *param_3) {
-    StandardRemoveObject(obj, param_2, param_3);
+    StandardRemoveObject((unsigned int)obj, (unsigned int)param_2, (unsigned int)param_3);
     RemoveAllBlokesFromRide((unsigned int)obj->building, param_2);
 }
 

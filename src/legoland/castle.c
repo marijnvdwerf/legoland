@@ -10,6 +10,7 @@
 #include "castle.h"
 #include "interface.h"
 #include "llidb.h"
+#include "map_object.h"
 #include <math.h>
 
 extern unsigned int DAT_004d8268;
@@ -26,8 +27,6 @@ struct LookupResult;
 struct CastleObj;
 struct Anim;
 
-extern void AddBasicObject(unsigned int param1, unsigned int param2);
-extern void StandardRemoveObject(unsigned int param1, unsigned int param2, unsigned int param3);
 extern unsigned int DAT_004d8a40[];
 extern unsigned int DAT_004d8abc[];
 extern unsigned int DAT_004d8b34[];
@@ -71,7 +70,6 @@ extern void KillSprite(unsigned int sprite);
 extern unsigned int DAT_008119b8;
 extern unsigned int EditMode;
 extern struct Cursor EditCursor;
-extern unsigned int SetEditCursorFootPrint(const char *footprint);
 extern unsigned int DAT_006103a8;
 extern float FLOAT_004ab454;
 extern float FLOAT_004ab458;
@@ -2078,7 +2076,7 @@ unsigned int FUN_00424240(void) {
     DAT_008119b8 = DAT_00829bf8;
     DefaultCursor(&EditCursor);
     FUN_00423de0();
-    return SetEditCursorFootPrint(DAT_00829a80);
+    return ((unsigned int (*)(const char *))SetEditCursorFootPrint)(DAT_00829a80); /* TODO: fold — SetEditCursorFootPrint leaves memcpy's eax, used here as uint return */
 }
 
 // FUNCTION: LEGOLAND 0x00424280
@@ -2997,7 +2995,6 @@ struct Struct4274f0Coord {
 };
 
 extern void *DAT_00829980;
-extern void SetMapTile(int x, int y, unsigned short value);
 
 // FUNCTION: LEGOLAND 0x004274f0
 void FUN_004274f0(struct Struct4274f0Coord *coord) {
@@ -3028,7 +3025,7 @@ void FUN_00427940(struct Struct427940 *param_1) {
     unsigned int value = param_1->field_c;
     EditMode = 1;
     DAT_008119b8 = value;
-    SetEditCursorFootPrint((const char *)(value + 60));
+    SetEditCursorFootPrint((void *)(value + 60));
     EditCursor.field_1830 = 0;
 }
 

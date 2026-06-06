@@ -10,15 +10,13 @@
 #include "bloke.h"
 #include "objectives.h"
 #include "llidb.h"
+#include "map_object.h"
 
 extern unsigned int DAT_00669098;
 extern unsigned int DAT_0066879c;
 extern unsigned int DAT_007fdca4;
 
 extern unsigned int DAT_004bb5b0;
-
-extern unsigned int LoadBaseMap(unsigned int param_1);
-extern void FUN_00462e50(unsigned int param_1, int param_2);
 extern int __strcmpi(const char *s1, const char *s2);
 extern int FUN_004a04b9(const char *str);
 

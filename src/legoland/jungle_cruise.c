@@ -5,6 +5,7 @@
 #include "objclass.h"
 #include "render3d.h"
 #include "llidb.h"
+#include "map_object.h"
 
 struct JungleNode {
     unsigned short field_0;
@@ -94,7 +95,6 @@ extern struct Cursor EditCursor;
 
 extern unsigned int LoadSprite(const char *name, int flags);
 extern void KillSprite(unsigned int sprite);
-extern void SetEditCursorFootPrint(unsigned char *foot);
 
 extern unsigned int DAT_0082c6a0;
 extern unsigned int DAT_0082c6a4;

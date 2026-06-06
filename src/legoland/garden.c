@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "llidb.h"
+#include "map_object.h"
 
 struct GardenLayer {
     unsigned char pad_0[0xc];
@@ -18,9 +19,6 @@ struct EditTarget {
     unsigned int field_3c;
 };
 
-struct Cursor;
-struct EditFootprint;
-
 extern unsigned int DAT_0061615c;
 extern unsigned int DAT_0081cd08;
 extern unsigned int DAT_0061614c;
@@ -30,8 +28,6 @@ extern void *DAT_0081cd04;
 extern unsigned int EditMode;
 extern struct Cursor EditCursor;
 extern void *DAT_008119b8;
-
-extern void SetEditCursorFootPrint(struct EditFootprint *src);
 
 // FUNCTION: LEGOLAND 0x00432480
 void FUN_00432480(struct GardenLayer *arg0) {
@@ -88,7 +84,7 @@ void FUN_004328c0(void) {
     EditMode = 1;
     DAT_008119b8 = var;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((struct EditFootprint *)&((struct EditTarget *)DAT_008119b8)->field_3c);
+    SetEditCursorFootPrint(&((struct EditTarget *)DAT_008119b8)->field_3c);
 }
 
 // FUNCTION: LEGOLAND 0x00432900

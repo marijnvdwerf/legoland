@@ -5,6 +5,7 @@
 #include "sound_music.h"
 #include "space_tower.h"
 #include "render3d.h"
+#include "map_object.h"
 
 struct RideObject {
     unsigned short var_0;
@@ -73,7 +74,6 @@ extern const unsigned char SPACE_TOWER_SFX[15];
 
 extern void KillSprite(void *sprite);
 extern int __strcmpi(const char *s1, const char *s2);
-extern void SetEditCursorFootPrint(unsigned int arg);
 
 // FUNCTION: LEGOLAND 0x0043a7a0
 void FUN_0043a7a0(void) { STUB(); }
@@ -161,7 +161,7 @@ void FUN_0043b420(void) {
     EditMode = 1;
     DAT_008119b8 = (unsigned int)DAT_0062fd74;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((void *)(DAT_008119b8 + 0x3c));
 }
 
 // FUNCTION: LEGOLAND 0x0043b460

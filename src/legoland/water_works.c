@@ -7,6 +7,7 @@
 #include "draw.h"
 #include "sound_music.h"
 #include "llidb.h"
+#include "map_object.h"
 
 struct WaterNode {
     struct WaterNode *next;
@@ -120,12 +121,8 @@ extern struct Cursor EditCursor;
 extern void RemoveSoundObject(unsigned int a, unsigned int b, unsigned int c);
 extern void KillSprite(unsigned int sprite);
 extern unsigned int LoadSprite(const char *name, int flags);
-extern void StandardRemoveObject(unsigned int a, unsigned int b, unsigned int c);
-extern void ValidateCursor(struct Cursor *cursor, void *data);
 extern void FUN_0049e4d0(void *block);
 extern void *_malloc(unsigned int size);
-extern void FUN_0045f480(struct Cursor *cursor, unsigned int a);
-extern void FUN_0045f4d0(struct Cursor *cursor);
 
 // FUNCTION: LEGOLAND 0x00417a90
 unsigned int FUN_00417a90(void) {
@@ -460,7 +457,7 @@ void FUN_00418a30(struct CursorNode *arg, unsigned int a, unsigned int b) {
     memcpy(EditCursor.field_1414, &data->field_3c, 5 * sizeof(unsigned int));
     EditCursor.field_1830 = 0;
     ScreenToMapRef(a, &EditCursor.field_1404, b);
-    ValidateCursor(&EditCursor, data);
+    ValidateCursor(&EditCursor, (unsigned int)data);
     if (FUN_00417c90() != 0) {
         return;
     }

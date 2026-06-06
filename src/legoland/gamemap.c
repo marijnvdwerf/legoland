@@ -4,6 +4,7 @@
 #include "timer.h"
 #include "sound_music.h"
 #include "llidb.h"
+#include "map_object.h"
 
 extern unsigned int DAT_0080ff64;
 extern const unsigned char DAT_004b9228[1];
@@ -134,8 +135,6 @@ void AddObjectsPowerStats(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a230
 void RemoveObjectsPowerStats(void) { STUB(); }
-
-extern void FUN_0045f460(struct Cursor *cursor);
 
 // FUNCTION: LEGOLAND 0x0045a390
 void DefaultCursor(struct Cursor *cursor) {

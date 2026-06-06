@@ -16,6 +16,7 @@
 #include "worker.h"
 #include "icon.h"
 #include "interface.h"
+#include "map_object.h"
 
 struct ScreenConfig {
     unsigned short width;
@@ -46,7 +47,6 @@ extern char DAT_00832a98[256];
 
 extern unsigned int LoadSprite(const char *name, unsigned int flags);
 extern void KillSprite(unsigned int sprite);
-extern void BuildCursorPtr(struct Cursor *cursor, unsigned short a, unsigned short b);
 extern char *_strncpy(char *dest, const char *src, unsigned int count);
 
 // FUNCTION: LEGOLAND 0x004585c0

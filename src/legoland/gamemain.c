@@ -8,6 +8,7 @@
 #include "objectives.h"
 #include "challenge.h"
 #include "interface.h"
+#include "map_object.h"
 
 struct GameMainNode {
     struct GameMainNode *next;
@@ -59,9 +60,6 @@ extern unsigned int DAT_00832ba8;
 extern int __strcmpi(const char *s1, const char *s2);
 extern int FUN_004a04b9(const char *str);
 extern char *strcpy(char *dst, const char *src);
-
-extern void FUN_00462e90(void);
-extern void FUN_00463560(void);
 
 extern char DAT_004d8bb0[0x100];
 
