@@ -1,6 +1,8 @@
 #include <string.h>
 #include "legoland.h"
 
+#include "gamemap.h"
+
 struct WaterNode {
     struct WaterNode *next;
     unsigned int field_4;
@@ -108,16 +110,12 @@ extern unsigned int DAT_004cbff0;
 extern unsigned int DAT_004cbff4;
 extern unsigned int DAT_004cbff8;
 extern unsigned int DAT_004cc000;
-extern unsigned int DAT_007fffd4[5];
-extern unsigned int DAT_008003f0;
-extern unsigned int DAT_007fffc4;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 
 extern void Load_FXList(unsigned char *list, unsigned int count);
 extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern void UnSourceAndFadeAllSamplesFromSource(struct FxSource *source, int fade);
 extern void RemoveSoundObject(unsigned int a, unsigned int b, unsigned int c);
-extern unsigned int GetFirstObjectMatching(unsigned int filter);
 extern void KillSprite(unsigned int sprite);
 extern void LLIDB_UnLoadData(unsigned int handle);
 extern unsigned int LoadSprite(const char *name, int flags);
@@ -125,13 +123,13 @@ extern void IP_RenderBlokeIn3DNow(unsigned int fn);
 extern void StandardRemoveObject(unsigned int a, unsigned int b, unsigned int c);
 extern void SetOverrideFrame(unsigned int frame);
 extern void ScreenToMapRef(unsigned int a, void *out, unsigned int b);
-extern void ValidateCursor(void *cursor, void *data);
+extern void ValidateCursor(struct Cursor *cursor, void *data);
 extern int SaveGameWrite(void *buffer, unsigned int size);
 extern int SaveGameRead(void *buffer, unsigned int size);
 extern void FUN_0049e4d0(void *block);
 extern void *_malloc(unsigned int size);
-extern void FUN_0045f480(void *cursor, unsigned int a);
-extern void FUN_0045f4d0(void *cursor);
+extern void FUN_0045f480(struct Cursor *cursor, unsigned int a);
+extern void FUN_0045f4d0(struct Cursor *cursor);
 
 unsigned int FUN_00417a90(void);
 void FUN_00417ac0(void);
@@ -205,7 +203,10 @@ void FUN_00417c70(unsigned int a, unsigned int b, unsigned int c) {
 
 // FUNCTION: LEGOLAND 0x00417c90
 unsigned int FUN_00417c90(void) {
-    return GetFirstObjectMatching(DAT_004cbfe4) != 0;
+    // DAT_004cbfe4 is an int-typed global that stores an object pointer (set to a
+    // WaterArg*); pass it as the match vtable. Cast justified: the global is genuinely
+    // used as both an int and various struct pointers, so it stays unsigned int.
+    return GetFirstObjectMatching((struct RenderObjectVtable *)DAT_004cbfe4) != 0;
 }
 
 // FUNCTION: LEGOLAND 0x00417cb0
@@ -470,9 +471,9 @@ void FUN_00418a30(struct CursorNode *arg, unsigned int a, unsigned int b) {
     struct CursorData *data;
 
     data = arg->field_c;
-    memcpy(DAT_007fffd4, &data->field_3c, 5 * sizeof(unsigned int));
-    DAT_008003f0 = 0;
-    ScreenToMapRef(a, &DAT_007fffc4, b);
+    memcpy(EditCursor.field_1414, &data->field_3c, 5 * sizeof(unsigned int));
+    EditCursor.field_1830 = 0;
+    ScreenToMapRef(a, &EditCursor.field_1404, b);
     ValidateCursor(&EditCursor, data);
     if (FUN_00417c90() != 0) {
         return;

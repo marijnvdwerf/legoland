@@ -1,5 +1,7 @@
 #include <windows.h>
 
+#include "gamemap.h"
+
 struct Sprite;
 struct CursorSource;
 struct Building;
@@ -298,7 +300,7 @@ unsigned int DAT_00813a10;
 unsigned int GamePad;
 
 // GLOBAL: LEGOLAND 0x007febc0
-unsigned int EditCursor;
+struct Cursor EditCursor;
 
 // GLOBAL: LEGOLAND 0x00665e8c
 unsigned int DAT_00665e8c;
@@ -853,12 +855,8 @@ void *DAT_004cc02c;
 void *DAT_004cc030;
 // GLOBAL: LEGOLAND 0x004cc034
 void *DAT_004cc034;
-// GLOBAL: LEGOLAND 0x007fffc4
-unsigned int DAT_007fffc4;
-// GLOBAL: LEGOLAND 0x007fffd4
-unsigned int DAT_007fffd4[5];
-// GLOBAL: LEGOLAND 0x008003f0
-unsigned int DAT_008003f0;
+// 0x007fffc4, 0x007fffd4, 0x008003f0 are EditCursor fields (field_1404,
+// field_1414[5], field_1830) — see struct Cursor in gamemap.h.
 
 struct InterfaceIconNode;
 struct InterfaceProfileObj;
@@ -1294,8 +1292,7 @@ unsigned int DAT_004b472c;
 unsigned int DAT_004b4730;
 // GLOBAL: LEGOLAND 0x004b4734
 unsigned int DAT_004b4734;
-// GLOBAL: LEGOLAND 0x008003e8
-unsigned int DAT_008003e8;
+// 0x008003e8 is EditCursor.field_1828 — see struct Cursor in gamemap.h.
 // GLOBAL: LEGOLAND 0x004cbdd8
 unsigned int DAT_004cbdd8;
 // GLOBAL: LEGOLAND 0x004c2a88
@@ -1779,21 +1776,14 @@ unsigned int DAT_00830f88;
 // GLOBAL: LEGOLAND 0x004b4bf0
 unsigned int DAT_004b4bf0[5];
 // GLOBAL: LEGOLAND 0x0082f760
-unsigned int DAT_0082f760;
+struct Cursor DAT_0082f760;
 // GLOBAL: LEGOLAND 0x00830b74
 unsigned int DAT_00830b74;
-// GLOBAL: LEGOLAND 0x00811564
-unsigned int DAT_00811564;
-// GLOBAL: LEGOLAND 0x00811568
-unsigned int DAT_00811568;
-// GLOBAL: LEGOLAND 0x00811988
-unsigned int DAT_00811988;
-// GLOBAL: LEGOLAND 0x00811574
-unsigned int DAT_00811574[5];
-// GLOBAL: LEGOLAND 0x007fffc8
-unsigned int DAT_007fffc8;
+// 0x00811564, 0x00811568, 0x00811988, 0x00811574 are QueryCursor fields
+// (field_1404, field_1408, field_1828, field_1414[5]) — see struct Cursor.
+// 0x007fffc8 is EditCursor.field_1408 — see struct Cursor in gamemap.h.
 // GLOBAL: LEGOLAND 0x00810160
-unsigned int QueryCursor;
+struct Cursor QueryCursor;
 
 // GLOBAL: LEGOLAND 0x0062fdb0
 unsigned int DAT_0062fdb0;

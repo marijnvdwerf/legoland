@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "gamemap.h"
+
 struct Sprite;
 struct RinData;
 struct Position;
@@ -81,14 +83,13 @@ extern struct Position *DAT_006160e4;
 extern struct Sprite *DAT_006160d8;
 extern struct Sprite *DAT_006160e0;
 extern unsigned int EditMode;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 extern void *DAT_008119b8;
 
 extern void *_malloc(unsigned int size);
 extern void UnLoadRin(struct RinData *rin);
 extern void UnloadPos(struct Position *pos);
 extern void KillSprite(struct Sprite *sprite);
-extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(unsigned int *footprint);
 
 // FUNCTION: LEGOLAND 0x0042cd70

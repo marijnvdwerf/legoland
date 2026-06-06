@@ -1,4 +1,6 @@
 #include "legoland.h"
+
+#include "gamemap.h"
 #include "money.h"
 #include "obj_instance.h"
 
@@ -28,7 +30,6 @@ struct RideObject {
 
 extern unsigned int LoadSprite(const char *filename, unsigned int param_2);
 extern void KillSprite(unsigned int sprite);
-extern void DefaultCursor(void **cursor);
 extern void SetEditCursorFootPrint(void *param_1);
 extern void AddBasicObject(struct MapObject *obj, void *param_2);
 extern void StandardRemoveObject(struct RideObject *obj, void *param_2, void *param_3);
@@ -49,7 +50,7 @@ extern unsigned short DAT_0082c6ac;
 
 extern unsigned int EditMode;
 extern void *DAT_008119b8;
-extern void *EditCursor;
+extern struct Cursor EditCursor;
 
 void FUN_00439230(unsigned int param_1, void *param_2);
 

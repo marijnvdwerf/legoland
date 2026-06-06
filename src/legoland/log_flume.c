@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "gamemap.h"
 #include "ride_queue.h"
 
 extern void *_malloc(unsigned int size);
@@ -28,8 +29,7 @@ extern void *DAT_004c2af8;
 extern unsigned int DAT_004c2b9c;
 extern unsigned int EditMode;
 extern void *DAT_008119b8;
-extern unsigned int EditCursor;
-extern unsigned int DAT_008003e8;
+extern struct Cursor EditCursor;
 extern unsigned int DAT_004cbdd8;
 extern unsigned int DAT_004c2a88;
 extern unsigned int DAT_004c5c90;
@@ -87,10 +87,9 @@ extern int __strcmpi(const char *s1, const char *s2);
 extern void GetTileDimensions(int *param1, int *param2);
 void FUN_004119c0(void);
 extern void FUN_0049e4d0(void *block);
-extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(unsigned int param);
 extern void LLIDB_UnLoadData(unsigned int handle);
-extern void BuildCursorPtr(void *cursor, unsigned int param_2, unsigned int param_3);
+extern void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, unsigned int param_3);
 
 struct ChainNode {
     struct ChainNode *next;
@@ -1113,7 +1112,7 @@ unsigned int FUN_0040d3b0(void *param_1, unsigned int *param_2) {
     EditMode = 1;
     DAT_008119b8 = param_1;
     DefaultCursor(&EditCursor);
-    DAT_008003e8 |= 8;
+    EditCursor.field_1828 |= 8;
     BuildCursorPtr(&EditCursor, 0x8f8, 0);
     SetEditCursorFootPrint((unsigned int)param_2);
     DAT_004cbdd8 = 0x2034;

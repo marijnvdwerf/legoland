@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "gamemap.h"
+
 struct HutObject {
     unsigned char pad_0[0x1c];
     unsigned int field_1c;
@@ -21,11 +23,10 @@ extern struct HutObject *DAT_0081caf4;
 extern unsigned int DAT_0062fe50;
 extern unsigned int DAT_0062fe54;
 extern unsigned int EditMode;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 extern struct EditCursorData *DAT_008119b8;
 extern unsigned int LoadSprite(const char *name, int flags);
 extern void KillSprite(unsigned int sprite);
-extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(unsigned char *footprint);
 extern unsigned int AddBasicObject(unsigned int param1, unsigned int param2);
 

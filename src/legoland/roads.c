@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "gamemap.h"
 #include "bricks.h"
 #include "ride_queue.h"
 
@@ -46,34 +47,24 @@ extern struct RoadQueueEntry *DAT_004cbeac;
 extern void *DAT_0082c684;
 extern void *DAT_0082c680;
 extern void *DAT_0082c678;
-extern unsigned int DAT_008003e8;
 extern unsigned int DAT_00830f88;
 extern unsigned int DAT_004b4bf0[5];
-extern unsigned int DAT_0082f760;
+extern struct Cursor DAT_0082f760;
 extern unsigned int DAT_00830b74;
-extern unsigned int DAT_00811564;
-extern unsigned int DAT_00811568;
-extern unsigned int DAT_00811988;
-extern unsigned int DAT_00811574[5];
-extern unsigned int DAT_007fffc4;
-extern unsigned int DAT_007fffc8;
-extern unsigned int DAT_007fffd4[5];
-extern unsigned int DAT_008003f0;
 extern unsigned int EditMode;
 extern void *DAT_008119b8;
-extern unsigned int EditCursor;
-extern unsigned int QueryCursor;
+extern struct Cursor EditCursor;
+extern struct Cursor QueryCursor;
 
 extern unsigned int LLIDB_FindElement(const char *name, unsigned int *out_handle, unsigned int zero);
 extern void *LLIDB_LoadData(struct LLIDB_Head *head);
 extern void LLIDB_UnLoadData(unsigned int handle);
 extern void FUN_0049e4d0(void *block);
-extern void DefaultCursor(void *cursor);
 extern void SetEditCursorFootPrint(void *footprint);
-extern void BuildCursorPtr(void *cursor, unsigned int param_2, unsigned int param_3);
+extern void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, unsigned int param_3);
 extern void ScreenToMapRef(unsigned int a, void *out, unsigned int b);
-extern void FUN_0045f480(void *cursor, unsigned int a);
-extern void FUN_0045f460(void *cursor);
+extern void FUN_0045f480(struct Cursor *cursor, unsigned int a);
+extern void FUN_0045f460(struct Cursor *cursor);
 extern int GetObjCost(void *info);
 extern unsigned int FUN_00411aa0(unsigned int a, unsigned int b);
 
@@ -181,7 +172,7 @@ void FUN_00413ad0(void) {
     DAT_008119b8 = DAT_0082c684;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(&DAT_004b4bf0);
-    DAT_008003e8 |= 8;
+    EditCursor.field_1828 |= 8;
     BuildCursorPtr(&EditCursor, 0x8f8, 0);
     DefaultCursor(&DAT_0082f760);
     memcpy(&DAT_00830b74, &DAT_004b4bf0, 20);
@@ -202,11 +193,11 @@ void FUN_00413fa0(unsigned int dummy, struct RoadPlaceArg *param) {
     unsigned int count;
 
     if (tile != NULL) {
-        DAT_00811564 = tile->x;
-        DAT_00811568 = tile->y;
+        QueryCursor.field_1404 = tile->x;
+        QueryCursor.field_1408 = tile->y;
 
         src = &DAT_004b4bf0[0];
-        dst = &DAT_00811574[0];
+        dst = &QueryCursor.field_1414[0];
         count = 5;
         while (count != 0) {
             *dst = *src;
@@ -215,7 +206,7 @@ void FUN_00413fa0(unsigned int dummy, struct RoadPlaceArg *param) {
             count--;
         }
 
-        DAT_00811988 = 8;
+        QueryCursor.field_1828 = 8;
         FUN_0045f480(&QueryCursor, 1);
 
         if ((tile->flags & 0xf) != 6) {
@@ -239,7 +230,7 @@ void FUN_00414830(void) {
     DAT_008119b8 = DAT_0082c678;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(&DAT_004b4bf0);
-    DAT_008003e8 |= 8;
+    EditCursor.field_1828 |= 8;
     BuildCursorPtr(&EditCursor, 0, 0);
 }
 
@@ -249,10 +240,10 @@ void FUN_00414880(struct RoadEditArg *param_1, unsigned int param_2, unsigned in
     struct RoadTile *tile;
     int cost;
 
-    memcpy(&DAT_007fffd4, (char *)obj + 0x3c, 20);
-    DAT_008003f0 = 0;
-    ScreenToMapRef(param_2, &DAT_007fffc4, param_3);
-    tile = FUN_004125f0(DAT_007fffc4, DAT_007fffc8);
+    memcpy(EditCursor.field_1414, (char *)obj + 0x3c, 20);
+    EditCursor.field_1830 = 0;
+    ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
+    tile = FUN_004125f0(EditCursor.field_1404, EditCursor.field_1408);
     FUN_0045f480(&EditCursor, 0xe);
     cost = GetObjCost(obj);
     if (GetBrickCount() < cost) {
@@ -261,8 +252,8 @@ void FUN_00414880(struct RoadEditArg *param_1, unsigned int param_2, unsigned in
     if (tile == NULL) {
         return;
     }
-    DAT_007fffc4 = tile->x;
-    DAT_007fffc8 = tile->y;
+    EditCursor.field_1404 = tile->x;
+    EditCursor.field_1408 = tile->y;
     if (tile->flags & 0x10) {
         return;
     }

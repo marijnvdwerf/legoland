@@ -1,11 +1,12 @@
 #include "legoland.h"
+
+#include "gamemap.h"
 #include "money.h"
 #include "obj_instance.h"
 
 extern void IP_RenderBlokeIn3DNow(unsigned int fn);
 extern void GetScreenCoordsForObject(unsigned short *value, void *obj);
 extern void LLIDB_UnLoadData(void *param_1);
-extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(unsigned int param);
 extern void Load_FXList(unsigned char *list, unsigned int count);
 extern void Kill_FXList(unsigned char *list, unsigned int count);
@@ -20,7 +21,7 @@ extern void *_malloc(unsigned int size);
 
 extern unsigned int EditMode;
 extern void *DAT_008119b8;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 
 extern unsigned char RESTAURANT_SFX[];
 extern unsigned char OCTOPUS_SFX[];

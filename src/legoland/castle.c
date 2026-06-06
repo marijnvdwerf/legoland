@@ -1,5 +1,7 @@
 #include <windows.h>
 #include "legoland.h"
+
+#include "gamemap.h"
 #include "debug_alloc.h"
 #include "path_control.h"
 #include "timer.h"
@@ -102,8 +104,7 @@ extern struct Anim DAT_00829b04;
 extern void KillSprite(unsigned int sprite);
 extern unsigned int DAT_008119b8;
 extern unsigned int EditMode;
-extern unsigned int EditCursor;
-extern void DefaultCursor(unsigned int *cursor);
+extern struct Cursor EditCursor;
 extern unsigned int SetEditCursorFootPrint(const char *footprint);
 extern unsigned int DAT_006103a8;
 extern float FLOAT_004ab454;
@@ -1131,14 +1132,14 @@ struct OuterAt28 {
     unsigned int field_28;
 };
 
-struct Cursor {
+struct AnimWalker {
     unsigned int field_0;
     unsigned int field_4;
     unsigned int field_8;
 };
 
 // FUNCTION: LEGOLAND 0x0041f850
-unsigned int FUN_0041f850(struct Cursor *cursor) {
+unsigned int FUN_0041f850(struct AnimWalker *cursor) {
     struct InnerAt50 *inner = (struct InnerAt50 *)cursor->field_4;
     unsigned int result = inner->field_50;
     if (result == 0) {
@@ -3068,8 +3069,6 @@ void FUN_004275c0(void) {}
 // FUNCTION: LEGOLAND 0x004275d0
 void FUN_004275d0(void) { STUB(); }
 
-extern unsigned int DAT_008003f0;
-
 struct Struct427940 {
     unsigned char pad_0[0xc];
     unsigned int field_c;
@@ -3081,7 +3080,7 @@ void FUN_00427940(struct Struct427940 *param_1) {
     EditMode = 1;
     DAT_008119b8 = value;
     SetEditCursorFootPrint((const char *)(value + 60));
-    DAT_008003f0 = 0;
+    EditCursor.field_1830 = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00427970

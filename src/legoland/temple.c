@@ -1,4 +1,6 @@
 #include "legoland.h"
+
+#include "gamemap.h"
 #include "obj_instance.h"
 
 typedef void (*TempleHandler)(void);
@@ -25,11 +27,10 @@ extern unsigned int DAT_004cbf68;
 extern unsigned int DAT_004cbf6c;
 extern void *DAT_004cbf5c;
 extern unsigned int EditMode;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 extern void *DAT_008119b8;
 
 extern void KillSprite(unsigned int sprite);
-extern void DefaultCursor(unsigned int cursor);
 extern void SetEditCursorFootPrint(unsigned int src);
 extern void AddBasicObject(unsigned int param_1, unsigned int param_2);
 extern void StandardRemoveObject(struct TempleObject *a1, void *a2, unsigned int a3);
@@ -59,7 +60,7 @@ void FUN_00416dc0(void) {
     void *temp = DAT_004cbf5c;
     EditMode = 1;
     DAT_008119b8 = temp;
-    DefaultCursor((unsigned int)&EditCursor);
+    DefaultCursor(&EditCursor);
     SetEditCursorFootPrint((unsigned int)DAT_008119b8 + 0x3c);
 }
 

@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "gamemain.h"
+#include "gamemap.h"
 
 extern unsigned int DAT_00669098;
 extern unsigned int DAT_0066879c;
@@ -15,8 +16,6 @@ extern unsigned int LoadObjectClass(unsigned int cls);
 extern void FUN_00469ab0(unsigned int object);
 extern void ClearObjectCounters(void);
 extern unsigned int LoadBaseMap(unsigned int param_1);
-extern void CalculateMapRenderOrder(void);
-extern void FUN_0045a060(void);
 extern void FUN_0046bdd0(unsigned char param_1, unsigned int param_2, unsigned int param_3);
 extern void FUN_0046bef0(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 extern void FUN_0046c030(unsigned char param_1, unsigned int param_2, unsigned int param_3);

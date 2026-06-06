@@ -2,6 +2,7 @@
 
 #include "bricks.h"
 #include "debug_alloc.h"
+#include "gamemap.h"
 #include "saveload.h"
 #include "screens.h"
 
@@ -79,24 +80,6 @@ struct EventList {
     struct EventNode *head;
 };
 
-struct RenderVtableEntry {
-    unsigned char pad_0[0x2c];
-    unsigned char field_2c;
-};
-
-struct RenderVtable {
-    unsigned char pad_0[0xc];
-    struct RenderVtableEntry *field_c;
-};
-
-struct RenderObject {
-    struct RenderVtable *vtable;
-    unsigned char pad_4[0xc - 0x4];
-    unsigned int field_c;
-    unsigned char pad_10[0x11 - 0x10];
-    unsigned char field_11;
-};
-
 struct Vec4 {
     unsigned int x;
     unsigned int y;
@@ -153,7 +136,6 @@ extern void FUN_00469100(struct NerpsArg *arg, int count, unsigned int param_3);
 extern void FUN_00469390(struct LoopArg *arg);
 extern int FUN_00469ae0(unsigned int param_1);
 extern int FUN_00469b00(unsigned int param_1);
-extern void FUN_00459970(void);
 
 extern struct EventList *DAT_0066879c;
 extern struct EventNode *FUN_00468910(unsigned int type, int sort_key);
@@ -170,8 +152,6 @@ extern unsigned char DAT_004b8bbc[];
 extern unsigned int DAT_00832ba4;
 extern int DAT_00832bdc;
 extern void FUN_004691e0(struct NerpsArg *arg, int param_2, unsigned int param_3);
-extern struct RenderObject *GetFirstRenderObject(void);
-extern struct RenderObject *GetNextRenderObject(struct RenderObject *object);
 extern char FUN_004688c0(int index);
 extern int FUN_00468d10(void);
 extern int FUN_00468d30(struct NerpsArg *arg);

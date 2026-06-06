@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "gamemap.h"
 #include "ride_queue.h"
 
 typedef void (*CopterVtblFn)(void);
@@ -54,7 +55,7 @@ extern struct Position *DAT_00830f98;
 extern unsigned char Helicopter_SFX[];
 extern void *DAT_008119b8;
 extern unsigned int EditMode;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 
 extern void *_malloc(unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);
@@ -62,7 +63,6 @@ extern void KillSprite(struct Sprite *sprite);
 extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern void UnloadPos(struct Position *pos);
 extern void ResumeSinglyPausedSample(unsigned int param);
-extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(void *footprint);
 
 void FUN_00403c80(struct CopterNode *node);

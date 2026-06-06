@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "gamemap.h"
+
 struct NameNode {
     unsigned short value;
     unsigned char pad_2[0x3ee];
@@ -8,14 +10,12 @@ struct NameNode {
 
 extern struct NameNode *DAT_004cc03c;
 
-extern void DefaultCursor(unsigned int *cursor);
 extern unsigned int BasicObjectDCalcCursor(unsigned int param_1, unsigned int param_2);
 extern void SetEditCursorFootPrint(unsigned int *footprint);
 
 extern unsigned int EditMode;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 extern void *DAT_008119b8;
-extern unsigned int DAT_008003e8;
 extern unsigned int DAT_0082c658;
 extern unsigned int DAT_0082adf8;
 extern void *DAT_0082adf0;
@@ -187,7 +187,7 @@ void FUN_0041b260(void) {
     EditMode = 1;
     DAT_008119b8 = (void *)DAT_0082adf8;
     DefaultCursor(&EditCursor);
-    DAT_008003e8 |= 0x8;
+    EditCursor.field_1828 |= 0x8;
     SetEditCursorFootPrint((unsigned int *)(DAT_0082adf8 + 0x3c));
 }
 
@@ -222,7 +222,7 @@ void FUN_0041b880(void) {
     DAT_008119b8 = state;
     memcpy(state->footprint, DAT_004b53c0, 20);
     DefaultCursor(&EditCursor);
-    DAT_008003e8 |= 0x8;
+    EditCursor.field_1828 |= 0x8;
     SetEditCursorFootPrint((unsigned int *)((char *)DAT_008119b8 + 0x3c));
 }
 

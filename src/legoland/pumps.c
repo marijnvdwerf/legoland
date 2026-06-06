@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "gamemap.h"
+
 struct PumpNode {
     unsigned char pad_0[2];
     unsigned short var_2;
@@ -13,20 +15,18 @@ struct PumpSource {
     unsigned int var_c;
 };
 
-extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(void *foot_print);
-extern void BuildCursorPtr(void *cursor, unsigned int param_2, unsigned int param_3);
+extern void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, unsigned int param_3);
 extern void FUN_0049e4d0(void *block);
 
 extern unsigned int DAT_004cbe9c;
 extern struct PumpNode *DAT_004cbea4;
 extern unsigned int DAT_008119b8;
-extern unsigned int DAT_008003e8;
 extern unsigned int DAT_00830f88;
 extern unsigned int EditMode;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 extern unsigned char DAT_004b4bd0[0x14];
-extern unsigned int DAT_0082f760;
+extern struct Cursor DAT_0082f760;
 extern unsigned int DAT_00830b74;
 
 // FUNCTION: LEGOLAND 0x00411a10
@@ -43,7 +43,7 @@ void FUN_00411a20(void) {
     DAT_008119b8 = eax_temp;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(DAT_004b4bd0);
-    DAT_008003e8 = DAT_008003e8 | 8;
+    EditCursor.field_1828 = EditCursor.field_1828 | 8;
     BuildCursorPtr(&EditCursor, 0x8f8, 0);
     DefaultCursor(&DAT_0082f760);
     memcpy(&DAT_00830b74, DAT_004b4bd0, 0x14);

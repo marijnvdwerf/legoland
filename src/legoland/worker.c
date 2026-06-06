@@ -2,6 +2,7 @@
 
 #include "bricks.h"
 #include "debug_alloc.h"
+#include "gamemap.h"
 
 struct LegoConfig;
 
@@ -71,8 +72,6 @@ extern void SortBlokeIn3D(struct Worker *worker);
 extern void DoHighLevelAI(struct Worker *worker);
 extern void DoLowLevelAI(struct Worker *worker);
 extern void UpdatePerson(struct Worker *worker);
-extern int FindObjectsPower(void *object);
-extern void FUN_0045a060(void);
 extern void NewLongTermAction(unsigned int worker, unsigned int action);
 extern void FUN_0045e4a0(int element, void *data);
 

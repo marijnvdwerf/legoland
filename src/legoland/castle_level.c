@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "gamemap.h"
+
 typedef void (*CastleVtblFn)(void);
 
 struct CastleLevelInterface {
@@ -24,11 +26,10 @@ struct EditCursorData {
 extern unsigned int DAT_004c10e4;
 extern void *DAT_004c10dc;
 extern unsigned int EditMode;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 extern struct EditCursorData *DAT_008119b8;
 extern int __strcmpi(const char *s1, const char *s2);
 extern void KillSprite(unsigned int sprite);
-extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(unsigned char *footprint);
 extern void AddBasicObject(unsigned int param1, unsigned int param2);
 

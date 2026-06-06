@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "gamemap.h"
+
 struct GardenLayer {
     unsigned char pad_0[0xc];
     struct GardenInner *field_c;
@@ -25,13 +27,12 @@ extern unsigned int DAT_00616150;
 extern unsigned int DAT_00616158;
 extern void *DAT_0081cd04;
 extern unsigned int EditMode;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 extern void *DAT_008119b8;
 
 extern int LLIDB_FindElement(const char *name, unsigned int *out, int param_3);
 extern unsigned int LLIDB_LoadData(unsigned int id);
 extern void LLIDB_UnLoadData(unsigned int id);
-extern void DefaultCursor(struct Cursor *cursor);
 extern void SetEditCursorFootPrint(struct EditFootprint *src);
 
 // FUNCTION: LEGOLAND 0x00432480
@@ -88,7 +89,7 @@ void FUN_004328c0(void) {
     void *var = DAT_0081cd04;
     EditMode = 1;
     DAT_008119b8 = var;
-    DefaultCursor((struct Cursor *)&EditCursor);
+    DefaultCursor(&EditCursor);
     SetEditCursorFootPrint((struct EditFootprint *)&((struct EditTarget *)DAT_008119b8)->field_3c);
 }
 

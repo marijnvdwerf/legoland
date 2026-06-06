@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "gamemap.h"
+
 struct ObjectClass;
 
 struct ObjectClass {
@@ -103,7 +105,6 @@ struct ObjInstance {
 };
 
 extern unsigned int LLIDB_LoadData(struct ObjectClass *cls);
-extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(unsigned int param);
 extern void CalcBasicObjectCursor(void);
 extern void AddBasicObject(void);
@@ -130,7 +131,7 @@ extern unsigned short NEWFLC_Repeat;
 extern unsigned int EditMode;
 extern void *DAT_008119b8;
 extern unsigned int GamePad;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 
 // FUNCTION: LEGOLAND 0x00480990
 struct ObjectClass *AddNewObjectClass(void) {

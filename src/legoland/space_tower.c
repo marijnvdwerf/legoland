@@ -1,4 +1,6 @@
 #include "legoland.h"
+
+#include "gamemap.h"
 #include "obj_instance.h"
 
 struct RideObject {
@@ -63,14 +65,13 @@ extern void *DAT_0062fd68;
 extern void *DAT_0062fd6c;
 extern unsigned int EditMode;
 extern unsigned int DAT_008119b8;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 extern const unsigned char SPACE_TOWER_SFX[15];
 
 extern void PlayInstanceOfSample(unsigned int sample, unsigned int a, unsigned int b, void *data);
 extern void KillSprite(void *sprite);
 extern void Kill_FXList(const unsigned char *list, int flag);
 extern int __strcmpi(const char *s1, const char *s2);
-extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(unsigned int arg);
 extern void Put3DBlokesOnRide2(struct RideObject *ride, struct RideObject *obj);
 extern void Ride_SetFlagToNotLetAnyoneOn(struct RideObject *ride);

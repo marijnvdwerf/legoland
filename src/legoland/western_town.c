@@ -1,4 +1,6 @@
 #include "legoland.h"
+
+#include "gamemap.h"
 #include "money.h"
 
 struct Building {
@@ -18,7 +20,6 @@ struct JailCell {
 
 extern unsigned int LoadSprite(const char *filename, unsigned int param_2);
 extern void KillSprite(unsigned int sprite);
-extern void DefaultCursor(void **cursor);
 extern void SetEditCursorFootPrint(void *param_1);
 extern unsigned int SaveGameWrite(const void *buffer, unsigned int size);
 extern unsigned int SaveGameRead(void *buffer, unsigned int size);
@@ -40,7 +41,7 @@ extern struct JailCell *DAT_0062fd3c;
 
 extern unsigned int EditMode;
 extern void *DAT_008119b8;
-extern void *EditCursor;
+extern struct Cursor EditCursor;
 
 // FUNCTION: LEGOLAND 0x004375d0
 void FUN_004375d0(struct MapObject *obj) {

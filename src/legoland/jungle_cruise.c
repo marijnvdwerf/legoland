@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "gamemap.h"
+
 struct JungleNode {
     unsigned short field_0;
     unsigned char pad_2[1010];
@@ -95,13 +97,11 @@ extern void *DAT_004b7288;
 extern struct JungleCursor *DAT_0081cb70;
 extern unsigned int DAT_0081cb68;
 extern void *DAT_008119b8;
-extern unsigned int DAT_008003e8;
 extern unsigned int EditMode;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 
 extern unsigned int LoadSprite(const char *name, int flags);
 extern void KillSprite(unsigned int sprite);
-extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(unsigned char *foot);
 extern unsigned int BasicObjectDCalcCursor(unsigned int param_1, unsigned int param_2);
 
@@ -183,7 +183,7 @@ void FUN_00433ce0(void) {
     EditMode = 1;
     DAT_008119b8 = DAT_0081cb70;
     DefaultCursor(&EditCursor);
-    DAT_008003e8 |= 0x8;
+    EditCursor.field_1828 |= 0x8;
     SetEditCursorFootPrint(&DAT_0081cb70->foot);
 }
 

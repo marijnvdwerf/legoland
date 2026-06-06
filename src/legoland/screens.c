@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "gamemap.h"
 #include "bricks.h"
 #include "build.h"
 #include "clipping.h"
@@ -21,7 +22,7 @@ extern unsigned int EditMode;
 extern unsigned int DAT_008119b4;
 extern void *DAT_008119b8;
 extern unsigned int GamePad;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 extern unsigned int DAT_00667c7c;
 extern unsigned int DAT_00667cd8;
 extern unsigned int DAT_0080ff84;
@@ -41,8 +42,7 @@ extern void PopRenderingStatus(void);
 extern void RenderingComplete(void);
 extern void KillSprite(unsigned int sprite);
 extern void FUN_00474880(void);
-extern void DefaultCursor(void *cursor);
-extern void BuildCursorPtr(void *cursor, unsigned short a, unsigned short b);
+extern void BuildCursorPtr(struct Cursor *cursor, unsigned short a, unsigned short b);
 extern void FUN_00481170(void);
 extern void FUN_0046fb40(unsigned int a);
 extern void DelObjectList(void);

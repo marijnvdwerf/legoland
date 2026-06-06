@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "gamemap.h"
+
 typedef void (*CatapultVtblFn)(void);
 
 struct CatapultInterface {
@@ -60,13 +62,12 @@ extern unsigned short DAT_004c110c;
 extern unsigned char Catapult_SFX[];
 extern void *DAT_008119b8;
 extern unsigned int EditMode;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 
 extern void HideLayer(void *layer, unsigned int flag);
 extern void Load_FXList(unsigned char *list, unsigned int count);
 extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern void GetSpriteForLayer(void *layer, unsigned int index);
-extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(void *footprint);
 extern int __strcmpi(const char *s1, const char *s2);
 

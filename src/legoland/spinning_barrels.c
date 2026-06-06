@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "gamemap.h"
 #include "binv.h"
 
 typedef void (*BarrelVtblFn)(void);
@@ -43,7 +44,7 @@ extern struct BarrelNode *DAT_0062fe08;
 extern unsigned int DAT_0062fde4;
 extern void *DAT_008119b8;
 extern unsigned int EditMode;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 extern unsigned int DAT_0062fdb0;
 extern unsigned int DAT_0062fdb4;
 extern unsigned int DAT_0062fdb8;
@@ -58,7 +59,6 @@ extern void *DAT_0062fdc8;
 extern void *_malloc(unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);
 extern int SaveGameWrite(const void *buf, unsigned int size);
-extern void DefaultCursor(unsigned int **cursor);
 extern void SetEditCursorFootPrint(unsigned int *arg);
 extern void KillSprite(void *sprite);
 extern int FUN_0049e4b2(void);
@@ -117,7 +117,7 @@ void FUN_0043c340(void) { STUB(); }
 void FUN_0043c490(void) {
     EditMode = 1;
     DAT_008119b8 = (void *)DAT_0062fde4;
-    DefaultCursor((unsigned int **)&EditCursor);
+    DefaultCursor(&EditCursor);
     SetEditCursorFootPrint((unsigned int *)((unsigned int)DAT_008119b8 + 0x3c));
 }
 

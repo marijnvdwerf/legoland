@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "gamemap.h"
 #include "timer.h"
 
 struct ObjInfo {
@@ -38,12 +39,6 @@ struct EditFootprint {
     unsigned int field_8;
     unsigned int field_c;
     unsigned int field_10;
-};
-
-struct PathState {
-    unsigned char pad_0[0x140c];
-    int target;
-    int delta;
 };
 
 struct CursorObj {
@@ -94,9 +89,7 @@ struct Overlay {
 };
 
 extern unsigned int DAT_007fd624;
-extern unsigned int DAT_007fffc4;
-extern unsigned int DAT_007fffd4[5];
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 extern struct LegoConfig *lpConfig;
 extern struct MapTile **DAT_00801400;
 extern int ScrollX;
@@ -114,9 +107,8 @@ extern int DAT_00832980;
 void FUN_00460f50(int *coord, unsigned int a, unsigned int b, unsigned int c);
 void FUN_004610f0(int *a, int *b);
 void FUN_00461290(unsigned int a, unsigned int b, unsigned int c, unsigned int d);
-void ValidateCursor(unsigned int *cursor, unsigned int param);
+void ValidateCursor(struct Cursor *cursor, unsigned int param);
 
-extern void DefaultCursor(unsigned int *cursor);
 extern void ScreenToMapRef(unsigned int x, unsigned int *out, unsigned int y);
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *block);
@@ -229,45 +221,45 @@ void StandardRemoveObject(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045f440
 void SetEditCursorFootPrint(struct EditFootprint *src) {
-    memcpy(&DAT_007fffd4, src, 20);
+    memcpy(EditCursor.field_1414, src, 20);
 }
 
 // FUNCTION: LEGOLAND 0x0045f460
-void FUN_0045f460(struct PathState *state) {
-    state->target = 1;
-    state->delta = 0;
+void FUN_0045f460(struct Cursor *cursor) {
+    cursor->field_140c = 1;
+    cursor->field_1410 = 0;
 }
 
 // FUNCTION: LEGOLAND 0x0045f480
-void FUN_0045f480(struct PathState *state, int param) {
+void FUN_0045f480(struct Cursor *cursor, int param) {
     int negated;
 
     negated = -param;
-    if (state->target >= negated) {
-        state->target = negated;
-        state->delta = param;
+    if (cursor->field_140c >= negated) {
+        cursor->field_140c = negated;
+        cursor->field_1410 = param;
     }
 }
 
 // FUNCTION: LEGOLAND 0x0045f4b0
-unsigned char FUN_0045f4b0(struct PathState *state) {
+unsigned char FUN_0045f4b0(struct Cursor *cursor) {
     int target;
 
-    target = state->target;
+    target = cursor->field_140c;
     return target > 0;
 }
 
 // FUNCTION: LEGOLAND 0x0045f4d0
-void FUN_0045f4d0(void) { STUB(); }
+void FUN_0045f4d0(struct Cursor *cursor) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045f540
 void FUN_0045f540(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045f5f0
-void BuildCursorPtr(void) { STUB(); }
+void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045f810
-void ValidateCursor(unsigned int *cursor, unsigned int param) { STUB(); }
+void ValidateCursor(struct Cursor *cursor, unsigned int param) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045fa80
 void CalcBasicObjectCursor(struct CursorObj *obj, unsigned int a2, unsigned int a3) {
@@ -275,9 +267,9 @@ void CalcBasicObjectCursor(struct CursorObj *obj, unsigned int a2, unsigned int 
 
     v1 = obj->field_c;
     DefaultCursor(&EditCursor);
-    ScreenToMapRef(a2, &DAT_007fffc4, a3);
+    ScreenToMapRef(a2, &EditCursor.field_1404, a3);
     v1 += 0x3c;
-    memcpy(DAT_007fffd4, (void *)v1, 20);
+    memcpy(EditCursor.field_1414, (void *)v1, 20);
     ValidateCursor(&EditCursor, obj->field_c);
 }
 

@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "gamemap.h"
 #include "binv.h"
 
 struct JoustNode {
@@ -62,11 +63,10 @@ extern unsigned short DAT_004c1234;
 extern unsigned char JOUST_SFX[12];
 extern unsigned int EditMode;
 extern void *DAT_008119b8;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 
 extern void KillSprite(unsigned int sprite);
 extern void Kill_FXList(unsigned char *list, unsigned int count);
-extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(void *foot_print);
 extern int SaveGameWrite(void *data, unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);

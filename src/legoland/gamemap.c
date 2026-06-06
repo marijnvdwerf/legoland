@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "gamemap.h"
 #include "timer.h"
 
 extern unsigned int DAT_0080ff64;
@@ -22,11 +23,9 @@ extern unsigned int ElemID(const char *name);
 extern void Load_FXList(const unsigned char *list, unsigned int count);
 extern void Kill_FXList(const unsigned char *list, unsigned int count);
 
-typedef int (*PowerFunc)(void);
-
 struct RenderObjectVtable {
     unsigned char pad_0[0xc];
-    PowerFunc get_power;
+    void *get_power;
 };
 
 struct RenderObject {
@@ -38,9 +37,6 @@ struct RenderObject {
     } flags;
     unsigned char pad_e[2];
 };
-
-struct RenderObject *GetFirstRenderObject(void);
-struct RenderObject *GetNextRenderObject(struct RenderObject *object);
 
 // FUNCTION: LEGOLAND 0x00459850
 void InitGameMap(void) {
@@ -84,7 +80,7 @@ void PutObjOnMap(void) { STUB(); }
 void RemObjFromMap(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00459fa0
-int FindObjectsPower(PowerFunc func) { STUB(); }
+int FindObjectsPower(void *object) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a000
 void FUN_0045a000(int power, struct RenderObject *object) {
@@ -140,15 +136,6 @@ void AddObjectsPowerStats(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a230
 void RemoveObjectsPowerStats(void) { STUB(); }
-
-struct Cursor {
-    unsigned char pad_0[0x1404];
-    unsigned int field_1404;
-    unsigned int field_1408;
-    unsigned char pad_140c[0x41c];
-    unsigned int field_1828;
-    unsigned char pad_182c[8];
-};
 
 extern void FUN_0045f460(struct Cursor *cursor);
 

@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "gamemap.h"
 #include "binv.h"
 #include "obj_instance.h"
 
@@ -63,13 +64,12 @@ extern unsigned char DAT_004beba0;
 extern unsigned char DAT_004b79d0[0x18];
 extern unsigned int EditMode;
 extern void *DAT_008119b8;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 
 extern void *_malloc(unsigned int size);
 extern int FUN_0049e4b2(void);
 extern void KillSprite(unsigned int sprite);
 extern void Kill_FXList(unsigned char *list, unsigned int count);
-extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(void *foot_print);
 extern void StandardRemoveObject(struct PlaneRideObject *a1, struct PlaneRideObject *a2, struct PlaneRideObject *a3);
 extern int SaveGameWrite(void *data, unsigned int size);

@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "gamemap.h"
 #include "binv.h"
 
 struct BalloonC {
@@ -32,7 +33,6 @@ struct CursorState {
 
 extern void KillSprite(unsigned int sprite);
 extern int SaveGameWrite(void *data, unsigned int size);
-extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(unsigned int *foot_print);
 
 extern void *DAT_00616060;
@@ -50,7 +50,7 @@ extern unsigned int DAT_0061605c;
 extern unsigned int DAT_0081cde8;
 extern struct CursorState *DAT_0081cde4;
 extern struct CursorState *DAT_008119b8;
-extern unsigned int EditCursor;
+extern struct Cursor EditCursor;
 extern unsigned int EditMode;
 
 // FUNCTION: LEGOLAND 0x0042a7b0

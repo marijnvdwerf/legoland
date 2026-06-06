@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "gamemap.h"
 #include "ride_queue.h"
 
 typedef void (*GoldVtblFn)(void);
@@ -56,14 +57,13 @@ extern struct Sprite *DAT_004c11e4;
 extern void *DAT_004c11f0;
 extern void *DAT_008119b8;
 extern unsigned int EditMode;
-extern void *EditCursor;
+extern struct Cursor EditCursor;
 
 extern int __strcmpi(const char *s1, const char *s2);
 extern int FUN_0049e4b2(void);
 extern void KillSprite(struct Sprite *sprite);
 extern void Ride_SetFlagToNotLetAnyoneOn(int param);
 extern void Ride_ClearFlagToNotLetAnyoneOn(int param);
-extern void DefaultCursor(void *cursor);
 extern void SetEditCursorFootPrint(void *footprint);
 
 // FUNCTION: LEGOLAND 0x00406920

@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "gamemain.h"
+#include "gamemap.h"
 
 struct GameMainNode {
     struct GameMainNode *next;
@@ -69,7 +70,6 @@ extern void FUN_00476050(void);
 extern void FUN_00490610(const char *param_1);
 extern void FUN_00463560(void);
 extern void FUN_00482b10(void);
-extern void FUN_00459960(void);
 extern void FUN_0046b240(unsigned int param_1);
 
 extern char DAT_004d8bb0[0x100];
