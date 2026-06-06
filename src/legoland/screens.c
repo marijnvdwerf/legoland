@@ -8,6 +8,7 @@
 #include "print_sprite.h"
 #include "profile_io.h"
 #include "screens.h"
+#include "popupinfo.h"
 
 struct ScreenConfig {
     unsigned short width;
@@ -49,8 +50,6 @@ extern void DelObjectList(void);
 extern void FreeBlokeCounters(void);
 extern void FUN_0046cb20(void);
 extern void FUN_00483090(void);
-extern void FUN_004714e0(void);
-extern void ResetInfoStruct(void);
 extern void FUN_0049cfc0(void);
 extern void FUN_00474ed0(void);
 extern char *_strncpy(char *dest, const char *src, unsigned int count);

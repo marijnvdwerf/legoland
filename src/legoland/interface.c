@@ -3,6 +3,8 @@
 #include "worker_mouse.h"
 #include "profile_io.h"
 #include "screens.h"
+#include "title.h"
+#include "popupinfo.h"
 
 struct IconNode {
     struct IconNode *next;
@@ -131,16 +133,11 @@ extern void KillSprite(unsigned int sprite);
 extern void FUN_0046d680(unsigned int a, unsigned int b);
 extern void UnLoad_Interface_ControlIcons(void);
 extern void FUN_0046fb40(unsigned int a);
-extern void UnLoad_PopUpInfo(void);
-extern void FUN_00473160(void);
-extern int FUN_00473130(void);
 extern int FUN_0046b280(void);
 extern unsigned int SaveGameWrite(unsigned int *data, unsigned int size);
 extern unsigned int SaveGameRead(void *data, unsigned int size);
 extern unsigned int RemoveIconGroup(unsigned int group);
 extern unsigned int FUN_0046d590(unsigned int a);
-extern void FUN_00490600(unsigned int a);
-extern void FUN_004911c0(const char *a, const char *b);
 extern void FUN_0046b700(void);
 extern void PlayInstanceOfSample(void *sample, int a, int b, int c);
 extern void SetEditObject(unsigned int obj);

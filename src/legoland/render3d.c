@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "man3d.h"
 #include <math.h>
 
 extern void *DAT_0081c8cc;
@@ -19,7 +20,6 @@ extern unsigned int DAT_00638218[];
 
 extern void FUN_0049e4d0(void *block);
 extern void KillSprite(unsigned int sprite);
-extern void IP_RenderBlokeIn3DNow(unsigned int fn);
 extern void LLSStop(unsigned int handle);
 
 unsigned int FUN_00443120(void);
@@ -109,7 +109,7 @@ void RenderBlokesNotInSeats(unsigned int a1, unsigned int a2) {
         if (bloke->id == node->id) {
             struct RenderData *data = (struct RenderData *)node->data_ptr;
             if ((data->flags & 0x80) == 0) {
-                IP_RenderBlokeIn3DNow((unsigned int)data);
+                IP_RenderBlokeIn3DNow((struct Bloke *)data);
             }
         }
         node = node->next;
@@ -358,7 +358,7 @@ void RenderBlokeList(struct BlokeListHead *list) {
     struct BlokeListNode *node = list->next;
     while (node) {
         if (node->field_4) {
-            IP_RenderBlokeIn3DNow(node->field_4);
+            IP_RenderBlokeIn3DNow((struct Bloke *)node->field_4);
         }
         node = node->next;
     }

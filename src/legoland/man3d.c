@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "man3d.h"
 #include "resource.h"
 #include "print_sprite.h"
 #include "render.h"
@@ -33,7 +34,7 @@ struct Person {
     unsigned int field_90;
 };
 
-struct Pos {
+struct Position {
     unsigned char pad_0[4];
     int count;
     unsigned char pad_8[0x24 - 0x8];
@@ -74,23 +75,11 @@ extern unsigned int DAT_0062fed4[];
 extern unsigned int DAT_0062feec[];
 extern void *DAT_0062fef4;
 
-void FUN_0043f810(struct Person *person);
-void FUN_0043fde0(void *ptr);
-struct Person *FUN_0043f8c0(unsigned int param_1, unsigned int param_2);
-void FUN_0043f970(void *buffer);
-void Render3DPerson(struct Person *person);
-void FUN_004401b0(unsigned int param_1, struct Person *person);
-void SetPersonPosition(struct Person *person, unsigned int x, unsigned int y);
-void UpdatePerson(struct Person *person);
-void BlokeSetAnim(struct Bloke *bloke, unsigned int anim);
-void BlokeWalkAnim(struct Bloke *bloke);
-struct Anim3D *GetBlokeAnim3D(struct Bloke *bloke);
-
 // FUNCTION: LEGOLAND 0x0043f660
 void LoadPos(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043f7d0
-void UnloadPos(struct Pos *pos) {
+void UnloadPos(struct Position *pos) {
     int i;
 
     i = 0;

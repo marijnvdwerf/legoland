@@ -1,4 +1,6 @@
 #include "legoland.h"
+#include "man3d.h"
+#include "tilemap.h"
 #include "worker_mouse.h"
 
 struct WorkerInner {
@@ -18,8 +20,6 @@ struct WorkerOuter {
 };
 
 extern void AdjustBlokePosition(unsigned int *coord);
-extern void ScreenToMapRef(unsigned int *global, unsigned int *out, unsigned int param3);
-extern void RenderBlokeIn3D(unsigned int worker);
 extern void KillSprite(struct Sprite *sprite);
 
 extern unsigned int DAT_007fdf9c;
@@ -72,7 +72,7 @@ void SetWorkersPositionAtMouse(void) {
     worker = DAT_007fdff0;
     inner = worker->inner;
     AdjustBlokePosition(&inner->var_1c);
-    ScreenToMapRef(&DAT_00813a44, pt, 0);
+    ScreenToMapRef((unsigned int)&DAT_00813a44, pt, 0);
     worker = DAT_007fdff0;
     worker->var_68 = pt[0] << 8;
     worker = DAT_007fdff0;
@@ -93,7 +93,7 @@ int CheckWorkerOnMouseStatus(int a) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004708c0
 void RenderWorkerOnMouse(void) {
-    RenderBlokeIn3D((unsigned int)DAT_007fdff0);
+    RenderBlokeIn3D((struct Bloke *)DAT_007fdff0);
 }
 
 // FUNCTION: LEGOLAND 0x004708d0

@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "gamemap.h"
+#include "man3d.h"
 
 struct Sprite;
 struct RinData;
@@ -88,7 +89,6 @@ extern void *DAT_008119b8;
 
 extern void *_malloc(unsigned int size);
 extern void UnLoadRin(struct RinData *rin);
-extern void UnloadPos(struct Position *pos);
 extern void KillSprite(struct Sprite *sprite);
 extern void SetEditCursorFootPrint(unsigned int *footprint);
 

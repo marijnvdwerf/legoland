@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "bricks.h"
 #include "ride_queue.h"
+#include "tilemap.h"
 
 struct RoadQueueEntry {
     struct RoadQueueEntry *next;
@@ -62,7 +63,6 @@ extern void LLIDB_UnLoadData(unsigned int handle);
 extern void FUN_0049e4d0(void *block);
 extern void SetEditCursorFootPrint(void *footprint);
 extern void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, unsigned int param_3);
-extern void ScreenToMapRef(unsigned int a, void *out, unsigned int b);
 extern void FUN_0045f480(struct Cursor *cursor, unsigned int a);
 extern void FUN_0045f460(struct Cursor *cursor);
 extern int GetObjCost(void *info);

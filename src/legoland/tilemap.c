@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "pathfind.h"
+#include "tilemap.h"
 
 struct MapTile {
     unsigned char pad_0[8];
@@ -104,7 +105,7 @@ void PointToIsoPlane(void) { STUB(); }
 void ScreenToMapRef2(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045be90
-void ScreenToMapRef(void) { STUB(); }
+void ScreenToMapRef(unsigned int x, void *out, unsigned int y) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045c010
 unsigned char Dir_To_Bit(unsigned char param) {
@@ -335,4 +336,4 @@ void FUN_0045d770(void) { STUB(); }
 void RestoreBaseMap(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045daa0
-void RemovePathTile(void) { STUB(); }
+void RemovePathTile(unsigned int param_1, unsigned short param_2) { STUB(); }

@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "timer.h"
+#include "tilemap.h"
 
 struct ObjInfo {
     unsigned char pad_c[12];
@@ -109,10 +110,8 @@ void FUN_004610f0(int *a, int *b);
 void FUN_00461290(unsigned int a, unsigned int b, unsigned int c, unsigned int d);
 void ValidateCursor(struct Cursor *cursor, unsigned int param);
 
-extern void ScreenToMapRef(unsigned int x, unsigned int *out, unsigned int y);
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *block);
-extern int FUN_0045ce10(struct MapTile *tile);
 
 // FUNCTION: LEGOLAND 0x0045dd80
 void AddObjectToMap(void) { STUB(); }

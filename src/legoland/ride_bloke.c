@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "man3d.h"
 #include "print_sprite.h"
 #include "ride_queue.h"
 #include "ride_bloke.h"
@@ -13,7 +14,6 @@ extern unsigned int DAT_0082c6bc;
 extern unsigned int DAT_00830f94;
 
 extern unsigned char Get_RFFlags(int x, int y);
-extern void IP_RenderBlokeIn3DNow(unsigned int fn);
 extern void SetOverridePalette(unsigned int param_1);
 extern void SetOverrideFrame(unsigned int param_1);
 extern void ClearOverrideFrame(void);
@@ -218,7 +218,7 @@ void FUN_00402490(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00402550
 void FUN_00402550(struct BlokeSprite *arg) {
-    IP_RenderBlokeIn3DNow(arg->var_cc);
+    IP_RenderBlokeIn3DNow((struct Bloke *)arg->var_cc);
 
     switch (arg->var_c3) {
         case 1:

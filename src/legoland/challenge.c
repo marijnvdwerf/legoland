@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "bloke_ai.h"
 #include "gamemain.h"
 #include "print_sprite.h"
 #include "screens.h"
@@ -50,7 +51,6 @@ extern unsigned int SaveGameRead(void *data, unsigned int size);
 extern struct RideElem *ElemID(const char *name);
 extern void PushRenderingStatusAndLockVideoSurface(void);
 extern void PopRenderingStatus(void);
-extern signed char FUN_0044eb10(struct Bloke *bloke);
 extern void PlayInstanceOfSample(void *sample, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 extern void KillSprite(unsigned int sprite);
 extern void RemoveIconGroup(unsigned int group);

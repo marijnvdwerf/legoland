@@ -1,5 +1,6 @@
 #include <windows.h>
 #include "legoland.h"
+#include "sound_sfx.h"
 
 struct SampleBufferVtbl;
 struct SampleBuffer;
@@ -114,8 +115,6 @@ extern GUID DAT_004ab8b0;
 
 extern void FUN_0049e4d0(void *block);
 
-int ResumeSinglyPausedSample(struct Sample *sample);
-
 // FUNCTION: LEGOLAND 0x004921c0
 void FUN_004921c0(void) { STUB(); }
 
@@ -123,10 +122,10 @@ void FUN_004921c0(void) { STUB(); }
 void CreateSampleFromWAV(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00492690
-void CreatePlayableSample(void) { STUB(); }
+struct Sample *CreatePlayableSample(unsigned int def) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00492710
-int PlaySample(struct Sample *sample, void *looping, int oneshot) {
+int PlaySample(struct Sample *sample, unsigned int looping, unsigned int oneshot) {
     if (DAT_007988c0 == 0) {
         return 0;
     }

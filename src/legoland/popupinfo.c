@@ -1,5 +1,6 @@
 #include "legoland.h"
 #include "worker_mouse.h"
+#include "popupinfo.h"
 
 struct Sprite;
 
@@ -76,23 +77,6 @@ extern void KillSprite(struct Sprite *sprite);
 extern int RemoveIconGroup(unsigned int group);
 extern void FUN_0046d680(void *a, struct Sprite *b);
 extern unsigned int FUN_00498cf0(void);
-
-int FUN_00471170(void);
-void DisableInfoPopUPIcons(void);
-void FUN_004714a0(void);
-void ResetInfoStruct(void);
-void FUN_00471610(void);
-void FUN_004714e0(void);
-void FUN_00471d60(void);
-unsigned char FUN_004730f0(void *param1, unsigned char param2, unsigned int param3, unsigned int param4);
-void FUN_004735b0(void);
-unsigned char FUN_00473360(void *arg1, unsigned char flags, unsigned int arg3, unsigned int arg4);
-void FUN_00471ca0(unsigned int param);
-unsigned int FUN_004735e0(unsigned int param);
-void FUN_004731a0(void);
-void FUN_004733f0(void);
-void FUN_00473460(void);
-void FUN_004734d0(void);
 
 // FUNCTION: LEGOLAND 0x00470bb0
 void InitPopUpInfo(void) { STUB(); }

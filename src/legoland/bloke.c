@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "debug_alloc.h"
+#include "man3d.h"
 #include "timer.h"
 #include "pathfind.h"
 
@@ -87,10 +88,7 @@ extern struct BestNode *FUN_00481790(struct InstancePos *pos);
 extern int FUN_0049e4b2(void);
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *ptr);
-extern void Add3DBlokeToList(struct BlokeWOList *bloke, void *param_2);
 extern void ClearBlokeCounters(unsigned int bloke_num, struct Bloke *bloke);
-extern void Control3DPeople(void);
-extern void SortBlokeIn3D(struct Bloke *bloke);
 extern struct LegoConfig *lpConfig;
 extern unsigned int DAT_008119a4;
 extern unsigned int DAT_004bdd00;
@@ -206,7 +204,8 @@ struct BlokeWOList *NewBlokeWOList(void *param_2) {
         memset(bloke, 0, 0xac);
         bloke->field_62 = 1;
         bloke->field_64 = 0;
-        Add3DBlokeToList(bloke, param_2);
+        /* TODO: fold struct BlokeWOList and struct Bloke — same object, different field view */
+        Add3DBlokeToList((struct Bloke *)bloke, (unsigned int)param_2);
     }
     return bloke;
 }

@@ -2,6 +2,8 @@
 #include "legoland.h"
 
 #include "gamemap.h"
+#include "man3d.h"
+#include "tilemap.h"
 
 struct WaterNode {
     struct WaterNode *next;
@@ -119,10 +121,8 @@ extern void RemoveSoundObject(unsigned int a, unsigned int b, unsigned int c);
 extern void KillSprite(unsigned int sprite);
 extern void LLIDB_UnLoadData(unsigned int handle);
 extern unsigned int LoadSprite(const char *name, int flags);
-extern void IP_RenderBlokeIn3DNow(unsigned int fn);
 extern void StandardRemoveObject(unsigned int a, unsigned int b, unsigned int c);
 extern void SetOverrideFrame(unsigned int frame);
-extern void ScreenToMapRef(unsigned int a, void *out, unsigned int b);
 extern void ValidateCursor(struct Cursor *cursor, void *data);
 extern int SaveGameWrite(void *buffer, unsigned int size);
 extern int SaveGameRead(void *buffer, unsigned int size);
@@ -287,7 +287,7 @@ void FUN_004181a0(struct WaterArg *arg, int a, int b, unsigned short *key) {
     node = ((struct WaterRender *)arg->field_c)->nodes;
     while (node != NULL) {
         if (*key == node->id) {
-            IP_RenderBlokeIn3DNow(node->fn);
+            IP_RenderBlokeIn3DNow((struct Bloke *)node->fn);
         }
         node = node->next;
     }

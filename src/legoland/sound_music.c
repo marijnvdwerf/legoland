@@ -1,6 +1,7 @@
 #include <windows.h>
 #include "legoland.h"
 
+#include "sound_sfx.h"
 #include "timer.h"
 
 struct PlayableSample;
@@ -109,13 +110,6 @@ extern unsigned int DAT_007988c0;
 extern unsigned int DAT_007988c8;
 extern struct PlayableSample *DAT_007988cc;
 
-extern int KillSoundSampleSystem(void);
-extern int FUN_00495b00(void);
-extern struct PlayableSample *CreatePlayableSample(unsigned int def);
-extern int PlaySample(struct PlayableSample *sample, unsigned int looping, unsigned int oneshot);
-extern void KillPlayableSample(struct PlayableSample *sample);
-extern void PauseSingleSample(struct PlayableSample *sample);
-extern void DeleteSampleDef(struct SampleDef *def);
 
 // FUNCTION: LEGOLAND 0x00495b90
 void SetMusicGrooveLevel(unsigned int level) {
@@ -368,7 +362,8 @@ void FUN_00496d10(struct PlayableSample *sample) {
 struct PlayableSample *PlayInstanceOfSample(unsigned int def, unsigned int looping, unsigned int oneshot, struct SampleConfig *config) {
     struct PlayableSample *sample;
 
-    sample = CreatePlayableSample(def);
+    /* TODO: fold struct Sample and struct PlayableSample — same object, different field view */
+    sample = (struct PlayableSample *)CreatePlayableSample(def);
     if (sample == 0) {
         return 0;
     }
@@ -378,12 +373,12 @@ struct PlayableSample *PlayInstanceOfSample(unsigned int def, unsigned int loopi
     } else {
         FUN_00496660(sample);
     }
-    if (PlaySample(sample, looping, oneshot) == 0) {
-        KillPlayableSample(sample);
+    if (PlaySample((struct Sample *)sample, looping, oneshot) == 0) {
+        KillPlayableSample((struct Sample *)sample);
         return 0;
     }
     if (DAT_007988c8 != 0) {
-        PauseSingleSample(sample);
+        PauseSingleSample((struct Sample *)sample);
     }
     return sample;
 }

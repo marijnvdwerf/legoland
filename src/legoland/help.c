@@ -3,6 +3,7 @@
 
 #include "timer.h"
 #include "text.h"
+#include "popupinfo.h"
 
 struct HelpAdvisor {
     unsigned char pad_0[0xc];
@@ -34,9 +35,7 @@ extern unsigned int FUN_00469400(void);
 extern void FUN_0046b2d0(void);
 extern void FUN_00468c00(void);
 extern void RenderHelpIcons(void);
-extern void FUN_00473660(void);
 extern unsigned int FUN_00498cf0(void);
-extern void FUN_004735b0(void);
 
 // FUNCTION: LEGOLAND 0x0046ce20
 void FUN_0046ce20(void) {

@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "bloke_ai.h"
 
 struct Bloke {
     struct Bloke *next;
@@ -52,10 +53,8 @@ struct BlokeRideState {
     unsigned short flags;
 };
 
-extern void DoHighLevelAI(struct Bloke *bloke);
 extern struct Bloke *MakeBloke(int param_1);
 extern unsigned int FUN_0049e4b2(void);
-extern int FUN_0044eab0(struct Bloke *bloke);
 
 extern unsigned int DAT_0083291c;
 extern int DAT_006661c8;
@@ -66,10 +65,6 @@ extern int DAT_004b8340;
 extern int DAT_004b8344;
 extern unsigned int DAT_008119a4;
 extern void (*PTR_Bloke_DoNothing_004b8368[16])(struct Bloke *);
-
-void NewLongTermAction(struct Bloke *bloke, unsigned short action);
-void InitBlokeAI(struct Bloke *bloke);
-unsigned int FUN_0044ea40(void);
 
 // FUNCTION: LEGOLAND 0x0044e760
 void NewLongTermAction(struct Bloke *bloke, unsigned short action) {

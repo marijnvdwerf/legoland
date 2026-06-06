@@ -1,8 +1,10 @@
 #include "legoland.h"
 
+#include "bloke_ai.h"
 #include "bricks.h"
 #include "debug_alloc.h"
 #include "gamemap.h"
+#include "man3d.h"
 
 struct LegoConfig;
 
@@ -68,11 +70,7 @@ extern struct LegoConfig *lpConfig;
 extern void *ElemID(const char *name);
 extern void *FUN_004a020e(unsigned int count, unsigned int size);
 extern void FUN_0049e4d0(void *block);
-extern void SortBlokeIn3D(struct Worker *worker);
-extern void DoHighLevelAI(struct Worker *worker);
 extern void DoLowLevelAI(struct Worker *worker);
-extern void UpdatePerson(struct Worker *worker);
-extern void NewLongTermAction(unsigned int worker, unsigned int action);
 extern void FUN_0045e4a0(int element, void *data);
 
 void RemoveAGardener(struct Worker *worker);
@@ -292,12 +290,13 @@ void FUN_00499fb0(void) {
             current->ticks++;
             next = current->next;
             if (current->state == 0) {
-                DoHighLevelAI(current);
+                /* TODO: fold struct Worker and struct Bloke — same person, different field view */
+                DoHighLevelAI((struct Bloke *)current);
             }
             if (current->state != 0) {
                 DoLowLevelAI(current);
             }
-            UpdatePerson(current);
+            UpdatePerson((struct Person *)current);
             if (current->progress == 100) {
                 RemoveAGardener(current);
             }
@@ -313,12 +312,12 @@ void FUN_0049a010(void) {
         struct Worker *next = node->next;
         node->ticks++;
         if (node->state == 0) {
-            DoHighLevelAI(node);
+            DoHighLevelAI((struct Bloke *)node);
         }
         if (node->state != 0) {
             DoLowLevelAI(node);
         }
-        UpdatePerson(node);
+        UpdatePerson((struct Person *)node);
         if (node->progress == 100) {
             RemoveAMechanic(node);
         }
@@ -338,7 +337,7 @@ void RenderWorkers(void) {
     if (esi) {
         do {
             if ((esi->flags & 0x20) == 0) {
-                SortBlokeIn3D(esi);
+                SortBlokeIn3D((struct Bloke *)esi);
             }
             esi = esi->next;
         } while (esi);
@@ -348,7 +347,7 @@ void RenderWorkers(void) {
     if (esi) {
         do {
             if (esi->var_46 != 0 && (esi->flags & 0x20) == 0) {
-                SortBlokeIn3D(esi);
+                SortBlokeIn3D((struct Bloke *)esi);
             }
             esi = esi->next;
         } while (esi);
@@ -519,7 +518,7 @@ struct WorkOrder *GetMechanicWorkOrderAt(int pos_x, int pos_y) {
 // FUNCTION: LEGOLAND 0x0049b1d0
 void EraseMechanicOrder(struct WorkOrder *order) {
     if (order->var_18 != 0) {
-        NewLongTermAction(order->var_1c, 0x11);
+        NewLongTermAction((struct Bloke *)order->var_1c, 0x11);
     }
     if (*(unsigned int *)((char *)order + 4) == DAT_0080ff64) {
         if (DAT_0079a8d0 != 0) {
@@ -535,7 +534,7 @@ void EraseMechanicOrder(struct WorkOrder *order) {
 // FUNCTION: LEGOLAND 0x0049b230
 void EraseGardenerOrder(struct WorkOrder *order) {
     if (order->var_18 != 0) {
-        NewLongTermAction(order->var_1c, 0x10);
+        NewLongTermAction((struct Bloke *)order->var_1c, 0x10);
     }
     if (order->var_20 == 1) {
         FUN_0045e4a0(*(int *)((char *)order + 4), (char *)order + 8);
@@ -609,7 +608,7 @@ void RemoveGardenersWorkOrderAt(unsigned int x, unsigned int y) {
         while (esi != 0) {
             if ((unsigned int)esi->var_8 == x && (unsigned int)esi->var_c == y) {
                 if (esi->var_18 != 0) {
-                    NewLongTermAction(esi->var_1c, 0x10);
+                    NewLongTermAction((struct Bloke *)esi->var_1c, 0x10);
                 }
                 FUN_00499e30(esi);
                 break;
@@ -625,7 +624,7 @@ void RemoveMechanicsWorkOrderAt(unsigned int x, unsigned int y) {
     while (current) {
         if ((unsigned int)current->var_8 == x && (unsigned int)current->var_c == y) {
             if (current->var_18) {
-                NewLongTermAction(current->var_1c, 0x11);
+                NewLongTermAction((struct Bloke *)current->var_1c, 0x11);
             }
             FUN_00499eb0(current);
             break;

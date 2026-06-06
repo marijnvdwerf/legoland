@@ -2,6 +2,7 @@
 
 #include "gamemain.h"
 #include "gamemap.h"
+#include "title.h"
 
 struct GameMainNode {
     struct GameMainNode *next;
@@ -67,7 +68,6 @@ extern void FUN_00482d70(void);
 extern void FUN_00462e90(void);
 extern void FUN_00476000(void);
 extern void FUN_00476050(void);
-extern void FUN_00490610(const char *param_1);
 extern void FUN_00463560(void);
 extern void FUN_00482b10(void);
 extern void FUN_0046b240(unsigned int param_1);

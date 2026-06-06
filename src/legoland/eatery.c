@@ -1,10 +1,10 @@
 #include "legoland.h"
 
 #include "gamemap.h"
+#include "man3d.h"
 #include "money.h"
 #include "obj_instance.h"
 
-extern void IP_RenderBlokeIn3DNow(unsigned int fn);
 extern void GetScreenCoordsForObject(unsigned short *value, void *obj);
 extern void LLIDB_UnLoadData(void *param_1);
 extern void SetEditCursorFootPrint(unsigned int param);
@@ -154,7 +154,7 @@ void FUN_0042e260(struct BlokeArg *arg, unsigned int param2, unsigned int param3
     if (node != NULL) {
         while (node != NULL) {
             if (*value == node->field_c) {
-                IP_RenderBlokeIn3DNow(node->field_8);
+                IP_RenderBlokeIn3DNow((struct Bloke *)node->field_8);
                 GetScreenCoordsForObject(value, owner);
                 break;
             }
@@ -245,7 +245,7 @@ void FUN_0042e830(struct BlokeArg *arg, unsigned int param2, unsigned int param3
     }
     while (node != NULL) {
         if (*value == node->field_c) {
-            IP_RenderBlokeIn3DNow(node->field_8);
+            IP_RenderBlokeIn3DNow((struct Bloke *)node->field_8);
         }
         node = node->next;
     }

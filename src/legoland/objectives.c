@@ -3,6 +3,7 @@
 #include "bricks.h"
 #include "debug_alloc.h"
 #include "timer.h"
+#include "sound_sfx.h"
 
 struct ObjectiveEvent {
     struct ObjectiveEvent *next;
@@ -78,7 +79,6 @@ extern void FUN_0049e4d0(void *block);
 extern void FUN_00476140(int index, int value);
 extern void FUN_00460560(int index);
 extern int LLIDB_FindElement(const char *name, unsigned int *out, int zero);
-extern void SetSampleFade(unsigned int handle, int fade);
 
 void FUN_00468860(int index, signed char value);
 struct ObjectiveEvent *FUN_00468910(unsigned int type, int sort_key);
@@ -596,7 +596,7 @@ void FUN_00469c40(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00469c60
 int FUN_00469c60(unsigned int handle) {
-    SetSampleFade(handle, -100);
+    SetSampleFade((struct Sample *)handle, -100);
     return 0;
 }
 

@@ -1,13 +1,12 @@
 #include "legoland.h"
 #include "path_control.h"
+#include "tilemap.h"
 
 struct PathSpriteHeader {
     unsigned short id;
 };
 
 extern struct PathSpriteHeader *PathSprite;
-
-extern void RemovePathTile(unsigned int param_1, unsigned short param_2);
 
 // FUNCTION: LEGOLAND 0x0045dbe0
 void AddBasicPath(void) { STUB(); }

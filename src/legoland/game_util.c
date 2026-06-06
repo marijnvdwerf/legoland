@@ -2,6 +2,8 @@
 
 #include "gamemain.h"
 #include "gamemap.h"
+#include "sound_sfx.h"
+#include "title.h"
 
 extern unsigned int DAT_00669098;
 extern unsigned int DAT_0066879c;
@@ -33,7 +35,6 @@ extern void FUN_0046bcb0(unsigned int param_1, unsigned int param_2);
 extern void FUN_0046b790(unsigned int param_1, unsigned int param_2);
 extern void FUN_0046b7f0(unsigned int param_1);
 extern void FUN_0046b9c0(unsigned int param_1);
-extern void FUN_00490610(unsigned int param_1);
 extern void FUN_0046ba30(unsigned int param_1);
 extern void FUN_00482d60(int param_1, int param_2);
 extern void FUN_00462e50(unsigned int param_1, int param_2);
@@ -41,9 +42,7 @@ extern void FUN_0046bbb0(unsigned int param_1, int param_2);
 extern void FUN_0046bb80(unsigned int param_1, int param_2);
 extern void FUN_0046bc60(void);
 extern void FUN_0046bc40(void);
-extern int FUN_00492980(void);
 extern void LLIDB_ClearOnLevel(void);
-extern void FUN_00492990(void);
 extern int __strcmpi(const char *s1, const char *s2);
 extern int FUN_004a04b9(const char *str);
 
@@ -618,7 +617,7 @@ int FUN_0047a800(struct CommandArgs *arg, int argc) {
     if (DAT_00669054 == 4) {
         FUN_0046b9c0(arg->field_4);
     } else {
-        FUN_00490610(arg->field_4);
+        FUN_00490610((const char *)arg->field_4);
     }
     return 1;
 }

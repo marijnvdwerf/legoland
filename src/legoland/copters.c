@@ -3,6 +3,8 @@
 #include "gamemap.h"
 #include "ride_queue.h"
 #include "copters.h"
+#include "man3d.h"
+#include "sound_sfx.h"
 
 typedef void (*CopterVtblFn)(void);
 
@@ -62,8 +64,6 @@ extern void *_malloc(unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);
 extern void KillSprite(struct Sprite *sprite);
 extern void Kill_FXList(unsigned char *list, unsigned int count);
-extern void UnloadPos(struct Position *pos);
-extern void ResumeSinglyPausedSample(unsigned int param);
 extern void SetEditCursorFootPrint(void *footprint);
 
 // FUNCTION: LEGOLAND 0x00403c40
@@ -200,7 +200,7 @@ void FUN_00404860(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004048a0
 unsigned int FUN_004048a0(unsigned int param) {
-    ResumeSinglyPausedSample(param);
+    ResumeSinglyPausedSample((struct Sample *)param);
     return 0;
 }
 

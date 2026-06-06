@@ -2,6 +2,8 @@
 #include "tooltip.h"
 #include "string.h"
 #include "options.h"
+#include "sound_sfx.h"
+#include "title.h"
 
 struct SpriteIcon {
     unsigned char pad_0[0x2c];
@@ -29,7 +31,6 @@ extern void FUN_00498630(const char *param_1);
 extern void FUN_00498b00(void);
 extern void FUN_0046d680(unsigned int param_1, unsigned int param_2);
 extern void FUN_00474880(void);
-extern void FUN_00492850(void);
 extern void FUN_0046ce20(void);
 extern void FUN_0046b760(void);
 extern void FUN_0049e4d0(void *ptr);
@@ -69,21 +70,6 @@ extern char DAT_007cae80[];
 extern char DAT_007cb1e0[];
 extern unsigned int DAT_007cb2e0;
 extern struct PopUp *DAT_00668e9c;
-
-void FUN_0048ffb0(void);
-void FUN_00490270(void);
-unsigned char FUN_004902c0(unsigned int param_1, unsigned int param_2);
-unsigned char FUN_00490300(unsigned int param_1, unsigned int param_2);
-void FUN_00490600(unsigned int param_1);
-void FUN_00490610(const char *param_1);
-unsigned int FUN_00490680(char *param_1, void **param_2, unsigned int param_3);
-void FUN_00490740(const char *param_1);
-void FUN_00490770(const char *param_1);
-unsigned int FUN_004907a0(const char *param_1);
-void FUN_00490850(void);
-void FUN_00490880(void);
-void FUN_004908b0(void);
-void FUN_00490aa0(void);
 
 // FUNCTION: LEGOLAND 0x0048fc40
 void InitTitleScreen(void) { STUB(); }
@@ -431,7 +417,7 @@ void FUN_00491080(void) { STUB(); }
 void FUN_004910f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004911c0
-void FUN_004911c0(void) { STUB(); }
+void FUN_004911c0(const char *a, const char *b) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491240
 unsigned int FUN_00491240(const char *param_1) {
@@ -452,4 +438,4 @@ unsigned int FUN_00491240(const char *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00491290
-void InitNewProfilePoPUp(void) { STUB(); }
+void InitNewProfilePoPUp(struct Profile *profile) { STUB(); }
