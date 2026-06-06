@@ -1,14 +1,6 @@
 #include "legoland.h"
 
-struct Vertex {
-    unsigned char data[20];
-};
-
-struct BinVModel {
-    int count;
-    unsigned char pad_4[4];
-    struct Vertex *vertices;
-};
+#include "binv.h"
 
 extern void FUN_0049e4d0(void *block);
 

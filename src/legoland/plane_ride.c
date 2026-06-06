@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "binv.h"
+
 struct PlaneRideNode {
     unsigned char pad_0[0x20];
     struct PlaneRideNode *next;
@@ -65,7 +67,6 @@ extern unsigned int EditCursor;
 extern void *_malloc(unsigned int size);
 extern int FUN_0049e4b2(void);
 extern void KillSprite(unsigned int sprite);
-extern void FreeBinV(unsigned int binv);
 extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(void *foot_print);
@@ -125,13 +126,13 @@ void FUN_0043dee0(struct PlaneRideObject *input) {
         KillSprite(DAT_0081cae0);
     }
     if (DAT_0062fe90) {
-        FreeBinV(DAT_0062fe90);
+        FreeBinV((void *)DAT_0062fe90);
     }
     if (DAT_0062fe94) {
-        FreeBinV(DAT_0062fe94);
+        FreeBinV((void *)DAT_0062fe94);
     }
     if (DAT_0062fe78) {
-        FreeBinV(DAT_0062fe78);
+        FreeBinV((void *)DAT_0062fe78);
     }
     FUN_0043d940();
     Kill_FXList(DAT_004b79d0, 2);

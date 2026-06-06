@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "binv.h"
+
 struct CarouselNode {
     struct CarouselNode *next;
 };
@@ -50,7 +52,6 @@ extern void *DAT_008119b8;
 extern unsigned int EditCursor;
 
 extern void KillSprite(unsigned int sprite);
-extern void FreeBinV(unsigned int binv);
 extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(void *foot_print);
@@ -93,9 +94,9 @@ void FUN_0042c3f0(struct CarouselObject *input) {
     KillSprite(DAT_006160c0);
     FUN_0042bc40();
     Kill_FXList(CAROUSSEL_SFX, 2);
-    FreeBinV(DAT_00616090);
-    FreeBinV(DAT_00616094);
-    FreeBinV(DAT_00616098);
+    FreeBinV((void *)DAT_00616090);
+    FreeBinV((void *)DAT_00616094);
+    FreeBinV((void *)DAT_00616098);
 }
 
 // FUNCTION: LEGOLAND 0x0042c460

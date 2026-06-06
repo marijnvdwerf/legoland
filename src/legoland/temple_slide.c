@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "binv.h"
+
 struct TempleRide {
     unsigned char pad_0[4];
     unsigned int var_4;
@@ -58,7 +60,6 @@ extern unsigned short DAT_004cbfa4;
 extern struct SaveNode *DAT_004cbfd4;
 
 extern unsigned int KillSprite(unsigned int handle);
-extern unsigned int FreeBinV(unsigned int handle);
 extern void Ride_SetFlagToNotLetAnyoneOn(void *arg);
 extern void Ride_ClearFlagToNotLetAnyoneOn(void *arg);
 extern int SaveGameWrite(void *buf, unsigned int size);
@@ -98,13 +99,13 @@ void FUN_00417130(struct TempleRide *arg) {
 void FUN_00417150(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00417200
-unsigned int FUN_00417200(struct TempleRide *arg) {
+void FUN_00417200(struct TempleRide *arg) {
     DAT_004cbf80 = arg->var_c;
     if (DAT_004cbf78 != 0) {
         KillSprite(DAT_004cbf78);
     }
     KillSprite(DAT_004cbfd0);
-    return FreeBinV(DAT_004cbfc4);
+    FreeBinV((void *)DAT_004cbfc4);
 }
 
 // FUNCTION: LEGOLAND 0x00417240

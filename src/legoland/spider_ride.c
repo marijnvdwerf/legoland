@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "binv.h"
+
 struct Sprite;
 
 struct SpiderNode {
@@ -77,7 +79,6 @@ extern void *_malloc(unsigned int size);
 extern void PlayInstanceOfSample(unsigned int sample, int param_2, int param_3, struct SampleParams *params);
 extern void UnSourceAndFadeAllSamplesFromSource(struct FadeParams *params, int fade);
 extern void KillSprite(struct Sprite *sprite);
-extern void FreeBinV(unsigned int binv);
 extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern int __strcmpi(const char *a, const char *b);
 
@@ -164,13 +165,13 @@ void FUN_00415fd0(struct CarNode *param_1)
         KillSprite(DAT_0082c668);
     }
     if (DAT_004cbf10 != 0) {
-        FreeBinV(DAT_004cbf10);
+        FreeBinV((void *)DAT_004cbf10);
     }
     if (DAT_004cbf24 != 0) {
-        FreeBinV(DAT_004cbf24);
+        FreeBinV((void *)DAT_004cbf24);
     }
     if (DAT_004cbf18 != 0) {
-        FreeBinV(DAT_004cbf18);
+        FreeBinV((void *)DAT_004cbf18);
     }
     KillSprite(DAT_004cbf14);
     KillSprite(DAT_004cbf1c);

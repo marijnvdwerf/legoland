@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "binv.h"
+
 typedef void (*BarrelVtblFn)(void);
 
 struct BarrelNode {
@@ -59,7 +61,6 @@ extern int SaveGameWrite(const void *buf, unsigned int size);
 extern void DefaultCursor(unsigned int **cursor);
 extern void SetEditCursorFootPrint(unsigned int *arg);
 extern void KillSprite(void *sprite);
-extern void FreeBinV(void *bin);
 extern int FUN_0049e4b2(void);
 
 void FUN_0043c2f0(struct BarrelNode *node);

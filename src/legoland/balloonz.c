@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "binv.h"
+
 struct BalloonC {
     unsigned char pad_0[0x10];
     unsigned int var_10;
@@ -29,7 +31,6 @@ struct CursorState {
 };
 
 extern void KillSprite(unsigned int sprite);
-extern void FreeBinV(unsigned int binv);
 extern int SaveGameWrite(void *data, unsigned int size);
 extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(unsigned int *foot_print);
@@ -117,7 +118,7 @@ void FUN_0042b9d0(void) {
     KillSprite(DAT_00616058);
     KillSprite(DAT_0061605c);
     KillSprite(DAT_0081cde8);
-    FreeBinV(DAT_00616018);
+    FreeBinV((void *)DAT_00616018);
     FUN_0042a9f0();
 }
 

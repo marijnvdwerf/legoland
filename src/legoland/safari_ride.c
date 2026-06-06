@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "binv.h"
+
 extern void *DAT_004cbf0c;
 extern unsigned int DAT_004cbec4;
 extern unsigned int DAT_004cbef8;
@@ -16,7 +18,6 @@ extern void *DAT_008119b8;
 extern unsigned int EditCursor;
 
 extern void KillSprite(unsigned int sprite);
-extern void FreeBinV(unsigned int binv);
 extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(void *foot_print);
@@ -98,9 +99,9 @@ void FUN_00414ea0(struct SafariObject *a1) {
     DAT_004cbec4 = a1->field_c;
     FUN_00414a60();
     Kill_FXList(SAFARI_SFX, 1);
-    FreeBinV(DAT_004cbef8);
-    FreeBinV(DAT_004cbefc);
-    FreeBinV(DAT_004cbf00);
+    FreeBinV((void *)DAT_004cbef8);
+    FreeBinV((void *)DAT_004cbefc);
+    FreeBinV((void *)DAT_004cbf00);
     KillSprite(DAT_004cbf08);
 }
 

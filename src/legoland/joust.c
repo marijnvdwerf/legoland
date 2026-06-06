@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "binv.h"
+
 struct JoustNode {
     unsigned char pad_0[4];
     struct JoustNode *next;
@@ -63,7 +65,6 @@ extern void *DAT_008119b8;
 extern unsigned int EditCursor;
 
 extern void KillSprite(unsigned int sprite);
-extern void FreeBinV(unsigned int binv);
 extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(void *foot_print);
@@ -122,7 +123,7 @@ void FUN_00408c00(void) {
     KillSprite(DAT_004c1244);
     KillSprite(DAT_004c1248);
     KillSprite(DAT_004c124c);
-    FreeBinV(DAT_004c1218);
+    FreeBinV((void *)DAT_004c1218);
     KillSprite(DAT_004c1240);
     FUN_00407ab0();
 }
