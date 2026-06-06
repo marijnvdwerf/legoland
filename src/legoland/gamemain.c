@@ -2,6 +2,7 @@
 
 #include "gamemain.h"
 #include "gamemap.h"
+#include "nerps.h"
 #include "title.h"
 #include "bloke.h"
 #include "objectives.h"
@@ -62,7 +63,6 @@ extern void FUN_00462e90(void);
 extern void FUN_00476000(void);
 extern void FUN_00476050(void);
 extern void FUN_00463560(void);
-extern void FUN_0046b240(unsigned int param_1);
 
 extern char DAT_004d8bb0[0x100];
 

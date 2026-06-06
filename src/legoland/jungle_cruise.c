@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "gamemap.h"
+#include "jungle_cruise.h"
 #include "objclass.h"
 #include "render3d.h"
 
@@ -8,16 +9,6 @@ struct JungleNode {
     unsigned short field_0;
     unsigned char pad_2[1010];
     struct JungleNode *next;
-};
-
-struct JungleRide {
-    unsigned char pad_0[8];
-    unsigned int field_8;
-    unsigned char pad_c[4];
-    unsigned int field_10;
-    unsigned char pad_14[0x3dc - 0x14];
-    unsigned int field_3dc;
-    unsigned int field_3e0;
 };
 
 struct JungleCursor {
@@ -112,8 +103,6 @@ extern unsigned short DAT_0082c6ac;
 extern unsigned int DAT_0081cb74;
 extern unsigned int DAT_0081cb6c;
 extern unsigned int DAT_0081cb54;
-
-void FUN_00433840(struct JungleRide *param_1, unsigned int param_2, unsigned int param_3);
 
 // FUNCTION: LEGOLAND 0x00432ac0
 void FUN_00432ac0(void) { STUB(); }

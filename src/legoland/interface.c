@@ -4,6 +4,7 @@
 #include "profile_io.h"
 #include "screens.h"
 #include "title.h"
+#include "nerps.h"
 #include "popupinfo.h"
 #include "objclass.h"
 
@@ -134,12 +135,10 @@ extern void KillSprite(unsigned int sprite);
 extern void FUN_0046d680(unsigned int a, unsigned int b);
 extern void UnLoad_Interface_ControlIcons(void);
 extern void FUN_0046fb40(unsigned int a);
-extern int FUN_0046b280(void);
 extern unsigned int SaveGameWrite(unsigned int *data, unsigned int size);
 extern unsigned int SaveGameRead(void *data, unsigned int size);
 extern unsigned int RemoveIconGroup(unsigned int group);
 extern unsigned int FUN_0046d590(unsigned int a);
-extern void FUN_0046b700(void);
 extern void PlayInstanceOfSample(void *sample, int a, int b, int c);
 extern void FUN_00498920(void);
 extern void FUN_0049e4d0(void *block);

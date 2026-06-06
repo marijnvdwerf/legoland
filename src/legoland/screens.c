@@ -10,8 +10,10 @@
 #include "screens.h"
 #include "popupinfo.h"
 #include "draw.h"
+#include "nerps.h"
 #include "objclass.h"
 #include "bloke.h"
+#include "worker.h"
 
 struct ScreenConfig {
     unsigned short width;
@@ -46,8 +48,6 @@ extern void FUN_00474880(void);
 extern void BuildCursorPtr(struct Cursor *cursor, unsigned short a, unsigned short b);
 extern void FUN_0046fb40(unsigned int a);
 extern void DelObjectList(void);
-extern void FUN_0046cb20(void);
-extern void FUN_0049cfc0(void);
 extern void FUN_00474ed0(void);
 extern char *_strncpy(char *dest, const char *src, unsigned int count);
 

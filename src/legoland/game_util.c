@@ -1,7 +1,9 @@
 #include "legoland.h"
 
+#include "game_util.h"
 #include "gamemain.h"
 #include "gamemap.h"
+#include "nerps.h"
 #include "sound_sfx.h"
 #include "title.h"
 #include "objclass.h"
@@ -14,32 +16,9 @@ extern unsigned int DAT_007fdca4;
 
 extern unsigned int DAT_004bb5b0;
 
-extern void FUN_0046b590(unsigned int param_1);
-extern unsigned int FUN_0046b4f0(unsigned int param_1);
 extern unsigned int ElemID(unsigned int id);
 extern unsigned int LoadBaseMap(unsigned int param_1);
-extern void FUN_0046bdd0(unsigned char param_1, unsigned int param_2, unsigned int param_3);
-extern void FUN_0046bef0(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4);
-extern void FUN_0046c030(unsigned char param_1, unsigned int param_2, unsigned int param_3);
-extern void FUN_0046c090(unsigned char param_1, unsigned int param_2);
-extern void FUN_0046c0c0(unsigned char param_1, unsigned int param_2, unsigned int param_3);
-extern void FUN_0046c120(unsigned char param_1, unsigned int param_2);
-extern void FUN_0046c290(unsigned char param_1, unsigned int param_2);
-extern void FUN_0046c2f0(unsigned char param_1, unsigned int param_2);
-extern void FUN_0046c320(unsigned char param_1, unsigned int param_2);
-extern void FUN_0046c390(unsigned char param_1, unsigned int param_2, unsigned int param_3);
-extern void FUN_0046c3c0(unsigned char param_1, unsigned int param_2);
-extern void FUN_0046c420(unsigned char param_1, unsigned int param_2, unsigned int param_3);
-extern void FUN_0046bcb0(unsigned int param_1, unsigned int param_2);
-extern void FUN_0046b790(unsigned int param_1, unsigned int param_2);
-extern void FUN_0046b7f0(unsigned int param_1);
-extern void FUN_0046b9c0(unsigned int param_1);
-extern void FUN_0046ba30(unsigned int param_1);
 extern void FUN_00462e50(unsigned int param_1, int param_2);
-extern void FUN_0046bbb0(unsigned int param_1, int param_2);
-extern void FUN_0046bb80(unsigned int param_1, int param_2);
-extern void FUN_0046bc60(void);
-extern void FUN_0046bc40(void);
 extern void LLIDB_ClearOnLevel(void);
 extern int __strcmpi(const char *s1, const char *s2);
 extern int FUN_004a04b9(const char *str);
@@ -63,8 +42,6 @@ struct CommandArgs {
     char *field_c;
 };
 
-unsigned int FUN_00478be0(unsigned int param_1, unsigned int param_2, unsigned int param_3);
-
 // FUNCTION: LEGOLAND 0x004787b0
 int FUN_004787b0(char **pp_str) {
     if (strlen(*pp_str) == 0) {
@@ -76,7 +53,8 @@ int FUN_004787b0(char **pp_str) {
 // FUNCTION: LEGOLAND 0x004787d0
 void FUN_004787d0(void) {
     if (DAT_0066879c != 0) {
-        FUN_0046b590(DAT_0066879c);
+        /* TODO: fold into struct SortNode/NerpsListNode views of DAT_0066879c */
+        FUN_0046b590((struct SortNode *)DAT_0066879c);
     }
     DAT_0066879c = 0;
 }
@@ -85,7 +63,7 @@ void FUN_004787d0(void) {
 void FUN_004787f0(void) {
     unsigned int id = DAT_00669098;
     DAT_00669098 = DAT_00669098 + 1;
-    DAT_0066879c = FUN_0046b4f0(id);
+    DAT_0066879c = (unsigned int)FUN_0046b4f0(id);
     DAT_007fdca4 = 0;
 }
 

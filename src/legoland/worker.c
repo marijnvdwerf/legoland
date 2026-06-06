@@ -6,22 +6,9 @@
 #include "gamemap.h"
 #include "man3d.h"
 #include "bloke.h"
+#include "worker.h"
 
 struct LegoConfig;
-
-struct Worker {
-    struct Worker *next;
-    unsigned char pad_4[10];
-    unsigned short state;
-    unsigned char pad_10[38];
-    unsigned char progress;
-    unsigned char pad_37[15];
-    unsigned short var_46;
-    unsigned char pad_48[20];
-    unsigned long ticks;
-    unsigned char pad_60[2];
-    unsigned char flags;
-};
 
 struct WorkOrder {
     struct WorkOrder *next;
@@ -72,13 +59,6 @@ extern void *ElemID(const char *name);
 extern void *FUN_004a020e(unsigned int count, unsigned int size);
 extern void FUN_0049e4d0(void *block);
 extern void FUN_0045e4a0(int element, void *data);
-
-void RemoveAGardener(struct Worker *worker);
-void RemoveAMechanic(struct Worker *worker);
-int IterateNoneWorkersRepairOrders(void);
-void RemoveGardenersWorkOrderAt(unsigned int x, unsigned int y);
-void RemoveMechanicsWorkOrderAt(unsigned int x, unsigned int y);
-void RemoveNoneWorkersRepairOrderAT(unsigned int x, unsigned int y);
 
 // FUNCTION: LEGOLAND 0x00499530
 void LoadWorkerInterfaceGFX(void) {
@@ -392,13 +372,13 @@ void RefundMechanic(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0049a1a0
-void GenerateGardener(void) { STUB(); }
+void GenerateGardener(void *object, int param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049a2d0
 void RemoveAGardener(struct Worker *worker) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049a340
-void GenerateMechanic(void) { STUB(); }
+void GenerateMechanic(void *object, int param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049a430
 void RemoveAMechanic(struct Worker *worker) { STUB(); }

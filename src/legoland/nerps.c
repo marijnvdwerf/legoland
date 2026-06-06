@@ -6,8 +6,10 @@
 #include "saveload.h"
 #include "screens.h"
 #include "draw.h"
+#include "nerps.h"
 #include "objclass.h"
 #include "objectives.h"
+#include "worker.h"
 
 struct NerpsArg {
     unsigned char pad_0[0x4];
@@ -58,8 +60,6 @@ struct LoopObject {
     unsigned char pad_4[0xc - 0x4];
     struct LoopVtable *vtable;
 };
-
-struct SortNode;
 
 struct EventNode {
     struct EventNode *next;
@@ -114,11 +114,8 @@ extern int DAT_00667ce8;
 extern int DAT_00667cec;
 extern int DAT_00667ce0;
 
-extern void GenerateGardener(void *object, int param_2);
-extern void GenerateMechanic(void *object, int param_2);
 extern void FUN_00462e50(unsigned int param_1, unsigned int param_2);
 extern void FUN_00462e70(unsigned int param_1, unsigned int param_2);
-extern void FUN_0046b240(unsigned int param_1);
 extern void FUN_00476070(unsigned int param_1, unsigned int param_2);
 
 extern struct EventList *DAT_0066879c;
@@ -153,14 +150,6 @@ extern void FUN_0046ce20(void);
 extern unsigned int DAT_00810140;
 extern unsigned int DAT_007fe050;
 extern unsigned int DAT_007fe054;
-
-void FUN_0046ce00(void);
-
-void FUN_0046b630(struct EventNode *node, struct EventList *list);
-unsigned int FUN_0046b280(void);
-
-void FUN_0046a040(unsigned int param_1, unsigned int param_2);
-void FUN_0046a140(int index, unsigned int param_2, unsigned int param_3);
 
 // FUNCTION: LEGOLAND 0x0046a040
 void FUN_0046a040(unsigned int param_1, unsigned int param_2) { STUB(); }
@@ -708,19 +697,11 @@ void FUN_0046b290(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0046b2d0
 void FUN_0046b2d0(void) { STUB(); }
 
-struct ListNode {
-    struct ListNode *field_0;
-    unsigned int field_4;
-    unsigned int field_8;
-    unsigned int field_c;
-    unsigned int field_10;
-};
-
 // FUNCTION: LEGOLAND 0x0046b4f0
-struct ListNode *FUN_0046b4f0(unsigned int param_1) {
-    struct ListNode *node;
+struct NerpsListNode *FUN_0046b4f0(unsigned int param_1) {
+    struct NerpsListNode *node;
 
-    node = (struct ListNode *)_malloc(0x14);
+    node = (struct NerpsListNode *)_malloc(0x14);
     if (node != NULL) {
         node->field_8 = 0;
         node->field_4 = param_1;
@@ -762,11 +743,6 @@ void FUN_0046b560(struct WrapperNode *node) {
         FUN_0046b520(node);
     }
 }
-
-struct SortNode {
-    struct SortNode *next;
-    int val;
-};
 
 // FUNCTION: LEGOLAND 0x0046b590
 void FUN_0046b590(struct SortNode *node) {
@@ -1252,7 +1228,7 @@ void FUN_0046bec0(unsigned char param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0046bef0
-void FUN_0046bef0(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4, unsigned int param_5) {
+void FUN_0046bef0(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
     struct EventNode *node;
 
     node = FUN_00468910(0x26, 1);
@@ -1302,7 +1278,7 @@ void FUN_0046bff0(unsigned char param_1, unsigned int param_2, unsigned int para
 }
 
 // FUNCTION: LEGOLAND 0x0046c030
-void FUN_0046c030(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4, unsigned int param_5) {
+void FUN_0046c030(unsigned char param_1, unsigned int param_2, unsigned int param_3) {
     struct EventNode *node;
 
     node = FUN_00468910(0x2b, 1);
@@ -1435,7 +1411,7 @@ void FUN_0046c2f0(unsigned char param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0046c320
-void FUN_0046c320(unsigned char param_1, unsigned int param_2, unsigned int param_3) {
+void FUN_0046c320(unsigned char param_1, unsigned int param_2) {
     struct EventNode *node;
 
     node = FUN_00468910(0x3b, 1);
@@ -1448,7 +1424,7 @@ void FUN_0046c320(unsigned char param_1, unsigned int param_2, unsigned int para
 void FUN_0046c350(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046c390
-void FUN_0046c390(void) { STUB(); }
+void FUN_0046c390(unsigned char param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046c3c0
 void FUN_0046c3c0(unsigned char param_1, unsigned int param_2) {
@@ -1472,7 +1448,7 @@ void FUN_0046c3f0(unsigned char param_1, unsigned int param_2, unsigned int para
 }
 
 // FUNCTION: LEGOLAND 0x0046c420
-void FUN_0046c420(void) { STUB(); }
+void FUN_0046c420(unsigned char param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046c450
 void FUN_0046c450(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {

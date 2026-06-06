@@ -131,16 +131,6 @@ extern void *_malloc(unsigned int size);
 extern void FUN_0045f480(struct Cursor *cursor, unsigned int a);
 extern void FUN_0045f4d0(struct Cursor *cursor);
 
-unsigned int FUN_00417a90(void);
-void FUN_00417ac0(void);
-void FUN_00417af0(void *arg, unsigned int a, unsigned int b);
-void *FUN_00417ba0(void *list, unsigned short *key);
-void FUN_00417bd0(void *list, void *node);
-unsigned int FUN_00417ec0(void *arg);
-unsigned int FUN_00418710(void *arg1, unsigned int arg2);
-void *FUN_004182c0(unsigned short *key);
-void FUN_004182a0(void *node);
-
 // FUNCTION: LEGOLAND 0x00417a90
 unsigned int FUN_00417a90(void) {
     if (DAT_004cc028++ == 0) {

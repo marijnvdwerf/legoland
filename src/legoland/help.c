@@ -3,6 +3,7 @@
 
 #include "timer.h"
 #include "text.h"
+#include "nerps.h"
 #include "popupinfo.h"
 #include "objectives.h"
 #include "challenge.h"
@@ -32,7 +33,6 @@ extern void FUN_0049e4d0(void *block);
 extern void FUN_004748a0(unsigned int arg);
 extern void FUN_00476000(void);
 extern void FUN_004988c0(void);
-extern void FUN_0046b2d0(void);
 extern void RenderHelpIcons(void);
 extern unsigned int FUN_00498cf0(void);
 

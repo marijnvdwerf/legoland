@@ -5,6 +5,7 @@
 #include "sound_sfx.h"
 #include "title.h"
 #include "draw.h"
+#include "nerps.h"
 
 struct SpriteIcon {
     unsigned char pad_0[0x2c];
@@ -32,7 +33,6 @@ extern void FUN_00498b00(void);
 extern void FUN_0046d680(unsigned int param_1, unsigned int param_2);
 extern void FUN_00474880(void);
 extern void FUN_0046ce20(void);
-extern void FUN_0046b760(void);
 extern void FUN_0049e4d0(void *ptr);
 extern int FUN_0049e573(char *buffer, const char *format, ...);
 
