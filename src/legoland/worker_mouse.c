@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "worker_mouse.h"
 
 struct WorkerInner {
     unsigned char pad_0[0x1c];
@@ -88,7 +89,7 @@ void FUN_00470410(void) { STUB(); }
 void FUN_004704b0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00470620
-void CheckWorkerOnMouseStatus(void) { STUB(); }
+int CheckWorkerOnMouseStatus(int a) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004708c0
 void RenderWorkerOnMouse(void) {

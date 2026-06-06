@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "timer.h"
+#include "saveload.h"
 
 extern int SaveGameRead(void *data, unsigned int size);
 

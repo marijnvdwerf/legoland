@@ -1,4 +1,6 @@
 #include "legoland.h"
+#include "string.h"
+#include "worker_mouse.h"
 
 struct IconNode {
     struct IconNode *next;
@@ -130,9 +132,7 @@ extern void FUN_0046fb40(unsigned int a);
 extern void UnLoad_PopUpInfo(void);
 extern void FUN_00473160(void);
 extern int FUN_00473130(void);
-extern int CheckWorkerOnMouseStatus(int a);
 extern int FUN_0046b280(void);
-extern unsigned int GetString(unsigned int id);
 extern unsigned int SaveGameWrite(unsigned int *data, unsigned int size);
 extern unsigned int SaveGameRead(void *data, unsigned int size);
 extern unsigned int RemoveIconGroup(unsigned int group);

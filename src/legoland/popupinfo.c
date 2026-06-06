@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "worker_mouse.h"
 
 struct Sprite;
 
@@ -72,7 +73,6 @@ extern unsigned int DAT_00668d68;
 extern unsigned int DAT_004ba9ac[];
 
 extern void KillSprite(struct Sprite *sprite);
-extern void FUN_00470b00(void);
 extern int RemoveIconGroup(unsigned int group);
 extern void FUN_0046d680(void *a, struct Sprite *b);
 extern unsigned int FUN_00498cf0(void);

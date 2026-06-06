@@ -2,6 +2,7 @@
 #include "legoland.h"
 
 #include "timer.h"
+#include "string.h"
 
 struct StringNode {
     int key;
