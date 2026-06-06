@@ -1,5 +1,6 @@
 #include "legoland.h"
 #include "sound_music.h"
+#include "power.h"
 
 
 extern unsigned int DAT_00667114;
@@ -32,7 +33,7 @@ void FUN_004529c0(void) {
 void FUN_004529e0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00452a30
-void RemoveSoundObject(void) { STUB(); }
+void RemoveSoundObject(unsigned int a, unsigned int b, unsigned int c) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00452a80
 void FUN_00452a80(void) {

@@ -64,13 +64,6 @@ extern struct SaveNode *DAT_004cbfd4;
 #include "image_sprite.h"
 extern int __strcmpi(const char *s1, const char *s2);
 
-void FUN_00417150(void);
-void FUN_004172d0(void);
-void FUN_00417280(void);
-void FUN_00417240(void);
-void FUN_00417430(void);
-void FUN_00416fa0(void);
-
 // FUNCTION: LEGOLAND 0x00416ec0
 void FUN_00416ec0(void) { STUB(); }
 

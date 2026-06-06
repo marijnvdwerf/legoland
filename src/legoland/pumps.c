@@ -2,14 +2,7 @@
 
 #include "gamemap.h"
 #include "map_object.h"
-
-struct PumpNode {
-    unsigned char pad_0[2];
-    unsigned short var_2;
-    unsigned int var_4;
-    unsigned int var_8;
-    struct PumpNode *next;
-};
+#include "pumps.h"
 
 struct PumpSource {
     unsigned char pad_0[0xc];

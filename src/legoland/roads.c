@@ -7,6 +7,7 @@
 #include "objclass.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "pumps.h"
 
 struct RoadQueueEntry {
     struct RoadQueueEntry *next;
@@ -61,7 +62,6 @@ extern struct Cursor EditCursor;
 extern struct Cursor QueryCursor;
 
 extern void FUN_0049e4d0(void *block);
-extern unsigned int FUN_00411aa0(unsigned int a, unsigned int b);
 
 // FUNCTION: LEGOLAND 0x004132a0
 void FUN_004132a0(void) { STUB(); }

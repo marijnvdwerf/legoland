@@ -12,6 +12,7 @@
 #include "worker.h"
 #include "interface.h"
 #include "map_object.h"
+#include "help.h"
 
 struct NerpsArg {
     unsigned char pad_0[0x4];
@@ -142,7 +143,6 @@ extern unsigned int DAT_007fd624;
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *block);
 extern unsigned int DAT_00832ba8;
-extern void FUN_0046ce20(void);
 extern unsigned int DAT_00810140;
 extern unsigned int DAT_007fe050;
 extern unsigned int DAT_007fe054;

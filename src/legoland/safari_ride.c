@@ -5,6 +5,7 @@
 #include "sound_music.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "safari_ride.h"
 
 extern void *DAT_004cbf0c;
 extern unsigned int DAT_004cbec4;
@@ -23,13 +24,6 @@ extern struct Cursor EditCursor;
 
 #include "image_sprite.h"
 extern void *_malloc(unsigned int size);
-
-struct SafariNode {
-    unsigned short field_0;
-    unsigned char pad_2[14];
-    struct SafariNode *next;
-    unsigned char pad_14[0x14];
-};
 
 struct SafariBlockData {
     unsigned char pad_0[0x10];
@@ -53,8 +47,6 @@ struct SafariObject {
     unsigned char pad_0[0xc];
     unsigned int field_c;
 };
-
-void FUN_00414b10(struct SafariNode *node);
 
 // FUNCTION: LEGOLAND 0x004149c0
 void FUN_004149c0(struct SafariNode *param) {

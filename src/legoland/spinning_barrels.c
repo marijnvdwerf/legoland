@@ -4,23 +4,9 @@
 #include "binv.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "spinning_barrels.h"
 
 typedef void (*BarrelVtblFn)(void);
-
-struct BarrelNode {
-    struct BarrelNode *next;
-    unsigned short field_4;
-    unsigned char field_6;
-    unsigned char field_7;
-    unsigned char field_8;
-    unsigned char pad_9[3];
-    unsigned int field_c;
-    unsigned char field_10;
-    unsigned char pad_11[3];
-    unsigned int field_14;
-    unsigned char field_18;
-    unsigned char pad_19[0x34 - 0x19];
-};
 
 struct BarrelSource {
     unsigned short field_0;
@@ -62,9 +48,6 @@ extern void *_malloc(unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);
 #include "image_sprite.h"
 extern int FUN_0049e4b2(void);
-
-void FUN_0043c2f0(struct BarrelNode *node);
-void FUN_0043c950(void);
 
 // FUNCTION: LEGOLAND 0x0043bdb0
 void FUN_0043bdb0(void *param1) {

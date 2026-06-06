@@ -6,12 +6,6 @@
 
 struct Sprite;
 
-struct SpiderNode {
-    unsigned short field_0;
-    unsigned char pad_2[0x2a];
-    struct SpiderNode *next;
-};
-
 struct SampleParams {
     int field_0;
     unsigned int pad_4;

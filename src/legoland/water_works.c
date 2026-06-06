@@ -118,7 +118,7 @@ extern unsigned int DAT_004cbff8;
 extern unsigned int DAT_004cc000;
 extern struct Cursor EditCursor;
 
-extern void RemoveSoundObject(unsigned int a, unsigned int b, unsigned int c);
+#include "power.h"
 #include "image_sprite.h"
 
 extern void FUN_0049e4d0(void *block);

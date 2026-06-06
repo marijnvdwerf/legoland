@@ -6,6 +6,7 @@
 #include "sound_music.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "plane_ride.h"
 
 struct PlaneRideNode {
     unsigned char pad_0[0x20];
@@ -73,9 +74,6 @@ extern void *_malloc(unsigned int size);
 extern int FUN_0049e4b2(void);
 #include "image_sprite.h"
 extern int __strcmpi(const char *s1, const char *s2);
-
-void FUN_0043d9f0(void *param_1);
-void FUN_0043e410(void);
 
 // FUNCTION: LEGOLAND 0x0043d880
 void FUN_0043d880(void *param_1) {

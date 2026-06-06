@@ -1,6 +1,7 @@
 #include "legoland.h"
 #include <windows.h>
 
+#include "help.h"
 #include "timer.h"
 #include "text.h"
 #include "nerps.h"

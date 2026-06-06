@@ -9,8 +9,7 @@
 #include "sound_music.h"
 
 #include "image_sprite.h"
-
-extern unsigned int FUN_0046d280(unsigned int param_1);
+#include "help.h"
 
 extern void *PTR_004b92c0;
 extern void *DAT_004b929c;
