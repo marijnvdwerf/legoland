@@ -4,7 +4,11 @@ struct RideObject;
 struct RinData;
 struct SpriteLLS;
 struct LayerContainer;
-struct BlokePos;
+
+struct BlokePos {
+    unsigned int field_0;
+    unsigned int field_4;
+};
 
 void Put3DBlokesOnRide2(struct RideObject *ride, struct RideObject *obj);
 void UnLoadRin(struct RinData *rin);

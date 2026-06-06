@@ -12,19 +12,6 @@ struct BestNode {
     unsigned char flags_20;
 };
 
-struct BlokeWOList {
-    unsigned char pad_0[0x62];
-    unsigned short field_62;
-    unsigned char field_64;
-    unsigned char pad_65[0xac - 0x65];
-};
-
-struct Bloke {
-    struct Bloke *next;
-    unsigned char pad_4[0x62 - 0x4];
-    unsigned char flag;
-};
-
 struct LegoConfig {
     unsigned char pad_0[0x14];
     unsigned short field_14;
@@ -83,7 +70,7 @@ extern unsigned int DAT_0066b468;
 extern unsigned int DAT_0066b46c;
 extern void *DAT_0066b57c;
 extern int DAT_0083293c[13];
-extern void *FirstBloke;
+extern struct Bloke *FirstBloke;
 extern unsigned int DAT_006661bc;
 
 extern int FUN_0049e4b2(void);
@@ -198,14 +185,13 @@ void FUN_00482ec0(void) {
 struct Bloke *NewBloke(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482f70
-struct BlokeWOList *NewBlokeWOList(void *param_2) {
-    struct BlokeWOList *bloke = (struct BlokeWOList *)_malloc(0xac);
+struct Bloke *NewBlokeWOList(void *param_2) {
+    struct Bloke *bloke = (struct Bloke *)_malloc(0xac);
     if (bloke != NULL) {
         memset(bloke, 0, 0xac);
-        bloke->field_62 = 1;
+        bloke->flags = 1;
         bloke->field_64 = 0;
-        /* TODO: fold struct BlokeWOList and struct Bloke — same object, different field view */
-        Add3DBlokeToList((struct Bloke *)bloke, (unsigned int)param_2);
+        Add3DBlokeToList(bloke, (unsigned int)param_2);
     }
     return bloke;
 }
@@ -214,11 +200,11 @@ struct BlokeWOList *NewBlokeWOList(void *param_2) {
 unsigned int GetBlokeNum(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482fe0
-struct BlokeWOList *GetBlokePtr(int index) {
+struct Bloke *GetBlokePtr(int index) {
     if (index == -1) {
         return NULL;
     }
-    return &((struct BlokeWOList *)DAT_0066b57c)[index];
+    return &((struct Bloke *)DAT_0066b57c)[index];
 }
 
 // FUNCTION: LEGOLAND 0x00483010
@@ -227,7 +213,7 @@ void DestroyBloke(struct Bloke *bloke) { STUB(); }
 // FUNCTION: LEGOLAND 0x00483090
 void FUN_00483090(void) {
     while (FirstBloke != NULL) {
-        DestroyBloke((struct Bloke *)FirstBloke);
+        DestroyBloke(FirstBloke);
     }
     DAT_006661bc = 0;
 }
@@ -245,8 +231,8 @@ struct Bloke *MakeBloke(int param_1) {
 void RenderPeople(void) {
     struct Bloke *current;
     Control3DPeople();
-    for (current = (struct Bloke *)FirstBloke; current != NULL; current = current->next) {
-        if ((current->flag & 0xa0) == 0) {
+    for (current = FirstBloke; current != NULL; current = current->next) {
+        if ((current->flags & 0xa0) == 0) {
             SortBlokeIn3D(current);
         }
     }

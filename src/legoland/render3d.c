@@ -284,11 +284,6 @@ void AdjustOffsetForViewMode(struct AdjustStruct *param_1) {
     param_1->field4 = temp4;
 }
 
-struct BlokePos {
-    unsigned int field_0;
-    unsigned int field_4;
-};
-
 // FUNCTION: LEGOLAND 0x00442d60
 void AdjustBlokePosition(struct BlokePos *pBloke) {
     pBloke->field_0 -= 0x4b;

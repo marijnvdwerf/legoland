@@ -2,44 +2,6 @@
 #include "bloke_ai.h"
 #include "bloke.h"
 
-struct Bloke {
-    struct Bloke *next;
-    struct Bloke *prev;
-    unsigned char prev_action;
-    unsigned char pad_9[0x1];
-    unsigned short prev_param;
-    unsigned short action;
-    unsigned short field_e;
-    unsigned short field_10;
-    unsigned char pad_12[0x1c - 0x12];
-    unsigned int field_1c;
-    unsigned char pad_20[0x2e - 0x20];
-    short field_2e;
-    unsigned char pad_30[0x54 - 0x30];
-    unsigned int field_54;
-    unsigned char pad_58[0x60 - 0x58];
-    unsigned char param_action;
-    unsigned char pad_61[0x1];
-    unsigned short flags;
-    unsigned char field_64;
-    unsigned char pad_65[0x72 - 0x65];
-    unsigned char field_72;
-    unsigned char pad_73[0x1];
-    unsigned char field_74;
-    unsigned char field_75;
-    unsigned char pad_76[0x78 - 0x76];
-    unsigned short field_78;
-    unsigned char pad_7a[0x7c - 0x7a];
-    unsigned short field_7c;
-    unsigned char pad_7e[0x80 - 0x7e];
-    unsigned char field_80;
-    unsigned char pad_81[0x88 - 0x81];
-    unsigned int favourite_attraction_0;
-    unsigned int favourite_attraction_1;
-    unsigned int favourite_attraction_2;
-    unsigned int favourite_food;
-};
-
 struct BlokeList {
     unsigned char pad_0[0xcc];
     struct Bloke *head;

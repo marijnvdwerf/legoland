@@ -270,7 +270,11 @@ void FUN_00499fb0(void) {
             current->ticks++;
             next = current->next;
             if (current->state == 0) {
-                /* TODO: fold struct Worker and struct Bloke — same person, different field view */
+                /* Worker is the same record as struct Bloke, but it cannot be
+                   merged into one non-union struct: worker uses 0x34/0x38 as a
+                   (speed_x, speed_y) float pair (FUN_00499760) while the bloke
+                   view uses 0x36 as a byte (progress) — the float overlaps the
+                   byte, so the cast to the AI view stays. */
                 DoHighLevelAI((struct Bloke *)current);
             }
             if (current->state != 0) {

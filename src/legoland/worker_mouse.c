@@ -6,8 +6,7 @@
 
 struct WorkerInner {
     unsigned char pad_0[0x1c];
-    unsigned int var_1c;
-    unsigned int var_20;
+    struct BlokePos pos;
 };
 
 struct WorkerOuter {
@@ -65,14 +64,13 @@ void SetWorkersPositionAtMouse(void) {
     worker->var_e = 13;
     worker = DAT_007fdff0;
     inner = worker->inner;
-    inner->var_1c = DAT_00813a44;
+    inner->pos.field_0 = DAT_00813a44;
     worker = DAT_007fdff0;
     inner = worker->inner;
-    inner->var_20 = DAT_00813a48;
+    inner->pos.field_4 = DAT_00813a48;
     worker = DAT_007fdff0;
     inner = worker->inner;
-    /* TODO: fold WorkerInner/BlokePos — &var_1c is the (x,y) pair AdjustBlokePosition mutates */
-    AdjustBlokePosition((struct BlokePos *)&inner->var_1c);
+    AdjustBlokePosition(&inner->pos);
     ScreenToMapRef((unsigned int)&DAT_00813a44, pt, 0);
     worker = DAT_007fdff0;
     worker->var_68 = pt[0] << 8;
