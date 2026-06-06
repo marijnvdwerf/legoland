@@ -2,13 +2,31 @@
 
 struct SampleDef;
 struct SampleBuffer;
-struct SampleSink;
+
+/* Sound-buffer object behind a playable sample. sound_sfx.c drives playback
+ * through method_0x20..0x48; sound_music.c reuses the same vtable slot at 0x3c
+ * (Apply) to push the sample's source config. One object, one vtable. */
+struct SampleBufferVtbl {
+    unsigned char pad_0[0x20];
+    int(__stdcall *method_0x20)(struct SampleBuffer *self, struct Sample **out);
+    unsigned char pad_24[0x30 - 0x24];
+    int(__stdcall *method_0x30)(struct SampleBuffer *self, int arg1, int arg2, int arg3);
+    int(__stdcall *method_0x34)(struct SampleBuffer *self, int arg1);
+    unsigned char pad_38[0x3c - 0x38];
+    int(__stdcall *method_0x3c)(struct SampleBuffer *self, int arg1);
+    int(__stdcall *method_0x40)(struct SampleBuffer *self, int arg1);
+    int(__stdcall *method_0x44)(struct SampleBuffer *self, int arg1);
+    int(__stdcall *method_0x48)(struct SampleBuffer *self);
+};
+
+struct SampleBuffer {
+    struct SampleBufferVtbl *vtable;
+};
 
 /* Canonical playable-sample object. sound_sfx.c manipulates it through the
  * "Sample" field view (next/fade/flags/buffer); sound_music.c through the
- * "PlayableSample" field view (field_c..field_18/flags_1c/sink). Same heap
- * object, same offsets — the two pointer/flags views are unions so each TU
- * still compiles to its original memory-access width with no casts. */
+ * "PlayableSample" field view (field_c..field_18/flags/buffer). Same heap
+ * object, same offsets. */
 struct Sample {
     struct Sample *next;
     unsigned char pad_4[0x8 - 0x4];
@@ -17,16 +35,10 @@ struct Sample {
     unsigned int field_10;
     unsigned int field_14;
     unsigned int field_18;
-    union {
-        unsigned short flags;
-        unsigned char flags_1c;
-    };
+    unsigned short flags;
     unsigned char pad_1e[0x28 - 0x1e];
     unsigned int active;
-    union {
-        struct SampleBuffer *buffer;
-        struct SampleSink *sink;
-    };
+    struct SampleBuffer *buffer;
 };
 
 struct Sample *CreatePlayableSample(unsigned int def);

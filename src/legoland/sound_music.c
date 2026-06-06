@@ -12,8 +12,6 @@ struct MusicPerformanceVtbl;
 struct BandObj;
 struct BandVtbl;
 struct CallbackEntry;
-struct SampleSink;
-struct SampleSinkVtbl;
 struct SampleDef;
 struct FXItem;
 struct FXList;
@@ -60,15 +58,6 @@ struct CallbackEntry {
     unsigned int timeout;
     unsigned int (*callback)(struct CallbackEntry *self);
     unsigned int active;
-};
-
-struct SampleSinkVtbl {
-    unsigned char pad_0[0x3c];
-    void(__stdcall *Apply)(struct SampleSink *self, unsigned int arg);
-};
-
-struct SampleSink {
-    struct SampleSinkVtbl *vtable;
 };
 
 struct SampleConfig {
@@ -240,7 +229,7 @@ int FUN_00496660(struct Sample *sample) {
     if (sample->active == 0) {
         return 0;
     }
-    sample->sink->vtable->Apply(sample->sink, DAT_007988a0);
+    sample->buffer->vtable->method_0x3c(sample->buffer, DAT_007988a0); /* Apply: same vtable slot, return ignored */
     return 1;
 }
 
@@ -342,7 +331,7 @@ void UnSourceAndFadeAllSamplesFromSource(void *source, int fade) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496d10
 void FUN_00496d10(struct Sample *sample) {
-    sample->flags_1c |= 0x20;
+    sample->flags |= 0x20;
 }
 
 // FUNCTION: LEGOLAND 0x00496d20

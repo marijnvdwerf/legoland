@@ -2,28 +2,9 @@
 #include "legoland.h"
 #include "sound_sfx.h"
 
-struct SampleBufferVtbl;
-struct SampleBuffer;
 struct SampleDef;
 struct DirectSoundObj;
 struct DirectMusicObj;
-
-struct SampleBufferVtbl {
-    unsigned char pad_0[0x20];
-    int(__stdcall *method_0x20)(struct SampleBuffer *self, struct Sample **out);
-    unsigned char pad_24[0x30 - 0x24];
-    int(__stdcall *method_0x30)(struct SampleBuffer *self, int arg1, int arg2, int arg3);
-    int(__stdcall *method_0x34)(struct SampleBuffer *self, int arg1);
-    unsigned char pad_38[0x3c - 0x38];
-    int(__stdcall *method_0x3c)(struct SampleBuffer *self, int arg1);
-    int(__stdcall *method_0x40)(struct SampleBuffer *self, int arg1);
-    int(__stdcall *method_0x44)(struct SampleBuffer *self, int arg1);
-    int(__stdcall *method_0x48)(struct SampleBuffer *self);
-};
-
-struct SampleBuffer {
-    struct SampleBufferVtbl *vtable;
-};
 
 struct SampleCounter {
     unsigned char pad_0[4];
