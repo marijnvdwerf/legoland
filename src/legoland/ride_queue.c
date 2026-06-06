@@ -141,7 +141,16 @@ void FUN_00411fa0(struct Queue *queue, unsigned int param_2, unsigned int param_
 void FUN_00412060(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004120a0
-void FUN_004120a0(struct Queue *queue, unsigned int param_2, unsigned int param_3) { STUB(); }
+void FUN_004120a0(struct Queue *queue, unsigned int param_2, unsigned int param_3) {
+    struct QueueNode *node = queue->head;
+    while (node != NULL) {
+        struct QueueItemInner *inner = node->field_4->field_8;
+        if (inner->field_e == 0) {
+            FUN_00411fa0(queue, param_2, param_3, inner);
+        }
+        node = node->next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00412100
 void FUN_00412100(void) { STUB(); }
@@ -154,7 +163,12 @@ void FUN_00412290(void *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x004122a0
-void FUN_004122a0(struct RideSlotArg *param_1, struct RideSlot *slot) { STUB(); }
+void FUN_004122a0(struct RideSlotArg *param_1, struct RideSlot *slot) {
+    slot->field_50 = param_1;
+    slot->field_38 = param_1->field_0 - 1;
+    slot->field_34 = 0xff;
+    slot->field_60++;
+}
 
 // FUNCTION: LEGOLAND 0x004122d0
 void FUN_004122d0(struct RideSlotArg *param_1, struct RideSlot *slot) {

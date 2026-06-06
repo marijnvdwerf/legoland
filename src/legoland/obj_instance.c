@@ -54,6 +54,9 @@ struct Ride {
 extern struct ObjTableEntry DAT_007cb3e0[];
 extern struct ObjTableEntry DAT_007cb3e2[];
 extern struct ObjTableEntry DAT_007cb5e0;
+extern struct ObjClassNode *ObjectClassList;
+
+extern void FUN_0049e4d0(void *ptr);
 
 // FUNCTION: LEGOLAND 0x00489e60
 void FUN_00489e60(void) { STUB(); }
@@ -127,7 +130,19 @@ unsigned short FUN_00489fd0(const struct ObjClassKey *key) {
 void AddInstanceToList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048a040
-void FUN_0048a040(void) { STUB(); }
+void FUN_0048a040(void) {
+    struct ObjClassNode *node;
+
+    for (node = ObjectClassList; node != 0; node = node->next) {
+        void *obj = node->instances;
+        while (obj != 0) {
+            void *next = *(void **)obj;
+            FUN_0049e4d0(obj);
+            obj = next;
+        }
+        node->instances = 0;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0048a080
 void RemoveInstanceFromList(struct InstanceNode *node) {

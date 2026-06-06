@@ -1,5 +1,13 @@
 #include "legoland.h"
 
+struct PathSpriteHeader {
+    unsigned short id;
+};
+
+extern struct PathSpriteHeader *PathSprite;
+
+extern void RemovePathTile(unsigned int param_1, unsigned short param_2);
+
 // FUNCTION: LEGOLAND 0x0045dbe0
 void AddBasicPath(void) { STUB(); }
 
@@ -10,7 +18,9 @@ void AddRollerCoasterPath(void) { STUB(); }
 void RemoveBasicPath(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045dcd0
-void RemoveRollerCoasterPath(void) { STUB(); }
+void RemoveRollerCoasterPath(unsigned int param_1) {
+    RemovePathTile(param_1, PathSprite->id);
+}
 
 // FUNCTION: LEGOLAND 0x0045dcf0
 void DrawBasicPath(void) { STUB(); }
