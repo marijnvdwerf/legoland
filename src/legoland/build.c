@@ -1,5 +1,10 @@
 #include "legoland.h"
 
+extern int GetObjCost(int objClass);
+
+extern unsigned int DAT_006664f8[768];
+extern unsigned int DAT_006670f8;
+
 // FUNCTION: LEGOLAND 0x00450b90
 void AddObjectToBuildList(void) { STUB(); }
 
@@ -7,10 +12,21 @@ void AddObjectToBuildList(void) { STUB(); }
 void FUN_00450c00(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00450c40
-void GetBuildTime(void) { STUB(); }
+int GetBuildTime(int objClass) {
+    int cost = GetObjCost(objClass);
+    if (cost < 50) {
+        return 50;
+    }
+    if (cost > 150) {
+        return 150;
+    }
+    return cost;
+}
 
 // FUNCTION: LEGOLAND 0x00450c70
-void FUN_00450c70(void) { STUB(); }
+unsigned int FUN_00450c70(void) {
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00450c80
 void ProcessBuildingTimes(void) { STUB(); }
@@ -22,4 +38,11 @@ void GetBuildAnimFrame(void) { STUB(); }
 void DoBuildEffects(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00450f10
-void ClearBuildObjList(void) { STUB(); }
+void ClearBuildObjList(void) {
+    int entry = (int)DAT_006664f8;
+    int end = (int)&DAT_006670f8;
+    while (entry < end) {
+        *(unsigned int *)entry = 0;
+        entry += 12;
+    }
+}

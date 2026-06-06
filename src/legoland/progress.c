@@ -1,5 +1,32 @@
 #include "legoland.h"
 
+struct LegoConfig {
+    unsigned char pad_0[0x28];
+    unsigned int field_28;
+};
+
+extern void *PTR_004b92c0;
+extern unsigned int DAT_006687c0;
+extern unsigned int DAT_006687bc;
+extern unsigned int DAT_006687b0;
+extern unsigned int DAT_00668e38;
+extern unsigned int DAT_008119b4;
+extern unsigned int DAT_00798660;
+extern unsigned int DAT_00798664;
+extern unsigned int DAT_00798668;
+extern unsigned int DAT_0080ff84;
+extern struct LegoConfig *lpConfig;
+
+extern void FUN_00498920(void);
+extern void FUN_00466360(int a, int b);
+extern void FUN_00474880(void);
+extern void FUN_00458a50(void);
+extern void FUN_004663c0(void);
+extern int InitGameInterface(int a);
+extern void PlayInstanceOfSample(void *sample, int a, int b, int c);
+extern void FUN_0048b770(void);
+extern unsigned char FUN_0048fb80(unsigned int a, unsigned int b, unsigned int c, unsigned int d);
+
 // FUNCTION: LEGOLAND 0x0048b7e0
 void InitProgressScreen(void) { STUB(); }
 
@@ -22,13 +49,65 @@ void FUN_0048bd70(void) { STUB(); }
 void FUN_0048bde0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048bf90
-void FUN_0048bf90(void) { STUB(); }
+unsigned char FUN_0048bf90(unsigned int arg0, unsigned int arg1) {
+    if ((arg1 & 2) != 0) {
+        DAT_006687c0 = 0;
+        DAT_006687bc = 0;
+        FUN_00498920();
+        DAT_006687b0 = 4;
+        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
+        FUN_0048bd70();
+        FUN_00466360(0x186, 0x18b);
+        DAT_00668e38 = 0;
+        InitGameInterface(1);
+        DAT_008119b4 = 3;
+        FUN_00474880();
+        FUN_00458a50();
+        FUN_004663c0();
+        DAT_00798660 = 0;
+        DAT_00798668 = 0;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0048c020
-void FUN_0048c020(void) { STUB(); }
+unsigned char FUN_0048c020(unsigned int a1, unsigned int a2, unsigned int a3, unsigned int a4) {
+    unsigned int temp;
+
+    if ((a2 & 2) != 0) {
+        DAT_006687c0 = 0;
+        DAT_006687bc = 0;
+        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
+        temp = DAT_00798664;
+        DAT_00798660 = 0;
+        DAT_00798668 = 0;
+        if (temp != 0) {
+            FUN_0048bd70();
+        } else {
+            FUN_0048b770();
+        }
+        return FUN_0048fb80(a1, a2, a3, a4);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0048c090
-void FUN_0048c090(void) { STUB(); }
+unsigned char FUN_0048c090(void *param1, unsigned char param2) {
+    if (param2 & 2) {
+        DAT_00798660 = 0;
+        DAT_00798668 = 1;
+        DAT_0080ff84 = 0xffffffff;
+        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
+        if (DAT_00798664 != 0) {
+            FUN_0048bd70();
+            lpConfig->field_28 = 6;
+        } else {
+            FUN_0048b770();
+            lpConfig->field_28 = 1;
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0048c100
 void FUN_0048c100(void) { STUB(); }

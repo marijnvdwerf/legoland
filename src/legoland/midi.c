@@ -1,4 +1,10 @@
 #include "legoland.h"
+#include <windows.h>
+#include <mmsystem.h>
+
+extern unsigned int DAT_007fd630;
+extern void *DAT_007fd634;
+extern unsigned int DAT_007fd638;
 
 // FUNCTION: LEGOLAND 0x00480200
 void LoadMIDIFile(void) { STUB(); }
@@ -13,13 +19,22 @@ void FUN_004802f0(void) { STUB(); }
 void FUN_00480330(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00480570
-void FUN_00480570(void) { STUB(); }
+void __stdcall FUN_00480570(unsigned int p1, unsigned int p2, unsigned int p3, unsigned int p4, unsigned int p5) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004805d0
 void PlayMIDI(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00480630
-void InitMIDIManager(void) { STUB(); }
+int InitMIDIManager(void) {
+    DAT_007fd634 = 0;
+    DAT_007fd630 = timeSetEvent(0x14, 0xa, (LPTIMECALLBACK)FUN_00480570, 0, 1);
+    midiOutOpen((LPHMIDIOUT)&DAT_007fd638, (UINT)-1, 0, 0, 0);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00480670
-void KillMIDIManager(void) { STUB(); }
+void KillMIDIManager(void) {
+    DAT_007fd634 = 0;
+    timeKillEvent(DAT_007fd630);
+    midiOutClose((HMIDIOUT)DAT_007fd638);
+}
