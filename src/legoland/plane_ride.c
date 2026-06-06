@@ -54,9 +54,9 @@ extern unsigned int DAT_0062fe60;
 extern unsigned int DAT_0062fe64;
 extern unsigned int DAT_0062fe68;
 extern unsigned short DAT_0062fe6c;
-extern unsigned int DAT_0062fe78;
-extern unsigned int DAT_0062fe90;
-extern unsigned int DAT_0062fe94;
+extern void *DAT_0062fe78;
+extern void *DAT_0062fe90;
+extern void *DAT_0062fe94;
 extern unsigned int DAT_0081cae0;
 extern unsigned char DAT_004beba0;
 extern unsigned char DAT_004b79d0[0x18];
@@ -126,13 +126,13 @@ void FUN_0043dee0(struct PlaneRideObject *input) {
         KillSprite(DAT_0081cae0);
     }
     if (DAT_0062fe90) {
-        FreeBinV((void *)DAT_0062fe90);
+        FreeBinV(DAT_0062fe90);
     }
     if (DAT_0062fe94) {
-        FreeBinV((void *)DAT_0062fe94);
+        FreeBinV(DAT_0062fe94);
     }
     if (DAT_0062fe78) {
-        FreeBinV((void *)DAT_0062fe78);
+        FreeBinV(DAT_0062fe78);
     }
     FUN_0043d940();
     Kill_FXList(DAT_004b79d0, 2);

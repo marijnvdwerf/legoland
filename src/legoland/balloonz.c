@@ -36,7 +36,7 @@ extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(unsigned int *foot_print);
 
 extern void *DAT_00616060;
-extern unsigned int DAT_00616018;
+extern void *DAT_00616018;
 extern unsigned int DAT_00616028;
 extern unsigned int DAT_0061602c;
 extern unsigned int DAT_00616030;
@@ -118,7 +118,7 @@ void FUN_0042b9d0(void) {
     KillSprite(DAT_00616058);
     KillSprite(DAT_0061605c);
     KillSprite(DAT_0081cde8);
-    FreeBinV((void *)DAT_00616018);
+    FreeBinV(DAT_00616018);
     FUN_0042a9f0();
 }
 

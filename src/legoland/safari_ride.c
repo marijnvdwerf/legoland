@@ -4,9 +4,9 @@
 
 extern void *DAT_004cbf0c;
 extern unsigned int DAT_004cbec4;
-extern unsigned int DAT_004cbef8;
-extern unsigned int DAT_004cbefc;
-extern unsigned int DAT_004cbf00;
+extern void *DAT_004cbef8;
+extern void *DAT_004cbefc;
+extern void *DAT_004cbf00;
 extern unsigned int DAT_004cbf08;
 extern unsigned int DAT_004cbed0;
 extern unsigned int DAT_004cbed4;
@@ -99,9 +99,9 @@ void FUN_00414ea0(struct SafariObject *a1) {
     DAT_004cbec4 = a1->field_c;
     FUN_00414a60();
     Kill_FXList(SAFARI_SFX, 1);
-    FreeBinV((void *)DAT_004cbef8);
-    FreeBinV((void *)DAT_004cbefc);
-    FreeBinV((void *)DAT_004cbf00);
+    FreeBinV(DAT_004cbef8);
+    FreeBinV(DAT_004cbefc);
+    FreeBinV(DAT_004cbf00);
     KillSprite(DAT_004cbf08);
 }
 

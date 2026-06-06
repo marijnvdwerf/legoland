@@ -52,7 +52,7 @@ struct SaveNode {
 extern unsigned int DAT_004cbf78;
 extern unsigned int DAT_004cbf80;
 extern unsigned int DAT_004cbfd0;
-extern unsigned int DAT_004cbfc4;
+extern void *DAT_004cbfc4;
 extern unsigned int DAT_004cbf98;
 extern unsigned int DAT_004cbf9c;
 extern unsigned int DAT_004cbfa0;
@@ -105,7 +105,7 @@ void FUN_00417200(struct TempleRide *arg) {
         KillSprite(DAT_004cbf78);
     }
     KillSprite(DAT_004cbfd0);
-    FreeBinV((void *)DAT_004cbfc4);
+    FreeBinV(DAT_004cbfc4);
 }
 
 // FUNCTION: LEGOLAND 0x00417240

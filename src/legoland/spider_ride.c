@@ -64,9 +64,9 @@ extern void *DAT_004cbf58;
 extern unsigned int DAT_004b4d90;
 extern struct Sprite *DAT_0082c668;
 extern unsigned int DAT_004cbf20;
-extern unsigned int DAT_004cbf10;
-extern unsigned int DAT_004cbf24;
-extern unsigned int DAT_004cbf18;
+extern void *DAT_004cbf10;
+extern void *DAT_004cbf24;
+extern void *DAT_004cbf18;
 extern struct Sprite *DAT_004cbf14;
 extern struct Sprite *DAT_004cbf1c;
 extern unsigned int DAT_004cbf40;
@@ -165,13 +165,13 @@ void FUN_00415fd0(struct CarNode *param_1)
         KillSprite(DAT_0082c668);
     }
     if (DAT_004cbf10 != 0) {
-        FreeBinV((void *)DAT_004cbf10);
+        FreeBinV(DAT_004cbf10);
     }
     if (DAT_004cbf24 != 0) {
-        FreeBinV((void *)DAT_004cbf24);
+        FreeBinV(DAT_004cbf24);
     }
     if (DAT_004cbf18 != 0) {
-        FreeBinV((void *)DAT_004cbf18);
+        FreeBinV(DAT_004cbf18);
     }
     KillSprite(DAT_004cbf14);
     KillSprite(DAT_004cbf1c);

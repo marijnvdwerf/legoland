@@ -39,9 +39,9 @@ extern unsigned int DAT_0061606c;
 extern unsigned int DAT_00616070;
 extern unsigned int DAT_006160c0;
 extern unsigned int DAT_006160bc;
-extern unsigned int DAT_00616090;
-extern unsigned int DAT_00616094;
-extern unsigned int DAT_00616098;
+extern void *DAT_00616090;
+extern void *DAT_00616094;
+extern void *DAT_00616098;
 extern unsigned int DAT_006160a0;
 extern unsigned int DAT_006160a4;
 extern unsigned int DAT_006160a8;
@@ -94,9 +94,9 @@ void FUN_0042c3f0(struct CarouselObject *input) {
     KillSprite(DAT_006160c0);
     FUN_0042bc40();
     Kill_FXList(CAROUSSEL_SFX, 2);
-    FreeBinV((void *)DAT_00616090);
-    FreeBinV((void *)DAT_00616094);
-    FreeBinV((void *)DAT_00616098);
+    FreeBinV(DAT_00616090);
+    FreeBinV(DAT_00616094);
+    FreeBinV(DAT_00616098);
 }
 
 // FUNCTION: LEGOLAND 0x0042c460

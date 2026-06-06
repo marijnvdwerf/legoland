@@ -50,7 +50,7 @@ struct JoustInterface {
 
 extern struct JoustNode *DAT_004c1250;
 extern unsigned int DAT_004c121c;
-extern unsigned int DAT_004c1218;
+extern void *DAT_004c1218;
 extern unsigned int DAT_004c1240;
 extern unsigned int DAT_004c1244;
 extern unsigned int DAT_004c1248;
@@ -123,7 +123,7 @@ void FUN_00408c00(void) {
     KillSprite(DAT_004c1244);
     KillSprite(DAT_004c1248);
     KillSprite(DAT_004c124c);
-    FreeBinV((void *)DAT_004c1218);
+    FreeBinV(DAT_004c1218);
     KillSprite(DAT_004c1240);
     FUN_00407ab0();
 }
