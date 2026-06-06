@@ -8,14 +8,20 @@ Worked TUs so far: tooltip, binv, setcustomcallbacks, certificate, main, debug,
 money, path_control. Process **smallest TU first** (see `tools/defmap.py`).
 
 ## Per TU `T`
-- Create `src/legoland/T.h` (`#pragma once`, MSVC6-supported) with a plain prototype
-  for **every** function defined in `T.c` (functions are found via their
-  `// FUNCTION:` annotations — the next line is the signature). No reccmp annotations
-  in headers. If a prototype needs a struct, put that struct's definition (or a
-  forward `struct X;`) in `T.h`; if the struct was defined locally in `T.c`, **move**
-  it into `T.h`.
-- `T.c` `#include "T.h"` and delete its own internal forward declarations.
-- Every other `.c` that inline-declares one of `T`'s functions: replace the inline
+- **Only MOVE pre-declarations that already exist — do NOT declare every function.**
+  A function of `T` belongs in `T.h` ONLY if it was actually pre-declared somewhere:
+  it's referenced from another `.c` (it had an `extern`), or it's used before its own
+  definition in `T.c` (it had an internal forward decl). A function that is
+  defined-and-then-called-in-order, with no `extern` anywhere, gets **no declaration**.
+  Run `uv run --no-project tools/needsdecl.py <tu>` to get the exact KEEP set.
+- **If `T` has no such functions, it gets NO header at all** — don't create an empty one.
+- Create `src/legoland/T.h` (`#pragma once`, MSVC6-supported) with plain prototypes for
+  ONLY the KEEP set. No reccmp annotations in headers. If a kept prototype needs a struct,
+  move that struct's definition (or a forward `struct X;`) from `T.c` into `T.h`. A struct
+  used only inside `T.c`'s bodies stays in `T.c`.
+- `T.c` `#include "T.h"` (only if `T.h` exists) and delete the internal forward decls it
+  replaced.
+- Every other `.c` that inline-declares one of `T`'s KEEP functions: replace the inline
   `extern` with `#include "T.h"`. Find them: `grep -rn '<fnname>' src/legoland/*.c`.
 
 ## Canonical signature — one per function, no exceptions

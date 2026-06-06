@@ -1,6 +1,24 @@
 #include "legoland.h"
 
-#include "math.h"
+struct Navigator {
+    int x;
+    int y;
+    short dx;
+    short dy;
+};
+
+struct Point {
+    int x;
+    int y;
+};
+
+struct RectNode {
+    int field_0;
+    int field_4;
+    int field_8;
+    int field_c;
+    struct RectNode *next;
+};
 
 extern int FUN_0049e4b2(void);
 

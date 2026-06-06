@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "clipping.h"
+
 struct Sprite;
 
 extern struct Sprite *DAT_00798674;
@@ -61,7 +63,6 @@ extern void PlayInstanceOfSample(void *sample, unsigned int param_2, unsigned in
 extern void InitNewProfilePoPUp(struct Profile *profile);
 extern void RemoveProfile(unsigned char index);
 extern void FUN_00498920(void);
-extern void FUN_0048a800(void);
 
 // FUNCTION: LEGOLAND 0x0048c260
 void InitListProfiles(void) { STUB(); }

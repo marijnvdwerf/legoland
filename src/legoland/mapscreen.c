@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "mapscreen.h"
+
 struct Sprite {
     unsigned char pad_0[0x18];
     unsigned short field_18;
@@ -22,7 +24,6 @@ extern unsigned int DAT_00667c34;
 extern struct Sprite *CreateFunctionBasedSprite(unsigned int source, unsigned short a, unsigned short b);
 extern unsigned int LoadSprite(const char *filename, int flags);
 extern void KillSprite(unsigned int sprite);
-extern void RenderFullMap(void);
 extern void FUN_00475080(void);
 
 // FUNCTION: LEGOLAND 0x004562c0

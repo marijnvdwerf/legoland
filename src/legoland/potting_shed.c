@@ -1,6 +1,22 @@
 #include "legoland.h"
 
-#include "potting_shed.h"
+struct PSCarInner {
+    unsigned char pad_0[0x10];
+    unsigned int field_10;
+};
+
+struct PSCarSub {
+    unsigned char pad_0[0x14];
+    unsigned int field_14;
+    unsigned int field_18;
+    unsigned char pad_1c[0x48];
+    struct PSCarInner *field_64;
+};
+
+struct PSCarLayer {
+    unsigned char pad_0[0xc];
+    struct PSCarSub *field_c;
+};
 
 struct PottingLayer {
     unsigned char pad_0[12];

@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "bricks.h"
 #include "debug_alloc.h"
 
 struct NerpsArg {
@@ -125,7 +126,6 @@ extern int DAT_00667ce8;
 extern int DAT_00667cec;
 extern int DAT_00667ce0;
 
-extern void FUN_00457870(unsigned int param_1);
 extern void GenerateGardener(void *object, int param_2);
 extern void GenerateMechanic(void *object, int param_2);
 extern void FUN_00462e50(unsigned int param_1, unsigned int param_2);
@@ -152,7 +152,6 @@ extern void FUN_00469390(struct LoopArg *arg);
 extern int FUN_00469ae0(unsigned int param_1);
 extern int FUN_00469b00(unsigned int param_1);
 extern void FUN_00459970(void);
-extern int GetBrickCount(void);
 
 extern struct EventList *DAT_0066879c;
 extern struct EventNode *FUN_00468910(unsigned int type, int sort_key);

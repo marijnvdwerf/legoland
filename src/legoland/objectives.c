@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "bricks.h"
 #include "debug_alloc.h"
 #include "timer.h"
 
@@ -76,8 +77,6 @@ extern char *_strncpy(char *dest, const char *src, unsigned int count);
 extern void FUN_0049e4d0(void *block);
 extern void FUN_00476140(int index, int value);
 extern void FUN_00460560(int index);
-extern unsigned int GetBrickCount(void);
-extern void FUN_00457900(unsigned int count);
 extern int LLIDB_FindElement(const char *name, unsigned int *out, int zero);
 extern void SetSampleFade(unsigned int handle, int fade);
 

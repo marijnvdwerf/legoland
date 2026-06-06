@@ -1,5 +1,4 @@
 #include "legoland.h"
-#include "certificate.h"
 
 // FUNCTION: LEGOLAND 0x00451740
 void FUN_00451740(void) { STUB(); }

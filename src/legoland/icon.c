@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "clipping.h"
 #include "timer.h"
 
 struct Sprite;
@@ -124,7 +125,6 @@ extern void ReferenceSprite(struct Sprite *sprite);
 extern void FUN_0049e4d0(void *ptr);
 extern void *_malloc(unsigned int size);
 extern void *LoadSprite(const char *name, unsigned int flags);
-extern void SetClipping(int *rect);
 
 int FUN_0046df60(void);
 

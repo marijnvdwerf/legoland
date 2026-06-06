@@ -1,6 +1,24 @@
 #include "legoland.h"
 
-#include "temple.h"
+typedef void (*TempleHandler)(void);
+
+struct TempleObj {
+    unsigned char pad_0[0x8c];
+    TempleHandler field_8c;
+    unsigned char pad_90[0x8];
+    TempleHandler field_98;
+    TempleHandler field_9c;
+    unsigned char pad_a0[0x4];
+    TempleHandler field_a4;
+    TempleHandler field_a8;
+    TempleHandler field_ac;
+    TempleHandler field_b0;
+};
+
+struct TempleObject {
+    unsigned char pad_0[12];
+    unsigned int field_c;
+};
 
 extern unsigned int DAT_004cbf68;
 extern unsigned int DAT_004cbf6c;

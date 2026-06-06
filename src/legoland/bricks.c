@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "bricks.h"
+
 extern unsigned int DAT_004b90fc;
 extern unsigned int DAT_004b90f8;
 
@@ -31,7 +33,7 @@ void UseBricks(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x004578e0
-unsigned int GetBrickCount(void) {
+int GetBrickCount(void) {
     if (DAT_004b90fc != 0) {
         return 0x7fffffff;
     }

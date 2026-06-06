@@ -1,5 +1,4 @@
 #include "legoland.h"
-#include "debug.h"
 
 // FUNCTION: LEGOLAND 0x0047f870
 void FUN_0047f870(void) {}

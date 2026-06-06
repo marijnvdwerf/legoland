@@ -1,5 +1,4 @@
 #include "legoland.h"
-#include "main.h"
 #include <stdarg.h>
 
 extern char DAT_00667128[512];

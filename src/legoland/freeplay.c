@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "clipping.h"
+
 struct FreePlaySpriteSlot {
     struct Sprite *field_0;
     struct Sprite *field_4;
@@ -11,7 +13,6 @@ struct ElemRecord {
     unsigned char flags;
 };
 
-extern unsigned int FUN_0048a840(unsigned int arg, unsigned int param2);
 extern struct ElemRecord *ElemID(const char *name);
 extern int KillSprite(struct Sprite *sprite);
 extern void FUN_0046fb40(unsigned int group);

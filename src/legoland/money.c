@@ -1,11 +1,22 @@
 #include "legoland.h"
 #include "money.h"
 
+#include "bricks.h"
+
+struct ShopItem {
+    unsigned char pad_0[0x28];
+    short field_28;
+};
+
+struct BuyItemArg {
+    unsigned char pad_0[0xc];
+    struct ShopItem *field_c;
+};
+
 extern unsigned int DAT_00667120;
 extern unsigned char MONEY_SFX[12];
 
 extern void Kill_FXList(unsigned char *list, unsigned int count);
-extern void AddBricks(unsigned int amount);
 
 // FUNCTION: LEGOLAND 0x00453900
 void LoadMoneySFX(void) { STUB(); }

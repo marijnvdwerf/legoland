@@ -1,5 +1,6 @@
 #include "legoland.h"
 
+#include "bricks.h"
 #include "debug_alloc.h"
 
 struct LegoConfig;
@@ -67,9 +68,6 @@ extern void *ElemID(const char *name);
 extern void *FUN_004a020e(unsigned int count, unsigned int size);
 extern void FUN_0049e4d0(void *block);
 extern void SortBlokeIn3D(struct Worker *worker);
-extern int GetBrickCount(void);
-extern void UseBricks(int count);
-extern void AddBricks(unsigned int count);
 extern void DoHighLevelAI(struct Worker *worker);
 extern void DoLowLevelAI(struct Worker *worker);
 extern void UpdatePerson(struct Worker *worker);

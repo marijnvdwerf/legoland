@@ -1,6 +1,8 @@
 #include "legoland.h"
 #include <windows.h>
 
+#include "clipping.h"
+
 struct ClipRect {
     int left;
     int top;
@@ -17,11 +19,6 @@ struct ObjectClassNode {
     struct ObjectClassNode *next;
     unsigned char pad_4[0xc0];
     struct ClippedObject *object;
-};
-
-struct ClipQueryResult {
-    unsigned char pad_0[0xc];
-    unsigned int field_c;
 };
 
 typedef void (*ClipNodeMethod)(struct ClipNode *node, int a1, int a2, int a3);
@@ -45,10 +42,8 @@ extern unsigned int DAT_00798648;
 extern struct ObjectClassNode *ObjectClassList;
 extern struct ClipNode *DAT_006687c8;
 
-void FUN_0048a840(unsigned int arg, struct ClipQueryResult **out);
-
 // FUNCTION: LEGOLAND 0x0048a5c0
-void SetClipping(void) { STUB(); }
+void SetClipping(int *rect) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048a630
 void GetClipping(struct ClipRect *dest) {
@@ -122,4 +117,4 @@ void FUN_0048a790(void) {
 void FUN_0048a800(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048a840
-void FUN_0048a840(unsigned int arg, struct ClipQueryResult **out) { STUB(); }
+unsigned int FUN_0048a840(unsigned int arg, struct ClipQueryResult **out) { STUB(); }

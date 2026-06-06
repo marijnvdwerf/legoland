@@ -1,6 +1,8 @@
 #include "legoland.h"
 
+#include "bricks.h"
 #include "build.h"
+#include "clipping.h"
 
 struct ScreenConfig {
     unsigned short width;
@@ -50,9 +52,7 @@ extern void FUN_004714e0(void);
 extern void ResetInfoStruct(void);
 extern void FUN_0049cfc0(void);
 extern void FUN_00474ed0(void);
-extern void FUN_0048a750(void);
 extern void UpDateCurrentProfile(void);
-extern void FUN_00457870(unsigned int a);
 extern char *_strncpy(char *dest, const char *src, unsigned int count);
 
 // FUNCTION: LEGOLAND 0x004585c0

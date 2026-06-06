@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "bricks.h"
+
 struct RoadQueueEntry {
     struct RoadQueueEntry *next;
     unsigned char pad_4[0x4];
@@ -73,7 +75,6 @@ extern void ScreenToMapRef(unsigned int a, void *out, unsigned int b);
 extern void FUN_0045f480(void *cursor, unsigned int a);
 extern void FUN_0045f460(void *cursor);
 extern int GetObjCost(void *info);
-extern int GetBrickCount(void);
 extern unsigned int FUN_00411aa0(unsigned int a, unsigned int b);
 
 // FUNCTION: LEGOLAND 0x004132a0
