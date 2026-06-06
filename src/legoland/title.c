@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "tooltip.h"
 
 struct SpriteIcon {
     unsigned char pad_0[0x2c];
@@ -26,7 +27,6 @@ extern void FUN_00498920(void);
 extern void FUN_004771f0(const char *filename, unsigned int param_2, unsigned int param_3);
 extern void FUN_00498630(const char *param_1);
 extern void FUN_00498b00(void);
-extern void FUN_0046d390(void);
 extern void FUN_0046d680(unsigned int param_1, unsigned int param_2);
 extern void FUN_00474880(void);
 extern void FUN_004993c0(void);

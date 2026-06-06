@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "tooltip.h"
 #include <windows.h>
 
 extern unsigned int DAT_004b9f8c;
