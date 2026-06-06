@@ -1,8 +1,7 @@
 #include "legoland.h"
 
 #include "build.h"
-
-extern int GetObjCost(int objClass);
+#include "objclass.h"
 
 extern unsigned int DAT_006664f8[768];
 extern unsigned int DAT_006670f8;
@@ -14,7 +13,7 @@ void AddObjectToBuildList(void) { STUB(); }
 void FUN_00450c00(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00450c40
-int GetBuildTime(int objClass) {
+int GetBuildTime(struct CostInfo *objClass) {
     int cost = GetObjCost(objClass);
     if (cost < 50) {
         return 50;

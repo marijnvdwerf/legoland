@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "binv.h"
+#include "render3d.h"
 
 struct TempleRide {
     unsigned char pad_0[4];
@@ -60,8 +61,6 @@ extern unsigned short DAT_004cbfa4;
 extern struct SaveNode *DAT_004cbfd4;
 
 extern unsigned int KillSprite(unsigned int handle);
-extern void Ride_SetFlagToNotLetAnyoneOn(void *arg);
-extern void Ride_ClearFlagToNotLetAnyoneOn(void *arg);
 extern int SaveGameWrite(void *buf, unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);
 

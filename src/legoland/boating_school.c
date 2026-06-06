@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "gamemap.h"
+#include "objclass.h"
 
 struct NameNode {
     unsigned short value;
@@ -10,7 +11,6 @@ struct NameNode {
 
 extern struct NameNode *DAT_004cc03c;
 
-extern unsigned int BasicObjectDCalcCursor(unsigned int param_1, unsigned int param_2);
 extern void SetEditCursorFootPrint(unsigned int *footprint);
 
 extern unsigned int EditMode;

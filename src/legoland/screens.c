@@ -9,6 +9,9 @@
 #include "profile_io.h"
 #include "screens.h"
 #include "popupinfo.h"
+#include "draw.h"
+#include "objclass.h"
+#include "bloke.h"
 
 struct ScreenConfig {
     unsigned short width;
@@ -38,18 +41,12 @@ extern char DAT_00832998[256];
 extern char DAT_00832a98[256];
 
 extern unsigned int LoadSprite(const char *name, unsigned int flags);
-extern void PushRenderingStatusAndLockVideoSurface(void);
-extern void PopRenderingStatus(void);
-extern void RenderingComplete(void);
 extern void KillSprite(unsigned int sprite);
 extern void FUN_00474880(void);
 extern void BuildCursorPtr(struct Cursor *cursor, unsigned short a, unsigned short b);
-extern void FUN_00481170(void);
 extern void FUN_0046fb40(unsigned int a);
 extern void DelObjectList(void);
-extern void FreeBlokeCounters(void);
 extern void FUN_0046cb20(void);
-extern void FUN_00483090(void);
 extern void FUN_0049cfc0(void);
 extern void FUN_00474ed0(void);
 extern char *_strncpy(char *dest, const char *src, unsigned int count);

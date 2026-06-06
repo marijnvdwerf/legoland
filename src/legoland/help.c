@@ -4,6 +4,8 @@
 #include "timer.h"
 #include "text.h"
 #include "popupinfo.h"
+#include "objectives.h"
+#include "challenge.h"
 
 struct HelpAdvisor {
     unsigned char pad_0[0xc];
@@ -29,11 +31,8 @@ extern unsigned int DAT_004b9f78[4];
 extern void FUN_0049e4d0(void *block);
 extern void FUN_004748a0(unsigned int arg);
 extern void FUN_00476000(void);
-extern void FUN_00444070(unsigned int a1, unsigned int a2);
 extern void FUN_004988c0(void);
-extern unsigned int FUN_00469400(void);
 extern void FUN_0046b2d0(void);
-extern void FUN_00468c00(void);
 extern void RenderHelpIcons(void);
 extern unsigned int FUN_00498cf0(void);
 

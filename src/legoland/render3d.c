@@ -1,5 +1,6 @@
 #include "legoland.h"
 #include "man3d.h"
+#include "render3d.h"
 #include <math.h>
 
 extern void *DAT_0081c8cc;
@@ -21,8 +22,6 @@ extern unsigned int DAT_00638218[];
 extern void FUN_0049e4d0(void *block);
 extern void KillSprite(unsigned int sprite);
 extern void LLSStop(unsigned int handle);
-
-unsigned int FUN_00443120(void);
 
 struct Viewport {
     unsigned int field_0;
@@ -76,7 +75,7 @@ void FUN_00441980(void) { STUB(); }
 void Put3DBlokesOnRide(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00441ad0
-void Put3DBlokesOnRide2(void) { STUB(); }
+void Put3DBlokesOnRide2(struct RideObject *ride, struct RideObject *obj) { STUB(); }
 
 struct RenderNode {
     struct RenderNode *next;
@@ -256,7 +255,7 @@ unsigned int FUN_00442c70(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00442cc0
-void GetScreenCoordsForObject(void) { STUB(); }
+void GetScreenCoordsForObject(unsigned short *value, void *obj) { STUB(); }
 
 struct AdjustStruct {
     int field0;
@@ -365,10 +364,10 @@ void RenderBlokeList(struct BlokeListHead *list) {
 }
 
 // FUNCTION: LEGOLAND 0x00442fa0
-void Ride_SetFlagToNotLetAnyoneOn(void) { STUB(); }
+void Ride_SetFlagToNotLetAnyoneOn(struct RideObject *ride) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00443000
-void Ride_ClearFlagToNotLetAnyoneOn(void) { STUB(); }
+void Ride_ClearFlagToNotLetAnyoneOn(struct RideObject *ride) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00443060
 void RenderItems2_New(void) {

@@ -1,6 +1,8 @@
 #include "legoland.h"
 
 #include "gamemap.h"
+#include "objclass.h"
+#include "render3d.h"
 
 struct JungleNode {
     unsigned short field_0;
@@ -84,7 +86,6 @@ extern struct JungleScore *DAT_00629c3c;
 extern unsigned int DAT_0062fd2c;
 extern struct JungleFishNode *DAT_00629c30;
 
-extern struct JungleLLS *GetLLSForSprite(unsigned int sprite);
 extern void LLSSetFrame(struct JungleLLS *lls, int frame);
 extern int FUN_0049e4b2(void);
 
@@ -103,7 +104,6 @@ extern struct Cursor EditCursor;
 extern unsigned int LoadSprite(const char *name, int flags);
 extern void KillSprite(unsigned int sprite);
 extern void SetEditCursorFootPrint(unsigned char *foot);
-extern unsigned int BasicObjectDCalcCursor(unsigned int param_1, unsigned int param_2);
 
 extern unsigned int DAT_0082c6a0;
 extern unsigned int DAT_0082c6a4;
@@ -254,7 +254,9 @@ unsigned int *FUN_00434740(struct JungleFishHolder *param_1, unsigned short para
         node = node->next;
     }
 
-    lls1 = GetLLSForSprite(obj->field_64);
+    /* TODO: fold SpriteLLS/JungleLLS — GetLLSForSprite takes a SpriteLLS* (stored
+       here as the unsigned int sprite handle) and returns a JungleLLS* as unsigned int. */
+    lls1 = (struct JungleLLS *)GetLLSForSprite((struct SpriteLLS *)obj->field_64);
 
     if (node->field_4 != 0) {
         if (lls1->field_0 == 0) {
@@ -269,7 +271,7 @@ unsigned int *FUN_00434740(struct JungleFishHolder *param_1, unsigned short para
     }
 
     if (node->field_4 != 0) {
-        lls2 = GetLLSForSprite(DAT_0081cb6c);
+        lls2 = (struct JungleLLS *)GetLLSForSprite((struct SpriteLLS *)DAT_0081cb6c);
         frame = lls1->field_0;
         LLSSetFrame(lls2, frame);
         DAT_0082c6a0 = DAT_0081cb6c;

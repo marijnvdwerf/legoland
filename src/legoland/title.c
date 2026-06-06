@@ -4,6 +4,7 @@
 #include "options.h"
 #include "sound_sfx.h"
 #include "title.h"
+#include "draw.h"
 
 struct SpriteIcon {
     unsigned char pad_0[0x2c];
@@ -22,7 +23,6 @@ struct PopUp {
 extern void PlayInstanceOfSample(void *sample, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 extern void KillSprite(unsigned int sprite);
 extern void RemoveIconGroup(unsigned int group);
-extern void SetPointer(unsigned int index);
 extern unsigned int LoadSprite(const char *filename, unsigned int param_2);
 extern struct SpriteIcon *LoadSpriteIcon(const char *filename, unsigned int param_2, unsigned int param_3, unsigned int param_4, unsigned int param_5);
 extern void FUN_00498920(void);

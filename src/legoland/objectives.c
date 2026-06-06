@@ -4,6 +4,7 @@
 #include "debug_alloc.h"
 #include "timer.h"
 #include "sound_sfx.h"
+#include "objectives.h"
 
 struct ObjectiveEvent {
     struct ObjectiveEvent *next;
@@ -19,13 +20,6 @@ struct ObjectiveEvent {
     int sort_key;
     unsigned int timestamp;
     unsigned int field_40;
-};
-
-struct GameObject {
-    unsigned char pad_0[0x10];
-    unsigned char flags;
-    unsigned char pad_11[0x40 - 0x11];
-    unsigned int id;
 };
 
 struct ThemeQueryArg {
@@ -80,20 +74,6 @@ extern void FUN_00476140(int index, int value);
 extern void FUN_00460560(int index);
 extern int LLIDB_FindElement(const char *name, unsigned int *out, int zero);
 
-void FUN_00468860(int index, signed char value);
-struct ObjectiveEvent *FUN_00468910(unsigned int type, int sort_key);
-void FUN_00468940(struct ObjectiveEvent *event);
-struct ObjectiveEvent *FUN_00468cd0(unsigned int type, int sort_key);
-void FUN_00468c80(struct ObjectiveEvent *event);
-void FUN_00468d00(void);
-int FUN_00468d10(void);
-int FUN_00468d30(struct GameObject *object);
-void FUN_00469900(struct GameObject *object, unsigned int a, unsigned int b);
-void FUN_00469980(struct ThemeQueryArg *arg);
-void FUN_00469a80(struct GameObject *object);
-void FUN_00469ab0(struct GameObject *object);
-int FUN_00469ae0(struct RewardArg *arg);
-
 // FUNCTION: LEGOLAND 0x00468810
 void FUN_00468810(char *name) {
     _strncpy(DAT_0066869c, name, 0x80);
@@ -133,7 +113,7 @@ unsigned char FUN_00468890(int index, unsigned char value) {
 }
 
 // FUNCTION: LEGOLAND 0x004688c0
-unsigned char FUN_004688c0(int index) {
+char FUN_004688c0(int index) {
     if (index < 10) {
         return DAT_007fe930[index];
     }
@@ -144,14 +124,14 @@ unsigned char FUN_004688c0(int index) {
 void FUN_004688e0(void) {}
 
 // FUNCTION: LEGOLAND 0x004688f0
-void FUN_004688f0(int index) {
+void FUN_004688f0(int index, unsigned char param_2) {
     if (index < 4) {
         FUN_00460560(index);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00468910
-struct ObjectiveEvent *FUN_00468910(unsigned int type, int sort_key) {
+struct EventNode *FUN_00468910(unsigned int type, int sort_key) {
     struct ObjectiveEvent *event;
 
     event = (struct ObjectiveEvent *)FUN_004a020e(1, 0x44);
@@ -161,11 +141,13 @@ struct ObjectiveEvent *FUN_00468910(unsigned int type, int sort_key) {
         event->type = type;
         event->sort_key = sort_key;
     }
-    return event;
+    /* objectives owns this as ObjectiveEvent; nerps sees the same object as EventNode */
+    return (struct EventNode *)event;
 }
 
 // FUNCTION: LEGOLAND 0x00468940
-void FUN_00468940(struct ObjectiveEvent *event) {
+void FUN_00468940(struct EventNode *node) {
+    struct ObjectiveEvent *event = (struct ObjectiveEvent *)node;
     if (event->flags_10 & 0x20) {
         if (event->field_8 != 0) {
             FUN_0049e4d0((void *)event->field_8);
@@ -175,12 +157,13 @@ void FUN_00468940(struct ObjectiveEvent *event) {
 }
 
 // FUNCTION: LEGOLAND 0x00468970
-void FUN_00468970(struct ObjectiveEvent *event) {
+void FUN_00468970(struct EventNode *node) {
+    struct ObjectiveEvent *event = (struct ObjectiveEvent *)node;
     if (event != NULL) {
         if (event->next != NULL) {
-            FUN_00468970(event->next);
+            FUN_00468970((struct EventNode *)event->next);
         }
-        FUN_00468940(event);
+        FUN_00468940(node);
     }
 }
 
@@ -188,10 +171,11 @@ void FUN_00468970(struct ObjectiveEvent *event) {
 void FUN_004689a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004689f0
-void FUN_004689f0(void) { STUB(); }
+unsigned int FUN_004689f0(unsigned int param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00468b00
-void FUN_00468b00(struct ObjectiveEvent *event) {
+void FUN_00468b00(struct EventNode *param) {
+    struct ObjectiveEvent *event = (struct ObjectiveEvent *)param;
     struct ObjectiveEvent *node;
     struct ObjectiveEvent *prev;
     int key;
@@ -219,10 +203,10 @@ void FUN_00468b00(struct ObjectiveEvent *event) {
 }
 
 // FUNCTION: LEGOLAND 0x00468b40
-void FUN_00468b40(void) { STUB(); }
+void FUN_00468b40(struct EventNode *node, unsigned int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00468bb0
-void FUN_00468bb0(void) { STUB(); }
+void FUN_00468bb0(void *param_1, unsigned int param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00468c00
 void FUN_00468c00(void) { STUB(); }
@@ -234,7 +218,7 @@ void FUN_00468c80(struct ObjectiveEvent *event) { STUB(); }
 struct ObjectiveEvent *FUN_00468cd0(unsigned int type, int sort_key) {
     struct ObjectiveEvent *event;
 
-    event = FUN_00468910(type, sort_key);
+    event = (struct ObjectiveEvent *)FUN_00468910(type, sort_key);
     if (event != NULL) {
         event->timestamp = GetGameTimer();
     }
@@ -256,10 +240,10 @@ int FUN_00468d10(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00468d30
-int FUN_00468d30(struct GameObject *object) { STUB(); }
+int FUN_00468d30(struct NerpsArg *object) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00468d80
-void FUN_00468d80(struct GameObject *object, unsigned int a, unsigned int b) {
+void FUN_00468d80(struct NerpsArg *object, unsigned int a, int b) {
     struct ObjectiveEvent *event;
 
     if (FUN_00468d10() == 0) {
@@ -278,7 +262,7 @@ void FUN_00468d80(struct GameObject *object, unsigned int a, unsigned int b) {
 void FUN_00468dc0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00468e00
-void FUN_00468e00(struct GameObject *object, unsigned int a) {
+void FUN_00468e00(struct NerpsArg *object, unsigned int a) {
     struct ObjectiveEvent *event;
 
     if (FUN_00468d10() == 0) {
@@ -294,19 +278,19 @@ void FUN_00468e00(struct GameObject *object, unsigned int a) {
 }
 
 // FUNCTION: LEGOLAND 0x00468e40
-void FUN_00468e40(void) { STUB(); }
+void FUN_00468e40(struct NerpsArg *arg, unsigned int class_id, int count, int sum) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00468ea0
-void FUN_00468ea0(void) { STUB(); }
+void FUN_00468ea0(struct NerpsArg *arg, unsigned int class_id, int count, int sum) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00468f00
 void FUN_00468f00(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00468f40
-void FUN_00468f40(void) { STUB(); }
+void FUN_00468f40(struct NerpsArg *arg, unsigned int class_id, int count) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00468f80
-void FUN_00468f80(struct GameObject *object, unsigned int a) {
+void FUN_00468f80(struct NerpsArg *object, int a) {
     struct ObjectiveEvent *event;
 
     if (FUN_00468d10() == 0) {
@@ -324,7 +308,7 @@ void FUN_00468f80(struct GameObject *object, unsigned int a) {
 void FUN_00468fc0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00469000
-void FUN_00469000(struct GameObject *object, int a) {
+void FUN_00469000(struct NerpsArg *object, int a) {
     struct ObjectiveEvent *event;
 
     if (FUN_00468d10() == 0) {
@@ -339,7 +323,7 @@ void FUN_00469000(struct GameObject *object, int a) {
 }
 
 // FUNCTION: LEGOLAND 0x00469040
-void FUN_00469040(struct GameObject *object, unsigned int a) {
+void FUN_00469040(struct NerpsArg *object, unsigned int a) {
     struct ObjectiveEvent *event;
 
     if (FUN_00468d10() == 0) {
@@ -357,10 +341,10 @@ void FUN_00469040(struct GameObject *object, unsigned int a) {
 void FUN_00469080(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004690c0
-void FUN_004690c0(void) { STUB(); }
+void FUN_004690c0(struct NerpsArg *arg, int count) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00469100
-void FUN_00469100(struct GameObject *object, unsigned int a, unsigned int b) {
+void FUN_00469100(struct NerpsArg *object, int a, unsigned int b) {
     struct ObjectiveEvent *event;
 
     if (FUN_00468d10() == 0) {
@@ -376,7 +360,7 @@ void FUN_00469100(struct GameObject *object, unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x00469140
-void FUN_00469140(struct GameObject *object, unsigned int a, unsigned int b) {
+void FUN_00469140(struct NerpsArg *object, unsigned int a, unsigned int b) {
     struct ObjectiveEvent *event;
 
     if (FUN_00468d10() == 0) {
@@ -393,7 +377,7 @@ void FUN_00469140(struct GameObject *object, unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x00469190
-void FUN_00469190(struct GameObject *object, unsigned int a, unsigned int b) {
+void FUN_00469190(struct NerpsArg *object, unsigned int a, unsigned int b) {
     struct ObjectiveEvent *event;
 
     if (FUN_00468d10() == 0) {
@@ -410,10 +394,10 @@ void FUN_00469190(struct GameObject *object, unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x004691e0
-void FUN_004691e0(void) { STUB(); }
+void FUN_004691e0(struct NerpsArg *arg, int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00469220
-void FUN_00469220(struct GameObject *object, unsigned int a, unsigned int b) {
+void FUN_00469220(struct NerpsArg *object, unsigned int a, unsigned int b) {
     struct ObjectiveEvent *event;
 
     if (FUN_00468d10() == 0) {
@@ -429,10 +413,10 @@ void FUN_00469220(struct GameObject *object, unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x00469260
-void FUN_00469260(void) { STUB(); }
+void FUN_00469260(struct NerpsArg *arg, unsigned int class_id, int sum, int count) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00469310
-void FUN_00469310(struct GameObject *object, unsigned int a, unsigned int b) {
+void FUN_00469310(struct NerpsArg *object, unsigned int a, int b) {
     struct ObjectiveEvent *event;
 
     if (FUN_00468d10() == 0) {
@@ -448,7 +432,7 @@ void FUN_00469310(struct GameObject *object, unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x00469350
-void FUN_00469350(struct GameObject *object, unsigned int a) {
+void FUN_00469350(struct NerpsArg *object, int a) {
     struct ObjectiveEvent *event;
 
     if (FUN_00468d10() == 0) {
@@ -463,7 +447,7 @@ void FUN_00469350(struct GameObject *object, unsigned int a) {
 }
 
 // FUNCTION: LEGOLAND 0x00469390
-void FUN_00469390(struct GameObject *object) {
+void FUN_00469390(struct NerpsArg *object) {
     if (FUN_00468d10() != 0) {
         FUN_00468d30(object);
     }
@@ -473,10 +457,10 @@ void FUN_00469390(struct GameObject *object) {
 void FUN_004693b0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00469400
-void FUN_00469400(void) { STUB(); }
+unsigned int FUN_00469400(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00469900
-void FUN_00469900(struct GameObject *object, unsigned int a, unsigned int b) { STUB(); }
+void FUN_00469900(struct NerpsArg *object, unsigned int a, unsigned int b) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00469980
 void FUN_00469980(struct ThemeQueryArg *arg) {
@@ -513,7 +497,7 @@ void FUN_00469980(struct ThemeQueryArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00469a80
-void FUN_00469a80(struct GameObject *object) {
+void FUN_00469a80(struct NerpsArg *object) {
     unsigned int flags;
 
     if (object != NULL) {
@@ -527,7 +511,7 @@ void FUN_00469a80(struct GameObject *object) {
 }
 
 // FUNCTION: LEGOLAND 0x00469ab0
-void FUN_00469ab0(struct GameObject *object) {
+void FUN_00469ab0(struct NerpsArg *object) {
     unsigned int flags;
 
     if (object != NULL) {
@@ -555,24 +539,24 @@ int FUN_00469b00(struct RewardArg *arg) {
 
 // FUNCTION: LEGOLAND 0x00469b20
 int FUN_00469b20(struct ObjectiveEvent *event) {
-    struct GameObject *object;
+    struct NerpsArg *object;
 
-    object = (struct GameObject *)event->field_4;
+    object = (struct NerpsArg *)event->field_4;
     FUN_00469900(object, event->field_14, 0);
-    object = (struct GameObject *)event->field_4;
+    object = (struct NerpsArg *)event->field_4;
     ((struct ObjectiveEvent *)object)->field_8 |= 0x20000;
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469b50
 int FUN_00469b50(struct ObjectiveEvent *event) {
-    FUN_00469a80((struct GameObject *)event->field_4);
+    FUN_00469a80((struct NerpsArg *)event->field_4);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469b70
 int FUN_00469b70(struct ObjectiveEvent *event) {
-    FUN_00469ab0((struct GameObject *)event->field_4);
+    FUN_00469ab0((struct NerpsArg *)event->field_4);
     return 1;
 }
 

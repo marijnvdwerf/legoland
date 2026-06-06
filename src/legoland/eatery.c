@@ -4,8 +4,8 @@
 #include "man3d.h"
 #include "money.h"
 #include "obj_instance.h"
+#include "render3d.h"
 
-extern void GetScreenCoordsForObject(unsigned short *value, void *obj);
 extern void LLIDB_UnLoadData(void *param_1);
 extern void SetEditCursorFootPrint(unsigned int param);
 extern void Load_FXList(unsigned char *list, unsigned int count);

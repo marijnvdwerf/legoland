@@ -5,6 +5,8 @@
 #include "print_sprite.h"
 #include "screens.h"
 #include "timer.h"
+#include "draw.h"
+#include "challenge.h"
 
 struct AnimHandle;
 struct RideElem;
@@ -49,8 +51,6 @@ extern void KillImage(unsigned int image);
 extern unsigned int SaveGameWrite(const void *data, unsigned int size);
 extern unsigned int SaveGameRead(void *data, unsigned int size);
 extern struct RideElem *ElemID(const char *name);
-extern void PushRenderingStatusAndLockVideoSurface(void);
-extern void PopRenderingStatus(void);
 extern void PlayInstanceOfSample(void *sample, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 extern void KillSprite(unsigned int sprite);
 extern void RemoveIconGroup(unsigned int group);
@@ -133,17 +133,6 @@ extern unsigned int DAT_00832b9c;
 extern unsigned int DAT_00832978;
 extern unsigned int DAT_0083297c;
 
-unsigned int FUN_004434d0(unsigned int param_1);
-struct AnimHandle *FUN_00443bd0(const char *filename);
-void FUN_00443d50(struct AnimHandle *handle);
-void FUN_00443d90(void);
-void FUN_00443dc0(struct AnimHandle *handle);
-unsigned int FUN_00443f90(unsigned int param_1);
-unsigned int FUN_00443fe0(unsigned int param_1);
-unsigned int FUN_00444020(void);
-int FUN_00444c40(struct ObjectClass *node);
-void FUN_0044db20(void);
-
 // FUNCTION: LEGOLAND 0x004434d0
 unsigned int FUN_004434d0(unsigned int param_1) { STUB(); }
 
@@ -171,7 +160,7 @@ unsigned int FUN_00443710(void) {
 void FUN_00443720(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004437d0
-void FUN_004437d0(void) { STUB(); }
+void FUN_004437d0(unsigned int arg, void *ptr) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00443bd0
 struct AnimHandle *FUN_00443bd0(const char *filename) { STUB(); }

@@ -4,6 +4,7 @@
 #include "gamemap.h"
 #include "man3d.h"
 #include "tilemap.h"
+#include "draw.h"
 
 struct WaterNode {
     struct WaterNode *next;
@@ -122,7 +123,6 @@ extern void KillSprite(unsigned int sprite);
 extern void LLIDB_UnLoadData(unsigned int handle);
 extern unsigned int LoadSprite(const char *name, int flags);
 extern void StandardRemoveObject(unsigned int a, unsigned int b, unsigned int c);
-extern void SetOverrideFrame(unsigned int frame);
 extern void ValidateCursor(struct Cursor *cursor, void *data);
 extern int SaveGameWrite(void *buffer, unsigned int size);
 extern int SaveGameRead(void *buffer, unsigned int size);

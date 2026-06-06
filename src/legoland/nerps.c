@@ -5,6 +5,9 @@
 #include "gamemap.h"
 #include "saveload.h"
 #include "screens.h"
+#include "draw.h"
+#include "objclass.h"
+#include "objectives.h"
 
 struct NerpsArg {
     unsigned char pad_0[0x4];
@@ -116,34 +119,9 @@ extern void GenerateMechanic(void *object, int param_2);
 extern void FUN_00462e50(unsigned int param_1, unsigned int param_2);
 extern void FUN_00462e70(unsigned int param_1, unsigned int param_2);
 extern void FUN_0046b240(unsigned int param_1);
-extern void FUN_00468860(unsigned int param_1, unsigned char param_2);
-extern unsigned char FUN_00468890(unsigned int param_1, unsigned char param_2);
-extern void FUN_004688f0(unsigned int param_1, unsigned char param_2);
-extern void FUN_004687f0(unsigned int param_1);
-extern void FUN_00468810(unsigned int param_1);
 extern void FUN_00476070(unsigned int param_1, unsigned int param_2);
-extern int ObjCount(unsigned int class_id);
-extern void FUN_00468d80(struct NerpsArg *arg, unsigned int class_id, int count);
-extern void FUN_00468e40(struct NerpsArg *arg, unsigned int class_id, int count, int sum);
-extern void FUN_00468ea0(struct NerpsArg *arg, unsigned int class_id, int count, int sum);
-extern void FUN_00468f40(struct NerpsArg *arg, unsigned int class_id, int count);
-extern void FUN_00469260(struct NerpsArg *arg, unsigned int class_id, int sum, int count);
-extern void FUN_00468f80(struct NerpsArg *arg, int count);
-extern void FUN_00469310(struct NerpsArg *arg, unsigned int param_2, int count);
-extern void FUN_00469350(struct NerpsArg *arg, int count);
-extern void FUN_004690c0(struct NerpsArg *arg, int count);
-extern void FUN_00469100(struct NerpsArg *arg, int count, unsigned int param_3);
-extern void FUN_00469390(struct LoopArg *arg);
-extern int FUN_00469ae0(unsigned int param_1);
-extern int FUN_00469b00(unsigned int param_1);
 
 extern struct EventList *DAT_0066879c;
-extern struct EventNode *FUN_00468910(unsigned int type, int sort_key);
-extern void FUN_00468940(struct EventNode *node);
-extern void FUN_00468b40(struct EventNode *node, unsigned int param_2, unsigned int param_3);
-extern void FUN_00468b00(struct EventNode *node);
-extern void FUN_00468d00(void);
-extern void FUN_00468bb0(void *param_1, unsigned int param_2);
 extern unsigned int DAT_00668614;
 extern unsigned int DAT_00668618;
 extern unsigned int DAT_007fe120[];
@@ -151,10 +129,6 @@ extern unsigned char DAT_004b8bbc[];
 
 extern unsigned int DAT_00832ba4;
 extern int DAT_00832bdc;
-extern void FUN_004691e0(struct NerpsArg *arg, int param_2, unsigned int param_3);
-extern char FUN_004688c0(int index);
-extern int FUN_00468d10(void);
-extern int FUN_00468d30(struct NerpsArg *arg);
 extern unsigned int DAT_004baff8;
 extern unsigned int DAT_00668e34;
 extern unsigned int DAT_007fdca4;
@@ -172,11 +146,9 @@ extern unsigned int DAT_007fd624;
 
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *block);
-extern void FUN_00468970(struct EventNode *node);
 extern unsigned int DAT_00832ba8;
 extern void FUN_004748a0(unsigned int param_1);
 extern void FUN_004629e0(void);
-extern void FUN_004689a0(void);
 extern void FUN_0046ce20(void);
 extern unsigned int DAT_00810140;
 extern unsigned int DAT_007fe050;
@@ -301,13 +273,15 @@ unsigned int FUN_0046a460(struct NerpsArg *arg) {
 
 // FUNCTION: LEGOLAND 0x0046a480
 unsigned int FUN_0046a480(struct NerpsArg *arg) {
-    FUN_004687f0(arg->field_8);
+    /* TODO: fold into NerpsArg — field_8 is used both as unsigned int (FUN_00468810) and a string ptr here */
+    FUN_004687f0((const char *)arg->field_8);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a4a0
 unsigned int FUN_0046a4a0(struct NerpsArg *arg) {
-    FUN_00468810(arg->field_8);
+    /* TODO: fold into NerpsArg — field_8 doubles as the name string pointer here */
+    FUN_00468810((char *)arg->field_8);
     return 1;
 }
 
@@ -327,7 +301,9 @@ unsigned int FUN_0046a4e0(void) {
 unsigned int FUN_0046a4f0(struct NerpsArg *arg) {
     int count;
 
-    count = ObjCount(arg->field_4);
+    /* TODO: fold into NerpsArg — field_4 is used both as a class_id (unsigned int)
+       and, here, as the ObjCountWrap* that ObjCount() dereferences */
+    count = ObjCount((struct ObjCountWrap *)arg->field_4);
     if (count < (int)arg->field_1c) {
         FUN_00468d80(arg, arg->field_4, arg->field_1c - count);
         DAT_0066878c = arg->field_1c - count;
@@ -391,7 +367,7 @@ void FUN_0046a960(void) { STUB(); }
 unsigned int FUN_0046aa30(struct NerpsArg *arg) {
     int count;
 
-    count = ObjCount(arg->field_4);
+    count = ObjCount((struct ObjCountWrap *)arg->field_4);
     if (count > (int)arg->field_1c) {
         FUN_00468f40(arg, arg->field_4, count - arg->field_1c);
         return 0;
@@ -437,7 +413,7 @@ unsigned int FUN_0046aae0(struct NerpsArg *arg) {
     int sum;
 
     node = ObjectClassList;
-    if (ObjCount(arg->field_4) < 1) {
+    if (ObjCount((struct ObjCountWrap *)arg->field_4) < 1) {
         FUN_00468d80(arg, arg->field_4, 1);
         return 0;
     }
@@ -468,7 +444,8 @@ unsigned int FUN_0046ab70(struct LoopArg *arg) {
     vtable = object->vtable;
     if (vtable->eval != NULL) {
         if (vtable->eval(object, 1) < arg->field_1c) {
-            FUN_00469390(arg);
+            /* TODO: fold LoopArg/NerpsArg — same objective object, two struct views */
+            FUN_00469390((struct NerpsArg *)arg);
             return 0;
         }
     } else {
@@ -480,7 +457,8 @@ unsigned int FUN_0046ab70(struct LoopArg *arg) {
 
 // FUNCTION: LEGOLAND 0x0046abc0
 int FUN_0046abc0(unsigned int param_1) {
-    return FUN_00469ae0(param_1);
+    /* param_1 is a RewardArg* carried as unsigned int (table callback ABI) */
+    return FUN_00469ae0((struct RewardArg *)param_1);
 }
 
 // FUNCTION: LEGOLAND 0x0046abd0
@@ -560,7 +538,7 @@ unsigned int FUN_0046ae20(void) {
 
 // FUNCTION: LEGOLAND 0x0046ae30
 int FUN_0046ae30(unsigned int param_1) {
-    return FUN_00469ae0(param_1);
+    return FUN_00469ae0((struct RewardArg *)param_1);
 }
 
 // FUNCTION: LEGOLAND 0x0046ae40
@@ -679,7 +657,7 @@ unsigned int FUN_0046b180(struct NerpsArg *arg) {
 
 // FUNCTION: LEGOLAND 0x0046b1e0
 int FUN_0046b1e0(unsigned int param_1) {
-    return FUN_00469b00(param_1);
+    return FUN_00469b00((struct RewardArg *)param_1);
 }
 
 // FUNCTION: LEGOLAND 0x0046b1f0

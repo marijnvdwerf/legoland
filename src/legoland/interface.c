@@ -5,6 +5,7 @@
 #include "screens.h"
 #include "title.h"
 #include "popupinfo.h"
+#include "objclass.h"
 
 struct IconNode {
     struct IconNode *next;
@@ -140,7 +141,6 @@ extern unsigned int RemoveIconGroup(unsigned int group);
 extern unsigned int FUN_0046d590(unsigned int a);
 extern void FUN_0046b700(void);
 extern void PlayInstanceOfSample(void *sample, int a, int b, int c);
-extern void SetEditObject(unsigned int obj);
 extern void FUN_00498920(void);
 extern void FUN_0049e4d0(void *block);
 extern unsigned int ObjectLinkedList(unsigned int *entry);
@@ -450,7 +450,7 @@ unsigned char FUN_00474fc0(void *a, unsigned int flags) {
     }
     if (flags & 2) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        SetEditObject(*(unsigned int *)((char *)a + 8));
+        SetEditObject(*(struct EditObject **)((char *)a + 8));
     }
     return 1;
 }

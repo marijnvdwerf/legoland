@@ -5,6 +5,7 @@
 #include "debug_alloc.h"
 #include "gamemap.h"
 #include "man3d.h"
+#include "bloke.h"
 
 struct LegoConfig;
 
@@ -70,7 +71,6 @@ extern struct LegoConfig *lpConfig;
 extern void *ElemID(const char *name);
 extern void *FUN_004a020e(unsigned int count, unsigned int size);
 extern void FUN_0049e4d0(void *block);
-extern void DoLowLevelAI(struct Worker *worker);
 extern void FUN_0045e4a0(int element, void *data);
 
 void RemoveAGardener(struct Worker *worker);

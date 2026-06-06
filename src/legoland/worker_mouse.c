@@ -2,6 +2,7 @@
 #include "man3d.h"
 #include "tilemap.h"
 #include "worker_mouse.h"
+#include "render3d.h"
 
 struct WorkerInner {
     unsigned char pad_0[0x1c];
@@ -19,7 +20,6 @@ struct WorkerOuter {
     unsigned int var_6c;
 };
 
-extern void AdjustBlokePosition(unsigned int *coord);
 extern void KillSprite(struct Sprite *sprite);
 
 extern unsigned int DAT_007fdf9c;
@@ -71,7 +71,8 @@ void SetWorkersPositionAtMouse(void) {
     inner->var_20 = DAT_00813a48;
     worker = DAT_007fdff0;
     inner = worker->inner;
-    AdjustBlokePosition(&inner->var_1c);
+    /* TODO: fold WorkerInner/BlokePos — &var_1c is the (x,y) pair AdjustBlokePosition mutates */
+    AdjustBlokePosition((struct BlokePos *)&inner->var_1c);
     ScreenToMapRef((unsigned int)&DAT_00813a44, pt, 0);
     worker = DAT_007fdff0;
     worker->var_68 = pt[0] << 8;

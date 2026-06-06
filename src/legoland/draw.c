@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "draw.h"
+
 extern unsigned int DDRAWENV[246];
 extern unsigned int DAT_0066814c;
 extern unsigned int DAT_00668148;
@@ -64,7 +66,7 @@ void FUN_004640f0(void) { STUB(); }
 void PopRenderingStatus(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00464310
-void GetVideoSurface(void) { STUB(); }
+int GetVideoSurface(struct VideoArg *arg) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00464360
 void PrintBackground(void) { return; }
@@ -130,7 +132,7 @@ void FUN_00466080(void) { STUB(); }
 void FUN_004661d0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00466360
-void FUN_00466360(void) { STUB(); }
+void FUN_00466360(int a, int b) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004663c0
 void FUN_004663c0(void) {
@@ -163,7 +165,7 @@ void PopTarget(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00466640
-void RecreateSprite(void) { STUB(); }
+int RecreateSprite(struct Sprite *sprite) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00466770
 void FUN_00466770(void) { STUB(); }

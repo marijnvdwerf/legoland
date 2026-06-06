@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "gamemap.h"
+#include "render3d.h"
 
 typedef void (*CatapultVtblFn)(void);
 
@@ -67,7 +68,6 @@ extern struct Cursor EditCursor;
 extern void HideLayer(void *layer, unsigned int flag);
 extern void Load_FXList(unsigned char *list, unsigned int count);
 extern void Kill_FXList(unsigned char *list, unsigned int count);
-extern void GetSpriteForLayer(void *layer, unsigned int index);
 extern void SetEditCursorFootPrint(void *footprint);
 extern int __strcmpi(const char *s1, const char *s2);
 

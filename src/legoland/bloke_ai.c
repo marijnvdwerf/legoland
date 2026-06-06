@@ -1,5 +1,6 @@
 #include "legoland.h"
 #include "bloke_ai.h"
+#include "bloke.h"
 
 struct Bloke {
     struct Bloke *next;
@@ -53,7 +54,6 @@ struct BlokeRideState {
     unsigned short flags;
 };
 
-extern struct Bloke *MakeBloke(int param_1);
 extern unsigned int FUN_0049e4b2(void);
 
 extern unsigned int DAT_0083291c;

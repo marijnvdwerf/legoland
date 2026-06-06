@@ -3,6 +3,9 @@
 #include "gamemain.h"
 #include "gamemap.h"
 #include "title.h"
+#include "bloke.h"
+#include "objectives.h"
+#include "challenge.h"
 
 struct GameMainNode {
     struct GameMainNode *next;
@@ -55,21 +58,10 @@ extern int __strcmpi(const char *s1, const char *s2);
 extern int FUN_004a04b9(const char *str);
 extern char *strcpy(char *dst, const char *src);
 
-extern void FUN_004689a0(void);
-extern unsigned int FUN_004689f0(unsigned int param_1, unsigned int param_2, unsigned int param_3);
-extern void FUN_004441f0(void);
-extern void FUN_0044db20(void);
-extern void FUN_0044db80(void);
-extern void FUN_00468840(void);
-extern void FUN_004688e0(void);
-extern void FUN_0044dc70(unsigned int param_1, unsigned int param_2);
-extern void FUN_00468830(void);
-extern void FUN_00482d70(void);
 extern void FUN_00462e90(void);
 extern void FUN_00476000(void);
 extern void FUN_00476050(void);
 extern void FUN_00463560(void);
-extern void FUN_00482b10(void);
 extern void FUN_0046b240(unsigned int param_1);
 
 extern char DAT_004d8bb0[0x100];

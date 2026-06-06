@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "ride_queue.h"
+#include "render3d.h"
 
 typedef void (*GoldVtblFn)(void);
 
@@ -62,8 +63,6 @@ extern struct Cursor EditCursor;
 extern int __strcmpi(const char *s1, const char *s2);
 extern int FUN_0049e4b2(void);
 extern void KillSprite(struct Sprite *sprite);
-extern void Ride_SetFlagToNotLetAnyoneOn(int param);
-extern void Ride_ClearFlagToNotLetAnyoneOn(int param);
 extern void SetEditCursorFootPrint(void *footprint);
 
 // FUNCTION: LEGOLAND 0x00406920
@@ -154,10 +153,11 @@ struct GoldArray *FUN_00406f00(struct GoldItem *item) {
 
 // FUNCTION: LEGOLAND 0x00406f30
 void FUN_00406f30(int param) {
+    /* param is a RideObject* carried as int (also passed to FUN_00406e90 as void*) */
     if (FUN_00406e90((void *)param) == 0) {
-        Ride_SetFlagToNotLetAnyoneOn(param);
+        Ride_SetFlagToNotLetAnyoneOn((struct RideObject *)param);
     } else {
-        Ride_ClearFlagToNotLetAnyoneOn(param);
+        Ride_ClearFlagToNotLetAnyoneOn((struct RideObject *)param);
     }
 }
 

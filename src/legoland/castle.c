@@ -6,6 +6,7 @@
 #include "path_control.h"
 #include "timer.h"
 #include "obj_instance.h"
+#include "draw.h"
 #include <math.h>
 
 extern unsigned int DAT_004d8268;
@@ -1981,7 +1982,6 @@ struct VideoArg {
     void *field_c;
 };
 
-extern int GetVideoSurface(struct VideoArg *arg);
 extern void *DAT_004b5b20;
 extern int DAT_004b5b28;
 extern int DAT_004b5b4c;

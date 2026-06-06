@@ -4,6 +4,8 @@
 #include "man3d.h"
 #include "timer.h"
 #include "pathfind.h"
+#include "objclass.h"
+#include "bloke.h"
 
 struct BestNode {
     unsigned char pad_0[0x20];
@@ -84,11 +86,9 @@ extern int DAT_0083293c[13];
 extern void *FirstBloke;
 extern unsigned int DAT_006661bc;
 
-extern struct BestNode *FUN_00481790(struct InstancePos *pos);
 extern int FUN_0049e4b2(void);
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *ptr);
-extern void ClearBlokeCounters(unsigned int bloke_num, struct Bloke *bloke);
 extern struct LegoConfig *lpConfig;
 extern unsigned int DAT_008119a4;
 extern unsigned int DAT_004bdd00;
@@ -233,7 +233,7 @@ void FUN_00483090(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004830c0
-struct Bloke *MakeBloke(void) {
+struct Bloke *MakeBloke(int param_1) {
     struct Bloke *bloke = NewBloke();
     if (bloke != NULL) {
         ClearBlokeCounters(GetBlokeNum(), bloke);
@@ -452,7 +452,7 @@ void Bloke_DoNothing(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00484920
-void DoLowLevelAI(void) { STUB(); }
+void DoLowLevelAI(struct Worker *worker) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00484950
 void ApplyObjectOrientationToPerson(void) { STUB(); }

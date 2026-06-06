@@ -1,8 +1,7 @@
 #include "legoland.h"
 
 #include "gamemap.h"
-
-struct ObjectClass;
+#include "objclass.h"
 
 struct ObjectClass {
     struct ObjectClass *next;
@@ -114,13 +113,6 @@ extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *block);
 extern int __strcmpi(const char *s1, const char *s2);
 
-void FUN_004809d0(struct ObjectClass *cls);
-void BasicObjectDCalcCursor(void);
-void FUN_00480b70(struct ObjClassNames *param);
-int GetObjCost(struct CostInfo *info);
-unsigned int GetObjSalvageValue(unsigned int param_1, unsigned int param_2);
-unsigned int Calc_Item_Attractiveness(unsigned int param_1, unsigned int param_2, unsigned int param_3);
-
 extern struct ObjectClass *ObjectClassList;
 extern struct RideNode *DAT_00669248;
 extern unsigned int DAT_0066924c;
@@ -205,7 +197,7 @@ void FUN_00480b70(struct ObjClassNames *param) {
 }
 
 // FUNCTION: LEGOLAND 0x00480bb0
-void BasicObjectDCalcCursor(void) { STUB(); }
+unsigned int BasicObjectDCalcCursor(unsigned int param_1, unsigned int param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00480cd0
 void SetStandardCallbacks(struct CallbackTable *table) {
@@ -296,7 +288,7 @@ void FreeBlokeCounters(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00480e90
-void ClearBlokeCounters(unsigned int index) {
+void ClearBlokeCounters(unsigned int index, struct Bloke *bloke) {
     struct ObjectClass *cls;
 
     for (cls = ObjectClassList; cls != 0; cls = cls->next) {
@@ -414,7 +406,7 @@ unsigned int FUN_00481720(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00481730
-void FUN_00481730(void) {
+struct BestNode *FUN_00481730(void) {
     struct BestNode *node;
 
     node = (struct BestNode *)_malloc(0x24);
@@ -422,6 +414,7 @@ void FUN_00481730(void) {
     node->field_1c = 0;
     node->next = DAT_0066b44c;
     DAT_0066b44c = node;
+    return node;
 }
 
 // FUNCTION: LEGOLAND 0x00481750
@@ -470,4 +463,4 @@ void FUN_00481810(void) { STUB(); }
 void FUN_004819a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00481b10
-void FUN_00481b10(void) { STUB(); }
+void FUN_00481b10(struct BestNode *node) { STUB(); }

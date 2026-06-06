@@ -4,6 +4,7 @@
 #include "print_sprite.h"
 #include "ride_queue.h"
 #include "ride_bloke.h"
+#include "draw.h"
 
 extern void *DAT_004c10d4;
 extern int DAT_004cbeb0;
@@ -14,10 +15,6 @@ extern unsigned int DAT_0082c6bc;
 extern unsigned int DAT_00830f94;
 
 extern unsigned char Get_RFFlags(int x, int y);
-extern void SetOverridePalette(unsigned int param_1);
-extern void SetOverrideFrame(unsigned int param_1);
-extern void ClearOverrideFrame(void);
-extern void ClearOverridePalette(void);
 
 struct Sprite {
     unsigned char pad_0[0x14];

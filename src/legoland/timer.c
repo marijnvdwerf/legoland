@@ -1,13 +1,13 @@
 #include <windows.h>
 
 #include "timer.h"
+#include "draw.h"
 
 struct Sprite {
     unsigned char pad_0[0x10];
     unsigned char flags;
 };
 
-extern int RecreateSprite(struct Sprite *sprite);
 extern void MakeSprite(struct Sprite *sprite);
 
 extern unsigned int DAT_0079a890;

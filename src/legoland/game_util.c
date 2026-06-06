@@ -4,6 +4,9 @@
 #include "gamemap.h"
 #include "sound_sfx.h"
 #include "title.h"
+#include "objclass.h"
+#include "bloke.h"
+#include "objectives.h"
 
 extern unsigned int DAT_00669098;
 extern unsigned int DAT_0066879c;
@@ -14,9 +17,6 @@ extern unsigned int DAT_004bb5b0;
 extern void FUN_0046b590(unsigned int param_1);
 extern unsigned int FUN_0046b4f0(unsigned int param_1);
 extern unsigned int ElemID(unsigned int id);
-extern unsigned int LoadObjectClass(unsigned int cls);
-extern void FUN_00469ab0(unsigned int object);
-extern void ClearObjectCounters(void);
 extern unsigned int LoadBaseMap(unsigned int param_1);
 extern void FUN_0046bdd0(unsigned char param_1, unsigned int param_2, unsigned int param_3);
 extern void FUN_0046bef0(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4);
@@ -30,13 +30,11 @@ extern void FUN_0046c320(unsigned char param_1, unsigned int param_2);
 extern void FUN_0046c390(unsigned char param_1, unsigned int param_2, unsigned int param_3);
 extern void FUN_0046c3c0(unsigned char param_1, unsigned int param_2);
 extern void FUN_0046c420(unsigned char param_1, unsigned int param_2, unsigned int param_3);
-extern void FUN_00468890(unsigned int param_1, unsigned int param_2);
 extern void FUN_0046bcb0(unsigned int param_1, unsigned int param_2);
 extern void FUN_0046b790(unsigned int param_1, unsigned int param_2);
 extern void FUN_0046b7f0(unsigned int param_1);
 extern void FUN_0046b9c0(unsigned int param_1);
 extern void FUN_0046ba30(unsigned int param_1);
-extern void FUN_00482d60(int param_1, int param_2);
 extern void FUN_00462e50(unsigned int param_1, int param_2);
 extern void FUN_0046bbb0(unsigned int param_1, int param_2);
 extern void FUN_0046bb80(unsigned int param_1, int param_2);

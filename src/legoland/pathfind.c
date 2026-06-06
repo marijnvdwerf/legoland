@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "pathfind.h"
+#include "objclass.h"
 
 struct BestNode {
     struct BestNode *next;
@@ -43,9 +44,6 @@ extern unsigned int DAT_0066b460;
 extern unsigned int DAT_006661c4;
 extern unsigned int DAT_00669258[1152];
 
-extern struct BestNode *FUN_00481790(struct InstancePos *pos);
-extern struct BestNode *FUN_00481730(void);
-extern void FUN_00481b10(struct BestNode *node);
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *block);
 extern unsigned int SaveGameWrite(void *data, unsigned int size);
