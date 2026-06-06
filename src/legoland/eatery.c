@@ -1,5 +1,6 @@
 #include "legoland.h"
 #include "money.h"
+#include "obj_instance.h"
 
 extern void IP_RenderBlokeIn3DNow(unsigned int fn);
 extern void GetScreenCoordsForObject(unsigned short *value, void *obj);
@@ -12,7 +13,6 @@ extern void KillSprite(void *sprite);
 extern void *LoadSprite(const char *name, int param);
 extern void AddBasicObject(unsigned int self, void *param);
 extern void StandardRemoveObject(unsigned int self, unsigned int a, unsigned int b);
-extern void RemoveAllBlokesFromRide(unsigned int a, unsigned int b);
 extern void Set_UserFlags(int x, int y, unsigned short value);
 extern unsigned int SaveGameRead(void *data, unsigned int size);
 extern void FUN_0049e4d0(void *ptr);
@@ -369,7 +369,7 @@ void FUN_0042fa40(unsigned int arg1, unsigned int arg2, unsigned int arg3, unsig
         FUN_0042fa00(result);
     }
     StandardRemoveObject(arg1, arg2, arg3);
-    RemoveAllBlokesFromRide((unsigned int)((struct EateryObj *)arg1)->fx_c, arg2);
+    RemoveAllBlokesFromRide((unsigned int)((struct EateryObj *)arg1)->fx_c, (void *)arg2);
 }
 
 // FUNCTION: LEGOLAND 0x0042fa90

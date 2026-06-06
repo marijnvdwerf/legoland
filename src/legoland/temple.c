@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "obj_instance.h"
 
 typedef void (*TempleHandler)(void);
 
@@ -32,7 +33,6 @@ extern void DefaultCursor(unsigned int cursor);
 extern void SetEditCursorFootPrint(unsigned int src);
 extern void AddBasicObject(unsigned int param_1, unsigned int param_2);
 extern void StandardRemoveObject(struct TempleObject *a1, void *a2, unsigned int a3);
-extern void RemoveAllBlokesFromRide(unsigned int a1, void *a2);
 extern int __strcmpi(const char *a, const char *b);
 
 // FUNCTION: LEGOLAND 0x004169c0

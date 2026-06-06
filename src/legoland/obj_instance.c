@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "obj_instance.h"
 
 struct ObjTableEntry {
     unsigned short key;
@@ -184,13 +185,13 @@ struct ObjInstance *GetInstanceOfClass(struct ObjClassNode *cls, const unsigned 
 void HandleRideAI(void) {}
 
 // FUNCTION: LEGOLAND 0x0048a100
-void RemoveBlokeFromRide(void) { STUB(); }
+void RemoveBlokeFromRide(void *ride, void *node) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048a2d0
 void UpdateBlokesOnRide(void) {}
 
 // FUNCTION: LEGOLAND 0x0048a2e0
-void RemoveAllBlokesFromRide(void) { STUB(); }
+void RemoveAllBlokesFromRide(unsigned int arg1, void *arg2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048a390
 int GetAllBlokesOffRide(struct Ride *ride, unsigned short uid) {

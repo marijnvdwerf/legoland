@@ -3,6 +3,7 @@
 #include "bricks.h"
 #include "build.h"
 #include "clipping.h"
+#include "obj_instance.h"
 
 struct ScreenConfig {
     unsigned short width;
@@ -44,9 +45,7 @@ extern void FUN_00481170(void);
 extern void FUN_0046fb40(unsigned int a);
 extern void DelObjectList(void);
 extern void FreeBlokeCounters(void);
-extern void FUN_0048a040(void);
 extern void FUN_0046cb20(void);
-extern void FUN_00489ee0(void);
 extern void FUN_00483090(void);
 extern void FUN_004714e0(void);
 extern void ResetInfoStruct(void);

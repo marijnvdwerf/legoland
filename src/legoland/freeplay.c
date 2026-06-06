@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "clipping.h"
+#include "freeplay.h"
 
 struct FreePlaySpriteSlot {
     struct Sprite *field_0;

@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "binv.h"
+#include "obj_instance.h"
 
 struct PlaneRideNode {
     unsigned char pad_0[0x20];
@@ -71,7 +72,6 @@ extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(void *foot_print);
 extern void StandardRemoveObject(struct PlaneRideObject *a1, struct PlaneRideObject *a2, struct PlaneRideObject *a3);
-extern void RemoveAllBlokesFromRide(unsigned int arg1, struct PlaneRideObject *a2);
 extern int SaveGameWrite(void *data, unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);
 

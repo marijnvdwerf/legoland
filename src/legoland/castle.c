@@ -3,6 +3,7 @@
 #include "debug_alloc.h"
 #include "path_control.h"
 #include "timer.h"
+#include "obj_instance.h"
 #include <math.h>
 
 extern unsigned int DAT_004d8268;
@@ -129,10 +130,6 @@ extern void SaveGameWrite(unsigned int *data, unsigned int value);
 unsigned int FUN_00426650(void);
 struct ListHost;
 void FUN_00424d80(struct ListHost *list);
-struct RideStruct;
-struct RideNode;
-extern void RemoveBlokeFromRide(struct RideStruct *ride, struct RideNode *node);
-
 // FUNCTION: LEGOLAND 0x0041cc50
 unsigned int FUN_0041cc50(unsigned int dir) {
     if (dir == 1) return 4;

@@ -1,5 +1,6 @@
 #include "legoland.h"
 #include "money.h"
+#include "obj_instance.h"
 
 struct Building {
     unsigned char pad_0[0x1c];
@@ -31,7 +32,6 @@ extern void DefaultCursor(void **cursor);
 extern void SetEditCursorFootPrint(void *param_1);
 extern void AddBasicObject(struct MapObject *obj, void *param_2);
 extern void StandardRemoveObject(struct RideObject *obj, void *param_2, void *param_3);
-extern void RemoveAllBlokesFromRide(struct RideBuilding *building, void *param_2);
 
 extern unsigned int DAT_0081cb18;
 extern unsigned int DAT_0081cb20;
@@ -215,7 +215,7 @@ unsigned int *FUN_0043a390(struct RideObject *obj, unsigned short param_2) {
 // FUNCTION: LEGOLAND 0x0043a3d0
 void FUN_0043a3d0(struct RideObject *obj, void *param_2, void *param_3) {
     StandardRemoveObject(obj, param_2, param_3);
-    RemoveAllBlokesFromRide(obj->building, param_2);
+    RemoveAllBlokesFromRide((unsigned int)obj->building, param_2);
 }
 
 // FUNCTION: LEGOLAND 0x0043a400

@@ -1,7 +1,7 @@
 #include <windows.h>
 #include "legoland.h"
+#include "resource.h"
 
-struct ResFile;
 struct ResVolume;
 
 struct ResVolume {
@@ -112,11 +112,11 @@ struct ResFile *RES_OpenFileFromVolume(void *param_1, void *name) { STUB(); }
 struct ResFile *RES_OpenFile(const char *path) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489ce0
-unsigned int RES_GetFileSize(unsigned int *file) {
+unsigned int RES_GetFileSize(struct ResFile *file) {
     if (file == 0) {
         return 0xffffffff;
     }
-    return *file;
+    return file->size;
 }
 
 // FUNCTION: LEGOLAND 0x00489cf0

@@ -71,8 +71,6 @@ extern void SetEditCursorFootPrint(void *foot_print);
 extern int SaveGameWrite(void *data, unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);
 
-void FUN_00407a50(struct JoustNode *node);
-
 // FUNCTION: LEGOLAND 0x00407970
 void FUN_00407970(void) { STUB(); }
 

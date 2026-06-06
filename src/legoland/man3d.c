@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "resource.h"
 
 struct Person {
     struct Person *prev;
@@ -55,10 +56,6 @@ extern void FUN_0049e4d0(void *ptr);
 extern void *_malloc(unsigned int size);
 extern unsigned int FUN_0049e4b2(void);
 extern int FUN_0049e573(char *buffer, const char *format, ...);
-extern unsigned int RES_OpenFile(const char *path);
-extern unsigned int RES_GetFileSize(unsigned int file);
-extern void RES_ReadFile(unsigned int file, void *buffer, unsigned int size);
-extern void RES_CloseFile(unsigned int file);
 extern void SortPerson(struct Person *person, unsigned int param_2, void *param_3);
 extern void FUN_00442c70(void);
 extern void FUN_00486250(void);
@@ -203,7 +200,7 @@ void FUN_0043f970(void *buffer) {
 // FUNCTION: LEGOLAND 0x0043f990
 void *FUN_0043f990(const char *param_1, const char *param_2) {
     char path[256];
-    unsigned int file;
+    struct ResFile *file;
     unsigned int size;
     void *buffer;
 

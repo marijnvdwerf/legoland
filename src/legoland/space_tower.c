@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "obj_instance.h"
 
 struct RideObject {
     unsigned short var_0;
@@ -71,7 +72,6 @@ extern void Kill_FXList(const unsigned char *list, int flag);
 extern int __strcmpi(const char *s1, const char *s2);
 extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(unsigned int arg);
-extern unsigned int GetAllBlokesOffRide(struct RideObject *ride, unsigned short id);
 extern void Put3DBlokesOnRide2(struct RideObject *ride, struct RideObject *obj);
 extern void Ride_SetFlagToNotLetAnyoneOn(struct RideObject *ride);
 
@@ -228,7 +228,7 @@ void FUN_0043b990(struct RideObject *esi) {
         FUN_0043a940(&esi->var_5c);
         FUN_0043a940(&esi->var_80);
         if (esi->var_20 == 0 && esi->var_44 == 0 && esi->var_68 == 0 && esi->var_8c == 0) {
-            if (GetAllBlokesOffRide(DAT_0062fd74, esi->var_0) == 0) {
+            if (GetAllBlokesOffRide((struct Ride *)DAT_0062fd74, esi->var_0) == 0) {
                 return;
             }
             FUN_0043aac0(esi);
