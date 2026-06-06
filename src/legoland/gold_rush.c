@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "ride_queue.h"
+
 typedef void (*GoldVtblFn)(void);
 
 struct GoldRushModule {
@@ -59,13 +61,10 @@ extern void *EditCursor;
 extern int __strcmpi(const char *s1, const char *s2);
 extern int FUN_0049e4b2(void);
 extern void KillSprite(struct Sprite *sprite);
-extern void FUN_00412290(struct Sprite *sprite);
 extern void Ride_SetFlagToNotLetAnyoneOn(int param);
 extern void Ride_ClearFlagToNotLetAnyoneOn(int param);
 extern void DefaultCursor(void *cursor);
 extern void SetEditCursorFootPrint(void *footprint);
-
-void FUN_00406960(struct GoldNode *node);
 
 // FUNCTION: LEGOLAND 0x00406920
 void FUN_00406920(void) { STUB(); }

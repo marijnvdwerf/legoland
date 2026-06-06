@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "ride_queue.h"
+
 struct QueueItemInner {
     unsigned char pad_0[0xe];
     unsigned short field_e;
@@ -58,10 +60,6 @@ extern struct LegoConfig *lpConfig;
 extern struct RideQueueEntry *DAT_004cbeac;
 
 extern void FUN_0049e4d0(void *ptr);
-
-void FUN_00411f00(struct Queue *queue);
-void FUN_00411fa0(struct Queue *queue, unsigned int param_2, unsigned int param_3,
-                  struct QueueItemInner *param_4);
 
 // FUNCTION: LEGOLAND 0x00411e30
 void FUN_00411e30(struct Queue *queue, struct QueueNode *node) {
@@ -242,7 +240,7 @@ struct RideQueueEntry *FUN_004125a0(int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x004125f0
-void FUN_004125f0(void) { STUB(); }
+void *FUN_004125f0(unsigned int a, unsigned int b) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00412650
 struct RideQueueEntry *FUN_00412650(unsigned short param_1) {

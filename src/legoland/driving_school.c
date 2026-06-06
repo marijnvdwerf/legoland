@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "ride_queue.h"
+
 struct DrivingSchoolNode {
     struct DrivingSchoolNode *next;
     unsigned char pad_4[4];
@@ -66,7 +68,6 @@ extern unsigned int DAT_0082c6a8;
 extern unsigned short DAT_0082c6ac;
 extern char DRIVING_SCHOOL_SFX[];
 
-extern struct RetStruct *FUN_00412650(unsigned short param_1);
 extern unsigned int LLIDB_FindElement(char *name, unsigned int *out, unsigned int param_3);
 extern void LLIDB_UnLoadData(unsigned int data);
 extern void FUN_00401c60(unsigned int node);
@@ -94,7 +95,10 @@ void FUN_00405310(unsigned int param_1) {
         cur = cur->next;
     }
 
-    ret = FUN_00412650((unsigned short)param_1);
+    /* FUN_00412650 returns struct RideQueueEntry*; driving_school views the same
+       object through its own partial RetStruct layout (fields at 0x4/0x15 that
+       RideQueueEntry doesn't model), so the pointer is reinterpreted here. */
+    ret = (struct RetStruct *)FUN_00412650((unsigned short)param_1);
     ret->field_15 = 0;
     ret->field_4 = 0;
 

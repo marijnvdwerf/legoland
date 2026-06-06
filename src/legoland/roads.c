@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "bricks.h"
+#include "ride_queue.h"
 
 struct RoadQueueEntry {
     struct RoadQueueEntry *next;
@@ -63,7 +64,6 @@ extern void *DAT_008119b8;
 extern unsigned int EditCursor;
 extern unsigned int QueryCursor;
 
-extern struct RoadTile *FUN_004125f0(unsigned int a, unsigned int b);
 extern unsigned int LLIDB_FindElement(const char *name, unsigned int *out_handle, unsigned int zero);
 extern void *LLIDB_LoadData(struct LLIDB_Head *head);
 extern void LLIDB_UnLoadData(unsigned int handle);

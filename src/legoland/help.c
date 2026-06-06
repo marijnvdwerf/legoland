@@ -2,6 +2,7 @@
 #include <windows.h>
 
 #include "timer.h"
+#include "text.h"
 
 struct HelpAdvisor {
     unsigned char pad_0[0xc];
@@ -31,7 +32,6 @@ extern void FUN_00444070(unsigned int a1, unsigned int a2);
 extern void FUN_004988c0(void);
 extern unsigned int FUN_00469400(void);
 extern void FUN_0046b2d0(void);
-extern void BubbleHelp(unsigned int *table, unsigned int a2, unsigned int a3);
 extern void FUN_00468c00(void);
 extern void RenderHelpIcons(void);
 extern void FUN_00473660(void);

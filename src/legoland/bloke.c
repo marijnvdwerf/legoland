@@ -2,8 +2,7 @@
 
 #include "debug_alloc.h"
 #include "timer.h"
-
-struct InstancePos;
+#include "pathfind.h"
 
 struct BestNode {
     unsigned char pad_0[0x20];
@@ -84,8 +83,6 @@ extern int DAT_0083293c[13];
 extern void *FirstBloke;
 extern unsigned int DAT_006661bc;
 
-extern void FUN_00482a40(unsigned int *bnv);
-extern void FUN_00482a90(void);
 extern struct BestNode *FUN_00481790(struct InstancePos *pos);
 extern int FUN_0049e4b2(void);
 extern void *_malloc(unsigned int size);
@@ -125,7 +122,9 @@ void FUN_00482b20(int force) {
     }
     DAT_0066b468 = now;
     FUN_00482a90();
-    FUN_00482a40(&DAT_0066b460);
+    /* DAT_0066b460 is the first uint of an InstancePos-shaped pair (x,y);
+       its address is reinterpreted here as the position passed to FUN_00482a40. */
+    FUN_00482a40((struct InstancePos *)&DAT_0066b460);
 }
 
 // FUNCTION: LEGOLAND 0x00482b60

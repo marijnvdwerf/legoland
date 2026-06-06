@@ -2,6 +2,7 @@
 #include <windows.h>
 
 #include "print_sprite.h"
+#include "text.h"
 
 struct TextSprite {
     unsigned char pad_0[0x1c];
@@ -110,7 +111,7 @@ void FUN_004551a0(void) { STUB(); }
 void FUN_00455220(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00455370
-void BubbleHelp(void) { STUB(); }
+void BubbleHelp(unsigned int *table, unsigned int a2, unsigned int a3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004557c0
 void HTBubbleHelp(void) { STUB(); }

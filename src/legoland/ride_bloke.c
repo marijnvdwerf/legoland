@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "print_sprite.h"
+#include "ride_queue.h"
 
 extern void *DAT_004c10d4;
 extern int DAT_004cbeb0;
@@ -59,8 +60,6 @@ struct BlokeSprite {
     unsigned char pad_c4[8];
     unsigned int var_cc;
 };
-
-extern struct TileInfo *FUN_004125f0(unsigned int a, unsigned int b);
 
 // FUNCTION: LEGOLAND 0x00401000
 void FUN_00401000(void) { STUB(); }

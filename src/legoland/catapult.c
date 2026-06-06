@@ -70,9 +70,6 @@ extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(void *footprint);
 extern int __strcmpi(const char *s1, const char *s2);
 
-void FUN_00403130(struct CatapultNode *node);
-void FUN_004035a0(struct CatapultNode *node);
-
 // FUNCTION: LEGOLAND 0x004030f0
 void FUN_004030f0(void) { STUB(); }
 

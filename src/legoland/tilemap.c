@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "pathfind.h"
+
 struct MapTile {
     unsigned char pad_0[8];
     unsigned short tile;
@@ -35,7 +37,6 @@ extern void FUN_0049e4d0(void *block);
 extern unsigned int LLIDB_FindElement(const char *name, void *out, unsigned int zero);
 extern void LLIDB_UnLoadData(unsigned int handle);
 extern void KillSprite(unsigned int sprite);
-extern void AddPathSquare(struct Point *p);
 
 // FUNCTION: LEGOLAND 0x0045a9b0
 void AllocTileSpace(void) { STUB(); }
@@ -310,7 +311,9 @@ void AddPathTileGFX(struct Point *p, unsigned short param1) { STUB(); }
 // FUNCTION: LEGOLAND 0x0045d3b0
 void AddPathTile(struct Point *p, unsigned short param1) {
     AddPathTileGFX(p, param1);
-    AddPathSquare(p);
+    /* struct Point and struct InstancePos are identical {x,y} layouts; cast
+       bridges tilemap's local Point to pathfind's InstancePos (no shared type). */
+    AddPathSquare((struct InstancePos *)p);
 }
 
 // FUNCTION: LEGOLAND 0x0045d3d0

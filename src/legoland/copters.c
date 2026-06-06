@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "ride_queue.h"
+
 typedef void (*CopterVtblFn)(void);
 
 struct CopterInterface {
@@ -59,7 +61,6 @@ extern int __strcmpi(const char *s1, const char *s2);
 extern void KillSprite(struct Sprite *sprite);
 extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern void UnloadPos(struct Position *pos);
-extern void FUN_00412290(struct Sprite *sprite);
 extern void ResumeSinglyPausedSample(unsigned int param);
 extern void DefaultCursor(unsigned int *cursor);
 extern void SetEditCursorFootPrint(void *footprint);

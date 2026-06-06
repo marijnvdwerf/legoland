@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "pathfind.h"
+
 struct BestNode {
     struct BestNode *next;
     unsigned int pad_4;
@@ -10,11 +12,6 @@ struct BestNode {
     unsigned int field_18;
     unsigned int field_1c;
     unsigned int field_20;
-};
-
-struct InstancePos {
-    unsigned int x;
-    unsigned int y;
 };
 
 struct PathQuery {

@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "binv.h"
+#include "spider_ride.h"
 
 struct Sprite;
 
@@ -81,10 +82,6 @@ extern void UnSourceAndFadeAllSamplesFromSource(struct FadeParams *params, int f
 extern void KillSprite(struct Sprite *sprite);
 extern void Kill_FXList(unsigned char *list, unsigned int count);
 extern int __strcmpi(const char *a, const char *b);
-
-void FUN_00416330(void);
-void SaveSpider(void);
-void LoadSpider(void);
 
 // FUNCTION: LEGOLAND 0x004158f0
 int FUN_004158f0(struct SpiderNode *arg0)
