@@ -1,5 +1,8 @@
 #include "legoland.h"
 
+#include "gamemain.h"
+#include "print_sprite.h"
+#include "screens.h"
 #include "timer.h"
 
 struct AnimHandle;
@@ -47,13 +50,10 @@ extern unsigned int SaveGameRead(void *data, unsigned int size);
 extern struct RideElem *ElemID(const char *name);
 extern void PushRenderingStatusAndLockVideoSurface(void);
 extern void PopRenderingStatus(void);
-extern void PrintSprite(unsigned int sprite, unsigned int x, unsigned int y, unsigned int param_4, unsigned int param_5);
-extern int FUN_004781b0(int param_1, const void *param_2, unsigned int param_3);
 extern signed char FUN_0044eb10(struct Bloke *bloke);
 extern void PlayInstanceOfSample(void *sample, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 extern void KillSprite(unsigned int sprite);
 extern void RemoveIconGroup(unsigned int group);
-extern void FUN_004597e0(unsigned int param_1, unsigned int param_2);
 
 extern unsigned int DAT_00665e8c;
 extern unsigned int DAT_004b7d74;
@@ -668,7 +668,7 @@ void FUN_00444bf0(unsigned int *param_1, unsigned int *param_2) {
 
 // FUNCTION: LEGOLAND 0x00444c40
 int FUN_00444c40(struct ObjectClass *node) {
-    return FUN_004781b0(**(int **)((char *)node + 0xc4), &DAT_004b7e9c, 0x16) >= 0;
+    return FUN_004781b0((const char *)**(int **)((char *)node + 0xc4), &DAT_004b7e9c, 0x16) >= 0;
 }
 
 // FUNCTION: LEGOLAND 0x00444c70
@@ -864,5 +864,5 @@ void FUN_0044db90(void) { STUB(); }
 void FUN_0044dc70(unsigned int param_1, unsigned int param_2) {
     DAT_0083297c = param_1;
     FUN_0044db20();
-    FUN_004597e0(0, param_2);
+    FUN_004597e0(0, (const char *)param_2);
 }

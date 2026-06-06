@@ -55,7 +55,6 @@ struct SafariObject {
 };
 
 void FUN_00414b10(struct SafariNode *node);
-void FUN_004150c0(struct SafariNode *node);
 
 // FUNCTION: LEGOLAND 0x004149c0
 void FUN_004149c0(struct SafariNode *param) {

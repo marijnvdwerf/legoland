@@ -1,6 +1,8 @@
 #include "legoland.h"
 #include <windows.h>
 
+#include "print_sprite.h"
+
 struct TextSprite {
     unsigned char pad_0[0x1c];
     unsigned int field_1c;
@@ -27,7 +29,6 @@ extern void *PTR_00668098;
 extern int LLIDB_FindElement(const char *name, void *out, int zero);
 extern void *LLIDB_LoadData(void *id);
 extern void *LoadSprite(const char *name, int flags);
-extern void PrintSprite(unsigned int sprite, unsigned int x, unsigned int y, unsigned int param_4, unsigned int param_5);
 
 // FUNCTION: LEGOLAND 0x00454910
 void LoadBubbleHelpGFX(void) {

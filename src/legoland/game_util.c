@@ -1,20 +1,15 @@
 #include "legoland.h"
 
+#include "gamemain.h"
+
 extern unsigned int DAT_00669098;
 extern unsigned int DAT_0066879c;
 extern unsigned int DAT_007fdca4;
 
 extern unsigned int DAT_004bb5b0;
 
-extern void FUN_004785d0(char *param_1, unsigned int param_2);
 extern void FUN_0046b590(unsigned int param_1);
 extern unsigned int FUN_0046b4f0(unsigned int param_1);
-extern int FUN_004786a0(unsigned int param_1, unsigned int param_2, unsigned int param_3);
-extern int FUN_00478690(unsigned int param_1, unsigned int param_2, unsigned int param_3);
-extern unsigned int FUN_004786c0(unsigned int param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4);
-extern void FUN_00478610(unsigned int param_1);
-extern void FUN_00478650(unsigned int param_1, unsigned int param_2);
-extern unsigned int FUN_004787a0(unsigned int param_1, unsigned int param_2);
 extern unsigned int ElemID(unsigned int id);
 extern unsigned int LoadObjectClass(unsigned int cls);
 extern void FUN_00469ab0(unsigned int object);
@@ -41,7 +36,6 @@ extern void FUN_0046b7f0(unsigned int param_1);
 extern void FUN_0046b9c0(unsigned int param_1);
 extern void FUN_00490610(unsigned int param_1);
 extern void FUN_0046ba30(unsigned int param_1);
-extern int FUN_004781b0(const char *param_1, const void *param_2, int param_3);
 extern void FUN_00482d60(int param_1, int param_2);
 extern void FUN_00462e50(unsigned int param_1, int param_2);
 extern void FUN_0046bbb0(unsigned int param_1, int param_2);
@@ -50,8 +44,6 @@ extern void FUN_0046bc60(void);
 extern void FUN_0046bc40(void);
 extern int FUN_00492980(void);
 extern void LLIDB_ClearOnLevel(void);
-extern int FUN_004784c0(void);
-extern int FUN_004781f0(int param_1, const void *param_2, int param_3, int param_4);
 extern void FUN_00492990(void);
 extern int __strcmpi(const char *s1, const char *s2);
 extern int FUN_004a04b9(const char *str);

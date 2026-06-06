@@ -1,6 +1,8 @@
 #include "legoland.h"
 #include "string.h"
 #include "worker_mouse.h"
+#include "profile_io.h"
+#include "screens.h"
 
 struct IconNode {
     struct IconNode *next;
@@ -139,12 +141,10 @@ extern unsigned int RemoveIconGroup(unsigned int group);
 extern unsigned int FUN_0046d590(unsigned int a);
 extern void FUN_00490600(unsigned int a);
 extern void FUN_004911c0(const char *a, const char *b);
-extern void FUN_00459820(unsigned int a);
 extern void FUN_0046b700(void);
 extern void PlayInstanceOfSample(void *sample, int a, int b, int c);
 extern void SetEditObject(unsigned int obj);
 extern void FUN_00498920(void);
-extern void UpDateCurrentProfile(void);
 extern void FUN_0049e4d0(void *block);
 extern unsigned int ObjectLinkedList(unsigned int *entry);
 extern unsigned int TestMenu(unsigned int *entry);

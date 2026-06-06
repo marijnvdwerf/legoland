@@ -1,12 +1,11 @@
 #include "legoland.h"
 #include "string.h"
+#include "profile.h"
+#include "profile_io.h"
 
 extern void PlayInstanceOfSample(void *sample, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 extern void KillSprite(unsigned int sprite);
 extern void RemoveIconGroup(unsigned int group);
-extern void CloseFontEndCheckBox(void);
-extern void UpDateCurrentProfile(void);
-extern void UpDateCurrentSaveSlotInfo(void);
 extern void StoreNewSaveGameToDisk(void);
 extern void FUN_00498920(void);
 extern void FUN_00474880(void);

@@ -1,6 +1,8 @@
 #include "legoland.h"
 
 #include "clipping.h"
+#include "profile.h"
+#include "profile_io.h"
 
 struct Sprite;
 
@@ -56,12 +58,8 @@ struct Profile {
 
 extern void KillSprite(struct Sprite *sprite);
 extern void RemoveIconGroup(unsigned int group);
-extern void SaveProfileToDisk(void);
-extern void DeleteProfileList(void);
-extern void LoadProfilesFormDisk(void);
 extern void PlayInstanceOfSample(void *sample, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 extern void InitNewProfilePoPUp(struct Profile *profile);
-extern void RemoveProfile(unsigned char index);
 extern void FUN_00498920(void);
 
 // FUNCTION: LEGOLAND 0x0048c260

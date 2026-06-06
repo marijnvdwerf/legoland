@@ -4,6 +4,9 @@
 #include "build.h"
 #include "clipping.h"
 #include "obj_instance.h"
+#include "print_sprite.h"
+#include "profile_io.h"
+#include "screens.h"
 
 struct ScreenConfig {
     unsigned short width;
@@ -34,7 +37,6 @@ extern char DAT_00832a98[256];
 
 extern unsigned int LoadSprite(const char *name, unsigned int flags);
 extern void PushRenderingStatusAndLockVideoSurface(void);
-extern void PrintSprite(unsigned int sprite, unsigned int a, unsigned int b, unsigned int c, unsigned int d);
 extern void PopRenderingStatus(void);
 extern void RenderingComplete(void);
 extern void KillSprite(unsigned int sprite);
@@ -51,7 +53,6 @@ extern void FUN_004714e0(void);
 extern void ResetInfoStruct(void);
 extern void FUN_0049cfc0(void);
 extern void FUN_00474ed0(void);
-extern void UpDateCurrentProfile(void);
 extern char *_strncpy(char *dest, const char *src, unsigned int count);
 
 // FUNCTION: LEGOLAND 0x004585c0

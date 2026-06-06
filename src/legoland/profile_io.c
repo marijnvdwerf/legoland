@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "profile_io.h"
+
 extern unsigned char DAT_007cad60[0x110];
 extern void *DAT_00798890;
 extern unsigned int DAT_007cad80;
@@ -41,7 +43,7 @@ struct ProfileObj {
 void ResetTempProfile(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491360
-void Goto_ProfileDir(void) { STUB(); }
+int Goto_ProfileDir(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004913e0
 int ReturnFrom_ProfileDir(void) { return 1; }
@@ -90,7 +92,7 @@ struct ProfileNode *FUN_004919a0(unsigned char slot) {
 void AddNodeToProfileList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491ab0
-void RemoveProfile(void) { STUB(); }
+void RemoveProfile(unsigned char index) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491b50
 void DeleteProfileList(void) {

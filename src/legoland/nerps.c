@@ -3,6 +3,7 @@
 #include "bricks.h"
 #include "debug_alloc.h"
 #include "saveload.h"
+#include "screens.h"
 
 struct NerpsArg {
     unsigned char pad_0[0x4];
@@ -194,8 +195,6 @@ extern void FUN_0049e4d0(void *block);
 extern void FUN_00468970(struct EventNode *node);
 extern unsigned int DAT_00832ba8;
 extern void FUN_004748a0(unsigned int param_1);
-extern unsigned int FUN_00458be0(void);
-extern void FUN_00459820(unsigned int param_1);
 extern void FUN_004629e0(void);
 extern void FUN_004689a0(void);
 extern void FUN_0046ce20(void);

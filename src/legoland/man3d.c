@@ -1,5 +1,6 @@
 #include "legoland.h"
 #include "resource.h"
+#include "print_sprite.h"
 
 struct Person {
     struct Person *prev;
@@ -56,11 +57,9 @@ extern void FUN_0049e4d0(void *ptr);
 extern void *_malloc(unsigned int size);
 extern unsigned int FUN_0049e4b2(void);
 extern int FUN_0049e573(char *buffer, const char *format, ...);
-extern void SortPerson(struct Person *person, unsigned int param_2, void *param_3);
 extern void FUN_00442c70(void);
 extern void FUN_00486250(void);
 extern void FUN_004886a0(void);
-extern void FUN_00485fa0(void);
 
 extern struct Person *DAT_00655a3c;
 extern struct Person *FirstBloke;

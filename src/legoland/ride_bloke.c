@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "print_sprite.h"
+
 extern void *DAT_004c10d4;
 extern int DAT_004cbeb0;
 extern int DAT_004cbeb4;
@@ -12,7 +14,6 @@ extern unsigned char Get_RFFlags(int x, int y);
 extern void IP_RenderBlokeIn3DNow(unsigned int fn);
 extern void SetOverridePalette(unsigned int param_1);
 extern void SetOverrideFrame(unsigned int param_1);
-extern void PrintSprite(unsigned int sprite, unsigned int x, unsigned int y, unsigned int param_4, unsigned int param_5);
 extern void ClearOverrideFrame(void);
 extern void ClearOverridePalette(void);
 

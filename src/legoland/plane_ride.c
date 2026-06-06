@@ -75,10 +75,7 @@ extern void StandardRemoveObject(struct PlaneRideObject *a1, struct PlaneRideObj
 extern int SaveGameWrite(void *data, unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);
 
-void FUN_0043d8c0(void *param_1);
-unsigned int FUN_0043d960(struct PlaneRideObject **arg);
 void FUN_0043d9f0(void *param_1);
-void FUN_0043e2b0(void *param_1);
 void FUN_0043e410(void);
 
 // FUNCTION: LEGOLAND 0x0043d880

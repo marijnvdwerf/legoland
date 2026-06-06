@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "print_sprite.h"
+
 struct PrintListNode {
     unsigned int field_0;
     struct PrintListNode *next;
@@ -34,7 +36,7 @@ extern void FUN_004860f0(void);
 extern void FUN_00486540(void);
 
 // FUNCTION: LEGOLAND 0x004853a0
-void PrintSprite(unsigned int param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4, unsigned int param_5) { STUB(); }
+void PrintSprite(unsigned int sprite, unsigned int x, unsigned int y, unsigned int param_4, unsigned int param_5) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004855d0
 void FUN_004855d0(void) { STUB(); }
@@ -74,7 +76,7 @@ void SortSpriteWithCallback(void) { STUB(); }
 void SortSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00485e00
-void SortPerson(unsigned int param_1, unsigned int param_2)
+void SortPerson(struct Person *person, unsigned int param_2, void *param_3)
 {
     unsigned int original = DAT_0066b5a8;
     struct PersonBlock *block;
@@ -83,7 +85,7 @@ void SortPerson(unsigned int param_1, unsigned int param_2)
     block = (struct PersonBlock *)&DAT_007cb600[original];
     block->field_8 = param_2;
     block->field_c = 0x2000;
-    block->field_1c = param_1;
+    block->field_1c = (unsigned int)person;
     FUN_00485bd0(block);
 }
 
@@ -103,9 +105,9 @@ void FUN_00485f00(unsigned int param_1, unsigned int param_2, unsigned int param
 }
 
 // FUNCTION: LEGOLAND 0x00485f20
-void FUN_00485f20(unsigned int param_1)
+void FUN_00485f20(void *ptr)
 {
-    DAT_0066b630 = param_1;
+    DAT_0066b630 = (unsigned int)ptr;
 }
 
 // FUNCTION: LEGOLAND 0x00485f30

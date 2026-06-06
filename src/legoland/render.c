@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "print_sprite.h"
+
 struct CursorCacheNode {
     struct CursorCacheNode *next;
     unsigned char r;
@@ -44,7 +46,6 @@ extern unsigned int DAT_00701e5c;
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *ptr);
 extern void FUN_004437d0(unsigned int arg, void *ptr);
-extern void FUN_00485f20(void *ptr);
 
 // FUNCTION: LEGOLAND 0x004860f0
 void FUN_004860f0(void) { STUB(); }

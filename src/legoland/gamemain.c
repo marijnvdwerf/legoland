@@ -1,5 +1,7 @@
 #include "legoland.h"
 
+#include "gamemain.h"
+
 struct GameMainNode {
     struct GameMainNode *next;
     unsigned char pad_4[0x4];
@@ -72,9 +74,6 @@ extern void FUN_0046b240(unsigned int param_1);
 
 extern char DAT_004d8bb0[0x100];
 
-int FUN_004786a0(unsigned int param_1, unsigned int param_2, unsigned int param_3);
-int FUN_00478690(unsigned int param_1, unsigned int param_2, unsigned int param_3);
-
 // FUNCTION: LEGOLAND 0x004777c0
 struct GameMainNode *FUN_004777c0(struct GameMainArg *arg) {
     struct GameMainNode *node = DAT_00668fc0;
@@ -114,10 +113,10 @@ void FUN_00477bd0(void) { STUB(); }
 void FUN_00478110(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004781b0
-void FUN_004781b0(void) { STUB(); }
+int FUN_004781b0(const char *param_1, const void *param_2, int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004781f0
-void FUN_004781f0(void) { STUB(); }
+int FUN_004781f0(int param_1, const void *param_2, int param_3, int param_4) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00478280
 void FUN_00478280(void) { STUB(); }
@@ -194,12 +193,14 @@ void FUN_00478610(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00478650
-void FUN_00478650(struct GameMainEntry *param_1, unsigned int param_2) {
+void FUN_00478650(unsigned int param_1, unsigned int param_2) {
+    // param_1 is an opaque command-block handle reinterpreted as a GameMainEntry
+    struct GameMainEntry *entry = (struct GameMainEntry *)param_1;
     if (param_2 == 0) {
         return;
     }
     // STRING: LEGOLAND 0x004bb9ec
-    if (__strcmpi(param_1->name, "PURGE") == 0) {
+    if (__strcmpi(entry->name, "PURGE") == 0) {
         DAT_00669050 |= 0x8;
     } else {
         DAT_00669050 &= 0xf7;
@@ -252,6 +253,7 @@ void FUN_00478770(int *param_1, char **param_2, int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x004787a0
-unsigned int FUN_004787a0(struct GameMainArg *param_1) {
-    return param_1->field_4;
+unsigned int FUN_004787a0(unsigned int param_1, unsigned int param_2) {
+    // param_1 is an opaque command-block handle reinterpreted as a GameMainArg
+    return ((struct GameMainArg *)param_1)->field_4;
 }

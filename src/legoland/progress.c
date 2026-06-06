@@ -1,5 +1,6 @@
 #include "legoland.h"
 #include "freeplay.h"
+#include "screens.h"
 
 struct LegoConfig {
     unsigned char pad_0[0x28];
@@ -21,7 +22,6 @@ extern struct LegoConfig *lpConfig;
 extern void FUN_00498920(void);
 extern void FUN_00466360(int a, int b);
 extern void FUN_00474880(void);
-extern void FUN_00458a50(void);
 extern void FUN_004663c0(void);
 extern int InitGameInterface(int a);
 extern void PlayInstanceOfSample(void *sample, int a, int b, int c);

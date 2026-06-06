@@ -1,5 +1,8 @@
 #include "legoland.h"
 
+#include "profile.h"
+#include "profile_io.h"
+
 struct Sprite;
 
 extern unsigned char DAT_007cad60[0x110];
@@ -37,12 +40,9 @@ extern void *FUN_0049f330(const char *filename, const char *mode);
 extern unsigned int FUN_0049f044(void *ptr, unsigned int size, unsigned int count, void *stream);
 extern int FUN_0049efee(void *stream);
 extern void FUN_0049e4d0(void *ptr);
-extern int Goto_ProfileDir(void);
-extern void ReturnFrom_ProfileDir(void);
 extern void PlayInstanceOfSample(void *sample, int a, int b, void *instance);
 extern void KillSprite(struct Sprite *sprite);
 extern void FUN_0046d680(unsigned int a, struct Sprite *b);
-extern void CloseFontEndCheckBox(void);
 
 struct SaveNode {
     struct SaveNode *next;
