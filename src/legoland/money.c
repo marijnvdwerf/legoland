@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 #include "money.h"
 
 #include "bricks.h"
@@ -13,10 +14,6 @@ struct BuyItemArg {
     unsigned char pad_0[0xc];
     struct ShopItem *field_c;
 };
-
-extern unsigned int DAT_00667120;
-extern unsigned char MONEY_SFX[12];
-
 
 // FUNCTION: LEGOLAND 0x00453900
 void LoadMoneySFX(void) { STUB(); }

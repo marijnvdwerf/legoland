@@ -1,12 +1,7 @@
 #include "legoland.h"
+#include "globals.h"
 #include "tooltip.h"
 #include <windows.h>
-
-extern unsigned int DAT_004b9f8c;
-extern unsigned int DAT_004b9f88;
-extern unsigned int DAT_007fe920;
-extern unsigned int DAT_006687a4;
-extern unsigned int DAT_006687a8;
 
 #include "image_sprite.h"
 

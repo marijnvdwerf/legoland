@@ -1,14 +1,8 @@
 #include "legoland.h"
+#include "globals.h"
 #include "sound_music.h"
 #include "power.h"
 
-
-extern unsigned int DAT_00667114;
-extern unsigned int DAT_00667118;
-extern unsigned int DAT_0066711c;
-extern unsigned char DAT_004b8710[0x40];
-extern unsigned char DAT_004b8750[0x40];
-extern unsigned char DINO_SFX[];
 
 // FUNCTION: LEGOLAND 0x00452990
 void FUN_00452990(void) {
