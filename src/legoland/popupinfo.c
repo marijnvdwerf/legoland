@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 #include "worker_mouse.h"
 #include "popupinfo.h"
 #include "icon.h"
@@ -12,67 +13,6 @@ struct InfoIcon {
     unsigned int flags;
 };
 
-extern struct Sprite *DAT_00668958;
-extern struct Sprite *DAT_006688e0;
-extern struct Sprite *DAT_006688e4;
-extern struct Sprite *DAT_006688e8;
-extern struct Sprite *DAT_006688f0;
-extern struct Sprite *DAT_006688ec;
-extern struct Sprite *DAT_006688f4;
-extern struct Sprite *DAT_006688f8;
-extern struct Sprite *DAT_006688fc;
-extern struct Sprite *DAT_00668900;
-extern struct Sprite *DAT_007fe004;
-extern struct Sprite *DAT_007fdeb0;
-extern struct Sprite *DAT_00668914;
-extern struct Sprite *DAT_00668918;
-extern struct Sprite *DAT_0066891c;
-extern struct Sprite *DAT_00668920;
-extern struct Sprite *DAT_00668928;
-extern struct Sprite *DAT_00668924;
-extern struct Sprite *DAT_00668930;
-extern struct Sprite *DAT_0066892c;
-extern struct Sprite *DAT_00668938;
-extern struct Sprite *DAT_0066893c;
-extern struct Sprite *DAT_00668940;
-extern struct Sprite *DAT_00668944;
-extern struct Sprite *DAT_00668948;
-extern struct Sprite *DAT_0066894c;
-extern struct Sprite *DAT_00668950;
-extern struct Sprite *DAT_007fdfc8;
-extern struct Sprite *DAT_007fdfe4;
-extern struct Sprite *DAT_007fe018;
-extern struct Sprite *DAT_007fdfd0;
-extern struct Sprite *DAT_007fe008;
-extern struct Sprite *DAT_007fdeac;
-
-extern struct InfoIcon *DAT_007fdfdc;
-extern struct InfoIcon *DAT_007fdfe0;
-extern struct InfoIcon *DAT_007fdea4;
-extern struct InfoIcon *DAT_007fdfcc;
-extern struct InfoIcon *DAT_007fdfc0;
-extern struct InfoIcon *DAT_007fdfd8;
-extern struct InfoIcon *DAT_007fdea8;
-extern struct InfoIcon *DAT_007fe000;
-extern struct InfoIcon *DAT_007fdfc4;
-extern struct InfoIcon *DAT_007fdfe8;
-
-extern unsigned int DAT_007fdf74;
-extern int DAT_007fdf78;
-extern unsigned int DAT_007fded4;
-extern unsigned int DAT_007fdf7c;
-extern unsigned int DAT_007fdf8c;
-extern unsigned int DAT_007fdf84;
-extern unsigned int DAT_007fdf9c;
-extern unsigned int DAT_007fdfa0;
-extern unsigned int DAT_007fdfa4;
-extern unsigned int DAT_007fdfa8;
-extern unsigned int DAT_007fdf98;
-extern unsigned char DAT_007fdfac;
-
-extern unsigned int DAT_00668960;
-extern unsigned int DAT_00668d68;
-extern unsigned int DAT_004ba9ac[];
 
 #include "image_sprite.h"
 

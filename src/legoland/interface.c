@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 #include "string.h"
 #include "worker_mouse.h"
 #include "profile_io.h"
@@ -55,78 +56,6 @@ struct QueryNode {
     unsigned int field_c;
 };
 
-extern unsigned int DAT_00668ea4;
-extern unsigned int DAT_00668e68;
-extern unsigned int DAT_00668e6c;
-extern unsigned int DAT_00668e70;
-extern unsigned int DAT_007fdcd0;
-extern unsigned int DAT_007fdd50;
-extern unsigned int DAT_007fdcd4;
-extern unsigned int DAT_007fdd54;
-extern unsigned int DAT_007fdcd8;
-extern unsigned int DAT_007fdd58;
-extern unsigned int DAT_007fdcdc;
-extern unsigned int DAT_007fdd5c;
-extern unsigned int DAT_007fdce0;
-extern unsigned int DAT_007fdd60;
-extern unsigned int DAT_00668e74;
-extern unsigned int DAT_00668e78;
-extern unsigned int DAT_00668e7c;
-extern unsigned int DAT_00668e80;
-extern unsigned int DAT_00668e84;
-extern unsigned int DAT_00668e88;
-extern unsigned int DAT_00668e8c;
-extern unsigned int DAT_00668e90;
-extern unsigned int DAT_00668e94;
-extern unsigned int DAT_00668e98;
-extern unsigned int DAT_00668ea0;
-extern unsigned int DAT_00668eb0;
-extern unsigned int DAT_004bb0a0;
-extern unsigned int DAT_004bb09c;
-extern unsigned int DAT_004bb098;
-extern unsigned int DAT_004bb094;
-extern unsigned int DAT_00668eb4;
-extern unsigned int DAT_007fdcc0;
-extern unsigned int DAT_007fdd40;
-extern unsigned int DAT_007fdcc8;
-extern unsigned int DAT_007fdd48;
-extern unsigned int DAT_007fdcc4;
-extern unsigned int DAT_007fdd44;
-extern unsigned int DAT_007fdccc;
-extern unsigned int DAT_007fdd4c;
-extern unsigned int DAT_006687bc;
-extern unsigned int DAT_006687c0;
-extern unsigned int DAT_00668eb8;
-extern struct ProfileObj *DAT_007fdd70[4];
-extern unsigned int DAT_00668e20[4];
-extern unsigned int DAT_00668ebc;
-extern void *DAT_00668e9c;
-extern unsigned char DAT_007fdd80;
-extern unsigned int DAT_007fdd84;
-extern unsigned int DAT_007fdd88;
-extern unsigned char DAT_007fdd8c;
-extern unsigned int DAT_008119b4;
-extern unsigned int EditMode;
-extern unsigned int GamePad;
-extern char DAT_0066869c;
-extern char DAT_0066861c;
-extern unsigned int DAT_00668954;
-extern void *PTR_004b92c0;
-extern unsigned int DAT_00668e38;
-extern unsigned int DAT_0080ff84;
-extern unsigned int DAT_0080ff88;
-extern unsigned int DAT_006687b0;
-extern struct ListNode *DAT_00668e40;
-extern unsigned int DAT_004baff8;
-extern unsigned int DAT_004bafa8[20];
-extern unsigned int DAT_004bb18c[4];
-extern unsigned int DAT_007fdd00[9];
-extern unsigned char DAT_0080ffd0[4];
-extern struct ResearchNode *DAT_00668ed8;
-extern struct IconNode *DAT_006687c8;
-extern struct LegoConfig *lpConfig;
-extern struct QueryNode *DAT_00668fc4;
-extern struct EventNode *DAT_00668fc0;
 
 struct LegoConfig {
     unsigned char pad_0[0x14];
@@ -350,7 +279,7 @@ int FUN_00474920(void) {
     int i;
 
     for (i = 0; i < 4; i++) {
-        if (DAT_007fdd70[i]->flags & 0x400) {
+        if (((struct ProfileObj *)DAT_007fdd70[i])->flags & 0x400) {
             DAT_00668e20[i] = 0;
         } else {
             DAT_00668e20[i] = 1;
@@ -370,9 +299,9 @@ void FUN_00474990(void) {
 
     for (i = 0; i < 4; i++) {
         if (DAT_00668e20[i] != 0) {
-            DAT_007fdd70[i]->flags &= 0xfffffbff;
+            ((struct ProfileObj *)DAT_007fdd70[i])->flags &= 0xfffffbff;
         } else {
-            DAT_007fdd70[i]->flags |= 0x400;
+            ((struct ProfileObj *)DAT_007fdd70[i])->flags |= 0x400;
         }
     }
 }
@@ -403,7 +332,7 @@ unsigned char FUN_00474f40(void *context, unsigned int flags, const char *a, con
         if (flags & 2) {
             EditMode = 0;
             FUN_00490600(1);
-            FUN_004911c0(&DAT_0066861c, &DAT_0066869c);
+            FUN_004911c0((const char *)&DAT_0066861c, (const char *)&DAT_0066869c);
         }
     }
     return 1;
@@ -509,7 +438,7 @@ void DelObjectList(void) {
     struct ListNode *current;
     struct ListNode *next;
 
-    current = DAT_00668e40;
+    current = (struct ListNode *)DAT_00668e40;
     while (current != NULL) {
         next = current->next;
         FUN_0049e4d0(current);
@@ -559,7 +488,7 @@ void RAndDLinkedList(void) { STUB(); }
 void DisableSidePanelIcons(void) {
     struct IconNode *node;
 
-    node = DAT_006687c8;
+    node = (struct IconNode *)DAT_006687c8;
     while (node != NULL) {
         if (node->id == 0xd2 || node->id == 0xd5 || node->id == 0xd6 || node->id == 0xd7) {
             node->flags |= 0x400;
@@ -572,7 +501,7 @@ void DisableSidePanelIcons(void) {
 void EnableSidePanelIcons(void) {
     struct IconNode *node;
 
-    node = DAT_006687c8;
+    node = (struct IconNode *)DAT_006687c8;
     while (node != NULL) {
         if (node->id == 0xd2 || node->id == 0xd5 || node->id == 0xd6 || node->id == 0xd7) {
             node->flags &= 0xfffffbff;
@@ -656,7 +585,7 @@ void FUN_004760a0(void) { STUB(); }
 void FUN_00476140(int index, int value) {
     struct ProfileObj *obj;
 
-    obj = DAT_007fdd70[index];
+    obj = (struct ProfileObj *)DAT_007fdd70[index];
     if (obj != NULL) {
         if (value != 0) {
             obj->flags &= 0xfffffbff;
@@ -675,7 +604,7 @@ void FUN_00476180(void) {
     unsigned int counter;
 
     flags = DAT_0080ffd0;
-    items = DAT_007fdd70;
+    items = (struct ProfileObj **)DAT_007fdd70;
     counter = 4;
     while (counter != 0) {
         if (*flags != 0) {
@@ -733,7 +662,7 @@ void DeleteReseachList(void) {
     struct ResearchNode *current;
     struct ResearchNode *next;
 
-    current = DAT_00668ed8;
+    current = (struct ResearchNode *)DAT_00668ed8;
     while (current != NULL) {
         next = current->next;
         FUN_0049e4d0(current);
@@ -809,8 +738,8 @@ int FUN_00477680(int a, int b) {
 
 // FUNCTION: LEGOLAND 0x004776c0
 void FUN_004776c0(struct QueryNode *node) {
-    node->next = DAT_00668fc4;
-    DAT_00668fc4 = node;
+    node->next = (struct QueryNode *)DAT_00668fc4;
+    DAT_00668fc4 = (struct InterfaceQueryNode *)node;
 }
 
 // FUNCTION: LEGOLAND 0x004776e0
@@ -845,7 +774,7 @@ void FUN_004776e0(struct EventNode *node) {
 struct QueryNode *FUN_00477730(struct QueryNode *ctx) {
     struct QueryNode *node;
 
-    node = DAT_00668fc4;
+    node = (struct QueryNode *)DAT_00668fc4;
     if (node == NULL) {
         return NULL;
     }
@@ -864,7 +793,7 @@ void FUN_00477760(struct QueryNode *ctx) {
     struct QueryNode *node;
 
     prev = NULL;
-    node = DAT_00668fc4;
+    node = (struct QueryNode *)DAT_00668fc4;
     while (node != NULL) {
         if (node == ctx) {
             break;
@@ -875,7 +804,7 @@ void FUN_00477760(struct QueryNode *ctx) {
     if (prev != NULL) {
         prev->next = node->next;
     } else {
-        DAT_00668fc4 = node->next;
+        DAT_00668fc4 = (struct InterfaceQueryNode *)node->next;
     }
 }
 

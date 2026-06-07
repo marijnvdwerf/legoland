@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "man3d.h"
@@ -13,13 +14,6 @@
 
 extern void FUN_0049e4d0(void *ptr);
 extern void *_malloc(unsigned int size);
-
-extern unsigned int EditMode;
-extern void *DAT_008119b8;
-extern struct Cursor EditCursor;
-
-extern unsigned char RESTAURANT_SFX[];
-extern unsigned char OCTOPUS_SFX[];
 
 struct EateryObj;
 struct EateryFX;
@@ -75,61 +69,6 @@ struct SaveBlock {
     unsigned char data[60];
 };
 
-extern struct EateryFX *DAT_0081cd44;
-extern struct EateryFX *DAT_0081cd18;
-extern unsigned int DAT_0081cd14;
-extern struct EateryFX *DAT_0081cde0;
-extern unsigned int DAT_0081cd3c;
-extern unsigned int DAT_0081cd0c;
-extern unsigned int DAT_0081cd10;
-extern unsigned int DAT_0081cd38;
-extern unsigned int DAT_0061613c;
-extern struct EateryFX *DAT_0081cd1c;
-
-extern unsigned int DAT_0081cd28;
-extern unsigned int DAT_0081cd8c;
-extern unsigned int DAT_0081cd88;
-extern unsigned int DAT_0081cd94;
-extern unsigned int DAT_0081cd90;
-
-extern unsigned int DAT_0081cd34;
-extern unsigned int DAT_0081cd84;
-extern unsigned int DAT_0081cd20;
-extern unsigned int DAT_0081cd48;
-
-extern unsigned int DAT_00616120;
-extern unsigned int DAT_00616124;
-extern unsigned int DAT_00616128;
-extern unsigned short DAT_0061612c;
-
-extern struct BlokeNode *DAT_00616144;
-extern struct SaveBlock *DAT_00616148;
-
-extern void *DAT_0081cd60;
-extern void *DAT_0081cd64;
-extern void *DAT_0081cd68;
-extern void *DAT_0081cd6c;
-extern void *DAT_0081cd70;
-extern void *DAT_0081cd74;
-extern void *DAT_0081cd78;
-extern void *DAT_0081cd7c;
-extern void *DAT_0081cd80;
-extern void *DAT_0081cda0;
-extern void *DAT_0081cda4;
-extern void *DAT_0081cda8;
-extern void *DAT_0081cdac;
-extern void *DAT_0081cdb0;
-extern void *DAT_0081cdb4;
-extern void *DAT_0081cdb8;
-extern void *DAT_0081cdbc;
-extern void *DAT_0081cdc0;
-extern void *DAT_0081cdc4;
-extern void *DAT_0081cdc8;
-extern void *DAT_0081cdcc;
-extern void *DAT_0081cdd0;
-extern void *DAT_0081cdd4;
-extern void *DAT_0081cdd8;
-extern void *DAT_0081cddc;
 
 // FUNCTION: LEGOLAND 0x0042e220
 void FUN_0042e220(struct EateryObj *obj) {

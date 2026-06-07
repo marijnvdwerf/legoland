@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "ride_queue.h"
@@ -9,82 +10,10 @@
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e5c5(const char *msg);
 
-extern unsigned int DAT_004cbe20;
-extern unsigned int DAT_004cbe24;
-extern unsigned int DAT_004cbe28;
-extern unsigned int DAT_004cbe2c;
-
 struct Sprite;
-
-extern struct Sprite *DAT_004cbe4c;
-extern struct Sprite *DAT_004cbe74;
-extern struct Sprite *DAT_004cbe78;
-extern struct Sprite *DAT_004cbe7c;
-extern struct Sprite *DAT_004cbe80;
-extern struct Sprite *DAT_004cbe88;
-extern struct Sprite *DAT_004cbe8c;
-extern struct Sprite *DAT_004cbe90;
-extern struct Sprite *DAT_004cbe94;
-extern struct Sprite *DAT_004cbe98;
-extern void *DAT_004cbe84;
-extern void *DAT_004c2ae8;
-extern void *DAT_004c2af8;
-extern unsigned int DAT_004c2b9c;
-extern unsigned int EditMode;
-extern void *DAT_008119b8;
-extern struct Cursor EditCursor;
-extern unsigned int DAT_004cbdd8;
-extern unsigned int DAT_004c2a88;
-extern unsigned int DAT_004c5c90;
-extern unsigned int DAT_004c74c8;
-extern struct CursorSource *DAT_004c445c;
-extern struct CursorSource *DAT_004c2aa0;
-extern struct CursorSource *DAT_004c2b0c;
-extern unsigned int DAT_004c2af4;
-extern unsigned int DAT_004c2b98;
-extern unsigned int DAT_004c2b6c;
-extern unsigned int DAT_004c2b70;
-extern unsigned int DAT_004b47f8;
-extern unsigned int DAT_004b4804;
 
 #include "image_sprite.h"
 
-extern unsigned int DAT_004b4728;
-extern unsigned int DAT_004b472c;
-extern unsigned int DAT_004b4730;
-extern unsigned int DAT_004b4734;
-extern unsigned int DAT_004c2afc;
-extern struct Sprite *DAT_004c2abc;
-extern struct Sprite *DAT_004c2ae4;
-extern struct Sprite *DAT_004cbe1c;
-extern struct Sprite *DAT_004c8d68;
-extern unsigned int DAT_004c2b10;
-
-extern void *DAT_004cbe10;
-extern struct Sprite *DAT_004c8d2c;
-extern struct CursorSource *DAT_004c74d4;
-extern void *DAT_004c2ba0;
-extern struct Sprite *DAT_004c8d70;
-extern struct Sprite *DAT_004cbe0c;
-extern struct Sprite *DAT_004cbe08;
-extern struct CursorSource *DAT_004cbe18;
-extern void *DAT_004cbe48;
-extern struct Sprite *DAT_004c1258;
-extern void *DAT_004c4460;
-extern struct CursorSource *DAT_004c2bf0;
-extern unsigned int DAT_004cbe14;
-extern void *DAT_004c2b50;
-extern struct CursorSource *DAT_004c2b60;
-extern unsigned int DAT_004c2a94;
-extern unsigned int DAT_004c2a98;
-extern unsigned int DAT_004b4838;
-extern unsigned int DAT_004b4850;
-extern void *DAT_004c8d4c;
-extern struct CursorSource *DAT_004c8d6c;
-extern unsigned int DAT_004c2af0;
-extern unsigned int DAT_004c2aec;
-extern unsigned int DAT_004c2b64;
-extern unsigned int DAT_0082c688;
 extern int __strcmpi(const char *s1, const char *s2);
 extern void FUN_0049e4d0(void *block);
 

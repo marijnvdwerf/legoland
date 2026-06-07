@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "bloke_ai.h"
 #include "gamemain.h"
@@ -51,83 +52,6 @@ struct Bloke {
 
 #include "image_sprite.h"
 
-extern unsigned int DAT_00665e8c;
-extern unsigned int DAT_004b7d74;
-extern unsigned int DAT_004b7d78;
-extern unsigned short DAT_004b7d7e;
-extern unsigned int DAT_004b7d84;
-extern unsigned int DAT_00665f60;
-extern unsigned int DAT_00665fe8;
-extern unsigned int DAT_00665fec;
-extern unsigned int DAT_0081c088;
-extern struct AnimHandle *DAT_0081c08c;
-extern struct AnimHandle *DAT_0081c090;
-extern struct AnimHandle *DAT_0081c094;
-extern struct AnimHandle *DAT_0081c098;
-extern unsigned int DAT_0081c09c;
-extern struct AnimHandle *DAT_0081c0a0;
-extern struct AnimHandle *DAT_0081c0a4;
-extern unsigned int DAT_00665ff8;
-extern unsigned int DAT_00665ffc;
-extern unsigned int DAT_00666000;
-extern unsigned int DAT_00666004;
-extern unsigned int DAT_00666008;
-extern unsigned int DAT_0066600c;
-extern unsigned int DAT_00666010;
-extern unsigned int DAT_00666014;
-extern unsigned int DAT_00666018;
-extern unsigned int DAT_0066601c;
-extern unsigned int DAT_00666020;
-extern unsigned int DAT_00666024;
-extern unsigned int DAT_00666030;
-extern unsigned int DAT_00666034;
-extern unsigned int DAT_00666038;
-extern unsigned int DAT_0066603c;
-extern unsigned int DAT_00666040;
-extern unsigned int DAT_00666044;
-extern unsigned int DAT_00666048;
-extern unsigned int DAT_0066604c;
-extern unsigned int DAT_00666050;
-extern unsigned int DAT_00666054;
-extern unsigned int DAT_00666058;
-extern unsigned int DAT_0066605c;
-extern unsigned int DAT_00666060;
-extern unsigned int DAT_00666064;
-extern unsigned int DAT_00666068;
-extern unsigned int DAT_0066606c;
-extern unsigned int DAT_00666070;
-extern unsigned int DAT_00666074;
-extern unsigned int DAT_00666078;
-extern unsigned int DAT_0066607c;
-extern unsigned int DAT_00666080;
-extern unsigned int DAT_00666084;
-extern unsigned int DAT_00666088;
-extern unsigned int DAT_0066608c;
-extern unsigned int DAT_00666090;
-extern unsigned int DAT_00666094;
-extern unsigned int DAT_00666098;
-extern unsigned int DAT_004b7e9c;
-extern unsigned int DAT_0081c040[];
-extern unsigned int DAT_0081c054[];
-extern unsigned int DAT_0081c068[];
-extern struct ObjectClass *ObjectClassList;
-extern struct Bloke *FirstBloke;
-extern int DAT_00832934;
-extern int DAT_00832938;
-extern unsigned int DAT_0081c038;
-extern unsigned int DAT_006660a8;
-extern unsigned int DAT_006660ac;
-extern void *PTR_004b92c0;
-extern unsigned int DAT_0081c028;
-extern unsigned int DAT_0081c02c;
-extern unsigned int DAT_0081c030;
-extern unsigned int DAT_0081c034;
-extern unsigned int SPRITE_TitleScreenBk;
-extern unsigned int DAT_0081c080;
-extern unsigned int DAT_0081c084;
-extern unsigned int DAT_00832b9c;
-extern unsigned int DAT_00832978;
-extern unsigned int DAT_0083297c;
 
 // FUNCTION: LEGOLAND 0x004434d0
 unsigned int FUN_004434d0(unsigned int param_1) { STUB(); }
@@ -213,32 +137,32 @@ void FUN_00444090(void) {
     // STRING: LEGOLAND 0x004b7e24
     DAT_0081c08c = FUN_00443bd0("AD_Blink.avi");
     if (DAT_0081c08c != 0) {
-        DAT_0081c08c->callback = FUN_00444020;
+        ((struct AnimHandle *)DAT_0081c08c)->callback = FUN_00444020;
     }
     // STRING: LEGOLAND 0x004b7e18
     DAT_0081c094 = FUN_00443bd0("AD_LR.avi");
     if (DAT_0081c094 != 0) {
-        DAT_0081c094->callback = FUN_00444020;
+        ((struct AnimHandle *)DAT_0081c094)->callback = FUN_00444020;
     }
     // STRING: LEGOLAND 0x004b7e08
     DAT_0081c0a0 = FUN_00443bd0("AD_Phone.avi");
     if (DAT_0081c0a0 != 0) {
-        DAT_0081c0a0->callback = FUN_00444020;
+        ((struct AnimHandle *)DAT_0081c0a0)->callback = FUN_00444020;
     }
     // STRING: LEGOLAND 0x004b7df4
     DAT_0081c0a4 = FUN_00443bd0("AD_PhoneGesture.avi");
     if (DAT_0081c0a4 != 0) {
-        DAT_0081c0a4->callback = FUN_00444020;
+        ((struct AnimHandle *)DAT_0081c0a4)->callback = FUN_00444020;
     }
     // STRING: LEGOLAND 0x004b7de0
     DAT_0081c098 = FUN_00443bd0("AD_PhoneDown.avi");
     if (DAT_0081c098 != 0) {
-        DAT_0081c098->callback = FUN_00444020;
+        ((struct AnimHandle *)DAT_0081c098)->callback = FUN_00444020;
     }
     // STRING: LEGOLAND 0x004b7dd0
     DAT_0081c090 = FUN_00443bd0("AD_Wobble.avi");
     if (DAT_0081c090 != 0) {
-        DAT_0081c090->callback = FUN_00444020;
+        ((struct AnimHandle *)DAT_0081c090)->callback = FUN_00444020;
     }
     FUN_00443dc0(DAT_0081c08c);
 }

@@ -1,5 +1,6 @@
 #include <windows.h>
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "debug_alloc.h"
@@ -13,84 +14,15 @@
 #include "map_object.h"
 #include <math.h>
 
-extern unsigned int DAT_004d8268;
-extern unsigned int DAT_00829ae0;
-extern unsigned int DAT_00829b88;
-extern unsigned int DAT_00829ba0;
-extern float DAT_004ab3d0;
-extern float DAT_004ab430;
-extern unsigned int DAT_0082adec;
-extern unsigned int DAT_004d8270;
-extern const unsigned char DAT_004d8250[];
-
 struct LookupResult;
 struct CastleObj;
 struct Anim;
-
-extern unsigned int DAT_004d8a40[];
-extern unsigned int DAT_004d8abc[];
-extern unsigned int DAT_004d8b34[];
-extern unsigned int DAT_004d89c8[];
-extern unsigned int DAT_004d8bac;
-extern unsigned int DAT_004b55f4;
-extern unsigned int DAT_004b5608;
-extern unsigned int DAT_004b560c;
-extern unsigned int DAT_0082add0;
-extern unsigned int DAT_0082add4;
-extern unsigned int DAT_0082add8;
-extern unsigned int DAT_0082ade0;
-extern unsigned int DAT_0082ade4;
-extern unsigned int DAT_0082ade8;
-extern unsigned char DAT_004d88f4[];
-extern unsigned char DAT_004d8934[];
-extern unsigned char DAT_004d8974[];
-extern void *DAT_004d89c4;
-extern char DAT_004d8bb0[];
 
 struct FlagWord {
     unsigned int field_0;
 };
 
-extern unsigned int DAT_00829bf8;
-extern void *DAT_00829bec;
-extern void *DAT_00829bf0;
-extern void *DAT_00829bf4;
-
-extern unsigned int DAT_0060f924[];
-extern unsigned int DAT_0060f938;
-extern unsigned int DAT_00610a08;
-extern char DAT_00829a80[];
-extern unsigned int DAT_00829a90;
-extern unsigned int DAT_00829c04;
-extern unsigned int DAT_00829b8c;
-extern unsigned int DAT_00829ba4;
-extern struct Anim DAT_00829af8;
-extern struct Anim DAT_00829b04;
 #include "image_sprite.h"
-extern unsigned int DAT_008119b8;
-extern unsigned int EditMode;
-extern struct Cursor EditCursor;
-extern unsigned int DAT_006103a8;
-extern float FLOAT_004ab454;
-extern float FLOAT_004ab458;
-extern float FLOAT_004ab45c;
-extern unsigned int DAT_004b5c9c;
-extern unsigned int DAT_004b5ca0;
-extern unsigned int DAT_004b5ca4;
-extern unsigned int DAT_004b5ca8;
-extern float DAT_004b5cbc;
-extern unsigned int DAT_004b5cc0;
-extern unsigned int DAT_004b5cc4;
-extern unsigned int DAT_004b5cc8;
-extern unsigned int DAT_00611648;
-extern float DAT_00611650;
-extern float DAT_0082999c;
-extern float DAT_00829a60;
-extern float DAT_008299d4;
-extern unsigned int DAT_008299fc;
-extern struct ListLink DAT_00829a3c;
-extern struct ListLink *DAT_00829a50;
-extern struct ListLink *DAT_00829a54;
 // FUNCTION: LEGOLAND 0x0041cc50
 unsigned int FUN_0041cc50(unsigned int dir) {
     if (dir == 1) return 4;
@@ -917,14 +849,11 @@ struct DispatchTarget {
     unsigned int field_c;
 };
 
-extern struct DispatchRow DAT_0082ad20[];
-extern struct DispatchRow DAT_0082adb0[];
-
 // FUNCTION: LEGOLAND 0x0041ebd0
 unsigned int FUN_0041ebd0(unsigned int arg) {
     unsigned int index = 0;
-    struct DispatchRow *row = DAT_0082ad20;
-    while ((int)row < (int)DAT_0082adb0) {
+    struct DispatchRow *row = (struct DispatchRow *)DAT_0082ad20;
+    while ((int)row < (int)&DAT_0082adb0) {
         struct DispatchTarget *target = (struct DispatchTarget *)row->field_0;
         if (target != NULL && arg == target->field_c) {
             return index;
@@ -937,15 +866,15 @@ unsigned int FUN_0041ebd0(unsigned int arg) {
 
 // FUNCTION: LEGOLAND 0x0041ec00
 unsigned int FUN_0041ec00(unsigned int param) {
-    struct DispatchTarget *target = (struct DispatchTarget *)DAT_0082ad20[param].field_0;
+    struct DispatchTarget *target = (struct DispatchTarget *)((struct DispatchRow *)DAT_0082ad20)[param].field_0;
     return target->field_c;
 }
 
 // FUNCTION: LEGOLAND 0x0041ec20
 unsigned int FUN_0041ec20(unsigned int param) {
     unsigned int index = 0;
-    struct DispatchRow *row = DAT_0082ad20;
-    while ((int)row < (int)DAT_0082adb0) {
+    struct DispatchRow *row = (struct DispatchRow *)DAT_0082ad20;
+    while ((int)row < (int)&DAT_0082adb0) {
         if (param == row->field_0) {
             return index;
         }
@@ -957,7 +886,7 @@ unsigned int FUN_0041ec20(unsigned int param) {
 
 // FUNCTION: LEGOLAND 0x0041ec40
 unsigned int FUN_0041ec40(unsigned int param) {
-    return DAT_0082ad20[param].field_0;
+    return ((struct DispatchRow *)DAT_0082ad20)[param].field_0;
 }
 
 // FUNCTION: LEGOLAND 0x0041ec50
@@ -1366,12 +1295,6 @@ void FUN_00421400(struct IntBuffer *buf, int size) {
 // FUNCTION: LEGOLAND 0x00421430
 void FUN_00421430(void) { STUB(); }
 
-extern void *DAT_004dcbd0[10];
-extern unsigned int DAT_004dcbf8;
-extern unsigned char DAT_004dcc00[];
-extern unsigned int DAT_004dd5d8;
-extern void *DAT_0082ac60[];
-
 // FUNCTION: LEGOLAND 0x00421470
 void FUN_00421470(void) {
     void **table;
@@ -1737,8 +1660,6 @@ void FUN_004220e0(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00422180
 void FUN_00422180(void) { STUB(); }
 
-extern void *DAT_004dd5e0[24];
-
 // FUNCTION: LEGOLAND 0x00422210
 void FUN_00422210(void) {
     DAT_004dd5e0[0] = FUN_00421df0;
@@ -1841,12 +1762,6 @@ void *FUN_00422470(const char *fileName, unsigned int *bytesReadPtr) {
     return buffer;
 }
 
-extern unsigned int DAT_004dd758;
-extern char DAT_004dd760[];
-extern unsigned int DAT_004dd860;
-extern unsigned int DAT_004dd868;
-extern unsigned int DAT_004dd86c;
-
 // FUNCTION: LEGOLAND 0x00422590
 unsigned int FUN_00422590(const char *s) {
     return FUN_00422400(&DAT_004dd860, (unsigned int)s);
@@ -1934,13 +1849,6 @@ struct VideoArg {
     unsigned char pad_4[8];
     void *field_c;
 };
-
-extern void *DAT_004b5b20;
-extern int DAT_004b5b28;
-extern int DAT_004b5b4c;
-extern int DAT_004b5b50;
-extern unsigned int DAT_00610a04;
-extern unsigned int DAT_006102f8;
 
 // FUNCTION: LEGOLAND 0x00423760
 int FUN_00423760(struct VideoArg *arg) {
@@ -2062,8 +1970,8 @@ void FUN_004241e0(void) {
     FUN_0041d1b0(&DAT_00829ba4);
     DAT_00829b88 = 0;
     DAT_00829ba0 = 0;
-    FUN_0041ce10(&DAT_00829af8);
-    FUN_0041ce10(&DAT_00829b04);
+    FUN_0041ce10((struct Anim *)&DAT_00829af8);
+    FUN_0041ce10((struct Anim *)&DAT_00829b04);
     DAT_00829ae0 = 0;
 }
 
@@ -2594,10 +2502,10 @@ struct ListLink {
 
 // FUNCTION: LEGOLAND 0x004266b0
 void FUN_004266b0(struct ListLink *param_1) {
-    DAT_00829a54->var_14 = param_1;
-    param_1->var_18 = DAT_00829a54;
+    ((struct ListLink *)DAT_00829a54)->var_14 = param_1;
+    param_1->var_18 = (struct ListLink *)DAT_00829a54;
     DAT_00829a54 = param_1;
-    param_1->var_14 = &DAT_00829a3c;
+    param_1->var_14 = (struct ListLink *)&DAT_00829a3c;
 }
 
 // FUNCTION: LEGOLAND 0x004266e0
@@ -2620,7 +2528,7 @@ void FUN_00426700(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00426740
 void FUN_00426740(void) {
     DAT_00829a54 = &DAT_00829a3c;
-    DAT_00829a50 = &DAT_00829a3c;
+    DAT_00829a50 = (struct ListLink *)&DAT_00829a3c;
 }
 
 // FUNCTION: LEGOLAND 0x00426750
@@ -2994,7 +2902,6 @@ struct Struct4274f0Coord {
     short field_2;
 };
 
-extern void *DAT_00829980;
 
 // FUNCTION: LEGOLAND 0x004274f0
 void FUN_004274f0(struct Struct4274f0Coord *coord) {
@@ -3032,7 +2939,6 @@ void FUN_00427940(struct Struct427940 *param_1) {
 // FUNCTION: LEGOLAND 0x00427970
 void FUN_00427970(void) { STUB(); }
 
-extern void *DAT_0081cdec;
 
 // FUNCTION: LEGOLAND 0x004279f0
 void FUN_004279f0(void) {
@@ -3207,10 +3113,6 @@ void FUN_00427ff0(struct Struct427ff0Point *point) {
     AddRollerCoasterPath(coords);
 }
 
-extern unsigned int DAT_00611958;
-extern unsigned int DAT_00611688;
-extern unsigned int DAT_0061168c;
-extern const unsigned char DAT_004b5dc8[];
 
 // FUNCTION: LEGOLAND 0x00428070
 void FUN_00428070(void *param_1) {
@@ -3242,13 +3144,11 @@ struct Struct4286e0Element {
     unsigned int field_4;
 };
 
-extern struct Struct4286e0Element DAT_00828fe0[];
-
 // FUNCTION: LEGOLAND 0x004286e0
 struct Struct4286e0Element *FUN_004286e0(void *param1) {
     unsigned int result = FUN_004283c0(param1);
     unsigned int index = result + (result + result * 4) * 2;
-    return &DAT_00828fe0[index];
+    return &((struct Struct4286e0Element *)DAT_00828fe0)[index];
 }
 
 // FUNCTION: LEGOLAND 0x00428700
@@ -3291,9 +3191,6 @@ struct Struct428e70 {
     unsigned int (**vtable)(void *self, const char *name);
 };
 
-extern unsigned int DAT_00615f6c;
-extern char DAT_00612178[];
-extern unsigned char DAT_004b5f60[];
 
 // FUNCTION: LEGOLAND 0x00428e70
 void FUN_00428e70(struct Struct428e70 *p, unsigned int a, unsigned int b) {
@@ -3320,8 +3217,6 @@ void FUN_00429270(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x004292f0
 void FUN_004292f0(void) { STUB(); }
 
-extern unsigned int DAT_004b62f0;
-extern unsigned int DAT_004b6300;
 
 // FUNCTION: LEGOLAND 0x00429490
 void FUN_00429490(unsigned int param_1, unsigned int param_2) {
@@ -3522,7 +3417,6 @@ void FUN_0042a150(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0042a1b0
 void FUN_0042a1b0(void) { STUB(); }
 
-extern unsigned int DAT_00615f98;
 
 // FUNCTION: LEGOLAND 0x0042a2e0
 void FUN_0042a2e0(void) {
@@ -3544,7 +3438,6 @@ void FUN_0042a620(unsigned int *param_1, unsigned int *param_2, unsigned int par
 // FUNCTION: LEGOLAND 0x0042a640
 unsigned int FUN_0042a640(void *ptr, unsigned int a, unsigned int b) { STUB(); }
 
-extern float FLOAT_004ab390;
 
 // FUNCTION: LEGOLAND 0x0042a670
 float FUN_0042a670(void) {
@@ -3554,8 +3447,6 @@ float FUN_0042a670(void) {
 // FUNCTION: LEGOLAND 0x0042a680
 void FUN_0042a680(void) { STUB(); }
 
-extern unsigned int DAT_00616000;
-extern unsigned int DAT_00616004;
 
 // FUNCTION: LEGOLAND 0x0042a780
 void FUN_0042a780(void) {
