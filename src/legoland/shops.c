@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "money.h"
@@ -30,24 +31,6 @@ struct RideObject {
 };
 
 #include "image_sprite.h"
-
-extern unsigned int DAT_0081cb18;
-extern unsigned int DAT_0081cb20;
-extern unsigned int DAT_0081cb28;
-extern unsigned int DAT_0081cb48;
-extern unsigned int DAT_0081cb50;
-extern struct Building *DAT_0081cb3c;
-extern struct Building *DAT_0081cb4c;
-extern struct Building *DAT_0081cb40;
-extern struct Building *DAT_0081cb44;
-extern unsigned int DAT_0082c6a0;
-extern unsigned int DAT_0082c6a4;
-extern unsigned int DAT_0082c6a8;
-extern unsigned short DAT_0082c6ac;
-
-extern unsigned int EditMode;
-extern void *DAT_008119b8;
-extern struct Cursor EditCursor;
 
 // FUNCTION: LEGOLAND 0x00439200
 void FUN_00439200(struct MapObject *obj) {

@@ -1,5 +1,6 @@
 #include <string.h>
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "man3d.h"
@@ -94,29 +95,6 @@ struct WaterListNode {
     unsigned char field_8;
     unsigned char field_9;
 };
-
-extern unsigned char WATERWORKS_SFX[];
-
-extern unsigned int DAT_004cc028;
-extern void *DAT_004cc02c;
-extern void *DAT_004cc030;
-extern void *DAT_004cc034;
-extern unsigned int DAT_004cbfe4;
-extern unsigned int DAT_004cc01c;
-extern unsigned int DAT_004cbfd8;
-extern unsigned int DAT_004cbfe8;
-extern struct WaterContext *DAT_004cc024;
-extern struct WaterSub *DAT_004cbfe0;
-extern unsigned int DAT_004cc014;
-extern struct WaterContext *DAT_004cbfdc;
-extern unsigned int DAT_004cbfec;
-extern unsigned int DAT_004cc020;
-extern unsigned short DAT_004cbffc;
-extern unsigned int DAT_004cbff0;
-extern unsigned int DAT_004cbff4;
-extern unsigned int DAT_004cbff8;
-extern unsigned int DAT_004cc000;
-extern struct Cursor EditCursor;
 
 #include "power.h"
 #include "image_sprite.h"

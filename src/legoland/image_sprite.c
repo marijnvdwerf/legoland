@@ -1,5 +1,6 @@
 #include <windows.h>
 #include "legoland.h"
+#include "globals.h"
 
 #include "image_sprite.h"
 #include "gfx.h"
@@ -79,28 +80,6 @@ struct KLIBAUDIO_Stop {
 struct KLIBAUDIO_Object {
     void *vtable;
 };
-
-extern struct Sprite *DAT_0079a7c0;
-extern struct Image **DAT_0079a7c4;
-extern unsigned int DAT_0079a7c8;
-extern unsigned int DAT_0079a7cc;
-extern unsigned int DAT_0079a7d0;
-extern int DAT_0079a7d8;
-extern int DAT_0079a7dc;
-extern unsigned int DAT_0079a7e0;
-extern unsigned int DAT_0079a7e4[19];
-extern unsigned int DAT_0079a7e8[19];
-extern unsigned int DAT_0079a830;
-extern int DAT_0079a834;
-extern int DAT_0079a838;
-extern unsigned int DAT_0079a83c;
-extern unsigned int DAT_0079a84c;
-extern unsigned int DAT_008119a4;
-extern unsigned int DAT_007caca8;
-extern unsigned int DAT_007cacac;
-extern unsigned int DAT_007cacb4;
-extern unsigned int DAT_0079ac04;
-extern struct KLIBAUDIO_Object *DAT_0079a848;
 
 extern void FUN_0049e4d0(void *block);
 extern void *_malloc(unsigned int size);
@@ -612,7 +591,7 @@ int FUN_004988c0(void) {
     if (DAT_0079a84c == 0 || DAT_0079a84c == 1) {
         return 0;
     }
-    ((struct KLIBAUDIO_Stop *)DAT_0079a848->vtable)->func_48(DAT_0079a848);
+    ((struct KLIBAUDIO_Stop *)((struct KLIBAUDIO_Object *)DAT_0079a848)->vtable)->func_48(DAT_0079a848);
     FUN_00498870();
     FUN_00498120();
     DAT_0079a84c = 1;
@@ -623,7 +602,7 @@ int FUN_004988c0(void) {
 void FUN_00498900(unsigned int param_1) {
     DAT_0079a7d0 = param_1;
     if (DAT_0079a848 != NULL) {
-        ((struct KLIBAUDIO_Vtbl *)DAT_0079a848->vtable)->func_3c(DAT_0079a848, param_1);
+        ((struct KLIBAUDIO_Vtbl *)((struct KLIBAUDIO_Object *)DAT_0079a848)->vtable)->func_3c(DAT_0079a848, param_1);
     }
 }
 
@@ -639,7 +618,7 @@ int FUN_00498b00(void) {
         return 0;
     }
     FUN_004989b0();
-    ((struct KLIBAUDIO_Vtbl *)DAT_0079a848->vtable)->func_30(DAT_0079a848, 0, 0, 1);
+    ((struct KLIBAUDIO_Vtbl *)((struct KLIBAUDIO_Object *)DAT_0079a848)->vtable)->func_30(DAT_0079a848, 0, 0, 1);
     DAT_0079a84c = 3;
     return 1;
 }

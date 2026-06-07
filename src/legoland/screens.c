@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "bricks.h"
@@ -25,26 +26,6 @@ struct ScreenConfig {
     unsigned int slot;
 };
 
-extern struct ScreenConfig *lpConfig;
-extern unsigned int DAT_007fe020[4];
-extern unsigned int EditMode;
-extern unsigned int DAT_008119b4;
-extern void *DAT_008119b8;
-extern unsigned int GamePad;
-extern struct Cursor EditCursor;
-extern unsigned int DAT_00667c7c;
-extern unsigned int DAT_00667cd8;
-extern unsigned int DAT_0080ff84;
-extern unsigned int DAT_0080ff88;
-extern unsigned char DAT_0080ffd4[0xf];
-extern unsigned int DAT_0080ffa0[68];
-extern unsigned int DAT_0080ffc4;
-extern unsigned int DAT_0080ffc8;
-extern unsigned int DAT_0080ffcc;
-extern unsigned int DAT_00832ba0;
-extern char DAT_00832998[256];
-extern char DAT_00832a98[256];
-
 #include "image_sprite.h"
 
 extern char *_strncpy(char *dest, const char *src, unsigned int count);
@@ -67,7 +48,7 @@ void FUN_004588c0(void)
     struct ScreenConfig *config;
     unsigned int sprite;
 
-    config = lpConfig;
+    config = (struct ScreenConfig *)lpConfig;
     DAT_007fe020[0] = 0;
     DAT_007fe020[1] = 0;
     DAT_007fe020[2] = config->width;
@@ -146,7 +127,7 @@ void FUN_00458bc0(void)
 // FUNCTION: LEGOLAND 0x00458be0
 void FUN_00458be0(void)
 {
-    int slot = lpConfig->slot;
+    int slot = ((struct ScreenConfig *)lpConfig)->slot;
 
     if (slot < 0xf) {
         DAT_0080ffd4[slot] = 1;

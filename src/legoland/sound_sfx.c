@@ -1,5 +1,6 @@
 #include <windows.h>
 #include "legoland.h"
+#include "globals.h"
 #include "sound_sfx.h"
 
 struct SampleDef;
@@ -61,26 +62,6 @@ struct DirectMusicComposerVtbl {
 struct DirectMusicObj {
     void *vtable;
 };
-
-extern unsigned int DAT_007988c0;
-extern unsigned int DAT_007988c4;
-extern unsigned int DAT_007988c8;
-extern struct Sample *DAT_007988cc;
-extern unsigned int DAT_007988bc;
-extern unsigned int DAT_004bf774;
-extern unsigned int DAT_004bf778;
-extern HANDLE DAT_0079a698;
-extern unsigned int DAT_0079a694;
-extern HANDLE DAT_0079a6a0;
-extern unsigned int DAT_0079a6a4;
-extern unsigned int DAT_0079a6a8;
-extern unsigned int DAT_0079a6ac;
-extern struct DirectSoundObj *DAT_007cad40;
-extern struct DirectMusicObj *DAT_007cacd8;
-extern struct DirectMusicObj *DAT_007cacdc;
-extern struct DirectMusicObj *DAT_007cad44;
-extern DWORD DAT_007cad48;
-extern GUID DAT_004ab8b0;
 
 extern void FUN_0049e4d0(void *block);
 
@@ -369,7 +350,7 @@ int KillSoundSampleSystem(void) {
         return 0;
     }
     DeletePlayableSamples(0);
-    DAT_007cad40->vtable->Release(DAT_007cad40);
+    ((struct DirectSoundObj *)DAT_007cad40)->vtable->Release(DAT_007cad40);
     DAT_007cad40 = 0;
     DAT_007988c0 = 0;
     return 1;
@@ -418,7 +399,7 @@ void FUN_00492db0(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00495a10
 int FUN_00495a10(void) {
     if (DAT_004bf774 != 0) {
-        DAT_0079a698 = CreateThread(0, 0x4000, (LPTHREAD_START_ROUTINE)FUN_00492db0, 0, 0, &DAT_007cad48);
+        DAT_0079a698 = CreateThread(0, 0x4000, (LPTHREAD_START_ROUTINE)FUN_00492db0, 0, 0, (LPDWORD)&DAT_007cad48);
         return 1;
     }
     DAT_007988bc = 1;
@@ -436,16 +417,16 @@ int FUN_00495b00(void) {
     if (DAT_004bf774 != 0 && DAT_0079a694 != 0) {
         TerminateThread(DAT_0079a698, 0);
 
-        ((struct DirectMusicLoaderVtbl *)DAT_007cacd8->vtable)
+        ((struct DirectMusicLoaderVtbl *)((struct DirectMusicObj *)DAT_007cacd8)->vtable)
             ->ClearCache(DAT_007cacd8, &DAT_004ab8b0);
-        ((struct DirectMusicLoaderVtbl *)DAT_007cacd8->vtable)->Release(DAT_007cacd8);
+        ((struct DirectMusicLoaderVtbl *)((struct DirectMusicObj *)DAT_007cacd8)->vtable)->Release(DAT_007cacd8);
 
-        ((struct DirectMusicPerformanceVtbl *)DAT_007cacdc->vtable)
+        ((struct DirectMusicPerformanceVtbl *)((struct DirectMusicObj *)DAT_007cacdc)->vtable)
             ->Stop(DAT_007cacdc, 0, 0, 0, 0);
-        ((struct DirectMusicPerformanceVtbl *)DAT_007cacdc->vtable)->CloseDown(DAT_007cacdc);
-        ((struct DirectMusicPerformanceVtbl *)DAT_007cacdc->vtable)->Release(DAT_007cacdc);
+        ((struct DirectMusicPerformanceVtbl *)((struct DirectMusicObj *)DAT_007cacdc)->vtable)->CloseDown(DAT_007cacdc);
+        ((struct DirectMusicPerformanceVtbl *)((struct DirectMusicObj *)DAT_007cacdc)->vtable)->Release(DAT_007cacdc);
 
-        ((struct DirectMusicComposerVtbl *)DAT_007cad44->vtable)->Release(DAT_007cad44);
+        ((struct DirectMusicComposerVtbl *)((struct DirectMusicObj *)DAT_007cad44)->vtable)->Release(DAT_007cad44);
 
         DAT_0079a694 = 0;
     }

@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "bloke_ai.h"
 #include "bricks.h"
@@ -37,25 +38,6 @@ struct RepairOrder {
     int var_18;
     int var_1c;
 };
-
-extern void *DAT_0079abfc;
-extern void *DAT_0079a8a8;
-extern void *DAT_0079a8ac;
-extern void *DAT_0079a8b0;
-extern void *DAT_0079a8b4;
-extern int DAT_0079a8b8;
-extern int DAT_0079a8bc;
-extern void *DAT_0079a8c0;
-extern void *DAT_0079a8c4;
-extern int DAT_0079a8c8;
-extern int DAT_0079a8cc;
-extern unsigned int DAT_0079a8d0;
-extern void *DAT_0079a8d4;
-extern unsigned int DAT_0080ff64;
-extern int DAT_00832bd0;
-extern unsigned int DAT_00832bd8;
-extern float FLOAT_004ab480;
-extern struct LegoConfig *lpConfig;
 
 extern void *FUN_004a020e(unsigned int count, unsigned int size);
 extern void FUN_0049e4d0(void *block);

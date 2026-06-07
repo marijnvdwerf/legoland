@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "binv.h"
@@ -34,24 +35,6 @@ struct CursorState {
 };
 
 #include "image_sprite.h"
-
-extern void *DAT_00616060;
-extern void *DAT_00616018;
-extern unsigned int DAT_00616028;
-extern unsigned int DAT_0061602c;
-extern unsigned int DAT_00616030;
-extern unsigned short DAT_00616034;
-extern unsigned int DAT_00616048;
-extern unsigned int DAT_0061604c;
-extern unsigned int DAT_00616050;
-extern unsigned int DAT_00616054;
-extern unsigned int DAT_00616058;
-extern unsigned int DAT_0061605c;
-extern unsigned int DAT_0081cde8;
-extern struct CursorState *DAT_0081cde4;
-extern struct CursorState *DAT_008119b8;
-extern struct Cursor EditCursor;
-extern unsigned int EditMode;
 
 // FUNCTION: LEGOLAND 0x0042a7b0
 void FUN_0042a7b0(void) { STUB(); }
@@ -130,7 +113,7 @@ void FUN_0042ba40(void) {
     EditMode = 1;
     DAT_008119b8 = temp;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(&DAT_008119b8->var_3c);
+    SetEditCursorFootPrint(&((struct CursorState *)DAT_008119b8)->var_3c);
 }
 
 // FUNCTION: LEGOLAND 0x0042ba80

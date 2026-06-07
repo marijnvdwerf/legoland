@@ -1,15 +1,10 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "clipping.h"
 #include "freeplay.h"
 #include "icon.h"
 #include "llidb.h"
-
-struct FreePlaySpriteSlot {
-    struct Sprite *field_0;
-    struct Sprite *field_4;
-    unsigned char pad_8[0x14];
-};
 
 struct ElemRecord {
     unsigned char pad_0[8];
@@ -17,23 +12,6 @@ struct ElemRecord {
 };
 
 #include "image_sprite.h"
-
-extern unsigned int DAT_007cb3a0;
-extern unsigned int DAT_007cb394;
-extern struct Sprite *DAT_007cb398;
-extern struct Sprite *DAT_007cb3a8;
-extern struct Sprite *DAT_007cb3ac;
-extern struct Sprite *DAT_007cb3b0;
-extern struct Sprite *DAT_007cb3b4;
-extern struct Sprite *DAT_007cb3c0;
-extern struct Sprite *DAT_007cb3c4;
-extern struct Sprite *DAT_007cb3c8;
-extern struct Sprite *DAT_007cb3cc;
-extern struct Sprite *DAT_007cb3d4;
-extern unsigned char DAT_0080ffd4[15];
-extern struct FreePlaySpriteSlot DAT_004beb94[10];
-extern unsigned int DAT_004becac;
-extern int DAT_004becb0[1];
 
 // FUNCTION: LEGOLAND 0x0048a8a0
 void InitFreePlayScreen(void) { STUB(); }

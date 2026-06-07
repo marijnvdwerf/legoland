@@ -1,5 +1,6 @@
 #include "legoland.h"
 #include <windows.h>
+#include "globals.h"
 
 #include "print_sprite.h"
 #include "text.h"
@@ -9,24 +10,6 @@ struct TextSprite {
     unsigned char pad_0[0x1c];
     unsigned int field_1c;
 };
-
-extern unsigned int DAT_006675b4;
-extern void *DAT_00813a0c;
-extern void *DAT_008139e0;
-extern void *DAT_008139e4;
-extern void *DAT_008139e8;
-extern void *DAT_008139ec;
-extern void *DAT_008139f0;
-extern void *DAT_008139f4;
-extern void *DAT_008139f8;
-extern void *DAT_008139fc;
-extern void *DAT_00813a00;
-extern void *DAT_00813a04;
-extern void *DAT_00813a08;
-extern void *PTR_0066808c;
-extern void *PTR_00668090;
-extern void *PTR_00668094;
-extern void *PTR_00668098;
 
 #include "image_sprite.h"
 

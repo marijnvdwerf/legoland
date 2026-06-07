@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemain.h"
 #include "gamemap.h"
@@ -36,32 +37,9 @@ struct LegoConfig {
     unsigned int field_38;
 };
 
-extern struct GameMainNode *DAT_00668fc0;
-extern struct LegoConfig *lpConfig;
-
-extern unsigned short NEWFLC_Repeat;
-extern unsigned int NEWFLC_BuffSize;
-extern unsigned int NEWFLC_CheckDuplicate;
-extern unsigned int DAT_00669054;
-extern char DAT_00669058[0x100];
-extern unsigned char DAT_00669050;
-extern unsigned int DAT_004bb5ac;
-extern unsigned int DAT_0066879c;
-extern unsigned int DAT_00669098;
-extern unsigned int DAT_00832920;
-extern unsigned int DAT_00832924;
-extern unsigned int DAT_007fdca4;
-extern unsigned int DAT_004bb5b0;
-extern unsigned int DAT_00832974;
-extern unsigned int DAT_00832994;
-extern unsigned int DAT_00832980;
-extern unsigned int DAT_00832ba8;
-
 extern int __strcmpi(const char *s1, const char *s2);
 extern int FUN_004a04b9(const char *str);
 extern char *strcpy(char *dst, const char *src);
-
-extern char DAT_004d8bb0[0x100];
 
 // FUNCTION: LEGOLAND 0x004777c0
 struct GameMainNode *FUN_004777c0(struct GameMainArg *arg) {
