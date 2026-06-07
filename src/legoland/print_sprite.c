@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "print_sprite.h"
 #include "render.h"
@@ -17,8 +18,6 @@ struct PersonBlock {
     unsigned int field_1c;
 };
 
-extern void *_malloc(unsigned int size);
-extern void FUN_0049e4d0(void *ptr);
 
 // FUNCTION: LEGOLAND 0x004853a0
 void PrintSprite(unsigned int sprite, unsigned int x, unsigned int y, unsigned int param_4, unsigned int param_5) { STUB(); }

@@ -1,9 +1,9 @@
 #include "legoland.h"
+#include "crt.h"
 #include <stdarg.h>
 
 #include "globals.h"
 
-extern int FUN_0049fdeb(char *buffer, const char *format, va_list ap);
 
 // FUNCTION: LEGOLAND 0x00453cd0
 void FUN_00453cd0(char *text) {}

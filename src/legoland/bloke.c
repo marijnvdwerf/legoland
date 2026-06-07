@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "debug_alloc.h"
 #include "man3d.h"
@@ -66,9 +67,6 @@ struct BNVPath {
     unsigned int field_40;
 };
 
-extern int FUN_0049e4b2(void);
-extern void *_malloc(unsigned int size);
-extern void FUN_0049e4d0(void *ptr);
 
 struct Person {
     unsigned int field_0;

@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "ride_queue.h"
 #include "globals.h"
@@ -57,7 +58,6 @@ struct RideSlot {
     unsigned char field_60;
 };
 
-extern void FUN_0049e4d0(void *ptr);
 
 // FUNCTION: LEGOLAND 0x00411e30
 void FUN_00411e30(struct Queue *queue, struct QueueNode *node) {

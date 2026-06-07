@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "print_sprite.h"
 #include "render.h"
@@ -36,8 +37,6 @@ struct RenderViewport {
     unsigned int y;
 };
 
-extern void *_malloc(unsigned int size);
-extern void FUN_0049e4d0(void *ptr);
 
 // FUNCTION: LEGOLAND 0x004860f0
 void FUN_004860f0(void) { STUB(); }

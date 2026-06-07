@@ -1,5 +1,6 @@
 #include <string.h>
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "gamemap.h"
@@ -99,8 +100,6 @@ struct WaterListNode {
 #include "power.h"
 #include "image_sprite.h"
 
-extern void FUN_0049e4d0(void *block);
-extern void *_malloc(unsigned int size);
 
 // FUNCTION: LEGOLAND 0x00417a90
 unsigned int FUN_00417a90(void) {

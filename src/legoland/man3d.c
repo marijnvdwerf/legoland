@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 #include "man3d.h"
 #include "resource.h"
@@ -57,10 +58,6 @@ struct Bloke {
     struct Person *person;
 };
 
-extern void FUN_0049e4d0(void *ptr);
-extern void *_malloc(unsigned int size);
-extern unsigned int FUN_0049e4b2(void);
-extern int FUN_0049e573(char *buffer, const char *format, ...);
 
 // FUNCTION: LEGOLAND 0x0043f660
 void LoadPos(void) { STUB(); }

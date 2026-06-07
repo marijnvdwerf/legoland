@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "gamemap.h"
@@ -29,10 +30,7 @@ struct BarrelRide {
     BarrelVtblFn var_bc;
 };
 
-extern void *_malloc(unsigned int size);
-extern int __strcmpi(const char *s1, const char *s2);
 #include "image_sprite.h"
-extern int FUN_0049e4b2(void);
 
 // FUNCTION: LEGOLAND 0x0043bdb0
 void FUN_0043bdb0(void *param1) {

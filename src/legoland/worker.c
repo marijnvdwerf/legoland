@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "bloke_ai.h"
@@ -39,8 +40,6 @@ struct RepairOrder {
     int var_1c;
 };
 
-extern void *FUN_004a020e(unsigned int count, unsigned int size);
-extern void FUN_0049e4d0(void *block);
 
 // FUNCTION: LEGOLAND 0x00499530
 void LoadWorkerInterfaceGFX(void) {

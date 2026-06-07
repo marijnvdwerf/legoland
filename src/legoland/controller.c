@@ -1,8 +1,8 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "globals.h"
 
-extern void FUN_0049e4d0(void *ptr);
 
 // FUNCTION: LEGOLAND 0x00451e70
 void SetupControllers(void) { STUB(); }

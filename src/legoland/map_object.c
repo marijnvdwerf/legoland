@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "gamemap.h"
@@ -87,8 +88,6 @@ struct Overlay {
    map_object views the same memory through its own struct MapTile layout. */
 #define MapTileGrid ((struct MapTile **)DAT_00801400)
 
-extern void *_malloc(unsigned int size);
-extern void FUN_0049e4d0(void *block);
 
 // FUNCTION: LEGOLAND 0x0045dd80
 void AddObjectToMap(void) { STUB(); }

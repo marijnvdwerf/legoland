@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "gamemap.h"
@@ -7,15 +8,11 @@
 #include "llidb.h"
 #include "map_object.h"
 
-extern void *_malloc(unsigned int size);
-extern void FUN_0049e5c5(const char *msg);
 
 struct Sprite;
 
 #include "image_sprite.h"
 
-extern int __strcmpi(const char *s1, const char *s2);
-extern void FUN_0049e4d0(void *block);
 
 struct ChainNode {
     struct ChainNode *next;

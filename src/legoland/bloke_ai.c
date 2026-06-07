@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "bloke_ai.h"
 #include "bloke.h"
 #include "globals.h"
@@ -17,7 +18,6 @@ struct BlokeRideState {
     unsigned short flags;
 };
 
-extern unsigned int FUN_0049e4b2(void);
 
 // FUNCTION: LEGOLAND 0x0044e760
 void NewLongTermAction(struct Bloke *bloke, unsigned short action) {

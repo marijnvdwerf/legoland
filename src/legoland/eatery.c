@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "gamemap.h"
@@ -12,8 +13,6 @@
 
 #include "image_sprite.h"
 
-extern void FUN_0049e4d0(void *ptr);
-extern void *_malloc(unsigned int size);
 
 struct EateryObj;
 struct EateryFX;

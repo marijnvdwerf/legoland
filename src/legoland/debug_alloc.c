@@ -1,10 +1,9 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "debug_alloc.h"
 #include "globals.h"
 
-extern unsigned int FUN_0049fdc2(void *block);
-extern void FUN_0049e4d0(void *block);
 
 // FUNCTION: LEGOLAND 0x00453a20
 void DBPrintf(const char *format, ...) {}

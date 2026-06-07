@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "gamemap.h"
 #include "ride_queue.h"
@@ -49,8 +50,6 @@ struct GoldRandItem {
     struct GoldRandSub *field_8;
 };
 
-extern int __strcmpi(const char *s1, const char *s2);
-extern int FUN_0049e4b2(void);
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x00406920

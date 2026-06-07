@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "gamemap.h"
@@ -55,10 +56,7 @@ struct PlaneRideInterface {
     PlaneRideMethod field_bc;
 };
 
-extern void *_malloc(unsigned int size);
-extern int FUN_0049e4b2(void);
 #include "image_sprite.h"
-extern int __strcmpi(const char *s1, const char *s2);
 
 // FUNCTION: LEGOLAND 0x0043d880
 void FUN_0043d880(void *param_1) {

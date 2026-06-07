@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "gamemap.h"
 #include "obj_instance.h"
@@ -62,7 +63,6 @@ struct ListNode {
 };
 
 #include "image_sprite.h"
-extern int __strcmpi(const char *s1, const char *s2);
 
 // FUNCTION: LEGOLAND 0x0043a7a0
 void FUN_0043a7a0(void) { STUB(); }

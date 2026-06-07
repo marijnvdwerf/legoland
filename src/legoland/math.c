@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 struct Navigator {
     int x;
@@ -20,7 +21,6 @@ struct RectNode {
     struct RectNode *next;
 };
 
-extern int FUN_0049e4b2(void);
 
 // FUNCTION: LEGOLAND 0x004806a0
 unsigned int Rand_Max(unsigned int max_value) {

@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "gamemap.h"
@@ -75,7 +76,6 @@ struct JungleFishHolder {
     struct JungleFishObj *field_c;
 };
 
-extern int FUN_0049e4b2(void);
 
 #include "image_sprite.h"
 

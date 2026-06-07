@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "ride_queue.h"
@@ -57,7 +58,6 @@ struct CountNode {
 
 #include "pumps.h"
 #include "image_sprite.h"
-extern void FUN_0049e4d0(unsigned int ptr);
 
 // FUNCTION: LEGOLAND 0x004051a0
 unsigned int FUN_004051a0(unsigned int param_1) { STUB(); }

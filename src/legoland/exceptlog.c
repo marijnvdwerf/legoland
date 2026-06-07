@@ -1,11 +1,11 @@
 #include "legoland.h"
+#include "crt.h"
 
 struct ExceptionEntry {
     unsigned int code;
     const char *message;
 };
 
-extern char *_strrchr(const char *s, int c);
 
 // FUNCTION: LEGOLAND 0x00453da0
 void FUN_00453da0(void) { STUB(); }

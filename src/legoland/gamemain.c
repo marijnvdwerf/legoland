@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "gamemain.h"
@@ -37,8 +38,6 @@ struct LegoConfig {
     unsigned int field_38;
 };
 
-extern int __strcmpi(const char *s1, const char *s2);
-extern int FUN_004a04b9(const char *str);
 extern char *strcpy(char *dst, const char *src);
 
 // FUNCTION: LEGOLAND 0x004777c0

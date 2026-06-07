@@ -1,13 +1,11 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "llidb.h"
 #include "tilemap.h"
 #include "globals.h"
 
-extern void FUN_0049e4d0(void *block);
 #include "image_sprite.h"
-extern unsigned int FUN_0049f4ca(int fd, void *buffer, unsigned int count);
-extern int FUN_004a63e4(int fd, void *buffer, unsigned int count);
 
 struct ILFTable {
     unsigned char pad_0[4];

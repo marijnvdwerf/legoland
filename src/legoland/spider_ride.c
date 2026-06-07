@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "binv.h"
@@ -55,9 +56,7 @@ struct RideObject {
     void (*field_bc)(void);
 };
 
-extern void *_malloc(unsigned int size);
 #include "image_sprite.h"
-extern int __strcmpi(const char *a, const char *b);
 
 // FUNCTION: LEGOLAND 0x004158f0
 int FUN_004158f0(struct SpiderNode *arg0)

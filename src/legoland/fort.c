@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "gamemap.h"
 #include "map_object.h"
@@ -25,7 +26,6 @@ struct EditCursorData {
     unsigned char field_3c;
 };
 
-extern int __strcmpi(const char *s1, const char *s2);
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x00406240

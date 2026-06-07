@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "bricks.h"
@@ -70,8 +71,6 @@ struct EventList {
     struct ObjectiveEvent *head;
 };
 
-extern void *_malloc(unsigned int size);
-extern void FUN_0049e4d0(void *block);
 
 // FUNCTION: LEGOLAND 0x0046a040
 void FUN_0046a040(unsigned int param_1, unsigned int param_2) { STUB(); }

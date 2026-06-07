@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "gamemap.h"
@@ -9,7 +10,6 @@
 #include "safari_ride.h"
 
 #include "image_sprite.h"
-extern void *_malloc(unsigned int size);
 
 struct SafariBlockData {
     unsigned char pad_0[0x10];

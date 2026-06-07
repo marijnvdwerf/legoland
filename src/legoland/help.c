@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 #include <windows.h>
 
@@ -17,7 +18,6 @@ struct HelpAdvisor {
     unsigned int field_c;
 };
 
-extern void FUN_0049e4d0(void *block);
 
 #include "image_sprite.h"
 

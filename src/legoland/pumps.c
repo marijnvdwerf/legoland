@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "gamemap.h"
 #include "map_object.h"
@@ -10,7 +11,6 @@ struct PumpSource {
     unsigned int var_c;
 };
 
-extern void FUN_0049e4d0(void *block);
 
 // FUNCTION: LEGOLAND 0x00411a10
 void FUN_00411a10(struct PumpSource *param_1) {

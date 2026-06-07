@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 #include "tooltip.h"
 #include "string.h"
@@ -28,8 +29,6 @@ struct PopUp {
 #include "image_sprite.h"
 #include "help.h"
 
-extern void FUN_0049e4d0(void *ptr);
-extern int FUN_0049e573(char *buffer, const char *format, ...);
 
 // FUNCTION: LEGOLAND 0x0048fc40
 void InitTitleScreen(void) { STUB(); }

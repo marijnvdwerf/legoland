@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "clipping.h"
@@ -99,8 +100,6 @@ struct TimedIndicator {
 
 #include "image_sprite.h"
 
-extern void FUN_0049e4d0(void *ptr);
-extern void *_malloc(unsigned int size);
 
 // FUNCTION: LEGOLAND 0x0046d3a0
 void FUN_0046d3a0(void) { DAT_006687a4 = 4; }

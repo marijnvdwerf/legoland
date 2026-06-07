@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "bricks.h"
@@ -39,9 +40,6 @@ struct MapElement {
     unsigned char pad_e[0x14 - 0xe];
 };
 
-extern void *FUN_004a020e(unsigned int count, unsigned int size);
-extern char *_strncpy(char *dest, const char *src, unsigned int count);
-extern void FUN_0049e4d0(void *block);
 
 // FUNCTION: LEGOLAND 0x00468810
 void FUN_00468810(char *name) {

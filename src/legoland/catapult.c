@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "gamemap.h"
 #include "render3d.h"
@@ -58,7 +59,6 @@ struct CatapultInner {
 
 #include "image_sprite.h"
 
-extern int __strcmpi(const char *s1, const char *s2);
 
 // FUNCTION: LEGOLAND 0x004030f0
 void FUN_004030f0(void) { STUB(); }

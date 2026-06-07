@@ -1,5 +1,6 @@
 #include <windows.h>
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "image_sprite.h"
@@ -81,9 +82,6 @@ struct KLIBAUDIO_Object {
     void *vtable;
 };
 
-extern void FUN_0049e4d0(void *block);
-extern void *_malloc(unsigned int size);
-extern unsigned int FUN_004a56c3(unsigned int a, unsigned int b, unsigned int c);
 
 // FUNCTION: LEGOLAND 0x00496f20
 unsigned int GetVRAMAddress(unsigned int address) {

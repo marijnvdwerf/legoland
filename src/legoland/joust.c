@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "gamemap.h"
@@ -54,7 +55,6 @@ struct JoustInterface {
 };
 
 #include "image_sprite.h"
-extern int __strcmpi(const char *s1, const char *s2);
 
 // FUNCTION: LEGOLAND 0x00407970
 void FUN_00407970(void) { STUB(); }

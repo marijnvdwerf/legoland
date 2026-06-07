@@ -1,10 +1,9 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "profile_io.h"
 #include "globals.h"
 
-extern void *_malloc(unsigned int size);
-extern void FUN_0049e4d0(void *ptr);
 
 struct ProfileNode {
     struct ProfileNode *next;

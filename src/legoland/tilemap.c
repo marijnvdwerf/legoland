@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "pathfind.h"
 #include "tilemap.h"
@@ -25,7 +26,6 @@ struct Point {
     int y;
 };
 
-extern void FUN_0049e4d0(void *block);
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0045a9b0

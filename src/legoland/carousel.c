@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "gamemap.h"
@@ -40,7 +41,6 @@ struct CarouselSlotOwner {
 };
 
 #include "image_sprite.h"
-extern int FUN_0049e4b2(void);
 
 // FUNCTION: LEGOLAND 0x0042bbc0
 void FUN_0042bbc0(void) { STUB(); }

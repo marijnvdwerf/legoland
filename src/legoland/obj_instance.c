@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "obj_instance.h"
 #include "globals.h"
 
@@ -48,7 +49,6 @@ struct Ride {
     struct RideNode *riders;
 };
 
-extern void FUN_0049e4d0(void *ptr);
 
 // FUNCTION: LEGOLAND 0x00489e60
 void FUN_00489e60(void) { STUB(); }

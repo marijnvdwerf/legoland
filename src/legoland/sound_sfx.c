@@ -1,5 +1,6 @@
 #include <windows.h>
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 #include "sound_sfx.h"
 
@@ -63,7 +64,6 @@ struct DirectMusicObj {
     void *vtable;
 };
 
-extern void FUN_0049e4d0(void *block);
 
 // FUNCTION: LEGOLAND 0x004921c0
 void FUN_004921c0(void) { STUB(); }

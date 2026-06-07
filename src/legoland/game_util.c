@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "game_util.h"
 #include "gamemain.h"
@@ -13,8 +14,6 @@
 #include "map_object.h"
 #include "globals.h"
 
-extern int __strcmpi(const char *s1, const char *s2);
-extern int FUN_004a04b9(const char *str);
 
 struct GameObject {
     unsigned char pad_0[8];

@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 #include "string.h"
 #include "worker_mouse.h"
@@ -65,7 +66,6 @@ struct LegoConfig {
 
 #include "image_sprite.h"
 
-extern void FUN_0049e4d0(void *block);
 
 // FUNCTION: LEGOLAND 0x004741f0
 void Load_Interface_ControlIcons(void) {

@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "pathfind.h"
 #include "objclass.h"
@@ -39,8 +40,6 @@ struct DirNode {
     unsigned int y;
 };
 
-extern void *_malloc(unsigned int size);
-extern void FUN_0049e4d0(void *block);
 
 // FUNCTION: LEGOLAND 0x00481c50
 void AddPathSquare(struct InstancePos *pos) {

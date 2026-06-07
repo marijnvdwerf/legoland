@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "binv.h"
 #include "render3d.h"
@@ -53,7 +54,6 @@ struct SaveNode {
 };
 
 #include "image_sprite.h"
-extern int __strcmpi(const char *s1, const char *s2);
 
 // FUNCTION: LEGOLAND 0x00416ec0
 void FUN_00416ec0(void) { STUB(); }

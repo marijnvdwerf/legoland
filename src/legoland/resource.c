@@ -1,5 +1,6 @@
 #include <windows.h>
 #include "legoland.h"
+#include "crt.h"
 #include "resource.h"
 #include "globals.h"
 
@@ -36,9 +37,6 @@ struct MasterVolNode {
     char name[1];
 };
 
-extern void FUN_0049e4d0(void *block);
-extern void *_malloc(unsigned int size);
-extern int __strcmpi(const char *s1, const char *s2);
 extern unsigned int strlen(const char *s);
 extern char *strcpy(char *dst, const char *src);
 

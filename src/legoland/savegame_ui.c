@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "profile.h"
@@ -7,11 +8,6 @@
 #include "icon.h"
 #include "sound_music.h"
 
-extern int FUN_0049e573(char *buffer, const char *format, ...);
-extern void *FUN_0049f330(const char *filename, const char *mode);
-extern unsigned int FUN_0049f044(void *ptr, unsigned int size, unsigned int count, void *stream);
-extern int FUN_0049efee(void *stream);
-extern void FUN_0049e4d0(void *ptr);
 #include "image_sprite.h"
 
 struct SaveNode {

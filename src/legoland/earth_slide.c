@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "gamemap.h"
 #include "man3d.h"
@@ -76,7 +77,6 @@ struct ListNodeC {
     struct ListNodeC *next;
 };
 
-extern void *_malloc(unsigned int size);
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0042cd70

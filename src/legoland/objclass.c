@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "gamemap.h"
@@ -106,9 +107,6 @@ struct ObjInstance {
     unsigned int field_10;
 };
 
-extern void *_malloc(unsigned int size);
-extern void FUN_0049e4d0(void *block);
-extern int __strcmpi(const char *s1, const char *s2);
 
 // FUNCTION: LEGOLAND 0x00480990
 struct ObjectClass *AddNewObjectClass(void) {

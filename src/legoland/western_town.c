@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "gamemap.h"
@@ -23,8 +24,6 @@ struct JailCell {
 
 #include "image_sprite.h"
 
-extern void *_malloc(unsigned int size);
-extern void FUN_0049e4d0(void *ptr);
 
 // FUNCTION: LEGOLAND 0x004375d0
 void FUN_004375d0(struct MapObject *obj) {

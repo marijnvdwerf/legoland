@@ -1,11 +1,11 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 #include "man3d.h"
 #include "render3d.h"
 #include "llidb.h"
 #include <math.h>
 
-extern void FUN_0049e4d0(void *block);
 #include "image_sprite.h"
 
 struct Viewport {

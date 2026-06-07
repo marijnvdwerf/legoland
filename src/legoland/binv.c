@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "binv.h"
 
@@ -12,7 +13,6 @@ struct BinVModel {
     struct Vertex *vertices;
 };
 
-extern void FUN_0049e4d0(void *block);
 
 // FUNCTION: LEGOLAND 0x0044dc90
 void LoadBinV(void) { STUB(); }

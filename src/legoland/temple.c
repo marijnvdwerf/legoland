@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "gamemap.h"
 #include "obj_instance.h"
@@ -26,7 +27,6 @@ struct TempleObject {
 };
 
 #include "image_sprite.h"
-extern int __strcmpi(const char *a, const char *b);
 
 // FUNCTION: LEGOLAND 0x004169c0
 void FUN_004169c0(void) { STUB(); }

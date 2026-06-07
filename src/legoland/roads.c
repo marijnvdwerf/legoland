@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "gamemap.h"
@@ -49,7 +50,6 @@ struct RoadPlaceArg {
     unsigned int field_4;
 };
 
-extern void FUN_0049e4d0(void *block);
 
 // FUNCTION: LEGOLAND 0x004132a0
 void FUN_004132a0(void) { STUB(); }

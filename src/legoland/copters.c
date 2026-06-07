@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 
 #include "gamemap.h"
 #include "ride_queue.h"
@@ -48,8 +49,6 @@ struct CopterSub {
     int field_50;
 };
 
-extern void *_malloc(unsigned int size);
-extern int __strcmpi(const char *s1, const char *s2);
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x00403c40

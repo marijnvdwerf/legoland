@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "gamemap.h"
@@ -28,7 +29,6 @@ struct ScreenConfig {
 
 #include "image_sprite.h"
 
-extern char *_strncpy(char *dest, const char *src, unsigned int count);
 
 // FUNCTION: LEGOLAND 0x004585c0
 void FUN_004585c0(void) { STUB(); }
