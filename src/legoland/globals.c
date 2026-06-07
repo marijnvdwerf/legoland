@@ -547,6 +547,12 @@ unsigned short DAT_0082c6ac;
 struct JailCell *DAT_0062fd3c;
 // GLOBAL: LEGOLAND 0x004bcbf4
 struct LegoConfig *lpConfig;
+// GLOBAL: LEGOLAND 0x004b9ca4
+void (*DAT_004b9ca4)(const char *);
+// GLOBAL: LEGOLAND 0x00667d6c
+int DAT_00667d6c;
+// GLOBAL: LEGOLAND 0x0066920c
+int DAT_0066920c;
 // GLOBAL: LEGOLAND 0x004cbeac
 struct RideQueueEntry *DAT_004cbeac;
 // GLOBAL: LEGOLAND 0x004cbf68

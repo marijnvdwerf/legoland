@@ -250,6 +250,8 @@ extern void *DAT_004b929c;
 extern void *PTR_004b92c0;
 // 0x004b9550
 extern unsigned char DAT_004b9550[8];
+// 0x004b9ca4
+extern void (*DAT_004b9ca4)(const char *);
 // 0x004b9ca8
 extern unsigned int DAT_004b9ca8;
 // 0x004b9e5c
@@ -1098,6 +1100,8 @@ extern unsigned int DAT_00667d10;
 extern unsigned int DAT_00667d54;
 // 0x00667d58
 extern int DAT_00667d58;
+// 0x00667d6c
+extern int DAT_00667d6c;
 // 0x00667d70
 extern unsigned int DDRAWENV[246];
 // 0x00668070
@@ -1350,6 +1354,8 @@ extern unsigned int *DAT_00669200;
 extern unsigned int DAT_00669204;
 // 0x00669208
 extern void *g_hInstance;
+// 0x0066920c
+extern int DAT_0066920c;
 // 0x00669210
 extern void *DAT_00669210;
 // 0x00669240
