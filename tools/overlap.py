@@ -55,6 +55,16 @@ def sizeof(decl):
         return None
     return base * mult
 
+# Known-intentional "opaque block + separately-named typed fields" globals: a
+# bulk-zeroed/serialized region whose interior fields are also declared as their
+# own typed globals (matching port2). The overlap is by design, not a modeling
+# error, so we don't flag it. Key = base address of the block.
+WHITELIST = {
+    0x00667d70,  # DDRAWENV[246]: game DirectDraw state block; interior fields
+                 # (ddSurface1@0x300, palette@0x314, video_rgb_mode@0x318) stay
+                 # as separate typed globals, as in port2.
+}
+
 def parse():
     out = []
     lines = pathlib.Path(HDR).read_text().splitlines()
@@ -84,6 +94,8 @@ def main():
         naddr = g[i + 1][0]
         if sz is None or isinstance(sz, tuple):
             unknown += 1
+            continue
+        if addr in WHITELIST:
             continue
         end = addr + sz
         if end > naddr:
