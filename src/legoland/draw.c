@@ -5,7 +5,6 @@
 #include "draw.h"
 
 #include "image_sprite.h"
-extern __declspec(noreturn) void FUN_004a02b8(int status);
 
 // FUNCTION: LEGOLAND 0x004636f0
 int InstallDirectDraw(void) { return 0; }

@@ -38,7 +38,6 @@ struct LegoConfig {
     unsigned int field_38;
 };
 
-extern char *strcpy(char *dst, const char *src);
 
 // FUNCTION: LEGOLAND 0x004777c0
 struct GameMainNode *FUN_004777c0(struct GameMainArg *arg) {

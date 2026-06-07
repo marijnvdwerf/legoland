@@ -37,8 +37,6 @@ struct MasterVolNode {
     char name[1];
 };
 
-extern unsigned int strlen(const char *s);
-extern char *strcpy(char *dst, const char *src);
 
 // FUNCTION: LEGOLAND 0x00489440
 struct MasterDirNode *FUN_00489440(char *name) {

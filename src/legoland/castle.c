@@ -3335,9 +3335,6 @@ void FUN_00429ac0(int a, int b, int c, void *d) { STUB(); }
 // FUNCTION: LEGOLAND 0x00429af0
 void FUN_00429af0(int a, void *b) { STUB(); }
 
-void FUN_00429ac0(int a, int b, int c, void *d);
-void FUN_00429af0(int a, void *b);
-
 // FUNCTION: LEGOLAND 0x00429b60
 void FUN_00429b60(int a, int b) {
     int local[3];
