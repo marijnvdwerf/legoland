@@ -11,21 +11,10 @@
 #include "objectives.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "globals.h"
 
-extern unsigned int DAT_00669098;
-extern unsigned int DAT_0066879c;
-extern unsigned int DAT_007fdca4;
-
-extern unsigned int DAT_004bb5b0;
 extern int __strcmpi(const char *s1, const char *s2);
 extern int FUN_004a04b9(const char *str);
-
-extern unsigned char DAT_00669050;
-extern unsigned int DAT_00669054;
-extern unsigned int DAT_00832924;
-extern unsigned int DAT_004bb688;
-extern unsigned int DAT_004bb6bc;
-extern unsigned int DAT_004bb6f8;
 
 struct GameObject {
     unsigned char pad_0[8];

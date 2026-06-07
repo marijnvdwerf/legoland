@@ -4,6 +4,7 @@
 
 #include "icon.h"
 #include "llidb.h"
+#include "globals.h"
 
 struct DInputDeviceVtbl {
     void *pad_0[2];
@@ -15,19 +16,6 @@ struct DInputDeviceVtbl {
 struct DInputDevice {
     struct DInputDeviceVtbl *vtable;
 };
-
-extern IDirectInputDeviceA *dinput_keyboard;
-extern IDirectInputDeviceA *dintput_mouse;
-extern struct DInputDevice *dinput;
-extern unsigned char DAT_007fdda0[256];
-extern unsigned char DAT_00668d78[16];
-extern int mouse_granularity;
-extern int DAT_00668d80;
-extern unsigned char DAT_007fddca;
-extern unsigned char DAT_007fddd6;
-extern unsigned int DAT_004baff8;
-extern unsigned int DAT_00668e34;
-extern unsigned char DAT_007fdd80;
 
 // FUNCTION: LEGOLAND 0x00473870
 void InitInputSystem(void) { STUB(); }
@@ -43,12 +31,12 @@ void ScanKeyboard(void) {
         return;
     }
     while (1) {
-        hr = IDirectInputDevice_GetDeviceState(dinput_keyboard, 0x100, DAT_007fdda0);
+        hr = IDirectInputDevice_GetDeviceState((IDirectInputDeviceA *)dinput_keyboard, 0x100, DAT_007fdda0);
         if (hr == DI_OK) {
             return;
         }
         if (hr == 0x8007000c || hr == 0x8007001e) {
-            IDirectInputDevice_Acquire(dinput_keyboard);
+            IDirectInputDevice_Acquire((IDirectInputDeviceA *)dinput_keyboard);
         }
     }
 }
@@ -73,12 +61,12 @@ void ScanMouse(void) {
 
     if (dintput_mouse != NULL) {
         while (1) {
-            hr = IDirectInputDevice_GetDeviceState(dintput_mouse, 0x10, DAT_00668d78);
+            hr = IDirectInputDevice_GetDeviceState((IDirectInputDeviceA *)dintput_mouse, 0x10, DAT_00668d78);
             if (hr == DI_OK) {
                 break;
             }
             if (hr == 0x8007000c || hr == 0x8007001e) {
-                IDirectInputDevice_Acquire(dintput_mouse);
+                IDirectInputDevice_Acquire((IDirectInputDeviceA *)dintput_mouse);
             }
         }
     }
@@ -94,7 +82,7 @@ void KillInputSystem(void) {
     FUN_00473a50();
     FUN_00473a60();
     if (dinput != NULL) {
-        dinput->vtable->Release(dinput);
+        ((struct DInputDevice *)dinput)->vtable->Release(dinput);
     }
 }
 

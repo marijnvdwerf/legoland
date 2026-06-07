@@ -3,6 +3,7 @@
 #include "pathfind.h"
 #include "tilemap.h"
 #include "llidb.h"
+#include "globals.h"
 
 struct MapTile {
     unsigned char pad_0[8];
@@ -23,17 +24,6 @@ struct Point {
     int x;
     int y;
 };
-
-extern void *TileSpriteArray[];
-extern void *PathSprite;
-extern struct MapTile **DAT_00801400;
-extern struct LegoConfig *lpConfig;
-extern unsigned char DAT_004b9550[8];
-extern unsigned int DAT_00667c88;
-extern unsigned int DAT_00667c8c;
-extern unsigned int DAT_00667c90;
-extern unsigned int DAT_00667c94;
-extern void *DAT_00667c9c;
 
 extern void FUN_0049e4d0(void *block);
 #include "image_sprite.h"
@@ -168,7 +158,7 @@ void FUN_0045cb90(struct Point *param) {
     struct MapTile *tile;
     unsigned short value;
 
-    tile = DAT_00801400[param->y];
+    tile = (struct MapTile *)DAT_00801400[param->y];
     value = *(unsigned short *)PathSprite;
     *(unsigned short *)((unsigned char *)tile + param->x * 0x14 + 8) = value;
 }

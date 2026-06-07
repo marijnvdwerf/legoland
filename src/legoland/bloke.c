@@ -6,6 +6,7 @@
 #include "pathfind.h"
 #include "objclass.h"
 #include "bloke.h"
+#include "globals.h"
 
 struct BestNode {
     unsigned char pad_0[0x20];
@@ -65,21 +66,9 @@ struct BNVPath {
     unsigned int field_40;
 };
 
-extern unsigned int DAT_0066b460;
-extern unsigned int DAT_0066b468;
-extern unsigned int DAT_0066b46c;
-extern void *DAT_0066b57c;
-extern int DAT_0083293c[13];
-extern struct Bloke *FirstBloke;
-extern unsigned int DAT_006661bc;
-
 extern int FUN_0049e4b2(void);
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *ptr);
-extern struct LegoConfig *lpConfig;
-extern unsigned int DAT_008119a4;
-extern unsigned int DAT_004bdd00;
-extern unsigned int DAT_004bdd04;
 
 struct Person {
     unsigned int field_0;

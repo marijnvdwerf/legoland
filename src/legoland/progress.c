@@ -5,23 +5,12 @@
 #include "draw.h"
 #include "interface.h"
 #include "sound_music.h"
+#include "globals.h"
 
 struct LegoConfig {
     unsigned char pad_0[0x28];
     unsigned int field_28;
 };
-
-extern void *PTR_004b92c0;
-extern unsigned int DAT_006687c0;
-extern unsigned int DAT_006687bc;
-extern unsigned int DAT_006687b0;
-extern unsigned int DAT_00668e38;
-extern unsigned int DAT_008119b4;
-extern unsigned int DAT_00798660;
-extern unsigned int DAT_00798664;
-extern unsigned int DAT_00798668;
-extern unsigned int DAT_0080ff84;
-extern struct LegoConfig *lpConfig;
 
 #include "image_sprite.h"
 

@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "map_object.h"
+#include "globals.h"
 
 struct PSCarInner {
     unsigned char pad_0[0x10];
@@ -34,17 +35,6 @@ struct EditTarget {
     unsigned char pad_0[0x3c];
     unsigned char field_3c;
 };
-
-extern void *DAT_0081caf0;
-extern unsigned int DAT_0062fe48;
-extern unsigned int DAT_0062fe4c;
-extern unsigned int DAT_0062fe10;
-extern unsigned int DAT_0062fe14;
-extern unsigned int DAT_0062fe18;
-extern unsigned short DAT_0062fe1c;
-extern unsigned int EditMode;
-extern struct Cursor EditCursor;
-extern void *DAT_008119b8;
 
 #include "image_sprite.h"
 

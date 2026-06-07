@@ -3,6 +3,7 @@
 #include "binv.h"
 #include "render3d.h"
 #include "llidb.h"
+#include "globals.h"
 
 struct TempleRide {
     unsigned char pad_0[4];
@@ -50,16 +51,6 @@ struct SaveNode {
     struct SaveNode *var_8;
     unsigned char pad_c[0x14];
 };
-
-extern unsigned int DAT_004cbf78;
-extern unsigned int DAT_004cbf80;
-extern unsigned int DAT_004cbfd0;
-extern void *DAT_004cbfc4;
-extern unsigned int DAT_004cbf98;
-extern unsigned int DAT_004cbf9c;
-extern unsigned int DAT_004cbfa0;
-extern unsigned short DAT_004cbfa4;
-extern struct SaveNode *DAT_004cbfd4;
 
 #include "image_sprite.h"
 extern int __strcmpi(const char *s1, const char *s2);

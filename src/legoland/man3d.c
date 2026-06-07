@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 #include "man3d.h"
 #include "resource.h"
 #include "print_sprite.h"
@@ -61,20 +62,6 @@ extern void *_malloc(unsigned int size);
 extern unsigned int FUN_0049e4b2(void);
 extern int FUN_0049e573(char *buffer, const char *format, ...);
 
-extern struct Person *DAT_00655a3c;
-extern struct Person *FirstBloke;
-extern void *DAT_0081c8c0;
-extern void *DAT_0081c8c4;
-extern void *DAT_0081c8c8;
-extern void *DAT_00630100;
-extern void *DAT_0062feac;
-extern unsigned int DAT_0062feb0[];
-extern unsigned int DAT_0062feb8[];
-extern unsigned int DAT_0062febc[];
-extern unsigned int DAT_0062fed4[];
-extern unsigned int DAT_0062feec[];
-extern void *DAT_0062fef4;
-
 // FUNCTION: LEGOLAND 0x0043f660
 void LoadPos(void) { STUB(); }
 
@@ -99,7 +86,7 @@ void FUN_0043f810(struct Person *person) {
     person->next = 0;
     if (DAT_00655a3c != 0) {
         person->next = DAT_00655a3c;
-        DAT_00655a3c->prev = person;
+        ((struct Person *)DAT_00655a3c)->prev = person;
     }
     DAT_00655a3c = person;
 }

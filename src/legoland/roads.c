@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "bricks.h"
@@ -48,19 +49,6 @@ struct RoadPlaceArg {
     unsigned int field_4;
 };
 
-extern struct RoadQueueEntry *DAT_004cbeac;
-extern void *DAT_0082c684;
-extern void *DAT_0082c680;
-extern void *DAT_0082c678;
-extern unsigned int DAT_00830f88;
-extern unsigned int DAT_004b4bf0[5];
-extern struct Cursor DAT_0082f760;
-extern unsigned int DAT_00830b74;
-extern unsigned int EditMode;
-extern void *DAT_008119b8;
-extern struct Cursor EditCursor;
-extern struct Cursor QueryCursor;
-
 extern void FUN_0049e4d0(void *block);
 
 // FUNCTION: LEGOLAND 0x004132a0
@@ -86,7 +74,7 @@ void FUN_00413650(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00413970
 unsigned int FUN_00413970(unsigned short param_1) {
-    struct RoadQueueEntry *entry = DAT_004cbeac;
+    struct RoadQueueEntry *entry = (struct RoadQueueEntry *)DAT_004cbeac;
     unsigned int count = 0;
 
     while (entry != NULL) {
@@ -146,7 +134,7 @@ void FUN_00413a10(struct LLIDB_Head *head) {
 
 // FUNCTION: LEGOLAND 0x00413a80
 void FUN_00413a80(void) {
-    struct RoadQueueEntry *entry = DAT_004cbeac;
+    struct RoadQueueEntry *entry = (struct RoadQueueEntry *)DAT_004cbeac;
     unsigned int handle;
     struct RoadQueueEntry *next;
 

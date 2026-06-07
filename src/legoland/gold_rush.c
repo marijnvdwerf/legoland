@@ -4,6 +4,7 @@
 #include "ride_queue.h"
 #include "render3d.h"
 #include "map_object.h"
+#include "globals.h"
 
 typedef void (*GoldVtblFn)(void);
 
@@ -47,19 +48,6 @@ struct GoldRandItem {
     unsigned char pad_0[8];
     struct GoldRandSub *field_8;
 };
-
-struct Sprite;
-
-extern struct GoldNode *DAT_004c1204;
-extern struct Sprite *DAT_004c11f8;
-extern struct Sprite *DAT_004c11fc;
-extern struct Sprite *DAT_004c1200;
-extern struct Sprite *DAT_004c11f4;
-extern struct Sprite *DAT_004c11e4;
-extern void *DAT_004c11f0;
-extern void *DAT_008119b8;
-extern unsigned int EditMode;
-extern struct Cursor EditCursor;
 
 extern int __strcmpi(const char *s1, const char *s2);
 extern int FUN_0049e4b2(void);

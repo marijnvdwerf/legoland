@@ -6,6 +6,7 @@
 #include "space_tower.h"
 #include "render3d.h"
 #include "map_object.h"
+#include "globals.h"
 
 struct RideObject {
     unsigned short var_0;
@@ -59,18 +60,6 @@ struct ListNode {
     unsigned char pad_0[8];
     struct ListNode *next;
 };
-
-extern void *DAT_004b7620;
-extern struct RideObject *DAT_0062fd74;
-extern struct ListNode *DAT_0062fda8;
-extern void *DAT_0062fd80;
-extern void *DAT_0062fd7c;
-extern void *DAT_0062fd68;
-extern void *DAT_0062fd6c;
-extern unsigned int EditMode;
-extern unsigned int DAT_008119b8;
-extern struct Cursor EditCursor;
-extern const unsigned char SPACE_TOWER_SFX[15];
 
 #include "image_sprite.h"
 extern int __strcmpi(const char *s1, const char *s2);
@@ -159,9 +148,9 @@ void FUN_0043b2b0(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0043b420
 void FUN_0043b420(void) {
     EditMode = 1;
-    DAT_008119b8 = (unsigned int)DAT_0062fd74;
+    DAT_008119b8 = DAT_0062fd74;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((void *)(DAT_008119b8 + 0x3c));
+    SetEditCursorFootPrint((void *)((unsigned int)DAT_008119b8 + 0x3c));
 }
 
 // FUNCTION: LEGOLAND 0x0043b460
@@ -181,7 +170,7 @@ void FUN_0043b570(void) {
     KillSprite(DAT_0062fd6c);
     FUN_0043ac20();
     Kill_FXList(SPACE_TOWER_SFX, 1);
-    DAT_0062fd74->var_cc = 0;
+    ((struct RideObject *)DAT_0062fd74)->var_cc = 0;
 }
 
 // FUNCTION: LEGOLAND 0x0043b5d0

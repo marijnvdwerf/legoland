@@ -7,6 +7,7 @@
 #include "sound_sfx.h"
 #include "sound_music.h"
 #include "map_object.h"
+#include "globals.h"
 
 typedef void (*CopterVtblFn)(void);
 
@@ -46,21 +47,6 @@ struct CopterSub {
     unsigned char pad_0[0x50];
     int field_50;
 };
-
-struct Sprite;
-struct Position;
-
-extern struct CopterNode *DAT_004c11b4;
-extern struct Sprite *DAT_004c1120;
-extern int DAT_004c1124[6];
-extern struct Sprite *DAT_004c113c[10];
-extern struct Sprite *DAT_004c1164;
-extern void *DAT_004c1198;
-extern struct Position *DAT_00830f98;
-extern unsigned char Helicopter_SFX[];
-extern void *DAT_008119b8;
-extern unsigned int EditMode;
-extern struct Cursor EditCursor;
 
 extern void *_malloc(unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);

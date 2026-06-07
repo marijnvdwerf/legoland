@@ -4,6 +4,7 @@
 #include "render3d.h"
 #include "sound_music.h"
 #include "map_object.h"
+#include "globals.h"
 
 typedef void (*CatapultVtblFn)(void);
 
@@ -54,18 +55,6 @@ struct CatapultInner {
     unsigned char pad_0[0x10];
     unsigned int field_10;
 };
-
-extern struct CatapultNode *DAT_004c1118;
-extern void *DAT_004c10f4;
-extern void *DAT_004c10f0;
-extern void *DAT_004c1100;
-extern unsigned int DAT_004c1104;
-extern unsigned int DAT_004c1108;
-extern unsigned short DAT_004c110c;
-extern unsigned char Catapult_SFX[];
-extern void *DAT_008119b8;
-extern unsigned int EditMode;
-extern struct Cursor EditCursor;
 
 #include "image_sprite.h"
 

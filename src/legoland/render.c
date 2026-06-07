@@ -3,6 +3,7 @@
 #include "print_sprite.h"
 #include "render.h"
 #include "challenge.h"
+#include "globals.h"
 
 struct CursorCacheNode {
     struct CursorCacheNode *next;
@@ -34,16 +35,6 @@ struct RenderViewport {
     unsigned int x;
     unsigned int y;
 };
-
-extern struct CursorCacheNode *DAT_00797e6c;
-extern unsigned int DAT_0066b61c;
-extern void *DAT_00798190[256];
-extern void *DAT_00798590;
-extern unsigned int DAT_007feb14;
-extern unsigned int DAT_007fe9a8;
-extern unsigned int DAT_00701e58;
-extern unsigned int DAT_0066be4c;
-extern unsigned int DAT_00701e5c;
 
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *ptr);

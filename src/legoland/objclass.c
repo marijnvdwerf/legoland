@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "objclass.h"
@@ -108,18 +109,6 @@ struct ObjInstance {
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *block);
 extern int __strcmpi(const char *s1, const char *s2);
-
-extern struct ObjectClass *ObjectClassList;
-extern struct RideNode *DAT_00669248;
-extern unsigned int DAT_0066924c;
-extern struct BestNode *DAT_0066b44c;
-extern unsigned int NEWFLC_CheckDuplicate;
-extern unsigned int NEWFLC_BuffSize;
-extern unsigned short NEWFLC_Repeat;
-extern unsigned int EditMode;
-extern void *DAT_008119b8;
-extern unsigned int GamePad;
-extern struct Cursor EditCursor;
 
 // FUNCTION: LEGOLAND 0x00480990
 struct ObjectClass *AddNewObjectClass(void) {

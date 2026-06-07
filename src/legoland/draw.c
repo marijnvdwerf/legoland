@@ -1,21 +1,7 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "draw.h"
-
-extern unsigned int DDRAWENV[246];
-extern unsigned int DAT_0066814c;
-extern unsigned int DAT_00668148;
-extern unsigned int DAT_007fe9c0[];
-extern unsigned int DAT_006681e8;
-extern unsigned int DAT_004b9ca8;
-extern unsigned int DAT_00668208;
-extern unsigned int DAT_00668204;
-extern void *renderEngine;
-extern int renderEngineTargetIdx;
-extern void *renderEngineTargets[1];
-
-extern char DAT_0066861c[128];
-extern unsigned char DAT_0066869b;
 
 #include "image_sprite.h"
 extern char *_strncpy(char *dest, const char *src, unsigned int count);
@@ -202,6 +188,6 @@ void FUN_00468410(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004687f0
 void FUN_004687f0(const char *param_1) {
-    _strncpy(DAT_0066861c, param_1, 0x80);
+    _strncpy((char *)&DAT_0066861c, param_1, 0x80);
     DAT_0066869b = 0;
 }
