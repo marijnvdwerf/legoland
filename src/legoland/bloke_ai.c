@@ -1,6 +1,7 @@
 #include "legoland.h"
 #include "bloke_ai.h"
 #include "bloke.h"
+#include "globals.h"
 
 struct BlokeList {
     unsigned char pad_0[0xcc];
@@ -17,16 +18,6 @@ struct BlokeRideState {
 };
 
 extern unsigned int FUN_0049e4b2(void);
-
-extern unsigned int DAT_0083291c;
-extern int DAT_006661c8;
-extern int DAT_006661bc;
-extern unsigned int DAT_00832990;
-extern int DAT_004b8334;
-extern int DAT_004b8340;
-extern int DAT_004b8344;
-extern unsigned int DAT_008119a4;
-extern void (*PTR_Bloke_DoNothing_004b8368[16])(struct Bloke *);
 
 // FUNCTION: LEGOLAND 0x0044e760
 void NewLongTermAction(struct Bloke *bloke, unsigned short action) {
@@ -269,7 +260,7 @@ void FUN_00450450(void) { STUB(); }
 void DoHighLevelAI(struct Bloke *bloke) {
     void (*fn)(struct Bloke *);
 
-    fn = PTR_Bloke_DoNothing_004b8368[bloke->action];
+    fn = (void (*)(struct Bloke *))PTR_Bloke_DoNothing_004b8368[bloke->action];
     if (fn != 0) {
         fn(bloke);
     }

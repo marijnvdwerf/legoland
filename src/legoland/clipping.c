@@ -2,13 +2,7 @@
 #include <windows.h>
 
 #include "clipping.h"
-
-struct ClipRect {
-    int left;
-    int top;
-    int right;
-    int bottom;
-};
+#include "globals.h"
 
 struct ClippedObject {
     unsigned char pad_0[8];
@@ -32,15 +26,6 @@ struct ClipNode {
     unsigned char pad_20[0xc];
     ClipNodeMethod field_2c;
 };
-
-extern struct ClipRect SPRITE_ClipRect;
-extern unsigned int DAT_00798630;
-extern unsigned int DAT_00798634;
-extern unsigned int DAT_00798638;
-extern unsigned int DAT_0079863c;
-extern unsigned int DAT_00798648;
-extern struct ObjectClassNode *ObjectClassList;
-extern struct ClipNode *DAT_006687c8;
 
 // FUNCTION: LEGOLAND 0x0048a5c0
 void SetClipping(int *rect) { STUB(); }
@@ -79,7 +64,7 @@ void FUN_0048a6e0(struct ClippedObject *object) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048a750
 void FUN_0048a750(void) {
-    struct ObjectClassNode *current = ObjectClassList;
+    struct ObjectClassNode *current = (struct ObjectClassNode *)ObjectClassList;
     while (current != NULL) {
         struct ClippedObject *object = current->object;
         if ((object->flags & 0x2) == 0) {
@@ -95,7 +80,7 @@ void FUN_0048a780(void) {
 
 // FUNCTION: LEGOLAND 0x0048a790
 void FUN_0048a790(void) {
-    struct ClipNode *node = DAT_006687c8;
+    struct ClipNode *node = (struct ClipNode *)DAT_006687c8;
     DAT_00798648 = 1;
 
     while (node != NULL) {

@@ -9,13 +9,7 @@ struct Sprite {
 };
 
 #include "image_sprite.h"
-
-extern unsigned int DAT_0079a890;
-extern unsigned int DAT_0079a894;
-extern unsigned int DAT_0079a898;
-extern unsigned int DAT_0079a89c;
-extern unsigned int DAT_0079a8a0;
-extern unsigned int DAT_008119a4;
+#include "globals.h"
 
 // FUNCTION: LEGOLAND 0x00499430
 unsigned int GetGameTimer(void) {

@@ -4,10 +4,7 @@
 #include "man3d.h"
 #include "render3d.h"
 #include "map_object.h"
-
-struct Sprite;
-struct RinData;
-struct Position;
+#include "globals.h"
 
 struct EarthNode {
     unsigned short field_0;
@@ -78,16 +75,6 @@ struct ListNodeC {
     unsigned char pad_0[0xc];
     struct ListNodeC *next;
 };
-
-extern void *DAT_006160e8;
-extern unsigned int DAT_006160d0;
-extern struct RinData *DAT_006160d4;
-extern struct Position *DAT_006160e4;
-extern struct Sprite *DAT_006160d8;
-extern struct Sprite *DAT_006160e0;
-extern unsigned int EditMode;
-extern struct Cursor EditCursor;
-extern void *DAT_008119b8;
 
 extern void *_malloc(unsigned int size);
 #include "image_sprite.h"

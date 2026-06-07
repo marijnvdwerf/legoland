@@ -2,6 +2,7 @@
 
 #include "mapscreen.h"
 #include "interface.h"
+#include "globals.h"
 
 struct Sprite {
     unsigned char pad_0[0x18];
@@ -13,14 +14,6 @@ struct MapPoint {
     int field0;
     int field1;
 };
-
-extern unsigned int DAT_006687bc;
-extern unsigned int DAT_006687c0;
-extern unsigned int DAT_00667c10;
-extern unsigned int DAT_00667c28;
-extern struct Sprite *DAT_00667c2c;
-extern unsigned int DAT_00667c30;
-extern unsigned int DAT_00667c34;
 
 #include "image_sprite.h"
 

@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "globals.h"
 
 struct GardenLayer {
     unsigned char pad_0[0xc];
@@ -18,16 +19,6 @@ struct EditTarget {
     unsigned char pad_0[0x3c];
     unsigned int field_3c;
 };
-
-extern unsigned int DAT_0061615c;
-extern unsigned int DAT_0081cd08;
-extern unsigned int DAT_0061614c;
-extern unsigned int DAT_00616150;
-extern unsigned int DAT_00616158;
-extern void *DAT_0081cd04;
-extern unsigned int EditMode;
-extern struct Cursor EditCursor;
-extern void *DAT_008119b8;
 
 // FUNCTION: LEGOLAND 0x00432480
 void FUN_00432480(struct GardenLayer *arg0) {

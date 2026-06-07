@@ -1,19 +1,12 @@
 #include "legoland.h"
 #include "money.h"
 #include "sound_music.h"
+#include "globals.h"
 
 struct EntranceParam {
     unsigned char pad_0[0xc];
     unsigned int field_c;
 };
-
-extern unsigned char ENTRANCE_SFX[0x1c];
-extern unsigned int DAT_0061610c;
-extern unsigned int DAT_006160f4;
-extern unsigned int DAT_006160fc;
-extern unsigned int DAT_00616100;
-extern unsigned int DAT_00616104;
-extern unsigned int DAT_00616108;
 
 #include "image_sprite.h"
 

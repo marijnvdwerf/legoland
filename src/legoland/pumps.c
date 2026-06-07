@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "map_object.h"
 #include "pumps.h"
+#include "globals.h"
 
 struct PumpSource {
     unsigned char pad_0[0xc];
@@ -10,16 +11,6 @@ struct PumpSource {
 };
 
 extern void FUN_0049e4d0(void *block);
-
-extern unsigned int DAT_004cbe9c;
-extern struct PumpNode *DAT_004cbea4;
-extern unsigned int DAT_008119b8;
-extern unsigned int DAT_00830f88;
-extern unsigned int EditMode;
-extern struct Cursor EditCursor;
-extern unsigned char DAT_004b4bd0[0x14];
-extern struct Cursor DAT_0082f760;
-extern unsigned int DAT_00830b74;
 
 // FUNCTION: LEGOLAND 0x00411a10
 void FUN_00411a10(struct PumpSource *param_1) {
@@ -32,7 +23,7 @@ void FUN_00411a20(void) {
 
     eax_temp = DAT_004cbe9c;
     EditMode = 1;
-    DAT_008119b8 = eax_temp;
+    DAT_008119b8 = (void *)eax_temp;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(DAT_004b4bd0);
     EditCursor.field_1828 = EditCursor.field_1828 | 8;
@@ -46,7 +37,7 @@ void FUN_00411a20(void) {
 struct PumpNode *FUN_00411aa0(unsigned int arg1, unsigned int arg2) {
     struct PumpNode *node;
 
-    node = DAT_004cbea4;
+    node = (struct PumpNode *)DAT_004cbea4;
     while (node) {
         if (node->var_4 == arg1 && node->var_8 == arg2) {
             return node;
@@ -67,7 +58,7 @@ void FUN_00411ad0(struct PumpNode *node) {
         if (DAT_004cbea4 == node) {
             DAT_004cbea4 = next;
         } else {
-            current = DAT_004cbea4;
+            current = (struct PumpNode *)DAT_004cbea4;
             if (current->next != node) {
                 do {
                     current = current->next;
@@ -88,7 +79,7 @@ void FUN_00411ba0(unsigned short param) {
     struct PumpNode *cur;
     struct PumpNode *next;
 
-    cur = DAT_004cbea4;
+    cur = (struct PumpNode *)DAT_004cbea4;
     if (cur) {
         do {
             next = cur->next;
@@ -105,7 +96,7 @@ void FUN_00411bd0(void) {
     struct PumpNode *current;
     struct PumpNode *next;
 
-    current = DAT_004cbea4;
+    current = (struct PumpNode *)DAT_004cbea4;
     if (current == NULL) {
         return;
     }

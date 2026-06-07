@@ -4,6 +4,7 @@
 #include "sound_sfx.h"
 #include "sound_music.h"
 #include "timer.h"
+#include "globals.h"
 
 struct AVISoundBuffer;
 struct AVISoundBufferVtbl;
@@ -77,20 +78,10 @@ struct FXList {
     struct FXItem items[1];
 };
 
-extern unsigned int DAT_004bf774;
-extern unsigned int DAT_0079a694;
-extern struct MusicPerformance *DAT_007cacdc;
-extern GUID GUID_PerfMasterGrooveLevel;
-extern unsigned int DAT_007988a0;
-extern unsigned int DAT_007988c0;
-extern unsigned int DAT_007988c8;
-extern struct Sample *DAT_007988cc;
-
-
 // FUNCTION: LEGOLAND 0x00495b90
 void SetMusicGrooveLevel(unsigned int level) {
     if (DAT_004bf774 != 0 && DAT_0079a694 != 0) {
-        DAT_007cacdc->vtable->SetGlobalParam(DAT_007cacdc, &GUID_PerfMasterGrooveLevel, &level, 1);
+        ((struct MusicPerformance *)DAT_007cacdc)->vtable->SetGlobalParam((struct MusicPerformance *)DAT_007cacdc, &GUID_PerfMasterGrooveLevel, &level, 1);
     }
 }
 
@@ -143,7 +134,7 @@ unsigned int SetBand(unsigned int band) {
     if (DAT_0079a694 == 0) {
         return 0;
     }
-    DAT_007cacdc->vtable->PlayMotif(DAT_007cacdc, band, 0x2080, 0, 0, 0);
+    ((struct MusicPerformance *)DAT_007cacdc)->vtable->PlayMotif((struct MusicPerformance *)DAT_007cacdc, band, 0x2080, 0, 0, 0);
     return 1;
 }
 
@@ -155,7 +146,7 @@ unsigned int PlayMotif(unsigned int motif) {
     if (DAT_0079a694 == 0) {
         return 0;
     }
-    DAT_007cacdc->vtable->PlayMotif(DAT_007cacdc, motif, 0x2080, 0, 0, 0);
+    ((struct MusicPerformance *)DAT_007cacdc)->vtable->PlayMotif((struct MusicPerformance *)DAT_007cacdc, motif, 0x2080, 0, 0, 0);
     return 1;
 }
 

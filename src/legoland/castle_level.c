@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "map_object.h"
+#include "globals.h"
 
 typedef void (*CastleVtblFn)(void);
 
@@ -24,11 +25,6 @@ struct EditCursorData {
     unsigned char field_3c;
 };
 
-extern unsigned int DAT_004c10e4;
-extern void *DAT_004c10dc;
-extern unsigned int EditMode;
-extern struct Cursor EditCursor;
-extern struct EditCursorData *DAT_008119b8;
 extern int __strcmpi(const char *s1, const char *s2);
 #include "image_sprite.h"
 
@@ -50,10 +46,10 @@ void FUN_00402dc0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00402ff0
 void FUN_00402ff0(void) {
-    DAT_008119b8 = (struct EditCursorData *)DAT_004c10dc;
+    DAT_008119b8 = DAT_004c10dc;
     EditMode = 1;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(&DAT_008119b8->field_3c);
+    SetEditCursorFootPrint(&((struct EditCursorData *)DAT_008119b8)->field_3c);
 }
 
 // FUNCTION: LEGOLAND 0x00403030

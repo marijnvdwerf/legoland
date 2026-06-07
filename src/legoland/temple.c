@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "obj_instance.h"
 #include "map_object.h"
+#include "globals.h"
 
 typedef void (*TempleHandler)(void);
 
@@ -23,13 +24,6 @@ struct TempleObject {
     unsigned char pad_0[12];
     unsigned int field_c;
 };
-
-extern unsigned int DAT_004cbf68;
-extern unsigned int DAT_004cbf6c;
-extern void *DAT_004cbf5c;
-extern unsigned int EditMode;
-extern struct Cursor EditCursor;
-extern void *DAT_008119b8;
 
 #include "image_sprite.h"
 extern int __strcmpi(const char *a, const char *b);

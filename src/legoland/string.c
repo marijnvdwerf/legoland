@@ -3,6 +3,7 @@
 
 #include "timer.h"
 #include "string.h"
+#include "globals.h"
 
 struct StringNode {
     int key;
@@ -10,17 +11,9 @@ struct StringNode {
     struct StringNode *next;
 };
 
-extern struct StringNode *strings[10];
-extern unsigned int DAT_0079a890;
-extern unsigned int DAT_0079a894;
-extern unsigned int DAT_0079a898;
-extern unsigned int DAT_0079a89c;
-extern unsigned int DAT_0079a8a0;
-extern unsigned int DAT_008119a4;
-
 // FUNCTION: LEGOLAND 0x00498f50
 char *GetString(int n) {
-    struct StringNode *node = strings[n % 10];
+    struct StringNode *node = (struct StringNode *)strings[n % 10];
     while (node != NULL) {
         if (node->key == n) {
             return node->text;

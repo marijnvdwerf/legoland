@@ -3,6 +3,7 @@
 #include "pathfind.h"
 #include "objclass.h"
 #include "llidb.h"
+#include "globals.h"
 
 struct BestNode {
     struct BestNode *next;
@@ -37,13 +38,6 @@ struct DirNode {
     unsigned int x;
     unsigned int y;
 };
-
-extern struct BestNode *DAT_0066b44c;
-extern struct DirNode *DAT_0066b450;
-extern struct DirNode *DAT_0066b458;
-extern unsigned int DAT_0066b460;
-extern unsigned int DAT_006661c4;
-extern unsigned int DAT_00669258[1152];
 
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *block);
@@ -110,7 +104,7 @@ void FUN_00481e60(struct PathQuery *query, struct PathBox *box) {
 void FUN_00481ee0(void) {
     struct BestNode *node;
 
-    node = DAT_0066b44c;
+    node = (struct BestNode *)DAT_0066b44c;
     if (node) {
         while (node) {
             node->field_20 = node->field_20 & 0xfffffffe;
@@ -139,7 +133,7 @@ void FUN_004821e0(void) {
     struct DirNode *node;
     struct DirNode *next;
 
-    node = DAT_0066b450;
+    node = (struct DirNode *)DAT_0066b450;
     while (node != NULL) {
         next = node->next;
         FUN_0049e4d0(node);
@@ -153,7 +147,7 @@ void FUN_00482210(void) {
     struct DirNode *node;
     struct DirNode *next;
 
-    node = DAT_0066b458;
+    node = (struct DirNode *)DAT_0066b458;
     while (node != NULL) {
         next = node->next;
         FUN_0049e4d0(node);
@@ -201,7 +195,7 @@ unsigned int FUN_00482860(void) {
 
     count = 0;
     if (DAT_0066b44c != NULL) {
-        node = DAT_0066b44c;
+        node = (struct BestNode *)DAT_0066b44c;
         while (node != NULL) {
             count++;
             node = node->next;
@@ -212,7 +206,7 @@ unsigned int FUN_00482860(void) {
         return 0;
     }
 
-    node = DAT_0066b44c;
+    node = (struct BestNode *)DAT_0066b44c;
     while (node != NULL) {
         if (SaveGameWrite(&node->x_min, 20) == 0) {
             return 0;
@@ -244,7 +238,7 @@ void FUN_00482a40(struct InstancePos *pos) {
     struct BestNode *found;
 
     if (DAT_0066b44c != NULL) {
-        node = DAT_0066b44c;
+        node = (struct BestNode *)DAT_0066b44c;
         while (node != NULL) {
             node->field_20 &= 0xfffffffd;
             node = node->next;
