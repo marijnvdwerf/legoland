@@ -61,6 +61,17 @@ struct ClipRect {
     int bottom;
 };
 
+struct ListLink {
+    unsigned char pad_0[0x14];
+    struct ListLink *var_14;
+    struct ListLink *var_18;
+};
+
+struct EditFootPrint {
+    unsigned char data[16];
+    void *field_10;
+};
+
 // ---------------------------------------------------------------------------
 // All game globals, sorted by ascending address. Definitions (with any
 // initializers) live in globals.c. This phase only collects the declarations;
@@ -2149,17 +2160,11 @@ extern float DAT_008299d4;
 // 0x008299fc
 extern unsigned int DAT_008299fc;
 // 0x00829a3c
-extern unsigned char DAT_00829a3c[0x1c];
-// 0x00829a50
-extern void *DAT_00829a50;
-// 0x00829a54
-extern void *DAT_00829a54;
+extern struct ListLink DAT_00829a3c;
 // 0x00829a60
 extern float DAT_00829a60;
 // 0x00829a80
-extern char DAT_00829a80[20];
-// 0x00829a90
-extern unsigned int DAT_00829a90;
+extern struct EditFootPrint DAT_00829a80;
 // 0x00829ae0
 extern unsigned int DAT_00829ae0;
 // 0x00829af8

@@ -1938,8 +1938,8 @@ void FUN_00423db0(void) {
 // FUNCTION: LEGOLAND 0x00423de0
 void FUN_00423de0(void) {
     unsigned int v0 = DAT_00829bf8;
-    memcpy(DAT_00829a80, (void *)(v0 + 0x3c), 20);
-    DAT_00829a90 = (unsigned int)&DAT_0060f938;
+    memcpy(&DAT_00829a80, (void *)(v0 + 0x3c), 20);
+    DAT_00829a80.field_10 = &DAT_0060f938;
     DAT_0060f924[DAT_00610a08 * 9] = 0;
 }
 
@@ -1984,7 +1984,7 @@ unsigned int FUN_00424240(void) {
     DAT_008119b8 = DAT_00829bf8;
     DefaultCursor(&EditCursor);
     FUN_00423de0();
-    return ((unsigned int (*)(const char *))SetEditCursorFootPrint)(DAT_00829a80); /* TODO: fold — SetEditCursorFootPrint leaves memcpy's eax, used here as uint return */
+    return ((unsigned int (*)(const char *))SetEditCursorFootPrint)((const char *)&DAT_00829a80); /* TODO: fold — SetEditCursorFootPrint leaves memcpy's eax, used here as uint return */
 }
 
 // FUNCTION: LEGOLAND 0x00424280
@@ -2494,18 +2494,12 @@ int FUN_004265d0(struct RectI *a, struct RectI *b) {
 // FUNCTION: LEGOLAND 0x00426650
 unsigned int FUN_00426650(void) { STUB(); }
 
-struct ListLink {
-    unsigned char pad_0[0x14];
-    struct ListLink *var_14;
-    struct ListLink *var_18;
-};
-
 // FUNCTION: LEGOLAND 0x004266b0
 void FUN_004266b0(struct ListLink *param_1) {
-    ((struct ListLink *)DAT_00829a54)->var_14 = param_1;
-    param_1->var_18 = (struct ListLink *)DAT_00829a54;
-    DAT_00829a54 = param_1;
-    param_1->var_14 = (struct ListLink *)&DAT_00829a3c;
+    DAT_00829a3c.var_18->var_14 = param_1;
+    param_1->var_18 = DAT_00829a3c.var_18;
+    DAT_00829a3c.var_18 = param_1;
+    param_1->var_14 = &DAT_00829a3c;
 }
 
 // FUNCTION: LEGOLAND 0x004266e0
@@ -2527,8 +2521,8 @@ void FUN_00426700(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00426740
 void FUN_00426740(void) {
-    DAT_00829a54 = &DAT_00829a3c;
-    DAT_00829a50 = (struct ListLink *)&DAT_00829a3c;
+    DAT_00829a3c.var_18 = &DAT_00829a3c;
+    DAT_00829a3c.var_14 = &DAT_00829a3c;
 }
 
 // FUNCTION: LEGOLAND 0x00426750
