@@ -85,11 +85,7 @@ int DAT_0079a7dc;
 // GLOBAL: LEGOLAND 0x0079a7e0
 unsigned int DAT_0079a7e0;
 // GLOBAL: LEGOLAND 0x0079a7e4
-unsigned int DAT_0079a7e4[19];
-// GLOBAL: LEGOLAND 0x0079a7e8
-unsigned int DAT_0079a7e8[19];
-// GLOBAL: LEGOLAND 0x0079a830
-unsigned int DAT_0079a830;
+unsigned int DAT_0079a7e4[20];
 // GLOBAL: LEGOLAND 0x0079a834
 int DAT_0079a834;
 // GLOBAL: LEGOLAND 0x0079a838
@@ -596,8 +592,6 @@ char DAT_007cb315;
 char DAT_007cb31c;
 // GLOBAL: LEGOLAND 0x0080ffe4
 unsigned char DAT_0080ffe4;
-// GLOBAL: LEGOLAND 0x0080ffd9
-unsigned char DAT_0080ffd9;
 // GLOBAL: LEGOLAND 0x007cb320
 unsigned int DAT_007cb320;
 // GLOBAL: LEGOLAND 0x007cb310
@@ -740,8 +734,6 @@ unsigned int DAT_00832ba8;
 
 // GLOBAL: LEGOLAND 0x0066869c
 char DAT_0066869c[128];
-// GLOBAL: LEGOLAND 0x0066871b
-unsigned char DAT_0066871b;
 // GLOBAL: LEGOLAND 0x0066861c
 unsigned char DAT_0066861c;
 // GLOBAL: LEGOLAND 0x007fe930
@@ -1947,13 +1939,9 @@ void *dinput;
 // GLOBAL: LEGOLAND 0x007fdda0
 unsigned char DAT_007fdda0[256];
 // GLOBAL: LEGOLAND 0x00668d78
-unsigned char DAT_00668d78[16];
+int DAT_00668d78[4];
 // GLOBAL: LEGOLAND 0x004bad54
 int mouse_granularity;
-// GLOBAL: LEGOLAND 0x00668d80
-int DAT_00668d80;
-// GLOBAL: LEGOLAND 0x007fddca
-unsigned char DAT_007fddca;
 // GLOBAL: LEGOLAND 0x007fddd6
 unsigned char DAT_007fddd6;
 

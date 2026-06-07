@@ -1112,8 +1112,6 @@ extern unsigned char DAT_0066861c;
 extern unsigned char DAT_0066869b;
 // 0x0066869c
 extern char DAT_0066869c[128];
-// 0x0066871b
-extern unsigned char DAT_0066871b;
 // 0x0066871c
 extern unsigned int DAT_0066871c;
 // 0x00668724
@@ -1241,9 +1239,7 @@ extern unsigned int DAT_00668960;
 // 0x00668d68
 extern unsigned int DAT_00668d68;
 // 0x00668d78
-extern unsigned char DAT_00668d78[16];
-// 0x00668d80
-extern int DAT_00668d80;
+extern int DAT_00668d78[4];
 // 0x00668d88
 extern void *dinput;
 // 0x00668d8c
@@ -1553,11 +1549,7 @@ extern int DAT_0079a7dc;
 // 0x0079a7e0
 extern unsigned int DAT_0079a7e0;
 // 0x0079a7e4
-extern unsigned int DAT_0079a7e4[19];
-// 0x0079a7e8
-extern unsigned int DAT_0079a7e8[19];
-// 0x0079a830
-extern unsigned int DAT_0079a830;
+extern unsigned int DAT_0079a7e4[20];
 // 0x0079a834
 extern int DAT_0079a834;
 // 0x0079a838
@@ -1756,8 +1748,6 @@ extern unsigned int DAT_007fdd88;
 extern unsigned char DAT_007fdd8c;
 // 0x007fdda0
 extern unsigned char DAT_007fdda0[256];
-// 0x007fddca
-extern unsigned char DAT_007fddca;
 // 0x007fddd6
 extern unsigned char DAT_007fddd6;
 // 0x007fdea4
@@ -1884,8 +1874,6 @@ extern unsigned int DAT_0080ffcc;
 extern unsigned char DAT_0080ffd0[4];
 // 0x0080ffd4
 extern unsigned char DAT_0080ffd4[0xf];
-// 0x0080ffd9
-extern unsigned char DAT_0080ffd9;
 // 0x0080ffe3
 extern unsigned char DAT_0080ffe3;
 // 0x0080ffe4

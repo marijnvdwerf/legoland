@@ -507,8 +507,8 @@ int FUN_00497fb0(void) {
     limit = DAT_0079a7e4[0];
     used = (DAT_0079a7dc - DAT_0079a7d8) & 0xffff;
     if (limit == 0) {
-        memcpy(DAT_0079a7e4, DAT_0079a7e8, 0x13 * sizeof(unsigned int));
-        DAT_0079a830 = 0;
+        memcpy(DAT_0079a7e4, &DAT_0079a7e4[1], 0x13 * sizeof(unsigned int));
+        DAT_0079a7e4[19] = 0;
         if (DAT_0079a7e0 != 0) {
             DAT_0079a7e0--;
         }

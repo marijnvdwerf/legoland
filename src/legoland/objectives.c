@@ -46,7 +46,7 @@ extern void FUN_0049e4d0(void *block);
 // FUNCTION: LEGOLAND 0x00468810
 void FUN_00468810(char *name) {
     _strncpy(DAT_0066869c, name, 0x80);
-    DAT_0066871b = 0;
+    DAT_0066869c[0x7f] = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00468830

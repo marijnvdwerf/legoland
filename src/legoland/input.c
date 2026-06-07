@@ -70,9 +70,9 @@ void ScanMouse(void) {
             }
         }
     }
-    if (DAT_00668d80 <= -mouse_granularity) {
+    if (DAT_00668d78[2] <= -mouse_granularity) {
         FUN_0046db40();
-    } else if (DAT_00668d80 >= mouse_granularity) {
+    } else if (DAT_00668d78[2] >= mouse_granularity) {
         FUN_0046dac0();
     }
 }
@@ -94,7 +94,7 @@ void UpdateControllerFromKeyboardData(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00474070
 unsigned int FUN_00474070(void) {
-    return DAT_007fddca >> 7;
+    return DAT_007fdda0[0x2a] >> 7;
 }
 
 // FUNCTION: LEGOLAND 0x00474080
