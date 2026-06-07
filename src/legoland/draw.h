@@ -16,3 +16,5 @@ void FUN_004663c0(void);
 void RenderingComplete(void);
 int RecreateSprite(struct Sprite *sprite);
 void FUN_004687f0(const char *param_1);
+int CheckHostSystemGPU(void);
+void FUN_004661d0(const char *msg);

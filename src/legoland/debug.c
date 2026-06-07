@@ -3,9 +3,7 @@
 #include "legoland.h"
 #include "globals.h"
 #include "debug_alloc.h"
-
-extern void FUN_004661d0(const char *msg);
-extern int CheckHostSystemGPU(void);
+#include "draw.h"
 
 struct LegoConfig {
     unsigned char gap_0[0x40];

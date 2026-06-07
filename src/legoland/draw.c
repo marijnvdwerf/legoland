@@ -13,7 +13,7 @@ int InstallDirectDraw(void) { return 0; }
 void InitHostSystemGPU(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004637c0
-void CheckHostSystemGPU(void) {
+int CheckHostSystemGPU(void) {
     int i;
     for (i = 0; i < 246; ++i) {
         DDRAWENV[i] = 0;
@@ -114,7 +114,7 @@ void FUN_00465ee0(void) { STUB(); }
 void FUN_00466080(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004661d0
-void FUN_004661d0(void) { STUB(); }
+void FUN_004661d0(const char *msg) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00466360
 void FUN_00466360(int a, int b) { STUB(); }
