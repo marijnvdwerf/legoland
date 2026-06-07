@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "bricks.h"
 #include "debug_alloc.h"
@@ -69,52 +70,8 @@ struct EventList {
     struct ObjectiveEvent *head;
 };
 
-extern struct LegoConfig *lpConfig;
-extern struct ObjectClass *ObjectClassList;
-extern struct Bloke *FirstBloke;
-extern unsigned int DAT_00832920;
-extern unsigned int DAT_00832924;
-extern int DAT_00832970;
-extern unsigned int DAT_00832978;
-extern unsigned int DAT_00668788;
-extern int DAT_0066878c;
-extern int DAT_006661bc;
-extern int DAT_00667cf8;
-extern int DAT_00667d08;
-extern int DAT_00667ce4;
-extern int DAT_00667ce8;
-extern int DAT_00667cec;
-extern int DAT_00667ce0;
-
-extern struct EventList *DAT_0066879c;
-extern unsigned int DAT_00668614;
-extern unsigned int DAT_00668618;
-extern unsigned int DAT_007fe120[];
-extern unsigned char DAT_004b8bbc[];
-
-extern unsigned int DAT_00832ba4;
-extern int DAT_00832bdc;
-extern unsigned int DAT_004baff8;
-extern unsigned int DAT_00668e34;
-extern unsigned int DAT_007fdca4;
-extern struct SortNode *DAT_00668798;
-extern struct ObjectiveEvent *DAT_00668784;
-extern struct ObjectiveEvent *DAT_00668724;
-extern struct ObjectiveEvent *DAT_00668728;
-extern unsigned int DAT_00668790;
-extern unsigned int DAT_00668794;
-extern unsigned int DAT_00668610;
-extern unsigned int DAT_004b9e5c[];
-extern unsigned int EditMode;
-extern unsigned int DAT_008119b8;
-extern unsigned int DAT_007fd624;
-
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *block);
-extern unsigned int DAT_00832ba8;
-extern unsigned int DAT_00810140;
-extern unsigned int DAT_007fe050;
-extern unsigned int DAT_007fe054;
 
 // FUNCTION: LEGOLAND 0x0046a040
 void FUN_0046a040(unsigned int param_1, unsigned int param_2) { STUB(); }
@@ -848,7 +805,7 @@ void FUN_0046b790(unsigned int param_1, unsigned int param_2) {
     node->field_4 = param_1;
     node->flags_10 = 0;
     node->field_14 = param_2;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046b7f0
@@ -858,7 +815,7 @@ void FUN_0046b7f0(unsigned int param_1) {
     node = FUN_00468910(4, 1);
     node->flags_10 = 0;
     node->field_4 = param_1;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046b820
@@ -868,7 +825,7 @@ void FUN_0046b820(unsigned int param_1) {
     node = FUN_00468910(5, 1);
     node->flags_10 = 0;
     node->field_1c = param_1;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046b850
@@ -878,7 +835,7 @@ void FUN_0046b850(unsigned int param_1) {
     node = FUN_00468910(6, 1);
     node->flags_10 = 0;
     node->field_1c = param_1;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046b880
@@ -891,7 +848,7 @@ void FUN_0046b880(unsigned int param_1, unsigned int *param_2, unsigned int para
     node->field_24 = param_2[1];
     node->field_18 = param_3;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046b8c0
@@ -901,7 +858,7 @@ void FUN_0046b8c0(struct Vec4 *param_1) {
     node = FUN_00468910(8, 1);
     node->vec_28 = *param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046b900
@@ -911,7 +868,7 @@ void FUN_0046b900(struct Vec4 *param_1) {
     node = FUN_00468910(9, 1);
     node->vec_28 = *param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046b940
@@ -921,7 +878,7 @@ void FUN_0046b940(struct Vec4 *param_1) {
     node = FUN_00468910(0xa, 1);
     node->vec_28 = *param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046b980
@@ -931,7 +888,7 @@ void FUN_0046b980(struct Vec4 *param_1) {
     node = FUN_00468910(0xb, 1);
     node->vec_28 = *param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046b9c0
@@ -940,7 +897,7 @@ void FUN_0046b9c0(unsigned int param_1) {
 
     node = FUN_00468910(0xc, 1);
     FUN_00468b40(node, param_1, 1);
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046b9f0
@@ -950,7 +907,7 @@ void FUN_0046b9f0(unsigned int param_1) {
     node = FUN_00468910(0xd, 1);
     FUN_00468b40(node, param_1, 1);
     node->field_1c = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046ba30
@@ -959,7 +916,7 @@ void FUN_0046ba30(unsigned int param_1) {
 
     node = FUN_00468910(0xe, 1);
     FUN_00468b40(node, param_1, 1);
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046ba60
@@ -970,7 +927,7 @@ void FUN_0046ba60(unsigned int param_1, unsigned int param_2) {
     node->field_1c = param_1;
     node->field_14 = param_2;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046ba90
@@ -982,7 +939,7 @@ void FUN_0046ba90(unsigned int param_1, unsigned int param_2, unsigned int param
     node->field_1c = param_2;
     node->field_14 = param_3;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bad0
@@ -995,7 +952,7 @@ void FUN_0046bad0(unsigned int param_1, unsigned int param_2, unsigned int *para
     node->field_24 = param_3[1];
     node->field_14 = param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bb10
@@ -1006,7 +963,7 @@ void FUN_0046bb10(unsigned int param_1, unsigned int param_2) {
     node->field_1c = param_1;
     node->field_14 = param_2;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bb40
@@ -1018,7 +975,7 @@ void FUN_0046bb40(unsigned int param_1, unsigned int param_2, unsigned int param
     node->field_14 = param_2;
     node->field_1c = param_3;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bb80
@@ -1029,7 +986,7 @@ void FUN_0046bb80(unsigned int param_1, unsigned int param_2) {
     node->field_1c = param_2;
     node->field_14 = param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bbb0
@@ -1040,7 +997,7 @@ void FUN_0046bbb0(unsigned int param_1, unsigned int param_2) {
     node->field_1c = param_2;
     node->field_14 = param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bbe0
@@ -1051,7 +1008,7 @@ void FUN_0046bbe0(unsigned int param_1, unsigned int param_2) {
     node->field_1c = param_2;
     node->field_14 = param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bc10
@@ -1061,7 +1018,7 @@ void FUN_0046bc10(unsigned int param_1) {
     node = FUN_00468910(0x16, 1);
     node->flags_10 = 0;
     node->field_1c = param_1;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bc40
@@ -1070,7 +1027,7 @@ void FUN_0046bc40(void) {
 
     node = FUN_00468910(0x20, 1);
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bc60
@@ -1079,7 +1036,7 @@ void FUN_0046bc60(void) {
 
     node = FUN_00468910(0x1f, 1);
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bc80
@@ -1090,7 +1047,7 @@ void FUN_0046bc80(unsigned int param_1, unsigned int param_2) {
     node->field_1c = param_2;
     node->field_14 = param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bcb0
@@ -1101,7 +1058,7 @@ void FUN_0046bcb0(unsigned int param_1, unsigned int param_2) {
     node->field_1c = param_2;
     node->field_14 = param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bce0
@@ -1112,7 +1069,7 @@ void FUN_0046bce0(unsigned int param_1, unsigned int param_2) {
     node->field_1c = param_2;
     node->field_14 = param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bd10
@@ -1121,7 +1078,7 @@ void FUN_0046bd10(unsigned int param_1) {
 
     node = FUN_00468910(0x1c, 1);
     FUN_00468b40(node, param_1, 1);
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bd40
@@ -1130,7 +1087,7 @@ void FUN_0046bd40(unsigned int param_1) {
 
     node = FUN_00468910(0x1d, 1);
     FUN_00468b40(node, param_1, 1);
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bd70
@@ -1141,7 +1098,7 @@ void FUN_0046bd70(unsigned int param_1, unsigned int param_2) {
     node->field_1c = param_1;
     node->field_14 = param_2;
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bda0
@@ -1152,7 +1109,7 @@ void FUN_0046bda0(unsigned int *param_1) {
     node->field_20 = param_1[0];
     node->field_24 = param_1[1];
     node->flags_10 = 0;
-    FUN_0046b630(node, DAT_0066879c);
+    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
 }
 
 // FUNCTION: LEGOLAND 0x0046bdd0

@@ -1,42 +1,11 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "profile.h"
 #include "profile_io.h"
 #include "savegame_ui.h"
 #include "icon.h"
 #include "sound_music.h"
-
-struct Sprite;
-
-extern unsigned char DAT_007cad60[0x110];
-extern unsigned int DAT_004bef9c;
-extern unsigned int DAT_0080ff88;
-extern void *PTR_004b92c0;
-extern struct Sprite *DAT_00798704;
-extern struct Sprite *DAT_00798708;
-extern struct Sprite *DAT_0079870c;
-extern struct Sprite *DAT_00798710;
-extern struct Sprite *DAT_00798714;
-extern struct Sprite *DAT_00798718;
-extern struct Sprite *DAT_0079871c;
-extern struct Sprite *DAT_00798720;
-extern struct Sprite *DAT_00798724;
-extern struct Sprite *DAT_00798728;
-extern struct Sprite *DAT_0079872c;
-extern struct Sprite *DAT_00798730;
-extern struct Sprite *DAT_0079868c;
-extern void *DAT_00798734;
-extern unsigned int DAT_007986d8;
-extern struct Sprite *DAT_00798678;
-extern unsigned int DAT_007986dc;
-extern struct Sprite *DAT_0079867c;
-extern unsigned char DAT_0080ffe4;
-extern unsigned int DAT_007986e4;
-extern unsigned int DAT_0080ff84;
-extern unsigned int DAT_006687bc;
-extern unsigned int DAT_006687c0;
-extern unsigned int DAT_00798740;
-extern unsigned int DAT_0079873c;
 
 extern int FUN_0049e573(char *buffer, const char *format, ...);
 extern void *FUN_0049f330(const char *filename, const char *mode);

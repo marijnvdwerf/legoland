@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "jungle_cruise.h"
@@ -74,34 +75,9 @@ struct JungleFishHolder {
     struct JungleFishObj *field_c;
 };
 
-extern struct JungleNode *DAT_00616164;
-extern struct JungleScore *DAT_00629c3c;
-extern unsigned int DAT_0062fd2c;
-extern struct JungleFishNode *DAT_00629c30;
-
 extern int FUN_0049e4b2(void);
 
-extern void *DAT_0081cb60;
-extern unsigned char DAT_00629c40[16];
-extern void *DAT_00629c50;
-extern unsigned char DAT_004b7260[0x18];
-extern unsigned char DAT_004b7278[0x10];
-extern void *DAT_004b7288;
-extern struct JungleCursor *DAT_0081cb70;
-extern unsigned int DAT_0081cb68;
-extern void *DAT_008119b8;
-extern unsigned int EditMode;
-extern struct Cursor EditCursor;
-
 #include "image_sprite.h"
-
-extern unsigned int DAT_0082c6a0;
-extern unsigned int DAT_0082c6a4;
-extern unsigned int DAT_0082c6a8;
-extern unsigned short DAT_0082c6ac;
-extern unsigned int DAT_0081cb74;
-extern unsigned int DAT_0081cb6c;
-extern unsigned int DAT_0081cb54;
 
 // FUNCTION: LEGOLAND 0x00432ac0
 void FUN_00432ac0(void) { STUB(); }
@@ -232,7 +208,7 @@ void FUN_00434670(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00434740
 unsigned int *FUN_00434740(struct JungleFishHolder *param_1, unsigned short param_2) {
-    struct JungleFishNode *node = DAT_00629c30;
+    struct JungleFishNode *node = (struct JungleFishNode *)DAT_00629c30;
     struct JungleFishObj *obj = param_1->field_c;
     struct JungleLLS *lls1;
     struct JungleLLS *lls2;

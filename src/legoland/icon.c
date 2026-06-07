@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "clipping.h"
 #include "timer.h"
@@ -96,31 +97,6 @@ struct TimedIndicator {
     unsigned int field_1c;
 };
 
-struct InterfaceIconNode;
-
-extern unsigned int DAT_006687a4;
-extern struct IconNode *DAT_006687c8;
-extern struct IconNode *DAT_006687cc;
-extern struct IconNode *FocussedIconPtr;
-extern struct IconNode *PTR_some_list_head_004ba87c;
-extern struct CtrlBuffer *CONTROLLERBUFFER;
-extern struct Config *lpConfig;
-extern unsigned int DAT_004bdd00;
-extern struct IconNode *DAT_004bdd04;
-extern void *DAT_006688a8;
-extern void *DAT_006688ac;
-extern void *DAT_006688b0;
-extern unsigned int DAT_006688d0;
-extern void *DAT_00668828;
-extern void *DAT_0066882c;
-extern void *DAT_00668830;
-extern void *DAT_00668834;
-extern struct Indicator *DAT_006688d4;
-extern struct Indicator *DAT_006688d8;
-extern unsigned int DAT_008119b4;
-extern unsigned int DAT_0080ff88;
-extern unsigned int DAT_007fe020[];
-
 #include "image_sprite.h"
 
 extern void FUN_0049e4d0(void *ptr);
@@ -147,7 +123,7 @@ void FUN_0046d3c0(struct IconNode *node) {
     if (FocussedIconPtr == node) {
         FocussedIconPtr = NULL;
     }
-    if (DAT_004bdd00 == 2 && DAT_004bdd04 == node) {
+    if (DAT_004bdd00 == 2 && DAT_004bdd04 == (unsigned int)node) {
         DAT_004bdd04 = NULL;
         DAT_004bdd00 = 0x100;
     }
@@ -155,7 +131,7 @@ void FUN_0046d3c0(struct IconNode *node) {
 
 // FUNCTION: LEGOLAND 0x0046d440
 void FUN_0046d440(struct IconNode *node) {
-    PTR_some_list_head_004ba87c->next = node;
+    ((struct IconNode *)PTR_some_list_head_004ba87c)->next = node;
     PTR_some_list_head_004ba87c = node;
 }
 
@@ -189,14 +165,14 @@ void FUN_0046d590(unsigned int val) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d630
 struct IconNode *FindIcon(unsigned short id) {
-    struct IconNode *node = DAT_006687c8;
+    struct IconNode *node = (struct IconNode *)DAT_006687c8;
     while (node) {
         if (node->field_14 == id && (node->field_34 & 0x100) == 0) {
             return node;
         }
         node = node->next;
     }
-    node = DAT_006687cc;
+    node = (struct IconNode *)DAT_006687cc;
     while (node) {
         if (node->field_14 == id && (node->field_34 & 0x100) == 0) {
             return node;
@@ -236,8 +212,8 @@ void SetNewGroup_Callbacks(void *param_1, void *param_2, void *param_3) {
 struct IconNode *AddFullScreenIcon(void *icon) {
     struct IconNode *result = InsertIcon(0, 0, (int)icon, 0);
     if (result) {
-        result->field_10 = lpConfig->field_0;
-        result->field_12 = lpConfig->field_2;
+        result->field_10 = ((struct Config *)lpConfig)->field_0;
+        result->field_12 = ((struct Config *)lpConfig)->field_2;
         result->field_28 = (void *)FUN_0046df60;
         result->field_34 = result->field_34 | 0x29;
     }
@@ -264,7 +240,7 @@ void FUN_0046db40(void) {
     unsigned int v;
     struct IconNode *icon;
     if (DAT_008119b4 == 2 && DAT_0080ff88 == 3) {
-        int field = CONTROLLERBUFFER->field_8;
+        int field = ((struct CtrlBuffer *)CONTROLLERBUFFER)->field_8;
         if (field < 0xb2) {
             v = 0xc8;
         } else if (field < 0x143) {
@@ -562,7 +538,7 @@ void DeleteIndicator(struct Indicator *ind) {
 
     if ((ind->field_4 & 0x8) != 0) {
         if (DAT_006688d8 == ind) {
-            DAT_006688d8 = DAT_006688d8->next;
+            DAT_006688d8 = ((struct Indicator *)DAT_006688d8)->next;
             FUN_0049e4d0(ind);
             return;
         }
@@ -580,7 +556,7 @@ void DeleteIndicator(struct Indicator *ind) {
     }
 
     if (DAT_006688d4 == ind) {
-        DAT_006688d4 = DAT_006688d4->next;
+        DAT_006688d4 = ((struct Indicator *)DAT_006688d4)->next;
         FUN_0049e4d0(ind);
         return;
     }
@@ -605,7 +581,7 @@ void FUN_00470000(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x004700a0
 void UpdateFocussedIconPtr(void) {
     if (DAT_004bdd00 == 2) {
-        FocussedIconPtr = DAT_004bdd04;
+        FocussedIconPtr = (void *)DAT_004bdd04;
     } else {
         FocussedIconPtr = NULL;
     }

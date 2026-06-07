@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "clipping.h"
 #include "profile.h"
@@ -7,52 +8,10 @@
 #include "icon.h"
 #include "sound_music.h"
 
-struct Sprite;
-
-extern struct Sprite *DAT_00798674;
-extern struct Sprite *DAT_00798678;
-extern struct Sprite *DAT_0079867c;
-extern struct Sprite *DAT_00798680;
-extern struct Sprite *DAT_00798684;
-extern struct Sprite *DAT_00798688;
-extern struct Sprite *DAT_0079868c;
-extern struct Sprite *DAT_00798690;
-extern struct Sprite *DAT_00798694;
-extern struct Sprite *DAT_00798698;
-extern struct Sprite *DAT_0079869c;
-extern struct Sprite *DAT_007986a0;
-extern struct Sprite *DAT_007986a4;
-extern struct Sprite *DAT_007986a8;
-extern struct Sprite *DAT_007986ac;
-extern struct Sprite *DAT_007986b0;
-extern struct Sprite *DAT_007986b4;
-extern unsigned int DAT_007986b8;
-extern struct Sprite *DAT_007986bc;
-extern struct Sprite *DAT_007986c0;
-extern struct Sprite *DAT_007986c4;
-extern struct Sprite *DAT_007986c8;
-extern struct Sprite *DAT_007986cc;
-extern struct Sprite *DAT_007986d0;
-extern struct Sprite *DAT_007986d4;
-
-extern unsigned int DAT_004bef9c;
-extern unsigned int DAT_007986e4;
-extern unsigned int DAT_007986e8;
-extern unsigned int DAT_007986f4;
-extern unsigned int DAT_007986f8;
-extern unsigned char DAT_0080ffe3;
-extern unsigned int DAT_0080ff84;
-extern unsigned int DAT_0080ff88;
-extern unsigned int DAT_006687b0;
-extern unsigned int DAT_006687bc;
-extern unsigned int DAT_006687c0;
-extern void *PTR_004b92c0;
-
 struct ProfileFlags {
     unsigned char pad_0[0x34];
     unsigned int var_34;
 };
-extern struct ProfileFlags *DAT_007986e0;
 
 struct Profile {
     unsigned char pad_0[0x1c];
@@ -228,7 +187,7 @@ void FUN_0048d230(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048d300
 unsigned char FUN_0048d300(unsigned int dummy, unsigned char arg_0) {
-    if (DAT_007986e4 == 0 && (arg_0 & 0x2) != 0 && ((DAT_007986e0->var_34 >> 8) & 0x4) == 0 && DAT_0080ffe3 != 0) {
+    if (DAT_007986e4 == 0 && (arg_0 & 0x2) != 0 && ((((struct ProfileFlags *)DAT_007986e0)->var_34 >> 8) & 0x4) == 0 && DAT_0080ffe3 != 0) {
         if (DAT_007986e8 != 0) {
             SaveProfileToDisk();
             DeleteProfileList();

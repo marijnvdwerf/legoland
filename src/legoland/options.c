@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 #include "string.h"
 #include "profile.h"
 #include "profile_io.h"
@@ -10,38 +11,6 @@
 
 #include "image_sprite.h"
 #include "help.h"
-
-extern void *PTR_004b92c0;
-extern void *DAT_004b929c;
-extern unsigned int DAT_004bef9c;
-extern unsigned int DAT_006687b0;
-extern unsigned int DAT_00668e38;
-extern unsigned int DAT_008119b4;
-extern unsigned int DAT_0080ff88;
-extern unsigned int DAT_0080ff80;
-extern unsigned int DAT_007cb320;
-extern unsigned int DAT_007cb310;
-extern unsigned int DAT_007cb328;
-extern unsigned int DAT_007cb324;
-extern unsigned int DAT_007cb360;
-extern unsigned int DAT_00832ba0;
-extern unsigned int DAT_00798740;
-extern unsigned int DAT_0079873c;
-extern unsigned int DAT_006687bc;
-extern unsigned int DAT_006687c0;
-extern unsigned int DAT_0080ffc4;
-extern unsigned int DAT_0080ffc8;
-extern unsigned int DAT_0080ffcc;
-extern char DAT_007cb314;
-extern char DAT_007cb315;
-extern char DAT_007cb31c;
-extern unsigned char DAT_0080ffe4;
-extern unsigned char DAT_0080ffd9;
-extern unsigned int SPRITE_TitleScreenBk;
-extern unsigned int DAT_007986b8;
-extern unsigned int DAT_007986d8;
-extern unsigned int DAT_007986dc;
-extern unsigned int DAT_007986e0;
 
 // FUNCTION: LEGOLAND 0x0048eb40
 void FUN_0048eb40(void) {

@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 #include "tooltip.h"
 #include "string.h"
 #include "options.h"
@@ -29,41 +30,6 @@ struct PopUp {
 
 extern void FUN_0049e4d0(void *ptr);
 extern int FUN_0049e573(char *buffer, const char *format, ...);
-
-extern unsigned int DAT_004bef9c;
-extern void *PTR_004b92c0;
-extern unsigned int DAT_007cb324;
-extern unsigned int DAT_007cb328;
-extern unsigned int DAT_0080ff88;
-extern unsigned int DAT_006687b0;
-extern unsigned int SPRITE_TitleScreenBk;
-extern char DAT_007cb2f0[];
-extern char DAT_007cb300[];
-extern char DAT_007cb30c[];
-extern unsigned int DAT_00798764;
-extern unsigned int DAT_00798768;
-extern unsigned int DAT_0079876c;
-extern unsigned int DAT_00798770;
-extern unsigned int DAT_00798878;
-extern unsigned int DAT_0079887c;
-extern unsigned int DAT_00798880;
-extern unsigned int DAT_004bf670;
-extern void *DAT_007cafa0;
-extern void *DAT_007cb140;
-extern unsigned int DAT_0081c02c;
-extern unsigned int DAT_0081c034;
-extern unsigned int DAT_0081c080;
-extern unsigned int DAT_0081c084;
-extern unsigned int DAT_007caf80;
-extern unsigned int DAT_007cb1c4;
-extern unsigned int DAT_00668e38;
-extern unsigned int DAT_008119b4;
-extern char DAT_00798778[];
-extern char DAT_004d8bb0[];
-extern char DAT_007cae80[];
-extern char DAT_007cb1e0[];
-extern unsigned int DAT_007cb2e0;
-extern struct PopUp *DAT_00668e9c;
 
 // FUNCTION: LEGOLAND 0x0048fc40
 void InitTitleScreen(void) { STUB(); }
@@ -421,10 +387,10 @@ unsigned int FUN_00491240(const char *param_1) {
         return 0;
     }
     if (FUN_004907a0(param_1) != 0) {
-        DAT_00668e9c->field_34 &= 0xfffffbff;
+        ((struct PopUp *)DAT_00668e9c)->field_34 &= 0xfffffbff;
         result = 1;
     } else {
-        DAT_00668e9c->field_34 |= 0x400;
+        ((struct PopUp *)DAT_00668e9c)->field_34 |= 0x400;
         result = 0;
     }
     FUN_00490850();
