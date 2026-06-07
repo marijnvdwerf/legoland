@@ -51,7 +51,7 @@ void ScanForProfiles(void) { STUB(); }
 void LoadProfilesFormDisk(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491540
-unsigned int FUN_00491540(void) { return DAT_007cad60[0] != 0; }
+unsigned int FUN_00491540(void) { return DAT_007cad60.field_0 != 0; }
 
 // FUNCTION: LEGOLAND 0x00491550
 void UpDateCurrentSaveSlotInfo(void) { STUB(); }
@@ -116,13 +116,13 @@ void FUN_00491e40(void) { STUB(); }
 unsigned char FUN_00491f90(struct RideState *state, unsigned char flags) {
     if ((flags & 0x2) != 0) {
         if (state->var_18 == 2) {
-            if (DAT_007cad80 >= 2) {
-                DAT_007cad80--;
+            if (DAT_007cad60.field_20 >= 2) {
+                DAT_007cad60.field_20--;
                 return 1;
             }
         } else {
-            if (DAT_007cad80 <= 99) {
-                DAT_007cad80++;
+            if (DAT_007cad60.field_20 <= 99) {
+                DAT_007cad60.field_20++;
                 return 1;
             }
         }

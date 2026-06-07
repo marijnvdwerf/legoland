@@ -72,6 +72,13 @@ struct EditFootPrint {
     void *field_10;
 };
 
+struct Settings {
+    unsigned char field_0;
+    unsigned char gap_1[0x1f];
+    unsigned int field_20;
+    unsigned char gap_24[0xec];
+};
+
 // ---------------------------------------------------------------------------
 // All game globals, sorted by ascending address. Definitions (with any
 // initializers) live in globals.c. This phase only collects the declarations;
@@ -1628,9 +1635,7 @@ extern void *DAT_007cad44;
 // 0x007cad48
 extern unsigned int DAT_007cad48;
 // 0x007cad60
-extern unsigned char DAT_007cad60[0x110];
-// 0x007cad80
-extern unsigned int DAT_007cad80;
+extern struct Settings DAT_007cad60;
 // 0x007cae80
 extern char DAT_007cae80[0x100];
 // 0x007caf80

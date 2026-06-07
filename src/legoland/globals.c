@@ -2064,11 +2064,9 @@ struct JoustNode *DAT_004c1250;
 unsigned char JOUST_SFX[12];
 
 // GLOBAL: LEGOLAND 0x007cad60
-unsigned char DAT_007cad60[0x110];
+struct Settings DAT_007cad60;
 // GLOBAL: LEGOLAND 0x00798890
 void *DAT_00798890;
-// GLOBAL: LEGOLAND 0x007cad80
-unsigned int DAT_007cad80;
 
 // GLOBAL: LEGOLAND 0x004cbeb0
 int DAT_004cbeb0;

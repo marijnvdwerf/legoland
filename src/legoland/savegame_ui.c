@@ -36,7 +36,7 @@ int LoadDateIntoTempProfile(int a1, int a2) {
     // STRING: LEGOLAND 0x004bf2b8
     file = FUN_0049f330(buffer, "r");
     if (file != 0) {
-        FUN_0049f044(DAT_007cad60, 0x110, 1, file);
+        FUN_0049f044(&DAT_007cad60, 0x110, 1, file);
         FUN_0049efee(file);
         ReturnFrom_ProfileDir();
         return 1;
