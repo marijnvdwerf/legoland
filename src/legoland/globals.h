@@ -1748,8 +1748,6 @@ extern unsigned int DAT_007fdd88;
 extern unsigned char DAT_007fdd8c;
 // 0x007fdda0
 extern unsigned char DAT_007fdda0[256];
-// 0x007fddd6
-extern unsigned char DAT_007fddd6;
 // 0x007fdea4
 extern struct InfoIcon *DAT_007fdea4;
 // 0x007fdea8

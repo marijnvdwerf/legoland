@@ -99,7 +99,7 @@ unsigned int FUN_00474070(void) {
 
 // FUNCTION: LEGOLAND 0x00474080
 unsigned int FUN_00474080(void) {
-    return DAT_007fddd6 >> 7;
+    return DAT_007fdda0[0x36] >> 7;
 }
 
 // FUNCTION: LEGOLAND 0x004740b0

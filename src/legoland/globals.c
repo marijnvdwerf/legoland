@@ -1942,8 +1942,6 @@ unsigned char DAT_007fdda0[256];
 int DAT_00668d78[4];
 // GLOBAL: LEGOLAND 0x004bad54
 int mouse_granularity;
-// GLOBAL: LEGOLAND 0x007fddd6
-unsigned char DAT_007fddd6;
 
 // GLOBAL: LEGOLAND 0x004b7618
 const unsigned char SPACE_TOWER_SFX[15] = {0};
