@@ -15,21 +15,21 @@ int FUN_00457890(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004578a0
-void AddBricks(unsigned int param_1) {
+LEGO_EXPORT void AddBricks(unsigned int param_1) {
     if (DAT_004b90fc == 0) {
         DAT_004b90f8 += param_1;
     }
 }
 
 // FUNCTION: LEGOLAND 0x004578c0
-void UseBricks(unsigned int param_1) {
+LEGO_EXPORT void UseBricks(unsigned int param_1) {
     if (DAT_004b90fc == 0) {
         DAT_004b90f8 -= param_1;
     }
 }
 
 // FUNCTION: LEGOLAND 0x004578e0
-int GetBrickCount(void) {
+LEGO_EXPORT int GetBrickCount(void) {
     if (DAT_004b90fc != 0) {
         return 0x7fffffff;
     }

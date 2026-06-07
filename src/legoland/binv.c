@@ -15,23 +15,23 @@ struct BinVModel {
 
 
 // FUNCTION: LEGOLAND 0x0044dc90
-void LoadBinV(void) { STUB(); }
+LEGO_EXPORT void LoadBinV(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044dd60
-void FreeBinV(void *binv) {
+LEGO_EXPORT void FreeBinV(void *binv) {
     if (binv != NULL) {
         FUN_0049e4d0(binv);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0044dd70
-void GetBinVFrame(void) { STUB(); }
+LEGO_EXPORT void GetBinVFrame(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044dda0
-void GetObjectFromName(void) { STUB(); }
+LEGO_EXPORT void GetObjectFromName(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044ddf0
-struct Vertex *GetVertex(struct BinVModel *model, int index) {
+LEGO_EXPORT struct Vertex *GetVertex(struct BinVModel *model, int index) {
     if (model == NULL) {
         return NULL;
     }
@@ -42,7 +42,7 @@ struct Vertex *GetVertex(struct BinVModel *model, int index) {
 }
 
 // FUNCTION: LEGOLAND 0x0044de20
-void GetZSkew(void) { STUB(); }
+LEGO_EXPORT void GetZSkew(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044de50
-void GetUnitDepth(void) { STUB(); }
+LEGO_EXPORT void GetUnitDepth(void) { STUB(); }

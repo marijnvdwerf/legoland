@@ -15,10 +15,10 @@ struct SaveNode {
 };
 
 // FUNCTION: LEGOLAND 0x0048d4b0
-void InitSavedGameScreen(void) { STUB(); }
+LEGO_EXPORT void InitSavedGameScreen(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048d8f0
-int LoadDateIntoTempProfile(int a1, int a2) {
+LEGO_EXPORT int LoadDateIntoTempProfile(int a1, int a2) {
     char buffer[132];
     void *file;
 
@@ -57,10 +57,10 @@ unsigned char FUN_0048db10(int param1, unsigned char flags) {
 }
 
 // FUNCTION: LEGOLAND 0x0048db50
-void GetSavePanelBK(void) { STUB(); }
+LEGO_EXPORT void GetSavePanelBK(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048dbc0
-void KillSaveScreenSprites(void) {
+LEGO_EXPORT void KillSaveScreenSprites(void) {
     if (DAT_00798704 != 0) {
         KillSprite(DAT_00798704);
         DAT_00798704 = 0;
@@ -116,13 +116,13 @@ void KillSaveScreenSprites(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048dd00
-void PrintSavedGameDetails(void) { STUB(); }
+LEGO_EXPORT void PrintSavedGameDetails(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048e0c0
 void FUN_0048e0c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048e160
-void DeleteSavedGameList(void) {
+LEGO_EXPORT void DeleteSavedGameList(void) {
     struct SaveNode *current = (struct SaveNode *)DAT_00798734;
     while (current != NULL) {
         struct SaveNode *next = current->next;
@@ -133,10 +133,10 @@ void DeleteSavedGameList(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048e190
-void LoadSavedGamesList(void) { STUB(); }
+LEGO_EXPORT void LoadSavedGamesList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048e280
-void InitNewSaveGamePOPUP(void) { STUB(); }
+LEGO_EXPORT void InitNewSaveGamePOPUP(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048e3d0
 void FUN_0048e3d0(void) { STUB(); }
@@ -166,7 +166,7 @@ void FUN_0048e4a0(void) { STUB(); }
 void FUN_0048e4f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048e550
-void EnterSaveGameDetails(void) { STUB(); }
+LEGO_EXPORT void EnterSaveGameDetails(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048e720
 void FUN_0048e720(void) { STUB(); }
@@ -175,10 +175,10 @@ void FUN_0048e720(void) { STUB(); }
 void FUN_0048e810(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048e870
-void StoreNewSaveGameToDisk(void) { STUB(); }
+LEGO_EXPORT void StoreNewSaveGameToDisk(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048ea10
-void RemoveSaveGame(unsigned char slot) { STUB(); }
+LEGO_EXPORT void RemoveSaveGame(unsigned char slot) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048eac0
 void FUN_0048eac0(void) { STUB(); }

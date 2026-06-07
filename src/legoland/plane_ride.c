@@ -172,7 +172,7 @@ unsigned int FUN_0043e050(int param2, int param1, signed char n) {
 }
 
 // FUNCTION: LEGOLAND 0x0043e0a0
-int SaveZoomer(void) {
+LEGO_EXPORT int SaveZoomer(void) {
     struct PlaneRideNode *current = DAT_0062fe9c;
     unsigned int flag = 1;
     unsigned int terminator = 0;
@@ -194,7 +194,7 @@ int SaveZoomer(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043e110
-void LoadZoomer(void) { STUB(); }
+LEGO_EXPORT void LoadZoomer(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043e220
 void FUN_0043e220(const char **name, struct PlaneRideInterface *iface) {

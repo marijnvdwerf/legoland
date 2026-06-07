@@ -1,4 +1,6 @@
 #pragma once
 
-int InitInputSystem(void);
-void KillInputSystem(void);
+#include "legoland.h"
+
+LEGO_EXPORT int InitInputSystem(void);
+LEGO_EXPORT void KillInputSystem(void);

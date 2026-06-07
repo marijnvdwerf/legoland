@@ -174,10 +174,10 @@ void FUN_0043b570(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043b5d0
-void SpaceTower_Save(void) { STUB(); }
+LEGO_EXPORT void SpaceTower_Save(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043b6a0
-void SpaceTower_Load(void) { STUB(); }
+LEGO_EXPORT void SpaceTower_Load(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043b780
 void SpaceTowerRide(const char **name, struct SpaceTowerObject *obj) {

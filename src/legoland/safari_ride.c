@@ -131,7 +131,7 @@ void FUN_00415220(void) { STUB(); }
 void FUN_00415760(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004157b0
-int SaveSafariRide(void) {
+LEGO_EXPORT int SaveSafariRide(void) {
     struct SafariNode *current = (struct SafariNode *)DAT_004cbf0c;
     unsigned int value1 = 1;
     unsigned int value0 = 0;
@@ -153,4 +153,4 @@ int SaveSafariRide(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00415820
-void LoadSafariRide(void) { STUB(); }
+LEGO_EXPORT void LoadSafariRide(void) { STUB(); }

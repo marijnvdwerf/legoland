@@ -119,7 +119,7 @@ unsigned short FUN_00489fd0(const struct ObjClassKey *key) {
 }
 
 // FUNCTION: LEGOLAND 0x0048a010
-void AddInstanceToList(void) { STUB(); }
+LEGO_EXPORT void AddInstanceToList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048a040
 void FUN_0048a040(void) {
@@ -137,7 +137,7 @@ void FUN_0048a040(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048a080
-void RemoveInstanceFromList(struct InstanceNode *node) {
+LEGO_EXPORT void RemoveInstanceFromList(struct InstanceNode *node) {
     if (node->next == 0) {
         node->list->next = node->prev;
         if (node->list->next != 0) {
@@ -156,7 +156,7 @@ void RemoveInstanceFromList(struct InstanceNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0048a0c0
-struct ObjInstance *GetInstanceOfClass(struct ObjClassNode *cls, const unsigned short *uid) {
+LEGO_EXPORT struct ObjInstance *GetInstanceOfClass(struct ObjClassNode *cls, const unsigned short *uid) {
     struct ObjInstance *instance;
 
     instance = (struct ObjInstance *)cls->instances;
@@ -173,19 +173,19 @@ struct ObjInstance *GetInstanceOfClass(struct ObjClassNode *cls, const unsigned 
 }
 
 // FUNCTION: LEGOLAND 0x0048a0f0
-void HandleRideAI(void) {}
+LEGO_EXPORT void HandleRideAI(void) {}
 
 // FUNCTION: LEGOLAND 0x0048a100
-void RemoveBlokeFromRide(void *ride, void *node) { STUB(); }
+LEGO_EXPORT void RemoveBlokeFromRide(void *ride, void *node) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048a2d0
-void UpdateBlokesOnRide(void) {}
+LEGO_EXPORT void UpdateBlokesOnRide(void) {}
 
 // FUNCTION: LEGOLAND 0x0048a2e0
-void RemoveAllBlokesFromRide(unsigned int arg1, void *arg2) { STUB(); }
+LEGO_EXPORT void RemoveAllBlokesFromRide(unsigned int arg1, void *arg2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048a390
-int GetAllBlokesOffRide(struct Ride *ride, unsigned short uid) {
+LEGO_EXPORT int GetAllBlokesOffRide(struct Ride *ride, unsigned short uid) {
     struct RideNode *node;
     struct RideNode *next;
 
@@ -203,4 +203,4 @@ int GetAllBlokesOffRide(struct Ride *ride, unsigned short uid) {
 }
 
 // FUNCTION: LEGOLAND 0x0048a3e0
-void GetObjectUID(void) { STUB(); }
+LEGO_EXPORT void GetObjectUID(void) { STUB(); }

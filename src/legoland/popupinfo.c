@@ -17,7 +17,7 @@ struct InfoIcon {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x00470bb0
-void InitPopUpInfo(void) { STUB(); }
+LEGO_EXPORT void InitPopUpInfo(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00471170
 int FUN_00471170(void) {
@@ -145,7 +145,7 @@ int FUN_00471170(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00471450
-int UnLoad_PopUpInfo(void) {
+LEGO_EXPORT int UnLoad_PopUpInfo(void) {
     RemoveIconGroup(0x2c3);
     return FUN_00471170();
 }
@@ -175,7 +175,7 @@ void FUN_004714e0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00471510
-void ResetInfoStruct(void) {
+LEGO_EXPORT void ResetInfoStruct(void) {
     DAT_007fdf7c = 0;
     DAT_007fdf8c = 0;
     DAT_007fdf84 = 0;
@@ -190,14 +190,14 @@ void ResetInfoStruct(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00471550
-void PopInfoSizeMayChange(void) {
+LEGO_EXPORT void PopInfoSizeMayChange(void) {
     if (DAT_007fdfa0 != 0) {
         DAT_007fdfa8 = 1;
     }
 }
 
 // FUNCTION: LEGOLAND 0x00471570
-void StopFollowingBloke(void) {
+LEGO_EXPORT void StopFollowingBloke(void) {
     if (DAT_007fdf98 == 0) {
         return;
     }
@@ -205,7 +205,7 @@ void StopFollowingBloke(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00471580
-void DisableInfoPopUPIcons(void) {
+LEGO_EXPORT void DisableInfoPopUPIcons(void) {
     DAT_007fdfdc->flags |= 0x400;
     DAT_007fdfc0->flags |= 0x400;
     DAT_007fdfd8->flags |= 0x400;
@@ -230,7 +230,7 @@ void FUN_00471610(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004716a0
-void InfoPrintCent(void) { STUB(); }
+LEGO_EXPORT void InfoPrintCent(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004717a0
 void FUN_004717a0(void) { STUB(); }
@@ -242,7 +242,7 @@ void FUN_00471840(void) { STUB(); }
 void FUN_004718c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00471950
-void PopUpInfoSetUp(void) { STUB(); }
+LEGO_EXPORT void PopUpInfoSetUp(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00471bf0
 void FUN_00471bf0(void) {
@@ -289,7 +289,7 @@ void FUN_004720a0(void) { STUB(); }
 void FUN_004723f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004724a0
-void DrawPopUpInfo(void) { STUB(); }
+LEGO_EXPORT void DrawPopUpInfo(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004730f0
 unsigned char FUN_004730f0(void *param1, unsigned char param2, unsigned int param3, unsigned int param4) {

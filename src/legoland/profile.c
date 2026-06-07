@@ -21,22 +21,22 @@ struct Profile {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0048c260
-void InitListProfiles(void) { STUB(); }
+LEGO_EXPORT void InitListProfiles(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048c5e0
 void FUN_0048c5e0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048c650
-void EnterNewProfileCheckBoxIcons(void) { STUB(); }
+LEGO_EXPORT void EnterNewProfileCheckBoxIcons(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048c720
-void InitProfileCheckBoxIcons(void) { STUB(); }
+LEGO_EXPORT void InitProfileCheckBoxIcons(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048c860
 void FUN_0048c860(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048c9a0
-void KillFrontEndCheckBoxSprite(void) {
+LEGO_EXPORT void KillFrontEndCheckBoxSprite(void) {
     if (DAT_00798674 != NULL) {
         KillSprite(DAT_00798674);
         DAT_00798674 = NULL;
@@ -64,7 +64,7 @@ void KillFrontEndCheckBoxSprite(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048ca40
-void KillListProfileSprite(void) {
+LEGO_EXPORT void KillListProfileSprite(void) {
     struct Sprite *sprite;
     sprite = DAT_0079868c;
     if (sprite != NULL) {
@@ -164,7 +164,7 @@ void KillListProfileSprite(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048cc10
-void CloseFontEndCheckBox(void) {
+LEGO_EXPORT void CloseFontEndCheckBox(void) {
     RemoveIconGroup(0xE);
     KillFrontEndCheckBoxSprite();
     DAT_004bef9c = 1;
@@ -174,13 +174,13 @@ void CloseFontEndCheckBox(void) {
 void FUN_0048cc30(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048cd50
-void LightUpthisDeleteIcon(void) { STUB(); }
+LEGO_EXPORT void LightUpthisDeleteIcon(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048ce20
-void UpdateProfileCheckBoxIcons(void) { STUB(); }
+LEGO_EXPORT void UpdateProfileCheckBoxIcons(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048cf10
-void PrintProfileDetails(void) { STUB(); }
+LEGO_EXPORT void PrintProfileDetails(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048d230
 void FUN_0048d230(void) { STUB(); }

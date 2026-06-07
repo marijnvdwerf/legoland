@@ -158,7 +158,7 @@ int FUN_0041b100(int dummy, int arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0041b150
-void GetInterface(void) { STUB(); }
+LEGO_EXPORT void GetInterface(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0041b250
 void FUN_0041b250(struct RideObject *param_1) {

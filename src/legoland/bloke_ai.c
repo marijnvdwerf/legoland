@@ -20,7 +20,7 @@ struct BlokeRideState {
 
 
 // FUNCTION: LEGOLAND 0x0044e760
-void NewLongTermAction(struct Bloke *bloke, unsigned short action) {
+LEGO_EXPORT void NewLongTermAction(struct Bloke *bloke, unsigned short action) {
     bloke->action = action;
     bloke->param_action = 0;
     bloke->field_10 = 0;
@@ -33,7 +33,7 @@ void NewLongTermAction(struct Bloke *bloke, unsigned short action) {
 void FUN_0044e790(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044e830
-int IsFavouriteAttraction(struct Bloke *bloke, unsigned int attraction) {
+LEGO_EXPORT int IsFavouriteAttraction(struct Bloke *bloke, unsigned int attraction) {
     if (bloke->favourite_attraction_0 == attraction) {
         return 1;
     }
@@ -44,7 +44,7 @@ int IsFavouriteAttraction(struct Bloke *bloke, unsigned int attraction) {
 }
 
 // FUNCTION: LEGOLAND 0x0044e870
-unsigned char IsFavouriteFood(struct Bloke *bloke, unsigned int food) {
+LEGO_EXPORT unsigned char IsFavouriteFood(struct Bloke *bloke, unsigned int food) {
     return bloke->favourite_food == food;
 }
 
@@ -52,7 +52,7 @@ unsigned char IsFavouriteFood(struct Bloke *bloke, unsigned int food) {
 void FUN_0044e890(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044e920
-void InitBlokeAI(struct Bloke *bloke) { STUB(); }
+LEGO_EXPORT void InitBlokeAI(struct Bloke *bloke) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044ea40
 unsigned int FUN_0044ea40(void) {
@@ -140,7 +140,7 @@ void FUN_0044eb50(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044ebb0
-void PushLongTermAction(struct Bloke *bloke) {
+LEGO_EXPORT void PushLongTermAction(struct Bloke *bloke) {
     unsigned short action = bloke->action;
     unsigned char param = bloke->param_action;
     bloke->prev_param = action;
@@ -148,7 +148,7 @@ void PushLongTermAction(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044ebd0
-void PopLongTermAction(struct Bloke *bloke) {
+LEGO_EXPORT void PopLongTermAction(struct Bloke *bloke) {
     unsigned short action = bloke->prev_param;
     unsigned char param = bloke->prev_action;
     bloke->action = action;
@@ -205,7 +205,7 @@ unsigned int FUN_0044f400(struct BlokeList *list, unsigned short *value) {
 }
 
 // FUNCTION: LEGOLAND 0x0044f430
-void PutBlokeInList(struct BlokeList *list, struct Bloke *bloke) {
+LEGO_EXPORT void PutBlokeInList(struct BlokeList *list, struct Bloke *bloke) {
     struct Bloke *tail;
 
     if (list->head == 0) {
@@ -221,7 +221,7 @@ void PutBlokeInList(struct BlokeList *list, struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044f470
-void RemoveBlokeFromList(struct BlokeList *list, struct Bloke *bloke) {
+LEGO_EXPORT void RemoveBlokeFromList(struct BlokeList *list, struct Bloke *bloke) {
     if (bloke->prev == 0) {
         list->head = bloke->next;
     } else {
@@ -257,7 +257,7 @@ void FUN_004503a0(void) { STUB(); }
 void FUN_00450450(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004504d0
-void DoHighLevelAI(struct Bloke *bloke) {
+LEGO_EXPORT void DoHighLevelAI(struct Bloke *bloke) {
     void (*fn)(struct Bloke *);
 
     fn = (void (*)(struct Bloke *))PTR_Bloke_DoNothing_004b8368[bloke->action];
@@ -275,7 +275,7 @@ void FUN_00450500(void) { STUB(); }
 void FUN_00450530(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00450990
-void ControlPeople(void) { STUB(); }
+LEGO_EXPORT void ControlPeople(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00450a40
 void FUN_00450a40(struct BlokeRideState *bloke) {

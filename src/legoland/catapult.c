@@ -186,10 +186,10 @@ unsigned int *FUN_004039e0(struct CatapultLayer *arg1, unsigned short arg2) {
 }
 
 // FUNCTION: LEGOLAND 0x00403a20
-void Catapult_Save(void) { STUB(); }
+LEGO_EXPORT void Catapult_Save(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00403af0
-void Catapult_Load(void) { STUB(); }
+LEGO_EXPORT void Catapult_Load(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00403bb0
 void FUN_00403bb0(const char **name, struct CatapultInterface *ci) {

@@ -4,13 +4,13 @@
 #include "globals.h"
 
 // FUNCTION: LEGOLAND 0x0047fe40
-void *WNDENV_GethInstance(void) { return g_hInstance; }
+LEGO_EXPORT void *WNDENV_GethInstance(void) { return g_hInstance; }
 
 // FUNCTION: LEGOLAND 0x0047fe50
-void WNDENV_Sethwnd(void *param_1) { DAT_00669210 = param_1; }
+LEGO_EXPORT void WNDENV_Sethwnd(void *param_1) { DAT_00669210 = param_1; }
 
 // FUNCTION: LEGOLAND 0x0047fe60
-void *WNDENV_Gethwnd(void) { return DAT_00669210; }
+LEGO_EXPORT void *WNDENV_Gethwnd(void) { return DAT_00669210; }
 
 // FUNCTION: LEGOLAND 0x0047fe70
 BOOL FUN_0047fe70(void) { return ShowWindow((HWND)WNDENV_Gethwnd(), 6); }
@@ -22,7 +22,7 @@ void FUN_0047fe80(void) { ShowWindow((HWND)WNDENV_Gethwnd(), 9); }
 void _LegoLandWindowProc(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00480050
-void ProcessSystemEvents(void) { STUB(); }
+LEGO_EXPORT void ProcessSystemEvents(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00480150
 void FUN_00480150(void) { STUB(); }

@@ -42,7 +42,7 @@ struct RepairOrder {
 
 
 // FUNCTION: LEGOLAND 0x00499530
-void LoadWorkerInterfaceGFX(void) {
+LEGO_EXPORT void LoadWorkerInterfaceGFX(void) {
     // STRING: LEGOLAND 0x004b9bd0
     DAT_0079abfc = (void *)ElemID("NORMAL PATH TILES"); /* TODO: fold — ElemID handle (uint) stored as void* */
 }
@@ -291,13 +291,13 @@ void FUN_0049a010(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0049a070
-void ControlWorkers(void) {
+LEGO_EXPORT void ControlWorkers(void) {
     FUN_0049a010();
     FUN_00499fb0();
 }
 
 // FUNCTION: LEGOLAND 0x0049a080
-void RenderWorkers(void) {
+LEGO_EXPORT void RenderWorkers(void) {
     struct Worker *esi = DAT_0079a8a8;
     if (esi) {
         do {
@@ -320,7 +320,7 @@ void RenderWorkers(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0049a0d0
-void PutWorkerOnRide(void) { STUB(); }
+LEGO_EXPORT void PutWorkerOnRide(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049a120
 int FUN_0049a120(void) {
@@ -335,7 +335,7 @@ int FUN_0049a120(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0049a150
-void RefundGardener(void) {
+LEGO_EXPORT void RefundGardener(void) {
     AddBricks(30);
 }
 
@@ -352,24 +352,24 @@ int FUN_0049a160(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0049a190
-void RefundMechanic(void) {
+LEGO_EXPORT void RefundMechanic(void) {
     AddBricks(30);
 }
 
 // FUNCTION: LEGOLAND 0x0049a1a0
-void GenerateGardener(void *object, int param_2) { STUB(); }
+LEGO_EXPORT void GenerateGardener(void *object, int param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049a2d0
-void RemoveAGardener(struct Worker *worker) { STUB(); }
+LEGO_EXPORT void RemoveAGardener(struct Worker *worker) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049a340
-void GenerateMechanic(void *object, int param_2) { STUB(); }
+LEGO_EXPORT void GenerateMechanic(void *object, int param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049a430
-void RemoveAMechanic(struct Worker *worker) { STUB(); }
+LEGO_EXPORT void RemoveAMechanic(struct Worker *worker) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049a480
-void Gardener_Idle(struct Worker *worker) {
+LEGO_EXPORT void Gardener_Idle(struct Worker *worker) {
     worker->state = 0xe;
     FUN_00499d00(worker);
 }
@@ -380,7 +380,7 @@ void FUN_0049a4a0(struct Worker *worker) {
 }
 
 // FUNCTION: LEGOLAND 0x0049a4b0
-void Mechanic_Idle(struct Worker *worker) {
+LEGO_EXPORT void Mechanic_Idle(struct Worker *worker) {
     worker->state = 0xe;
     FUN_00499d30(worker);
 }
@@ -391,19 +391,19 @@ void FUN_0049a4d0(struct Worker *worker) {
 }
 
 // FUNCTION: LEGOLAND 0x0049a4e0
-void Gardener_Build(void) { STUB(); }
+LEGO_EXPORT void Gardener_Build(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049a7f0
-void Mechanic_Build(void) { STUB(); }
+LEGO_EXPORT void Mechanic_Build(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049ab30
-void WorkOrderBuildObject(void) { STUB(); }
+LEGO_EXPORT void WorkOrderBuildObject(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049ac50
 int FUN_0049ac50(int param) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049b0b0
-int RenderWorkerInterfaceGFX(void) {
+LEGO_EXPORT int RenderWorkerInterfaceGFX(void) {
     FUN_0049ac50(0);
     FUN_0049ac50(1);
     return IterateNoneWorkersRepairOrders();
@@ -429,7 +429,7 @@ unsigned int FUN_0049b0d0(struct Worker *a, void *b) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b130
-struct WorkOrder *GetGardenerWorkOrderAt(int x, int y) {
+LEGO_EXPORT struct WorkOrder *GetGardenerWorkOrderAt(int x, int y) {
     struct WorkOrder *current = DAT_0079a8b0;
 
     while (current != NULL) {
@@ -457,7 +457,7 @@ struct WorkOrder *GetGardenerWorkOrderAt(int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b180
-struct WorkOrder *GetMechanicWorkOrderAt(int pos_x, int pos_y) {
+LEGO_EXPORT struct WorkOrder *GetMechanicWorkOrderAt(int pos_x, int pos_y) {
     struct WorkOrder *node = DAT_0079a8c0;
     if (node == 0) {
         return 0;
@@ -481,7 +481,7 @@ struct WorkOrder *GetMechanicWorkOrderAt(int pos_x, int pos_y) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b1d0
-void EraseMechanicOrder(struct WorkOrder *order) {
+LEGO_EXPORT void EraseMechanicOrder(struct WorkOrder *order) {
     if (order->var_18 != 0) {
         NewLongTermAction((struct Bloke *)order->var_1c, 0x11);
     }
@@ -497,7 +497,7 @@ void EraseMechanicOrder(struct WorkOrder *order) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b230
-void EraseGardenerOrder(struct WorkOrder *order) {
+LEGO_EXPORT void EraseGardenerOrder(struct WorkOrder *order) {
     if (order->var_18 != 0) {
         NewLongTermAction((struct Bloke *)order->var_1c, 0x10);
     }
@@ -511,16 +511,16 @@ void EraseGardenerOrder(struct WorkOrder *order) {
 void FUN_0049b270(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049b2c0
-void SetGardenerWorkOrderAtPostion(void) { STUB(); }
+LEGO_EXPORT void SetGardenerWorkOrderAtPostion(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049b350
 void FUN_0049b350(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049b430
-void SetMechanicsOrderAtPostion(void) { STUB(); }
+LEGO_EXPORT void SetMechanicsOrderAtPostion(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049b510
-void ClearAMechanicsWorkList(int value) {
+LEGO_EXPORT void ClearAMechanicsWorkList(int value) {
     struct WorkOrder *head = DAT_0079a8c0;
     if (head == 0) {
         return;
@@ -540,7 +540,7 @@ void ClearAMechanicsWorkList(int value) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b550
-void ClearAGardenersWorkList(int param) {
+LEGO_EXPORT void ClearAGardenersWorkList(int param) {
     struct WorkOrder *current = DAT_0079a8b0;
     if (current == NULL) {
         return;
@@ -556,7 +556,7 @@ void ClearAGardenersWorkList(int param) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b580
-void RemoveRepairOrderAT(struct Worker *worker, unsigned int x, unsigned int y) {
+LEGO_EXPORT void RemoveRepairOrderAT(struct Worker *worker, unsigned int x, unsigned int y) {
     if ((*(unsigned int *)((char *)worker + 0x1c) & 0x200000) && (*(unsigned int *)((char *)lpConfig + 0x38) != 0)) {
         RemoveGardenersWorkOrderAt(x, y);
     } else if ((*(unsigned int *)((char *)worker + 0x1c) & 0x400000) && (*(unsigned int *)((char *)lpConfig + 0x34) != 0)) {
@@ -567,7 +567,7 @@ void RemoveRepairOrderAT(struct Worker *worker, unsigned int x, unsigned int y) 
 }
 
 // FUNCTION: LEGOLAND 0x0049b5f0
-void RemoveGardenersWorkOrderAt(unsigned int x, unsigned int y) {
+LEGO_EXPORT void RemoveGardenersWorkOrderAt(unsigned int x, unsigned int y) {
     struct WorkOrder *esi = DAT_0079a8b0;
     if (esi != 0) {
         while (esi != 0) {
@@ -584,7 +584,7 @@ void RemoveGardenersWorkOrderAt(unsigned int x, unsigned int y) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b640
-void RemoveMechanicsWorkOrderAt(unsigned int x, unsigned int y) {
+LEGO_EXPORT void RemoveMechanicsWorkOrderAt(unsigned int x, unsigned int y) {
     struct WorkOrder *current = DAT_0079a8c0;
     while (current) {
         if ((unsigned int)current->var_8 == x && (unsigned int)current->var_c == y) {
@@ -605,7 +605,7 @@ void FUN_0049b690(void) { STUB(); }
 void FUN_0049b6e0(void *order) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049b720
-void RemoveNoneWorkersRepairOrderAT(unsigned int x, unsigned int y) {
+LEGO_EXPORT void RemoveNoneWorkersRepairOrderAT(unsigned int x, unsigned int y) {
     struct RepairOrder *current = DAT_0079a8d4;
     while (current != NULL) {
         if ((unsigned int)current->var_18 == x && (unsigned int)current->var_1c == y) {
@@ -617,16 +617,16 @@ void RemoveNoneWorkersRepairOrderAT(unsigned int x, unsigned int y) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b750
-int IterateNoneWorkersRepairOrders(void) { STUB(); }
+LEGO_EXPORT int IterateNoneWorkersRepairOrders(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049b930
-void AddRepairOrderForObject(void) { STUB(); }
+LEGO_EXPORT void AddRepairOrderForObject(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049ba10
-void Garderner_Repair(void) { STUB(); }
+LEGO_EXPORT void Garderner_Repair(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049bd20
-void Mechanics_Repair(void) { STUB(); }
+LEGO_EXPORT void Mechanics_Repair(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049c140
 void FUN_0049c140(void) { STUB(); }

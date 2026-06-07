@@ -30,7 +30,7 @@ void FUN_004562e0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00456300
-void InitMapScreen(void) {
+LEGO_EXPORT void InitMapScreen(void) {
     if (DAT_00667c30 != 0) {
         return;
     }
@@ -47,7 +47,7 @@ void InitMapScreen(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00456370
-void KillMapScreen(void) {
+LEGO_EXPORT void KillMapScreen(void) {
     if (DAT_00667c2c != NULL) {
         KillSprite((unsigned int)DAT_00667c2c);
         DAT_00667c2c = NULL;
@@ -63,13 +63,13 @@ void KillMapScreen(void) {
 void FUN_004563b0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00456460
-void RenderMouseBounds(void) { STUB(); }
+LEGO_EXPORT void RenderMouseBounds(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004565b0
-void MapScreenSetScrollPos(void) { STUB(); }
+LEGO_EXPORT void MapScreenSetScrollPos(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004566f0
-void DrawMapScreen(void) { STUB(); }
+LEGO_EXPORT void DrawMapScreen(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00456770
 void FUN_00456770(struct MapPoint *arg) {
@@ -93,4 +93,4 @@ void FUN_00456770(struct MapPoint *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x004567a0
-void RenderFullMap(void) { STUB(); }
+LEGO_EXPORT void RenderFullMap(void) { STUB(); }

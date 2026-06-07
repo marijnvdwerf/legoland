@@ -1,3 +1,5 @@
 #pragma once
 
-void CloseFontEndCheckBox(void);
+#include "legoland.h"
+
+LEGO_EXPORT void CloseFontEndCheckBox(void);

@@ -20,22 +20,22 @@ struct PersonBlock {
 
 
 // FUNCTION: LEGOLAND 0x004853a0
-void PrintSprite(unsigned int sprite, unsigned int x, unsigned int y, unsigned int param_4, unsigned int param_5) { STUB(); }
+LEGO_EXPORT void PrintSprite(unsigned int sprite, unsigned int x, unsigned int y, unsigned int param_4, unsigned int param_5) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004855d0
 void FUN_004855d0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004856a0
-void PrintSpriteEx(void) { STUB(); }
+LEGO_EXPORT void PrintSpriteEx(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004858e0
-void PrintTiledSprite(void) { STUB(); }
+LEGO_EXPORT void PrintTiledSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00485940
-void PrintScaledSprite(void) { STUB(); }
+LEGO_EXPORT void PrintScaledSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004859b0
-void ClearPrintList(void)
+LEGO_EXPORT void ClearPrintList(void)
 {
     struct PrintListNode *node = (struct PrintListNode *)DAT_0066b5a4;
 
@@ -48,19 +48,19 @@ void ClearPrintList(void)
 }
 
 // FUNCTION: LEGOLAND 0x004859d0
-void DrawAndClearPrintList(void) { STUB(); }
+LEGO_EXPORT void DrawAndClearPrintList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00485bd0
 void FUN_00485bd0(void *ctx) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00485cd0
-void SortSpriteWithCallback(void) { STUB(); }
+LEGO_EXPORT void SortSpriteWithCallback(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00485d70
-void SortSprite(void) { STUB(); }
+LEGO_EXPORT void SortSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00485e00
-void SortPerson(struct Person *person, unsigned int param_2, void *param_3)
+LEGO_EXPORT void SortPerson(struct Person *person, unsigned int param_2, void *param_3)
 {
     unsigned int original = DAT_0066b5a8;
     struct PersonBlock *block;
@@ -74,10 +74,10 @@ void SortPerson(struct Person *person, unsigned int param_2, void *param_3)
 }
 
 // FUNCTION: LEGOLAND 0x00485e40
-void SortClippedSprite(void) { STUB(); }
+LEGO_EXPORT void SortClippedSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00485ef0
-void ResetHitInfo(void)
+LEGO_EXPORT void ResetHitInfo(void)
 {
     DAT_004bdd00 = 0x100;
 }

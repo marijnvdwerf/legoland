@@ -61,7 +61,7 @@ void FUN_00401080(void) { STUB(); }
 void FUN_00401320(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004015c0
-void GetSpriteSize(struct Sprite *sprite, unsigned short *pWidth, unsigned short *pHeight) { *pWidth = sprite->width; *pHeight = sprite->height; }
+LEGO_EXPORT void GetSpriteSize(struct Sprite *sprite, unsigned short *pWidth, unsigned short *pHeight) { *pWidth = sprite->width; *pHeight = sprite->height; }
 
 // FUNCTION: LEGOLAND 0x004015e0
 void FUN_004015e0(void) { STUB(); }
@@ -70,19 +70,19 @@ void FUN_004015e0(void) { STUB(); }
 void FUN_00401660(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004017c0
-void MapToPlayfield(void) { STUB(); }
+LEGO_EXPORT void MapToPlayfield(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00401800
-unsigned int IsSemiPermiable(int param_1, int param_2) { unsigned char rf_flags = Get_RFFlags(param_1, param_2); return (rf_flags & 0x3) == 0x3; }
+LEGO_EXPORT unsigned int IsSemiPermiable(int param_1, int param_2) { unsigned char rf_flags = Get_RFFlags(param_1, param_2); return (rf_flags & 0x3) == 0x3; }
 
 // FUNCTION: LEGOLAND 0x00401820
-void SPGetRFFlags(void) { STUB(); }
+LEGO_EXPORT void SPGetRFFlags(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00401890
-void SPEnter(void) { STUB(); }
+LEGO_EXPORT void SPEnter(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00401900
-void SPLeave(void) { STUB(); }
+LEGO_EXPORT void SPLeave(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00401970
 void FUN_00401970(void) { STUB(); }

@@ -41,7 +41,7 @@ unsigned int FUN_004700f0(void) {
 void FUN_00470100(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004701f0
-void SetWorkersPositionAtMouse(void) {
+LEGO_EXPORT void SetWorkersPositionAtMouse(void) {
     struct WorkerOuter *worker;
     struct WorkerInner *inner;
     unsigned int pt[2];
@@ -74,18 +74,18 @@ void FUN_00470410(void) { STUB(); }
 void FUN_004704b0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00470620
-int CheckWorkerOnMouseStatus(int a) { STUB(); }
+LEGO_EXPORT int CheckWorkerOnMouseStatus(int a) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004708c0
-void RenderWorkerOnMouse(void) {
+LEGO_EXPORT void RenderWorkerOnMouse(void) {
     RenderBlokeIn3D((struct Bloke *)DAT_007fdff0);
 }
 
 // FUNCTION: LEGOLAND 0x004708d0
-void ResetWorkersOldCoords(void) { STUB(); }
+LEGO_EXPORT void ResetWorkersOldCoords(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00470930
-void ResetMoveAWorkerStruct(void) {
+LEGO_EXPORT void ResetMoveAWorkerStruct(void) {
     DAT_00668954 = 0;
     DAT_007fdff0 = NULL;
     DAT_007fdffc = 0;

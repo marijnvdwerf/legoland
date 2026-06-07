@@ -18,13 +18,13 @@ struct DInputDevice {
 };
 
 // FUNCTION: LEGOLAND 0x00473870
-int InitInputSystem(void) { STUB(); }
+LEGO_EXPORT int InitInputSystem(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004738b0
 void FUN_004738b0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00473930
-void ScanKeyboard(void) {
+LEGO_EXPORT void ScanKeyboard(void) {
     HRESULT hr;
 
     if (dinput_keyboard == NULL) {
@@ -56,7 +56,7 @@ void FUN_00473a60(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00473a80
-void ScanMouse(void) {
+LEGO_EXPORT void ScanMouse(void) {
     HRESULT hr;
 
     if (dintput_mouse != NULL) {
@@ -78,7 +78,7 @@ void ScanMouse(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00473ae0
-void KillInputSystem(void) {
+LEGO_EXPORT void KillInputSystem(void) {
     FUN_00473a50();
     FUN_00473a60();
     if (dinput != NULL) {
@@ -87,10 +87,10 @@ void KillInputSystem(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00473b00
-void UpdateControllerFromMouseData(void) { STUB(); }
+LEGO_EXPORT void UpdateControllerFromMouseData(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00473c10
-void UpdateControllerFromKeyboardData(void) { STUB(); }
+LEGO_EXPORT void UpdateControllerFromKeyboardData(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00474070
 unsigned int FUN_00474070(void) {
@@ -103,7 +103,7 @@ unsigned int FUN_00474080(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004740b0
-void GetInputChar(void) { STUB(); }
+LEGO_EXPORT void GetInputChar(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00474130
 void FUN_00474130(void) { STUB(); }

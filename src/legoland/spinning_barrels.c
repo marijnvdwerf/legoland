@@ -132,7 +132,7 @@ void FUN_0043c5b0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043c620
-int SaveSBarrel(void) {
+LEGO_EXPORT int SaveSBarrel(void) {
     struct BarrelNode *node = DAT_0062fe08;
     unsigned int marker = 1;
     unsigned int terminator = 0;
@@ -155,7 +155,7 @@ int SaveSBarrel(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043c690
-void LoadSBarrel(void) { STUB(); }
+LEGO_EXPORT void LoadSBarrel(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043c760
 void FUN_0043c760(const char **str, struct BarrelRide *ride) {

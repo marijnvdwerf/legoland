@@ -69,13 +69,13 @@ struct DirectMusicObj {
 void FUN_004921c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00492380
-void CreateSampleFromWAV(void) { STUB(); }
+LEGO_EXPORT void CreateSampleFromWAV(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00492690
-struct Sample *CreatePlayableSample(unsigned int def) { STUB(); }
+LEGO_EXPORT struct Sample *CreatePlayableSample(unsigned int def) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00492710
-int PlaySample(struct Sample *sample, unsigned int looping, unsigned int oneshot) {
+LEGO_EXPORT int PlaySample(struct Sample *sample, unsigned int looping, unsigned int oneshot) {
     if (DAT_007988c0 == 0) {
         return 0;
     }
@@ -114,7 +114,7 @@ int PlaySample(struct Sample *sample, unsigned int looping, unsigned int oneshot
 int FUN_004927b0(struct Sample *sample) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00492800
-void PauseSingleSample(struct Sample *sample) { STUB(); }
+LEGO_EXPORT void PauseSingleSample(struct Sample *sample) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00492830
 void FUN_00492830(void) {
@@ -143,7 +143,7 @@ void FUN_00492850(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00492870
-void Mute_SFX(void) {
+LEGO_EXPORT void Mute_SFX(void) {
     struct Sample *sample;
 
     sample = DAT_007988cc;
@@ -160,7 +160,7 @@ void Mute_SFX(void) {
 int FUN_004928a0(struct Sample *sample) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00492910
-int ResumeSinglyPausedSample(struct Sample *sample) {
+LEGO_EXPORT int ResumeSinglyPausedSample(struct Sample *sample) {
     if (DAT_007988c0 != 0 && sample != 0 && (sample->flags & 1) != 0) {
         sample->flags &= 0xfffe;
         if (DAT_007988c4 == 0) {
@@ -172,7 +172,7 @@ int ResumeSinglyPausedSample(struct Sample *sample) {
 }
 
 // FUNCTION: LEGOLAND 0x00492950
-void UnMute_FX(void) {
+LEGO_EXPORT void UnMute_FX(void) {
     struct Sample *sample;
 
     sample = DAT_007988cc;
@@ -194,7 +194,7 @@ void FUN_00492990(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004929a0
-int SetSampleVolume(struct Sample *sample, int volume) {
+LEGO_EXPORT int SetSampleVolume(struct Sample *sample, int volume) {
     if (DAT_007988c0 == 0) {
         return 0;
     }
@@ -211,7 +211,7 @@ int SetSampleVolume(struct Sample *sample, int volume) {
 }
 
 // FUNCTION: LEGOLAND 0x004929e0
-int SetSamplePan(struct Sample *sample, int pan) {
+LEGO_EXPORT int SetSamplePan(struct Sample *sample, int pan) {
     if (DAT_007988c0 == 0) {
         return 0;
     }
@@ -227,7 +227,7 @@ int SetSamplePan(struct Sample *sample, int pan) {
 }
 
 // FUNCTION: LEGOLAND 0x00492a20
-int SetSampleFrequency(struct Sample *sample, int frequency) {
+LEGO_EXPORT int SetSampleFrequency(struct Sample *sample, int frequency) {
     if (DAT_007988c0 == 0) {
         return 0;
     }
@@ -259,10 +259,10 @@ struct Sample *FUN_00492a60(struct Sample *sample) {
 }
 
 // FUNCTION: LEGOLAND 0x00492aa0
-void AdjustPSampleFreq(void) { STUB(); }
+LEGO_EXPORT void AdjustPSampleFreq(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00492af0
-int SetSampleFade(struct Sample *sample, unsigned int fade) {
+LEGO_EXPORT int SetSampleFade(struct Sample *sample, unsigned int fade) {
     if (DAT_007988c0 == 0) {
         return 0;
     }
@@ -286,7 +286,7 @@ void FUN_00492b20(struct Sample *sample) {
 }
 
 // FUNCTION: LEGOLAND 0x00492b50
-void KillPlayableSample(struct Sample *sample) {
+LEGO_EXPORT void KillPlayableSample(struct Sample *sample) {
     struct Sample *node;
 
     if (DAT_007988cc == sample) {
@@ -305,7 +305,7 @@ void KillPlayableSample(struct Sample *sample) {
 }
 
 // FUNCTION: LEGOLAND 0x00492b90
-void DeletePlayableSamples(unsigned int param_1) {
+LEGO_EXPORT void DeletePlayableSamples(unsigned int param_1) {
     struct Sample *current;
     struct Sample *previous;
     struct Sample *next;
@@ -333,7 +333,7 @@ void DeletePlayableSamples(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00492be0
-void DeleteSampleDef(struct SampleDef *def) {
+LEGO_EXPORT void DeleteSampleDef(struct SampleDef *def) {
     if (def == 0) {
         return;
     }
@@ -345,7 +345,7 @@ void DeleteSampleDef(struct SampleDef *def) {
 }
 
 // FUNCTION: LEGOLAND 0x00492c20
-int KillSoundSampleSystem(void) {
+LEGO_EXPORT int KillSoundSampleSystem(void) {
     if (DAT_007988c0 == 0) {
         return 0;
     }
@@ -410,7 +410,7 @@ int FUN_00495a10(void) {
 void FUN_00495a50(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00495a90
-void UpdateSoundVols(void) { STUB(); }
+LEGO_EXPORT void UpdateSoundVols(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00495b00
 int FUN_00495b00(void) {

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "legoland.h"
+
 /* Canonical "bloke" record (one 0xac allocation).  Shared by the AI code
    (bloke_ai.c) and the visitor allocator (bloke.c), which previously each
    declared their own private view of the same object.  The gardener/mechanic
@@ -52,6 +54,6 @@ void FUN_00482b10(void);
 void FUN_00482d60(unsigned int index, int value);
 void FUN_00482d70(void);
 void FUN_00483090(void);
-struct Bloke *MakeBloke(int param_1);
+LEGO_EXPORT struct Bloke *MakeBloke(int param_1);
 struct Worker;
-void DoLowLevelAI(struct Worker *worker);
+LEGO_EXPORT void DoLowLevelAI(struct Worker *worker);

@@ -160,7 +160,7 @@ int FUN_0047f880(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0047fc20
-unsigned int mystrlen(const char *s) {
+LEGO_EXPORT unsigned int mystrlen(const char *s) {
     if (s == NULL) {
         return 0;
     }

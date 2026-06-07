@@ -19,7 +19,7 @@ void FUN_0048eb40(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048eb60
-void InitOptionScreen(void) { STUB(); }
+LEGO_EXPORT void InitOptionScreen(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048ef10
 unsigned char FUN_0048ef10(unsigned int param_1, unsigned int param_2) {
@@ -97,10 +97,10 @@ unsigned char FUN_0048f0a0(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048f0f0
-void InitExitCheckBox(unsigned int param_1, unsigned int param_2) { STUB(); }
+LEGO_EXPORT void InitExitCheckBox(unsigned int param_1, unsigned int param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048f2d0
-void PrintExitCheckBox(void) { STUB(); }
+LEGO_EXPORT void PrintExitCheckBox(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048f440
 unsigned char FUN_0048f440(unsigned int param_1, unsigned int param_2) {
@@ -189,7 +189,7 @@ void FUN_0048f9f0(void) { STUB(); }
 void FUN_0048fa40(const char *param_1, const char *param_2, const char *param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048faa0
-void KillTitleScreenSprites(void) {
+LEGO_EXPORT void KillTitleScreenSprites(void) {
     if (SPRITE_TitleScreenBk != 0) {
         KillSprite(SPRITE_TitleScreenBk);
         SPRITE_TitleScreenBk = 0;
@@ -205,7 +205,7 @@ void KillTitleScreenSprites(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048faf0
-void RenderScreen(void) { STUB(); }
+LEGO_EXPORT void RenderScreen(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048fb80
 unsigned char FUN_0048fb80(unsigned int param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {

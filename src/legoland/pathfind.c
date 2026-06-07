@@ -42,7 +42,7 @@ struct DirNode {
 
 
 // FUNCTION: LEGOLAND 0x00481c50
-void AddPathSquare(struct InstancePos *pos) {
+LEGO_EXPORT void AddPathSquare(struct InstancePos *pos) {
     struct BestNode *node;
     unsigned int x;
     unsigned int y;
@@ -62,7 +62,7 @@ void AddPathSquare(struct InstancePos *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x00481c90
-void RemovePathSquare(void) { STUB(); }
+LEGO_EXPORT void RemovePathSquare(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00481e60
 void FUN_00481e60(struct PathQuery *query, struct PathBox *box) {
@@ -116,7 +116,7 @@ void FUN_00481ee0(void) {
 void FUN_00481f00(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482050
-void SuggestNextMove(void) { STUB(); }
+LEGO_EXPORT void SuggestNextMove(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004821c0
 void FUN_004821c0(void) {
@@ -179,7 +179,7 @@ void FUN_00482330(void) { STUB(); }
 void FUN_00482430(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004824d0
-void PTPSuggestNextMove(void) { STUB(); }
+LEGO_EXPORT void PTPSuggestNextMove(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482620
 void FUN_00482620(void) { STUB(); }

@@ -1,4 +1,6 @@
 #pragma once
 
-void StoreNewSaveGameToDisk(void);
-void RemoveSaveGame(unsigned char slot);
+#include "legoland.h"
+
+LEGO_EXPORT void StoreNewSaveGameToDisk(void);
+LEGO_EXPORT void RemoveSaveGame(unsigned char slot);

@@ -187,10 +187,10 @@ void FUN_004075f0(void) { STUB(); }
 void FUN_004076e0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00407800
-void SaveGoldWash(void) { STUB(); }
+LEGO_EXPORT void SaveGoldWash(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00407870
-void LoadGoldWash(void) { STUB(); }
+LEGO_EXPORT void LoadGoldWash(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004078f0
 void FUN_004078f0(const char **str, struct GoldRushModule *module) {

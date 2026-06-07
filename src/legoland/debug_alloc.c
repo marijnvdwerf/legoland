@@ -6,25 +6,25 @@
 
 
 // FUNCTION: LEGOLAND 0x00453a20
-void DBPrintf(const char *format, ...) {}
+LEGO_EXPORT void DBPrintf(const char *format, ...) {}
 
 // FUNCTION: LEGOLAND 0x00453a30
-void __DEBUG_TAG(void) { STUB(); }
+LEGO_EXPORT void __DEBUG_TAG(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00453a80
-void __DEBUG_MALLOC(void) { STUB(); }
+LEGO_EXPORT void __DEBUG_MALLOC(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00453b00
-void __DEBUG_SMALLOC(void) { STUB(); }
+LEGO_EXPORT void __DEBUG_SMALLOC(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00453b70
-void __DEBUG_REALLOC(void) { STUB(); }
+LEGO_EXPORT void __DEBUG_REALLOC(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00453bb0
-void __DEBUG_CALLOC(void) { STUB(); }
+LEGO_EXPORT void __DEBUG_CALLOC(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00453bf0
-void __DEBUG_FREE(void *ptr) {
+LEGO_EXPORT void __DEBUG_FREE(void *ptr) {
     void *block_base = (char *)ptr - 0x10;
     unsigned int block_size = FUN_0049fdc2(block_base);
     DAT_00813a10 += 0x10 - block_size;

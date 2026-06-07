@@ -28,10 +28,10 @@ struct ClipNode {
 };
 
 // FUNCTION: LEGOLAND 0x0048a5c0
-void SetClipping(int *rect) { STUB(); }
+LEGO_EXPORT void SetClipping(int *rect) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048a630
-void GetClipping(struct ClipRect *dest) {
+LEGO_EXPORT void GetClipping(struct ClipRect *dest) {
     dest->left = SPRITE_ClipRect.left;
     dest->top = SPRITE_ClipRect.top;
     dest->right = SPRITE_ClipRect.right;
@@ -39,7 +39,7 @@ void GetClipping(struct ClipRect *dest) {
 }
 
 // FUNCTION: LEGOLAND 0x0048a660
-void StoreClipping(void) {
+LEGO_EXPORT void StoreClipping(void) {
     DAT_00798630 = SPRITE_ClipRect.left;
     DAT_00798634 = SPRITE_ClipRect.top;
     DAT_00798638 = SPRITE_ClipRect.right;
@@ -47,7 +47,7 @@ void StoreClipping(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048a690
-void RestoreClipping(void) {
+LEGO_EXPORT void RestoreClipping(void) {
     SPRITE_ClipRect.left = DAT_00798630;
     SPRITE_ClipRect.top = DAT_00798634;
     SPRITE_ClipRect.right = DAT_00798638;
@@ -55,7 +55,7 @@ void RestoreClipping(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048a6c0
-int ClipThisRect(RECT *lpRect) {
+LEGO_EXPORT int ClipThisRect(RECT *lpRect) {
     return IntersectRect(lpRect, lpRect, (RECT *)&SPRITE_ClipRect);
 }
 

@@ -80,23 +80,23 @@ struct FXList {
 };
 
 // FUNCTION: LEGOLAND 0x00495b90
-void SetMusicGrooveLevel(unsigned int level) {
+LEGO_EXPORT void SetMusicGrooveLevel(unsigned int level) {
     if (DAT_004bf774 != 0 && DAT_0079a694 != 0) {
         ((struct MusicPerformance *)DAT_007cacdc)->vtable->SetGlobalParam((struct MusicPerformance *)DAT_007cacdc, &GUID_PerfMasterGrooveLevel, &level, 1);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00495bc0
-void LoadMusicStyle(void) { STUB(); }
+LEGO_EXPORT void LoadMusicStyle(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00495c90
-void LoadMusicBand(void) { STUB(); }
+LEGO_EXPORT void LoadMusicBand(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00495d60
-void LoadMusicChordMap(void) { STUB(); }
+LEGO_EXPORT void LoadMusicChordMap(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00495e30
-void LoadMusicSegment(void) { STUB(); }
+LEGO_EXPORT void LoadMusicSegment(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00495f00
 void FUN_00495f00(void) { STUB(); }
@@ -105,10 +105,10 @@ void FUN_00495f00(void) { STUB(); }
 void FUN_00496010(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496090
-void GetMusicBand(void) { STUB(); }
+LEGO_EXPORT void GetMusicBand(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496110
-int CreateMusicBandSegment(struct BandObj *band, void *arg) {
+LEGO_EXPORT int CreateMusicBandSegment(struct BandObj *band, void *arg) {
     int result;
 
     if (DAT_004bf774 == 0) {
@@ -122,13 +122,13 @@ int CreateMusicBandSegment(struct BandObj *band, void *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00496150
-void PlaySegmentFromTemplate(void) { STUB(); }
+LEGO_EXPORT void PlaySegmentFromTemplate(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004961d0
-void PlaySegment(void) { STUB(); }
+LEGO_EXPORT void PlaySegment(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496250
-unsigned int SetBand(unsigned int band) {
+LEGO_EXPORT unsigned int SetBand(unsigned int band) {
     if (DAT_004bf774 == 0) {
         return 0;
     }
@@ -140,7 +140,7 @@ unsigned int SetBand(unsigned int band) {
 }
 
 // FUNCTION: LEGOLAND 0x00496290
-unsigned int PlayMotif(unsigned int motif) {
+LEGO_EXPORT unsigned int PlayMotif(unsigned int motif) {
     if (DAT_004bf774 == 0) {
         return 0;
     }
@@ -152,40 +152,40 @@ unsigned int PlayMotif(unsigned int motif) {
 }
 
 // FUNCTION: LEGOLAND 0x004962d0
-void BlendMusic(void) { STUB(); }
+LEGO_EXPORT void BlendMusic(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496360
-void KLIBAUDIO_CreateAVISoundBuffer(void) { STUB(); }
+LEGO_EXPORT void KLIBAUDIO_CreateAVISoundBuffer(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004963d0
-void KLIBAUDIO_PlayAVISoundBuffer(void) { STUB(); }
+LEGO_EXPORT void KLIBAUDIO_PlayAVISoundBuffer(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004963f0
-void KLIBAUDIO_LockAVISoundBuffer(void) { STUB(); }
+LEGO_EXPORT void KLIBAUDIO_LockAVISoundBuffer(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496490
-void KLIBAUDIO_UnLockAVISoundBuffer(void) { STUB(); }
+LEGO_EXPORT void KLIBAUDIO_UnLockAVISoundBuffer(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004964c0
-int KLIBAUDIO_DestroyAVISoundBuffer(struct AVISoundBuffer *buffer) {
+LEGO_EXPORT int KLIBAUDIO_DestroyAVISoundBuffer(struct AVISoundBuffer *buffer) {
     return buffer->vtable->Destroy(buffer) == 0;
 }
 
 // FUNCTION: LEGOLAND 0x004964d0
-void KLIBAUDIO_StopAVISoundBuffer(struct AVISoundBuffer *buffer) {
+LEGO_EXPORT void KLIBAUDIO_StopAVISoundBuffer(struct AVISoundBuffer *buffer) {
     buffer->vtable->Stop(buffer);
 }
 
 // FUNCTION: LEGOLAND 0x004964e0
-void KLIBAUDIO_SetAVIVolume(struct AVISoundBuffer *buffer) {
+LEGO_EXPORT void KLIBAUDIO_SetAVIVolume(struct AVISoundBuffer *buffer) {
     buffer->vtable->SetVolume(buffer, 0);
 }
 
 // FUNCTION: LEGOLAND 0x004964f0
-void InitSoundSystem(void) { STUB(); }
+LEGO_EXPORT void InitSoundSystem(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496520
-int KillSoundSystem(void) {
+LEGO_EXPORT int KillSoundSystem(void) {
     if (KillSoundSampleSystem() == 0) {
         return 0;
     }
@@ -271,7 +271,7 @@ void FUN_004969d0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004969f0
-unsigned int UnSourcePlayableSample(struct Sample *sample) {
+LEGO_EXPORT unsigned int UnSourcePlayableSample(struct Sample *sample) {
     if (DAT_007988c0 == 0) {
         return 0;
     }
@@ -287,7 +287,7 @@ unsigned int UnSourcePlayableSample(struct Sample *sample) {
 }
 
 // FUNCTION: LEGOLAND 0x00496a30
-unsigned int SourcePlayableSampleToBloke(struct Sample *sample, unsigned int bloke) {
+LEGO_EXPORT unsigned int SourcePlayableSampleToBloke(struct Sample *sample, unsigned int bloke) {
     if (DAT_007988c0 == 0) {
         return 0;
     }
@@ -304,22 +304,22 @@ unsigned int SourcePlayableSampleToBloke(struct Sample *sample, unsigned int blo
 }
 
 // FUNCTION: LEGOLAND 0x00496a70
-void SourcePlayableSampleToMapRef(void) { STUB(); }
+LEGO_EXPORT void SourcePlayableSampleToMapRef(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496ac0
-void SourcePlayableSampleToLevelXY(void) { STUB(); }
+LEGO_EXPORT void SourcePlayableSampleToLevelXY(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496b10
-void CountSamplesFromSource(void) { STUB(); }
+LEGO_EXPORT void CountSamplesFromSource(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496b80
-void KillAllSamplesFromSource(void) { STUB(); }
+LEGO_EXPORT void KillAllSamplesFromSource(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496c20
-void UnSourceAndFadeSample(void) { STUB(); }
+LEGO_EXPORT void UnSourceAndFadeSample(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496c80
-void UnSourceAndFadeAllSamplesFromSource(void *source, int fade) { STUB(); }
+LEGO_EXPORT void UnSourceAndFadeAllSamplesFromSource(void *source, int fade) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496d10
 void FUN_00496d10(struct Sample *sample) {
@@ -327,7 +327,7 @@ void FUN_00496d10(struct Sample *sample) {
 }
 
 // FUNCTION: LEGOLAND 0x00496d20
-struct Sample *PlayInstanceOfSample(void *def, unsigned int looping, unsigned int oneshot, void *config) {
+LEGO_EXPORT struct Sample *PlayInstanceOfSample(void *def, unsigned int looping, unsigned int oneshot, void *config) {
     struct Sample *sample;
 
     sample = CreatePlayableSample((unsigned int)def);
@@ -351,13 +351,13 @@ struct Sample *PlayInstanceOfSample(void *def, unsigned int looping, unsigned in
 }
 
 // FUNCTION: LEGOLAND 0x00496db0
-void AddSFX_Callback(void) { STUB(); }
+LEGO_EXPORT void AddSFX_Callback(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496dd0
-void Load_FXList(const unsigned char *list, unsigned int count) { STUB(); }
+LEGO_EXPORT void Load_FXList(const unsigned char *list, unsigned int count) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00496e30
-void Kill_FXList(const unsigned char *list, int count) {
+LEGO_EXPORT void Kill_FXList(const unsigned char *list, int count) {
     struct FXItem *item;
 
     if (count <= 0) {

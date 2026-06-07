@@ -5,7 +5,7 @@
 
 
 // FUNCTION: LEGOLAND 0x00451e70
-void SetupControllers(void) { STUB(); }
+LEGO_EXPORT void SetupControllers(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00451f40
 void FUN_00451f40(void) {
@@ -25,4 +25,4 @@ void FUN_00452030(void) { STUB(); }
 void FUN_00452390(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00452460
-void ReadGameButtons(void) { STUB(); }
+LEGO_EXPORT void ReadGameButtons(void) { STUB(); }

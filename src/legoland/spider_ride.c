@@ -211,7 +211,7 @@ void FUN_00416330(void) { STUB(); }
 void FUN_00416830(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00416880
-void SaveSpider(void) { STUB(); }
+LEGO_EXPORT void SaveSpider(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004168f0
-void LoadSpider(void) { STUB(); }
+LEGO_EXPORT void LoadSpider(void) { STUB(); }

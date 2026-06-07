@@ -68,7 +68,7 @@ struct LegoConfig {
 
 
 // FUNCTION: LEGOLAND 0x004741f0
-void Load_Interface_ControlIcons(void) {
+LEGO_EXPORT void Load_Interface_ControlIcons(void) {
     if (DAT_00668ea4 != 0) {
         return;
     }
@@ -124,7 +124,7 @@ void Load_Interface_ControlIcons(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004743b0
-void UnLoad_Interface_ControlIcons(void) { STUB(); }
+LEGO_EXPORT void UnLoad_Interface_ControlIcons(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00474590
 void FUN_00474590(void) {
@@ -136,7 +136,7 @@ void FUN_00474590(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004745c0
-void Load_Interface_ThemeIcons(void) {
+LEGO_EXPORT void Load_Interface_ThemeIcons(void) {
     if (DAT_00668eb4 != 0) {
         return;
     }
@@ -160,7 +160,7 @@ void Load_Interface_ThemeIcons(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00474670
-void UnLoad_Interface_ThemeIcons(void) {
+LEGO_EXPORT void UnLoad_Interface_ThemeIcons(void) {
     unsigned int sprite;
 
     if (DAT_00668eb4 != 0) {
@@ -221,7 +221,7 @@ void FUN_00474750(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00474800
-void UnLoad_Interface_Icons(void) {
+LEGO_EXPORT void UnLoad_Interface_Icons(void) {
     UnLoad_Interface_ControlIcons();
     FUN_0046fb40(0xd2);
     UnLoad_PopUpInfo();
@@ -307,7 +307,7 @@ void FUN_00474990(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004749d0
-int InitGameInterface(int a) { STUB(); }
+LEGO_EXPORT int InitGameInterface(int a) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00474ed0
 void FUN_00474ed0(void) {
@@ -431,10 +431,10 @@ void FUN_004754b0(void) { STUB(); }
 void FUN_004755c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00475630
-void InsertChildIntoList(void) { STUB(); }
+LEGO_EXPORT void InsertChildIntoList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004756e0
-void DelObjectList(void) {
+LEGO_EXPORT void DelObjectList(void) {
     struct ListNode *current;
     struct ListNode *next;
 
@@ -448,15 +448,15 @@ void DelObjectList(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00475710
-unsigned int TestMenu(unsigned int *entry) {
+LEGO_EXPORT unsigned int TestMenu(unsigned int *entry) {
     return ObjectLinkedList(entry);
 }
 
 // FUNCTION: LEGOLAND 0x00475720
-unsigned int ObjectLinkedList(unsigned int *entry) { STUB(); }
+LEGO_EXPORT unsigned int ObjectLinkedList(unsigned int *entry) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004758c0
-void UpdateMenu(void) {
+LEGO_EXPORT void UpdateMenu(void) {
     if (DAT_004baff8 == 5) {
         return;
     }
@@ -464,16 +464,16 @@ void UpdateMenu(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004758e0
-void RedrawObjectList(void) { STUB(); }
+LEGO_EXPORT void RedrawObjectList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00475960
-void MakeUpObjectList(void) { STUB(); }
+LEGO_EXPORT void MakeUpObjectList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00475bb0
-void ListChildrenBar(void) { STUB(); }
+LEGO_EXPORT void ListChildrenBar(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00475c00
-void CloseChildrenBar(void) { STUB(); }
+LEGO_EXPORT void CloseChildrenBar(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00475c50
 void FUN_00475c50(void) { STUB(); }
@@ -482,10 +482,10 @@ void FUN_00475c50(void) { STUB(); }
 void FUN_00475c90(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00475cd0
-void RAndDLinkedList(void) { STUB(); }
+LEGO_EXPORT void RAndDLinkedList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00475e90
-void DisableSidePanelIcons(void) {
+LEGO_EXPORT void DisableSidePanelIcons(void) {
     struct IconNode *node;
 
     node = (struct IconNode *)DAT_006687c8;
@@ -498,7 +498,7 @@ void DisableSidePanelIcons(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00475ed0
-void EnableSidePanelIcons(void) {
+LEGO_EXPORT void EnableSidePanelIcons(void) {
     struct IconNode *node;
 
     node = (struct IconNode *)DAT_006687c8;
@@ -619,19 +619,19 @@ void FUN_00476180(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004761c0
-void InitRAndDCheckBox(void) {}
+LEGO_EXPORT void InitRAndDCheckBox(void) {}
 
 // FUNCTION: LEGOLAND 0x004761d0
-void Unload_RAndDCheckBox(void) {}
+LEGO_EXPORT void Unload_RAndDCheckBox(void) {}
 
 // FUNCTION: LEGOLAND 0x004761f0
-void RenderRAndDCheckBox(void) {}
+LEGO_EXPORT void RenderRAndDCheckBox(void) {}
 
 // FUNCTION: LEGOLAND 0x00476200
-void CloseCheckBoxRAndD(void) {}
+LEGO_EXPORT void CloseCheckBoxRAndD(void) {}
 
 // FUNCTION: LEGOLAND 0x00476210
-void DisableRAndDIcons(void) {}
+LEGO_EXPORT void DisableRAndDIcons(void) {}
 
 // FUNCTION: LEGOLAND 0x00476220
 unsigned char FUN_00476220(void) {
@@ -655,10 +655,10 @@ void FUN_00476250(void) { STUB(); }
 void FUN_004762f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004763d0
-void CleanUpReseachList(void) { STUB(); }
+LEGO_EXPORT void CleanUpReseachList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00476420
-void DeleteReseachList(void) {
+LEGO_EXPORT void DeleteReseachList(void) {
     struct ResearchNode *current;
     struct ResearchNode *next;
 

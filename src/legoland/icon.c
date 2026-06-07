@@ -157,13 +157,13 @@ void FUN_0046d4a0(void) { STUB(); }
 void FUN_0046d4e0(struct IconNode *node) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d520
-void RemoveIconGroup(unsigned int group) { STUB(); }
+LEGO_EXPORT void RemoveIconGroup(unsigned int group) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d590
 void FUN_0046d590(unsigned int val) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d630
-struct IconNode *FindIcon(unsigned short id) {
+LEGO_EXPORT struct IconNode *FindIcon(unsigned short id) {
     struct IconNode *node = (struct IconNode *)DAT_006687c8;
     while (node) {
         if (node->field_14 == id && (node->field_34 & 0x100) == 0) {
@@ -198,17 +198,17 @@ void FUN_0046d680(struct IconNode *node, struct Sprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d6c0
-struct IconNode *InsertIcon(int a1, int a2, int a3, void *a4) { STUB(); }
+LEGO_EXPORT struct IconNode *InsertIcon(int a1, int a2, int a3, void *a4) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d740
-void SetNewGroup_Callbacks(void *param_1, void *param_2, void *param_3) {
+LEGO_EXPORT void SetNewGroup_Callbacks(void *param_1, void *param_2, void *param_3) {
     DAT_006688a8 = param_1;
     DAT_006688ac = param_2;
     DAT_006688b0 = param_3;
 }
 
 // FUNCTION: LEGOLAND 0x0046d760
-struct IconNode *AddFullScreenIcon(void *icon) {
+LEGO_EXPORT struct IconNode *AddFullScreenIcon(void *icon) {
     struct IconNode *result = InsertIcon(0, 0, (int)icon, 0);
     if (result) {
         result->field_10 = ((struct Config *)lpConfig)->field_0;
@@ -220,7 +220,7 @@ struct IconNode *AddFullScreenIcon(void *icon) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d7b0
-struct SpriteIcon *LoadSpriteIcon(const char *filename, unsigned int param_2, unsigned int param_3, unsigned int param_4, unsigned int param_5) { STUB(); }
+LEGO_EXPORT struct SpriteIcon *LoadSpriteIcon(const char *filename, unsigned int param_2, unsigned int param_3, unsigned int param_4, unsigned int param_5) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d850
 void FUN_0046d850(void) { STUB(); }
@@ -261,10 +261,10 @@ void FUN_0046db40(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046dbc0
-void AddGBarIcons(void) { STUB(); }
+LEGO_EXPORT void AddGBarIcons(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046dcd0
-void MoveIcons(void) { STUB(); }
+LEGO_EXPORT void MoveIcons(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046dd10
 void FUN_0046dd10(void) { STUB(); }
@@ -295,7 +295,7 @@ int FUN_0046df60(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046df70
-void RenderBoxIcon(void) { STUB(); }
+LEGO_EXPORT void RenderBoxIcon(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046dfd0
 void FUN_0046dfd0(void) { STUB(); }
@@ -304,34 +304,34 @@ void FUN_0046dfd0(void) { STUB(); }
 void FUN_0046e040(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e0a0
-void RenderBuildObjectIcon(void) { STUB(); }
+LEGO_EXPORT void RenderBuildObjectIcon(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e300
-void RenderFreePlayIcons(void) { STUB(); }
+LEGO_EXPORT void RenderFreePlayIcons(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e400
-void RenderScroll_Icons(void) { STUB(); }
+LEGO_EXPORT void RenderScroll_Icons(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e4d0
-void RenderEnergyBar(void) { STUB(); }
+LEGO_EXPORT void RenderEnergyBar(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e670
-void RenderMoneyBar(void) { STUB(); }
+LEGO_EXPORT void RenderMoneyBar(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e7b0
-void RenderFreePlayBar(void) { STUB(); }
+LEGO_EXPORT void RenderFreePlayBar(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e850
-void RenderGBarSpriteIcon(void) { STUB(); }
+LEGO_EXPORT void RenderGBarSpriteIcon(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e8a0
-void RenderFlashingSpriteIcon(void) { STUB(); }
+LEGO_EXPORT void RenderFlashingSpriteIcon(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e920
 void FUN_0046e920(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e9d0
-void RenderGBarSprite(void) { STUB(); }
+LEGO_EXPORT void RenderGBarSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046ea10
 void FUN_0046ea10(void) { STUB(); }
@@ -340,7 +340,7 @@ void FUN_0046ea10(void) { STUB(); }
 void FUN_0046eaa0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046eaf0
-void SetupInterfacePanelIcons(void) { STUB(); }
+LEGO_EXPORT void SetupInterfacePanelIcons(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046ec50
 void FUN_0046ec50(void) { STUB(); }
@@ -349,16 +349,16 @@ void FUN_0046ec50(void) { STUB(); }
 void FUN_0046ee00(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046eee0
-void RenderIcons(void) { STUB(); }
+LEGO_EXPORT void RenderIcons(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046f010
-void RenderIcons2(void) { STUB(); }
+LEGO_EXPORT void RenderIcons2(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046f100
 void FUN_0046f100(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046f200
-void RenderHelpIcons(void) { STUB(); }
+LEGO_EXPORT void RenderHelpIcons(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046f2e0
 void FUN_0046f2e0(void) { STUB(); }
@@ -373,16 +373,16 @@ int FUN_0046f300(struct Point *point, struct Bbox *bbox) {
 void FUN_0046f330(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046f360
-void GetIconAtPos(void) { STUB(); }
+LEGO_EXPORT void GetIconAtPos(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046f4c0
-void CheckFocussedIcon(void) { STUB(); }
+LEGO_EXPORT void CheckFocussedIcon(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046f690
-void AddGBarClassIcon(void) { STUB(); }
+LEGO_EXPORT void AddGBarClassIcon(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046f7a0
-void AddFreePlayIcon(void) { STUB(); }
+LEGO_EXPORT void AddFreePlayIcon(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046f890
 void FUN_0046f890(void) {
@@ -476,7 +476,7 @@ unsigned char FUN_0046fbc0(struct IconNode *icon, unsigned char flag) {
 }
 
 // FUNCTION: LEGOLAND 0x0046fbf0
-struct TimedIndicator *AllocateTimedIndicator(struct Sprite *sprite, unsigned int a2, unsigned int a3) {
+LEGO_EXPORT struct TimedIndicator *AllocateTimedIndicator(struct Sprite *sprite, unsigned int a2, unsigned int a3) {
     struct TimedIndicator *ind;
     struct IconNode *icon;
 
@@ -509,28 +509,28 @@ struct TimedIndicator *AllocateTimedIndicator(struct Sprite *sprite, unsigned in
 }
 
 // FUNCTION: LEGOLAND 0x0046fc80
-void AllocatePermanentIndicator(void) { STUB(); }
+LEGO_EXPORT void AllocatePermanentIndicator(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046fd00
-void SetCheckFunc(struct IndicatorFuncs *ind, unsigned int func) {
+LEGO_EXPORT void SetCheckFunc(struct IndicatorFuncs *ind, unsigned int func) {
     ind->field_18 = func;
     ind->field_4 |= 0x4;
 }
 
 // FUNCTION: LEGOLAND 0x0046fd20
-void SetClickFunc(struct IndicatorFuncs *ind, unsigned int func) {
+LEGO_EXPORT void SetClickFunc(struct IndicatorFuncs *ind, unsigned int func) {
     ind->field_1c = func;
     ind->field_4 |= 0x4;
 }
 
 // FUNCTION: LEGOLAND 0x0046fd40
-void AddIndicator(void) { STUB(); }
+LEGO_EXPORT void AddIndicator(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046fda0
-void RemoveIndicator(void) { STUB(); }
+LEGO_EXPORT void RemoveIndicator(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046fe00
-void DeleteIndicator(struct Indicator *ind) {
+LEGO_EXPORT void DeleteIndicator(struct Indicator *ind) {
     struct Indicator *cur;
 
     FUN_0046d4e0(ind->field_14);
@@ -572,13 +572,13 @@ void DeleteIndicator(struct Indicator *ind) {
 }
 
 // FUNCTION: LEGOLAND 0x0046feb0
-void ControlIndicators(void) { STUB(); }
+LEGO_EXPORT void ControlIndicators(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00470000
 void FUN_00470000(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004700a0
-void UpdateFocussedIconPtr(void) {
+LEGO_EXPORT void UpdateFocussedIconPtr(void) {
     if (DAT_004bdd00 == 2) {
         FocussedIconPtr = (void *)DAT_004bdd04;
     } else {

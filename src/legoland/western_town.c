@@ -129,7 +129,7 @@ void FUN_00438150(void) { STUB(); }
 void FUN_00438430(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00438780
-unsigned int SaveJailCells(void) {
+LEGO_EXPORT unsigned int SaveJailCells(void) {
     struct JailCell *cell = DAT_0062fd3c;
     unsigned int marker = 1;
     unsigned int terminator = 0;
@@ -147,7 +147,7 @@ unsigned int SaveJailCells(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004387f0
-unsigned int LoadJailCells(void) {
+LEGO_EXPORT unsigned int LoadJailCells(void) {
     unsigned int marker;
     struct JailCell *prev = NULL;
 

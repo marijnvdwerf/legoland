@@ -7,13 +7,13 @@
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x004636f0
-int InstallDirectDraw(void) { return 0; }
+LEGO_EXPORT int InstallDirectDraw(void) { return 0; }
 
 // FUNCTION: LEGOLAND 0x00463700
-void InitHostSystemGPU(void) { STUB(); }
+LEGO_EXPORT void InitHostSystemGPU(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004637c0
-int CheckHostSystemGPU(void) {
+LEGO_EXPORT int CheckHostSystemGPU(void) {
     int i;
     for (i = 0; i < 246; ++i) {
         DDRAWENV[i] = 0;
@@ -22,10 +22,10 @@ int CheckHostSystemGPU(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004637e0
-void KillHostSystemGPU(void) { STUB(); }
+LEGO_EXPORT void KillHostSystemGPU(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00463850
-unsigned int SetPointer(unsigned int param_1) {
+LEGO_EXPORT unsigned int SetPointer(unsigned int param_1) {
     unsigned int old = DAT_0066814c;
     DAT_0066814c = param_1;
     DAT_00668148 = DAT_007fe9c0[param_1];
@@ -33,52 +33,52 @@ unsigned int SetPointer(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00463870
-int InitScreen(void) { STUB(); }
+LEGO_EXPORT int InitScreen(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00463ef0
 void FUN_00463ef0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00463fc0
-void PushRenderingStatusAndLockVideoSurface(void) { STUB(); }
+LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00464080
-void PushRenderingStatusAndUnlockVideoSurface(void) { STUB(); }
+LEGO_EXPORT void PushRenderingStatusAndUnlockVideoSurface(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004640f0
 void FUN_004640f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004641f0
-void PopRenderingStatus(void) { STUB(); }
+LEGO_EXPORT void PopRenderingStatus(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00464310
-int GetVideoSurface(struct VideoArg *arg) { STUB(); }
+LEGO_EXPORT int GetVideoSurface(struct VideoArg *arg) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00464360
-void PrintBackground(void) { return; }
+LEGO_EXPORT void PrintBackground(void) { return; }
 
 // FUNCTION: LEGOLAND 0x00464370
-void CommitCliprectToHardware(void) { STUB(); }
+LEGO_EXPORT void CommitCliprectToHardware(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00464400
-void SetOverridePalette(unsigned int param_1) { DAT_006681e8 = param_1; }
+LEGO_EXPORT void SetOverridePalette(unsigned int param_1) { DAT_006681e8 = param_1; }
 
 // FUNCTION: LEGOLAND 0x00464410
-unsigned int GetOverridePalette(void) { return DAT_006681e8; }
+LEGO_EXPORT unsigned int GetOverridePalette(void) { return DAT_006681e8; }
 
 // FUNCTION: LEGOLAND 0x00464420
-void SetOverrideFrame(unsigned int param_1) { DAT_004b9ca8 = param_1; }
+LEGO_EXPORT void SetOverrideFrame(unsigned int param_1) { DAT_004b9ca8 = param_1; }
 
 // FUNCTION: LEGOLAND 0x00464430
-unsigned int GetOverrideFrame(void) { return DAT_004b9ca8; }
+LEGO_EXPORT unsigned int GetOverrideFrame(void) { return DAT_004b9ca8; }
 
 // FUNCTION: LEGOLAND 0x00464440
-void ClearOverrideFrame(void) { DAT_004b9ca8 = 0xffffffff; }
+LEGO_EXPORT void ClearOverrideFrame(void) { DAT_004b9ca8 = 0xffffffff; }
 
 // FUNCTION: LEGOLAND 0x00464450
-void ClearOverridePalette(void) { DAT_006681e8 = 0; }
+LEGO_EXPORT void ClearOverridePalette(void) { DAT_006681e8 = 0; }
 
 // FUNCTION: LEGOLAND 0x00464460
-void ClearSpriteOverrides(void) {
+LEGO_EXPORT void ClearSpriteOverrides(void) {
     DAT_004b9ca8 = 0xffffffff;
     DAT_006681e8 = 0;
 }
@@ -87,13 +87,13 @@ void ClearSpriteOverrides(void) {
 void FUN_00464480(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00464a90
-void ZBufferHelper(void) { STUB(); }
+LEGO_EXPORT void ZBufferHelper(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00464ee0
 void FUN_00464ee0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004651d0
-void SoftPrint_Clear(void) { STUB(); }
+LEGO_EXPORT void SoftPrint_Clear(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00465240
 void FUN_00465240(void) { STUB(); }
@@ -105,7 +105,7 @@ void FUN_00465850(void) { STUB(); }
 void FUN_004659a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00465a40
-void SoftPrint_XBltFast(void) { STUB(); }
+LEGO_EXPORT void SoftPrint_XBltFast(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00465ee0
 void FUN_00465ee0(void) { STUB(); }
@@ -132,13 +132,13 @@ void FUN_004663c0(void) {
 void FUN_004663f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00466500
-void RenderingComplete(void) { STUB(); }
+LEGO_EXPORT void RenderingComplete(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00466560
-void PushSetTarget(void) { STUB(); }
+LEGO_EXPORT void PushSetTarget(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00466600
-void PopTarget(void) {
+LEGO_EXPORT void PopTarget(void) {
     PopRenderingStatus();
     renderEngineTargetIdx--;
     renderEngine = renderEngineTargets[renderEngineTargetIdx];
@@ -150,7 +150,7 @@ void PopTarget(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00466640
-int RecreateSprite(struct Sprite *sprite) { STUB(); }
+LEGO_EXPORT int RecreateSprite(struct Sprite *sprite) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00466770
 void FUN_00466770(void) { STUB(); }

@@ -1,4 +1,6 @@
 #pragma once
 
-void LoadMoneySFX(void);
-void KillMoneySFX(void);
+#include "legoland.h"
+
+LEGO_EXPORT void LoadMoneySFX(void);
+LEGO_EXPORT void KillMoneySFX(void);

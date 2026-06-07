@@ -5,16 +5,16 @@
 #include "globals.h"
 
 // FUNCTION: LEGOLAND 0x0044de90
-void GetGFXFName(void) { STUB(); }
+LEGO_EXPORT void GetGFXFName(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044e010
-struct Image *__BMPLoader(struct Image *image) { STUB(); }
+LEGO_EXPORT struct Image *__BMPLoader(struct Image *image) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044e580
-void LoadColourTable(void) { STUB(); }
+LEGO_EXPORT void LoadColourTable(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044e670
-void ResendPalette(void) {
+LEGO_EXPORT void ResendPalette(void) {
     if (DAT_00668088 == 0) {
         LPDIRECTDRAWSURFACE surface = (LPDIRECTDRAWSURFACE)DAT_00668070;
         surface->lpVtbl->SetPalette(surface, (LPDIRECTDRAWPALETTE)DAT_00668084);
@@ -22,7 +22,7 @@ void ResendPalette(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0044e690
-unsigned int GetTransparentColour(void) {
+LEGO_EXPORT unsigned int GetTransparentColour(void) {
     switch (DAT_00668088) {
     case 0:
         return 0xfe;
@@ -36,7 +36,7 @@ unsigned int GetTransparentColour(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0044e6c0
-unsigned int GetNearestColour(int r, int g, int b) {
+LEGO_EXPORT unsigned int GetNearestColour(int r, int g, int b) {
     unsigned int color;
     switch (DAT_00668088) {
     case 0:

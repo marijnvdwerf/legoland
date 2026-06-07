@@ -14,7 +14,7 @@ struct TextSprite {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x00454910
-void LoadBubbleHelpGFX(void) {
+LEGO_EXPORT void LoadBubbleHelpGFX(void) {
     void *element;
 
     if (DAT_006675b4 != 0) {
@@ -55,7 +55,7 @@ void LoadBubbleHelpGFX(void) {
 void FUN_00454a10(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00454b40
-HGDIOBJ SelectFont(HDC hdc, int font_id) {
+LEGO_EXPORT HGDIOBJ SelectFont(HDC hdc, int font_id) {
     switch (font_id) {
     case 1:
         return SelectObject(hdc, PTR_0066808c);
@@ -69,22 +69,22 @@ HGDIOBJ SelectFont(HDC hdc, int font_id) {
 }
 
 // FUNCTION: LEGOLAND 0x00454ba0
-void Print(void) { STUB(); }
+LEGO_EXPORT void Print(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00454c70
-void PrintLimitedText(void) { STUB(); }
+LEGO_EXPORT void PrintLimitedText(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00454d80
 void FUN_00454d80(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00454e60
-void PrintCent(void) { STUB(); }
+LEGO_EXPORT void PrintCent(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00454f60
-void PrintCentOpaque(void) { STUB(); }
+LEGO_EXPORT void PrintCentOpaque(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00455060
-void PrintCentColref(void) { STUB(); }
+LEGO_EXPORT void PrintCentColref(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004551a0
 void FUN_004551a0(void) { STUB(); }
@@ -93,10 +93,10 @@ void FUN_004551a0(void) { STUB(); }
 void FUN_00455220(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00455370
-void BubbleHelp(unsigned int *table, unsigned int a2, unsigned int a3) { STUB(); }
+LEGO_EXPORT void BubbleHelp(unsigned int *table, unsigned int a2, unsigned int a3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004557c0
-void HTBubbleHelp(void) { STUB(); }
+LEGO_EXPORT void HTBubbleHelp(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00455a10
 void FUN_00455a10(void) { STUB(); }

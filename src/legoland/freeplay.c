@@ -14,7 +14,7 @@ struct ElemRecord {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0048a8a0
-void InitFreePlayScreen(void) { STUB(); }
+LEGO_EXPORT void InitFreePlayScreen(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048ab60
 void FUN_0048ab60(void) { STUB(); }
@@ -26,7 +26,7 @@ void FUN_0048abb0(void) { STUB(); }
 void FUN_0048ac60(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048ad00
-void InitFreePlayLists(void) { STUB(); }
+LEGO_EXPORT void InitFreePlayLists(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048aef0
 unsigned int FUN_0048aef0(unsigned int arg1, struct ElemRecord *arg2) {
@@ -59,16 +59,16 @@ void FUN_0048afa0(void) { STUB(); }
 void FUN_0048b000(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048b110
-void Add2FreePlayPanelLists(void) { STUB(); }
+LEGO_EXPORT void Add2FreePlayPanelLists(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048b2a0
-void FreePlayObjectList(void) { STUB(); }
+LEGO_EXPORT void FreePlayObjectList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048b4a0
 void FUN_0048b4a0(int arg) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048b540
-void CleanUpFreePlay(void) {
+LEGO_EXPORT void CleanUpFreePlay(void) {
     if (DAT_007cb3b4) {
         KillSprite(DAT_007cb3b4);
         DAT_007cb3b4 = NULL;

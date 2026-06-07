@@ -84,7 +84,7 @@ struct KLIBAUDIO_Object {
 
 
 // FUNCTION: LEGOLAND 0x00496f20
-unsigned int GetVRAMAddress(unsigned int address) {
+LEGO_EXPORT unsigned int GetVRAMAddress(unsigned int address) {
     return address + 4;
 }
 
@@ -151,10 +151,10 @@ int FUN_00497020(unsigned int value) {
 }
 
 // FUNCTION: LEGOLAND 0x00497070
-void ReloadAllDetailDependentImages(void) { STUB(); }
+LEGO_EXPORT void ReloadAllDetailDependentImages(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004970b0
-void ReloadAllDetailDependentImagesAndBuildSprites(void) {
+LEGO_EXPORT void ReloadAllDetailDependentImagesAndBuildSprites(void) {
     struct Sprite *node;
     struct Image **array;
     unsigned int count1;
@@ -187,7 +187,7 @@ void ReloadAllDetailDependentImagesAndBuildSprites(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00497110
-unsigned int MarkAllSpritesForResizing(void) {
+LEGO_EXPORT unsigned int MarkAllSpritesForResizing(void) {
     struct Sprite *node;
     unsigned int count;
 
@@ -206,18 +206,18 @@ unsigned int MarkAllSpritesForResizing(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00497150
-void MarkSpriteResized(struct Sprite *sprite) {
+LEGO_EXPORT void MarkSpriteResized(struct Sprite *sprite) {
     sprite->field_10 |= 0x400;
 }
 
 // FUNCTION: LEGOLAND 0x00497160
-void RemakeAllDetailDependentSprites(void) { STUB(); }
+LEGO_EXPORT void RemakeAllDetailDependentSprites(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497280
-unsigned int CreateSourceImage(unsigned int a, unsigned int b) { STUB(); }
+LEGO_EXPORT unsigned int CreateSourceImage(unsigned int a, unsigned int b) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497300
-struct Image *LoadSourceImage(unsigned int a, unsigned int b) {
+LEGO_EXPORT struct Image *LoadSourceImage(unsigned int a, unsigned int b) {
     struct Image *image;
 
     image = (struct Image *)CreateSourceImage(a, b);
@@ -232,7 +232,7 @@ struct Image *LoadSourceImage(unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x00497340
-int ReloadImageBitmap(struct Image *image) {
+LEGO_EXPORT int ReloadImageBitmap(struct Image *image) {
     if (image->field_4 != NULL) {
         FUN_0049e4d0(image->field_4);
     }
@@ -244,16 +244,16 @@ int ReloadImageBitmap(struct Image *image) {
 }
 
 // FUNCTION: LEGOLAND 0x00497380
-void ReloadImageBitmapAndBuildSprites(struct Image *image) { STUB(); }
+LEGO_EXPORT void ReloadImageBitmapAndBuildSprites(struct Image *image) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497500
-unsigned short ReferenceImage(struct Image *image) {
+LEGO_EXPORT unsigned short ReferenceImage(struct Image *image) {
     image->refcount++;
     return image->refcount;
 }
 
 // FUNCTION: LEGOLAND 0x00497510
-int KillImage(struct Image *image) {
+LEGO_EXPORT int KillImage(struct Image *image) {
     image->refcount--;
     if (image->refcount == 0) {
         if (image->field_14 == 2 || image->field_14 == 3) {
@@ -290,7 +290,7 @@ struct Sprite *FUN_00497580(void) {
 void FUN_004975b0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497610
-void FreeBitmapResources(struct Image *image) {
+LEGO_EXPORT void FreeBitmapResources(struct Image *image) {
     if (image->field_0 != 0) {
         LLSStop(image->field_0);
         FUN_0049e4d0((void *)image->field_0);
@@ -299,10 +299,10 @@ void FreeBitmapResources(struct Image *image) {
 }
 
 // FUNCTION: LEGOLAND 0x00497640
-void CreateSprite(void) { STUB(); }
+LEGO_EXPORT void CreateSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004976c0
-struct Sprite *CreateFunctionBasedSprite(unsigned int source, unsigned short a, unsigned short b) {
+LEGO_EXPORT struct Sprite *CreateFunctionBasedSprite(unsigned int source, unsigned short a, unsigned short b) {
     struct Sprite *sprite;
 
     sprite = FUN_00497580();
@@ -322,7 +322,7 @@ struct Sprite *CreateFunctionBasedSprite(unsigned int source, unsigned short a, 
 }
 
 // FUNCTION: LEGOLAND 0x00497710
-struct Sprite *CreateSysmemSprite(struct Image *image) {
+LEGO_EXPORT struct Sprite *CreateSysmemSprite(struct Image *image) {
     struct Sprite *sprite;
 
     sprite = FUN_00497580();
@@ -349,7 +349,7 @@ struct Sprite *CreateSysmemSprite(struct Image *image) {
 }
 
 // FUNCTION: LEGOLAND 0x00497790
-struct Sprite *CreatePartialSprite(struct Image *image, unsigned short a, unsigned short b, unsigned short c, unsigned short d) {
+LEGO_EXPORT struct Sprite *CreatePartialSprite(struct Image *image, unsigned short a, unsigned short b, unsigned short c, unsigned short d) {
     struct Sprite *sprite;
 
     sprite = FUN_00497580();
@@ -376,19 +376,19 @@ struct Sprite *CreatePartialSprite(struct Image *image, unsigned short a, unsign
 }
 
 // FUNCTION: LEGOLAND 0x00497810
-void RecreatePartialSprite(void) { STUB(); }
+LEGO_EXPORT void RecreatePartialSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004978b0
 void FUN_004978b0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497ab0
-unsigned int LoadSprite(const char *name, int flags) { STUB(); }
+LEGO_EXPORT unsigned int LoadSprite(const char *name, int flags) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497b70
-void MakeSprite(unsigned int sprite) { STUB(); }
+LEGO_EXPORT void MakeSprite(unsigned int sprite) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497bb0
-short ReferenceSprite(struct Sprite *sprite) {
+LEGO_EXPORT short ReferenceSprite(struct Sprite *sprite) {
     if (sprite == NULL) {
         return -1;
     }
@@ -397,13 +397,13 @@ short ReferenceSprite(struct Sprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x00497bd0
-int KillSprite(unsigned int sprite) { STUB(); }
+LEGO_EXPORT int KillSprite(unsigned int sprite) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497c30
-void GetSprite(void) { STUB(); }
+LEGO_EXPORT void GetSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497d90
-void SetSubSpriteSource(struct Sprite *sprite, unsigned short a, unsigned short b, unsigned short c, unsigned short d) {
+LEGO_EXPORT void SetSubSpriteSource(struct Sprite *sprite, unsigned short a, unsigned short b, unsigned short c, unsigned short d) {
     sprite->field_18 = a;
     sprite->field_1a = b;
     sprite->field_14 = c;
@@ -411,7 +411,7 @@ void SetSubSpriteSource(struct Sprite *sprite, unsigned short a, unsigned short 
 }
 
 // FUNCTION: LEGOLAND 0x00497dc0
-void ReleaseSprite(struct Sprite *sprite) {
+LEGO_EXPORT void ReleaseSprite(struct Sprite *sprite) {
     struct LayerHost *host;
     unsigned int arg;
 
@@ -421,13 +421,13 @@ void ReleaseSprite(struct Sprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x00497de0
-void HideLayer(void *layer, unsigned int flag) { STUB(); }
+LEGO_EXPORT void HideLayer(void *layer, unsigned int flag) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497e10
-void ShowLayer(void) { STUB(); }
+LEGO_EXPORT void ShowLayer(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497e80
-void GetLayer(struct LayerOwner *owner, struct LayerResult *result, int index) {
+LEGO_EXPORT void GetLayer(struct LayerOwner *owner, struct LayerResult *result, int index) {
     struct LayerArrays *arrays;
     void *layer;
 
@@ -448,13 +448,13 @@ void GetLayer(struct LayerOwner *owner, struct LayerResult *result, int index) {
 }
 
 // FUNCTION: LEGOLAND 0x00497ed0
-void SetLayerAnimatingState(struct LayerOwner *owner, int index, int state) {}
+LEGO_EXPORT void SetLayerAnimatingState(struct LayerOwner *owner, int index, int state) {}
 
 // FUNCTION: LEGOLAND 0x00497ee0
-void TellAllLayersToAnimate(void) { STUB(); }
+LEGO_EXPORT void TellAllLayersToAnimate(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497f20
-void TellAllLayersToStopAnimating(struct LayerOwner *owner) {
+LEGO_EXPORT void TellAllLayersToStopAnimating(struct LayerOwner *owner) {
     int i;
 
     if ((owner->flags & 0x8000) != 0) {

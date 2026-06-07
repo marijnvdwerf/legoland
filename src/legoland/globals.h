@@ -2,6 +2,7 @@
 
 #include <windows.h>
 
+#include "legoland.h"
 #include "gamemap.h"
 
 // ---------------------------------------------------------------------------
@@ -296,13 +297,13 @@ extern unsigned int DAT_004bb6f8;
 // 0x004bcba4
 extern const char *DAT_004bcba4[3];
 // 0x004bcbf4
-extern struct LegoConfig *lpConfig;
+extern LEGO_EXPORT struct LegoConfig *lpConfig;
 // 0x004bdd00
 extern unsigned int DAT_004bdd00;
 // 0x004bdd04
 extern unsigned int DAT_004bdd04;
 // 0x004bdea0
-extern struct ClipRect SPRITE_ClipRect;
+extern LEGO_EXPORT struct ClipRect SPRITE_ClipRect;
 // 0x004beb94
 extern struct FreePlaySpriteSlot DAT_004beb94[10];
 // 0x004beba0
@@ -1070,13 +1071,13 @@ extern void *DAT_00667c9c;
 // 0x00667ca4
 extern unsigned int DAT_00667ca4;
 // 0x00667ca8
-extern void *OverlayList;
+extern LEGO_EXPORT void *OverlayList;
 // 0x00667cac
-extern unsigned int OverlayILF;
+extern LEGO_EXPORT unsigned int OverlayILF;
 // 0x00667cb4
-extern int ScrollX;
+extern LEGO_EXPORT int ScrollX;
 // 0x00667cb8
-extern int ScrollY;
+extern LEGO_EXPORT int ScrollY;
 // 0x00667cd8
 extern unsigned int DAT_00667cd8;
 // 0x00667ce0
@@ -1106,7 +1107,7 @@ extern int DAT_00667d58;
 // 0x00667d6c
 extern int DAT_00667d6c;
 // 0x00667d70
-extern unsigned int DDRAWENV[246];
+extern LEGO_EXPORT unsigned int DDRAWENV[246];
 // 0x00668070
 extern void *DAT_00668070;
 // 0x0066807c
@@ -1190,7 +1191,7 @@ extern struct InterfaceIconNode *DAT_006687c8;
 // 0x006687cc
 extern struct InterfaceIconNode *DAT_006687cc;
 // 0x006687d0
-extern void *FocussedIconPtr;
+extern LEGO_EXPORT void *FocussedIconPtr;
 // 0x00668828
 extern void *DAT_00668828;
 // 0x0066882c
@@ -1362,7 +1363,7 @@ extern int DAT_0066920c;
 // 0x00669210
 extern void *DAT_00669210;
 // 0x00669240
-extern void *ObjectClassList;
+extern LEGO_EXPORT void *ObjectClassList;
 // 0x00669248
 extern void *DAT_00669248;
 // 0x0066924c
@@ -1382,7 +1383,7 @@ extern unsigned int DAT_0066b468;
 // 0x0066b46c
 extern unsigned int DAT_0066b46c;
 // 0x0066b574
-extern void *FirstBloke;
+extern LEGO_EXPORT void *FirstBloke;
 // 0x0066b57c
 extern void *DAT_0066b57c;
 // 0x0066b5a4
@@ -1886,11 +1887,11 @@ extern unsigned int DAT_007fe9c0[9];
 // 0x007feb14
 extern unsigned int DAT_007feb14;
 // 0x007febc0
-extern struct Cursor EditCursor;
+extern LEGO_EXPORT struct Cursor EditCursor;
 // 0x00801400
 extern struct MapElement **DAT_00801400;
 // 0x00805f60
-extern void *TileSpriteArray[256];
+extern LEGO_EXPORT void *TileSpriteArray[256];
 // 0x0080ff64
 extern unsigned int DAT_0080ff64;
 // 0x0080ff80
@@ -1906,17 +1907,17 @@ extern unsigned int DAT_00810140;
 // 0x00810148
 extern unsigned int SPRITE_TitleScreenBk;
 // 0x00810160
-extern struct Cursor QueryCursor;
+extern LEGO_EXPORT struct Cursor QueryCursor;
 // 0x008119a0
-extern unsigned int NEWFLC_CheckDuplicate;
+extern LEGO_EXPORT unsigned int NEWFLC_CheckDuplicate;
 // 0x008119a4
 extern unsigned int DAT_008119a4;
 // 0x008119a8
-extern unsigned int NEWFLC_BuffSize;
+extern LEGO_EXPORT unsigned int NEWFLC_BuffSize;
 // 0x008119ac
-extern unsigned short NEWFLC_Repeat;
+extern LEGO_EXPORT unsigned short NEWFLC_Repeat;
 // 0x008119b0
-extern unsigned int EditMode;
+extern LEGO_EXPORT unsigned int EditMode;
 // 0x008119b4
 extern unsigned int DAT_008119b4;
 // 0x008119b8
@@ -1948,13 +1949,13 @@ extern void *DAT_00813a0c;
 // 0x00813a10
 extern unsigned int DAT_00813a10;
 // 0x00813a40
-extern unsigned int GamePad;
+extern LEGO_EXPORT unsigned int GamePad;
 // 0x00813a44
 extern unsigned int DAT_00813a44;
 // 0x00813a48
 extern unsigned int DAT_00813a48;
 // 0x00813b00
-extern void *CONTROLLERBUFFER;
+extern LEGO_EXPORT void *CONTROLLERBUFFER;
 // 0x00814020
 extern unsigned char DAT_00814020[1];
 // 0x0081c028
@@ -2318,4 +2319,4 @@ extern unsigned int DAT_00832bd8;
 // 0x00832bdc
 extern int DAT_00832bdc;
 // 0x00832bf0
-extern void *PathSprite;
+extern LEGO_EXPORT void *PathSprite;

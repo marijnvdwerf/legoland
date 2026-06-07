@@ -12,7 +12,7 @@ struct StringNode {
 };
 
 // FUNCTION: LEGOLAND 0x00498f50
-char *GetString(int n) {
+LEGO_EXPORT char *GetString(int n) {
     struct StringNode *node = (struct StringNode *)strings[n % 10];
     while (node != NULL) {
         if (node->key == n) {
@@ -27,7 +27,7 @@ char *GetString(int n) {
 void FUN_00498f80(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00498ff0
-void DeleteStrings(void) { STUB(); }
+LEGO_EXPORT void DeleteStrings(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00499040
 void FUN_00499040(void) { STUB(); }

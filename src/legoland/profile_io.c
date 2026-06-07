@@ -35,34 +35,34 @@ struct ProfileObj {
 };
 
 // FUNCTION: LEGOLAND 0x004912e0
-void ResetTempProfile(void) { STUB(); }
+LEGO_EXPORT void ResetTempProfile(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491360
-int Goto_ProfileDir(void) { STUB(); }
+LEGO_EXPORT int Goto_ProfileDir(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004913e0
-int ReturnFrom_ProfileDir(void) { return 1; }
+LEGO_EXPORT int ReturnFrom_ProfileDir(void) { return 1; }
 
 // FUNCTION: LEGOLAND 0x004913f0
-void ScanForProfiles(void) { STUB(); }
+LEGO_EXPORT void ScanForProfiles(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491470
-void LoadProfilesFormDisk(void) { STUB(); }
+LEGO_EXPORT void LoadProfilesFormDisk(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491540
 unsigned int FUN_00491540(void) { return DAT_007cad60.field_0 != 0; }
 
 // FUNCTION: LEGOLAND 0x00491550
-void UpDateCurrentSaveSlotInfo(void) { STUB(); }
+LEGO_EXPORT void UpDateCurrentSaveSlotInfo(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491680
-void UpDateCurrentProfile(void) { STUB(); }
+LEGO_EXPORT void UpDateCurrentProfile(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004917c0
 void FUN_004917c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491910
-void SaveProfileToDisk(void) { STUB(); }
+LEGO_EXPORT void SaveProfileToDisk(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004919a0
 struct ProfileNode *FUN_004919a0(unsigned char slot) {
@@ -84,13 +84,13 @@ struct ProfileNode *FUN_004919a0(unsigned char slot) {
 }
 
 // FUNCTION: LEGOLAND 0x004919c0
-void AddNodeToProfileList(void) { STUB(); }
+LEGO_EXPORT void AddNodeToProfileList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491ab0
-void RemoveProfile(unsigned char index) { STUB(); }
+LEGO_EXPORT void RemoveProfile(unsigned char index) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491b50
-void DeleteProfileList(void) {
+LEGO_EXPORT void DeleteProfileList(void) {
     struct ProfileNode *current = (struct ProfileNode *)DAT_00798890;
 
     while (current != NULL) {
@@ -103,10 +103,10 @@ void DeleteProfileList(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00491bd0
-void EnterNewProfile(void) { STUB(); }
+LEGO_EXPORT void EnterNewProfile(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491d60
-void NewPrintCent(void) { STUB(); }
+LEGO_EXPORT void NewPrintCent(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491e40
 void FUN_00491e40(void) { STUB(); }

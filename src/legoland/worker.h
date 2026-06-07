@@ -1,5 +1,7 @@
 #pragma once
 
+#include "legoland.h"
+
 struct Worker {
     struct Worker *next;
     unsigned char pad_4[10];
@@ -14,12 +16,12 @@ struct Worker {
     unsigned char flags;
 };
 
-void GenerateGardener(void *object, int param_2);
-void GenerateMechanic(void *object, int param_2);
-void RemoveAGardener(struct Worker *worker);
-void RemoveAMechanic(struct Worker *worker);
-int IterateNoneWorkersRepairOrders(void);
-void RemoveGardenersWorkOrderAt(unsigned int x, unsigned int y);
-void RemoveMechanicsWorkOrderAt(unsigned int x, unsigned int y);
-void RemoveNoneWorkersRepairOrderAT(unsigned int x, unsigned int y);
+LEGO_EXPORT void GenerateGardener(void *object, int param_2);
+LEGO_EXPORT void GenerateMechanic(void *object, int param_2);
+LEGO_EXPORT void RemoveAGardener(struct Worker *worker);
+LEGO_EXPORT void RemoveAMechanic(struct Worker *worker);
+LEGO_EXPORT int IterateNoneWorkersRepairOrders(void);
+LEGO_EXPORT void RemoveGardenersWorkOrderAt(unsigned int x, unsigned int y);
+LEGO_EXPORT void RemoveMechanicsWorkOrderAt(unsigned int x, unsigned int y);
+LEGO_EXPORT void RemoveNoneWorkersRepairOrderAT(unsigned int x, unsigned int y);
 void FUN_0049cfc0(void);

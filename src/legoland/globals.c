@@ -306,7 +306,7 @@ const char *DAT_004bcba4[3] = {
 };
 
 // GLOBAL: LEGOLAND 0x004bcbf4
-struct LegoConfig *lpConfig;
+LEGO_EXPORT struct LegoConfig *lpConfig;
 
 // GLOBAL: LEGOLAND 0x004bdd00
 unsigned int DAT_004bdd00;
@@ -315,7 +315,7 @@ unsigned int DAT_004bdd00;
 unsigned int DAT_004bdd04;
 
 // GLOBAL: LEGOLAND 0x004bdea0
-struct ClipRect SPRITE_ClipRect;
+LEGO_EXPORT struct ClipRect SPRITE_ClipRect;
 
 // GLOBAL: LEGOLAND 0x004beb94
 struct FreePlaySpriteSlot DAT_004beb94[10];
@@ -1476,16 +1476,16 @@ void *DAT_00667c9c;
 unsigned int DAT_00667ca4;
 
 // GLOBAL: LEGOLAND 0x00667ca8
-void *OverlayList;
+LEGO_EXPORT void *OverlayList;
 
 // GLOBAL: LEGOLAND 0x00667cac
-unsigned int OverlayILF;
+LEGO_EXPORT unsigned int OverlayILF;
 
 // GLOBAL: LEGOLAND 0x00667cb4
-int ScrollX;
+LEGO_EXPORT int ScrollX;
 
 // GLOBAL: LEGOLAND 0x00667cb8
-int ScrollY;
+LEGO_EXPORT int ScrollY;
 
 // GLOBAL: LEGOLAND 0x00667cd8
 unsigned int DAT_00667cd8;
@@ -1530,7 +1530,7 @@ int DAT_00667d58;
 int DAT_00667d6c;
 
 // GLOBAL: LEGOLAND 0x00667d70
-unsigned int DDRAWENV[246];
+LEGO_EXPORT unsigned int DDRAWENV[246];
 
 // GLOBAL: LEGOLAND 0x00668070
 void *DAT_00668070;
@@ -1656,7 +1656,7 @@ struct InterfaceIconNode *DAT_006687c8;
 struct InterfaceIconNode *DAT_006687cc;
 
 // GLOBAL: LEGOLAND 0x006687d0
-void *FocussedIconPtr;
+LEGO_EXPORT void *FocussedIconPtr;
 
 // GLOBAL: LEGOLAND 0x00668828
 void *DAT_00668828;
@@ -1914,7 +1914,7 @@ int DAT_0066920c;
 void *DAT_00669210;
 
 // GLOBAL: LEGOLAND 0x00669240
-void *ObjectClassList;
+LEGO_EXPORT void *ObjectClassList;
 
 // GLOBAL: LEGOLAND 0x00669248
 void *DAT_00669248;
@@ -1944,7 +1944,7 @@ unsigned int DAT_0066b468;
 unsigned int DAT_0066b46c;
 
 // GLOBAL: LEGOLAND 0x0066b574
-void *FirstBloke;
+LEGO_EXPORT void *FirstBloke;
 
 // GLOBAL: LEGOLAND 0x0066b57c
 void *DAT_0066b57c;
@@ -2702,13 +2702,13 @@ unsigned int DAT_007fe9c0[9];
 unsigned int DAT_007feb14;
 
 // GLOBAL: LEGOLAND 0x007febc0
-struct Cursor EditCursor;
+LEGO_EXPORT struct Cursor EditCursor;
 
 // GLOBAL: LEGOLAND 0x00801400
 struct MapElement **DAT_00801400;
 
 // GLOBAL: LEGOLAND 0x00805f60
-void *TileSpriteArray[256];
+LEGO_EXPORT void *TileSpriteArray[256];
 
 // GLOBAL: LEGOLAND 0x0080ff64
 unsigned int DAT_0080ff64;
@@ -2732,22 +2732,22 @@ unsigned int DAT_00810140;
 unsigned int SPRITE_TitleScreenBk;
 
 // GLOBAL: LEGOLAND 0x00810160
-struct Cursor QueryCursor;
+LEGO_EXPORT struct Cursor QueryCursor;
 
 // GLOBAL: LEGOLAND 0x008119a0
-unsigned int NEWFLC_CheckDuplicate;
+LEGO_EXPORT unsigned int NEWFLC_CheckDuplicate;
 
 // GLOBAL: LEGOLAND 0x008119a4
 unsigned int DAT_008119a4;
 
 // GLOBAL: LEGOLAND 0x008119a8
-unsigned int NEWFLC_BuffSize;
+LEGO_EXPORT unsigned int NEWFLC_BuffSize;
 
 // GLOBAL: LEGOLAND 0x008119ac
-unsigned short NEWFLC_Repeat;
+LEGO_EXPORT unsigned short NEWFLC_Repeat;
 
 // GLOBAL: LEGOLAND 0x008119b0
-unsigned int EditMode;
+LEGO_EXPORT unsigned int EditMode;
 
 // GLOBAL: LEGOLAND 0x008119b4
 unsigned int DAT_008119b4;
@@ -2795,7 +2795,7 @@ void *DAT_00813a0c;
 unsigned int DAT_00813a10;
 
 // GLOBAL: LEGOLAND 0x00813a40
-unsigned int GamePad;
+LEGO_EXPORT unsigned int GamePad;
 
 // GLOBAL: LEGOLAND 0x00813a44
 unsigned int DAT_00813a44;
@@ -2804,7 +2804,7 @@ unsigned int DAT_00813a44;
 unsigned int DAT_00813a48;
 
 // GLOBAL: LEGOLAND 0x00813b00
-void *CONTROLLERBUFFER;
+LEGO_EXPORT void *CONTROLLERBUFFER;
 
 // GLOBAL: LEGOLAND 0x00814020
 unsigned char DAT_00814020[1];
@@ -3353,4 +3353,4 @@ unsigned int DAT_00832bd8;
 int DAT_00832bdc;
 
 // GLOBAL: LEGOLAND 0x00832bf0
-void *PathSprite;
+LEGO_EXPORT void *PathSprite;

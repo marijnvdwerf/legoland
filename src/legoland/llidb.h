@@ -1,5 +1,7 @@
 #pragma once
 
+#include "legoland.h"
+
 struct LLS {
     short frame;
     unsigned short delay;
@@ -9,17 +11,17 @@ struct LLS {
     unsigned int flags;
 };
 
-int LLIDB_FindElement(const char *name, unsigned int *out, int zero);
-unsigned int ElemID(const char *name);
-void LLIDB_LoadICM(void);
-void LLIDB_CloseICM(void);
-unsigned int LLIDB_RegisterNewElement(const char *param_1, unsigned int param_2, unsigned int param_3);
-void LLIDB_ClearOnLevel(void);
-void *LLIDB_LoadData(void *head);
-void LLIDB_UnLoadData(unsigned int handle);
+LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, int zero);
+LEGO_EXPORT unsigned int ElemID(const char *name);
+LEGO_EXPORT void LLIDB_LoadICM(void);
+LEGO_EXPORT void LLIDB_CloseICM(void);
+LEGO_EXPORT unsigned int LLIDB_RegisterNewElement(const char *param_1, unsigned int param_2, unsigned int param_3);
+LEGO_EXPORT void LLIDB_ClearOnLevel(void);
+LEGO_EXPORT void *LLIDB_LoadData(void *head);
+LEGO_EXPORT void LLIDB_UnLoadData(unsigned int handle);
 
-void LLSStop(unsigned int handle);
-void LLSSetFrame(struct LLS *lls, int index);
+LEGO_EXPORT void LLSStop(unsigned int handle);
+LEGO_EXPORT void LLSSetFrame(struct LLS *lls, int index);
 
-unsigned int SaveGameRead(void *buffer, unsigned int count);
-unsigned int SaveGameWrite(void *buffer, unsigned int count);
+LEGO_EXPORT unsigned int SaveGameRead(void *buffer, unsigned int count);
+LEGO_EXPORT unsigned int SaveGameWrite(void *buffer, unsigned int count);

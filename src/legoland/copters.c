@@ -217,10 +217,10 @@ void FUN_00404be0(void) { STUB(); }
 void FUN_00404f20(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00404f60
-void Copters_Save(void) { STUB(); }
+LEGO_EXPORT void Copters_Save(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00405050
-void Copters_Load(void) { STUB(); }
+LEGO_EXPORT void Copters_Load(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00405110
 void FUN_00405110(const char **name, struct CopterInterface *interfaces) {

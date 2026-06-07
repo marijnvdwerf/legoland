@@ -6,7 +6,7 @@
 #include "globals.h"
 
 // FUNCTION: LEGOLAND 0x0047d790
-void BeginMeasuredBlock(void) { STUB(); }
+LEGO_EXPORT void BeginMeasuredBlock(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d7e0
 void FUN_0047d7e0(void) {
@@ -16,13 +16,13 @@ void FUN_0047d7e0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d800
-void EndMeasuredBlock(void) { STUB(); }
+LEGO_EXPORT void EndMeasuredBlock(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d880
-void FindeIneList(void) { STUB(); }
+LEGO_EXPORT void FindeIneList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d8c0
-unsigned int GeteListPtr(int idx) {
+LEGO_EXPORT unsigned int GeteListPtr(int idx) {
     if (idx == -1) {
         return 0;
     }
@@ -30,13 +30,13 @@ unsigned int GeteListPtr(int idx) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d8e0
-void SaveGame(void) { STUB(); }
+LEGO_EXPORT void SaveGame(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047e980
-void LoadGame(void) { STUB(); }
+LEGO_EXPORT void LoadGame(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047f760
-void UnloadSaveGameMap(void) { STUB(); }
+LEGO_EXPORT void UnloadSaveGameMap(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047f810
 void FUN_0047f810(void) {

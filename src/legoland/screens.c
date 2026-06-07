@@ -34,10 +34,10 @@ struct ScreenConfig {
 void FUN_004585c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00458640
-void InitScreens(void) { STUB(); }
+LEGO_EXPORT void InitScreens(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00458740
-void RenderFrontEndScreen(void) { STUB(); }
+LEGO_EXPORT void RenderFrontEndScreen(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00458830
 void FUN_00458830(void) { STUB(); }

@@ -27,7 +27,7 @@ void FUN_004529c0(void) {
 void FUN_004529e0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00452a30
-void RemoveSoundObject(unsigned int a, unsigned int b, unsigned int c) { STUB(); }
+LEGO_EXPORT void RemoveSoundObject(unsigned int a, unsigned int b, unsigned int c) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00452a80
 void FUN_00452a80(void) {

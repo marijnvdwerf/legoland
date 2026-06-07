@@ -109,7 +109,7 @@ struct ObjInstance {
 
 
 // FUNCTION: LEGOLAND 0x00480990
-struct ObjectClass *AddNewObjectClass(void) {
+LEGO_EXPORT struct ObjectClass *AddNewObjectClass(void) {
     struct ObjectClass *cls;
 
     cls = (struct ObjectClass *)_malloc(0xd0);
@@ -157,7 +157,7 @@ void FUN_00480aa0(struct ObjClassNames *names, struct ObjectInfo *info) {
 }
 
 // FUNCTION: LEGOLAND 0x00480b40
-unsigned int LoadObjectClass(struct ObjectClass *cls) {
+LEGO_EXPORT unsigned int LoadObjectClass(struct ObjectClass *cls) {
     unsigned int result;
 
     result = (unsigned int)LLIDB_LoadData(cls); /* TODO: fold — LLIDB_LoadData handle as uint */
@@ -180,10 +180,10 @@ void FUN_00480b70(struct ObjClassNames *param) {
 }
 
 // FUNCTION: LEGOLAND 0x00480bb0
-unsigned int BasicObjectDCalcCursor(unsigned int param_1, unsigned int param_2) { STUB(); }
+LEGO_EXPORT unsigned int BasicObjectDCalcCursor(unsigned int param_1, unsigned int param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00480cd0
-void SetStandardCallbacks(struct CallbackTable *table) {
+LEGO_EXPORT void SetStandardCallbacks(struct CallbackTable *table) {
     table->func_8c = FUN_00480b70;
     table->func_90 = CalcBasicObjectCursor;
     table->func_94 = BasicObjectDCalcCursor;
@@ -192,7 +192,7 @@ void SetStandardCallbacks(struct CallbackTable *table) {
 }
 
 // FUNCTION: LEGOLAND 0x00480d10
-void ClearObjectCounters(void) {
+LEGO_EXPORT void ClearObjectCounters(void) {
     struct ObjectClass *cls;
 
     for (cls = ObjectClassList; cls != 0; cls = cls->next) {
@@ -201,7 +201,7 @@ void ClearObjectCounters(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00480d30
-unsigned int ObjCount(struct ObjCountWrap *wrap) {
+LEGO_EXPORT unsigned int ObjCount(struct ObjCountWrap *wrap) {
     if (wrap == 0) {
         return 0;
     }
@@ -209,34 +209,34 @@ unsigned int ObjCount(struct ObjCountWrap *wrap) {
 }
 
 // FUNCTION: LEGOLAND 0x00480d40
-void IncrementObjectCount(struct ObjectCount *count) {
+LEGO_EXPORT void IncrementObjectCount(struct ObjectCount *count) {
     count->count++;
     count->holder->count++;
 }
 
 // FUNCTION: LEGOLAND 0x00480d60
-void DecrementObjectCount(struct ObjectCount *count) {
+LEGO_EXPORT void DecrementObjectCount(struct ObjectCount *count) {
     count->count--;
     count->holder->count--;
 }
 
 // FUNCTION: LEGOLAND 0x00480d80
-void CreateObjectClasses(void) {
+LEGO_EXPORT void CreateObjectClasses(void) {
     NEWFLC_Repeat = 0;
     NEWFLC_BuffSize = 1;
     NEWFLC_CheckDuplicate = 1;
 }
 
 // FUNCTION: LEGOLAND 0x00480da0
-int GetObjCost(struct CostInfo *info) {
+LEGO_EXPORT int GetObjCost(struct CostInfo *info) {
     return info->cost;
 }
 
 // FUNCTION: LEGOLAND 0x00480db0
-unsigned int GetObjSalvageValue(unsigned int param_1, unsigned int param_2) { STUB(); }
+LEGO_EXPORT unsigned int GetObjSalvageValue(unsigned int param_1, unsigned int param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00480de0
-unsigned int GetObjRepairCost(unsigned int param_1, unsigned int param_2) {
+LEGO_EXPORT unsigned int GetObjRepairCost(unsigned int param_1, unsigned int param_2) {
     unsigned int salvage;
     unsigned int cost;
 
@@ -246,7 +246,7 @@ unsigned int GetObjRepairCost(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00480e10
-void AllocBlokeCounters(unsigned int size) {
+LEGO_EXPORT void AllocBlokeCounters(unsigned int size) {
     struct ObjectClass *cls;
 
     for (cls = ObjectClassList; cls != 0; cls = cls->next) {
@@ -259,7 +259,7 @@ void AllocBlokeCounters(unsigned int size) {
 }
 
 // FUNCTION: LEGOLAND 0x00480e60
-void FreeBlokeCounters(void) {
+LEGO_EXPORT void FreeBlokeCounters(void) {
     struct ObjectClass *cls;
 
     for (cls = ObjectClassList; cls != 0; cls = cls->next) {
@@ -271,7 +271,7 @@ void FreeBlokeCounters(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00480e90
-void ClearBlokeCounters(unsigned int index, struct Bloke *bloke) {
+LEGO_EXPORT void ClearBlokeCounters(unsigned int index, struct Bloke *bloke) {
     struct ObjectClass *cls;
 
     for (cls = ObjectClassList; cls != 0; cls = cls->next) {
@@ -282,7 +282,7 @@ void ClearBlokeCounters(unsigned int index, struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00480ec0
-void IncrementBlokeCounter(struct ObjectClass *cls, unsigned int index) {
+LEGO_EXPORT void IncrementBlokeCounter(struct ObjectClass *cls, unsigned int index) {
     unsigned char *counters;
 
     counters = (unsigned char *)cls->counters;
@@ -292,7 +292,7 @@ void IncrementBlokeCounter(struct ObjectClass *cls, unsigned int index) {
 }
 
 // FUNCTION: LEGOLAND 0x00480ee0
-int GetBlokeCounter(struct ObjectClass *cls, int index) {
+LEGO_EXPORT int GetBlokeCounter(struct ObjectClass *cls, int index) {
     unsigned char *counters;
 
     counters = (unsigned char *)cls->counters;
@@ -303,22 +303,22 @@ int GetBlokeCounter(struct ObjectClass *cls, int index) {
 }
 
 // FUNCTION: LEGOLAND 0x00480f00
-void LoadObjectLibrary(void) { STUB(); }
+LEGO_EXPORT void LoadObjectLibrary(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004810f0
-void UnLoadObjectLibrary(void) { STUB(); }
+LEGO_EXPORT void UnLoadObjectLibrary(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00481170
 void FUN_00481170(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00481200
-void BuildObjInfoList(void) { STUB(); }
+LEGO_EXPORT void BuildObjInfoList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00481410
-void CalculateViewRideCode(void) { STUB(); }
+LEGO_EXPORT void CalculateViewRideCode(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00481480
-unsigned int CalculateRideCode(unsigned int param_1, void *param_2, unsigned int param_3) {
+LEGO_EXPORT unsigned int CalculateRideCode(unsigned int param_1, void *param_2, unsigned int param_3) {
     int diff;
     int value;
 
@@ -337,10 +337,10 @@ unsigned int CalculateRideCode(unsigned int param_1, void *param_2, unsigned int
 }
 
 // FUNCTION: LEGOLAND 0x004814c0
-unsigned int Calc_Item_Attractiveness(unsigned int param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
+LEGO_EXPORT unsigned int Calc_Item_Attractiveness(unsigned int param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004815e0
-void CalculateRideCodes(unsigned int param_1) {
+LEGO_EXPORT void CalculateRideCodes(unsigned int param_1) {
     struct RideNode *node;
 
     for (node = DAT_00669248; node != 0; node = node->next) {
@@ -349,15 +349,15 @@ void CalculateRideCodes(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00481610
-void ShuffleObjKeys(void) { STUB(); }
+LEGO_EXPORT void ShuffleObjKeys(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00481690
-void ResetBestPtr(void) {
+LEGO_EXPORT void ResetBestPtr(void) {
     DAT_0066924c = 0;
 }
 
 // FUNCTION: LEGOLAND 0x004816a0
-struct ObjInstance *CreateObjectInstance(unsigned int param_1, unsigned short *param_2) {
+LEGO_EXPORT struct ObjInstance *CreateObjectInstance(unsigned int param_1, unsigned short *param_2) {
     struct ObjInstance *obj;
 
     obj = (struct ObjInstance *)_malloc(0x14);
@@ -370,7 +370,7 @@ struct ObjInstance *CreateObjectInstance(unsigned int param_1, unsigned short *p
 }
 
 // FUNCTION: LEGOLAND 0x004816e0
-void SetEditObject(struct EditObject *obj) {
+LEGO_EXPORT void SetEditObject(struct EditObject *obj) {
     EditMode = 1;
     DAT_008119b8 = obj;
     if (obj == 0) {

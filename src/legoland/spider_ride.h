@@ -1,5 +1,7 @@
 #pragma once
 
+#include "legoland.h"
+
 struct SpiderNode {
     unsigned short field_0;
     unsigned char pad_2[0x2a];
@@ -8,5 +10,5 @@ struct SpiderNode {
 
 int FUN_00415a90(struct SpiderNode *node);
 void FUN_00416330(void);
-void SaveSpider(void);
-void LoadSpider(void);
+LEGO_EXPORT void SaveSpider(void);
+LEGO_EXPORT void LoadSpider(void);

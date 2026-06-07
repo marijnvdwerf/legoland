@@ -148,7 +148,7 @@ void FUN_00417400(unsigned int index, void *arg) {
 void FUN_00417430(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004178c0
-int SaveTempleSlide(void) {
+LEGO_EXPORT int SaveTempleSlide(void) {
     int one = 1;
     int zero = 0;
     struct SaveNode *p;
@@ -167,10 +167,10 @@ int SaveTempleSlide(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00417930
-void LoadTempleSlide(void) { STUB(); }
+LEGO_EXPORT void LoadTempleSlide(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00417a00
-void TempleSlide_GetInterfaces(const char **ctx, struct TempleSlideObject *interfaces) {
+LEGO_EXPORT void TempleSlide_GetInterfaces(const char **ctx, struct TempleSlideObject *interfaces) {
     // STRING: LEGOLAND 0x004b4f8c
     if (__strcmpi("TEMPLE SLIDE", *ctx) == 0) {
         interfaces->field_a4 = FUN_00417150;

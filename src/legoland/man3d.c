@@ -60,10 +60,10 @@ struct Bloke {
 
 
 // FUNCTION: LEGOLAND 0x0043f660
-void LoadPos(void) { STUB(); }
+LEGO_EXPORT void LoadPos(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043f7d0
-void UnloadPos(struct Position *pos) {
+LEGO_EXPORT void UnloadPos(struct Position *pos) {
     int i;
 
     i = 0;
@@ -109,7 +109,7 @@ void FUN_0043f870(struct PosHeader *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0043f890
-struct Person *Find3DPersonFromBloke(unsigned int id) {
+LEGO_EXPORT struct Person *Find3DPersonFromBloke(unsigned int id) {
     struct Person *person;
 
     person = DAT_00655a3c;
@@ -201,10 +201,10 @@ void FUN_0043fa80(void) { STUB(); }
 void FUN_0043fde0(void *ptr) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043fe50
-void Render3DPerson(struct Person *person) { STUB(); }
+LEGO_EXPORT void Render3DPerson(struct Person *person) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043ffb0
-void RenderBlokeIn3D(struct Bloke *bloke) {
+LEGO_EXPORT void RenderBlokeIn3D(struct Bloke *bloke) {
     struct Person *person;
 
     person = bloke->person;
@@ -214,7 +214,7 @@ void RenderBlokeIn3D(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0043ffd0
-void SortBlokeIn3D(struct Bloke *bloke) {
+LEGO_EXPORT void SortBlokeIn3D(struct Bloke *bloke) {
     struct {
         unsigned int field_0;
         struct Bloke *bloke;
@@ -230,18 +230,18 @@ void SortBlokeIn3D(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00440010
-void IP_RenderBlokeIn3DNow(struct Bloke *bloke) {
+LEGO_EXPORT void IP_RenderBlokeIn3DNow(struct Bloke *bloke) {
     RenderBlokeIn3D(bloke);
 }
 
 // FUNCTION: LEGOLAND 0x00440020
-void SetPersonRotation(void) { STUB(); }
+LEGO_EXPORT void SetPersonRotation(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004400b0
-void SetPersonDirection(void) { STUB(); }
+LEGO_EXPORT void SetPersonDirection(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00440190
-void SetPersonPosition(struct Person *person, unsigned int x, unsigned int y) {
+LEGO_EXPORT void SetPersonPosition(struct Person *person, unsigned int x, unsigned int y) {
     person->field_1c = x;
     person->field_20 = y;
 }
@@ -250,7 +250,7 @@ void SetPersonPosition(struct Person *person, unsigned int x, unsigned int y) {
 void FUN_004401b0(unsigned int param_1, struct Person *person) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00440290
-void UpdatePerson(struct Person *person) {
+LEGO_EXPORT void UpdatePerson(struct Person *person) {
     if ((person->flags & 0x80) != 0) {
         return;
     }
@@ -261,7 +261,7 @@ void UpdatePerson(struct Person *person) {
 }
 
 // FUNCTION: LEGOLAND 0x004402b0
-void Control3DPeople(void) {
+LEGO_EXPORT void Control3DPeople(void) {
     struct Person *person;
 
     person = FirstBloke;
@@ -278,10 +278,10 @@ void Control3DPeople(void) {
 void FUN_004402d0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00440350
-void InitMan(void) { STUB(); }
+LEGO_EXPORT void InitMan(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004405a0
-void UnInitMan(void) {
+LEGO_EXPORT void UnInitMan(void) {
     unsigned int *p;
 
     if (DAT_0081c8c0 != 0) {
@@ -330,7 +330,7 @@ void UnInitMan(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00440680
-void Add3DBlokeToList(struct Bloke *bloke, unsigned int param_2) {
+LEGO_EXPORT void Add3DBlokeToList(struct Bloke *bloke, unsigned int param_2) {
     struct Person *person;
 
     person = FUN_0043f8c0((unsigned int)bloke, param_2);
@@ -343,21 +343,21 @@ void Add3DBlokeToList(struct Bloke *bloke, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x004406c0
-void BlokeSetAnim(struct Bloke *bloke, unsigned int anim) { STUB(); }
+LEGO_EXPORT void BlokeSetAnim(struct Bloke *bloke, unsigned int anim) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00440780
-void BlokeSitAnim(struct Bloke *bloke) {
+LEGO_EXPORT void BlokeSitAnim(struct Bloke *bloke) {
     BlokeSetAnim(bloke, 0);
 }
 
 // FUNCTION: LEGOLAND 0x00440790
-struct Anim3D *GetBlokeAnim3D(struct Bloke *bloke) { STUB(); }
+LEGO_EXPORT struct Anim3D *GetBlokeAnim3D(struct Bloke *bloke) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00440800
-void GetBlokeAnim3DFromPerson(void) { STUB(); }
+LEGO_EXPORT void GetBlokeAnim3DFromPerson(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00440870
-void BlokeSetFrame(struct Bloke *bloke, int frame) {
+LEGO_EXPORT void BlokeSetFrame(struct Bloke *bloke, int frame) {
     struct Person *person;
     struct Anim3D *anim;
 
@@ -369,10 +369,10 @@ void BlokeSetFrame(struct Bloke *bloke, int frame) {
 }
 
 // FUNCTION: LEGOLAND 0x004408a0
-void PlayBlokeAnim(void) { STUB(); }
+LEGO_EXPORT void PlayBlokeAnim(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004408e0
-void BlokeAnimNextFrame(struct Bloke *bloke) {
+LEGO_EXPORT void BlokeAnimNextFrame(struct Bloke *bloke) {
     struct Person *person;
     struct Anim3D *anim;
 
@@ -384,15 +384,15 @@ void BlokeAnimNextFrame(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00440910
-void BlokeWalkAnim(struct Bloke *bloke) { STUB(); }
+LEGO_EXPORT void BlokeWalkAnim(struct Bloke *bloke) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00440960
-void BlokeWalkWithPan(struct Bloke *bloke) {
+LEGO_EXPORT void BlokeWalkWithPan(struct Bloke *bloke) {
     BlokeSetAnim(bloke, 5);
 }
 
 // FUNCTION: LEGOLAND 0x00440970
-void BlokePanWithPan(struct Bloke *bloke) {
+LEGO_EXPORT void BlokePanWithPan(struct Bloke *bloke) {
     BlokeSetAnim(bloke, 4);
 }
 

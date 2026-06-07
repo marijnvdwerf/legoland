@@ -15,7 +15,7 @@ struct LegoConfig {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0048b7e0
-void InitProgressScreen(void) { STUB(); }
+LEGO_EXPORT void InitProgressScreen(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048bb60
 void FUN_0048bb60(void) { STUB(); }

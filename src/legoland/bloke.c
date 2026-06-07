@@ -113,7 +113,7 @@ int FUN_00482b60(struct InstancePos *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x00482ba0
-void GetVisitorName(void) { STUB(); }
+LEGO_EXPORT void GetVisitorName(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482c60
 void FUN_00482c60(struct Person *person) {
@@ -169,10 +169,10 @@ void FUN_00482ec0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00482ef0
-struct Bloke *NewBloke(void) { STUB(); }
+LEGO_EXPORT struct Bloke *NewBloke(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482f70
-struct Bloke *NewBlokeWOList(void *param_2) {
+LEGO_EXPORT struct Bloke *NewBlokeWOList(void *param_2) {
     struct Bloke *bloke = (struct Bloke *)_malloc(0xac);
     if (bloke != NULL) {
         memset(bloke, 0, 0xac);
@@ -184,10 +184,10 @@ struct Bloke *NewBlokeWOList(void *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00482fb0
-unsigned int GetBlokeNum(void) { STUB(); }
+LEGO_EXPORT unsigned int GetBlokeNum(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482fe0
-struct Bloke *GetBlokePtr(int index) {
+LEGO_EXPORT struct Bloke *GetBlokePtr(int index) {
     if (index == -1) {
         return NULL;
     }
@@ -195,7 +195,7 @@ struct Bloke *GetBlokePtr(int index) {
 }
 
 // FUNCTION: LEGOLAND 0x00483010
-void DestroyBloke(struct Bloke *bloke) { STUB(); }
+LEGO_EXPORT void DestroyBloke(struct Bloke *bloke) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00483090
 void FUN_00483090(void) {
@@ -206,7 +206,7 @@ void FUN_00483090(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004830c0
-struct Bloke *MakeBloke(int param_1) {
+LEGO_EXPORT struct Bloke *MakeBloke(int param_1) {
     struct Bloke *bloke = NewBloke();
     if (bloke != NULL) {
         ClearBlokeCounters(GetBlokeNum(), bloke);
@@ -215,7 +215,7 @@ struct Bloke *MakeBloke(int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00483130
-void RenderPeople(void) {
+LEGO_EXPORT void RenderPeople(void) {
     struct Bloke *current;
     Control3DPeople();
     for (current = FirstBloke; current != NULL; current = current->next) {
@@ -245,10 +245,10 @@ int FUN_00483160(int x, int y) {
 void FUN_004831a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004831d0
-void SetPathFlag(void) { STUB(); }
+LEGO_EXPORT void SetPathFlag(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00483240
-unsigned short DoPendingAction(struct PendingObject *obj) {
+LEGO_EXPORT unsigned short DoPendingAction(struct PendingObject *obj) {
     obj->field_e = obj->field_10;
     obj->field_10 = 0;
     return obj->field_e;
@@ -261,7 +261,7 @@ void FUN_00483260(void) { STUB(); }
 void FUN_00483300(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004833d0
-int NewDirForAction(struct ActionState *state, unsigned char dir) {
+LEGO_EXPORT int NewDirForAction(struct ActionState *state, unsigned char dir) {
     unsigned char masked = dir & 0x7;
     if (state->field_72 != masked) {
         state->field_10 = state->field_e;
@@ -274,19 +274,19 @@ int NewDirForAction(struct ActionState *state, unsigned char dir) {
 }
 
 // FUNCTION: LEGOLAND 0x00483400
-void Random_Dir_From_Bits(void) { STUB(); }
+LEGO_EXPORT void Random_Dir_From_Bits(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004834a0
-void HitPathEdge(void) { STUB(); }
+LEGO_EXPORT void HitPathEdge(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00483510
-void HitObstacle(void) { STUB(); }
+LEGO_EXPORT void HitObstacle(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00483580
 void FUN_00483580(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00483650
-int OverNewTile(struct OverTile *tile, unsigned int x, unsigned int y) {
+LEGO_EXPORT int OverNewTile(struct OverTile *tile, unsigned int x, unsigned int y) {
     if (((tile->field_68 ^ x) & 0xffffff00) || ((tile->field_6c ^ y) & 0xffffff00)) {
         return 1;
     }
@@ -306,7 +306,7 @@ int FUN_004837a0(struct Walker *walker, unsigned int x, unsigned int y) {
 }
 
 // FUNCTION: LEGOLAND 0x004837d0
-void CrossTileCentre(void) { STUB(); }
+LEGO_EXPORT void CrossTileCentre(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00483830
 void FUN_00483830(struct Walker *walker) {
@@ -352,10 +352,10 @@ void FUN_004838e0(struct Walker *walker) {
 }
 
 // FUNCTION: LEGOLAND 0x00483920
-void DoRndWalkPathTileAction(void) { STUB(); }
+LEGO_EXPORT void DoRndWalkPathTileAction(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00483b10
-void Handle_RndWalk_TileSpecifics(void) { STUB(); }
+LEGO_EXPORT void Handle_RndWalk_TileSpecifics(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00483b60
 void FUN_00483b60(void) { STUB(); }
@@ -407,7 +407,7 @@ void FUN_004845d0(void) { STUB(); }
 void FUN_00484630(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004846a0
-void GetTileInDir(void) { STUB(); }
+LEGO_EXPORT void GetTileInDir(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00484790
 void FUN_00484790(void) { STUB(); }
@@ -421,34 +421,34 @@ void FUN_004848e0(struct Walker *walker) {
 }
 
 // FUNCTION: LEGOLAND 0x00484910
-void Bloke_DoNothing(void) {
+LEGO_EXPORT void Bloke_DoNothing(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00484920
-void DoLowLevelAI(struct Worker *worker) { STUB(); }
+LEGO_EXPORT void DoLowLevelAI(struct Worker *worker) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00484950
-void ApplyObjectOrientationToPerson(void) { STUB(); }
+LEGO_EXPORT void ApplyObjectOrientationToPerson(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00484a70
-void SetBlokePositionFromBNV(void) { STUB(); }
+LEGO_EXPORT void SetBlokePositionFromBNV(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00484c20
-void NewBNVPath(void) { STUB(); }
+LEGO_EXPORT void NewBNVPath(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00484cd0
-void UpdateBlokeFromBNVPath(void) { STUB(); }
+LEGO_EXPORT void UpdateBlokeFromBNVPath(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00484ff0
-unsigned int BNVPath_GetDFrame(struct BNVPath *path) {
+LEGO_EXPORT unsigned int BNVPath_GetDFrame(struct BNVPath *path) {
     return path->field_40;
 }
 
 // FUNCTION: LEGOLAND 0x00485000
-void BNVPath_GetBINVScreenCoords(void) { STUB(); }
+LEGO_EXPORT void BNVPath_GetBINVScreenCoords(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004850b0
-void BNVPath_SetDFrame(void) { STUB(); }
+LEGO_EXPORT void BNVPath_SetDFrame(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00485260
-void CheckForPeople(void) { STUB(); }
+LEGO_EXPORT void CheckForPeople(void) { STUB(); }

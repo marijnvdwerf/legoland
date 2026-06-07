@@ -16,10 +16,10 @@ struct BuyItemArg {
 };
 
 // FUNCTION: LEGOLAND 0x00453900
-void LoadMoneySFX(void) { STUB(); }
+LEGO_EXPORT void LoadMoneySFX(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00453930
-void KillMoneySFX(void)
+LEGO_EXPORT void KillMoneySFX(void)
 {
     if (--DAT_00667120 == 0) {
         Kill_FXList(MONEY_SFX, 2);
@@ -27,13 +27,13 @@ void KillMoneySFX(void)
 }
 
 // FUNCTION: LEGOLAND 0x00453950
-void PlayMoneySFX(int a0, int a1, int a2) { STUB(); }
+LEGO_EXPORT void PlayMoneySFX(int a0, int a1, int a2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004539a0
-void StopMoneySFX(void) { STUB(); }
+LEGO_EXPORT void StopMoneySFX(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004539e0
-void BuyItem(struct BuyItemArg *item, int a2, int a3)
+LEGO_EXPORT void BuyItem(struct BuyItemArg *item, int a2, int a3)
 {
     int val = item->field_c->field_28;
 

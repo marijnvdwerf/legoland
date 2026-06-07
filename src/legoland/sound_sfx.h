@@ -1,5 +1,7 @@
 #pragma once
 
+#include "legoland.h"
+
 struct SampleDef;
 struct SampleBuffer;
 
@@ -41,15 +43,15 @@ struct Sample {
     struct SampleBuffer *buffer;
 };
 
-struct Sample *CreatePlayableSample(unsigned int def);
-int PlaySample(struct Sample *sample, unsigned int looping, unsigned int oneshot);
-void PauseSingleSample(struct Sample *sample);
+LEGO_EXPORT struct Sample *CreatePlayableSample(unsigned int def);
+LEGO_EXPORT int PlaySample(struct Sample *sample, unsigned int looping, unsigned int oneshot);
+LEGO_EXPORT void PauseSingleSample(struct Sample *sample);
 void FUN_00492850(void);
-int ResumeSinglyPausedSample(struct Sample *sample);
+LEGO_EXPORT int ResumeSinglyPausedSample(struct Sample *sample);
 void FUN_00492980(void);
 void FUN_00492990(void);
-int SetSampleFade(struct Sample *sample, unsigned int fade);
-void KillPlayableSample(struct Sample *sample);
-void DeleteSampleDef(struct SampleDef *def);
-int KillSoundSampleSystem(void);
+LEGO_EXPORT int SetSampleFade(struct Sample *sample, unsigned int fade);
+LEGO_EXPORT void KillPlayableSample(struct Sample *sample);
+LEGO_EXPORT void DeleteSampleDef(struct SampleDef *def);
+LEGO_EXPORT int KillSoundSampleSystem(void);
 int FUN_00495b00(void);

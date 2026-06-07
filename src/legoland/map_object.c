@@ -90,10 +90,10 @@ struct Overlay {
 
 
 // FUNCTION: LEGOLAND 0x0045dd80
-void AddObjectToMap(void) { STUB(); }
+LEGO_EXPORT void AddObjectToMap(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045dee0
-void SetObjRectFlags(void) { STUB(); }
+LEGO_EXPORT void SetObjRectFlags(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045e080
 void FUN_0045e080(void) { STUB(); }
@@ -169,33 +169,33 @@ int FUN_0045ead0(struct ObjState *obj) {
 void FUN_0045eaf0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045eb30
-void BuildObject(void) { STUB(); }
+LEGO_EXPORT void BuildObject(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045ed30
-void ObjectIsBuilt(void) { STUB(); }
+LEGO_EXPORT void ObjectIsBuilt(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045ef50
-void ObjectIsBuilding(void) { STUB(); }
+LEGO_EXPORT void ObjectIsBuilding(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045efc0
-void ApplyConsTileMap(void) {
+LEGO_EXPORT void ApplyConsTileMap(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0045efd0
-void ApplyDestrTileMap(void) {
+LEGO_EXPORT void ApplyDestrTileMap(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0045efe0
-unsigned int AddBasicObject(unsigned int param1, unsigned int param2) { STUB(); }
+LEGO_EXPORT unsigned int AddBasicObject(unsigned int param1, unsigned int param2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045f100
-void RemoveObjectFromMap(void) { STUB(); }
+LEGO_EXPORT void RemoveObjectFromMap(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045f220
-void StandardRemoveObject(unsigned int a, unsigned int b, unsigned int c) { STUB(); }
+LEGO_EXPORT void StandardRemoveObject(unsigned int a, unsigned int b, unsigned int c) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045f440
-void SetEditCursorFootPrint(void *src) {
+LEGO_EXPORT void SetEditCursorFootPrint(void *src) {
     memcpy(EditCursor.field_1414, src, 20);
 }
 
@@ -231,13 +231,13 @@ void FUN_0045f4d0(struct Cursor *cursor) { STUB(); }
 void FUN_0045f540(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045f5f0
-void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, unsigned int param_3) { STUB(); }
+LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045f810
-void ValidateCursor(struct Cursor *cursor, unsigned int param) { STUB(); }
+LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, unsigned int param) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045fa80
-void CalcBasicObjectCursor(struct CursorObj *obj, unsigned int a2, unsigned int a3) {
+LEGO_EXPORT void CalcBasicObjectCursor(struct CursorObj *obj, unsigned int a2, unsigned int a3) {
     unsigned int v1;
 
     v1 = obj->field_c;
@@ -255,10 +255,10 @@ void FUN_0045fad0(void) { STUB(); }
 void FUN_0045fca0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045ff00
-void RenderCursor(void) { STUB(); }
+LEGO_EXPORT void RenderCursor(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00460540
-void GetTileDimensions(int *width, int *height) {
+LEGO_EXPORT void GetTileDimensions(int *width, int *height) {
     struct TileSprite *sprite;
     int size;
 
@@ -320,27 +320,27 @@ void FUN_00461220(void) {
 void FUN_00461290(unsigned int a, unsigned int b, unsigned int c, unsigned int d) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004614a0
-void ProcessScrolling(unsigned int a, unsigned int b) {
+LEGO_EXPORT void ProcessScrolling(unsigned int a, unsigned int b) {
     ScrollX = ScrollX + a;
     ScrollY = ScrollY + b;
     FUN_00461290(lpConfig->field_10 << 8, lpConfig->field_12 << 8, 0, 0);
 }
 
 // FUNCTION: LEGOLAND 0x004614f0
-void MouseScrollMap(void) { STUB(); }
+LEGO_EXPORT void MouseScrollMap(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004615f0
-int Get_XScroll(void) {
+LEGO_EXPORT int Get_XScroll(void) {
     return ScrollX >> 8;
 }
 
 // FUNCTION: LEGOLAND 0x00461600
-int Get_YScroll(void) {
+LEGO_EXPORT int Get_YScroll(void) {
     return ScrollY >> 8;
 }
 
 // FUNCTION: LEGOLAND 0x00461610
-unsigned char Get_RFFlags(int x, int y) {
+LEGO_EXPORT unsigned char Get_RFFlags(int x, int y) {
     struct MapTile *tile;
 
     tile = MapTileGrid[y >> 8];
@@ -348,10 +348,10 @@ unsigned char Get_RFFlags(int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x00461630
-void GetCurrentRFFlags(void) { STUB(); }
+LEGO_EXPORT void GetCurrentRFFlags(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004616e0
-void Set_RFFlags(int x, int y, unsigned char value) {
+LEGO_EXPORT void Set_RFFlags(int x, int y, unsigned char value) {
     struct MapTile *tile;
 
     tile = MapTileGrid[y >> 8];
@@ -359,7 +359,7 @@ void Set_RFFlags(int x, int y, unsigned char value) {
 }
 
 // FUNCTION: LEGOLAND 0x00461710
-short Get_UserFlags(int x, int y) {
+LEGO_EXPORT short Get_UserFlags(int x, int y) {
     struct MapTile *tile;
 
     tile = MapTileGrid[y >> 8];
@@ -367,7 +367,7 @@ short Get_UserFlags(int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x00461730
-void Set_UserFlags(int x, int y, unsigned short value) {
+LEGO_EXPORT void Set_UserFlags(int x, int y, unsigned short value) {
     struct MapTile *tile;
 
     tile = MapTileGrid[y >> 8];
@@ -375,7 +375,7 @@ void Set_UserFlags(int x, int y, unsigned short value) {
 }
 
 // FUNCTION: LEGOLAND 0x00461760
-short Get_MapFlags(int x, int y) {
+LEGO_EXPORT short Get_MapFlags(int x, int y) {
     struct MapTile *tile;
 
     tile = MapTileGrid[y >> 8];
@@ -383,7 +383,7 @@ short Get_MapFlags(int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x00461780
-void SetMapTile(int x, int y, unsigned short value) {
+LEGO_EXPORT void SetMapTile(int x, int y, unsigned short value) {
     if (x < 0) {
         return;
     }
@@ -400,7 +400,7 @@ void SetMapTile(int x, int y, unsigned short value) {
 }
 
 // FUNCTION: LEGOLAND 0x004617d0
-unsigned short GetMapFlags(int x, int y) {
+LEGO_EXPORT unsigned short GetMapFlags(int x, int y) {
     struct MapTile *tile;
 
     if (x < 0 || x > 0x100 || y < 0 || y > 0x100) {
@@ -411,7 +411,7 @@ unsigned short GetMapFlags(int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x00461810
-void SetMapFlags(int x, int y, short value) {
+LEGO_EXPORT void SetMapFlags(int x, int y, short value) {
     if (x < 0 || x > 256) {
         return;
     }
@@ -422,19 +422,19 @@ void SetMapFlags(int x, int y, short value) {
 }
 
 // FUNCTION: LEGOLAND 0x00461850
-void GetObjectClassAndInstance(void) { STUB(); }
+LEGO_EXPORT void GetObjectClassAndInstance(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004618d0
 void FUN_004618d0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00461a50
-unsigned int LoadBaseMap(unsigned int param_1) { STUB(); }
+LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004629e0
 void FUN_004629e0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00462b30
-void AddOvSav(void) { STUB(); }
+LEGO_EXPORT void AddOvSav(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00462c00
 void FUN_00462c00(struct OverlayParam *param) {
@@ -463,7 +463,7 @@ void FUN_00462c00(struct OverlayParam *param) {
 void FUN_00462c60(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00462ce0
-void ClearOverlays(void) {
+LEGO_EXPORT void ClearOverlays(void) {
     struct Overlay *current;
     struct Overlay *next;
 
@@ -477,10 +477,10 @@ void ClearOverlays(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00462d10
-void PlayAppropriateBuildEffect(void) { STUB(); }
+LEGO_EXPORT void PlayAppropriateBuildEffect(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00462dd0
-void ResetMapAI(void) { STUB(); }
+LEGO_EXPORT void ResetMapAI(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00462e50
 void FUN_00462e50(unsigned int index, unsigned int value) {
@@ -506,13 +506,13 @@ void FUN_00462e70(unsigned int index, unsigned int value) {
 void FUN_00462e90(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00462ef0
-void DoMapAI(void) { STUB(); }
+LEGO_EXPORT void DoMapAI(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004632b0
 void FUN_004632b0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004633f0
-void RateBlokeOnLeaving(void) { STUB(); }
+LEGO_EXPORT void RateBlokeOnLeaving(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00463460
 void FUN_00463460(void) { STUB(); }
@@ -543,7 +543,7 @@ void FUN_00463560(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00463580
-void ProcessDamage(void) { STUB(); }
+LEGO_EXPORT void ProcessDamage(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00463680
 void FUN_00463680(void) { STUB(); }

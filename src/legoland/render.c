@@ -166,33 +166,33 @@ unsigned int FUN_00488820(unsigned int x, unsigned int y) {
 }
 
 // FUNCTION: LEGOLAND 0x00488840
-void GenerateNewImageFromZBuffer(void) { STUB(); }
+LEGO_EXPORT void GenerateNewImageFromZBuffer(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00488a10
-void RenderSprite(void) { STUB(); }
+LEGO_EXPORT void RenderSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00488b90
-void RenderSpriteX(void) { STUB(); }
+LEGO_EXPORT void RenderSpriteX(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00488c50
-void RenderTiledSprite(void) { STUB(); }
+LEGO_EXPORT void RenderTiledSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00488c80
 void FUN_00488c80(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489080
-void RenderScaledSprite(void) { STUB(); }
+LEGO_EXPORT void RenderScaledSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004890c0
-void RenderBlock(void) { STUB(); }
+LEGO_EXPORT void RenderBlock(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489190
-void RenderTransSprite(void) { STUB(); }
+LEGO_EXPORT void RenderTransSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489390
-void RenderThickBox(unsigned int a1, unsigned int a2, unsigned int a3, unsigned int a4, unsigned int a5, unsigned int a6) { STUB(); }
+LEGO_EXPORT void RenderThickBox(unsigned int a1, unsigned int a2, unsigned int a3, unsigned int a4, unsigned int a5, unsigned int a6) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489410
-void RenderBox(unsigned int a1, unsigned int a2, unsigned int a3, unsigned int a4, unsigned int a5) {
+LEGO_EXPORT void RenderBox(unsigned int a1, unsigned int a2, unsigned int a3, unsigned int a4, unsigned int a5) {
     RenderThickBox(a1, a2, a3, a4, 1, a5);
 }

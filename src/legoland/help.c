@@ -34,7 +34,7 @@ void FUN_0046ce20(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046ce60
-void DisplayAdvisorHelp(void) { STUB(); }
+LEGO_EXPORT void DisplayAdvisorHelp(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046cee0
 unsigned int FUN_0046cee0(void) {
@@ -80,7 +80,7 @@ return_0:
 }
 
 // FUNCTION: LEGOLAND 0x0046cf60
-void ProcessInGameHelp(void) {
+LEGO_EXPORT void ProcessInGameHelp(void) {
     int delta;
 
     FUN_00469400();
@@ -113,7 +113,7 @@ void ProcessInGameHelp(void) {
 void FUN_0046cff0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d080
-void ProcessFrontEndHelp(void) { STUB(); }
+LEGO_EXPORT void ProcessFrontEndHelp(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046d110
 void FUN_0046d110(void) { STUB(); }

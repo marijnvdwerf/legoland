@@ -12,7 +12,7 @@ struct Sprite {
 #include "globals.h"
 
 // FUNCTION: LEGOLAND 0x00499430
-unsigned int GetGameTimer(void) {
+LEGO_EXPORT unsigned int GetGameTimer(void) {
     unsigned int now;
 
     if (DAT_0079a890 != 0) {
@@ -41,7 +41,7 @@ unsigned long GetTicks(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00499480
-unsigned int GetBlink(void) {
+LEGO_EXPORT unsigned int GetBlink(void) {
     return (GetTicks() >> 9) & 1;
 }
 

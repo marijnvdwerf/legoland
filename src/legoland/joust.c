@@ -125,7 +125,7 @@ unsigned int *FUN_00408c50(struct JoustRoot *param1, unsigned short param2) {
 }
 
 // FUNCTION: LEGOLAND 0x00408c90
-int SaveJoust(void) {
+LEGO_EXPORT int SaveJoust(void) {
     struct JoustNode *current = DAT_004c1250;
     unsigned int flag = 1;
     unsigned int terminator = 0;
@@ -147,10 +147,10 @@ int SaveJoust(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00408d00
-void LoadJoust(void) { STUB(); }
+LEGO_EXPORT void LoadJoust(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00408db0
-void Joust_GetInterfaces(const char **interface_name, struct JoustInterface *pInterface) {
+LEGO_EXPORT void Joust_GetInterfaces(const char **interface_name, struct JoustInterface *pInterface) {
     // STRING: LEGOLAND 0x004b4718
     if (__strcmpi("JOUST", *interface_name) == 0) {
         pInterface->field_a4 = (JoustMethod)FUN_00407b50;

@@ -34,15 +34,15 @@ struct LLSImage {
 };
 
 // FUNCTION: LEGOLAND 0x0047aff0
-void LLIDB_LoadICM(void) { STUB(); }
+LEGO_EXPORT void LLIDB_LoadICM(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047b2d0
-unsigned int LLIDB_GetCount(void) {
+LEGO_EXPORT unsigned int LLIDB_GetCount(void) {
     return DAT_006691a4;
 }
 
 // FUNCTION: LEGOLAND 0x0047b2e0
-int LLIDB_GetElement(unsigned int index, unsigned int *output) {
+LEGO_EXPORT int LLIDB_GetElement(unsigned int index, unsigned int *output) {
     if (index < DAT_006691a4) {
         if (output != NULL) {
             *output = (unsigned int)DAT_006691a8[index >> 8] + (index & 0xff) * 20;
@@ -56,19 +56,19 @@ int LLIDB_GetElement(unsigned int index, unsigned int *output) {
 }
 
 // FUNCTION: LEGOLAND 0x0047b330
-int LLIDB_FindElement(const char *name, unsigned int *out, int zero) { STUB(); }
+LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, int zero) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047b3f0
-unsigned int ElemID(const char *name) {
+LEGO_EXPORT unsigned int ElemID(const char *name) {
     LLIDB_FindElement(name, (unsigned int *)&name, 0);
     return (unsigned int)name;
 }
 
 // FUNCTION: LEGOLAND 0x0047b410
-void LLIDB_FindElementFromDataPtr(void) { STUB(); }
+LEGO_EXPORT void LLIDB_FindElementFromDataPtr(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047b4c0
-void LLIDB_ClearOnLevel(void) {
+LEGO_EXPORT void LLIDB_ClearOnLevel(void) {
     unsigned int i = 0;
 
     if (DAT_006691a4 > 0) {
@@ -86,13 +86,13 @@ void FUN_0047b500(void) { STUB(); }
 void FUN_0047b5a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047b610
-unsigned int LLIDB_RegisterNewElement(const char *param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
+LEGO_EXPORT unsigned int LLIDB_RegisterNewElement(const char *param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047b7b0
 void FUN_0047b7b0(unsigned int param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047b860
-unsigned int LLIDB_RegisterNewElementB(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+LEGO_EXPORT unsigned int LLIDB_RegisterNewElementB(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
     unsigned int result = LLIDB_RegisterNewElement(param_1, param_2, param_3);
     if (result != 0) {
         FUN_0047b7b0(result);
@@ -104,16 +104,16 @@ unsigned int LLIDB_RegisterNewElementB(unsigned int param_1, unsigned int param_
 void FUN_0047b890(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047bc20
-void LLIDB_SelectElement(void) { STUB(); }
+LEGO_EXPORT void LLIDB_SelectElement(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047bc80
-void LLIDB_SaveICM(void) { STUB(); }
+LEGO_EXPORT void LLIDB_SaveICM(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047be00
-void LLIDB_CloseICM(void) { STUB(); }
+LEGO_EXPORT void LLIDB_CloseICM(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047bef0
-void LLIDB_FreeILFTable(struct ILFTable *table) {
+LEGO_EXPORT void LLIDB_FreeILFTable(struct ILFTable *table) {
     if (table == NULL) {
         return;
     }
@@ -143,7 +143,7 @@ void LLIDB_FreeILFTable(struct ILFTable *table) {
 }
 
 // FUNCTION: LEGOLAND 0x0047bf70
-void LLIDB_LoadODFData(void) { STUB(); }
+LEGO_EXPORT void LLIDB_LoadODFData(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047c6a0
 void FUN_0047c6a0(void) { STUB(); }
@@ -152,7 +152,7 @@ void FUN_0047c6a0(void) { STUB(); }
 void FUN_0047c7f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047cba0
-void LLIDB_LoadTSFData(void) { STUB(); }
+LEGO_EXPORT void LLIDB_LoadTSFData(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047cdd0
 void FUN_0047cdd0(struct SpriteManager *param_1) {
@@ -179,37 +179,37 @@ void FUN_0047cdd0(struct SpriteManager *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0047ce40
-void LLIDB_LoadTSMData(void) { STUB(); }
+LEGO_EXPORT void LLIDB_LoadTSMData(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047cf80
 void FUN_0047cf80(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047cfc0
-void LLIDB_LoadILFData(void) { STUB(); }
+LEGO_EXPORT void LLIDB_LoadILFData(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d1a0
-void LLIDB_LoadCSPData(void) { STUB(); }
+LEGO_EXPORT void LLIDB_LoadCSPData(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d3a0
-void *LLIDB_LoadData(void *head) { STUB(); }
+LEGO_EXPORT void *LLIDB_LoadData(void *head) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d450
-void LLIDB_UnLoadData(unsigned int handle) { STUB(); }
+LEGO_EXPORT void LLIDB_UnLoadData(unsigned int handle) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d4c0
-void LLSStop(unsigned int handle) { STUB(); }
+LEGO_EXPORT void LLSStop(unsigned int handle) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d520
-void LLSPlay(struct LLS *param_1, unsigned int param_2) { STUB(); }
+LEGO_EXPORT void LLSPlay(struct LLS *param_1, unsigned int param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d580
-void LLSPlayOnce(struct LLS *param_1, unsigned int param_2) {
+LEGO_EXPORT void LLSPlayOnce(struct LLS *param_1, unsigned int param_2) {
     LLSPlay(param_1, param_2);
     param_1->flags |= 0x4;
 }
 
 // FUNCTION: LEGOLAND 0x0047d5a0
-void LLSSetFrame(struct LLS *param_1, int index) {
+LEGO_EXPORT void LLSSetFrame(struct LLS *param_1, int index) {
     if (param_1 == NULL) {
         return;
     }
@@ -223,7 +223,7 @@ void LLSSetFrame(struct LLS *param_1, int index) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d5d0
-void LLSNextFrame(struct LLS *param_1) {
+LEGO_EXPORT void LLSNextFrame(struct LLS *param_1) {
     if (param_1 != NULL) {
         param_1->frame++;
         if (param_1->frame == param_1->frame_count) {
@@ -233,7 +233,7 @@ void LLSNextFrame(struct LLS *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d5f0
-void LLSSetDelay(struct LLS *param_1, unsigned int param_2) {
+LEGO_EXPORT void LLSSetDelay(struct LLS *param_1, unsigned int param_2) {
     param_1->delay = (unsigned short)param_2;
     param_1->loop_delay = (short)param_2;
 }
@@ -247,10 +247,10 @@ void FUN_0047d610(struct LLS *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d630
-void LLSAuto(void) { STUB(); }
+LEGO_EXPORT void LLSAuto(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d6a0
-void LLS555To565(struct LLSImage *param_1) {
+LEGO_EXPORT void LLS555To565(struct LLSImage *param_1) {
     unsigned char *esi = (unsigned char *)param_1 + 0x18;
 
     if (param_1->format == 8) {
@@ -288,11 +288,11 @@ void LLS555To565(struct LLSImage *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d730
-unsigned int SaveGameRead(void *buffer, unsigned int count) {
+LEGO_EXPORT unsigned int SaveGameRead(void *buffer, unsigned int count) {
     return FUN_0049f4ca(DAT_006691b0, buffer, count) == count;
 }
 
 // FUNCTION: LEGOLAND 0x0047d760
-unsigned int SaveGameWrite(void *buffer, unsigned int count) {
+LEGO_EXPORT unsigned int SaveGameWrite(void *buffer, unsigned int count) {
     return (unsigned int)FUN_004a63e4(DAT_006691b0, buffer, count) == count;
 }

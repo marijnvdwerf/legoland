@@ -24,14 +24,14 @@ struct RenderObject {
 };
 
 // FUNCTION: LEGOLAND 0x00459850
-void InitGameMap(void) {
+LEGO_EXPORT void InitGameMap(void) {
     // STRING: LEGOLAND 0x004b5c0c
     DAT_0080ff64 = ElemID("CASTLE OBJ");
     Load_FXList(DAT_004b9228, 0x17);
 }
 
 // FUNCTION: LEGOLAND 0x00459870
-void KillGameMap(void) {
+LEGO_EXPORT void KillGameMap(void) {
     Kill_FXList(DAT_004b9228, 0x17);
 }
 
@@ -59,13 +59,13 @@ void FUN_00459960(void) {
 void FUN_00459970(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00459ad0
-void PutObjOnMap(void) { STUB(); }
+LEGO_EXPORT void PutObjOnMap(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00459c90
-void RemObjFromMap(void) { STUB(); }
+LEGO_EXPORT void RemObjFromMap(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00459fa0
-int FindObjectsPower(void *object) { STUB(); }
+LEGO_EXPORT int FindObjectsPower(void *object) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a000
 void FUN_0045a000(int power, struct RenderObject *object) {
@@ -117,13 +117,13 @@ void FUN_0045a0d0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0045a130
-void AddObjectsPowerStats(void) { STUB(); }
+LEGO_EXPORT void AddObjectsPowerStats(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a230
-void RemoveObjectsPowerStats(void) { STUB(); }
+LEGO_EXPORT void RemoveObjectsPowerStats(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a390
-void DefaultCursor(struct Cursor *cursor) {
+LEGO_EXPORT void DefaultCursor(struct Cursor *cursor) {
     unsigned int saved_1404 = cursor->field_1404;
     unsigned int saved_1408 = cursor->field_1408;
     memset(cursor, 0, 0x1834);
@@ -140,19 +140,19 @@ void FUN_0045a3e0(void) { STUB(); }
 void FUN_0045a430(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a4a0
-void CalculateMapRenderOrder(void) { STUB(); }
+LEGO_EXPORT void CalculateMapRenderOrder(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a660
 void FUN_0045a660(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a850
-struct RenderObject *GetFirstRenderObject(void) { STUB(); }
+LEGO_EXPORT struct RenderObject *GetFirstRenderObject(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a8b0
-struct RenderObject *GetNextRenderObject(struct RenderObject *object) { STUB(); }
+LEGO_EXPORT struct RenderObject *GetNextRenderObject(struct RenderObject *object) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a910
-struct RenderObject *GetFirstObjectMatching(struct RenderObjectVtable *vtable) {
+LEGO_EXPORT struct RenderObject *GetFirstObjectMatching(struct RenderObjectVtable *vtable) {
     struct RenderObject *object = GetFirstRenderObject();
     while (object != NULL) {
         if (object->vtable == vtable) {
@@ -164,7 +164,7 @@ struct RenderObject *GetFirstObjectMatching(struct RenderObjectVtable *vtable) {
 }
 
 // FUNCTION: LEGOLAND 0x0045a940
-struct RenderObject *GetNextObjectMatching(struct RenderObject *object, struct RenderObjectVtable *vtable) {
+LEGO_EXPORT struct RenderObject *GetNextObjectMatching(struct RenderObject *object, struct RenderObjectVtable *vtable) {
     object = GetNextRenderObject(object);
     while (object != NULL) {
         if (object->vtable == vtable) {
@@ -176,4 +176,4 @@ struct RenderObject *GetNextObjectMatching(struct RenderObject *object, struct R
 }
 
 // FUNCTION: LEGOLAND 0x0045a970
-void PlayfieldToMap(void) { STUB(); }
+LEGO_EXPORT void PlayfieldToMap(void) { STUB(); }

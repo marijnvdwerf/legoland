@@ -31,7 +31,7 @@ struct PopUp {
 
 
 // FUNCTION: LEGOLAND 0x0048fc40
-void InitTitleScreen(void) { STUB(); }
+LEGO_EXPORT void InitTitleScreen(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048fe20
 unsigned char FUN_0048fe20(unsigned int param_1, unsigned char param_2) {
@@ -397,4 +397,4 @@ unsigned int FUN_00491240(const char *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00491290
-void InitNewProfilePoPUp(struct Profile *profile) { STUB(); }
+LEGO_EXPORT void InitNewProfilePoPUp(struct Profile *profile) { STUB(); }

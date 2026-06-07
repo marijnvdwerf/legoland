@@ -1,5 +1,7 @@
 #pragma once
 
+#include "legoland.h"
+
 // Opaque types; full definitions live in gamemap.c (only its bodies need them).
 struct RenderObject;
 struct RenderObjectVtable;
@@ -22,10 +24,10 @@ struct Cursor {
 
 void FUN_00459960(void);
 void FUN_00459970(void);
-int FindObjectsPower(void *object);
+LEGO_EXPORT int FindObjectsPower(void *object);
 void FUN_0045a060(void);
-void DefaultCursor(struct Cursor *cursor);
-void CalculateMapRenderOrder(void);
-struct RenderObject *GetFirstRenderObject(void);
-struct RenderObject *GetNextRenderObject(struct RenderObject *object);
-struct RenderObject *GetFirstObjectMatching(struct RenderObjectVtable *vtable);
+LEGO_EXPORT void DefaultCursor(struct Cursor *cursor);
+LEGO_EXPORT void CalculateMapRenderOrder(void);
+LEGO_EXPORT struct RenderObject *GetFirstRenderObject(void);
+LEGO_EXPORT struct RenderObject *GetNextRenderObject(struct RenderObject *object);
+LEGO_EXPORT struct RenderObject *GetFirstObjectMatching(struct RenderObjectVtable *vtable);

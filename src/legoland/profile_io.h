@@ -1,10 +1,12 @@
 #pragma once
 
-int Goto_ProfileDir(void);
-int ReturnFrom_ProfileDir(void);
-void LoadProfilesFormDisk(void);
-void UpDateCurrentSaveSlotInfo(void);
-void UpDateCurrentProfile(void);
-void SaveProfileToDisk(void);
-void RemoveProfile(unsigned char index);
-void DeleteProfileList(void);
+#include "legoland.h"
+
+LEGO_EXPORT int Goto_ProfileDir(void);
+LEGO_EXPORT int ReturnFrom_ProfileDir(void);
+LEGO_EXPORT void LoadProfilesFormDisk(void);
+LEGO_EXPORT void UpDateCurrentSaveSlotInfo(void);
+LEGO_EXPORT void UpDateCurrentProfile(void);
+LEGO_EXPORT void SaveProfileToDisk(void);
+LEGO_EXPORT void RemoveProfile(unsigned char index);
+LEGO_EXPORT void DeleteProfileList(void);

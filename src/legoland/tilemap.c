@@ -29,18 +29,18 @@ struct Point {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0045a9b0
-void AllocTileSpace(void) { STUB(); }
+LEGO_EXPORT void AllocTileSpace(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045aa50
 void FUN_0045aa50(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045aa90
-void FreeTileSpace(unsigned short index, unsigned short count) {
+LEGO_EXPORT void FreeTileSpace(unsigned short index, unsigned short count) {
     memset(&TileSpriteArray[index], 0xFF, count * 4);
 }
 
 // FUNCTION: LEGOLAND 0x0045aad0
-void LoadMapTiles(void) { STUB(); }
+LEGO_EXPORT void LoadMapTiles(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045ac20
 unsigned int FUN_0045ac20(void) {
@@ -72,10 +72,10 @@ unsigned int FUN_0045ac20(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0045acc0
-void GetTileBounds(void) { STUB(); }
+LEGO_EXPORT void GetTileBounds(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045ad60
-void GetTileCentre(void) { STUB(); }
+LEGO_EXPORT void GetTileCentre(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045ade0
 void FUN_0045ade0(void) { STUB(); }
@@ -85,24 +85,24 @@ void FUN_0045b170(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0045b180
-void RenderView(void) { STUB(); }
+LEGO_EXPORT void RenderView(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045bcd0
-void PointToIsoPlane(void) { STUB(); }
+LEGO_EXPORT void PointToIsoPlane(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045be00
-void ScreenToMapRef2(void) { STUB(); }
+LEGO_EXPORT void ScreenToMapRef2(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045be90
-void ScreenToMapRef(unsigned int x, void *out, unsigned int y) { STUB(); }
+LEGO_EXPORT void ScreenToMapRef(unsigned int x, void *out, unsigned int y) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045c010
-unsigned char Dir_To_Bit(unsigned char param) {
+LEGO_EXPORT unsigned char Dir_To_Bit(unsigned char param) {
     return DAT_004b9550[param & 7];
 }
 
 // FUNCTION: LEGOLAND 0x0045c020
-unsigned char Bit_To_Dir(unsigned char bit) {
+LEGO_EXPORT unsigned char Bit_To_Dir(unsigned char bit) {
     unsigned char result;
 
     for (result = 0; result < 8; result++) {
@@ -114,13 +114,13 @@ unsigned char Bit_To_Dir(unsigned char bit) {
 }
 
 // FUNCTION: LEGOLAND 0x0045c050
-void Get_Path_Directions(void) { STUB(); }
+LEGO_EXPORT void Get_Path_Directions(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045c440
 void FUN_0045c440(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045c830
-unsigned char ExcludeIsolatedDiags(unsigned char param) {
+LEGO_EXPORT unsigned char ExcludeIsolatedDiags(unsigned char param) {
     unsigned char result = param;
 
     if ((result & 0x5) != 0x5) {
@@ -139,7 +139,7 @@ unsigned char ExcludeIsolatedDiags(unsigned char param) {
 }
 
 // FUNCTION: LEGOLAND 0x0045c870
-void AdjustTileRFFlags(void) { STUB(); }
+LEGO_EXPORT void AdjustTileRFFlags(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045c900
 void FUN_0045c900(void) { STUB(); }
@@ -253,7 +253,7 @@ unsigned char FUN_0045d080(unsigned char flags, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045d1a0
-void AdjustPathTile(struct Point *p, unsigned int a) { STUB(); }
+LEGO_EXPORT void AdjustPathTile(struct Point *p, unsigned int a) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045d260
 void FUN_0045d260(struct Point *param) {
@@ -296,10 +296,10 @@ void FUN_0045d260(struct Point *param) {
 }
 
 // FUNCTION: LEGOLAND 0x0045d350
-void AddPathTileGFX(struct Point *p, unsigned short param1) { STUB(); }
+LEGO_EXPORT void AddPathTileGFX(struct Point *p, unsigned short param1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045d3b0
-void AddPathTile(struct Point *p, unsigned short param1) {
+LEGO_EXPORT void AddPathTile(struct Point *p, unsigned short param1) {
     AddPathTileGFX(p, param1);
     /* struct Point and struct InstancePos are identical {x,y} layouts; cast
        bridges tilemap's local Point to pathfind's InstancePos (no shared type). */
@@ -322,7 +322,7 @@ void FUN_0045d730(void) { STUB(); }
 void FUN_0045d770(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045da60
-void RestoreBaseMap(void) { STUB(); }
+LEGO_EXPORT void RestoreBaseMap(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045daa0
-void RemovePathTile(unsigned int param_1, unsigned short param_2) { STUB(); }
+LEGO_EXPORT void RemovePathTile(unsigned int param_1, unsigned short param_2) { STUB(); }

@@ -62,7 +62,7 @@ struct MasterDirNode *FUN_00489440(char *name) {
 }
 
 // FUNCTION: LEGOLAND 0x004894d0
-struct MasterDirNode *GetMasterDirPtr(const char *name) {
+LEGO_EXPORT struct MasterDirNode *GetMasterDirPtr(const char *name) {
     struct MasterDirNode *node;
 
     for (node = DAT_00798624; node != 0; node = node->next) {
@@ -74,7 +74,7 @@ struct MasterDirNode *GetMasterDirPtr(const char *name) {
 }
 
 // FUNCTION: LEGOLAND 0x00489510
-struct MasterVolNode *GetMasterVolPtr(const char *name) {
+LEGO_EXPORT struct MasterVolNode *GetMasterVolPtr(const char *name) {
     struct MasterVolNode *node;
 
     for (node = DAT_00798628; node != 0; node = node->next) {
@@ -92,21 +92,21 @@ void FUN_00489550(void) { STUB(); }
 void FUN_004895a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489740
-unsigned int RES_GetResourcePath(void) {
+LEGO_EXPORT unsigned int RES_GetResourcePath(void) {
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x00489750
-struct ResVolume *RES_OpenVolume(const char *path) { STUB(); }
+LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489a00
-struct ResFile *RES_OpenFileFromVolume(void *param_1, void *name) { STUB(); }
+LEGO_EXPORT struct ResFile *RES_OpenFileFromVolume(void *param_1, void *name) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489b60
-struct ResFile *RES_OpenFile(const char *path) { STUB(); }
+LEGO_EXPORT struct ResFile *RES_OpenFile(const char *path) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489ce0
-unsigned int RES_GetFileSize(struct ResFile *file) {
+LEGO_EXPORT unsigned int RES_GetFileSize(struct ResFile *file) {
     if (file == 0) {
         return 0xffffffff;
     }
@@ -114,7 +114,7 @@ unsigned int RES_GetFileSize(struct ResFile *file) {
 }
 
 // FUNCTION: LEGOLAND 0x00489cf0
-int RES_ReadFile(struct ResFile *file, void *buffer, int count) {
+LEGO_EXPORT int RES_ReadFile(struct ResFile *file, void *buffer, int count) {
     int remaining;
     int bytes_read;
     struct ResVolume *volume;
@@ -143,7 +143,7 @@ int RES_ReadFile(struct ResFile *file, void *buffer, int count) {
 }
 
 // FUNCTION: LEGOLAND 0x00489d70
-int RES_SetFilePointer(struct ResFile *file, int offset, int param_3) {
+LEGO_EXPORT int RES_SetFilePointer(struct ResFile *file, int offset, int param_3) {
     struct ResVolume *volume;
 
     if (file != 0) {
@@ -161,7 +161,7 @@ int RES_SetFilePointer(struct ResFile *file, int offset, int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00489db0
-int RES_GetFilePointer(struct ResFile *file) {
+LEGO_EXPORT int RES_GetFilePointer(struct ResFile *file) {
     if (file == 0) {
         return -1;
     }
@@ -169,7 +169,7 @@ int RES_GetFilePointer(struct ResFile *file) {
 }
 
 // FUNCTION: LEGOLAND 0x00489dc0
-unsigned int RES_CloseVolume(struct ResVolume *volume) {
+LEGO_EXPORT unsigned int RES_CloseVolume(struct ResVolume *volume) {
     if (volume == 0) {
         return 0xffffffff;
     }
@@ -178,7 +178,7 @@ unsigned int RES_CloseVolume(struct ResVolume *volume) {
 }
 
 // FUNCTION: LEGOLAND 0x00489de0
-int RES_CloseFile(struct ResFile *file) {
+LEGO_EXPORT int RES_CloseFile(struct ResFile *file) {
     struct ResVolume *volume;
 
     if (file == 0) {
@@ -196,7 +196,7 @@ int RES_CloseFile(struct ResFile *file) {
 }
 
 // FUNCTION: LEGOLAND 0x00489e10
-struct ResFile *RES_OpenFileFromVolumePtr(void *param_1, struct ResVolumeEntry *entry) {
+LEGO_EXPORT struct ResFile *RES_OpenFileFromVolumePtr(void *param_1, struct ResVolumeEntry *entry) {
     if (entry == 0) {
         return 0;
     }
@@ -204,7 +204,7 @@ struct ResFile *RES_OpenFileFromVolumePtr(void *param_1, struct ResVolumeEntry *
 }
 
 // FUNCTION: LEGOLAND 0x00489e30
-int RES_FileExists(const char *path) {
+LEGO_EXPORT int RES_FileExists(const char *path) {
     struct ResFile *file;
 
     file = RES_OpenFile(path);

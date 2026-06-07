@@ -443,7 +443,7 @@ void FUN_00418a30(struct CursorNode *arg, unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x00418aa0
-int Save_WaterBlock(void) {
+LEGO_EXPORT int Save_WaterBlock(void) {
     struct WaterListItem *current;
     unsigned int one;
     unsigned int zero;
@@ -464,7 +464,7 @@ int Save_WaterBlock(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00418b10
-int Load_WaterBlock(void) {
+LEGO_EXPORT int Load_WaterBlock(void) {
     struct WaterNode *node;
     struct WaterNode *prev;
     unsigned int count;
@@ -493,10 +493,10 @@ int Load_WaterBlock(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00418b90
-void Save_ElephantF(void) { STUB(); }
+LEGO_EXPORT void Save_ElephantF(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00418c00
-int Load_ElephantF(void) {
+LEGO_EXPORT int Load_ElephantF(void) {
     struct WaterNode *node;
     struct WaterNode *prev;
     unsigned int count;
