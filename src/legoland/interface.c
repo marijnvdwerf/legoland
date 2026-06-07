@@ -589,7 +589,7 @@ void FUN_00476140(int index, int value) {
     if (obj != NULL) {
         if (value != 0) {
             obj->flags &= 0xfffffbff;
-            DAT_0080ffd0[index] = 1;
+            DAT_0080ffa0.field_30[index] = 1;
             UpDateCurrentProfile();
         } else {
             obj->flags |= 0x400;
@@ -603,7 +603,7 @@ void FUN_00476180(void) {
     struct ProfileObj **items;
     unsigned int counter;
 
-    flags = DAT_0080ffd0;
+    flags = DAT_0080ffa0.field_30;
     items = (struct ProfileObj **)DAT_007fdd70;
     counter = 4;
     while (counter != 0) {

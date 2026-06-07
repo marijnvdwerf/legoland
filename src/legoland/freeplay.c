@@ -128,10 +128,10 @@ void FUN_0048b6c0(void) {
 void FUN_0048b6d0(void) {
     int i;
 
-    DAT_0080ffd4[0] = 1;
+    DAT_0080ffa0.field_34[0] = 1;
     for (i = 0; i < 15; i++) {
-        if (DAT_0080ffd4[i] != 0) {
-            DAT_0080ffd4[i] = 1;
+        if (DAT_0080ffa0.field_34[i] != 0) {
+            DAT_0080ffa0.field_34[i] = 1;
             DAT_007cb394 = i;
         }
     }

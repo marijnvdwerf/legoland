@@ -130,7 +130,7 @@ void FUN_00458be0(void)
     int slot = ((struct ScreenConfig *)lpConfig)->slot;
 
     if (slot < 0xf) {
-        DAT_0080ffd4[slot] = 1;
+        DAT_0080ffa0.field_34[slot] = 1;
     }
     FUN_0048a750();
     UpDateCurrentProfile();
@@ -163,12 +163,12 @@ void FUN_004594f0(void)
     int i;
 
     for (i = 0; i < 68; i = i + 1) {
-        DAT_0080ffa0[i] = 0;
+        ((unsigned int *)&DAT_0080ffa0)[i] = 0;
     }
 
-    DAT_0080ffc4 = 0x4b;
-    DAT_0080ffc8 = 0x64;
-    DAT_0080ffcc = 0x4b;
+    DAT_0080ffa0.field_24 = 0x4b;
+    DAT_0080ffa0.field_28 = 0x64;
+    DAT_0080ffa0.field_2c = 0x4b;
 }
 
 // FUNCTION: LEGOLAND 0x00459520

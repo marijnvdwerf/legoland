@@ -422,8 +422,6 @@ unsigned int DAT_007cb324;
 unsigned int DAT_007cb328;
 // GLOBAL: LEGOLAND 0x0080ff88
 unsigned int DAT_0080ff88;
-// GLOBAL: LEGOLAND 0x0080ffe3
-unsigned char DAT_0080ffe3;
 // GLOBAL: LEGOLAND 0x006687b0
 unsigned int DAT_006687b0;
 // GLOBAL: LEGOLAND 0x00798764
@@ -578,20 +576,12 @@ struct Sprite *DAT_00667c2c;
 unsigned int DAT_00667c30;
 // GLOBAL: LEGOLAND 0x00667c34
 unsigned int DAT_00667c34;
-// GLOBAL: LEGOLAND 0x0080ffc4
-unsigned int DAT_0080ffc4;
-// GLOBAL: LEGOLAND 0x0080ffc8
-unsigned int DAT_0080ffc8;
-// GLOBAL: LEGOLAND 0x0080ffcc
-unsigned int DAT_0080ffcc;
 // GLOBAL: LEGOLAND 0x007cb314
 char DAT_007cb314;
 // GLOBAL: LEGOLAND 0x007cb315
 char DAT_007cb315;
 // GLOBAL: LEGOLAND 0x007cb31c
 char DAT_007cb31c;
-// GLOBAL: LEGOLAND 0x0080ffe4
-unsigned char DAT_0080ffe4;
 // GLOBAL: LEGOLAND 0x007cb320
 unsigned int DAT_007cb320;
 // GLOBAL: LEGOLAND 0x007cb310
@@ -920,8 +910,6 @@ unsigned int DAT_004bafa8[20];
 unsigned int DAT_004bb18c[4];
 // GLOBAL: LEGOLAND 0x007fdd00
 unsigned int DAT_007fdd00[9];
-// GLOBAL: LEGOLAND 0x0080ffd0
-unsigned char DAT_0080ffd0[4];
 // GLOBAL: LEGOLAND 0x00668ed8
 struct InterfaceResearchNode *DAT_00668ed8;
 // GLOBAL: LEGOLAND 0x006687c8
@@ -1803,10 +1791,8 @@ unsigned char DAT_004b79d0[0x18];
 unsigned int DAT_00667c7c;
 // GLOBAL: LEGOLAND 0x00667cd8
 unsigned int DAT_00667cd8;
-// GLOBAL: LEGOLAND 0x0080ffd4
-unsigned char DAT_0080ffd4[0xf];
 // GLOBAL: LEGOLAND 0x0080ffa0
-unsigned int DAT_0080ffa0[68];
+struct ScreenState DAT_0080ffa0;
 // GLOBAL: LEGOLAND 0x00832998
 char DAT_00832998[256];
 // GLOBAL: LEGOLAND 0x00832a98

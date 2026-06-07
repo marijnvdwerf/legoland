@@ -153,12 +153,12 @@ void FUN_0048e420(void) {
 
 // FUNCTION: LEGOLAND 0x0048e450
 unsigned char FUN_0048e450(unsigned int a1, unsigned int a2) {
-    if ((a2 & 2) != 0 && DAT_0080ffe4 != 0) {
+    if ((a2 & 2) != 0 && DAT_0080ffa0.field_44 != 0) {
         CloseFontEndCheckBox();
         DAT_007986e4 = 0;
-        RemoveSaveGame(DAT_0080ffe4);
+        RemoveSaveGame(DAT_0080ffa0.field_44);
         DAT_0080ff84 = 0xffffffffu;
-        DAT_0080ffe4 = 0;
+        DAT_0080ffa0.field_44 = 0;
     }
     return 1;
 }

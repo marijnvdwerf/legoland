@@ -79,6 +79,18 @@ struct Settings {
     unsigned char gap_24[0xec];
 };
 
+struct ScreenState {
+    unsigned char gap_0[0x24];
+    unsigned int field_24;
+    unsigned int field_28;
+    unsigned int field_2c;
+    unsigned char field_30[4];
+    unsigned char field_34[0xf];
+    unsigned char field_43;
+    unsigned char field_44;
+    unsigned char gap_45[0xcb];
+};
+
 // ---------------------------------------------------------------------------
 // All game globals, sorted by ascending address. Definitions (with any
 // initializers) live in globals.c. This phase only collects the declarations;
@@ -1877,21 +1889,7 @@ extern unsigned int DAT_0080ff84;
 // 0x0080ff88
 extern unsigned int DAT_0080ff88;
 // 0x0080ffa0
-extern unsigned int DAT_0080ffa0[68];
-// 0x0080ffc4
-extern unsigned int DAT_0080ffc4;
-// 0x0080ffc8
-extern unsigned int DAT_0080ffc8;
-// 0x0080ffcc
-extern unsigned int DAT_0080ffcc;
-// 0x0080ffd0
-extern unsigned char DAT_0080ffd0[4];
-// 0x0080ffd4
-extern unsigned char DAT_0080ffd4[0xf];
-// 0x0080ffe3
-extern unsigned char DAT_0080ffe3;
-// 0x0080ffe4
-extern unsigned char DAT_0080ffe4;
+extern struct ScreenState DAT_0080ffa0;
 // 0x00810140
 extern unsigned int DAT_00810140;
 // 0x00810148

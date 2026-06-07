@@ -35,9 +35,9 @@ unsigned char FUN_0048ef10(unsigned int param_1, unsigned int param_2) {
 unsigned char FUN_0048ef40(unsigned int param_1, unsigned int param_2) {
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_0080ffc4 = DAT_007cb314;
-        DAT_0080ffc8 = DAT_007cb31c;
-        DAT_0080ffcc = DAT_007cb315;
+        DAT_0080ffa0.field_24 = DAT_007cb314;
+        DAT_0080ffa0.field_28 = DAT_007cb31c;
+        DAT_0080ffa0.field_2c = DAT_007cb315;
         DAT_0080ff88 = 1;
     }
     return 1;
@@ -60,7 +60,7 @@ unsigned char FUN_0048efd0(unsigned int param_1, unsigned int param_2) {
         FUN_00498920();
         DAT_006687b0 = 4;
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        if (DAT_0080ffe4 != 0) {
+        if (DAT_0080ffa0.field_44 != 0) {
             UpDateCurrentSaveSlotInfo();
         }
         DAT_00668e38 = 0;
@@ -239,5 +239,5 @@ void FUN_0048fc00(void) {
 
 // FUNCTION: LEGOLAND 0x0048fc30
 unsigned char FUN_0048fc30(void) {
-    return DAT_0080ffd4[5] != 0;
+    return DAT_0080ffa0.field_34[5] != 0;
 }

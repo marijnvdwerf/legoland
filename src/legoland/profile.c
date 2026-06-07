@@ -187,7 +187,7 @@ void FUN_0048d230(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048d300
 unsigned char FUN_0048d300(unsigned int dummy, unsigned char arg_0) {
-    if (DAT_007986e4 == 0 && (arg_0 & 0x2) != 0 && ((((struct ProfileFlags *)DAT_007986e0)->var_34 >> 8) & 0x4) == 0 && DAT_0080ffe3 != 0) {
+    if (DAT_007986e4 == 0 && (arg_0 & 0x2) != 0 && ((((struct ProfileFlags *)DAT_007986e0)->var_34 >> 8) & 0x4) == 0 && DAT_0080ffa0.field_43 != 0) {
         if (DAT_007986e8 != 0) {
             SaveProfileToDisk();
             DeleteProfileList();
@@ -207,7 +207,7 @@ unsigned char FUN_0048d300(unsigned int dummy, unsigned char arg_0) {
 // FUNCTION: LEGOLAND 0x0048d390
 unsigned char FUN_0048d390(struct Profile *profile, unsigned char param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 0x2) != 0) {
-        DAT_0080ffe3 = profile->var_1c;
+        DAT_0080ffa0.field_43 = profile->var_1c;
         FUN_0048a800();
     }
     return 1;
@@ -217,7 +217,7 @@ unsigned char FUN_0048d390(struct Profile *profile, unsigned char param_2) {
 unsigned char FUN_0048d3c0(struct Profile *profile, unsigned int param_2) {
     if (DAT_004bef9c != 0) {
         if (param_2 & 0x2) {
-            DAT_0080ffe3 = profile->var_1c;
+            DAT_0080ffa0.field_43 = profile->var_1c;
             DAT_007986e8 = 1;
             InitNewProfilePoPUp(profile);
             DAT_004bef9c = 0;
@@ -229,11 +229,11 @@ unsigned char FUN_0048d3c0(struct Profile *profile, unsigned int param_2) {
 // FUNCTION: LEGOLAND 0x0048d400
 unsigned char FUN_0048d400(unsigned int arg0, unsigned int arg1) {
     if (arg1 & 0x2) {
-        if (DAT_0080ffe3) {
+        if (DAT_0080ffa0.field_43) {
             CloseFontEndCheckBox();
             DAT_007986e4 = 0;
-            RemoveProfile(DAT_0080ffe3);
-            DAT_0080ffe3 = 0;
+            RemoveProfile(DAT_0080ffa0.field_43);
+            DAT_0080ffa0.field_43 = 0;
             DAT_0080ff84 = 0xffffffff;
             DAT_0080ff88 = 0;
         }
