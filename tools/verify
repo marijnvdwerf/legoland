@@ -5,10 +5,4 @@
 set -e
 cd "$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
 export PATH="$PWD/tools:$PATH"   # wine + winepath shims for reccmp's cvdump (PDB reader)
-exec uv run reccmp-reccmp \
-  --paths \
-    "$PWD/external/legoland.exe" \
-    "$PWD/build/legoland.exe" \
-    "$PWD/build/legoland.pdb" \
-    "$PWD/src/legoland" \
-  "$@"
+exec uv run reccmp-reccmp --target LEGOLAND "$@"

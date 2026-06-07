@@ -32,4 +32,4 @@ set(CMAKE_C_COMPILE_OBJECT
 # Runnability is a non-goal: /NODEFAULTLIB (stubs reference nothing external),
 # a dummy /ENTRY so the image links, /DEBUG for the PDB reccmp needs.
 set(CMAKE_C_LINK_EXECUTABLE
-    "${_tc_dir}/wrappers/link /nologo /DEBUG /INCREMENTAL:NO /NODEFAULTLIB /SUBSYSTEM:WINDOWS /ENTRY:legoland_entry <LINK_FLAGS> /OUT:<TARGET> <OBJECTS>")
+    "${_tc_dir}/wrappers/link /nologo /DEBUG /INCREMENTAL:NO /SUBSYSTEM:WINDOWS <LINK_FLAGS> /OUT:<TARGET> <OBJECTS>")
