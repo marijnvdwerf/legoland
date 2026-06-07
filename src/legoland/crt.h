@@ -18,13 +18,10 @@ extern int FUN_004a04b9(const char *str);
 extern unsigned int FUN_004a56c3(unsigned int a, unsigned int b, unsigned int c);
 extern int FUN_004a63e4(int fd, void *buffer, unsigned int count);
 
-// Variable-argument strlen/strcpy are NOT intrinsified by MSVC6 /O2 (verified:
-// callers stay byte-identical with this prototype visible), so they may live
-// here. Do NOT add memcpy/memset/memmove/memcmp/strcmp/strcat: /O2 inlines
-// those (esp. constant-size) to rep movs/stos and breaks the call form — they
-// must stay IMPLICITLY declared in callers.
 extern unsigned int strlen(const char *s);
 extern char *strcpy(char *dst, const char *src);
+extern void *memcpy(void *dst, const void *src, unsigned int n);
+extern void *memset(void *dst, int c, unsigned int n);
 
 extern void *_malloc(unsigned int size);
 extern char *_strncpy(char *dest, const char *src, unsigned int count);

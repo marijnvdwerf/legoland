@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "crt.h"
 #include "globals.h"
 
 #include "gamemap.h"

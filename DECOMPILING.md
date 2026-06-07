@@ -82,11 +82,14 @@ an unmatched function from scratch** — that's slow, separate work, not for the
   address (same file or another TU) triggers `[ERROR] Dropped duplicate address … on STRING
   annotation`. Before adding a `// STRING:`, grep the tree for that address; if it already
   has one, just write the literal with no annotation.
-- **CRT mem/str helpers (`memset`, `memcpy`, `memmove`, `strlen`, …):** leave them
-  IMPLICITLY declared — do **not** `#include <string.h>`. An explicit prototype lets `/O2`
-  treat them as intrinsics and emit inline `rep movs`/`stos`, which breaks the original's
-  `call _memset` form. Implicit declaration keeps the call and links against the `crt.c`
-  stub. clang's LSP flags `-Wimplicit-function-declaration`; ignore it — MSVC6 (C89) is fine.
+- **CRT mem/str helpers (`memset`, `memcpy`, `strlen`, `strcpy`, …):** declare them in
+  `crt.h` (NOT `#include <string.h>`) so we control exactly what's visible, and `#include
+  "crt.h"` in the caller. A visible prototype does **not** make MSVC6 `/O2` intrinsify
+  these to inline `rep movs`/`stos` — verified empirically: every caller (including
+  constant-size `memcpy(dst, src, 84)` / `memset(p, 0, 0xac)`) stays byte-identical with
+  the prototype present, keeping the `call _memset`/`call _memcpy` form. The tree has ZERO
+  implicit function declarations. (If you ever add a helper whose prototype *does* de-match
+  a function under reccmp, leave that one implicit and record the asm reason.)
 
 ## Gotchas (from real TUs)
 
