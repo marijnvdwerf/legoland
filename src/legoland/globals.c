@@ -1,176 +1,25 @@
 #include "globals.h"
 
-// GLOBAL: LEGOLAND 0x007cb3e0
-struct ObjTableEntry DAT_007cb3e0[128];
-// GLOBAL: LEGOLAND 0x007cb3e2
-struct ObjTableEntry DAT_007cb3e2[128];
-// GLOBAL: LEGOLAND 0x007cb5e0
-struct ObjTableEntry DAT_007cb5e0;
+// GLOBAL: LEGOLAND 0x004ab390
+float FLOAT_004ab390;
 
-// GLOBAL: LEGOLAND 0x00668958
-struct Sprite *DAT_00668958;
-// GLOBAL: LEGOLAND 0x006688e0
-struct Sprite *DAT_006688e0;
-// GLOBAL: LEGOLAND 0x006688e4
-struct Sprite *DAT_006688e4;
-// GLOBAL: LEGOLAND 0x006688e8
-struct Sprite *DAT_006688e8;
-// GLOBAL: LEGOLAND 0x006688f0
-struct Sprite *DAT_006688f0;
-// GLOBAL: LEGOLAND 0x006688ec
-struct Sprite *DAT_006688ec;
-// GLOBAL: LEGOLAND 0x006688f4
-struct Sprite *DAT_006688f4;
-// GLOBAL: LEGOLAND 0x006688f8
-struct Sprite *DAT_006688f8;
-// GLOBAL: LEGOLAND 0x006688fc
-struct Sprite *DAT_006688fc;
-// GLOBAL: LEGOLAND 0x00668900
-struct Sprite *DAT_00668900;
-// GLOBAL: LEGOLAND 0x007fe004
-struct Sprite *DAT_007fe004;
-// GLOBAL: LEGOLAND 0x007fdeb0
-struct Sprite *DAT_007fdeb0;
-// GLOBAL: LEGOLAND 0x00668914
-struct Sprite *DAT_00668914;
-// GLOBAL: LEGOLAND 0x00668918
-struct Sprite *DAT_00668918;
-// GLOBAL: LEGOLAND 0x0066891c
-struct Sprite *DAT_0066891c;
-// GLOBAL: LEGOLAND 0x00668920
-struct Sprite *DAT_00668920;
-// GLOBAL: LEGOLAND 0x00668928
-struct Sprite *DAT_00668928;
-// GLOBAL: LEGOLAND 0x00668924
-struct Sprite *DAT_00668924;
-// GLOBAL: LEGOLAND 0x00668930
-struct Sprite *DAT_00668930;
-// GLOBAL: LEGOLAND 0x0066892c
-struct Sprite *DAT_0066892c;
-// GLOBAL: LEGOLAND 0x00668944
-struct Sprite *DAT_00668944;
-// GLOBAL: LEGOLAND 0x00668948
-struct Sprite *DAT_00668948;
-// GLOBAL: LEGOLAND 0x0066894c
-struct Sprite *DAT_0066894c;
-// GLOBAL: LEGOLAND 0x00668950
-struct Sprite *DAT_00668950;
-// GLOBAL: LEGOLAND 0x007fdfc8
-struct Sprite *DAT_007fdfc8;
-// GLOBAL: LEGOLAND 0x007fdfe4
-struct Sprite *DAT_007fdfe4;
-// GLOBAL: LEGOLAND 0x007fe018
-struct Sprite *DAT_007fe018;
-// GLOBAL: LEGOLAND 0x007fdfd0
-struct Sprite *DAT_007fdfd0;
-// GLOBAL: LEGOLAND 0x007fe008
-struct Sprite *DAT_007fe008;
-// GLOBAL: LEGOLAND 0x007fdeac
-struct Sprite *DAT_007fdeac;
+// GLOBAL: LEGOLAND 0x004ab3d0
+float DAT_004ab3d0;
 
-// GLOBAL: LEGOLAND 0x0079a7c0
-void *DAT_0079a7c0;
-// GLOBAL: LEGOLAND 0x0079a7c4
-void *DAT_0079a7c4;
-// GLOBAL: LEGOLAND 0x0079a7c8
-unsigned int DAT_0079a7c8;
-// GLOBAL: LEGOLAND 0x0079a7cc
-unsigned int DAT_0079a7cc;
-// GLOBAL: LEGOLAND 0x0079a7d0
-unsigned int DAT_0079a7d0;
-// GLOBAL: LEGOLAND 0x0079a7d8
-int DAT_0079a7d8;
-// GLOBAL: LEGOLAND 0x0079a7dc
-int DAT_0079a7dc;
-// GLOBAL: LEGOLAND 0x0079a7e0
-unsigned int DAT_0079a7e0;
-// GLOBAL: LEGOLAND 0x0079a7e4
-unsigned int DAT_0079a7e4[20];
-// GLOBAL: LEGOLAND 0x0079a834
-int DAT_0079a834;
-// GLOBAL: LEGOLAND 0x0079a838
-int DAT_0079a838;
-// GLOBAL: LEGOLAND 0x0079a83c
-unsigned int DAT_0079a83c;
-// GLOBAL: LEGOLAND 0x0079a848
-void *DAT_0079a848;
-// GLOBAL: LEGOLAND 0x0079a84c
-unsigned int DAT_0079a84c;
-// GLOBAL: LEGOLAND 0x0079ac04
-unsigned int DAT_0079ac04;
-// GLOBAL: LEGOLAND 0x007caca8
-unsigned int DAT_007caca8;
-// GLOBAL: LEGOLAND 0x007cacac
-unsigned int DAT_007cacac;
-// GLOBAL: LEGOLAND 0x007cacb4
-unsigned int DAT_007cacb4;
+// GLOBAL: LEGOLAND 0x004ab430
+float DAT_004ab430;
 
-// GLOBAL: LEGOLAND 0x0079a850
-void *strings[10];
-// GLOBAL: LEGOLAND 0x0079a890
-unsigned int DAT_0079a890;
-// GLOBAL: LEGOLAND 0x0079a894
-unsigned int DAT_0079a894;
-// GLOBAL: LEGOLAND 0x0079a898
-unsigned int DAT_0079a898;
-// GLOBAL: LEGOLAND 0x0079a89c
-unsigned int DAT_0079a89c;
-// GLOBAL: LEGOLAND 0x0079a8a0
-unsigned int DAT_0079a8a0;
-// GLOBAL: LEGOLAND 0x008119a4
-unsigned int DAT_008119a4;
+// GLOBAL: LEGOLAND 0x004ab454
+float FLOAT_004ab454;
 
-// GLOBAL: LEGOLAND 0x004b90fc
-unsigned int DAT_004b90fc;
-// GLOBAL: LEGOLAND 0x004b90f8
-unsigned int DAT_004b90f8;
+// GLOBAL: LEGOLAND 0x004ab458
+float FLOAT_004ab458;
 
-// GLOBAL: LEGOLAND 0x00798624
-void *DAT_00798624;
-// GLOBAL: LEGOLAND 0x00798628
-void *DAT_00798628;
+// GLOBAL: LEGOLAND 0x004ab45c
+float FLOAT_004ab45c;
 
-// GLOBAL: LEGOLAND 0x007988c0
-unsigned int DAT_007988c0;
-// GLOBAL: LEGOLAND 0x007988c4
-unsigned int DAT_007988c4;
-// GLOBAL: LEGOLAND 0x007988c8
-unsigned int DAT_007988c8;
-// GLOBAL: LEGOLAND 0x007988cc
-void *DAT_007988cc;
-// GLOBAL: LEGOLAND 0x007988bc
-unsigned int DAT_007988bc;
-// GLOBAL: LEGOLAND 0x007988a0
-unsigned int DAT_007988a0;
-
-// GLOBAL: LEGOLAND 0x004bf774
-unsigned int DAT_004bf774;
-// GLOBAL: LEGOLAND 0x004bf778
-unsigned int DAT_004bf778;
-
-// GLOBAL: LEGOLAND 0x0079a694
-unsigned int DAT_0079a694;
-// GLOBAL: LEGOLAND 0x0079a698
-void *DAT_0079a698;
-// GLOBAL: LEGOLAND 0x0079a6a0
-void *DAT_0079a6a0;
-// GLOBAL: LEGOLAND 0x0079a6a4
-unsigned int DAT_0079a6a4;
-// GLOBAL: LEGOLAND 0x0079a6a8
-unsigned int DAT_0079a6a8;
-// GLOBAL: LEGOLAND 0x0079a6ac
-unsigned int DAT_0079a6ac;
-
-// GLOBAL: LEGOLAND 0x007cad40
-void *DAT_007cad40;
-// GLOBAL: LEGOLAND 0x007cacd8
-void *DAT_007cacd8;
-// GLOBAL: LEGOLAND 0x007cacdc
-void *DAT_007cacdc;
-// GLOBAL: LEGOLAND 0x007cad44
-void *DAT_007cad44;
-// GLOBAL: LEGOLAND 0x007cad48
-unsigned int DAT_007cad48;
+// GLOBAL: LEGOLAND 0x004ab480
+float FLOAT_004ab480;
 
 // GLOBAL: LEGOLAND 0x004ab6d0
 GUID GUID_PerfMasterGrooveLevel = {0xd2ac28b2, 0xb39b, 0x11d1, {0x87, 0x04, 0x00, 0x60, 0x08, 0x93, 0xb1, 0xbd}};
@@ -178,624 +27,766 @@ GUID GUID_PerfMasterGrooveLevel = {0xd2ac28b2, 0xb39b, 0x11d1, {0x87, 0x04, 0x00
 // GLOBAL: LEGOLAND 0x004ab8b0
 GUID DAT_004ab8b0 = {0xd2ac2893, 0xb39b, 0x11d1, {0x87, 0x04, 0x00, 0x60, 0x08, 0x93, 0xb1, 0xbd}};
 
-// GLOBAL: LEGOLAND 0x00669208
-void *g_hInstance;
-// GLOBAL: LEGOLAND 0x00669210
-void *DAT_00669210;
+// GLOBAL: LEGOLAND 0x004b40c8
+unsigned char Catapult_SFX[0x70];
 
-// GLOBAL: LEGOLAND 0x00669240
-void *ObjectClassList;
+// GLOBAL: LEGOLAND 0x004b4140
+unsigned char Helicopter_SFX[0x70];
 
-// GLOBAL: LEGOLAND 0x00669248
-void *DAT_00669248;
-// GLOBAL: LEGOLAND 0x0066924c
-unsigned int DAT_0066924c;
+// GLOBAL: LEGOLAND 0x004b43f8
+unsigned char DRIVING_SCHOOL_SFX[0xa8];
 
-// GLOBAL: LEGOLAND 0x00669258
-unsigned int DAT_00669258[1152];
+// GLOBAL: LEGOLAND 0x004b4688
+unsigned char JOUST_SFX[12];
 
-// GLOBAL: LEGOLAND 0x0066b44c
-void *DAT_0066b44c;
-// GLOBAL: LEGOLAND 0x0066b450
-void *DAT_0066b450;
-// GLOBAL: LEGOLAND 0x0066b458
-void *DAT_0066b458;
+// GLOBAL: LEGOLAND 0x004b4728
+unsigned int DAT_004b4728;
 
-// GLOBAL: LEGOLAND 0x0066b460
-unsigned int DAT_0066b460;
-// GLOBAL: LEGOLAND 0x0066b468
-unsigned int DAT_0066b468;
-// GLOBAL: LEGOLAND 0x0066b46c
-unsigned int DAT_0066b46c;
+// GLOBAL: LEGOLAND 0x004b472c
+unsigned int DAT_004b472c;
 
-// GLOBAL: LEGOLAND 0x008119a0
-unsigned int NEWFLC_CheckDuplicate;
-// GLOBAL: LEGOLAND 0x008119a8
-unsigned int NEWFLC_BuffSize;
-// GLOBAL: LEGOLAND 0x008119ac
-unsigned short NEWFLC_Repeat;
-// GLOBAL: LEGOLAND 0x008119b0
-unsigned int EditMode;
-// GLOBAL: LEGOLAND 0x008119b8
-void *DAT_008119b8;
-// GLOBAL: LEGOLAND 0x0061615c
-unsigned int DAT_0061615c;
-// GLOBAL: LEGOLAND 0x0081cd08
-unsigned int DAT_0081cd08;
-// GLOBAL: LEGOLAND 0x0061614c
-unsigned int DAT_0061614c;
-// GLOBAL: LEGOLAND 0x00616150
-unsigned int DAT_00616150;
-// GLOBAL: LEGOLAND 0x00616158
-unsigned int DAT_00616158;
-// GLOBAL: LEGOLAND 0x0081cd04
-void *DAT_0081cd04;
-// GLOBAL: LEGOLAND 0x0081caf0
-void *DAT_0081caf0;
-// GLOBAL: LEGOLAND 0x0062fe48
-unsigned int DAT_0062fe48;
-// GLOBAL: LEGOLAND 0x0062fe4c
-unsigned int DAT_0062fe4c;
-// GLOBAL: LEGOLAND 0x0062fe10
-unsigned int DAT_0062fe10;
-// GLOBAL: LEGOLAND 0x0062fe14
-unsigned int DAT_0062fe14;
-// GLOBAL: LEGOLAND 0x0062fe18
-unsigned int DAT_0062fe18;
-// GLOBAL: LEGOLAND 0x0062fe1c
-unsigned short DAT_0062fe1c;
+// GLOBAL: LEGOLAND 0x004b4730
+unsigned int DAT_004b4730;
 
-// GLOBAL: LEGOLAND 0x00813a10
-unsigned int DAT_00813a10;
-// GLOBAL: LEGOLAND 0x00813a40
-unsigned int GamePad;
+// GLOBAL: LEGOLAND 0x004b4734
+unsigned int DAT_004b4734;
+// 0x008003e8 is EditCursor.field_1828 — see struct Cursor in gamemap.h.
 
-// GLOBAL: LEGOLAND 0x007febc0
-struct Cursor EditCursor;
+// GLOBAL: LEGOLAND 0x004b47f8
+unsigned int DAT_004b47f8;
 
-// GLOBAL: LEGOLAND 0x00665e8c
-unsigned int DAT_00665e8c;
-// GLOBAL: LEGOLAND 0x004b7d74
-unsigned int DAT_004b7d74;
-// GLOBAL: LEGOLAND 0x004b7d78
-unsigned int DAT_004b7d78;
-// GLOBAL: LEGOLAND 0x004b7d7e
-unsigned short DAT_004b7d7e;
-// GLOBAL: LEGOLAND 0x004b7d84
-unsigned int DAT_004b7d84;
-// GLOBAL: LEGOLAND 0x00665f60
-unsigned int DAT_00665f60;
-// GLOBAL: LEGOLAND 0x00665fe8
-unsigned int DAT_00665fe8;
-// GLOBAL: LEGOLAND 0x00665fec
-unsigned int DAT_00665fec;
-// GLOBAL: LEGOLAND 0x0081c088
-unsigned int DAT_0081c088;
-// GLOBAL: LEGOLAND 0x0081c08c
-void *DAT_0081c08c;
-// GLOBAL: LEGOLAND 0x0081c090
-void *DAT_0081c090;
-// GLOBAL: LEGOLAND 0x0081c094
-void *DAT_0081c094;
-// GLOBAL: LEGOLAND 0x0081c098
-void *DAT_0081c098;
-// GLOBAL: LEGOLAND 0x0081c09c
-unsigned int DAT_0081c09c;
-// GLOBAL: LEGOLAND 0x0081c0a0
-void *DAT_0081c0a0;
-// GLOBAL: LEGOLAND 0x0081c0a4
-void *DAT_0081c0a4;
-// GLOBAL: LEGOLAND 0x00665ff8
-unsigned int DAT_00665ff8;
-// GLOBAL: LEGOLAND 0x00665ffc
-unsigned int DAT_00665ffc;
-// GLOBAL: LEGOLAND 0x00666000
-unsigned int DAT_00666000;
-// GLOBAL: LEGOLAND 0x00666004
-unsigned int DAT_00666004;
-// GLOBAL: LEGOLAND 0x00666008
-unsigned int DAT_00666008;
-// GLOBAL: LEGOLAND 0x0066600c
-unsigned int DAT_0066600c;
-// GLOBAL: LEGOLAND 0x00666010
-unsigned int DAT_00666010;
-// GLOBAL: LEGOLAND 0x00666014
-unsigned int DAT_00666014;
-// GLOBAL: LEGOLAND 0x00666018
-unsigned int DAT_00666018;
-// GLOBAL: LEGOLAND 0x0066601c
-unsigned int DAT_0066601c;
-// GLOBAL: LEGOLAND 0x00666020
-unsigned int DAT_00666020;
-// GLOBAL: LEGOLAND 0x00666024
-unsigned int DAT_00666024;
-// GLOBAL: LEGOLAND 0x00666030
-unsigned int DAT_00666030;
-// GLOBAL: LEGOLAND 0x00666034
-unsigned int DAT_00666034;
-// GLOBAL: LEGOLAND 0x00666038
-unsigned int DAT_00666038;
-// GLOBAL: LEGOLAND 0x0066603c
-unsigned int DAT_0066603c;
-// GLOBAL: LEGOLAND 0x00666040
-unsigned int DAT_00666040;
-// GLOBAL: LEGOLAND 0x00666044
-unsigned int DAT_00666044;
-// GLOBAL: LEGOLAND 0x00666048
-unsigned int DAT_00666048;
-// GLOBAL: LEGOLAND 0x0066604c
-unsigned int DAT_0066604c;
-// GLOBAL: LEGOLAND 0x00666050
-unsigned int DAT_00666050;
-// GLOBAL: LEGOLAND 0x00666054
-unsigned int DAT_00666054;
-// GLOBAL: LEGOLAND 0x00666058
-unsigned int DAT_00666058;
-// GLOBAL: LEGOLAND 0x0066605c
-unsigned int DAT_0066605c;
-// GLOBAL: LEGOLAND 0x00666060
-unsigned int DAT_00666060;
-// GLOBAL: LEGOLAND 0x00666064
-unsigned int DAT_00666064;
-// GLOBAL: LEGOLAND 0x00666068
-unsigned int DAT_00666068;
-// GLOBAL: LEGOLAND 0x0066606c
-unsigned int DAT_0066606c;
-// GLOBAL: LEGOLAND 0x00666070
-unsigned int DAT_00666070;
-// GLOBAL: LEGOLAND 0x00666074
-unsigned int DAT_00666074;
-// GLOBAL: LEGOLAND 0x00666078
-unsigned int DAT_00666078;
-// GLOBAL: LEGOLAND 0x0066607c
-unsigned int DAT_0066607c;
-// GLOBAL: LEGOLAND 0x00666080
-unsigned int DAT_00666080;
-// GLOBAL: LEGOLAND 0x00666084
-unsigned int DAT_00666084;
-// GLOBAL: LEGOLAND 0x00666088
-unsigned int DAT_00666088;
-// GLOBAL: LEGOLAND 0x0066608c
-unsigned int DAT_0066608c;
-// GLOBAL: LEGOLAND 0x00666090
-unsigned int DAT_00666090;
-// GLOBAL: LEGOLAND 0x00666094
-unsigned int DAT_00666094;
-// GLOBAL: LEGOLAND 0x00666098
-unsigned int DAT_00666098;
-// GLOBAL: LEGOLAND 0x004b7e9c
-unsigned int DAT_004b7e9c;
-// GLOBAL: LEGOLAND 0x0081c040
-unsigned int DAT_0081c040[1];
-// GLOBAL: LEGOLAND 0x0081c054
-unsigned int DAT_0081c054[1];
-// GLOBAL: LEGOLAND 0x0081c068
-unsigned int DAT_0081c068[1];
-// GLOBAL: LEGOLAND 0x0066b574
-void *FirstBloke;
-// GLOBAL: LEGOLAND 0x0066b57c
-void *DAT_0066b57c;
-// GLOBAL: LEGOLAND 0x00832934
-int DAT_00832934;
-// GLOBAL: LEGOLAND 0x00832938
-int DAT_00832938;
-// GLOBAL: LEGOLAND 0x0083293c
-int DAT_0083293c[13];
-// GLOBAL: LEGOLAND 0x0081c038
-unsigned int DAT_0081c038;
-// GLOBAL: LEGOLAND 0x006660a8
-unsigned int DAT_006660a8;
-// GLOBAL: LEGOLAND 0x006660ac
-unsigned int DAT_006660ac;
-// GLOBAL: LEGOLAND 0x004b92c0
-void *PTR_004b92c0;
-// GLOBAL: LEGOLAND 0x0081c028
-unsigned int DAT_0081c028;
-// GLOBAL: LEGOLAND 0x0081c02c
-unsigned int DAT_0081c02c;
-// GLOBAL: LEGOLAND 0x0081c030
-unsigned int DAT_0081c030;
-// GLOBAL: LEGOLAND 0x0081c034
-unsigned int DAT_0081c034;
-// GLOBAL: LEGOLAND 0x00810148
-unsigned int SPRITE_TitleScreenBk;
-// GLOBAL: LEGOLAND 0x0081c080
-unsigned int DAT_0081c080;
-// GLOBAL: LEGOLAND 0x0081c084
-unsigned int DAT_0081c084;
-// GLOBAL: LEGOLAND 0x004bdd00
-unsigned int DAT_004bdd00;
-// GLOBAL: LEGOLAND 0x004bdd04
-unsigned int DAT_004bdd04;
-// GLOBAL: LEGOLAND 0x00832b9c
-unsigned int DAT_00832b9c;
-// GLOBAL: LEGOLAND 0x00832978
-unsigned int DAT_00832978;
-// GLOBAL: LEGOLAND 0x0083297c
-unsigned int DAT_0083297c;
+// GLOBAL: LEGOLAND 0x004b4804
+unsigned int DAT_004b4804;
 
-// GLOBAL: LEGOLAND 0x004bef9c
-unsigned int DAT_004bef9c;
-// GLOBAL: LEGOLAND 0x007cb324
-unsigned int DAT_007cb324;
-// GLOBAL: LEGOLAND 0x007cb328
-unsigned int DAT_007cb328;
-// GLOBAL: LEGOLAND 0x0080ff88
-unsigned int DAT_0080ff88;
-// GLOBAL: LEGOLAND 0x006687b0
-unsigned int DAT_006687b0;
-// GLOBAL: LEGOLAND 0x00798764
-unsigned int DAT_00798764;
-// GLOBAL: LEGOLAND 0x00798768
-unsigned int DAT_00798768;
-// GLOBAL: LEGOLAND 0x0079876c
-unsigned int DAT_0079876c;
-// GLOBAL: LEGOLAND 0x00798770
-unsigned int DAT_00798770;
-// GLOBAL: LEGOLAND 0x00798878
-unsigned int DAT_00798878;
-// GLOBAL: LEGOLAND 0x0079887c
-unsigned int DAT_0079887c;
-// GLOBAL: LEGOLAND 0x00798880
-unsigned int DAT_00798880;
-// GLOBAL: LEGOLAND 0x004bf670
-unsigned int DAT_004bf670;
-// GLOBAL: LEGOLAND 0x00668e38
-unsigned int DAT_00668e38;
-// GLOBAL: LEGOLAND 0x008119b4
-unsigned int DAT_008119b4;
-// GLOBAL: LEGOLAND 0x004d8bb0
-char DAT_004d8bb0[0x100];
-// GLOBAL: LEGOLAND 0x00798778
-char DAT_00798778[0x100];
-// GLOBAL: LEGOLAND 0x007cae80
-char DAT_007cae80[0x100];
-// GLOBAL: LEGOLAND 0x007caf80
-unsigned int DAT_007caf80;
-// GLOBAL: LEGOLAND 0x007cafa0
-void *DAT_007cafa0;
-// GLOBAL: LEGOLAND 0x007cb140
-void *DAT_007cb140;
-// GLOBAL: LEGOLAND 0x007cb1c4
-unsigned int DAT_007cb1c4;
-// GLOBAL: LEGOLAND 0x007cb1e0
-char DAT_007cb1e0[0x100];
-// GLOBAL: LEGOLAND 0x007cb2e0
-unsigned int DAT_007cb2e0;
-// GLOBAL: LEGOLAND 0x007cb2f0
-char DAT_007cb2f0[0x10];
-// GLOBAL: LEGOLAND 0x007cb300
-char DAT_007cb300[0xc];
-// GLOBAL: LEGOLAND 0x007cb30c
-char DAT_007cb30c[4];
-// GLOBAL: LEGOLAND 0x00668e9c
-void *DAT_00668e9c;
-// GLOBAL: LEGOLAND 0x00655a3c
-void *DAT_00655a3c;
-// GLOBAL: LEGOLAND 0x0081c8c0
-void *DAT_0081c8c0;
-// GLOBAL: LEGOLAND 0x0081c8c4
-void *DAT_0081c8c4;
-// GLOBAL: LEGOLAND 0x0081c8c8
-void *DAT_0081c8c8;
-// GLOBAL: LEGOLAND 0x00630100
-void *DAT_00630100;
-// GLOBAL: LEGOLAND 0x0062feac
-void *DAT_0062feac;
-// GLOBAL: LEGOLAND 0x0062feb0
-unsigned int DAT_0062feb0[2];
-// GLOBAL: LEGOLAND 0x0062feb8
-unsigned int DAT_0062feb8[1];
-// GLOBAL: LEGOLAND 0x0062febc
-unsigned int DAT_0062febc[6];
-// GLOBAL: LEGOLAND 0x0062fed4
-unsigned int DAT_0062fed4[6];
-// GLOBAL: LEGOLAND 0x0062feec
-unsigned int DAT_0062feec[1];
-// GLOBAL: LEGOLAND 0x0062fef4
-void *DAT_0062fef4;
+// GLOBAL: LEGOLAND 0x004b4838
+unsigned int DAT_004b4838;
 
-// GLOBAL: LEGOLAND 0x0081cb00
-unsigned int DAT_0081cb00;
-// GLOBAL: LEGOLAND 0x0081cb04
-unsigned int DAT_0081cb04;
-// GLOBAL: LEGOLAND 0x0081cb08
-unsigned int DAT_0081cb08;
-// GLOBAL: LEGOLAND 0x0081cb0c
-unsigned int DAT_0081cb0c;
-// GLOBAL: LEGOLAND 0x0081cb14
-struct Building *DAT_0081cb14;
-// GLOBAL: LEGOLAND 0x0081cb1c
-struct Building *DAT_0081cb1c;
-// GLOBAL: LEGOLAND 0x0081cb24
-unsigned int DAT_0081cb24;
-// GLOBAL: LEGOLAND 0x0081cb2c
-struct Building *DAT_0081cb2c;
-// GLOBAL: LEGOLAND 0x0081cb30
-struct Building *DAT_0081cb30;
-// GLOBAL: LEGOLAND 0x0081cb34
-unsigned int DAT_0081cb34;
-// GLOBAL: LEGOLAND 0x0081cb38
-unsigned int DAT_0081cb38;
-// GLOBAL: LEGOLAND 0x0081cb18
-unsigned int DAT_0081cb18;
-// GLOBAL: LEGOLAND 0x0081cb20
-unsigned int DAT_0081cb20;
-// GLOBAL: LEGOLAND 0x0081cb28
-unsigned int DAT_0081cb28;
-// GLOBAL: LEGOLAND 0x0081cb48
-unsigned int DAT_0081cb48;
-// GLOBAL: LEGOLAND 0x0081cb50
-unsigned int DAT_0081cb50;
-// GLOBAL: LEGOLAND 0x0081cb3c
-struct Building *DAT_0081cb3c;
-// GLOBAL: LEGOLAND 0x0081cb4c
-struct Building *DAT_0081cb4c;
-// GLOBAL: LEGOLAND 0x0081cb40
-struct Building *DAT_0081cb40;
-// GLOBAL: LEGOLAND 0x0081cb44
-struct Building *DAT_0081cb44;
-// GLOBAL: LEGOLAND 0x0082c6a0
-unsigned int DAT_0082c6a0;
-// GLOBAL: LEGOLAND 0x0082c6a4
-unsigned int DAT_0082c6a4;
-// GLOBAL: LEGOLAND 0x0082c6a8
-unsigned int DAT_0082c6a8;
-// GLOBAL: LEGOLAND 0x0082c6ac
-unsigned short DAT_0082c6ac;
-// GLOBAL: LEGOLAND 0x0062fd3c
-struct JailCell *DAT_0062fd3c;
-// GLOBAL: LEGOLAND 0x004bcbf4
-struct LegoConfig *lpConfig;
-// GLOBAL: LEGOLAND 0x004b9ca4
-void (*DAT_004b9ca4)(const char *);
-// GLOBAL: LEGOLAND 0x00667d6c
-int DAT_00667d6c;
-// GLOBAL: LEGOLAND 0x0066920c
-int DAT_0066920c;
-// GLOBAL: LEGOLAND 0x004cbeac
-struct RideQueueEntry *DAT_004cbeac;
-// GLOBAL: LEGOLAND 0x004cbf68
-unsigned int DAT_004cbf68;
-// GLOBAL: LEGOLAND 0x004cbf6c
-unsigned int DAT_004cbf6c;
-// GLOBAL: LEGOLAND 0x004cbf5c
-void *DAT_004cbf5c;
+// GLOBAL: LEGOLAND 0x004b4850
+unsigned int DAT_004b4850;
 
-// GLOBAL: LEGOLAND 0x00798740
-unsigned int DAT_00798740;
-// GLOBAL: LEGOLAND 0x0079873c
-unsigned int DAT_0079873c;
-// GLOBAL: LEGOLAND 0x006687bc
-unsigned int DAT_006687bc;
-// GLOBAL: LEGOLAND 0x006687c0
-unsigned int DAT_006687c0;
-// GLOBAL: LEGOLAND 0x00667128
-char DAT_00667128[512];
-// GLOBAL: LEGOLAND 0x00667c10
-unsigned int DAT_00667c10;
-// GLOBAL: LEGOLAND 0x00667c28
-unsigned int DAT_00667c28;
-// GLOBAL: LEGOLAND 0x00667c2c
-struct Sprite *DAT_00667c2c;
-// GLOBAL: LEGOLAND 0x00667c30
-unsigned int DAT_00667c30;
-// GLOBAL: LEGOLAND 0x00667c34
-unsigned int DAT_00667c34;
-// GLOBAL: LEGOLAND 0x007cb314
-char DAT_007cb314;
-// GLOBAL: LEGOLAND 0x007cb315
-char DAT_007cb315;
-// GLOBAL: LEGOLAND 0x007cb31c
-char DAT_007cb31c;
-// GLOBAL: LEGOLAND 0x007cb320
-unsigned int DAT_007cb320;
-// GLOBAL: LEGOLAND 0x007cb310
-unsigned int DAT_007cb310;
-// GLOBAL: LEGOLAND 0x00832ba0
-unsigned int DAT_00832ba0;
-// GLOBAL: LEGOLAND 0x0080ff80
-unsigned int DAT_0080ff80;
-// GLOBAL: LEGOLAND 0x004b929c
-void *DAT_004b929c;
-// GLOBAL: LEGOLAND 0x00798674
-struct Sprite *DAT_00798674;
-// GLOBAL: LEGOLAND 0x00798678
-struct Sprite *DAT_00798678;
-// GLOBAL: LEGOLAND 0x0079867c
-struct Sprite *DAT_0079867c;
-// GLOBAL: LEGOLAND 0x00798680
-struct Sprite *DAT_00798680;
-// GLOBAL: LEGOLAND 0x00798684
-struct Sprite *DAT_00798684;
-// GLOBAL: LEGOLAND 0x00798688
-struct Sprite *DAT_00798688;
-// GLOBAL: LEGOLAND 0x0079868c
-struct Sprite *DAT_0079868c;
-// GLOBAL: LEGOLAND 0x00798690
-struct Sprite *DAT_00798690;
-// GLOBAL: LEGOLAND 0x00798694
-struct Sprite *DAT_00798694;
-// GLOBAL: LEGOLAND 0x00798698
-struct Sprite *DAT_00798698;
-// GLOBAL: LEGOLAND 0x0079869c
-struct Sprite *DAT_0079869c;
-// GLOBAL: LEGOLAND 0x007986a0
-struct Sprite *DAT_007986a0;
-// GLOBAL: LEGOLAND 0x007986a4
-struct Sprite *DAT_007986a4;
-// GLOBAL: LEGOLAND 0x007986a8
-struct Sprite *DAT_007986a8;
-// GLOBAL: LEGOLAND 0x007986ac
-struct Sprite *DAT_007986ac;
-// GLOBAL: LEGOLAND 0x007986b0
-struct Sprite *DAT_007986b0;
-// GLOBAL: LEGOLAND 0x007986b4
-struct Sprite *DAT_007986b4;
-// GLOBAL: LEGOLAND 0x007986b8
-unsigned int DAT_007986b8;
-// GLOBAL: LEGOLAND 0x007986bc
-struct Sprite *DAT_007986bc;
-// GLOBAL: LEGOLAND 0x007986c0
-struct Sprite *DAT_007986c0;
-// GLOBAL: LEGOLAND 0x007986c4
-struct Sprite *DAT_007986c4;
-// GLOBAL: LEGOLAND 0x007986c8
-struct Sprite *DAT_007986c8;
-// GLOBAL: LEGOLAND 0x007986cc
-struct Sprite *DAT_007986cc;
-// GLOBAL: LEGOLAND 0x007986d0
-struct Sprite *DAT_007986d0;
-// GLOBAL: LEGOLAND 0x007986d4
-struct Sprite *DAT_007986d4;
-// GLOBAL: LEGOLAND 0x007986d8
-unsigned int DAT_007986d8;
-// GLOBAL: LEGOLAND 0x007986dc
-unsigned int DAT_007986dc;
-// GLOBAL: LEGOLAND 0x007986e0
-unsigned int DAT_007986e0;
-// GLOBAL: LEGOLAND 0x007986e4
-unsigned int DAT_007986e4;
-// GLOBAL: LEGOLAND 0x007986e8
-unsigned int DAT_007986e8;
-// GLOBAL: LEGOLAND 0x007986f4
-unsigned int DAT_007986f4;
-// GLOBAL: LEGOLAND 0x007986f8
-unsigned int DAT_007986f8;
-// GLOBAL: LEGOLAND 0x007cb360
-unsigned int DAT_007cb360;
+// GLOBAL: LEGOLAND 0x004b4bd0
+unsigned char DAT_004b4bd0[0x14];
 
-// GLOBAL: LEGOLAND 0x0083291c
-unsigned int DAT_0083291c;
-// GLOBAL: LEGOLAND 0x006661c4
-unsigned int DAT_006661c4;
-// GLOBAL: LEGOLAND 0x006661c8
-int DAT_006661c8;
-// GLOBAL: LEGOLAND 0x006661bc
-int DAT_006661bc;
-// GLOBAL: LEGOLAND 0x00832990
-unsigned int DAT_00832990;
-// GLOBAL: LEGOLAND 0x004b8334
-int DAT_004b8334;
-// GLOBAL: LEGOLAND 0x004b8340
-int DAT_004b8340;
-// GLOBAL: LEGOLAND 0x004b8344
-int DAT_004b8344;
-// GLOBAL: LEGOLAND 0x004b8368
-void (*PTR_Bloke_DoNothing_004b8368[16])(void *);
+// GLOBAL: LEGOLAND 0x004b4bf0
+unsigned int DAT_004b4bf0[5];
 
-// GLOBAL: LEGOLAND 0x006691a4
-unsigned int DAT_006691a4;
-// GLOBAL: LEGOLAND 0x006691a8
-unsigned int **DAT_006691a8;
-// GLOBAL: LEGOLAND 0x006691b0
-int DAT_006691b0;
+// GLOBAL: LEGOLAND 0x004b4cb8
+unsigned char SAFARI_SFX[8];
 
-// GLOBAL: LEGOLAND 0x00668fc0
-void *DAT_00668fc0;
-// GLOBAL: LEGOLAND 0x00669050
-unsigned char DAT_00669050;
-// GLOBAL: LEGOLAND 0x00669054
-unsigned int DAT_00669054;
-// GLOBAL: LEGOLAND 0x00669058
-char DAT_00669058[0x40];
-// GLOBAL: LEGOLAND 0x0066879c
-unsigned int DAT_0066879c;
-// GLOBAL: LEGOLAND 0x00669098
-unsigned int DAT_00669098;
-// GLOBAL: LEGOLAND 0x004bb5ac
-unsigned int DAT_004bb5ac;
-// GLOBAL: LEGOLAND 0x004bb5b0
-unsigned int DAT_004bb5b0;
-// GLOBAL: LEGOLAND 0x004bb688
-unsigned int DAT_004bb688;
-// GLOBAL: LEGOLAND 0x004bb6bc
-unsigned int DAT_004bb6bc;
-// GLOBAL: LEGOLAND 0x004bb6f8
-unsigned int DAT_004bb6f8;
-// GLOBAL: LEGOLAND 0x007fdca4
-unsigned int DAT_007fdca4;
-// GLOBAL: LEGOLAND 0x00832920
-unsigned int DAT_00832920;
-// GLOBAL: LEGOLAND 0x00832924
-unsigned int DAT_00832924;
-// GLOBAL: LEGOLAND 0x00832974
-unsigned int DAT_00832974;
-// GLOBAL: LEGOLAND 0x00832980
-unsigned int DAT_00832980;
-// GLOBAL: LEGOLAND 0x00832994
-unsigned int DAT_00832994;
-// GLOBAL: LEGOLAND 0x00832ba8
-unsigned int DAT_00832ba8;
+// GLOBAL: LEGOLAND 0x004b4d88
+unsigned char SpiderRide_SFX[8];
 
-// GLOBAL: LEGOLAND 0x0066869c
-char DAT_0066869c[128];
-// GLOBAL: LEGOLAND 0x0066861c
-unsigned char DAT_0066861c;
-// GLOBAL: LEGOLAND 0x007fe930
-unsigned char DAT_007fe930[10];
-// GLOBAL: LEGOLAND 0x00668724
-struct ObjectiveEvent *DAT_00668724;
-// GLOBAL: LEGOLAND 0x00668728
-struct ObjectiveEvent *DAT_00668728;
-// GLOBAL: LEGOLAND 0x0066872c
-unsigned int DAT_0066872c[0x15];
-// GLOBAL: LEGOLAND 0x00668780
-unsigned int DAT_00668780;
-// GLOBAL: LEGOLAND 0x0066871c
-unsigned int DAT_0066871c;
-// GLOBAL: LEGOLAND 0x007fe114
-unsigned char DAT_007fe114;
-// GLOBAL: LEGOLAND 0x007fe115
-unsigned char DAT_007fe115;
-// GLOBAL: LEGOLAND 0x007fe116
-unsigned char DAT_007fe116;
-// GLOBAL: LEGOLAND 0x007fe117
-unsigned char DAT_007fe117;
-// GLOBAL: LEGOLAND 0x007fe120
-unsigned int DAT_007fe120[256];
-// GLOBAL: LEGOLAND 0x00801400
-struct MapElement **DAT_00801400;
+// GLOBAL: LEGOLAND 0x004b4d90
+void *DAT_004b4d90;
 
 // GLOBAL: LEGOLAND 0x004b4fa8
 unsigned char WATERWORKS_SFX[28];
 
+// GLOBAL: LEGOLAND 0x004b53c0
+unsigned int DAT_004b53c0[5];
+
+// GLOBAL: LEGOLAND 0x004b55f4
+unsigned int DAT_004b55f4;
+
+// GLOBAL: LEGOLAND 0x004b5608
+unsigned int DAT_004b5608;
+
+// GLOBAL: LEGOLAND 0x004b560c
+unsigned int DAT_004b560c;
+
+// GLOBAL: LEGOLAND 0x004b5b20
+void *DAT_004b5b20;
+
+// GLOBAL: LEGOLAND 0x004b5b28
+int DAT_004b5b28;
+
+// GLOBAL: LEGOLAND 0x004b5b4c
+int DAT_004b5b4c;
+
+// GLOBAL: LEGOLAND 0x004b5b50
+int DAT_004b5b50;
+
+// GLOBAL: LEGOLAND 0x004b5c9c
+unsigned int DAT_004b5c9c;
+
+// GLOBAL: LEGOLAND 0x004b5ca0
+unsigned int DAT_004b5ca0;
+
+// GLOBAL: LEGOLAND 0x004b5ca4
+unsigned int DAT_004b5ca4;
+
+// GLOBAL: LEGOLAND 0x004b5ca8
+unsigned int DAT_004b5ca8;
+
+// GLOBAL: LEGOLAND 0x004b5cbc
+float DAT_004b5cbc;
+
+// GLOBAL: LEGOLAND 0x004b5cc0
+unsigned int DAT_004b5cc0;
+
+// GLOBAL: LEGOLAND 0x004b5cc4
+unsigned int DAT_004b5cc4;
+
+// GLOBAL: LEGOLAND 0x004b5cc8
+unsigned int DAT_004b5cc8;
+
+// GLOBAL: LEGOLAND 0x004b5dc8
+const unsigned char DAT_004b5dc8[1];
+
+// GLOBAL: LEGOLAND 0x004b5f60
+unsigned char DAT_004b5f60[1];
+
+// GLOBAL: LEGOLAND 0x004b62f0
+unsigned int DAT_004b62f0;
+
+// GLOBAL: LEGOLAND 0x004b6300
+unsigned int DAT_004b6300;
+
+// GLOBAL: LEGOLAND 0x004b64d8
+unsigned char CAROUSSEL_SFX[12];
+
+// GLOBAL: LEGOLAND 0x004b6668
+unsigned char ENTRANCE_SFX[0x1c];
+
+// GLOBAL: LEGOLAND 0x004b66e8
+unsigned char RESTAURANT_SFX[0x1c];
+
+// GLOBAL: LEGOLAND 0x004b6968
+unsigned char OCTOPUS_SFX[0x1c];
+
+// GLOBAL: LEGOLAND 0x004b7260
+unsigned char DAT_004b7260[0x18];
+
+// GLOBAL: LEGOLAND 0x004b7278
+unsigned char DAT_004b7278[0x10];
+
+// GLOBAL: LEGOLAND 0x004b7288
+void *DAT_004b7288;
+
+// GLOBAL: LEGOLAND 0x004b7618
+const unsigned char SPACE_TOWER_SFX[15] = {0};
+
+// GLOBAL: LEGOLAND 0x004b7620
+void *DAT_004b7620;
+
+// GLOBAL: LEGOLAND 0x004b79d0
+unsigned char DAT_004b79d0[0x18];
+
+// GLOBAL: LEGOLAND 0x004b7d74
+unsigned int DAT_004b7d74;
+
+// GLOBAL: LEGOLAND 0x004b7d78
+unsigned int DAT_004b7d78;
+
+// GLOBAL: LEGOLAND 0x004b7d7e
+unsigned short DAT_004b7d7e;
+
+// GLOBAL: LEGOLAND 0x004b7d84
+unsigned int DAT_004b7d84;
+
+// GLOBAL: LEGOLAND 0x004b7e9c
+unsigned int DAT_004b7e9c;
+
+// GLOBAL: LEGOLAND 0x004b8334
+int DAT_004b8334;
+
+// GLOBAL: LEGOLAND 0x004b8340
+int DAT_004b8340;
+
+// GLOBAL: LEGOLAND 0x004b8344
+int DAT_004b8344;
+
+// GLOBAL: LEGOLAND 0x004b8368
+void (*PTR_Bloke_DoNothing_004b8368[16])(void *);
+
+// GLOBAL: LEGOLAND 0x004b8710
+unsigned char DAT_004b8710[0x40];
+
+// GLOBAL: LEGOLAND 0x004b8750
+unsigned char DAT_004b8750[0x18];
+
+// GLOBAL: LEGOLAND 0x004b8768
+unsigned char DINO_SFX[0x18];
+
+// GLOBAL: LEGOLAND 0x004b87a8
+unsigned char MONEY_SFX[12];
+
+// GLOBAL: LEGOLAND 0x004b8bbc
+unsigned char DAT_004b8bbc[1];
+
+// GLOBAL: LEGOLAND 0x004b90f8
+unsigned int DAT_004b90f8;
+
+// GLOBAL: LEGOLAND 0x004b90fc
+unsigned int DAT_004b90fc;
+
+// GLOBAL: LEGOLAND 0x004b9228
+const unsigned char DAT_004b9228[1];
+
+// GLOBAL: LEGOLAND 0x004b929c
+void *DAT_004b929c;
+
+// GLOBAL: LEGOLAND 0x004b92c0
+void *PTR_004b92c0;
+
+// GLOBAL: LEGOLAND 0x004b9550
+unsigned char DAT_004b9550[8];
+
+// GLOBAL: LEGOLAND 0x004b9ca4
+void (*DAT_004b9ca4)(const char *);
+
+// GLOBAL: LEGOLAND 0x004b9ca8
+unsigned int DAT_004b9ca8;
+
+// GLOBAL: LEGOLAND 0x004b9e5c
+unsigned int DAT_004b9e5c[1];
+
+// GLOBAL: LEGOLAND 0x004b9f78
+unsigned int DAT_004b9f78[4] = {0x1f4, 0x190, 0x280, 0x1e0};
+
+// GLOBAL: LEGOLAND 0x004b9f88
+unsigned int DAT_004b9f88;
+
+// GLOBAL: LEGOLAND 0x004b9f8c
+unsigned int DAT_004b9f8c;
+
+// GLOBAL: LEGOLAND 0x004ba87c
+void *PTR_some_list_head_004ba87c;
+
+// GLOBAL: LEGOLAND 0x004ba9ac
+unsigned int DAT_004ba9ac[1];
+
+// GLOBAL: LEGOLAND 0x004bad54
+int mouse_granularity;
+
+// GLOBAL: LEGOLAND 0x004bafa8
+unsigned int DAT_004bafa8[20];
+
+// GLOBAL: LEGOLAND 0x004baff8
+unsigned int DAT_004baff8;
+
+// GLOBAL: LEGOLAND 0x004bb094
+unsigned int DAT_004bb094;
+
+// GLOBAL: LEGOLAND 0x004bb098
+unsigned int DAT_004bb098;
+
+// GLOBAL: LEGOLAND 0x004bb09c
+unsigned int DAT_004bb09c;
+
+// GLOBAL: LEGOLAND 0x004bb0a0
+unsigned int DAT_004bb0a0;
+
+// GLOBAL: LEGOLAND 0x004bb18c
+unsigned int DAT_004bb18c[4];
+
+// GLOBAL: LEGOLAND 0x004bb5ac
+unsigned int DAT_004bb5ac;
+
+// GLOBAL: LEGOLAND 0x004bb5b0
+unsigned int DAT_004bb5b0;
+
+// GLOBAL: LEGOLAND 0x004bb688
+unsigned int DAT_004bb688;
+
+// GLOBAL: LEGOLAND 0x004bb6bc
+unsigned int DAT_004bb6bc;
+
+// GLOBAL: LEGOLAND 0x004bb6f8
+unsigned int DAT_004bb6f8;
+
+// GLOBAL: LEGOLAND 0x004bcbf4
+struct LegoConfig *lpConfig;
+
+// GLOBAL: LEGOLAND 0x004bdd00
+unsigned int DAT_004bdd00;
+
+// GLOBAL: LEGOLAND 0x004bdd04
+unsigned int DAT_004bdd04;
+
+// GLOBAL: LEGOLAND 0x004bdea0
+struct ClipRect SPRITE_ClipRect;
+
+// GLOBAL: LEGOLAND 0x004beb94
+struct FreePlaySpriteSlot DAT_004beb94[10];
+
+// GLOBAL: LEGOLAND 0x004beba0
+unsigned char DAT_004beba0;
+
+// GLOBAL: LEGOLAND 0x004becac
+unsigned int DAT_004becac;
+
+// GLOBAL: LEGOLAND 0x004becb0
+int DAT_004becb0[1];
+
+// GLOBAL: LEGOLAND 0x004bef9c
+unsigned int DAT_004bef9c;
+
+// GLOBAL: LEGOLAND 0x004bf670
+unsigned int DAT_004bf670;
+
+// GLOBAL: LEGOLAND 0x004bf774
+unsigned int DAT_004bf774;
+
+// GLOBAL: LEGOLAND 0x004bf778
+unsigned int DAT_004bf778;
+
+// GLOBAL: LEGOLAND 0x004c10d4
+void *DAT_004c10d4;
+
+// GLOBAL: LEGOLAND 0x004c10dc
+void *DAT_004c10dc;
+
+// GLOBAL: LEGOLAND 0x004c10e4
+unsigned int DAT_004c10e4;
+
+// GLOBAL: LEGOLAND 0x004c10f0
+void *DAT_004c10f0;
+
+// GLOBAL: LEGOLAND 0x004c10f4
+void *DAT_004c10f4;
+
+// GLOBAL: LEGOLAND 0x004c1100
+void *DAT_004c1100;
+
+// GLOBAL: LEGOLAND 0x004c1104
+unsigned int DAT_004c1104;
+
+// GLOBAL: LEGOLAND 0x004c1108
+unsigned int DAT_004c1108;
+
+// GLOBAL: LEGOLAND 0x004c110c
+unsigned short DAT_004c110c;
+
+// GLOBAL: LEGOLAND 0x004c1118
+struct CatapultNode *DAT_004c1118;
+
+// GLOBAL: LEGOLAND 0x004c1120
+struct Sprite *DAT_004c1120;
+
+// GLOBAL: LEGOLAND 0x004c1124
+int DAT_004c1124[6];
+
+// GLOBAL: LEGOLAND 0x004c113c
+struct Sprite *DAT_004c113c[10];
+
+// GLOBAL: LEGOLAND 0x004c1164
+struct Sprite *DAT_004c1164;
+
+// GLOBAL: LEGOLAND 0x004c1198
+void *DAT_004c1198;
+
+// GLOBAL: LEGOLAND 0x004c11b4
+struct CopterNode *DAT_004c11b4;
+
+// GLOBAL: LEGOLAND 0x004c11bc
+void *DAT_004c11bc;
+
+// GLOBAL: LEGOLAND 0x004c11c4
+unsigned int DAT_004c11c4;
+
+// GLOBAL: LEGOLAND 0x004c11c8
+unsigned int DAT_004c11c8;
+
+// GLOBAL: LEGOLAND 0x004c11cc
+unsigned int DAT_004c11cc;
+
+// GLOBAL: LEGOLAND 0x004c11dc
+unsigned int DAT_004c11dc;
+
+// GLOBAL: LEGOLAND 0x004c11e4
+struct Sprite *DAT_004c11e4;
+
+// GLOBAL: LEGOLAND 0x004c11f0
+void *DAT_004c11f0;
+
+// GLOBAL: LEGOLAND 0x004c11f4
+struct Sprite *DAT_004c11f4;
+
+// GLOBAL: LEGOLAND 0x004c11f8
+struct Sprite *DAT_004c11f8;
+
+// GLOBAL: LEGOLAND 0x004c11fc
+struct Sprite *DAT_004c11fc;
+
+// GLOBAL: LEGOLAND 0x004c1200
+struct Sprite *DAT_004c1200;
+
+// GLOBAL: LEGOLAND 0x004c1204
+struct GoldNode *DAT_004c1204;
+
+// GLOBAL: LEGOLAND 0x004c1218
+void *DAT_004c1218;
+
+// GLOBAL: LEGOLAND 0x004c121c
+unsigned int DAT_004c121c;
+
+// GLOBAL: LEGOLAND 0x004c1228
+unsigned int DAT_004c1228;
+
+// GLOBAL: LEGOLAND 0x004c122c
+unsigned int DAT_004c122c;
+
+// GLOBAL: LEGOLAND 0x004c1230
+unsigned int DAT_004c1230;
+
+// GLOBAL: LEGOLAND 0x004c1234
+unsigned short DAT_004c1234;
+
+// GLOBAL: LEGOLAND 0x004c1240
+unsigned int DAT_004c1240;
+
+// GLOBAL: LEGOLAND 0x004c1244
+unsigned int DAT_004c1244;
+
+// GLOBAL: LEGOLAND 0x004c1248
+unsigned int DAT_004c1248;
+
+// GLOBAL: LEGOLAND 0x004c124c
+unsigned int DAT_004c124c;
+
+// GLOBAL: LEGOLAND 0x004c1250
+struct JoustNode *DAT_004c1250;
+
+// GLOBAL: LEGOLAND 0x004c1258
+struct Sprite *DAT_004c1258;
+
+// GLOBAL: LEGOLAND 0x004c2a88
+unsigned int DAT_004c2a88;
+
+// GLOBAL: LEGOLAND 0x004c2a94
+unsigned int DAT_004c2a94;
+
+// GLOBAL: LEGOLAND 0x004c2a98
+unsigned int DAT_004c2a98;
+
+// GLOBAL: LEGOLAND 0x004c2aa0
+struct CursorSource *DAT_004c2aa0;
+
+// GLOBAL: LEGOLAND 0x004c2abc
+struct Sprite *DAT_004c2abc;
+
+// GLOBAL: LEGOLAND 0x004c2ae4
+struct Sprite *DAT_004c2ae4;
+
+// GLOBAL: LEGOLAND 0x004c2ae8
+void *DAT_004c2ae8;
+
+// GLOBAL: LEGOLAND 0x004c2aec
+unsigned int DAT_004c2aec;
+
+// GLOBAL: LEGOLAND 0x004c2af0
+unsigned int DAT_004c2af0;
+
+// GLOBAL: LEGOLAND 0x004c2af4
+unsigned int DAT_004c2af4;
+
+// GLOBAL: LEGOLAND 0x004c2af8
+void *DAT_004c2af8;
+
+// GLOBAL: LEGOLAND 0x004c2afc
+unsigned int DAT_004c2afc;
+
+// GLOBAL: LEGOLAND 0x004c2b0c
+struct CursorSource *DAT_004c2b0c;
+
+// GLOBAL: LEGOLAND 0x004c2b10
+unsigned int DAT_004c2b10;
+
+// GLOBAL: LEGOLAND 0x004c2b50
+void *DAT_004c2b50;
+
+// GLOBAL: LEGOLAND 0x004c2b60
+struct CursorSource *DAT_004c2b60;
+
+// GLOBAL: LEGOLAND 0x004c2b64
+unsigned int DAT_004c2b64;
+
+// GLOBAL: LEGOLAND 0x004c2b6c
+unsigned int DAT_004c2b6c;
+
+// GLOBAL: LEGOLAND 0x004c2b70
+unsigned int DAT_004c2b70;
+
+// GLOBAL: LEGOLAND 0x004c2b98
+unsigned int DAT_004c2b98;
+
+// GLOBAL: LEGOLAND 0x004c2b9c
+unsigned int DAT_004c2b9c;
+
+// GLOBAL: LEGOLAND 0x004c2ba0
+void *DAT_004c2ba0;
+
+// GLOBAL: LEGOLAND 0x004c2bf0
+struct CursorSource *DAT_004c2bf0;
+
+// GLOBAL: LEGOLAND 0x004c445c
+struct CursorSource *DAT_004c445c;
+
+// GLOBAL: LEGOLAND 0x004c4460
+void *DAT_004c4460;
+
+// GLOBAL: LEGOLAND 0x004c5c90
+unsigned int DAT_004c5c90;
+
+// GLOBAL: LEGOLAND 0x004c74c8
+unsigned int DAT_004c74c8;
+
+// GLOBAL: LEGOLAND 0x004c74d4
+struct CursorSource *DAT_004c74d4;
+
+// GLOBAL: LEGOLAND 0x004c8d2c
+struct Sprite *DAT_004c8d2c;
+
+// GLOBAL: LEGOLAND 0x004c8d4c
+void *DAT_004c8d4c;
+
+// GLOBAL: LEGOLAND 0x004c8d68
+struct Sprite *DAT_004c8d68;
+
+// GLOBAL: LEGOLAND 0x004c8d6c
+struct CursorSource *DAT_004c8d6c;
+
+// GLOBAL: LEGOLAND 0x004c8d70
+struct Sprite *DAT_004c8d70;
+
+// GLOBAL: LEGOLAND 0x004cbdd8
+unsigned int DAT_004cbdd8;
+
+// GLOBAL: LEGOLAND 0x004cbe08
+struct Sprite *DAT_004cbe08;
+
+// GLOBAL: LEGOLAND 0x004cbe0c
+struct Sprite *DAT_004cbe0c;
+
+// GLOBAL: LEGOLAND 0x004cbe10
+void *DAT_004cbe10;
+
+// GLOBAL: LEGOLAND 0x004cbe14
+unsigned int DAT_004cbe14;
+
+// GLOBAL: LEGOLAND 0x004cbe18
+struct CursorSource *DAT_004cbe18;
+
+// GLOBAL: LEGOLAND 0x004cbe1c
+struct Sprite *DAT_004cbe1c;
+
+// GLOBAL: LEGOLAND 0x004cbe20
+unsigned int DAT_004cbe20;
+
+// GLOBAL: LEGOLAND 0x004cbe24
+unsigned int DAT_004cbe24;
+
+// GLOBAL: LEGOLAND 0x004cbe28
+unsigned int DAT_004cbe28;
+
+// GLOBAL: LEGOLAND 0x004cbe2c
+unsigned int DAT_004cbe2c;
+
+// GLOBAL: LEGOLAND 0x004cbe48
+void *DAT_004cbe48;
+
+// GLOBAL: LEGOLAND 0x004cbe4c
+struct Sprite *DAT_004cbe4c;
+
+// GLOBAL: LEGOLAND 0x004cbe74
+struct Sprite *DAT_004cbe74;
+
+// GLOBAL: LEGOLAND 0x004cbe78
+struct Sprite *DAT_004cbe78;
+
+// GLOBAL: LEGOLAND 0x004cbe7c
+struct Sprite *DAT_004cbe7c;
+
+// GLOBAL: LEGOLAND 0x004cbe80
+struct Sprite *DAT_004cbe80;
+
+// GLOBAL: LEGOLAND 0x004cbe84
+void *DAT_004cbe84;
+
+// GLOBAL: LEGOLAND 0x004cbe88
+struct Sprite *DAT_004cbe88;
+
+// GLOBAL: LEGOLAND 0x004cbe8c
+struct Sprite *DAT_004cbe8c;
+
+// GLOBAL: LEGOLAND 0x004cbe90
+struct Sprite *DAT_004cbe90;
+
+// GLOBAL: LEGOLAND 0x004cbe94
+struct Sprite *DAT_004cbe94;
+
+// GLOBAL: LEGOLAND 0x004cbe98
+struct Sprite *DAT_004cbe98;
+
+// GLOBAL: LEGOLAND 0x004cbe9c
+unsigned int DAT_004cbe9c;
+
+// GLOBAL: LEGOLAND 0x004cbea4
+void *DAT_004cbea4;
+
+// GLOBAL: LEGOLAND 0x004cbeac
+struct RideQueueEntry *DAT_004cbeac;
+
+// GLOBAL: LEGOLAND 0x004cbeb0
+int DAT_004cbeb0;
+
+// GLOBAL: LEGOLAND 0x004cbeb4
+int DAT_004cbeb4;
+
+// GLOBAL: LEGOLAND 0x004cbec4
+unsigned int DAT_004cbec4;
+
+// GLOBAL: LEGOLAND 0x004cbed0
+unsigned int DAT_004cbed0;
+
+// GLOBAL: LEGOLAND 0x004cbed4
+unsigned int DAT_004cbed4;
+
+// GLOBAL: LEGOLAND 0x004cbed8
+unsigned int DAT_004cbed8;
+
+// GLOBAL: LEGOLAND 0x004cbedc
+unsigned short DAT_004cbedc;
+
+// GLOBAL: LEGOLAND 0x004cbef8
+void *DAT_004cbef8;
+
+// GLOBAL: LEGOLAND 0x004cbefc
+void *DAT_004cbefc;
+
+// GLOBAL: LEGOLAND 0x004cbf00
+void *DAT_004cbf00;
+
+// GLOBAL: LEGOLAND 0x004cbf08
+unsigned int DAT_004cbf08;
+
+// GLOBAL: LEGOLAND 0x004cbf0c
+void *DAT_004cbf0c;
+
+// GLOBAL: LEGOLAND 0x004cbf10
+void *DAT_004cbf10;
+
+// GLOBAL: LEGOLAND 0x004cbf14
+struct Sprite *DAT_004cbf14;
+
+// GLOBAL: LEGOLAND 0x004cbf18
+void *DAT_004cbf18;
+
+// GLOBAL: LEGOLAND 0x004cbf1c
+struct Sprite *DAT_004cbf1c;
+
+// GLOBAL: LEGOLAND 0x004cbf20
+unsigned int DAT_004cbf20;
+
+// GLOBAL: LEGOLAND 0x004cbf24
+void *DAT_004cbf24;
+
+// GLOBAL: LEGOLAND 0x004cbf40
+unsigned int DAT_004cbf40;
+
+// GLOBAL: LEGOLAND 0x004cbf44
+unsigned int DAT_004cbf44;
+
+// GLOBAL: LEGOLAND 0x004cbf48
+unsigned int DAT_004cbf48;
+
+// GLOBAL: LEGOLAND 0x004cbf4c
+unsigned short DAT_004cbf4c;
+
+// GLOBAL: LEGOLAND 0x004cbf58
+void *DAT_004cbf58;
+
+// GLOBAL: LEGOLAND 0x004cbf5c
+void *DAT_004cbf5c;
+
+// GLOBAL: LEGOLAND 0x004cbf68
+unsigned int DAT_004cbf68;
+
+// GLOBAL: LEGOLAND 0x004cbf6c
+unsigned int DAT_004cbf6c;
+
+// GLOBAL: LEGOLAND 0x004cbf78
+unsigned int DAT_004cbf78;
+
+// GLOBAL: LEGOLAND 0x004cbf80
+unsigned int DAT_004cbf80;
+
+// GLOBAL: LEGOLAND 0x004cbf98
+unsigned int DAT_004cbf98;
+
+// GLOBAL: LEGOLAND 0x004cbf9c
+unsigned int DAT_004cbf9c;
+
+// GLOBAL: LEGOLAND 0x004cbfa0
+unsigned int DAT_004cbfa0;
+
+// GLOBAL: LEGOLAND 0x004cbfa4
+unsigned short DAT_004cbfa4;
+
+// GLOBAL: LEGOLAND 0x004cbfc4
+void *DAT_004cbfc4;
+
+// GLOBAL: LEGOLAND 0x004cbfd0
+unsigned int DAT_004cbfd0;
+
+// GLOBAL: LEGOLAND 0x004cbfd4
+void *DAT_004cbfd4;
+
 // GLOBAL: LEGOLAND 0x004cbfd8
 unsigned int DAT_004cbfd8;
+
 // GLOBAL: LEGOLAND 0x004cbfdc
 struct WaterContext *DAT_004cbfdc;
+
 // GLOBAL: LEGOLAND 0x004cbfe0
 struct WaterSub *DAT_004cbfe0;
+
 // GLOBAL: LEGOLAND 0x004cbfe4
 unsigned int DAT_004cbfe4;
+
 // GLOBAL: LEGOLAND 0x004cbfe8
 unsigned int DAT_004cbfe8;
+
 // GLOBAL: LEGOLAND 0x004cbfec
 unsigned int DAT_004cbfec;
+
 // GLOBAL: LEGOLAND 0x004cbff0
 unsigned int DAT_004cbff0;
+
 // GLOBAL: LEGOLAND 0x004cbff4
 unsigned int DAT_004cbff4;
+
 // GLOBAL: LEGOLAND 0x004cbff8
 unsigned int DAT_004cbff8;
+
 // GLOBAL: LEGOLAND 0x004cbffc
 unsigned short DAT_004cbffc;
+
 // GLOBAL: LEGOLAND 0x004cc000
 unsigned int DAT_004cc000;
+
 // GLOBAL: LEGOLAND 0x004cc014
 unsigned int DAT_004cc014;
+
 // GLOBAL: LEGOLAND 0x004cc01c
 unsigned int DAT_004cc01c;
+
 // GLOBAL: LEGOLAND 0x004cc020
 unsigned int DAT_004cc020;
+
 // GLOBAL: LEGOLAND 0x004cc024
 struct WaterContext *DAT_004cc024;
+
 // GLOBAL: LEGOLAND 0x004cc028
 unsigned int DAT_004cc028;
+
 // GLOBAL: LEGOLAND 0x004cc02c
 void *DAT_004cc02c;
+
 // GLOBAL: LEGOLAND 0x004cc030
 void *DAT_004cc030;
+
 // GLOBAL: LEGOLAND 0x004cc034
 void *DAT_004cc034;
 // 0x007fffc4, 0x007fffd4, 0x008003f0 are EditCursor fields (field_1404,
@@ -808,1504 +799,2545 @@ struct InterfaceQueryNode;
 struct InterfaceEventNode;
 struct InterfaceResearchNode;
 
-// GLOBAL: LEGOLAND 0x00668ea4
-unsigned int DAT_00668ea4;
-// GLOBAL: LEGOLAND 0x00668e68
-unsigned int DAT_00668e68;
-// GLOBAL: LEGOLAND 0x00668e6c
-unsigned int DAT_00668e6c;
-// GLOBAL: LEGOLAND 0x00668e70
-unsigned int DAT_00668e70;
-// GLOBAL: LEGOLAND 0x007fdcd0
-unsigned int DAT_007fdcd0;
-// GLOBAL: LEGOLAND 0x007fdd50
-unsigned int DAT_007fdd50;
-// GLOBAL: LEGOLAND 0x007fdcd4
-unsigned int DAT_007fdcd4;
-// GLOBAL: LEGOLAND 0x007fdd54
-unsigned int DAT_007fdd54;
-// GLOBAL: LEGOLAND 0x007fdcd8
-unsigned int DAT_007fdcd8;
-// GLOBAL: LEGOLAND 0x007fdd58
-unsigned int DAT_007fdd58;
-// GLOBAL: LEGOLAND 0x007fdcdc
-unsigned int DAT_007fdcdc;
-// GLOBAL: LEGOLAND 0x007fdd5c
-unsigned int DAT_007fdd5c;
-// GLOBAL: LEGOLAND 0x007fdce0
-unsigned int DAT_007fdce0;
-// GLOBAL: LEGOLAND 0x007fdd60
-unsigned int DAT_007fdd60;
-// GLOBAL: LEGOLAND 0x00668e74
-unsigned int DAT_00668e74;
-// GLOBAL: LEGOLAND 0x00668e78
-unsigned int DAT_00668e78;
-// GLOBAL: LEGOLAND 0x00668e7c
-unsigned int DAT_00668e7c;
-// GLOBAL: LEGOLAND 0x00668e80
-unsigned int DAT_00668e80;
-// GLOBAL: LEGOLAND 0x00668e84
-unsigned int DAT_00668e84;
-// GLOBAL: LEGOLAND 0x00668e88
-unsigned int DAT_00668e88;
-// GLOBAL: LEGOLAND 0x00668e8c
-unsigned int DAT_00668e8c;
-// GLOBAL: LEGOLAND 0x00668e90
-unsigned int DAT_00668e90;
-// GLOBAL: LEGOLAND 0x00668e94
-unsigned int DAT_00668e94;
-// GLOBAL: LEGOLAND 0x00668e98
-unsigned int DAT_00668e98;
-// GLOBAL: LEGOLAND 0x00668ea0
-unsigned int DAT_00668ea0;
-// GLOBAL: LEGOLAND 0x00668eb0
-unsigned int DAT_00668eb0;
-// GLOBAL: LEGOLAND 0x004bb0a0
-unsigned int DAT_004bb0a0;
-// GLOBAL: LEGOLAND 0x004bb09c
-unsigned int DAT_004bb09c;
-// GLOBAL: LEGOLAND 0x004bb098
-unsigned int DAT_004bb098;
-// GLOBAL: LEGOLAND 0x004bb094
-unsigned int DAT_004bb094;
-// GLOBAL: LEGOLAND 0x00668eb4
-unsigned int DAT_00668eb4;
-// GLOBAL: LEGOLAND 0x007fdcc0
-unsigned int DAT_007fdcc0;
-// GLOBAL: LEGOLAND 0x007fdd40
-unsigned int DAT_007fdd40;
-// GLOBAL: LEGOLAND 0x007fdcc8
-unsigned int DAT_007fdcc8;
-// GLOBAL: LEGOLAND 0x007fdd48
-unsigned int DAT_007fdd48;
-// GLOBAL: LEGOLAND 0x007fdcc4
-unsigned int DAT_007fdcc4;
-// GLOBAL: LEGOLAND 0x007fdd44
-unsigned int DAT_007fdd44;
-// GLOBAL: LEGOLAND 0x007fdccc
-unsigned int DAT_007fdccc;
-// GLOBAL: LEGOLAND 0x007fdd4c
-unsigned int DAT_007fdd4c;
-// GLOBAL: LEGOLAND 0x00668eb8
-unsigned int DAT_00668eb8;
-// GLOBAL: LEGOLAND 0x007fdd70
-struct InterfaceProfileObj *DAT_007fdd70[4];
-// GLOBAL: LEGOLAND 0x00668e20
-unsigned int DAT_00668e20[4];
-// GLOBAL: LEGOLAND 0x00668ebc
-unsigned int DAT_00668ebc;
-// GLOBAL: LEGOLAND 0x007fdd80
-unsigned char DAT_007fdd80;
-// GLOBAL: LEGOLAND 0x007fdd84
-unsigned int DAT_007fdd84;
-// GLOBAL: LEGOLAND 0x007fdd88
-unsigned int DAT_007fdd88;
-// GLOBAL: LEGOLAND 0x007fdd8c
-unsigned char DAT_007fdd8c;
-// GLOBAL: LEGOLAND 0x00668954
-unsigned int DAT_00668954;
-// GLOBAL: LEGOLAND 0x0080ff84
-unsigned int DAT_0080ff84;
-// GLOBAL: LEGOLAND 0x00668e40
-struct InterfaceListNode *DAT_00668e40;
-// GLOBAL: LEGOLAND 0x004baff8
-unsigned int DAT_004baff8;
-// GLOBAL: LEGOLAND 0x004bafa8
-unsigned int DAT_004bafa8[20];
-// GLOBAL: LEGOLAND 0x004bb18c
-unsigned int DAT_004bb18c[4];
-// GLOBAL: LEGOLAND 0x007fdd00
-unsigned int DAT_007fdd00[9];
-// GLOBAL: LEGOLAND 0x00668ed8
-struct InterfaceResearchNode *DAT_00668ed8;
-// GLOBAL: LEGOLAND 0x006687c8
-struct InterfaceIconNode *DAT_006687c8;
-// GLOBAL: LEGOLAND 0x00668fc4
-struct InterfaceQueryNode *DAT_00668fc4;
+// GLOBAL: LEGOLAND 0x004cc03c
+void *DAT_004cc03c;
 
-// GLOBAL: LEGOLAND 0x00832970
-int DAT_00832970;
-// GLOBAL: LEGOLAND 0x00668788
-unsigned int DAT_00668788;
-// GLOBAL: LEGOLAND 0x0066878c
-int DAT_0066878c;
-// GLOBAL: LEGOLAND 0x00667cf8
-int DAT_00667cf8;
-// GLOBAL: LEGOLAND 0x00667d08
-int DAT_00667d08;
-// GLOBAL: LEGOLAND 0x00667ce4
-int DAT_00667ce4;
-// GLOBAL: LEGOLAND 0x00667ce8
-int DAT_00667ce8;
-// GLOBAL: LEGOLAND 0x00667cec
-int DAT_00667cec;
-// GLOBAL: LEGOLAND 0x00667ce0
-int DAT_00667ce0;
-// GLOBAL: LEGOLAND 0x00667cf0
-int DAT_00667cf0;
-// GLOBAL: LEGOLAND 0x00667cf4
-int DAT_00667cf4;
-// GLOBAL: LEGOLAND 0x00667cfc
-int DAT_00667cfc;
-// GLOBAL: LEGOLAND 0x00667d10
-unsigned int DAT_00667d10;
+// GLOBAL: LEGOLAND 0x004cc048
+unsigned int DAT_004cc048;
 
-// GLOBAL: LEGOLAND 0x00832ba4
-unsigned int DAT_00832ba4;
-// GLOBAL: LEGOLAND 0x00832bdc
-int DAT_00832bdc;
-// GLOBAL: LEGOLAND 0x00668790
-unsigned int DAT_00668790;
-// GLOBAL: LEGOLAND 0x00668794
-unsigned int DAT_00668794;
-// GLOBAL: LEGOLAND 0x00668610
-unsigned int DAT_00668610;
-// GLOBAL: LEGOLAND 0x00668798
-void *DAT_00668798;
-// GLOBAL: LEGOLAND 0x00668614
-unsigned int DAT_00668614;
-// GLOBAL: LEGOLAND 0x00668618
-unsigned int DAT_00668618;
-// GLOBAL: LEGOLAND 0x00668784
-void *DAT_00668784;
-// GLOBAL: LEGOLAND 0x00668e34
-unsigned int DAT_00668e34;
-// GLOBAL: LEGOLAND 0x007fd624
-unsigned int DAT_007fd624;
-// GLOBAL: LEGOLAND 0x004b9e5c
-unsigned int DAT_004b9e5c[1];
-// GLOBAL: LEGOLAND 0x004b8bbc
-unsigned char DAT_004b8bbc[1];
-// GLOBAL: LEGOLAND 0x007fe050
-unsigned int DAT_007fe050;
-// GLOBAL: LEGOLAND 0x007fe054
-unsigned int DAT_007fe054;
-// GLOBAL: LEGOLAND 0x00810140
-unsigned int DAT_00810140;
-// GLOBAL: LEGOLAND 0x004d8268
-unsigned int DAT_004d8268;
-// GLOBAL: LEGOLAND 0x00829ae0
-unsigned int DAT_00829ae0;
-// GLOBAL: LEGOLAND 0x00829b88
-unsigned int DAT_00829b88;
-// GLOBAL: LEGOLAND 0x00829ba0
-unsigned int DAT_00829ba0;
-// GLOBAL: LEGOLAND 0x004ab3d0
-float DAT_004ab3d0;
-// GLOBAL: LEGOLAND 0x0082adec
-unsigned int DAT_0082adec;
-// GLOBAL: LEGOLAND 0x004d8270
-unsigned int DAT_004d8270;
+// GLOBAL: LEGOLAND 0x004cc060
+unsigned int DAT_004cc060;
+
+// GLOBAL: LEGOLAND 0x004cc070
+void *DAT_004cc070;
+
+// GLOBAL: LEGOLAND 0x004cc074
+void *DAT_004cc074;
+
+// GLOBAL: LEGOLAND 0x004cc078
+unsigned int DAT_004cc078;
+
+// GLOBAL: LEGOLAND 0x004cc088
+void *DAT_004cc088;
+
+// GLOBAL: LEGOLAND 0x004d823c
+void *DAT_004d823c;
+
 // GLOBAL: LEGOLAND 0x004d8250
 const unsigned char DAT_004d8250[1];
-// GLOBAL: LEGOLAND 0x004b5dc8
-const unsigned char DAT_004b5dc8[1];
-// GLOBAL: LEGOLAND 0x004ab430
-float DAT_004ab430;
-// GLOBAL: LEGOLAND 0x0082add0
-unsigned int DAT_0082add0;
-// GLOBAL: LEGOLAND 0x0082add4
-unsigned int DAT_0082add4;
-// GLOBAL: LEGOLAND 0x0082add8
-unsigned int DAT_0082add8;
-// GLOBAL: LEGOLAND 0x0082ade0
-unsigned int DAT_0082ade0;
-// GLOBAL: LEGOLAND 0x0082ade4
-unsigned int DAT_0082ade4;
-// GLOBAL: LEGOLAND 0x0082ade8
-unsigned int DAT_0082ade8;
-// GLOBAL: LEGOLAND 0x004d8a40
-unsigned int DAT_004d8a40[1];
-// GLOBAL: LEGOLAND 0x004d8abc
-unsigned int DAT_004d8abc[1];
-// GLOBAL: LEGOLAND 0x004d8b34
-unsigned int DAT_004d8b34[1];
-// GLOBAL: LEGOLAND 0x004d89c8
-unsigned int DAT_004d89c8[1];
-// GLOBAL: LEGOLAND 0x004d8bac
-unsigned int DAT_004d8bac;
-// GLOBAL: LEGOLAND 0x0082ad20
-unsigned char DAT_0082ad20[0x90];
-// GLOBAL: LEGOLAND 0x0082adb0
-unsigned int DAT_0082adb0;
-// GLOBAL: LEGOLAND 0x004b55f4
-unsigned int DAT_004b55f4;
-// GLOBAL: LEGOLAND 0x004b5608
-unsigned int DAT_004b5608;
-// GLOBAL: LEGOLAND 0x004b560c
-unsigned int DAT_004b560c;
+
+// GLOBAL: LEGOLAND 0x004d8268
+unsigned int DAT_004d8268;
+
+// GLOBAL: LEGOLAND 0x004d8270
+unsigned int DAT_004d8270;
+
 // GLOBAL: LEGOLAND 0x004d88f4
 unsigned char DAT_004d88f4[0x80];
+
 // GLOBAL: LEGOLAND 0x004d8974
 unsigned char DAT_004d8974[0x40];
+
 // GLOBAL: LEGOLAND 0x004d89c4
 void *DAT_004d89c4;
 
+// GLOBAL: LEGOLAND 0x004d89c8
+unsigned int DAT_004d89c8[1];
+
+// GLOBAL: LEGOLAND 0x004d8a40
+unsigned int DAT_004d8a40[1];
+
+// GLOBAL: LEGOLAND 0x004d8abc
+unsigned int DAT_004d8abc[1];
+
+// GLOBAL: LEGOLAND 0x004d8b34
+unsigned int DAT_004d8b34[1];
+
+// GLOBAL: LEGOLAND 0x004d8bac
+unsigned int DAT_004d8bac;
+
+// GLOBAL: LEGOLAND 0x004d8bb0
+char DAT_004d8bb0[0x100];
+
 // GLOBAL: LEGOLAND 0x004dcbd0
 void *DAT_004dcbd0[10];
+
 // GLOBAL: LEGOLAND 0x004dcbf8
 unsigned int DAT_004dcbf8;
+
 // GLOBAL: LEGOLAND 0x004dcc00
 unsigned char DAT_004dcc00[1];
+
 // GLOBAL: LEGOLAND 0x004dd5d8
 unsigned int DAT_004dd5d8;
-// GLOBAL: LEGOLAND 0x0082ac60
-void *DAT_0082ac60[1];
+
 // GLOBAL: LEGOLAND 0x004dd5e0
 void *DAT_004dd5e0[24];
+
 // GLOBAL: LEGOLAND 0x004dd758
 unsigned int DAT_004dd758;
+
 // GLOBAL: LEGOLAND 0x004dd760
 char DAT_004dd760[1];
+
 // GLOBAL: LEGOLAND 0x004dd860
 unsigned int DAT_004dd860;
+
 // GLOBAL: LEGOLAND 0x004dd868
 unsigned int DAT_004dd868;
+
 // GLOBAL: LEGOLAND 0x004dd86c
 unsigned int DAT_004dd86c;
-// GLOBAL: LEGOLAND 0x004b5b20
-void *DAT_004b5b20;
-// GLOBAL: LEGOLAND 0x004b5b28
-int DAT_004b5b28;
-// GLOBAL: LEGOLAND 0x004b5b4c
-int DAT_004b5b4c;
-// GLOBAL: LEGOLAND 0x004b5b50
-int DAT_004b5b50;
-// GLOBAL: LEGOLAND 0x00610a04
-unsigned int DAT_00610a04;
-// GLOBAL: LEGOLAND 0x006102f8
-unsigned int DAT_006102f8;
-// GLOBAL: LEGOLAND 0x004ab454
-float FLOAT_004ab454;
-// GLOBAL: LEGOLAND 0x004ab458
-float FLOAT_004ab458;
-// GLOBAL: LEGOLAND 0x004ab45c
-float FLOAT_004ab45c;
-// GLOBAL: LEGOLAND 0x004b5c9c
-unsigned int DAT_004b5c9c;
-// GLOBAL: LEGOLAND 0x004b5ca0
-unsigned int DAT_004b5ca0;
-// GLOBAL: LEGOLAND 0x004b5ca4
-unsigned int DAT_004b5ca4;
-// GLOBAL: LEGOLAND 0x004b5ca8
-unsigned int DAT_004b5ca8;
-// GLOBAL: LEGOLAND 0x004b5cbc
-float DAT_004b5cbc;
-// GLOBAL: LEGOLAND 0x004b5cc0
-unsigned int DAT_004b5cc0;
-// GLOBAL: LEGOLAND 0x004b5cc4
-unsigned int DAT_004b5cc4;
-// GLOBAL: LEGOLAND 0x004b5cc8
-unsigned int DAT_004b5cc8;
-// GLOBAL: LEGOLAND 0x00611648
-unsigned int DAT_00611648;
-// GLOBAL: LEGOLAND 0x00611650
-float DAT_00611650;
-// GLOBAL: LEGOLAND 0x0082999c
-float DAT_0082999c;
-// GLOBAL: LEGOLAND 0x008299d4
-float DAT_008299d4;
-// GLOBAL: LEGOLAND 0x008299fc
-unsigned int DAT_008299fc;
-// GLOBAL: LEGOLAND 0x00829a3c
-struct ListLink DAT_00829a3c;
-// GLOBAL: LEGOLAND 0x00829a60
-float DAT_00829a60;
-// GLOBAL: LEGOLAND 0x006103a8
-unsigned int DAT_006103a8;
+
 // GLOBAL: LEGOLAND 0x0060f924
 unsigned int DAT_0060f924[1];
+
 // GLOBAL: LEGOLAND 0x0060f938
 unsigned int DAT_0060f938;
+
+// GLOBAL: LEGOLAND 0x006102f8
+unsigned int DAT_006102f8;
+
+// GLOBAL: LEGOLAND 0x006103a8
+unsigned int DAT_006103a8;
+
+// GLOBAL: LEGOLAND 0x00610a04
+unsigned int DAT_00610a04;
+
 // GLOBAL: LEGOLAND 0x00610a08
 unsigned int DAT_00610a08;
-// GLOBAL: LEGOLAND 0x00829a80
-struct EditFootPrint DAT_00829a80;
-// GLOBAL: LEGOLAND 0x00829af8
-unsigned int DAT_00829af8[3];
-// GLOBAL: LEGOLAND 0x00829b04
-unsigned int DAT_00829b04[3];
-// GLOBAL: LEGOLAND 0x00829b8c
-unsigned int DAT_00829b8c;
-// GLOBAL: LEGOLAND 0x00829ba4
-unsigned int DAT_00829ba4;
-// GLOBAL: LEGOLAND 0x00829c04
-unsigned int DAT_00829c04;
-// GLOBAL: LEGOLAND 0x00829bec
-void *DAT_00829bec;
-// GLOBAL: LEGOLAND 0x00829bf0
-void *DAT_00829bf0;
-// GLOBAL: LEGOLAND 0x00829bf4
-void *DAT_00829bf4;
-// GLOBAL: LEGOLAND 0x00829bf8
-unsigned int DAT_00829bf8;
-// GLOBAL: LEGOLAND 0x00829980
-void *DAT_00829980;
-// GLOBAL: LEGOLAND 0x0081cdec
-void *DAT_0081cdec;
-// GLOBAL: LEGOLAND 0x00611958
-unsigned int DAT_00611958;
+
+// GLOBAL: LEGOLAND 0x00611648
+unsigned int DAT_00611648;
+
+// GLOBAL: LEGOLAND 0x00611650
+float DAT_00611650;
+
 // GLOBAL: LEGOLAND 0x00611688
 unsigned int DAT_00611688;
+
 // GLOBAL: LEGOLAND 0x0061168c
 unsigned int DAT_0061168c;
-// GLOBAL: LEGOLAND 0x00828fe0
-unsigned int DAT_00828fe0[2];
-// GLOBAL: LEGOLAND 0x00615f6c
-unsigned int DAT_00615f6c;
+
+// GLOBAL: LEGOLAND 0x00611958
+unsigned int DAT_00611958;
+
 // GLOBAL: LEGOLAND 0x00612178
 char DAT_00612178[1];
-// GLOBAL: LEGOLAND 0x004b5f60
-unsigned char DAT_004b5f60[1];
-// GLOBAL: LEGOLAND 0x004ab390
-float FLOAT_004ab390;
+
+// GLOBAL: LEGOLAND 0x00615f6c
+unsigned int DAT_00615f6c;
+
 // GLOBAL: LEGOLAND 0x00615f98
 unsigned int DAT_00615f98;
+
 // GLOBAL: LEGOLAND 0x00616000
 unsigned int DAT_00616000;
+
 // GLOBAL: LEGOLAND 0x00616004
 unsigned int DAT_00616004;
-// GLOBAL: LEGOLAND 0x004b62f0
-unsigned int DAT_004b62f0;
-// GLOBAL: LEGOLAND 0x004b6300
-unsigned int DAT_004b6300;
-// GLOBAL: LEGOLAND 0x004cbe20
-unsigned int DAT_004cbe20;
-// GLOBAL: LEGOLAND 0x004cbe24
-unsigned int DAT_004cbe24;
-// GLOBAL: LEGOLAND 0x004cbe28
-unsigned int DAT_004cbe28;
-// GLOBAL: LEGOLAND 0x004cbe2c
-unsigned int DAT_004cbe2c;
-// GLOBAL: LEGOLAND 0x004cbe4c
-struct Sprite *DAT_004cbe4c;
-// GLOBAL: LEGOLAND 0x004cbe74
-struct Sprite *DAT_004cbe74;
-// GLOBAL: LEGOLAND 0x004cbe78
-struct Sprite *DAT_004cbe78;
-// GLOBAL: LEGOLAND 0x004cbe7c
-struct Sprite *DAT_004cbe7c;
-// GLOBAL: LEGOLAND 0x004cbe80
-struct Sprite *DAT_004cbe80;
-// GLOBAL: LEGOLAND 0x004cbe84
-void *DAT_004cbe84;
-// GLOBAL: LEGOLAND 0x004cbe88
-struct Sprite *DAT_004cbe88;
-// GLOBAL: LEGOLAND 0x004cbe8c
-struct Sprite *DAT_004cbe8c;
-// GLOBAL: LEGOLAND 0x004cbe90
-struct Sprite *DAT_004cbe90;
-// GLOBAL: LEGOLAND 0x004cbe94
-struct Sprite *DAT_004cbe94;
-// GLOBAL: LEGOLAND 0x004cbe98
-struct Sprite *DAT_004cbe98;
-// GLOBAL: LEGOLAND 0x004c2ae8
-void *DAT_004c2ae8;
-// GLOBAL: LEGOLAND 0x004c2af8
-void *DAT_004c2af8;
-// GLOBAL: LEGOLAND 0x004c2b9c
-unsigned int DAT_004c2b9c;
-// GLOBAL: LEGOLAND 0x004c2afc
-unsigned int DAT_004c2afc;
-// GLOBAL: LEGOLAND 0x004c2abc
-struct Sprite *DAT_004c2abc;
-// GLOBAL: LEGOLAND 0x004c2ae4
-struct Sprite *DAT_004c2ae4;
-// GLOBAL: LEGOLAND 0x004cbe1c
-struct Sprite *DAT_004cbe1c;
-// GLOBAL: LEGOLAND 0x004c8d68
-struct Sprite *DAT_004c8d68;
-// GLOBAL: LEGOLAND 0x004c2b10
-unsigned int DAT_004c2b10;
-// GLOBAL: LEGOLAND 0x004b4728
-unsigned int DAT_004b4728;
-// GLOBAL: LEGOLAND 0x004b472c
-unsigned int DAT_004b472c;
-// GLOBAL: LEGOLAND 0x004b4730
-unsigned int DAT_004b4730;
-// GLOBAL: LEGOLAND 0x004b4734
-unsigned int DAT_004b4734;
-// 0x008003e8 is EditCursor.field_1828 — see struct Cursor in gamemap.h.
-// GLOBAL: LEGOLAND 0x004cbdd8
-unsigned int DAT_004cbdd8;
-// GLOBAL: LEGOLAND 0x004c2a88
-unsigned int DAT_004c2a88;
-// GLOBAL: LEGOLAND 0x004c5c90
-unsigned int DAT_004c5c90;
-// GLOBAL: LEGOLAND 0x004c74c8
-unsigned int DAT_004c74c8;
-// GLOBAL: LEGOLAND 0x004c445c
-struct CursorSource *DAT_004c445c;
-// GLOBAL: LEGOLAND 0x004c2aa0
-struct CursorSource *DAT_004c2aa0;
-// GLOBAL: LEGOLAND 0x004c2b0c
-struct CursorSource *DAT_004c2b0c;
-// GLOBAL: LEGOLAND 0x004c2af4
-unsigned int DAT_004c2af4;
-// GLOBAL: LEGOLAND 0x004c2b98
-unsigned int DAT_004c2b98;
-// GLOBAL: LEGOLAND 0x004c2b6c
-unsigned int DAT_004c2b6c;
-// GLOBAL: LEGOLAND 0x004c2b70
-unsigned int DAT_004c2b70;
-// GLOBAL: LEGOLAND 0x004b47f8
-unsigned int DAT_004b47f8;
-// GLOBAL: LEGOLAND 0x004b4804
-unsigned int DAT_004b4804;
-// GLOBAL: LEGOLAND 0x004cbe10
-void *DAT_004cbe10;
-// GLOBAL: LEGOLAND 0x004c8d2c
-struct Sprite *DAT_004c8d2c;
-// GLOBAL: LEGOLAND 0x004c74d4
-struct CursorSource *DAT_004c74d4;
-// GLOBAL: LEGOLAND 0x004c2ba0
-void *DAT_004c2ba0;
-// GLOBAL: LEGOLAND 0x004c8d70
-struct Sprite *DAT_004c8d70;
-// GLOBAL: LEGOLAND 0x004cbe0c
-struct Sprite *DAT_004cbe0c;
-// GLOBAL: LEGOLAND 0x004cbe08
-struct Sprite *DAT_004cbe08;
-// GLOBAL: LEGOLAND 0x004cbe18
-struct CursorSource *DAT_004cbe18;
-// GLOBAL: LEGOLAND 0x004cbe48
-void *DAT_004cbe48;
-// GLOBAL: LEGOLAND 0x004c1258
-struct Sprite *DAT_004c1258;
-// GLOBAL: LEGOLAND 0x004c4460
-void *DAT_004c4460;
-// GLOBAL: LEGOLAND 0x004c2bf0
-struct CursorSource *DAT_004c2bf0;
-// GLOBAL: LEGOLAND 0x004cbe14
-unsigned int DAT_004cbe14;
-// GLOBAL: LEGOLAND 0x004c2b50
-void *DAT_004c2b50;
-// GLOBAL: LEGOLAND 0x004c2b60
-struct CursorSource *DAT_004c2b60;
-// GLOBAL: LEGOLAND 0x004c2a94
-unsigned int DAT_004c2a94;
-// GLOBAL: LEGOLAND 0x004c2a98
-unsigned int DAT_004c2a98;
-// GLOBAL: LEGOLAND 0x004b4838
-unsigned int DAT_004b4838;
-// GLOBAL: LEGOLAND 0x004b4850
-unsigned int DAT_004b4850;
-// GLOBAL: LEGOLAND 0x004c8d4c
-void *DAT_004c8d4c;
-// GLOBAL: LEGOLAND 0x004c8d6c
-struct CursorSource *DAT_004c8d6c;
-// GLOBAL: LEGOLAND 0x004c2af0
-unsigned int DAT_004c2af0;
-// GLOBAL: LEGOLAND 0x004c2aec
-unsigned int DAT_004c2aec;
-// GLOBAL: LEGOLAND 0x004c2b64
-unsigned int DAT_004c2b64;
-// GLOBAL: LEGOLAND 0x0082c688
-unsigned int DAT_0082c688;
 
-// GLOBAL: LEGOLAND 0x0079abfc
-void *DAT_0079abfc;
-// GLOBAL: LEGOLAND 0x0079a8a8
-void *DAT_0079a8a8;
-// GLOBAL: LEGOLAND 0x0079a8ac
-void *DAT_0079a8ac;
-// GLOBAL: LEGOLAND 0x0079a8b0
-void *DAT_0079a8b0;
-// GLOBAL: LEGOLAND 0x0079a8b4
-void *DAT_0079a8b4;
-// GLOBAL: LEGOLAND 0x0079a8b8
-int DAT_0079a8b8;
-// GLOBAL: LEGOLAND 0x0079a8bc
-int DAT_0079a8bc;
-// GLOBAL: LEGOLAND 0x0079a8c0
-void *DAT_0079a8c0;
-// GLOBAL: LEGOLAND 0x0079a8c4
-void *DAT_0079a8c4;
-// GLOBAL: LEGOLAND 0x0079a8c8
-int DAT_0079a8c8;
-// GLOBAL: LEGOLAND 0x0079a8cc
-int DAT_0079a8cc;
-// GLOBAL: LEGOLAND 0x0079a8d0
-unsigned int DAT_0079a8d0;
-// GLOBAL: LEGOLAND 0x0079a8d4
-void *DAT_0079a8d4;
-// GLOBAL: LEGOLAND 0x0080ff64
-unsigned int DAT_0080ff64;
-// GLOBAL: LEGOLAND 0x00832bd0
-int DAT_00832bd0;
-// GLOBAL: LEGOLAND 0x00832bd4
-int DAT_00832bd4;
-// GLOBAL: LEGOLAND 0x00832bd8
-unsigned int DAT_00832bd8;
-// GLOBAL: LEGOLAND 0x004b9228
-const unsigned char DAT_004b9228[1];
-// GLOBAL: LEGOLAND 0x004ab480
-float FLOAT_004ab480;
+// GLOBAL: LEGOLAND 0x00616018
+void *DAT_00616018;
 
-// GLOBAL: LEGOLAND 0x00667cb4
-int ScrollX;
-// GLOBAL: LEGOLAND 0x00667cb8
-int ScrollY;
-// GLOBAL: LEGOLAND 0x00667ca8
-void *OverlayList;
-// GLOBAL: LEGOLAND 0x00667cac
-unsigned int OverlayILF;
-// GLOBAL: LEGOLAND 0x00805f60
-void *TileSpriteArray[256];
-// GLOBAL: LEGOLAND 0x00667ca4
-unsigned int DAT_00667ca4;
-// GLOBAL: LEGOLAND 0x00832824
-unsigned int DAT_00832824[1];
-// GLOBAL: LEGOLAND 0x00832828
-unsigned int DAT_00832828[1];
-// GLOBAL: LEGOLAND 0x00667d54
-unsigned int DAT_00667d54;
-// GLOBAL: LEGOLAND 0x00667d58
-int DAT_00667d58;
+// GLOBAL: LEGOLAND 0x00616028
+unsigned int DAT_00616028;
 
-// GLOBAL: LEGOLAND 0x0081c8cc
-void *DAT_0081c8cc;
-// GLOBAL: LEGOLAND 0x0081c8d0
-unsigned int DAT_0081c8d0;
-// GLOBAL: LEGOLAND 0x0081c8d4
-unsigned int DAT_0081c8d4;
-// GLOBAL: LEGOLAND 0x0081c8d8
-unsigned int DAT_0081c8d8;
-// GLOBAL: LEGOLAND 0x0081c8dc
-unsigned int DAT_0081c8dc;
-// GLOBAL: LEGOLAND 0x00655a38
-void *DAT_00655a38;
+// GLOBAL: LEGOLAND 0x0061602c
+unsigned int DAT_0061602c;
+
+// GLOBAL: LEGOLAND 0x00616030
+unsigned int DAT_00616030;
+
+// GLOBAL: LEGOLAND 0x00616034
+unsigned short DAT_00616034;
+
+// GLOBAL: LEGOLAND 0x00616048
+unsigned int DAT_00616048;
+
+// GLOBAL: LEGOLAND 0x0061604c
+unsigned int DAT_0061604c;
+
+// GLOBAL: LEGOLAND 0x00616050
+unsigned int DAT_00616050;
+
+// GLOBAL: LEGOLAND 0x00616054
+unsigned int DAT_00616054;
+
+// GLOBAL: LEGOLAND 0x00616058
+unsigned int DAT_00616058;
+
+// GLOBAL: LEGOLAND 0x0061605c
+unsigned int DAT_0061605c;
+
+// GLOBAL: LEGOLAND 0x00616060
+void *DAT_00616060;
+
+// GLOBAL: LEGOLAND 0x0061606c
+unsigned int DAT_0061606c;
+
+// GLOBAL: LEGOLAND 0x00616070
+unsigned int DAT_00616070;
+
+// GLOBAL: LEGOLAND 0x00616090
+void *DAT_00616090;
+
+// GLOBAL: LEGOLAND 0x00616094
+void *DAT_00616094;
+
+// GLOBAL: LEGOLAND 0x00616098
+void *DAT_00616098;
+
+// GLOBAL: LEGOLAND 0x006160a0
+unsigned int DAT_006160a0;
+
+// GLOBAL: LEGOLAND 0x006160a4
+unsigned int DAT_006160a4;
+
+// GLOBAL: LEGOLAND 0x006160a8
+unsigned int DAT_006160a8;
+
+// GLOBAL: LEGOLAND 0x006160ac
+unsigned short DAT_006160ac;
+
+// GLOBAL: LEGOLAND 0x006160bc
+unsigned int DAT_006160bc;
+
+// GLOBAL: LEGOLAND 0x006160c0
+unsigned int DAT_006160c0;
+
+// GLOBAL: LEGOLAND 0x006160c4
+struct CarouselNode *DAT_006160c4;
+
+// GLOBAL: LEGOLAND 0x006160d0
+unsigned int DAT_006160d0;
+
+// GLOBAL: LEGOLAND 0x006160d4
+struct RinData *DAT_006160d4;
+
+// GLOBAL: LEGOLAND 0x006160d8
+struct Sprite *DAT_006160d8;
+
+// GLOBAL: LEGOLAND 0x006160e0
+struct Sprite *DAT_006160e0;
+
+// GLOBAL: LEGOLAND 0x006160e4
+struct Position *DAT_006160e4;
+
+// GLOBAL: LEGOLAND 0x006160e8
+void *DAT_006160e8;
+
+// GLOBAL: LEGOLAND 0x006160f4
+unsigned int DAT_006160f4;
+
+// GLOBAL: LEGOLAND 0x006160fc
+unsigned int DAT_006160fc;
+
+// GLOBAL: LEGOLAND 0x00616100
+unsigned int DAT_00616100;
+
+// GLOBAL: LEGOLAND 0x00616104
+unsigned int DAT_00616104;
+
+// GLOBAL: LEGOLAND 0x00616108
+unsigned int DAT_00616108;
+
+// GLOBAL: LEGOLAND 0x0061610c
+unsigned int DAT_0061610c;
+
+// GLOBAL: LEGOLAND 0x00616120
+unsigned int DAT_00616120;
+
+// GLOBAL: LEGOLAND 0x00616124
+unsigned int DAT_00616124;
+
+// GLOBAL: LEGOLAND 0x00616128
+unsigned int DAT_00616128;
+
+// GLOBAL: LEGOLAND 0x0061612c
+unsigned short DAT_0061612c;
+
+// GLOBAL: LEGOLAND 0x0061613c
+unsigned int DAT_0061613c;
+
+// GLOBAL: LEGOLAND 0x00616144
+struct BlokeNode *DAT_00616144;
+
+// GLOBAL: LEGOLAND 0x00616148
+struct SaveBlock *DAT_00616148;
+
+// GLOBAL: LEGOLAND 0x0061614c
+unsigned int DAT_0061614c;
+
+// GLOBAL: LEGOLAND 0x00616150
+unsigned int DAT_00616150;
+
+// GLOBAL: LEGOLAND 0x00616158
+unsigned int DAT_00616158;
+
+// GLOBAL: LEGOLAND 0x0061615c
+unsigned int DAT_0061615c;
+
+// GLOBAL: LEGOLAND 0x00616164
+struct JungleNode *DAT_00616164;
+
+// GLOBAL: LEGOLAND 0x00629c30
+struct JungleFish *DAT_00629c30;
+
+// GLOBAL: LEGOLAND 0x00629c3c
+struct JungleScore *DAT_00629c3c;
+
+// GLOBAL: LEGOLAND 0x00629c40
+unsigned char DAT_00629c40[16];
+
+// GLOBAL: LEGOLAND 0x00629c50
+void *DAT_00629c50;
+
+// GLOBAL: LEGOLAND 0x0062fd2c
+unsigned int DAT_0062fd2c;
+
+// GLOBAL: LEGOLAND 0x0062fd3c
+struct JailCell *DAT_0062fd3c;
+
+// GLOBAL: LEGOLAND 0x0062fd68
+void *DAT_0062fd68;
+
+// GLOBAL: LEGOLAND 0x0062fd6c
+void *DAT_0062fd6c;
+
+// GLOBAL: LEGOLAND 0x0062fd74
+void *DAT_0062fd74;
+
+// GLOBAL: LEGOLAND 0x0062fd7c
+void *DAT_0062fd7c;
+
+// GLOBAL: LEGOLAND 0x0062fd80
+void *DAT_0062fd80;
+
+// GLOBAL: LEGOLAND 0x0062fda8
+void *DAT_0062fda8;
+
+// GLOBAL: LEGOLAND 0x0062fdb0
+unsigned int DAT_0062fdb0;
+
+// GLOBAL: LEGOLAND 0x0062fdb4
+unsigned int DAT_0062fdb4;
+
+// GLOBAL: LEGOLAND 0x0062fdb8
+unsigned int DAT_0062fdb8;
+
+// GLOBAL: LEGOLAND 0x0062fdbc
+unsigned short DAT_0062fdbc;
+
+// GLOBAL: LEGOLAND 0x0062fdc8
+void *DAT_0062fdc8;
+
+// GLOBAL: LEGOLAND 0x0062fdcc
+void *DAT_0062fdcc;
+
+// GLOBAL: LEGOLAND 0x0062fdd0
+void *DAT_0062fdd0;
+
+// GLOBAL: LEGOLAND 0x0062fde4
+unsigned int DAT_0062fde4;
+
+// GLOBAL: LEGOLAND 0x0062fde8
+void *DAT_0062fde8;
+
+// GLOBAL: LEGOLAND 0x0062fdfc
+void *DAT_0062fdfc;
+
+// GLOBAL: LEGOLAND 0x0062fe04
+void *DAT_0062fe04;
+
+// GLOBAL: LEGOLAND 0x0062fe08
+void *DAT_0062fe08;
+
+// GLOBAL: LEGOLAND 0x0062fe10
+unsigned int DAT_0062fe10;
+
+// GLOBAL: LEGOLAND 0x0062fe14
+unsigned int DAT_0062fe14;
+
+// GLOBAL: LEGOLAND 0x0062fe18
+unsigned int DAT_0062fe18;
+
+// GLOBAL: LEGOLAND 0x0062fe1c
+unsigned short DAT_0062fe1c;
+
+// GLOBAL: LEGOLAND 0x0062fe48
+unsigned int DAT_0062fe48;
+
+// GLOBAL: LEGOLAND 0x0062fe4c
+unsigned int DAT_0062fe4c;
+
+// GLOBAL: LEGOLAND 0x0062fe50
+unsigned int DAT_0062fe50;
+
+// GLOBAL: LEGOLAND 0x0062fe54
+unsigned int DAT_0062fe54;
+
+// GLOBAL: LEGOLAND 0x0062fe58
+unsigned int DAT_0062fe58;
+
+// GLOBAL: LEGOLAND 0x0062fe60
+unsigned int DAT_0062fe60;
+
+// GLOBAL: LEGOLAND 0x0062fe64
+unsigned int DAT_0062fe64;
+
+// GLOBAL: LEGOLAND 0x0062fe68
+unsigned int DAT_0062fe68;
+
+// GLOBAL: LEGOLAND 0x0062fe6c
+unsigned short DAT_0062fe6c;
+
+// GLOBAL: LEGOLAND 0x0062fe78
+void *DAT_0062fe78;
+
+// GLOBAL: LEGOLAND 0x0062fe90
+void *DAT_0062fe90;
+
+// GLOBAL: LEGOLAND 0x0062fe94
+void *DAT_0062fe94;
+
+// GLOBAL: LEGOLAND 0x0062fe9c
+void *DAT_0062fe9c;
+
 // GLOBAL: LEGOLAND 0x0062fea8
 void *DAT_0062fea8;
-// GLOBAL: LEGOLAND 0x0062fef8
-void *DAT_0062fef8;
-// GLOBAL: LEGOLAND 0x0064cd8c
-void *DAT_0064cd8c;
-// GLOBAL: LEGOLAND 0x00630108
-unsigned int DAT_00630108[1];
-// GLOBAL: LEGOLAND 0x00655a4c
-unsigned int DAT_00655a4c;
+
+// GLOBAL: LEGOLAND 0x0062feac
+void *DAT_0062feac;
+
+// GLOBAL: LEGOLAND 0x0062feb0
+unsigned int DAT_0062feb0[2];
+
+// GLOBAL: LEGOLAND 0x0062feb8
+unsigned int DAT_0062feb8[1];
+
+// GLOBAL: LEGOLAND 0x0062febc
+unsigned int DAT_0062febc[6];
+
+// GLOBAL: LEGOLAND 0x0062fed4
+unsigned int DAT_0062fed4[6];
+
+// GLOBAL: LEGOLAND 0x0062feec
+unsigned int DAT_0062feec[1];
+
 // GLOBAL: LEGOLAND 0x0062fef0
 unsigned int DAT_0062fef0;
-// GLOBAL: LEGOLAND 0x00655a50
-unsigned int DAT_00655a50;
+
+// GLOBAL: LEGOLAND 0x0062fef4
+void *DAT_0062fef4;
+
+// GLOBAL: LEGOLAND 0x0062fef8
+void *DAT_0062fef8;
+
+// GLOBAL: LEGOLAND 0x00630100
+void *DAT_00630100;
+
+// GLOBAL: LEGOLAND 0x00630108
+unsigned int DAT_00630108[1];
+
 // GLOBAL: LEGOLAND 0x00638218
 unsigned int DAT_00638218[1];
 
-// GLOBAL: LEGOLAND 0x006687a4
-unsigned int DAT_006687a4;
-// GLOBAL: LEGOLAND 0x006687cc
-struct InterfaceIconNode *DAT_006687cc;
-// GLOBAL: LEGOLAND 0x006687d0
-void *FocussedIconPtr;
-// GLOBAL: LEGOLAND 0x004ba87c
-void *PTR_some_list_head_004ba87c;
+// GLOBAL: LEGOLAND 0x0064cd8c
+void *DAT_0064cd8c;
+
+// GLOBAL: LEGOLAND 0x00655a38
+void *DAT_00655a38;
+
+// GLOBAL: LEGOLAND 0x00655a3c
+void *DAT_00655a3c;
+
+// GLOBAL: LEGOLAND 0x00655a4c
+unsigned int DAT_00655a4c;
+
+// GLOBAL: LEGOLAND 0x00655a50
+unsigned int DAT_00655a50;
+
+// GLOBAL: LEGOLAND 0x00665e8c
+unsigned int DAT_00665e8c;
+
+// GLOBAL: LEGOLAND 0x00665f60
+unsigned int DAT_00665f60;
+
+// GLOBAL: LEGOLAND 0x00665fe8
+unsigned int DAT_00665fe8;
+
+// GLOBAL: LEGOLAND 0x00665fec
+unsigned int DAT_00665fec;
+
+// GLOBAL: LEGOLAND 0x00665ff8
+unsigned int DAT_00665ff8;
+
+// GLOBAL: LEGOLAND 0x00665ffc
+unsigned int DAT_00665ffc;
+
+// GLOBAL: LEGOLAND 0x00666000
+unsigned int DAT_00666000;
+
+// GLOBAL: LEGOLAND 0x00666004
+unsigned int DAT_00666004;
+
+// GLOBAL: LEGOLAND 0x00666008
+unsigned int DAT_00666008;
+
+// GLOBAL: LEGOLAND 0x0066600c
+unsigned int DAT_0066600c;
+
+// GLOBAL: LEGOLAND 0x00666010
+unsigned int DAT_00666010;
+
+// GLOBAL: LEGOLAND 0x00666014
+unsigned int DAT_00666014;
+
+// GLOBAL: LEGOLAND 0x00666018
+unsigned int DAT_00666018;
+
+// GLOBAL: LEGOLAND 0x0066601c
+unsigned int DAT_0066601c;
+
+// GLOBAL: LEGOLAND 0x00666020
+unsigned int DAT_00666020;
+
+// GLOBAL: LEGOLAND 0x00666024
+unsigned int DAT_00666024;
+
+// GLOBAL: LEGOLAND 0x00666030
+unsigned int DAT_00666030;
+
+// GLOBAL: LEGOLAND 0x00666034
+unsigned int DAT_00666034;
+
+// GLOBAL: LEGOLAND 0x00666038
+unsigned int DAT_00666038;
+
+// GLOBAL: LEGOLAND 0x0066603c
+unsigned int DAT_0066603c;
+
+// GLOBAL: LEGOLAND 0x00666040
+unsigned int DAT_00666040;
+
+// GLOBAL: LEGOLAND 0x00666044
+unsigned int DAT_00666044;
+
+// GLOBAL: LEGOLAND 0x00666048
+unsigned int DAT_00666048;
+
+// GLOBAL: LEGOLAND 0x0066604c
+unsigned int DAT_0066604c;
+
+// GLOBAL: LEGOLAND 0x00666050
+unsigned int DAT_00666050;
+
+// GLOBAL: LEGOLAND 0x00666054
+unsigned int DAT_00666054;
+
+// GLOBAL: LEGOLAND 0x00666058
+unsigned int DAT_00666058;
+
+// GLOBAL: LEGOLAND 0x0066605c
+unsigned int DAT_0066605c;
+
+// GLOBAL: LEGOLAND 0x00666060
+unsigned int DAT_00666060;
+
+// GLOBAL: LEGOLAND 0x00666064
+unsigned int DAT_00666064;
+
+// GLOBAL: LEGOLAND 0x00666068
+unsigned int DAT_00666068;
+
+// GLOBAL: LEGOLAND 0x0066606c
+unsigned int DAT_0066606c;
+
+// GLOBAL: LEGOLAND 0x00666070
+unsigned int DAT_00666070;
+
+// GLOBAL: LEGOLAND 0x00666074
+unsigned int DAT_00666074;
+
+// GLOBAL: LEGOLAND 0x00666078
+unsigned int DAT_00666078;
+
+// GLOBAL: LEGOLAND 0x0066607c
+unsigned int DAT_0066607c;
+
+// GLOBAL: LEGOLAND 0x00666080
+unsigned int DAT_00666080;
+
+// GLOBAL: LEGOLAND 0x00666084
+unsigned int DAT_00666084;
+
+// GLOBAL: LEGOLAND 0x00666088
+unsigned int DAT_00666088;
+
+// GLOBAL: LEGOLAND 0x0066608c
+unsigned int DAT_0066608c;
+
+// GLOBAL: LEGOLAND 0x00666090
+unsigned int DAT_00666090;
+
+// GLOBAL: LEGOLAND 0x00666094
+unsigned int DAT_00666094;
+
+// GLOBAL: LEGOLAND 0x00666098
+unsigned int DAT_00666098;
+
+// GLOBAL: LEGOLAND 0x006660a8
+unsigned int DAT_006660a8;
+
+// GLOBAL: LEGOLAND 0x006660ac
+unsigned int DAT_006660ac;
+
+// GLOBAL: LEGOLAND 0x006661bc
+int DAT_006661bc;
+
+// GLOBAL: LEGOLAND 0x006661c4
+unsigned int DAT_006661c4;
+
+// GLOBAL: LEGOLAND 0x006661c8
+int DAT_006661c8;
+
+// GLOBAL: LEGOLAND 0x006664f8
+unsigned int DAT_006664f8[768];
+
+// GLOBAL: LEGOLAND 0x006670f8
+unsigned int DAT_006670f8;
+
 // GLOBAL: LEGOLAND 0x00667104
 unsigned int DAT_00667104;
-// GLOBAL: LEGOLAND 0x00813b00
-void *CONTROLLERBUFFER;
-// GLOBAL: LEGOLAND 0x006688a8
-void *DAT_006688a8;
-// GLOBAL: LEGOLAND 0x006688ac
-void *DAT_006688ac;
-// GLOBAL: LEGOLAND 0x006688b0
-void *DAT_006688b0;
-// GLOBAL: LEGOLAND 0x006688d0
-unsigned int DAT_006688d0;
-// GLOBAL: LEGOLAND 0x006688d4
-void *DAT_006688d4;
-// GLOBAL: LEGOLAND 0x006688d8
-void *DAT_006688d8;
+
+// GLOBAL: LEGOLAND 0x00667114
+unsigned int DAT_00667114;
+
+// GLOBAL: LEGOLAND 0x00667118
+unsigned int DAT_00667118;
+
+// GLOBAL: LEGOLAND 0x0066711c
+unsigned int DAT_0066711c;
+
+// GLOBAL: LEGOLAND 0x00667120
+unsigned int DAT_00667120;
+
+// GLOBAL: LEGOLAND 0x00667128
+char DAT_00667128[512];
+
+// GLOBAL: LEGOLAND 0x006675b4
+unsigned int DAT_006675b4;
+
+// GLOBAL: LEGOLAND 0x00667c10
+unsigned int DAT_00667c10;
+
+// GLOBAL: LEGOLAND 0x00667c28
+unsigned int DAT_00667c28;
+
+// GLOBAL: LEGOLAND 0x00667c2c
+struct Sprite *DAT_00667c2c;
+
+// GLOBAL: LEGOLAND 0x00667c30
+unsigned int DAT_00667c30;
+
+// GLOBAL: LEGOLAND 0x00667c34
+unsigned int DAT_00667c34;
+
+// GLOBAL: LEGOLAND 0x00667c7c
+unsigned int DAT_00667c7c;
+
+// GLOBAL: LEGOLAND 0x00667c88
+unsigned int DAT_00667c88;
+
+// GLOBAL: LEGOLAND 0x00667c8c
+unsigned int DAT_00667c8c;
+
+// GLOBAL: LEGOLAND 0x00667c90
+unsigned int DAT_00667c90;
+
+// GLOBAL: LEGOLAND 0x00667c94
+unsigned int DAT_00667c94;
+
+// GLOBAL: LEGOLAND 0x00667c9c
+void *DAT_00667c9c;
+
+// GLOBAL: LEGOLAND 0x00667ca4
+unsigned int DAT_00667ca4;
+
+// GLOBAL: LEGOLAND 0x00667ca8
+void *OverlayList;
+
+// GLOBAL: LEGOLAND 0x00667cac
+unsigned int OverlayILF;
+
+// GLOBAL: LEGOLAND 0x00667cb4
+int ScrollX;
+
+// GLOBAL: LEGOLAND 0x00667cb8
+int ScrollY;
+
+// GLOBAL: LEGOLAND 0x00667cd8
+unsigned int DAT_00667cd8;
+
+// GLOBAL: LEGOLAND 0x00667ce0
+int DAT_00667ce0;
+
+// GLOBAL: LEGOLAND 0x00667ce4
+int DAT_00667ce4;
+
+// GLOBAL: LEGOLAND 0x00667ce8
+int DAT_00667ce8;
+
+// GLOBAL: LEGOLAND 0x00667cec
+int DAT_00667cec;
+
+// GLOBAL: LEGOLAND 0x00667cf0
+int DAT_00667cf0;
+
+// GLOBAL: LEGOLAND 0x00667cf4
+int DAT_00667cf4;
+
+// GLOBAL: LEGOLAND 0x00667cf8
+int DAT_00667cf8;
+
+// GLOBAL: LEGOLAND 0x00667cfc
+int DAT_00667cfc;
+
+// GLOBAL: LEGOLAND 0x00667d08
+int DAT_00667d08;
+
+// GLOBAL: LEGOLAND 0x00667d10
+unsigned int DAT_00667d10;
+
+// GLOBAL: LEGOLAND 0x00667d54
+unsigned int DAT_00667d54;
+
+// GLOBAL: LEGOLAND 0x00667d58
+int DAT_00667d58;
+
+// GLOBAL: LEGOLAND 0x00667d6c
+int DAT_00667d6c;
+
+// GLOBAL: LEGOLAND 0x00667d70
+unsigned int DDRAWENV[246];
+
+// GLOBAL: LEGOLAND 0x00668070
+void *DAT_00668070;
+
+// GLOBAL: LEGOLAND 0x0066807c
+void *renderEngine;
+
+// GLOBAL: LEGOLAND 0x00668084
+unsigned int DAT_00668084;
+
+// GLOBAL: LEGOLAND 0x00668088
+unsigned int DAT_00668088;
+
+// GLOBAL: LEGOLAND 0x0066808c
+void *PTR_0066808c;
+
+// GLOBAL: LEGOLAND 0x00668090
+void *PTR_00668090;
+
+// GLOBAL: LEGOLAND 0x00668094
+void *PTR_00668094;
+
+// GLOBAL: LEGOLAND 0x00668098
+void *PTR_00668098;
+
+// GLOBAL: LEGOLAND 0x00668118
+int renderEngineTargetIdx;
+
+// GLOBAL: LEGOLAND 0x0066811c
+void *renderEngineTargets[1];
+
+// GLOBAL: LEGOLAND 0x00668148
+unsigned int DAT_00668148;
+
+// GLOBAL: LEGOLAND 0x0066814c
+unsigned int DAT_0066814c;
+
+// GLOBAL: LEGOLAND 0x006681e8
+unsigned int DAT_006681e8;
+
+// GLOBAL: LEGOLAND 0x00668204
+unsigned int DAT_00668204;
+
+// GLOBAL: LEGOLAND 0x00668208
+unsigned int DAT_00668208;
+
+// GLOBAL: LEGOLAND 0x00668610
+unsigned int DAT_00668610;
+
+// GLOBAL: LEGOLAND 0x00668614
+unsigned int DAT_00668614;
+
+// GLOBAL: LEGOLAND 0x00668618
+unsigned int DAT_00668618;
+
+// GLOBAL: LEGOLAND 0x0066861c
+unsigned char DAT_0066861c;
+
+// GLOBAL: LEGOLAND 0x0066869b
+unsigned char DAT_0066869b;
+
+// GLOBAL: LEGOLAND 0x0066869c
+char DAT_0066869c[128];
+
+// GLOBAL: LEGOLAND 0x0066871c
+unsigned int DAT_0066871c;
+
+// GLOBAL: LEGOLAND 0x00668724
+struct ObjectiveEvent *DAT_00668724;
+
+// GLOBAL: LEGOLAND 0x00668728
+struct ObjectiveEvent *DAT_00668728;
+
+// GLOBAL: LEGOLAND 0x0066872c
+unsigned int DAT_0066872c[0x15];
+
+// GLOBAL: LEGOLAND 0x00668780
+unsigned int DAT_00668780;
+
+// GLOBAL: LEGOLAND 0x00668784
+void *DAT_00668784;
+
+// GLOBAL: LEGOLAND 0x00668788
+unsigned int DAT_00668788;
+
+// GLOBAL: LEGOLAND 0x0066878c
+int DAT_0066878c;
+
+// GLOBAL: LEGOLAND 0x00668790
+unsigned int DAT_00668790;
+
+// GLOBAL: LEGOLAND 0x00668794
+unsigned int DAT_00668794;
+
+// GLOBAL: LEGOLAND 0x00668798
+void *DAT_00668798;
+
+// GLOBAL: LEGOLAND 0x0066879c
+unsigned int DAT_0066879c;
+
+// GLOBAL: LEGOLAND 0x006687a4
+unsigned int DAT_006687a4;
+
+// GLOBAL: LEGOLAND 0x006687a8
+unsigned int DAT_006687a8;
+
+// GLOBAL: LEGOLAND 0x006687ac
+unsigned int DAT_006687ac;
+
+// GLOBAL: LEGOLAND 0x006687b0
+unsigned int DAT_006687b0;
+
+// GLOBAL: LEGOLAND 0x006687bc
+unsigned int DAT_006687bc;
+
+// GLOBAL: LEGOLAND 0x006687c0
+unsigned int DAT_006687c0;
+
+// GLOBAL: LEGOLAND 0x006687c8
+struct InterfaceIconNode *DAT_006687c8;
+
+// GLOBAL: LEGOLAND 0x006687cc
+struct InterfaceIconNode *DAT_006687cc;
+
+// GLOBAL: LEGOLAND 0x006687d0
+void *FocussedIconPtr;
+
 // GLOBAL: LEGOLAND 0x00668828
 void *DAT_00668828;
+
 // GLOBAL: LEGOLAND 0x0066882c
 void *DAT_0066882c;
+
 // GLOBAL: LEGOLAND 0x00668830
 void *DAT_00668830;
+
 // GLOBAL: LEGOLAND 0x00668834
 void *DAT_00668834;
+
+// GLOBAL: LEGOLAND 0x006688a8
+void *DAT_006688a8;
+
+// GLOBAL: LEGOLAND 0x006688ac
+void *DAT_006688ac;
+
+// GLOBAL: LEGOLAND 0x006688b0
+void *DAT_006688b0;
+
+// GLOBAL: LEGOLAND 0x006688d0
+unsigned int DAT_006688d0;
+
+// GLOBAL: LEGOLAND 0x006688d4
+void *DAT_006688d4;
+
+// GLOBAL: LEGOLAND 0x006688d8
+void *DAT_006688d8;
+
+// GLOBAL: LEGOLAND 0x006688e0
+struct Sprite *DAT_006688e0;
+
+// GLOBAL: LEGOLAND 0x006688e4
+struct Sprite *DAT_006688e4;
+
+// GLOBAL: LEGOLAND 0x006688e8
+struct Sprite *DAT_006688e8;
+
+// GLOBAL: LEGOLAND 0x006688ec
+struct Sprite *DAT_006688ec;
+
+// GLOBAL: LEGOLAND 0x006688f0
+struct Sprite *DAT_006688f0;
+
+// GLOBAL: LEGOLAND 0x006688f4
+struct Sprite *DAT_006688f4;
+
+// GLOBAL: LEGOLAND 0x006688f8
+struct Sprite *DAT_006688f8;
+
+// GLOBAL: LEGOLAND 0x006688fc
+struct Sprite *DAT_006688fc;
+
+// GLOBAL: LEGOLAND 0x00668900
+struct Sprite *DAT_00668900;
+
+// GLOBAL: LEGOLAND 0x00668904
+struct Sprite *DAT_00668904;
+
+// GLOBAL: LEGOLAND 0x00668908
+struct Sprite *DAT_00668908;
+
+// GLOBAL: LEGOLAND 0x0066890c
+struct Sprite *DAT_0066890c;
+
+// GLOBAL: LEGOLAND 0x00668914
+struct Sprite *DAT_00668914;
+
+// GLOBAL: LEGOLAND 0x00668918
+struct Sprite *DAT_00668918;
+
+// GLOBAL: LEGOLAND 0x0066891c
+struct Sprite *DAT_0066891c;
+
+// GLOBAL: LEGOLAND 0x00668920
+struct Sprite *DAT_00668920;
+
+// GLOBAL: LEGOLAND 0x00668924
+struct Sprite *DAT_00668924;
+
+// GLOBAL: LEGOLAND 0x00668928
+struct Sprite *DAT_00668928;
+
+// GLOBAL: LEGOLAND 0x0066892c
+struct Sprite *DAT_0066892c;
+
+// GLOBAL: LEGOLAND 0x00668930
+struct Sprite *DAT_00668930;
+
+// GLOBAL: LEGOLAND 0x00668934
+struct Sprite *DAT_00668934;
+
+// GLOBAL: LEGOLAND 0x00668938
+struct Sprite *DAT_00668938;
+
+// GLOBAL: LEGOLAND 0x0066893c
+struct Sprite *DAT_0066893c;
+
+// GLOBAL: LEGOLAND 0x00668940
+struct Sprite *DAT_00668940;
+
+// GLOBAL: LEGOLAND 0x00668944
+struct Sprite *DAT_00668944;
+
+// GLOBAL: LEGOLAND 0x00668948
+struct Sprite *DAT_00668948;
+
+// GLOBAL: LEGOLAND 0x0066894c
+struct Sprite *DAT_0066894c;
+
+// GLOBAL: LEGOLAND 0x00668950
+struct Sprite *DAT_00668950;
+
+// GLOBAL: LEGOLAND 0x00668954
+unsigned int DAT_00668954;
+
+// GLOBAL: LEGOLAND 0x00668958
+struct Sprite *DAT_00668958;
+
+// GLOBAL: LEGOLAND 0x00668960
+unsigned int DAT_00668960;
+
+// GLOBAL: LEGOLAND 0x00668d68
+unsigned int DAT_00668d68;
+
+// GLOBAL: LEGOLAND 0x00668d78
+int DAT_00668d78[4];
+
+// GLOBAL: LEGOLAND 0x00668d88
+void *dinput;
+
+// GLOBAL: LEGOLAND 0x00668d8c
+void *dinput_keyboard;
+
+// GLOBAL: LEGOLAND 0x00668d90
+void *dintput_mouse;
+
+// GLOBAL: LEGOLAND 0x00668e20
+unsigned int DAT_00668e20[4];
+
+// GLOBAL: LEGOLAND 0x00668e34
+unsigned int DAT_00668e34;
+
+// GLOBAL: LEGOLAND 0x00668e38
+unsigned int DAT_00668e38;
+
+// GLOBAL: LEGOLAND 0x00668e40
+struct InterfaceListNode *DAT_00668e40;
+
+// GLOBAL: LEGOLAND 0x00668e68
+unsigned int DAT_00668e68;
+
+// GLOBAL: LEGOLAND 0x00668e6c
+unsigned int DAT_00668e6c;
+
+// GLOBAL: LEGOLAND 0x00668e70
+unsigned int DAT_00668e70;
+
+// GLOBAL: LEGOLAND 0x00668e74
+unsigned int DAT_00668e74;
+
+// GLOBAL: LEGOLAND 0x00668e78
+unsigned int DAT_00668e78;
+
+// GLOBAL: LEGOLAND 0x00668e7c
+unsigned int DAT_00668e7c;
+
+// GLOBAL: LEGOLAND 0x00668e80
+unsigned int DAT_00668e80;
+
+// GLOBAL: LEGOLAND 0x00668e84
+unsigned int DAT_00668e84;
+
+// GLOBAL: LEGOLAND 0x00668e88
+unsigned int DAT_00668e88;
+
+// GLOBAL: LEGOLAND 0x00668e8c
+unsigned int DAT_00668e8c;
+
+// GLOBAL: LEGOLAND 0x00668e90
+unsigned int DAT_00668e90;
+
+// GLOBAL: LEGOLAND 0x00668e94
+unsigned int DAT_00668e94;
+
+// GLOBAL: LEGOLAND 0x00668e98
+unsigned int DAT_00668e98;
+
+// GLOBAL: LEGOLAND 0x00668e9c
+void *DAT_00668e9c;
+
+// GLOBAL: LEGOLAND 0x00668ea0
+unsigned int DAT_00668ea0;
+
+// GLOBAL: LEGOLAND 0x00668ea4
+unsigned int DAT_00668ea4;
+
+// GLOBAL: LEGOLAND 0x00668eb0
+unsigned int DAT_00668eb0;
+
+// GLOBAL: LEGOLAND 0x00668eb4
+unsigned int DAT_00668eb4;
+
+// GLOBAL: LEGOLAND 0x00668eb8
+unsigned int DAT_00668eb8;
+
+// GLOBAL: LEGOLAND 0x00668ebc
+unsigned int DAT_00668ebc;
+
+// GLOBAL: LEGOLAND 0x00668ed8
+struct InterfaceResearchNode *DAT_00668ed8;
+
+// GLOBAL: LEGOLAND 0x00668fc0
+void *DAT_00668fc0;
+
+// GLOBAL: LEGOLAND 0x00668fc4
+struct InterfaceQueryNode *DAT_00668fc4;
+
+// GLOBAL: LEGOLAND 0x00669050
+unsigned char DAT_00669050;
+
+// GLOBAL: LEGOLAND 0x00669054
+unsigned int DAT_00669054;
+
+// GLOBAL: LEGOLAND 0x00669058
+char DAT_00669058[0x40];
+
+// GLOBAL: LEGOLAND 0x00669098
+unsigned int DAT_00669098;
+
+// GLOBAL: LEGOLAND 0x006691a4
+unsigned int DAT_006691a4;
+
+// GLOBAL: LEGOLAND 0x006691a8
+unsigned int **DAT_006691a8;
+
+// GLOBAL: LEGOLAND 0x006691b0
+int DAT_006691b0;
+
+// GLOBAL: LEGOLAND 0x00669200
+unsigned int *DAT_00669200;
+
+// GLOBAL: LEGOLAND 0x00669204
+unsigned int DAT_00669204;
+
+// GLOBAL: LEGOLAND 0x00669208
+void *g_hInstance;
+
+// GLOBAL: LEGOLAND 0x0066920c
+int DAT_0066920c;
+
+// GLOBAL: LEGOLAND 0x00669210
+void *DAT_00669210;
+
+// GLOBAL: LEGOLAND 0x00669240
+void *ObjectClassList;
+
+// GLOBAL: LEGOLAND 0x00669248
+void *DAT_00669248;
+
+// GLOBAL: LEGOLAND 0x0066924c
+unsigned int DAT_0066924c;
+
+// GLOBAL: LEGOLAND 0x00669258
+unsigned int DAT_00669258[1152];
+
+// GLOBAL: LEGOLAND 0x0066b44c
+void *DAT_0066b44c;
+
+// GLOBAL: LEGOLAND 0x0066b450
+void *DAT_0066b450;
+
+// GLOBAL: LEGOLAND 0x0066b458
+void *DAT_0066b458;
+
+// GLOBAL: LEGOLAND 0x0066b460
+unsigned int DAT_0066b460;
+
+// GLOBAL: LEGOLAND 0x0066b468
+unsigned int DAT_0066b468;
+
+// GLOBAL: LEGOLAND 0x0066b46c
+unsigned int DAT_0066b46c;
+
+// GLOBAL: LEGOLAND 0x0066b574
+void *FirstBloke;
+
+// GLOBAL: LEGOLAND 0x0066b57c
+void *DAT_0066b57c;
+
+// GLOBAL: LEGOLAND 0x0066b5a4
+void *DAT_0066b5a4;
+
+// GLOBAL: LEGOLAND 0x0066b5a8
+unsigned int DAT_0066b5a8;
+
+// GLOBAL: LEGOLAND 0x0066b61c
+unsigned int DAT_0066b61c;
+
+// GLOBAL: LEGOLAND 0x0066b630
+unsigned int DAT_0066b630;
+
+// GLOBAL: LEGOLAND 0x0066be40
+unsigned int DAT_0066be40;
+
+// GLOBAL: LEGOLAND 0x0066be44
+unsigned int DAT_0066be44;
+
+// GLOBAL: LEGOLAND 0x0066be48
+unsigned int DAT_0066be48;
+
+// GLOBAL: LEGOLAND 0x0066be4c
+unsigned int DAT_0066be4c;
+
+// GLOBAL: LEGOLAND 0x00701e58
+unsigned int DAT_00701e58;
+
+// GLOBAL: LEGOLAND 0x00701e5c
+unsigned int DAT_00701e5c;
+
+// GLOBAL: LEGOLAND 0x00701e60
+unsigned int DAT_00701e60;
+
+// GLOBAL: LEGOLAND 0x00797e68
+unsigned int DAT_00797e68;
+
+// GLOBAL: LEGOLAND 0x00797e6c
+void *DAT_00797e6c;
+
+// GLOBAL: LEGOLAND 0x00798190
+void *DAT_00798190[256];
+
+// GLOBAL: LEGOLAND 0x00798590
+void *DAT_00798590;
+
+// GLOBAL: LEGOLAND 0x00798624
+void *DAT_00798624;
+
+// GLOBAL: LEGOLAND 0x00798628
+void *DAT_00798628;
+
+// GLOBAL: LEGOLAND 0x00798630
+unsigned int DAT_00798630;
+
+// GLOBAL: LEGOLAND 0x00798634
+unsigned int DAT_00798634;
+
+// GLOBAL: LEGOLAND 0x00798638
+unsigned int DAT_00798638;
+
+// GLOBAL: LEGOLAND 0x0079863c
+unsigned int DAT_0079863c;
+
+// GLOBAL: LEGOLAND 0x00798648
+unsigned int DAT_00798648;
+
+// GLOBAL: LEGOLAND 0x00798660
+unsigned int DAT_00798660;
+
+// GLOBAL: LEGOLAND 0x00798664
+unsigned int DAT_00798664;
+
+// GLOBAL: LEGOLAND 0x00798668
+unsigned int DAT_00798668;
+
+// GLOBAL: LEGOLAND 0x00798674
+struct Sprite *DAT_00798674;
+
+// GLOBAL: LEGOLAND 0x00798678
+struct Sprite *DAT_00798678;
+
+// GLOBAL: LEGOLAND 0x0079867c
+struct Sprite *DAT_0079867c;
+
+// GLOBAL: LEGOLAND 0x00798680
+struct Sprite *DAT_00798680;
+
+// GLOBAL: LEGOLAND 0x00798684
+struct Sprite *DAT_00798684;
+
+// GLOBAL: LEGOLAND 0x00798688
+struct Sprite *DAT_00798688;
+
+// GLOBAL: LEGOLAND 0x0079868c
+struct Sprite *DAT_0079868c;
+
+// GLOBAL: LEGOLAND 0x00798690
+struct Sprite *DAT_00798690;
+
+// GLOBAL: LEGOLAND 0x00798694
+struct Sprite *DAT_00798694;
+
+// GLOBAL: LEGOLAND 0x00798698
+struct Sprite *DAT_00798698;
+
+// GLOBAL: LEGOLAND 0x0079869c
+struct Sprite *DAT_0079869c;
+
+// GLOBAL: LEGOLAND 0x007986a0
+struct Sprite *DAT_007986a0;
+
+// GLOBAL: LEGOLAND 0x007986a4
+struct Sprite *DAT_007986a4;
+
+// GLOBAL: LEGOLAND 0x007986a8
+struct Sprite *DAT_007986a8;
+
+// GLOBAL: LEGOLAND 0x007986ac
+struct Sprite *DAT_007986ac;
+
+// GLOBAL: LEGOLAND 0x007986b0
+struct Sprite *DAT_007986b0;
+
+// GLOBAL: LEGOLAND 0x007986b4
+struct Sprite *DAT_007986b4;
+
+// GLOBAL: LEGOLAND 0x007986b8
+unsigned int DAT_007986b8;
+
+// GLOBAL: LEGOLAND 0x007986bc
+struct Sprite *DAT_007986bc;
+
+// GLOBAL: LEGOLAND 0x007986c0
+struct Sprite *DAT_007986c0;
+
+// GLOBAL: LEGOLAND 0x007986c4
+struct Sprite *DAT_007986c4;
+
+// GLOBAL: LEGOLAND 0x007986c8
+struct Sprite *DAT_007986c8;
+
+// GLOBAL: LEGOLAND 0x007986cc
+struct Sprite *DAT_007986cc;
+
+// GLOBAL: LEGOLAND 0x007986d0
+struct Sprite *DAT_007986d0;
+
+// GLOBAL: LEGOLAND 0x007986d4
+struct Sprite *DAT_007986d4;
+
+// GLOBAL: LEGOLAND 0x007986d8
+unsigned int DAT_007986d8;
+
+// GLOBAL: LEGOLAND 0x007986dc
+unsigned int DAT_007986dc;
+
+// GLOBAL: LEGOLAND 0x007986e0
+unsigned int DAT_007986e0;
+
+// GLOBAL: LEGOLAND 0x007986e4
+unsigned int DAT_007986e4;
+
+// GLOBAL: LEGOLAND 0x007986e8
+unsigned int DAT_007986e8;
+
+// GLOBAL: LEGOLAND 0x007986f4
+unsigned int DAT_007986f4;
+
+// GLOBAL: LEGOLAND 0x007986f8
+unsigned int DAT_007986f8;
+
+// GLOBAL: LEGOLAND 0x00798704
+struct Sprite *DAT_00798704;
+
+// GLOBAL: LEGOLAND 0x00798708
+struct Sprite *DAT_00798708;
+
+// GLOBAL: LEGOLAND 0x0079870c
+struct Sprite *DAT_0079870c;
+
+// GLOBAL: LEGOLAND 0x00798710
+struct Sprite *DAT_00798710;
+
+// GLOBAL: LEGOLAND 0x00798714
+struct Sprite *DAT_00798714;
+
+// GLOBAL: LEGOLAND 0x00798718
+struct Sprite *DAT_00798718;
+
+// GLOBAL: LEGOLAND 0x0079871c
+struct Sprite *DAT_0079871c;
+
+// GLOBAL: LEGOLAND 0x00798720
+struct Sprite *DAT_00798720;
+
+// GLOBAL: LEGOLAND 0x00798724
+struct Sprite *DAT_00798724;
+
+// GLOBAL: LEGOLAND 0x00798728
+struct Sprite *DAT_00798728;
+
+// GLOBAL: LEGOLAND 0x0079872c
+struct Sprite *DAT_0079872c;
+
+// GLOBAL: LEGOLAND 0x00798730
+struct Sprite *DAT_00798730;
+
+// GLOBAL: LEGOLAND 0x00798734
+void *DAT_00798734;
+
+// GLOBAL: LEGOLAND 0x0079873c
+unsigned int DAT_0079873c;
+
+// GLOBAL: LEGOLAND 0x00798740
+unsigned int DAT_00798740;
+
+// GLOBAL: LEGOLAND 0x00798764
+unsigned int DAT_00798764;
+
+// GLOBAL: LEGOLAND 0x00798768
+unsigned int DAT_00798768;
+
+// GLOBAL: LEGOLAND 0x0079876c
+unsigned int DAT_0079876c;
+
+// GLOBAL: LEGOLAND 0x00798770
+unsigned int DAT_00798770;
+
+// GLOBAL: LEGOLAND 0x00798778
+char DAT_00798778[0x100];
+
+// GLOBAL: LEGOLAND 0x00798878
+unsigned int DAT_00798878;
+
+// GLOBAL: LEGOLAND 0x0079887c
+unsigned int DAT_0079887c;
+
+// GLOBAL: LEGOLAND 0x00798880
+unsigned int DAT_00798880;
+
+// GLOBAL: LEGOLAND 0x00798890
+void *DAT_00798890;
+
+// GLOBAL: LEGOLAND 0x007988a0
+unsigned int DAT_007988a0;
+
+// GLOBAL: LEGOLAND 0x007988bc
+unsigned int DAT_007988bc;
+
+// GLOBAL: LEGOLAND 0x007988c0
+unsigned int DAT_007988c0;
+
+// GLOBAL: LEGOLAND 0x007988c4
+unsigned int DAT_007988c4;
+
+// GLOBAL: LEGOLAND 0x007988c8
+unsigned int DAT_007988c8;
+
+// GLOBAL: LEGOLAND 0x007988cc
+void *DAT_007988cc;
+
+// GLOBAL: LEGOLAND 0x0079a694
+unsigned int DAT_0079a694;
+
+// GLOBAL: LEGOLAND 0x0079a698
+void *DAT_0079a698;
+
+// GLOBAL: LEGOLAND 0x0079a6a0
+void *DAT_0079a6a0;
+
+// GLOBAL: LEGOLAND 0x0079a6a4
+unsigned int DAT_0079a6a4;
+
+// GLOBAL: LEGOLAND 0x0079a6a8
+unsigned int DAT_0079a6a8;
+
+// GLOBAL: LEGOLAND 0x0079a6ac
+unsigned int DAT_0079a6ac;
+
+// GLOBAL: LEGOLAND 0x0079a7c0
+void *DAT_0079a7c0;
+
+// GLOBAL: LEGOLAND 0x0079a7c4
+void *DAT_0079a7c4;
+
+// GLOBAL: LEGOLAND 0x0079a7c8
+unsigned int DAT_0079a7c8;
+
+// GLOBAL: LEGOLAND 0x0079a7cc
+unsigned int DAT_0079a7cc;
+
+// GLOBAL: LEGOLAND 0x0079a7d0
+unsigned int DAT_0079a7d0;
+
+// GLOBAL: LEGOLAND 0x0079a7d8
+int DAT_0079a7d8;
+
+// GLOBAL: LEGOLAND 0x0079a7dc
+int DAT_0079a7dc;
+
+// GLOBAL: LEGOLAND 0x0079a7e0
+unsigned int DAT_0079a7e0;
+
+// GLOBAL: LEGOLAND 0x0079a7e4
+unsigned int DAT_0079a7e4[20];
+
+// GLOBAL: LEGOLAND 0x0079a834
+int DAT_0079a834;
+
+// GLOBAL: LEGOLAND 0x0079a838
+int DAT_0079a838;
+
+// GLOBAL: LEGOLAND 0x0079a83c
+unsigned int DAT_0079a83c;
+
+// GLOBAL: LEGOLAND 0x0079a848
+void *DAT_0079a848;
+
+// GLOBAL: LEGOLAND 0x0079a84c
+unsigned int DAT_0079a84c;
+
+// GLOBAL: LEGOLAND 0x0079a850
+void *strings[10];
+
+// GLOBAL: LEGOLAND 0x0079a890
+unsigned int DAT_0079a890;
+
+// GLOBAL: LEGOLAND 0x0079a894
+unsigned int DAT_0079a894;
+
+// GLOBAL: LEGOLAND 0x0079a898
+unsigned int DAT_0079a898;
+
+// GLOBAL: LEGOLAND 0x0079a89c
+unsigned int DAT_0079a89c;
+
+// GLOBAL: LEGOLAND 0x0079a8a0
+unsigned int DAT_0079a8a0;
+
+// GLOBAL: LEGOLAND 0x0079a8a8
+void *DAT_0079a8a8;
+
+// GLOBAL: LEGOLAND 0x0079a8ac
+void *DAT_0079a8ac;
+
+// GLOBAL: LEGOLAND 0x0079a8b0
+void *DAT_0079a8b0;
+
+// GLOBAL: LEGOLAND 0x0079a8b4
+void *DAT_0079a8b4;
+
+// GLOBAL: LEGOLAND 0x0079a8b8
+int DAT_0079a8b8;
+
+// GLOBAL: LEGOLAND 0x0079a8bc
+int DAT_0079a8bc;
+
+// GLOBAL: LEGOLAND 0x0079a8c0
+void *DAT_0079a8c0;
+
+// GLOBAL: LEGOLAND 0x0079a8c4
+void *DAT_0079a8c4;
+
+// GLOBAL: LEGOLAND 0x0079a8c8
+int DAT_0079a8c8;
+
+// GLOBAL: LEGOLAND 0x0079a8cc
+int DAT_0079a8cc;
+
+// GLOBAL: LEGOLAND 0x0079a8d0
+unsigned int DAT_0079a8d0;
+
+// GLOBAL: LEGOLAND 0x0079a8d4
+void *DAT_0079a8d4;
+
+// GLOBAL: LEGOLAND 0x0079abfc
+void *DAT_0079abfc;
+
+// GLOBAL: LEGOLAND 0x0079ac04
+unsigned int DAT_0079ac04;
+
+// GLOBAL: LEGOLAND 0x007caca8
+unsigned int DAT_007caca8;
+
+// GLOBAL: LEGOLAND 0x007cacac
+unsigned int DAT_007cacac;
+
+// GLOBAL: LEGOLAND 0x007cacb4
+unsigned int DAT_007cacb4;
+
+// GLOBAL: LEGOLAND 0x007cacd8
+void *DAT_007cacd8;
+
+// GLOBAL: LEGOLAND 0x007cacdc
+void *DAT_007cacdc;
+
+// GLOBAL: LEGOLAND 0x007cad40
+void *DAT_007cad40;
+
+// GLOBAL: LEGOLAND 0x007cad44
+void *DAT_007cad44;
+
+// GLOBAL: LEGOLAND 0x007cad48
+unsigned int DAT_007cad48;
+
+// GLOBAL: LEGOLAND 0x007cad60
+struct Settings DAT_007cad60;
+
+// GLOBAL: LEGOLAND 0x007cae80
+char DAT_007cae80[0x100];
+
+// GLOBAL: LEGOLAND 0x007caf80
+unsigned int DAT_007caf80;
+
+// GLOBAL: LEGOLAND 0x007cafa0
+void *DAT_007cafa0;
+
+// GLOBAL: LEGOLAND 0x007cb140
+void *DAT_007cb140;
+
+// GLOBAL: LEGOLAND 0x007cb1c4
+unsigned int DAT_007cb1c4;
+
+// GLOBAL: LEGOLAND 0x007cb1e0
+char DAT_007cb1e0[0x100];
+
+// GLOBAL: LEGOLAND 0x007cb2e0
+unsigned int DAT_007cb2e0;
+
+// GLOBAL: LEGOLAND 0x007cb2f0
+char DAT_007cb2f0[0x10];
+
+// GLOBAL: LEGOLAND 0x007cb300
+char DAT_007cb300[0xc];
+
+// GLOBAL: LEGOLAND 0x007cb30c
+char DAT_007cb30c[4];
+
+// GLOBAL: LEGOLAND 0x007cb310
+unsigned int DAT_007cb310;
+
+// GLOBAL: LEGOLAND 0x007cb314
+char DAT_007cb314;
+
+// GLOBAL: LEGOLAND 0x007cb315
+char DAT_007cb315;
+
+// GLOBAL: LEGOLAND 0x007cb31c
+char DAT_007cb31c;
+
+// GLOBAL: LEGOLAND 0x007cb320
+unsigned int DAT_007cb320;
+
+// GLOBAL: LEGOLAND 0x007cb324
+unsigned int DAT_007cb324;
+
+// GLOBAL: LEGOLAND 0x007cb328
+unsigned int DAT_007cb328;
+
+// GLOBAL: LEGOLAND 0x007cb360
+unsigned int DAT_007cb360;
+
+// GLOBAL: LEGOLAND 0x007cb394
+unsigned int DAT_007cb394;
+
+// GLOBAL: LEGOLAND 0x007cb398
+struct Sprite *DAT_007cb398;
+
+// GLOBAL: LEGOLAND 0x007cb3a0
+unsigned int DAT_007cb3a0;
+
+// GLOBAL: LEGOLAND 0x007cb3a8
+struct Sprite *DAT_007cb3a8;
+
+// GLOBAL: LEGOLAND 0x007cb3ac
+struct Sprite *DAT_007cb3ac;
+
+// GLOBAL: LEGOLAND 0x007cb3b0
+struct Sprite *DAT_007cb3b0;
+
+// GLOBAL: LEGOLAND 0x007cb3b4
+struct Sprite *DAT_007cb3b4;
+
+// GLOBAL: LEGOLAND 0x007cb3c0
+struct Sprite *DAT_007cb3c0;
+
+// GLOBAL: LEGOLAND 0x007cb3c4
+struct Sprite *DAT_007cb3c4;
+
+// GLOBAL: LEGOLAND 0x007cb3c8
+struct Sprite *DAT_007cb3c8;
+
+// GLOBAL: LEGOLAND 0x007cb3cc
+struct Sprite *DAT_007cb3cc;
+
+// GLOBAL: LEGOLAND 0x007cb3d4
+struct Sprite *DAT_007cb3d4;
+
+// GLOBAL: LEGOLAND 0x007cb3e0
+struct ObjTableEntry DAT_007cb3e0[128];
+
+// GLOBAL: LEGOLAND 0x007cb3e2
+struct ObjTableEntry DAT_007cb3e2[128];
+
+// GLOBAL: LEGOLAND 0x007cb5e0
+struct ObjTableEntry DAT_007cb5e0;
+
+// GLOBAL: LEGOLAND 0x007cb600
+unsigned char DAT_007cb600[1];
+
+// GLOBAL: LEGOLAND 0x007fd624
+unsigned int DAT_007fd624;
+
+// GLOBAL: LEGOLAND 0x007fd630
+unsigned int DAT_007fd630;
+
+// GLOBAL: LEGOLAND 0x007fd634
+void *DAT_007fd634;
+
+// GLOBAL: LEGOLAND 0x007fd638
+unsigned int DAT_007fd638;
+
+// GLOBAL: LEGOLAND 0x007fdca4
+unsigned int DAT_007fdca4;
+
+// GLOBAL: LEGOLAND 0x007fdcc0
+unsigned int DAT_007fdcc0;
+
+// GLOBAL: LEGOLAND 0x007fdcc4
+unsigned int DAT_007fdcc4;
+
+// GLOBAL: LEGOLAND 0x007fdcc8
+unsigned int DAT_007fdcc8;
+
+// GLOBAL: LEGOLAND 0x007fdccc
+unsigned int DAT_007fdccc;
+
+// GLOBAL: LEGOLAND 0x007fdcd0
+unsigned int DAT_007fdcd0;
+
+// GLOBAL: LEGOLAND 0x007fdcd4
+unsigned int DAT_007fdcd4;
+
+// GLOBAL: LEGOLAND 0x007fdcd8
+unsigned int DAT_007fdcd8;
+
+// GLOBAL: LEGOLAND 0x007fdcdc
+unsigned int DAT_007fdcdc;
+
+// GLOBAL: LEGOLAND 0x007fdce0
+unsigned int DAT_007fdce0;
+
+// GLOBAL: LEGOLAND 0x007fdd00
+unsigned int DAT_007fdd00[9];
+
+// GLOBAL: LEGOLAND 0x007fdd40
+unsigned int DAT_007fdd40;
+
+// GLOBAL: LEGOLAND 0x007fdd44
+unsigned int DAT_007fdd44;
+
+// GLOBAL: LEGOLAND 0x007fdd48
+unsigned int DAT_007fdd48;
+
+// GLOBAL: LEGOLAND 0x007fdd4c
+unsigned int DAT_007fdd4c;
+
+// GLOBAL: LEGOLAND 0x007fdd50
+unsigned int DAT_007fdd50;
+
+// GLOBAL: LEGOLAND 0x007fdd54
+unsigned int DAT_007fdd54;
+
+// GLOBAL: LEGOLAND 0x007fdd58
+unsigned int DAT_007fdd58;
+
+// GLOBAL: LEGOLAND 0x007fdd5c
+unsigned int DAT_007fdd5c;
+
+// GLOBAL: LEGOLAND 0x007fdd60
+unsigned int DAT_007fdd60;
+
+// GLOBAL: LEGOLAND 0x007fdd70
+struct InterfaceProfileObj *DAT_007fdd70[4];
+
+// GLOBAL: LEGOLAND 0x007fdd80
+unsigned char DAT_007fdd80;
+
+// GLOBAL: LEGOLAND 0x007fdd84
+unsigned int DAT_007fdd84;
+
+// GLOBAL: LEGOLAND 0x007fdd88
+unsigned int DAT_007fdd88;
+
+// GLOBAL: LEGOLAND 0x007fdd8c
+unsigned char DAT_007fdd8c;
+
+// GLOBAL: LEGOLAND 0x007fdda0
+unsigned char DAT_007fdda0[256];
+
+// GLOBAL: LEGOLAND 0x007fdea4
+struct InfoIcon *DAT_007fdea4;
+
+// GLOBAL: LEGOLAND 0x007fdea8
+struct InfoIcon *DAT_007fdea8;
+
+// GLOBAL: LEGOLAND 0x007fdeac
+struct Sprite *DAT_007fdeac;
+
+// GLOBAL: LEGOLAND 0x007fdeb0
+struct Sprite *DAT_007fdeb0;
+
+// GLOBAL: LEGOLAND 0x007fded4
+unsigned int DAT_007fded4;
+
+// GLOBAL: LEGOLAND 0x007fdf74
+unsigned int DAT_007fdf74;
+
+// GLOBAL: LEGOLAND 0x007fdf78
+int DAT_007fdf78;
+
+// GLOBAL: LEGOLAND 0x007fdf7c
+unsigned int DAT_007fdf7c;
+
+// GLOBAL: LEGOLAND 0x007fdf84
+unsigned int DAT_007fdf84;
+
+// GLOBAL: LEGOLAND 0x007fdf8c
+unsigned int DAT_007fdf8c;
+
+// GLOBAL: LEGOLAND 0x007fdf98
+unsigned int DAT_007fdf98;
+
+// GLOBAL: LEGOLAND 0x007fdf9c
+unsigned int DAT_007fdf9c;
+
+// GLOBAL: LEGOLAND 0x007fdfa0
+unsigned int DAT_007fdfa0;
+
+// GLOBAL: LEGOLAND 0x007fdfa4
+unsigned int DAT_007fdfa4;
+
+// GLOBAL: LEGOLAND 0x007fdfa8
+unsigned int DAT_007fdfa8;
+
+// GLOBAL: LEGOLAND 0x007fdfac
+unsigned char DAT_007fdfac;
+
+// GLOBAL: LEGOLAND 0x007fdfc0
+struct InfoIcon *DAT_007fdfc0;
+
+// GLOBAL: LEGOLAND 0x007fdfc4
+struct InfoIcon *DAT_007fdfc4;
+
+// GLOBAL: LEGOLAND 0x007fdfc8
+struct Sprite *DAT_007fdfc8;
+
+// GLOBAL: LEGOLAND 0x007fdfcc
+struct InfoIcon *DAT_007fdfcc;
+
+// GLOBAL: LEGOLAND 0x007fdfd0
+struct Sprite *DAT_007fdfd0;
+
+// GLOBAL: LEGOLAND 0x007fdfd8
+struct InfoIcon *DAT_007fdfd8;
+
+// GLOBAL: LEGOLAND 0x007fdfdc
+struct InfoIcon *DAT_007fdfdc;
+
+// GLOBAL: LEGOLAND 0x007fdfe0
+struct InfoIcon *DAT_007fdfe0;
+
+// GLOBAL: LEGOLAND 0x007fdfe4
+struct Sprite *DAT_007fdfe4;
+
+// GLOBAL: LEGOLAND 0x007fdfe8
+struct InfoIcon *DAT_007fdfe8;
+
+// GLOBAL: LEGOLAND 0x007fdff0
+void *DAT_007fdff0;
+
+// GLOBAL: LEGOLAND 0x007fdffc
+unsigned int DAT_007fdffc;
+
+// GLOBAL: LEGOLAND 0x007fe000
+struct InfoIcon *DAT_007fe000;
+
+// GLOBAL: LEGOLAND 0x007fe004
+struct Sprite *DAT_007fe004;
+
+// GLOBAL: LEGOLAND 0x007fe008
+struct Sprite *DAT_007fe008;
+
+// GLOBAL: LEGOLAND 0x007fe018
+struct Sprite *DAT_007fe018;
+
 // GLOBAL: LEGOLAND 0x007fe020
 unsigned int DAT_007fe020[4];
 
 struct InfoIcon;
 
-// GLOBAL: LEGOLAND 0x007fdfdc
-struct InfoIcon *DAT_007fdfdc;
-// GLOBAL: LEGOLAND 0x007fdfe0
-struct InfoIcon *DAT_007fdfe0;
-// GLOBAL: LEGOLAND 0x007fdea4
-struct InfoIcon *DAT_007fdea4;
-// GLOBAL: LEGOLAND 0x007fdfcc
-struct InfoIcon *DAT_007fdfcc;
-// GLOBAL: LEGOLAND 0x007fdfc0
-struct InfoIcon *DAT_007fdfc0;
-// GLOBAL: LEGOLAND 0x007fdfd8
-struct InfoIcon *DAT_007fdfd8;
-// GLOBAL: LEGOLAND 0x007fdea8
-struct InfoIcon *DAT_007fdea8;
-// GLOBAL: LEGOLAND 0x007fe000
-struct InfoIcon *DAT_007fe000;
-// GLOBAL: LEGOLAND 0x007fdfc4
-struct InfoIcon *DAT_007fdfc4;
-// GLOBAL: LEGOLAND 0x007fdfe8
-struct InfoIcon *DAT_007fdfe8;
+// GLOBAL: LEGOLAND 0x007fe040
+unsigned int DAT_007fe040;
 
-// GLOBAL: LEGOLAND 0x007fdf74
-unsigned int DAT_007fdf74;
-// GLOBAL: LEGOLAND 0x007fdf78
-int DAT_007fdf78;
-// GLOBAL: LEGOLAND 0x007fded4
-unsigned int DAT_007fded4;
-// GLOBAL: LEGOLAND 0x007fdf7c
-unsigned int DAT_007fdf7c;
-// GLOBAL: LEGOLAND 0x007fdf8c
-unsigned int DAT_007fdf8c;
-// GLOBAL: LEGOLAND 0x007fdf84
-unsigned int DAT_007fdf84;
-// GLOBAL: LEGOLAND 0x007fdf9c
-unsigned int DAT_007fdf9c;
-// GLOBAL: LEGOLAND 0x007fdfa0
-unsigned int DAT_007fdfa0;
-// GLOBAL: LEGOLAND 0x007fdfa4
-unsigned int DAT_007fdfa4;
-// GLOBAL: LEGOLAND 0x007fdfa8
-unsigned int DAT_007fdfa8;
-// GLOBAL: LEGOLAND 0x007fdf98
-unsigned int DAT_007fdf98;
-// GLOBAL: LEGOLAND 0x007fdfac
-unsigned char DAT_007fdfac;
+// GLOBAL: LEGOLAND 0x007fe044
+unsigned int DAT_007fe044;
 
-// GLOBAL: LEGOLAND 0x00668938
-struct Sprite *DAT_00668938;
-// GLOBAL: LEGOLAND 0x0066893c
-struct Sprite *DAT_0066893c;
-// GLOBAL: LEGOLAND 0x00668940
-struct Sprite *DAT_00668940;
-// GLOBAL: LEGOLAND 0x00668960
-unsigned int DAT_00668960;
-// GLOBAL: LEGOLAND 0x00668d68
-unsigned int DAT_00668d68;
-// GLOBAL: LEGOLAND 0x004ba9ac
-unsigned int DAT_004ba9ac[1];
+// GLOBAL: LEGOLAND 0x007fe048
+unsigned int DAT_007fe048;
 
-// GLOBAL: LEGOLAND 0x004b6668
-unsigned char ENTRANCE_SFX[0x1c];
-// GLOBAL: LEGOLAND 0x004b66e8
-unsigned char RESTAURANT_SFX[0x1c];
-// GLOBAL: LEGOLAND 0x004b6968
-unsigned char OCTOPUS_SFX[0x1c];
+// GLOBAL: LEGOLAND 0x007fe04c
+unsigned int DAT_007fe04c;
+
+// GLOBAL: LEGOLAND 0x007fe050
+unsigned int DAT_007fe050;
+
+// GLOBAL: LEGOLAND 0x007fe054
+unsigned int DAT_007fe054;
+
+// GLOBAL: LEGOLAND 0x007fe114
+unsigned char DAT_007fe114;
+
+// GLOBAL: LEGOLAND 0x007fe115
+unsigned char DAT_007fe115;
+
+// GLOBAL: LEGOLAND 0x007fe116
+unsigned char DAT_007fe116;
+
+// GLOBAL: LEGOLAND 0x007fe117
+unsigned char DAT_007fe117;
+
+// GLOBAL: LEGOLAND 0x007fe120
+unsigned int DAT_007fe120[256];
+
+// GLOBAL: LEGOLAND 0x007fe920
+unsigned int DAT_007fe920;
+
+// GLOBAL: LEGOLAND 0x007fe930
+unsigned char DAT_007fe930[10];
+
+// GLOBAL: LEGOLAND 0x007fe9a8
+unsigned int DAT_007fe9a8;
+
+// GLOBAL: LEGOLAND 0x007fe9c0
+unsigned int DAT_007fe9c0[1];
+
+// GLOBAL: LEGOLAND 0x007feb14
+unsigned int DAT_007feb14;
+
+// GLOBAL: LEGOLAND 0x007febc0
+struct Cursor EditCursor;
+
+// GLOBAL: LEGOLAND 0x00801400
+struct MapElement **DAT_00801400;
+
+// GLOBAL: LEGOLAND 0x00805f60
+void *TileSpriteArray[256];
+
+// GLOBAL: LEGOLAND 0x0080ff64
+unsigned int DAT_0080ff64;
+
+// GLOBAL: LEGOLAND 0x0080ff80
+unsigned int DAT_0080ff80;
+
+// GLOBAL: LEGOLAND 0x0080ff84
+unsigned int DAT_0080ff84;
+
+// GLOBAL: LEGOLAND 0x0080ff88
+unsigned int DAT_0080ff88;
+
+// GLOBAL: LEGOLAND 0x0080ffa0
+struct ScreenState DAT_0080ffa0;
+
+// GLOBAL: LEGOLAND 0x00810140
+unsigned int DAT_00810140;
+
+// GLOBAL: LEGOLAND 0x00810148
+unsigned int SPRITE_TitleScreenBk;
+
+// GLOBAL: LEGOLAND 0x00810160
+struct Cursor QueryCursor;
+
+// GLOBAL: LEGOLAND 0x008119a0
+unsigned int NEWFLC_CheckDuplicate;
+
+// GLOBAL: LEGOLAND 0x008119a4
+unsigned int DAT_008119a4;
+
+// GLOBAL: LEGOLAND 0x008119a8
+unsigned int NEWFLC_BuffSize;
+
+// GLOBAL: LEGOLAND 0x008119ac
+unsigned short NEWFLC_Repeat;
+
+// GLOBAL: LEGOLAND 0x008119b0
+unsigned int EditMode;
+
+// GLOBAL: LEGOLAND 0x008119b4
+unsigned int DAT_008119b4;
+
+// GLOBAL: LEGOLAND 0x008119b8
+void *DAT_008119b8;
+
+// GLOBAL: LEGOLAND 0x008139e0
+void *DAT_008139e0;
+
+// GLOBAL: LEGOLAND 0x008139e4
+void *DAT_008139e4;
+
+// GLOBAL: LEGOLAND 0x008139e8
+void *DAT_008139e8;
+
+// GLOBAL: LEGOLAND 0x008139ec
+void *DAT_008139ec;
+
+// GLOBAL: LEGOLAND 0x008139f0
+void *DAT_008139f0;
+
+// GLOBAL: LEGOLAND 0x008139f4
+void *DAT_008139f4;
+
+// GLOBAL: LEGOLAND 0x008139f8
+void *DAT_008139f8;
+
+// GLOBAL: LEGOLAND 0x008139fc
+void *DAT_008139fc;
+
+// GLOBAL: LEGOLAND 0x00813a00
+void *DAT_00813a00;
+
+// GLOBAL: LEGOLAND 0x00813a04
+void *DAT_00813a04;
+
+// GLOBAL: LEGOLAND 0x00813a08
+void *DAT_00813a08;
+
+// GLOBAL: LEGOLAND 0x00813a0c
+void *DAT_00813a0c;
+
+// GLOBAL: LEGOLAND 0x00813a10
+unsigned int DAT_00813a10;
+
+// GLOBAL: LEGOLAND 0x00813a40
+unsigned int GamePad;
+
+// GLOBAL: LEGOLAND 0x00813a44
+unsigned int DAT_00813a44;
+
+// GLOBAL: LEGOLAND 0x00813a48
+unsigned int DAT_00813a48;
+
+// GLOBAL: LEGOLAND 0x00813b00
+void *CONTROLLERBUFFER;
+
+// GLOBAL: LEGOLAND 0x00814020
+unsigned char DAT_00814020[1];
+
+// GLOBAL: LEGOLAND 0x0081c028
+unsigned int DAT_0081c028;
+
+// GLOBAL: LEGOLAND 0x0081c02c
+unsigned int DAT_0081c02c;
+
+// GLOBAL: LEGOLAND 0x0081c030
+unsigned int DAT_0081c030;
+
+// GLOBAL: LEGOLAND 0x0081c034
+unsigned int DAT_0081c034;
+
+// GLOBAL: LEGOLAND 0x0081c038
+unsigned int DAT_0081c038;
+
+// GLOBAL: LEGOLAND 0x0081c040
+unsigned int DAT_0081c040[1];
+
+// GLOBAL: LEGOLAND 0x0081c054
+unsigned int DAT_0081c054[1];
+
+// GLOBAL: LEGOLAND 0x0081c068
+unsigned int DAT_0081c068[1];
+
+// GLOBAL: LEGOLAND 0x0081c080
+unsigned int DAT_0081c080;
+
+// GLOBAL: LEGOLAND 0x0081c084
+unsigned int DAT_0081c084;
+
+// GLOBAL: LEGOLAND 0x0081c088
+unsigned int DAT_0081c088;
+
+// GLOBAL: LEGOLAND 0x0081c08c
+void *DAT_0081c08c;
+
+// GLOBAL: LEGOLAND 0x0081c090
+void *DAT_0081c090;
+
+// GLOBAL: LEGOLAND 0x0081c094
+void *DAT_0081c094;
+
+// GLOBAL: LEGOLAND 0x0081c098
+void *DAT_0081c098;
+
+// GLOBAL: LEGOLAND 0x0081c09c
+unsigned int DAT_0081c09c;
+
+// GLOBAL: LEGOLAND 0x0081c0a0
+void *DAT_0081c0a0;
+
+// GLOBAL: LEGOLAND 0x0081c0a4
+void *DAT_0081c0a4;
+
+// GLOBAL: LEGOLAND 0x0081c8c0
+void *DAT_0081c8c0;
+
+// GLOBAL: LEGOLAND 0x0081c8c4
+void *DAT_0081c8c4;
+
+// GLOBAL: LEGOLAND 0x0081c8c8
+void *DAT_0081c8c8;
+
+// GLOBAL: LEGOLAND 0x0081c8cc
+void *DAT_0081c8cc;
+
+// GLOBAL: LEGOLAND 0x0081c8d0
+unsigned int DAT_0081c8d0;
+
+// GLOBAL: LEGOLAND 0x0081c8d4
+unsigned int DAT_0081c8d4;
+
+// GLOBAL: LEGOLAND 0x0081c8d8
+unsigned int DAT_0081c8d8;
+
+// GLOBAL: LEGOLAND 0x0081c8dc
+unsigned int DAT_0081c8dc;
+
+// GLOBAL: LEGOLAND 0x0081cae0
+unsigned int DAT_0081cae0;
+
+// GLOBAL: LEGOLAND 0x0081caf0
+void *DAT_0081caf0;
+
+// GLOBAL: LEGOLAND 0x0081caf4
+void *DAT_0081caf4;
+
+// GLOBAL: LEGOLAND 0x0081cb00
+unsigned int DAT_0081cb00;
+
+// GLOBAL: LEGOLAND 0x0081cb04
+unsigned int DAT_0081cb04;
+
+// GLOBAL: LEGOLAND 0x0081cb08
+unsigned int DAT_0081cb08;
+
+// GLOBAL: LEGOLAND 0x0081cb0c
+unsigned int DAT_0081cb0c;
+
+// GLOBAL: LEGOLAND 0x0081cb14
+struct Building *DAT_0081cb14;
+
+// GLOBAL: LEGOLAND 0x0081cb18
+unsigned int DAT_0081cb18;
+
+// GLOBAL: LEGOLAND 0x0081cb1c
+struct Building *DAT_0081cb1c;
+
+// GLOBAL: LEGOLAND 0x0081cb20
+unsigned int DAT_0081cb20;
+
+// GLOBAL: LEGOLAND 0x0081cb24
+unsigned int DAT_0081cb24;
+
+// GLOBAL: LEGOLAND 0x0081cb28
+unsigned int DAT_0081cb28;
+
+// GLOBAL: LEGOLAND 0x0081cb2c
+struct Building *DAT_0081cb2c;
+
+// GLOBAL: LEGOLAND 0x0081cb30
+struct Building *DAT_0081cb30;
+
+// GLOBAL: LEGOLAND 0x0081cb34
+unsigned int DAT_0081cb34;
+
+// GLOBAL: LEGOLAND 0x0081cb38
+unsigned int DAT_0081cb38;
+
+// GLOBAL: LEGOLAND 0x0081cb3c
+struct Building *DAT_0081cb3c;
+
+// GLOBAL: LEGOLAND 0x0081cb40
+struct Building *DAT_0081cb40;
+
+// GLOBAL: LEGOLAND 0x0081cb44
+struct Building *DAT_0081cb44;
+
+// GLOBAL: LEGOLAND 0x0081cb48
+unsigned int DAT_0081cb48;
+
+// GLOBAL: LEGOLAND 0x0081cb4c
+struct Building *DAT_0081cb4c;
+
+// GLOBAL: LEGOLAND 0x0081cb50
+unsigned int DAT_0081cb50;
+
+// GLOBAL: LEGOLAND 0x0081cb54
+unsigned int DAT_0081cb54;
+
+// GLOBAL: LEGOLAND 0x0081cb60
+void *DAT_0081cb60;
+
+// GLOBAL: LEGOLAND 0x0081cb68
+unsigned int DAT_0081cb68;
+
+// GLOBAL: LEGOLAND 0x0081cb6c
+unsigned int DAT_0081cb6c;
+
+// GLOBAL: LEGOLAND 0x0081cb70
+struct JungleCursor *DAT_0081cb70;
+
+// GLOBAL: LEGOLAND 0x0081cb74
+unsigned int DAT_0081cb74;
+
+// GLOBAL: LEGOLAND 0x0081cd04
+void *DAT_0081cd04;
+
+// GLOBAL: LEGOLAND 0x0081cd08
+unsigned int DAT_0081cd08;
+
+// GLOBAL: LEGOLAND 0x0081cd0c
+unsigned int DAT_0081cd0c;
+
+// GLOBAL: LEGOLAND 0x0081cd10
+unsigned int DAT_0081cd10;
+
+// GLOBAL: LEGOLAND 0x0081cd14
+unsigned int DAT_0081cd14;
+
+// GLOBAL: LEGOLAND 0x0081cd18
+struct EateryFX *DAT_0081cd18;
+
+// GLOBAL: LEGOLAND 0x0081cd1c
+struct EateryFX *DAT_0081cd1c;
+
+// GLOBAL: LEGOLAND 0x0081cd20
+unsigned int DAT_0081cd20;
+
+// GLOBAL: LEGOLAND 0x0081cd28
+unsigned int DAT_0081cd28;
+
+// GLOBAL: LEGOLAND 0x0081cd34
+unsigned int DAT_0081cd34;
+
+// GLOBAL: LEGOLAND 0x0081cd38
+unsigned int DAT_0081cd38;
+
+// GLOBAL: LEGOLAND 0x0081cd3c
+unsigned int DAT_0081cd3c;
 
 // GLOBAL: LEGOLAND 0x0081cd44
 struct EateryFX *DAT_0081cd44;
-// GLOBAL: LEGOLAND 0x0081cd18
-struct EateryFX *DAT_0081cd18;
-// GLOBAL: LEGOLAND 0x0081cd14
-unsigned int DAT_0081cd14;
-// GLOBAL: LEGOLAND 0x0081cde0
-struct EateryFX *DAT_0081cde0;
-// GLOBAL: LEGOLAND 0x0081cd3c
-unsigned int DAT_0081cd3c;
-// GLOBAL: LEGOLAND 0x0081cd0c
-unsigned int DAT_0081cd0c;
-// GLOBAL: LEGOLAND 0x0081cd10
-unsigned int DAT_0081cd10;
-// GLOBAL: LEGOLAND 0x0081cd38
-unsigned int DAT_0081cd38;
-// GLOBAL: LEGOLAND 0x0061613c
-unsigned int DAT_0061613c;
-// GLOBAL: LEGOLAND 0x006160f4
-unsigned int DAT_006160f4;
-// GLOBAL: LEGOLAND 0x006160fc
-unsigned int DAT_006160fc;
-// GLOBAL: LEGOLAND 0x00616100
-unsigned int DAT_00616100;
-// GLOBAL: LEGOLAND 0x00616104
-unsigned int DAT_00616104;
-// GLOBAL: LEGOLAND 0x00616108
-unsigned int DAT_00616108;
-// GLOBAL: LEGOLAND 0x0061610c
-unsigned int DAT_0061610c;
-// GLOBAL: LEGOLAND 0x0081cd1c
-struct EateryFX *DAT_0081cd1c;
-// GLOBAL: LEGOLAND 0x0081cd28
-unsigned int DAT_0081cd28;
-// GLOBAL: LEGOLAND 0x0081cd8c
-unsigned int DAT_0081cd8c;
-// GLOBAL: LEGOLAND 0x0081cd88
-unsigned int DAT_0081cd88;
-// GLOBAL: LEGOLAND 0x0081cd94
-unsigned int DAT_0081cd94;
-// GLOBAL: LEGOLAND 0x0081cd90
-unsigned int DAT_0081cd90;
-// GLOBAL: LEGOLAND 0x0081cd34
-unsigned int DAT_0081cd34;
-// GLOBAL: LEGOLAND 0x0081cd84
-unsigned int DAT_0081cd84;
-// GLOBAL: LEGOLAND 0x0081cd20
-unsigned int DAT_0081cd20;
+
 // GLOBAL: LEGOLAND 0x0081cd48
 unsigned int DAT_0081cd48;
-// GLOBAL: LEGOLAND 0x00616120
-unsigned int DAT_00616120;
-// GLOBAL: LEGOLAND 0x00616124
-unsigned int DAT_00616124;
-// GLOBAL: LEGOLAND 0x00616128
-unsigned int DAT_00616128;
-// GLOBAL: LEGOLAND 0x0061612c
-unsigned short DAT_0061612c;
-// GLOBAL: LEGOLAND 0x00616144
-struct BlokeNode *DAT_00616144;
-// GLOBAL: LEGOLAND 0x00616148
-struct SaveBlock *DAT_00616148;
+
 // GLOBAL: LEGOLAND 0x0081cd60
 void *DAT_0081cd60;
+
 // GLOBAL: LEGOLAND 0x0081cd64
 void *DAT_0081cd64;
+
 // GLOBAL: LEGOLAND 0x0081cd68
 void *DAT_0081cd68;
+
 // GLOBAL: LEGOLAND 0x0081cd6c
 void *DAT_0081cd6c;
+
 // GLOBAL: LEGOLAND 0x0081cd70
 void *DAT_0081cd70;
+
 // GLOBAL: LEGOLAND 0x0081cd74
 void *DAT_0081cd74;
+
 // GLOBAL: LEGOLAND 0x0081cd78
 void *DAT_0081cd78;
+
 // GLOBAL: LEGOLAND 0x0081cd7c
 void *DAT_0081cd7c;
+
 // GLOBAL: LEGOLAND 0x0081cd80
 void *DAT_0081cd80;
+
+// GLOBAL: LEGOLAND 0x0081cd84
+unsigned int DAT_0081cd84;
+
+// GLOBAL: LEGOLAND 0x0081cd88
+unsigned int DAT_0081cd88;
+
+// GLOBAL: LEGOLAND 0x0081cd8c
+unsigned int DAT_0081cd8c;
+
+// GLOBAL: LEGOLAND 0x0081cd90
+unsigned int DAT_0081cd90;
+
+// GLOBAL: LEGOLAND 0x0081cd94
+unsigned int DAT_0081cd94;
+
 // GLOBAL: LEGOLAND 0x0081cda0
 void *DAT_0081cda0;
+
 // GLOBAL: LEGOLAND 0x0081cda4
 void *DAT_0081cda4;
+
 // GLOBAL: LEGOLAND 0x0081cda8
 void *DAT_0081cda8;
+
 // GLOBAL: LEGOLAND 0x0081cdac
 void *DAT_0081cdac;
+
 // GLOBAL: LEGOLAND 0x0081cdb0
 void *DAT_0081cdb0;
+
 // GLOBAL: LEGOLAND 0x0081cdb4
 void *DAT_0081cdb4;
+
 // GLOBAL: LEGOLAND 0x0081cdb8
 void *DAT_0081cdb8;
+
 // GLOBAL: LEGOLAND 0x0081cdbc
 void *DAT_0081cdbc;
+
 // GLOBAL: LEGOLAND 0x0081cdc0
 void *DAT_0081cdc0;
+
 // GLOBAL: LEGOLAND 0x0081cdc4
 void *DAT_0081cdc4;
+
 // GLOBAL: LEGOLAND 0x0081cdc8
 void *DAT_0081cdc8;
+
 // GLOBAL: LEGOLAND 0x0081cdcc
 void *DAT_0081cdcc;
+
 // GLOBAL: LEGOLAND 0x0081cdd0
 void *DAT_0081cdd0;
+
 // GLOBAL: LEGOLAND 0x0081cdd4
 void *DAT_0081cdd4;
+
 // GLOBAL: LEGOLAND 0x0081cdd8
 void *DAT_0081cdd8;
+
 // GLOBAL: LEGOLAND 0x0081cddc
 void *DAT_0081cddc;
 
-// GLOBAL: LEGOLAND 0x00616164
-struct JungleNode *DAT_00616164;
-// GLOBAL: LEGOLAND 0x0081cb70
-struct JungleCursor *DAT_0081cb70;
-// GLOBAL: LEGOLAND 0x0081cb68
-unsigned int DAT_0081cb68;
-// GLOBAL: LEGOLAND 0x0081cb74
-unsigned int DAT_0081cb74;
-// GLOBAL: LEGOLAND 0x0081cb6c
-unsigned int DAT_0081cb6c;
-// GLOBAL: LEGOLAND 0x0081cb60
-void *DAT_0081cb60;
-// GLOBAL: LEGOLAND 0x0081cb54
-unsigned int DAT_0081cb54;
-// GLOBAL: LEGOLAND 0x00629c30
-struct JungleFish *DAT_00629c30;
-// GLOBAL: LEGOLAND 0x00629c3c
-struct JungleScore *DAT_00629c3c;
-// GLOBAL: LEGOLAND 0x0062fd2c
-unsigned int DAT_0062fd2c;
-// GLOBAL: LEGOLAND 0x00629c40
-unsigned char DAT_00629c40[16];
-// GLOBAL: LEGOLAND 0x00629c50
-void *DAT_00629c50;
-// GLOBAL: LEGOLAND 0x004b7260
-unsigned char DAT_004b7260[0x18];
-// GLOBAL: LEGOLAND 0x004b7278
-unsigned char DAT_004b7278[0x10];
-// GLOBAL: LEGOLAND 0x004b7288
-void *DAT_004b7288;
+// GLOBAL: LEGOLAND 0x0081cde0
+struct EateryFX *DAT_0081cde0;
 
-// GLOBAL: LEGOLAND 0x00667d70
-unsigned int DDRAWENV[246];
-// GLOBAL: LEGOLAND 0x0066814c
-unsigned int DAT_0066814c;
-// GLOBAL: LEGOLAND 0x00668148
-unsigned int DAT_00668148;
-// GLOBAL: LEGOLAND 0x007fe9c0
-unsigned int DAT_007fe9c0[1];
-// GLOBAL: LEGOLAND 0x006681e8
-unsigned int DAT_006681e8;
-// GLOBAL: LEGOLAND 0x004b9ca8
-unsigned int DAT_004b9ca8;
-// GLOBAL: LEGOLAND 0x00668208
-unsigned int DAT_00668208;
-// GLOBAL: LEGOLAND 0x00668204
-unsigned int DAT_00668204;
-// GLOBAL: LEGOLAND 0x0066807c
-void *renderEngine;
-// GLOBAL: LEGOLAND 0x00668118
-int renderEngineTargetIdx;
-// GLOBAL: LEGOLAND 0x0066811c
-void *renderEngineTargets[1];
-// GLOBAL: LEGOLAND 0x0066869b
-unsigned char DAT_0066869b;
+// GLOBAL: LEGOLAND 0x0081cde4
+void *DAT_0081cde4;
 
-// GLOBAL: LEGOLAND 0x00667c88
-unsigned int DAT_00667c88;
-// GLOBAL: LEGOLAND 0x00667c8c
-unsigned int DAT_00667c8c;
-// GLOBAL: LEGOLAND 0x00667c90
-unsigned int DAT_00667c90;
-// GLOBAL: LEGOLAND 0x00667c94
-unsigned int DAT_00667c94;
-// GLOBAL: LEGOLAND 0x00667c9c
-void *DAT_00667c9c;
-// GLOBAL: LEGOLAND 0x004b9550
-unsigned char DAT_004b9550[8];
-// GLOBAL: LEGOLAND 0x00832bf0
-void *PathSprite;
+// GLOBAL: LEGOLAND 0x0081cde8
+unsigned int DAT_0081cde8;
 
-// GLOBAL: LEGOLAND 0x00797e6c
-void *DAT_00797e6c;
-// GLOBAL: LEGOLAND 0x0066b61c
-unsigned int DAT_0066b61c;
-// GLOBAL: LEGOLAND 0x00798190
-void *DAT_00798190[256];
-// GLOBAL: LEGOLAND 0x00798590
-void *DAT_00798590;
-// GLOBAL: LEGOLAND 0x007feb14
-unsigned int DAT_007feb14;
-// GLOBAL: LEGOLAND 0x007fe9a8
-unsigned int DAT_007fe9a8;
-// GLOBAL: LEGOLAND 0x00701e58
-unsigned int DAT_00701e58;
-// GLOBAL: LEGOLAND 0x0066be4c
-unsigned int DAT_0066be4c;
-// GLOBAL: LEGOLAND 0x00701e5c
-unsigned int DAT_00701e5c;
+// GLOBAL: LEGOLAND 0x0081cdec
+void *DAT_0081cdec;
+
+// GLOBAL: LEGOLAND 0x00828fe0
+unsigned int DAT_00828fe0[2];
+
+// GLOBAL: LEGOLAND 0x00829980
+void *DAT_00829980;
+
+// GLOBAL: LEGOLAND 0x0082999c
+float DAT_0082999c;
+
+// GLOBAL: LEGOLAND 0x008299d4
+float DAT_008299d4;
+
+// GLOBAL: LEGOLAND 0x008299fc
+unsigned int DAT_008299fc;
+
+// GLOBAL: LEGOLAND 0x00829a3c
+struct ListLink DAT_00829a3c;
+
+// GLOBAL: LEGOLAND 0x00829a60
+float DAT_00829a60;
+
+// GLOBAL: LEGOLAND 0x00829a80
+struct EditFootPrint DAT_00829a80;
+
+// GLOBAL: LEGOLAND 0x00829ae0
+unsigned int DAT_00829ae0;
+
+// GLOBAL: LEGOLAND 0x00829af8
+unsigned int DAT_00829af8[3];
+
+// GLOBAL: LEGOLAND 0x00829b04
+unsigned int DAT_00829b04[3];
+
+// GLOBAL: LEGOLAND 0x00829b88
+unsigned int DAT_00829b88;
+
+// GLOBAL: LEGOLAND 0x00829b8c
+unsigned int DAT_00829b8c;
+
+// GLOBAL: LEGOLAND 0x00829ba0
+unsigned int DAT_00829ba0;
+
+// GLOBAL: LEGOLAND 0x00829ba4
+unsigned int DAT_00829ba4;
+
+// GLOBAL: LEGOLAND 0x00829bec
+void *DAT_00829bec;
+
+// GLOBAL: LEGOLAND 0x00829bf0
+void *DAT_00829bf0;
+
+// GLOBAL: LEGOLAND 0x00829bf4
+void *DAT_00829bf4;
+
+// GLOBAL: LEGOLAND 0x00829bf8
+unsigned int DAT_00829bf8;
+
+// GLOBAL: LEGOLAND 0x00829c04
+unsigned int DAT_00829c04;
+
+// GLOBAL: LEGOLAND 0x0082ac60
+void *DAT_0082ac60[1];
+
+// GLOBAL: LEGOLAND 0x0082ad20
+unsigned char DAT_0082ad20[0x90];
+
+// GLOBAL: LEGOLAND 0x0082adb0
+unsigned int DAT_0082adb0;
+
+// GLOBAL: LEGOLAND 0x0082add0
+unsigned int DAT_0082add0;
+
+// GLOBAL: LEGOLAND 0x0082add4
+unsigned int DAT_0082add4;
+
+// GLOBAL: LEGOLAND 0x0082add8
+unsigned int DAT_0082add8;
+
+// GLOBAL: LEGOLAND 0x0082ade0
+unsigned int DAT_0082ade0;
+
+// GLOBAL: LEGOLAND 0x0082ade4
+unsigned int DAT_0082ade4;
+
+// GLOBAL: LEGOLAND 0x0082ade8
+unsigned int DAT_0082ade8;
+
+// GLOBAL: LEGOLAND 0x0082adec
+unsigned int DAT_0082adec;
+
+// GLOBAL: LEGOLAND 0x0082adf0
+void *DAT_0082adf0;
+
+// GLOBAL: LEGOLAND 0x0082adf8
+unsigned int DAT_0082adf8;
+
+// GLOBAL: LEGOLAND 0x0082c658
+unsigned int DAT_0082c658;
+
+// GLOBAL: LEGOLAND 0x0082c668
+struct Sprite *DAT_0082c668;
+
+// GLOBAL: LEGOLAND 0x0082c678
+void *DAT_0082c678;
+
+// GLOBAL: LEGOLAND 0x0082c680
+void *DAT_0082c680;
 
 // GLOBAL: LEGOLAND 0x0082c684
 void *DAT_0082c684;
-// GLOBAL: LEGOLAND 0x0082c680
-void *DAT_0082c680;
-// GLOBAL: LEGOLAND 0x0082c678
-void *DAT_0082c678;
-// GLOBAL: LEGOLAND 0x00830f88
-unsigned int DAT_00830f88;
-// GLOBAL: LEGOLAND 0x004b4bf0
-unsigned int DAT_004b4bf0[5];
+
+// GLOBAL: LEGOLAND 0x0082c688
+unsigned int DAT_0082c688;
+
+// GLOBAL: LEGOLAND 0x0082c690
+unsigned int DAT_0082c690;
+
+// GLOBAL: LEGOLAND 0x0082c694
+unsigned int DAT_0082c694;
+
+// GLOBAL: LEGOLAND 0x0082c6a0
+unsigned int DAT_0082c6a0;
+
+// GLOBAL: LEGOLAND 0x0082c6a4
+unsigned int DAT_0082c6a4;
+
+// GLOBAL: LEGOLAND 0x0082c6a8
+unsigned int DAT_0082c6a8;
+
+// GLOBAL: LEGOLAND 0x0082c6ac
+unsigned short DAT_0082c6ac;
+
+// GLOBAL: LEGOLAND 0x0082c6b8
+unsigned int DAT_0082c6b8;
+
+// GLOBAL: LEGOLAND 0x0082c6bc
+unsigned int DAT_0082c6bc;
+
+// GLOBAL: LEGOLAND 0x0082c6c0
+unsigned int DAT_0082c6c0;
+
 // GLOBAL: LEGOLAND 0x0082f760
 struct Cursor DAT_0082f760;
+
 // GLOBAL: LEGOLAND 0x00830b74
 unsigned int DAT_00830b74;
 // 0x00811564, 0x00811568, 0x00811988, 0x00811574 are QueryCursor fields
 // (field_1404, field_1408, field_1828, field_1414[5]) — see struct Cursor.
 // 0x007fffc8 is EditCursor.field_1408 — see struct Cursor in gamemap.h.
-// GLOBAL: LEGOLAND 0x00810160
-struct Cursor QueryCursor;
 
-// GLOBAL: LEGOLAND 0x0062fdb0
-unsigned int DAT_0062fdb0;
-// GLOBAL: LEGOLAND 0x0062fdb4
-unsigned int DAT_0062fdb4;
-// GLOBAL: LEGOLAND 0x0062fdb8
-unsigned int DAT_0062fdb8;
-// GLOBAL: LEGOLAND 0x0062fdbc
-unsigned short DAT_0062fdbc;
-// GLOBAL: LEGOLAND 0x0062fdc8
-void *DAT_0062fdc8;
-// GLOBAL: LEGOLAND 0x0062fdcc
-void *DAT_0062fdcc;
-// GLOBAL: LEGOLAND 0x0062fdd0
-void *DAT_0062fdd0;
-// GLOBAL: LEGOLAND 0x0062fde4
-unsigned int DAT_0062fde4;
-// GLOBAL: LEGOLAND 0x0062fde8
-void *DAT_0062fde8;
-// GLOBAL: LEGOLAND 0x0062fdfc
-void *DAT_0062fdfc;
-// GLOBAL: LEGOLAND 0x0062fe04
-void *DAT_0062fe04;
-// GLOBAL: LEGOLAND 0x0062fe08
-void *DAT_0062fe08;
+// GLOBAL: LEGOLAND 0x00830f88
+unsigned int DAT_00830f88;
 
-// GLOBAL: LEGOLAND 0x004cc03c
-void *DAT_004cc03c;
-// GLOBAL: LEGOLAND 0x004cc074
-void *DAT_004cc074;
-// GLOBAL: LEGOLAND 0x004cc088
-void *DAT_004cc088;
-// GLOBAL: LEGOLAND 0x004cc070
-void *DAT_004cc070;
-// GLOBAL: LEGOLAND 0x004cc078
-unsigned int DAT_004cc078;
-// GLOBAL: LEGOLAND 0x004cc060
-unsigned int DAT_004cc060;
-// GLOBAL: LEGOLAND 0x004cc048
-unsigned int DAT_004cc048;
-// GLOBAL: LEGOLAND 0x0082c658
-unsigned int DAT_0082c658;
-// GLOBAL: LEGOLAND 0x0082adf8
-unsigned int DAT_0082adf8;
-// GLOBAL: LEGOLAND 0x0082adf0
-void *DAT_0082adf0;
-// GLOBAL: LEGOLAND 0x004b53c0
-unsigned int DAT_004b53c0[5];
-// GLOBAL: LEGOLAND 0x004d823c
-void *DAT_004d823c;
+// GLOBAL: LEGOLAND 0x00830f94
+unsigned int DAT_00830f94;
 
-// GLOBAL: LEGOLAND 0x0062fe9c
-void *DAT_0062fe9c;
-// GLOBAL: LEGOLAND 0x0062fe58
-unsigned int DAT_0062fe58;
-// GLOBAL: LEGOLAND 0x0062fe60
-unsigned int DAT_0062fe60;
-// GLOBAL: LEGOLAND 0x0062fe64
-unsigned int DAT_0062fe64;
-// GLOBAL: LEGOLAND 0x0062fe68
-unsigned int DAT_0062fe68;
-// GLOBAL: LEGOLAND 0x0062fe6c
-unsigned short DAT_0062fe6c;
-// GLOBAL: LEGOLAND 0x0062fe78
-void *DAT_0062fe78;
-// GLOBAL: LEGOLAND 0x0062fe90
-void *DAT_0062fe90;
-// GLOBAL: LEGOLAND 0x0062fe94
-void *DAT_0062fe94;
-// GLOBAL: LEGOLAND 0x0081cae0
-unsigned int DAT_0081cae0;
-// GLOBAL: LEGOLAND 0x004beba0
-unsigned char DAT_004beba0;
-// GLOBAL: LEGOLAND 0x004b79d0
-unsigned char DAT_004b79d0[0x18];
-
-// GLOBAL: LEGOLAND 0x00667c7c
-unsigned int DAT_00667c7c;
-// GLOBAL: LEGOLAND 0x00667cd8
-unsigned int DAT_00667cd8;
-// GLOBAL: LEGOLAND 0x0080ffa0
-struct ScreenState DAT_0080ffa0;
-// GLOBAL: LEGOLAND 0x00832998
-char DAT_00832998[256];
-// GLOBAL: LEGOLAND 0x00832a98
-char DAT_00832a98[256];
-
-// GLOBAL: LEGOLAND 0x004b40c8
-unsigned char Catapult_SFX[0x70];
-// GLOBAL: LEGOLAND 0x004b43f8
-unsigned char DRIVING_SCHOOL_SFX[0xa8];
-// GLOBAL: LEGOLAND 0x004c1118
-struct CatapultNode *DAT_004c1118;
-// GLOBAL: LEGOLAND 0x004c10f4
-void *DAT_004c10f4;
-// GLOBAL: LEGOLAND 0x004c10f0
-void *DAT_004c10f0;
-// GLOBAL: LEGOLAND 0x004c1100
-void *DAT_004c1100;
-// GLOBAL: LEGOLAND 0x004c1104
-unsigned int DAT_004c1104;
-// GLOBAL: LEGOLAND 0x004c1108
-unsigned int DAT_004c1108;
-// GLOBAL: LEGOLAND 0x004c110c
-unsigned short DAT_004c110c;
-
-// GLOBAL: LEGOLAND 0x004b4140
-unsigned char Helicopter_SFX[0x70];
-// GLOBAL: LEGOLAND 0x004c11b4
-struct CopterNode *DAT_004c11b4;
-// GLOBAL: LEGOLAND 0x004c1120
-struct Sprite *DAT_004c1120;
-// GLOBAL: LEGOLAND 0x004c1124
-int DAT_004c1124[6];
-// GLOBAL: LEGOLAND 0x004c113c
-struct Sprite *DAT_004c113c[10];
-// GLOBAL: LEGOLAND 0x004c1164
-struct Sprite *DAT_004c1164;
-// GLOBAL: LEGOLAND 0x004c1198
-void *DAT_004c1198;
 // GLOBAL: LEGOLAND 0x00830f98
 struct Position *DAT_00830f98;
 
-// GLOBAL: LEGOLAND 0x004c1204
-struct GoldNode *DAT_004c1204;
-// GLOBAL: LEGOLAND 0x004c11f8
-struct Sprite *DAT_004c11f8;
-// GLOBAL: LEGOLAND 0x004c11fc
-struct Sprite *DAT_004c11fc;
-// GLOBAL: LEGOLAND 0x004c1200
-struct Sprite *DAT_004c1200;
-// GLOBAL: LEGOLAND 0x004c11f4
-struct Sprite *DAT_004c11f4;
-// GLOBAL: LEGOLAND 0x004c11e4
-struct Sprite *DAT_004c11e4;
-// GLOBAL: LEGOLAND 0x004c11f0
-void *DAT_004c11f0;
+// GLOBAL: LEGOLAND 0x00832824
+unsigned int DAT_00832824[1];
 
-// GLOBAL: LEGOLAND 0x0066b5a4
-void *DAT_0066b5a4;
-// GLOBAL: LEGOLAND 0x0066b5a8
-unsigned int DAT_0066b5a8;
-// GLOBAL: LEGOLAND 0x007cb600
-unsigned char DAT_007cb600[1];
-// GLOBAL: LEGOLAND 0x0066b630
-unsigned int DAT_0066b630;
-// GLOBAL: LEGOLAND 0x00797e68
-unsigned int DAT_00797e68;
-// GLOBAL: LEGOLAND 0x00701e60
-unsigned int DAT_00701e60;
-// GLOBAL: LEGOLAND 0x0066be48
-unsigned int DAT_0066be48;
-// GLOBAL: LEGOLAND 0x0066be40
-unsigned int DAT_0066be40;
-// GLOBAL: LEGOLAND 0x0066be44
-unsigned int DAT_0066be44;
+// GLOBAL: LEGOLAND 0x00832828
+unsigned int DAT_00832828[1];
 
-// GLOBAL: LEGOLAND 0x004cbf58
-void *DAT_004cbf58;
-// GLOBAL: LEGOLAND 0x004b4d88
-unsigned char SpiderRide_SFX[8];
-// GLOBAL: LEGOLAND 0x004b4d90
-void *DAT_004b4d90;
-// GLOBAL: LEGOLAND 0x0082c668
-struct Sprite *DAT_0082c668;
-// GLOBAL: LEGOLAND 0x004cbf20
-unsigned int DAT_004cbf20;
-// GLOBAL: LEGOLAND 0x004cbf10
-void *DAT_004cbf10;
-// GLOBAL: LEGOLAND 0x004cbf24
-void *DAT_004cbf24;
-// GLOBAL: LEGOLAND 0x004cbf18
-void *DAT_004cbf18;
-// GLOBAL: LEGOLAND 0x004cbf14
-struct Sprite *DAT_004cbf14;
-// GLOBAL: LEGOLAND 0x004cbf1c
-struct Sprite *DAT_004cbf1c;
-// GLOBAL: LEGOLAND 0x004cbf40
-unsigned int DAT_004cbf40;
-// GLOBAL: LEGOLAND 0x004cbf44
-unsigned int DAT_004cbf44;
-// GLOBAL: LEGOLAND 0x004cbf48
-unsigned int DAT_004cbf48;
-// GLOBAL: LEGOLAND 0x004cbf4c
-unsigned short DAT_004cbf4c;
+// GLOBAL: LEGOLAND 0x0083291c
+unsigned int DAT_0083291c;
 
-// GLOBAL: LEGOLAND 0x006160e8
-void *DAT_006160e8;
-// GLOBAL: LEGOLAND 0x006160d0
-unsigned int DAT_006160d0;
-// GLOBAL: LEGOLAND 0x006160d4
-struct RinData *DAT_006160d4;
-// GLOBAL: LEGOLAND 0x006160e4
-struct Position *DAT_006160e4;
-// GLOBAL: LEGOLAND 0x006160d8
-struct Sprite *DAT_006160d8;
-// GLOBAL: LEGOLAND 0x006160e0
-struct Sprite *DAT_006160e0;
+// GLOBAL: LEGOLAND 0x00832920
+unsigned int DAT_00832920;
 
-// GLOBAL: LEGOLAND 0x00668d8c
-void *dinput_keyboard;
-// GLOBAL: LEGOLAND 0x00668d90
-void *dintput_mouse;
-// GLOBAL: LEGOLAND 0x00668d88
-void *dinput;
-// GLOBAL: LEGOLAND 0x007fdda0
-unsigned char DAT_007fdda0[256];
-// GLOBAL: LEGOLAND 0x00668d78
-int DAT_00668d78[4];
-// GLOBAL: LEGOLAND 0x004bad54
-int mouse_granularity;
+// GLOBAL: LEGOLAND 0x00832924
+unsigned int DAT_00832924;
 
-// GLOBAL: LEGOLAND 0x004b7618
-const unsigned char SPACE_TOWER_SFX[15] = {0};
-// GLOBAL: LEGOLAND 0x004b7620
-void *DAT_004b7620;
-// GLOBAL: LEGOLAND 0x0062fd74
-void *DAT_0062fd74;
-// GLOBAL: LEGOLAND 0x0062fda8
-void *DAT_0062fda8;
-// GLOBAL: LEGOLAND 0x0062fd80
-void *DAT_0062fd80;
-// GLOBAL: LEGOLAND 0x0062fd7c
-void *DAT_0062fd7c;
-// GLOBAL: LEGOLAND 0x0062fd68
-void *DAT_0062fd68;
-// GLOBAL: LEGOLAND 0x0062fd6c
-void *DAT_0062fd6c;
+// GLOBAL: LEGOLAND 0x00832934
+int DAT_00832934;
 
-// GLOBAL: LEGOLAND 0x004cbf78
-unsigned int DAT_004cbf78;
-// GLOBAL: LEGOLAND 0x004cbf80
-unsigned int DAT_004cbf80;
-// GLOBAL: LEGOLAND 0x004cbfd0
-unsigned int DAT_004cbfd0;
-// GLOBAL: LEGOLAND 0x004cbfc4
-void *DAT_004cbfc4;
-// GLOBAL: LEGOLAND 0x004cbf98
-unsigned int DAT_004cbf98;
-// GLOBAL: LEGOLAND 0x004cbf9c
-unsigned int DAT_004cbf9c;
-// GLOBAL: LEGOLAND 0x004cbfa0
-unsigned int DAT_004cbfa0;
-// GLOBAL: LEGOLAND 0x004cbfa4
-unsigned short DAT_004cbfa4;
-// GLOBAL: LEGOLAND 0x004cbfd4
-void *DAT_004cbfd4;
+// GLOBAL: LEGOLAND 0x00832938
+int DAT_00832938;
 
-// GLOBAL: LEGOLAND 0x0061606c
-unsigned int DAT_0061606c;
-// GLOBAL: LEGOLAND 0x00616070
-unsigned int DAT_00616070;
-// GLOBAL: LEGOLAND 0x00616090
-void *DAT_00616090;
-// GLOBAL: LEGOLAND 0x00616094
-void *DAT_00616094;
-// GLOBAL: LEGOLAND 0x00616098
-void *DAT_00616098;
-// GLOBAL: LEGOLAND 0x006160a0
-unsigned int DAT_006160a0;
-// GLOBAL: LEGOLAND 0x006160a4
-unsigned int DAT_006160a4;
-// GLOBAL: LEGOLAND 0x006160a8
-unsigned int DAT_006160a8;
-// GLOBAL: LEGOLAND 0x006160ac
-unsigned short DAT_006160ac;
-// GLOBAL: LEGOLAND 0x006160bc
-unsigned int DAT_006160bc;
-// GLOBAL: LEGOLAND 0x006160c0
-unsigned int DAT_006160c0;
-// GLOBAL: LEGOLAND 0x006160c4
-struct CarouselNode *DAT_006160c4;
-// GLOBAL: LEGOLAND 0x004b64d8
-unsigned char CAROUSSEL_SFX[12];
-// GLOBAL: LEGOLAND 0x004b87a8
-unsigned char MONEY_SFX[12];
-// GLOBAL: LEGOLAND 0x00667120
-unsigned int DAT_00667120;
+// GLOBAL: LEGOLAND 0x0083293c
+int DAT_0083293c[13];
 
-// GLOBAL: LEGOLAND 0x004bdea0
-struct ClipRect SPRITE_ClipRect;
-// GLOBAL: LEGOLAND 0x00798630
-unsigned int DAT_00798630;
-// GLOBAL: LEGOLAND 0x00798634
-unsigned int DAT_00798634;
-// GLOBAL: LEGOLAND 0x00798638
-unsigned int DAT_00798638;
-// GLOBAL: LEGOLAND 0x0079863c
-unsigned int DAT_0079863c;
-// GLOBAL: LEGOLAND 0x00798648
-unsigned int DAT_00798648;
+// GLOBAL: LEGOLAND 0x00832970
+int DAT_00832970;
 
-// GLOBAL: LEGOLAND 0x007fe040
-unsigned int DAT_007fe040;
-// GLOBAL: LEGOLAND 0x007fe044
-unsigned int DAT_007fe044;
-// GLOBAL: LEGOLAND 0x007fe048
-unsigned int DAT_007fe048;
-// GLOBAL: LEGOLAND 0x007fe04c
-unsigned int DAT_007fe04c;
-// GLOBAL: LEGOLAND 0x007fe920
-unsigned int DAT_007fe920;
-// GLOBAL: LEGOLAND 0x004b9f78
-unsigned int DAT_004b9f78[4] = {0x1f4, 0x190, 0x280, 0x1e0};
-// GLOBAL: LEGOLAND 0x004b9f88
-unsigned int DAT_004b9f88;
-// GLOBAL: LEGOLAND 0x004b9f8c
-unsigned int DAT_004b9f8c;
-// GLOBAL: LEGOLAND 0x006687a8
-unsigned int DAT_006687a8;
-// GLOBAL: LEGOLAND 0x006687ac
-unsigned int DAT_006687ac;
+// GLOBAL: LEGOLAND 0x00832974
+unsigned int DAT_00832974;
 
-// GLOBAL: LEGOLAND 0x004c1218
-void *DAT_004c1218;
-// GLOBAL: LEGOLAND 0x004c121c
-unsigned int DAT_004c121c;
-// GLOBAL: LEGOLAND 0x004c1228
-unsigned int DAT_004c1228;
-// GLOBAL: LEGOLAND 0x004c122c
-unsigned int DAT_004c122c;
-// GLOBAL: LEGOLAND 0x004c1230
-unsigned int DAT_004c1230;
-// GLOBAL: LEGOLAND 0x004c1234
-unsigned short DAT_004c1234;
-// GLOBAL: LEGOLAND 0x004c1240
-unsigned int DAT_004c1240;
-// GLOBAL: LEGOLAND 0x004c1244
-unsigned int DAT_004c1244;
-// GLOBAL: LEGOLAND 0x004c1248
-unsigned int DAT_004c1248;
-// GLOBAL: LEGOLAND 0x004c124c
-unsigned int DAT_004c124c;
-// GLOBAL: LEGOLAND 0x004c1250
-struct JoustNode *DAT_004c1250;
-// GLOBAL: LEGOLAND 0x004b4688
-unsigned char JOUST_SFX[12];
+// GLOBAL: LEGOLAND 0x00832978
+unsigned int DAT_00832978;
 
-// GLOBAL: LEGOLAND 0x007cad60
-struct Settings DAT_007cad60;
-// GLOBAL: LEGOLAND 0x00798890
-void *DAT_00798890;
+// GLOBAL: LEGOLAND 0x0083297c
+unsigned int DAT_0083297c;
 
-// GLOBAL: LEGOLAND 0x004cbeb0
-int DAT_004cbeb0;
-// GLOBAL: LEGOLAND 0x004cbeb4
-int DAT_004cbeb4;
-// GLOBAL: LEGOLAND 0x0082c690
-unsigned int DAT_0082c690;
-// GLOBAL: LEGOLAND 0x0082c6b8
-unsigned int DAT_0082c6b8;
-// GLOBAL: LEGOLAND 0x0082c6bc
-unsigned int DAT_0082c6bc;
-// GLOBAL: LEGOLAND 0x00830f94
-unsigned int DAT_00830f94;
-// GLOBAL: LEGOLAND 0x004c10d4
-void *DAT_004c10d4;
-// GLOBAL: LEGOLAND 0x004c11c4
-unsigned int DAT_004c11c4;
-// GLOBAL: LEGOLAND 0x004c11c8
-unsigned int DAT_004c11c8;
-// GLOBAL: LEGOLAND 0x004c11bc
-void *DAT_004c11bc;
-// GLOBAL: LEGOLAND 0x0082c6c0
-unsigned int DAT_0082c6c0;
-// GLOBAL: LEGOLAND 0x0082c694
-unsigned int DAT_0082c694;
+// GLOBAL: LEGOLAND 0x00832980
+unsigned int DAT_00832980;
 
-// GLOBAL: LEGOLAND 0x004cbf0c
-void *DAT_004cbf0c;
-// GLOBAL: LEGOLAND 0x004cbec4
-unsigned int DAT_004cbec4;
-// GLOBAL: LEGOLAND 0x004cbef8
-void *DAT_004cbef8;
-// GLOBAL: LEGOLAND 0x004cbefc
-void *DAT_004cbefc;
-// GLOBAL: LEGOLAND 0x004cbf00
-void *DAT_004cbf00;
-// GLOBAL: LEGOLAND 0x004cbf08
-unsigned int DAT_004cbf08;
-// GLOBAL: LEGOLAND 0x004cbed0
-unsigned int DAT_004cbed0;
-// GLOBAL: LEGOLAND 0x004cbed4
-unsigned int DAT_004cbed4;
-// GLOBAL: LEGOLAND 0x004cbed8
-unsigned int DAT_004cbed8;
-// GLOBAL: LEGOLAND 0x004cbedc
-unsigned short DAT_004cbedc;
-// GLOBAL: LEGOLAND 0x004b4cb8
-unsigned char SAFARI_SFX[8];
+// GLOBAL: LEGOLAND 0x00832990
+unsigned int DAT_00832990;
 
-// GLOBAL: LEGOLAND 0x00798704
-struct Sprite *DAT_00798704;
-// GLOBAL: LEGOLAND 0x00798708
-struct Sprite *DAT_00798708;
-// GLOBAL: LEGOLAND 0x0079870c
-struct Sprite *DAT_0079870c;
-// GLOBAL: LEGOLAND 0x00798710
-struct Sprite *DAT_00798710;
-// GLOBAL: LEGOLAND 0x00798714
-struct Sprite *DAT_00798714;
-// GLOBAL: LEGOLAND 0x00798718
-struct Sprite *DAT_00798718;
-// GLOBAL: LEGOLAND 0x0079871c
-struct Sprite *DAT_0079871c;
-// GLOBAL: LEGOLAND 0x00798720
-struct Sprite *DAT_00798720;
-// GLOBAL: LEGOLAND 0x00798724
-struct Sprite *DAT_00798724;
-// GLOBAL: LEGOLAND 0x00798728
-struct Sprite *DAT_00798728;
-// GLOBAL: LEGOLAND 0x0079872c
-struct Sprite *DAT_0079872c;
-// GLOBAL: LEGOLAND 0x00798730
-struct Sprite *DAT_00798730;
-// GLOBAL: LEGOLAND 0x00798734
-void *DAT_00798734;
+// GLOBAL: LEGOLAND 0x00832994
+unsigned int DAT_00832994;
 
-// GLOBAL: LEGOLAND 0x00669200
-unsigned int *DAT_00669200;
-// GLOBAL: LEGOLAND 0x00669204
-unsigned int DAT_00669204;
+// GLOBAL: LEGOLAND 0x00832998
+char DAT_00832998[256];
 
-// GLOBAL: LEGOLAND 0x007cb3a0
-unsigned int DAT_007cb3a0;
-// GLOBAL: LEGOLAND 0x007cb394
-unsigned int DAT_007cb394;
-// GLOBAL: LEGOLAND 0x007cb398
-struct Sprite *DAT_007cb398;
-// GLOBAL: LEGOLAND 0x007cb3a8
-struct Sprite *DAT_007cb3a8;
-// GLOBAL: LEGOLAND 0x007cb3ac
-struct Sprite *DAT_007cb3ac;
-// GLOBAL: LEGOLAND 0x007cb3b0
-struct Sprite *DAT_007cb3b0;
-// GLOBAL: LEGOLAND 0x007cb3b4
-struct Sprite *DAT_007cb3b4;
-// GLOBAL: LEGOLAND 0x007cb3c0
-struct Sprite *DAT_007cb3c0;
-// GLOBAL: LEGOLAND 0x007cb3c4
-struct Sprite *DAT_007cb3c4;
-// GLOBAL: LEGOLAND 0x007cb3c8
-struct Sprite *DAT_007cb3c8;
-// GLOBAL: LEGOLAND 0x007cb3cc
-struct Sprite *DAT_007cb3cc;
-// GLOBAL: LEGOLAND 0x007cb3d4
-struct Sprite *DAT_007cb3d4;
+// GLOBAL: LEGOLAND 0x00832a98
+char DAT_00832a98[256];
 
-// GLOBAL: LEGOLAND 0x004beb94
-struct FreePlaySpriteSlot DAT_004beb94[10];
-// GLOBAL: LEGOLAND 0x004becac
-unsigned int DAT_004becac;
-// GLOBAL: LEGOLAND 0x004becb0
-int DAT_004becb0[1];
+// GLOBAL: LEGOLAND 0x00832b9c
+unsigned int DAT_00832b9c;
 
-// GLOBAL: LEGOLAND 0x00667114
-unsigned int DAT_00667114;
-// GLOBAL: LEGOLAND 0x00667118
-unsigned int DAT_00667118;
-// GLOBAL: LEGOLAND 0x0066711c
-unsigned int DAT_0066711c;
-// GLOBAL: LEGOLAND 0x004b8710
-unsigned char DAT_004b8710[0x40];
-// GLOBAL: LEGOLAND 0x004b8750
-unsigned char DAT_004b8750[0x18];
-// GLOBAL: LEGOLAND 0x004b8768
-unsigned char DINO_SFX[0x18];
+// GLOBAL: LEGOLAND 0x00832ba0
+unsigned int DAT_00832ba0;
 
-// GLOBAL: LEGOLAND 0x004cbe9c
-unsigned int DAT_004cbe9c;
-// GLOBAL: LEGOLAND 0x004cbea4
-void *DAT_004cbea4;
-// GLOBAL: LEGOLAND 0x004b4bd0
-unsigned char DAT_004b4bd0[0x14];
+// GLOBAL: LEGOLAND 0x00832ba4
+unsigned int DAT_00832ba4;
 
-// GLOBAL: LEGOLAND 0x007fdff0
-void *DAT_007fdff0;
-// GLOBAL: LEGOLAND 0x007fdffc
-unsigned int DAT_007fdffc;
-// GLOBAL: LEGOLAND 0x00813a44
-unsigned int DAT_00813a44;
-// GLOBAL: LEGOLAND 0x00813a48
-unsigned int DAT_00813a48;
-// GLOBAL: LEGOLAND 0x00668934
-struct Sprite *DAT_00668934;
-// GLOBAL: LEGOLAND 0x00668904
-struct Sprite *DAT_00668904;
-// GLOBAL: LEGOLAND 0x00668908
-struct Sprite *DAT_00668908;
-// GLOBAL: LEGOLAND 0x0066890c
-struct Sprite *DAT_0066890c;
+// GLOBAL: LEGOLAND 0x00832ba8
+unsigned int DAT_00832ba8;
 
-// GLOBAL: LEGOLAND 0x00616018
-void *DAT_00616018;
-// GLOBAL: LEGOLAND 0x00616028
-unsigned int DAT_00616028;
-// GLOBAL: LEGOLAND 0x0061602c
-unsigned int DAT_0061602c;
-// GLOBAL: LEGOLAND 0x00616030
-unsigned int DAT_00616030;
-// GLOBAL: LEGOLAND 0x00616034
-unsigned short DAT_00616034;
-// GLOBAL: LEGOLAND 0x00616048
-unsigned int DAT_00616048;
-// GLOBAL: LEGOLAND 0x0061604c
-unsigned int DAT_0061604c;
-// GLOBAL: LEGOLAND 0x00616050
-unsigned int DAT_00616050;
-// GLOBAL: LEGOLAND 0x00616054
-unsigned int DAT_00616054;
-// GLOBAL: LEGOLAND 0x00616058
-unsigned int DAT_00616058;
-// GLOBAL: LEGOLAND 0x0061605c
-unsigned int DAT_0061605c;
-// GLOBAL: LEGOLAND 0x00616060
-void *DAT_00616060;
-// GLOBAL: LEGOLAND 0x0081cde4
-void *DAT_0081cde4;
-// GLOBAL: LEGOLAND 0x0081cde8
-unsigned int DAT_0081cde8;
-// GLOBAL: LEGOLAND 0x004c10dc
-void *DAT_004c10dc;
-// GLOBAL: LEGOLAND 0x004c10e4
-unsigned int DAT_004c10e4;
-// GLOBAL: LEGOLAND 0x004c11cc
-unsigned int DAT_004c11cc;
-// GLOBAL: LEGOLAND 0x004c11dc
-unsigned int DAT_004c11dc;
-// GLOBAL: LEGOLAND 0x0081caf4
-void *DAT_0081caf4;
-// GLOBAL: LEGOLAND 0x0062fe50
-unsigned int DAT_0062fe50;
-// GLOBAL: LEGOLAND 0x0062fe54
-unsigned int DAT_0062fe54;
-// GLOBAL: LEGOLAND 0x006664f8
-unsigned int DAT_006664f8[768];
-// GLOBAL: LEGOLAND 0x006670f8
-unsigned int DAT_006670f8;
-// GLOBAL: LEGOLAND 0x00668088
-unsigned int DAT_00668088;
-// GLOBAL: LEGOLAND 0x00668070
-void *DAT_00668070;
-// GLOBAL: LEGOLAND 0x00668084
-unsigned int DAT_00668084;
-// GLOBAL: LEGOLAND 0x00814020
-unsigned char DAT_00814020[1];
-// GLOBAL: LEGOLAND 0x007fd630
-unsigned int DAT_007fd630;
-// GLOBAL: LEGOLAND 0x007fd634
-void *DAT_007fd634;
-// GLOBAL: LEGOLAND 0x007fd638
-unsigned int DAT_007fd638;
-// GLOBAL: LEGOLAND 0x00798660
-unsigned int DAT_00798660;
-// GLOBAL: LEGOLAND 0x00798664
-unsigned int DAT_00798664;
-// GLOBAL: LEGOLAND 0x00798668
-unsigned int DAT_00798668;
-// GLOBAL: LEGOLAND 0x006675b4
-unsigned int DAT_006675b4;
-// GLOBAL: LEGOLAND 0x00813a0c
-void *DAT_00813a0c;
-// GLOBAL: LEGOLAND 0x008139e0
-void *DAT_008139e0;
-// GLOBAL: LEGOLAND 0x008139e4
-void *DAT_008139e4;
-// GLOBAL: LEGOLAND 0x008139e8
-void *DAT_008139e8;
-// GLOBAL: LEGOLAND 0x008139ec
-void *DAT_008139ec;
-// GLOBAL: LEGOLAND 0x008139f0
-void *DAT_008139f0;
-// GLOBAL: LEGOLAND 0x008139f4
-void *DAT_008139f4;
-// GLOBAL: LEGOLAND 0x008139f8
-void *DAT_008139f8;
-// GLOBAL: LEGOLAND 0x008139fc
-void *DAT_008139fc;
-// GLOBAL: LEGOLAND 0x00813a00
-void *DAT_00813a00;
-// GLOBAL: LEGOLAND 0x00813a04
-void *DAT_00813a04;
-// GLOBAL: LEGOLAND 0x00813a08
-void *DAT_00813a08;
-// GLOBAL: LEGOLAND 0x0066808c
-void *PTR_0066808c;
-// GLOBAL: LEGOLAND 0x00668090
-void *PTR_00668090;
-// GLOBAL: LEGOLAND 0x00668094
-void *PTR_00668094;
-// GLOBAL: LEGOLAND 0x00668098
-void *PTR_00668098;
+// GLOBAL: LEGOLAND 0x00832bd0
+int DAT_00832bd0;
+
+// GLOBAL: LEGOLAND 0x00832bd4
+int DAT_00832bd4;
+
+// GLOBAL: LEGOLAND 0x00832bd8
+unsigned int DAT_00832bd8;
+
+// GLOBAL: LEGOLAND 0x00832bdc
+int DAT_00832bdc;
+
+// GLOBAL: LEGOLAND 0x00832bf0
+void *PathSprite;
