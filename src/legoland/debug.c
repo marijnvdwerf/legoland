@@ -2,6 +2,7 @@
 
 #include "legoland.h"
 #include "globals.h"
+#include "crt.h"
 #include "debug_alloc.h"
 #include "draw.h"
 
@@ -25,7 +26,34 @@ unsigned int mystrlen(const char *s) {
 }
 
 // FUNCTION: LEGOLAND 0x0047fc40
-char *FUN_0047fc40(const char *haystack, const char *needle) { STUB(); }
+char *FUN_0047fc40(const char *haystack, const char *needle) {
+    char *upper_haystack;
+    char *upper_needle;
+    char *match;
+
+    upper_haystack = (char *)_malloc(strlen(haystack) + 1);
+    if (upper_haystack == NULL) {
+        return NULL;
+    }
+    strcpy(upper_haystack, haystack);
+    FUN_004a0600(upper_haystack);
+
+    upper_needle = (char *)_malloc(strlen(needle) + 1);
+    if (upper_needle == NULL) {
+        FUN_0049e4d0(upper_haystack);
+        return NULL;
+    }
+    strcpy(upper_needle, needle);
+    FUN_004a0600(upper_needle);
+
+    match = _strstr(upper_haystack, upper_needle);
+    if (match != NULL) {
+        match = (char *)(haystack + (match - upper_haystack));
+    }
+    FUN_0049e4d0(upper_haystack);
+    FUN_0049e4d0(upper_needle);
+    return match;
+}
 
 // FUNCTION: LEGOLAND 0x0047fd10
 int FUN_0047fd10(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {

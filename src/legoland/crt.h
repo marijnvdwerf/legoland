@@ -30,3 +30,5 @@ extern void *_malloc(unsigned int size);
 extern char *_strncpy(char *dest, const char *src, unsigned int count);
 extern char *_strrchr(const char *s, int c);
 extern int __strcmpi(const char *s1, const char *s2);
+extern char *_strstr(const char *haystack, const char *needle);
+extern char *FUN_004a0600(char *s);
