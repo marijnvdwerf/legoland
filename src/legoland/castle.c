@@ -1087,7 +1087,7 @@ void FUN_0041fd30(void) {
     for (i = 0; i < 16; i++) {
         ((unsigned int *)DAT_004d88f4)[i] = 0;
     }
-    DAT_004d89c4 = DAT_004d8934;
+    DAT_004d89c4 = &DAT_004d88f4[0x40];
     for (i = 0x40; i <= 0x7f; i++) {
         DAT_004d88f4[i] = (unsigned char)(i - 0x40);
     }
