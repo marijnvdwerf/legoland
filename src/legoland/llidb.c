@@ -86,7 +86,7 @@ void FUN_0047b500(void) { STUB(); }
 void FUN_0047b5a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047b610
-unsigned int LLIDB_RegisterNewElement(unsigned int param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
+unsigned int LLIDB_RegisterNewElement(const char *param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047b7b0
 void FUN_0047b7b0(unsigned int param_1) { STUB(); }

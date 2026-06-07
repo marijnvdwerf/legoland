@@ -45,4 +45,4 @@ void FUN_004514b0(void) { STUB(); }
 void FUN_00451550(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004515e0
-void FUN_004515e0(void) { STUB(); }
+int FUN_004515e0(int param_1) { STUB(); }

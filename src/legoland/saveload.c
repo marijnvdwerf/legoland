@@ -49,7 +49,7 @@ unsigned int FUN_0047f820(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0047f830
-unsigned int FUN_0047f830(void) {
+unsigned int FUN_0047f830(const char *path) {
     return 1;
 }
 

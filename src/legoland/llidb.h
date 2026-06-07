@@ -11,6 +11,9 @@ struct LLS {
 
 int LLIDB_FindElement(const char *name, unsigned int *out, int zero);
 unsigned int ElemID(const char *name);
+void LLIDB_LoadICM(void);
+void LLIDB_CloseICM(void);
+unsigned int LLIDB_RegisterNewElement(const char *param_1, unsigned int param_2, unsigned int param_3);
 void LLIDB_ClearOnLevel(void);
 void *LLIDB_LoadData(void *head);
 void LLIDB_UnLoadData(unsigned int handle);

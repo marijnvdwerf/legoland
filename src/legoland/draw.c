@@ -33,7 +33,7 @@ unsigned int SetPointer(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00463870
-void InitScreen(void) { STUB(); }
+int InitScreen(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00463ef0
 void FUN_00463ef0(void) { STUB(); }

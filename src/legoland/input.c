@@ -18,7 +18,7 @@ struct DInputDevice {
 };
 
 // FUNCTION: LEGOLAND 0x00473870
-void InitInputSystem(void) { STUB(); }
+int InitInputSystem(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004738b0
 void FUN_004738b0(void) { STUB(); }

@@ -15,6 +15,7 @@ struct CursorSource;
 struct Building;
 struct JailCell;
 struct LegoConfig;
+struct ResVolume;
 struct RideQueueEntry;
 struct ObjectiveEvent;
 struct MapElement;
@@ -292,6 +293,8 @@ extern unsigned int DAT_004bb688;
 extern unsigned int DAT_004bb6bc;
 // 0x004bb6f8
 extern unsigned int DAT_004bb6f8;
+// 0x004bcba4
+extern const char *DAT_004bcba4[3];
 // 0x004bcbf4
 extern struct LegoConfig *lpConfig;
 // 0x004bdd00
@@ -1730,6 +1733,8 @@ extern unsigned int DAT_007fd630;
 extern void *DAT_007fd634;
 // 0x007fd638
 extern unsigned int DAT_007fd638;
+// 0x007fd640
+extern struct ResVolume *DAT_007fd640[4];
 // 0x007fdca4
 extern unsigned int DAT_007fdca4;
 // 0x007fdcc0
@@ -1877,7 +1882,7 @@ extern unsigned char DAT_007fe930[10];
 // 0x007fe9a8
 extern unsigned int DAT_007fe9a8;
 // 0x007fe9c0
-extern unsigned int DAT_007fe9c0[1];
+extern unsigned int DAT_007fe9c0[9];
 // 0x007feb14
 extern unsigned int DAT_007feb14;
 // 0x007febc0

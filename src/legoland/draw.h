@@ -3,6 +3,9 @@
 struct VideoArg;
 struct Sprite;
 
+void InitHostSystemGPU(void);
+void KillHostSystemGPU(void);
+int InitScreen(void);
 unsigned int SetPointer(unsigned int param_1);
 void PushRenderingStatusAndLockVideoSurface(void);
 void PopRenderingStatus(void);

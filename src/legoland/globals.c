@@ -295,6 +295,16 @@ unsigned int DAT_004bb6bc;
 // GLOBAL: LEGOLAND 0x004bb6f8
 unsigned int DAT_004bb6f8;
 
+// GLOBAL: LEGOLAND 0x004bcba4
+const char *DAT_004bcba4[3] = {
+    // STRING: LEGOLAND 0x004bcc18
+    "Legoland.res",
+    // STRING: LEGOLAND 0x004bcc08
+    "Graphics2.res",
+    // STRING: LEGOLAND 0x004bcbf8
+    "Graphics1.res",
+};
+
 // GLOBAL: LEGOLAND 0x004bcbf4
 struct LegoConfig *lpConfig;
 
@@ -2461,6 +2471,9 @@ void *DAT_007fd634;
 // GLOBAL: LEGOLAND 0x007fd638
 unsigned int DAT_007fd638;
 
+// GLOBAL: LEGOLAND 0x007fd640
+struct ResVolume *DAT_007fd640[4];
+
 // GLOBAL: LEGOLAND 0x007fdca4
 unsigned int DAT_007fdca4;
 
@@ -2683,7 +2696,7 @@ unsigned char DAT_007fe930[10];
 unsigned int DAT_007fe9a8;
 
 // GLOBAL: LEGOLAND 0x007fe9c0
-unsigned int DAT_007fe9c0[1];
+unsigned int DAT_007fe9c0[9];
 
 // GLOBAL: LEGOLAND 0x007feb14
 unsigned int DAT_007feb14;

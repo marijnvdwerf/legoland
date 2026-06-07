@@ -26,3 +26,4 @@ int FUN_004988c0(void);
 void FUN_00498920(void);
 int FUN_00498b00(void);
 int FUN_00498cf0(void);
+void FUN_00498d00(void);

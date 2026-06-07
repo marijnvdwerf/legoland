@@ -97,7 +97,7 @@ unsigned int RES_GetResourcePath(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00489750
-void RES_OpenVolume(void) { STUB(); }
+struct ResVolume *RES_OpenVolume(const char *path) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489a00
 struct ResFile *RES_OpenFileFromVolume(void *param_1, void *name) { STUB(); }
