@@ -86,7 +86,7 @@ struct Overlay {
 
 /* globals.h owns MapTileGrid as the canonical struct MapElement** map grid;
    map_object views the same memory through its own struct MapTile layout. */
-#define MapTileGrid ((struct MapTile **)DAT_00801400)
+#define MapTileGrid ((struct MapTile **)GameMap)
 
 
 // FUNCTION: LEGOLAND 0x0045dd80

@@ -165,7 +165,7 @@ void *FUN_00499be0(void *list, void *params) {
 
 // FUNCTION: LEGOLAND 0x00499c40
 void *FUN_00499c40(int *point) {
-    struct Worker *current = DAT_0079a8a8;
+    struct Worker *current = GardenerList;
     struct Worker *best = NULL;
     int minDist = 0x7fffffff;
 
@@ -244,7 +244,7 @@ void FUN_00499f40(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00499fb0
 void FUN_00499fb0(void) {
-    struct Worker *current = DAT_0079a8a8;
+    struct Worker *current = GardenerList;
     if (current != NULL) {
         struct Worker *next;
         do {
@@ -272,7 +272,7 @@ void FUN_00499fb0(void) {
 
 // FUNCTION: LEGOLAND 0x0049a010
 void FUN_0049a010(void) {
-    struct Worker *node = DAT_0079a8ac;
+    struct Worker *node = MechanicList;
     while (node != 0) {
         struct Worker *next = node->next;
         node->ticks++;
@@ -298,7 +298,7 @@ LEGO_EXPORT void ControlWorkers(void) {
 
 // FUNCTION: LEGOLAND 0x0049a080
 LEGO_EXPORT void RenderWorkers(void) {
-    struct Worker *esi = DAT_0079a8a8;
+    struct Worker *esi = GardenerList;
     if (esi) {
         do {
             if ((esi->flags & 0x20) == 0) {
@@ -308,7 +308,7 @@ LEGO_EXPORT void RenderWorkers(void) {
         } while (esi);
     }
 
-    esi = DAT_0079a8ac;
+    esi = MechanicList;
     if (esi) {
         do {
             if (esi->var_46 != 0 && (esi->flags & 0x20) == 0) {
@@ -666,10 +666,10 @@ void FUN_0049cfc0(void) {
     while (DAT_0079a8d4 != NULL) {
         FUN_0049b6e0(DAT_0079a8d4);
     }
-    while (DAT_0079a8a8 != NULL) {
-        RemoveAGardener(DAT_0079a8a8);
+    while (GardenerList != NULL) {
+        RemoveAGardener(GardenerList);
     }
-    while (DAT_0079a8ac != NULL) {
-        RemoveAMechanic(DAT_0079a8ac);
+    while (MechanicList != NULL) {
+        RemoveAMechanic(MechanicList);
     }
 }

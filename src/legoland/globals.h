@@ -1561,7 +1561,7 @@ extern unsigned int DAT_007988c8;
 // 0x007988cc
 extern void *DAT_007988cc;
 // 0x0079a694
-extern unsigned int DAT_0079a694;
+extern LEGO_EXPORT unsigned int DMusicInitialised;
 // 0x0079a698
 extern void *DAT_0079a698;
 // 0x0079a6a0
@@ -1613,9 +1613,9 @@ extern unsigned int DAT_0079a89c;
 // 0x0079a8a0
 extern unsigned int DAT_0079a8a0;
 // 0x0079a8a8
-extern void *DAT_0079a8a8;
+extern LEGO_EXPORT void *GardenerList;
 // 0x0079a8ac
-extern void *DAT_0079a8ac;
+extern LEGO_EXPORT void *MechanicList;
 // 0x0079a8b0
 extern void *DAT_0079a8b0;
 // 0x0079a8b4
@@ -1889,7 +1889,7 @@ extern unsigned int DAT_007feb14;
 // 0x007febc0
 extern LEGO_EXPORT struct Cursor EditCursor;
 // 0x00801400
-extern struct MapElement **DAT_00801400;
+extern LEGO_EXPORT struct MapElement **GameMap;
 // 0x00805f60
 extern LEGO_EXPORT void *TileSpriteArray[256];
 // 0x0080ff64

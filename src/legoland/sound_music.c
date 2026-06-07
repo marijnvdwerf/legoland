@@ -81,7 +81,7 @@ struct FXList {
 
 // FUNCTION: LEGOLAND 0x00495b90
 LEGO_EXPORT void SetMusicGrooveLevel(unsigned int level) {
-    if (DAT_004bf774 != 0 && DAT_0079a694 != 0) {
+    if (DAT_004bf774 != 0 && DMusicInitialised != 0) {
         ((struct MusicPerformance *)DAT_007cacdc)->vtable->SetGlobalParam((struct MusicPerformance *)DAT_007cacdc, &GUID_PerfMasterGrooveLevel, &level, 1);
     }
 }
@@ -114,7 +114,7 @@ LEGO_EXPORT int CreateMusicBandSegment(struct BandObj *band, void *arg) {
     if (DAT_004bf774 == 0) {
         return 0;
     }
-    if (DAT_0079a694 == 0) {
+    if (DMusicInitialised == 0) {
         return 0;
     }
     result = band->vtable->Create(band, arg);
@@ -132,7 +132,7 @@ LEGO_EXPORT unsigned int SetBand(unsigned int band) {
     if (DAT_004bf774 == 0) {
         return 0;
     }
-    if (DAT_0079a694 == 0) {
+    if (DMusicInitialised == 0) {
         return 0;
     }
     ((struct MusicPerformance *)DAT_007cacdc)->vtable->PlayMotif((struct MusicPerformance *)DAT_007cacdc, band, 0x2080, 0, 0, 0);
@@ -144,7 +144,7 @@ LEGO_EXPORT unsigned int PlayMotif(unsigned int motif) {
     if (DAT_004bf774 == 0) {
         return 0;
     }
-    if (DAT_0079a694 == 0) {
+    if (DMusicInitialised == 0) {
         return 0;
     }
     ((struct MusicPerformance *)DAT_007cacdc)->vtable->PlayMotif((struct MusicPerformance *)DAT_007cacdc, motif, 0x2080, 0, 0, 0);

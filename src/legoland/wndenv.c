@@ -19,7 +19,7 @@ BOOL FUN_0047fe70(void) { return ShowWindow((HWND)WNDENV_Gethwnd(), 6); }
 void FUN_0047fe80(void) { ShowWindow((HWND)WNDENV_Gethwnd(), 9); }
 
 // FUNCTION: LEGOLAND 0x0047fe90
-void _LegoLandWindowProc(void) { STUB(); }
+LEGO_EXPORT LRESULT CALLBACK LegoLandWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00480050
 LEGO_EXPORT void ProcessSystemEvents(void) { STUB(); }

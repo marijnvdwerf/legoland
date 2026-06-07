@@ -158,7 +158,7 @@ void FUN_0045cb90(struct Point *param) {
     struct MapTile *tile;
     unsigned short value;
 
-    tile = (struct MapTile *)DAT_00801400[param->y];
+    tile = (struct MapTile *)GameMap[param->y];
     value = *(unsigned short *)PathSprite;
     *(unsigned short *)((unsigned char *)tile + param->x * 0x14 + 8) = value;
 }
@@ -223,7 +223,7 @@ unsigned char FUN_0045d080(unsigned char flags, int *coords) {
         x = coords[0] - 1;
         y = coords[1] + 1;
         if (x >= 0 && x < lpConfig->field_14 && y >= 0 && y < lpConfig->field_16) {
-            map_row = (unsigned int *)DAT_00801400[y];
+            map_row = (unsigned int *)GameMap[y];
             memcpy(tile_data, map_row + x * 5, sizeof(tile_data));
         } else {
             *(unsigned short *)((unsigned char *)tile_data + 0x8) = 0;
@@ -238,7 +238,7 @@ unsigned char FUN_0045d080(unsigned char flags, int *coords) {
         x = coords[0] + 1;
         y = coords[1] - 1;
         if (x >= 0 && x < lpConfig->field_14 && y >= 0 && y < lpConfig->field_16) {
-            map_row = (unsigned int *)DAT_00801400[y];
+            map_row = (unsigned int *)GameMap[y];
             memcpy(tile_data, map_row + x * 5, sizeof(tile_data));
         } else {
             *(unsigned short *)((unsigned char *)tile_data + 0x8) = 0;

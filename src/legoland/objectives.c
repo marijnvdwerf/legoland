@@ -559,7 +559,7 @@ int FUN_00469ed0(struct MapRectArg *arg) {
     while (y <= arg->y1) {
         x = arg->x0;
         while (x <= arg->x1) {
-            DAT_00801400[y][x].flags &= 0xffbf;
+            GameMap[y][x].flags &= 0xffbf;
             x++;
         }
         y++;

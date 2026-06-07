@@ -414,7 +414,7 @@ LEGO_EXPORT void UpdateSoundVols(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00495b00
 int FUN_00495b00(void) {
-    if (DAT_004bf774 != 0 && DAT_0079a694 != 0) {
+    if (DAT_004bf774 != 0 && DMusicInitialised != 0) {
         TerminateThread(DAT_0079a698, 0);
 
         ((struct DirectMusicLoaderVtbl *)((struct DirectMusicObj *)DAT_007cacd8)->vtable)
@@ -428,7 +428,7 @@ int FUN_00495b00(void) {
 
         ((struct DirectMusicComposerVtbl *)((struct DirectMusicObj *)DAT_007cad44)->vtable)->Release(DAT_007cad44);
 
-        DAT_0079a694 = 0;
+        DMusicInitialised = 0;
     }
     return 1;
 }
