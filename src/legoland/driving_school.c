@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "ride_queue.h"
 #include "ride_bloke.h"
@@ -54,23 +55,6 @@ struct CountNode {
     struct CountNode *next;
 };
 
-extern struct DrivingSchoolNode *DAT_004cbeac;
-extern unsigned int DAT_004c11c4;
-extern unsigned int DAT_004c11c8;
-extern void *DAT_004c10d4;
-extern void *DAT_004c11bc;
-extern unsigned int DAT_0082c6c0;
-extern unsigned int DAT_0082c6bc;
-extern unsigned int DAT_0082c6b8;
-extern unsigned int DAT_0082c690;
-extern unsigned int DAT_00830f94;
-extern unsigned int DAT_0082c694;
-extern unsigned int DAT_0082c6a0;
-extern unsigned int DAT_0082c6a4;
-extern unsigned int DAT_0082c6a8;
-extern unsigned short DAT_0082c6ac;
-extern char DRIVING_SCHOOL_SFX[];
-
 #include "pumps.h"
 #include "image_sprite.h"
 extern void FUN_0049e4d0(unsigned int ptr);
@@ -85,7 +69,7 @@ void FUN_00405310(unsigned int param_1) {
     unsigned int tmp;
     unsigned short param_16;
 
-    cur = DAT_004cbeac;
+    cur = (struct DrivingSchoolNode *)DAT_004cbeac;
     param_16 = (unsigned short)param_1;
     while (cur != NULL) {
         if (cur->field_8 == param_16) {
@@ -138,7 +122,7 @@ void FUN_00405460(void) {
     while (DAT_004cbeac != NULL) {
         void *next = ((struct Node0 *)DAT_004cbeac)->next;
         FUN_0049e4d0((unsigned int)DAT_004cbeac);
-        DAT_004cbeac = next;
+        DAT_004cbeac = (struct RideQueueEntry *)next;
     }
 
     while (DAT_004c11bc != NULL) {

@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "money.h"
@@ -24,23 +25,6 @@ struct JailCell {
 
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *ptr);
-
-extern struct Building *DAT_0081cb30;
-extern unsigned int DAT_0081cb08;
-extern unsigned int DAT_0081cb24;
-extern struct Building *DAT_0081cb14;
-extern unsigned int DAT_0081cb38;
-extern struct Building *DAT_0081cb2c;
-extern unsigned int DAT_0081cb34;
-extern struct Building *DAT_0081cb1c;
-extern unsigned int DAT_0081cb00;
-extern unsigned int DAT_0081cb04;
-extern unsigned int DAT_0081cb0c;
-extern struct JailCell *DAT_0062fd3c;
-
-extern unsigned int EditMode;
-extern void *DAT_008119b8;
-extern struct Cursor EditCursor;
 
 // FUNCTION: LEGOLAND 0x004375d0
 void FUN_004375d0(struct MapObject *obj) {

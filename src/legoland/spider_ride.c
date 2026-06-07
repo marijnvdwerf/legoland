@@ -1,10 +1,9 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "binv.h"
 #include "sound_music.h"
 #include "spider_ride.h"
-
-struct Sprite;
 
 struct SampleParams {
     int field_0;
@@ -55,21 +54,6 @@ struct RideObject {
     void (*field_b8)(void);
     void (*field_bc)(void);
 };
-
-extern void *DAT_004cbf58;
-extern void *DAT_004b4d90;
-extern struct Sprite *DAT_0082c668;
-extern unsigned int DAT_004cbf20;
-extern void *DAT_004cbf10;
-extern void *DAT_004cbf24;
-extern void *DAT_004cbf18;
-extern struct Sprite *DAT_004cbf14;
-extern struct Sprite *DAT_004cbf1c;
-extern unsigned int DAT_004cbf40;
-extern unsigned int DAT_004cbf44;
-extern unsigned int DAT_004cbf48;
-extern unsigned short DAT_004cbf4c;
-extern unsigned char SpiderRide_SFX[8];
 
 extern void *_malloc(unsigned int size);
 #include "image_sprite.h"

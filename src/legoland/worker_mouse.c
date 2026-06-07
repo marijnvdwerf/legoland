@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 #include "man3d.h"
 #include "tilemap.h"
 #include "worker_mouse.h"
@@ -20,21 +21,6 @@ struct WorkerOuter {
 };
 
 #include "image_sprite.h"
-
-extern unsigned int DAT_007fdf9c;
-extern unsigned int DAT_007fdf8c;
-extern struct WorkerOuter *DAT_007fdff0;
-extern unsigned int DAT_007fdffc;
-extern unsigned int DAT_00813a44;
-extern unsigned int DAT_00813a48;
-extern unsigned int DAT_00668954;
-extern struct Sprite *DAT_00668934;
-extern struct Sprite *DAT_00668938;
-extern struct Sprite *DAT_0066893c;
-extern struct Sprite *DAT_00668940;
-extern struct Sprite *DAT_00668904;
-extern struct Sprite *DAT_00668908;
-extern struct Sprite *DAT_0066890c;
 
 // FUNCTION: LEGOLAND 0x004700c0
 unsigned int FUN_004700c0(unsigned int param_1) {

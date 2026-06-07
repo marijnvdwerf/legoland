@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "bricks.h"
 #include "debug_alloc.h"
@@ -37,22 +38,6 @@ struct MapElement {
     unsigned short flags;
     unsigned char pad_e[0x14 - 0xe];
 };
-
-extern char DAT_0066869c[128];
-extern unsigned char DAT_0066871b;
-extern unsigned char DAT_0066861c;
-extern unsigned char DAT_007fe930[10];
-extern struct ObjectiveEvent *DAT_00668724;
-extern struct ObjectiveEvent *DAT_00668728;
-extern unsigned int DAT_0066872c[];
-extern unsigned int DAT_00668780;
-extern unsigned int DAT_0066871c;
-extern unsigned char DAT_007fe114;
-extern unsigned char DAT_007fe115;
-extern unsigned char DAT_007fe116;
-extern unsigned char DAT_007fe117;
-extern unsigned int DAT_007fe120[];
-extern struct MapElement **DAT_00801400;
 
 extern void *FUN_004a020e(unsigned int count, unsigned int size);
 extern char *_strncpy(char *dest, const char *src, unsigned int count);

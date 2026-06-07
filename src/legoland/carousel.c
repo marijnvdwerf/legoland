@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "binv.h"
@@ -37,23 +38,6 @@ struct CarouselSlotOwner {
     unsigned char pad_0[0x8];
     unsigned char *field_8;
 };
-
-extern struct CarouselNode *DAT_006160c4;
-extern unsigned int DAT_0061606c;
-extern unsigned int DAT_00616070;
-extern unsigned int DAT_006160c0;
-extern unsigned int DAT_006160bc;
-extern void *DAT_00616090;
-extern void *DAT_00616094;
-extern void *DAT_00616098;
-extern unsigned int DAT_006160a0;
-extern unsigned int DAT_006160a4;
-extern unsigned int DAT_006160a8;
-extern unsigned short DAT_006160ac;
-extern unsigned char CAROUSSEL_SFX[12];
-extern unsigned int EditMode;
-extern void *DAT_008119b8;
-extern struct Cursor EditCursor;
 
 #include "image_sprite.h"
 extern int FUN_0049e4b2(void);

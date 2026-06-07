@@ -1,24 +1,9 @@
 #include "legoland.h"
+#include "globals.h"
 #include "man3d.h"
 #include "render3d.h"
 #include "llidb.h"
 #include <math.h>
-
-extern void *DAT_0081c8cc;
-extern unsigned int DAT_0081c8d0;
-extern unsigned int DAT_0081c8d4;
-extern unsigned int DAT_0081c8d8;
-extern unsigned int DAT_0081c8dc;
-extern void *DAT_00655a38;
-extern void *DAT_0062fea8;
-extern void *DAT_0062fef8;
-extern void *DAT_0064cd8c;
-extern unsigned int DAT_0062feec[];
-extern unsigned int DAT_00630108[];
-extern unsigned int DAT_00655a4c;
-extern unsigned int DAT_0062fef0;
-extern unsigned int DAT_00655a50;
-extern unsigned int DAT_00638218[];
 
 extern void FUN_0049e4d0(void *block);
 #include "image_sprite.h"

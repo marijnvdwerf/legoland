@@ -1,26 +1,11 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "timer.h"
 #include "sound_music.h"
 #include "llidb.h"
 #include "map_object.h"
-
-extern unsigned int DAT_0080ff64;
-extern const unsigned char DAT_004b9228[1];
-extern int DAT_00667ce0;
-extern int DAT_00667ce4;
-extern int DAT_00667ce8;
-extern int DAT_00667cec;
-extern int DAT_00667cf0;
-extern int DAT_00667cf4;
-extern int DAT_00667cf8;
-extern int DAT_00667cfc;
-extern unsigned int DAT_00667d10;
-extern int DAT_00832bd0;
-extern int DAT_00832bd4;
-extern int DAT_00832bd8;
-extern int DAT_00832bdc;
 
 struct RenderObjectVtable {
     unsigned char pad_0[0xc];
@@ -101,9 +86,9 @@ void FUN_0045a060(void) {
     while (object != NULL) {
         if (object->flags.bytes[1] & 1) {
             power = -FindObjectsPower(object->vtable->get_power);
-            if (DAT_00832bd4 - DAT_00832bd8 + power <= DAT_00832bd0) {
+            if (DAT_00832bd4 - (int)DAT_00832bd8 + power <= DAT_00832bd0) {
                 FUN_0045a000(power, object);
-                if (DAT_00832bd4 - DAT_00832bd8 == DAT_00832bd0) {
+                if (DAT_00832bd4 - (int)DAT_00832bd8 == DAT_00832bd0) {
                     return;
                 }
             }
@@ -121,7 +106,7 @@ void FUN_0045a0d0(void) {
             power = -FindObjectsPower(object->vtable->get_power);
             if (power > 0) {
                 FUN_0045a030(power, object);
-                if (DAT_00832bd4 - DAT_00832bd8 <= DAT_00832bd0) {
+                if (DAT_00832bd4 - (int)DAT_00832bd8 <= DAT_00832bd0) {
                     break;
                 }
             }

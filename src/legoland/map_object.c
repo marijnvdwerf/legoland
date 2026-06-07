@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "map_object.h"
@@ -82,21 +83,9 @@ struct Overlay {
     struct Overlay *next;
 };
 
-extern unsigned int DAT_007fd624;
-extern struct Cursor EditCursor;
-extern struct LegoConfig *lpConfig;
-extern struct MapTile **DAT_00801400;
-extern int ScrollX;
-extern int ScrollY;
-extern struct Overlay *OverlayList;
-extern unsigned int OverlayILF;
-extern struct TileSprite *TileSpriteArray[];
-extern unsigned int DAT_00667ca4;
-extern unsigned int DAT_00832824[];
-extern unsigned int DAT_00832828[];
-extern unsigned int DAT_00667d54;
-extern int DAT_00667d58;
-extern int DAT_00832980;
+/* globals.h owns MapTileGrid as the canonical struct MapElement** map grid;
+   map_object views the same memory through its own struct MapTile layout. */
+#define MapTileGrid ((struct MapTile **)DAT_00801400)
 
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *block);
@@ -304,7 +293,7 @@ void FUN_00461080(int *coord, unsigned int param2, unsigned int param3, unsigned
 
     if (coord[0] >= 0 && coord[0] < lpConfig->field_14 &&
         coord[1] >= 0 && coord[1] < lpConfig->field_16) {
-        tile = DAT_00801400[coord[1]];
+        tile = MapTileGrid[coord[1]];
         tile = tile + coord[0];
         if (tile != 0 && FUN_0045ce10(tile) != 0 && tile->tile != 0) {
             FUN_00460f50(coord, param2, param3, param4);
@@ -355,7 +344,7 @@ int Get_YScroll(void) {
 unsigned char Get_RFFlags(int x, int y) {
     struct MapTile *tile;
 
-    tile = DAT_00801400[y >> 8];
+    tile = MapTileGrid[y >> 8];
     return tile[x >> 8].rf_flags[0];
 }
 
@@ -366,7 +355,7 @@ void GetCurrentRFFlags(void) { STUB(); }
 void Set_RFFlags(int x, int y, unsigned char value) {
     struct MapTile *tile;
 
-    tile = DAT_00801400[y >> 8];
+    tile = MapTileGrid[y >> 8];
     tile[x >> 8].rf_flags[0] = value;
 }
 
@@ -374,7 +363,7 @@ void Set_RFFlags(int x, int y, unsigned char value) {
 short Get_UserFlags(int x, int y) {
     struct MapTile *tile;
 
-    tile = DAT_00801400[y >> 8];
+    tile = MapTileGrid[y >> 8];
     return tile[x >> 8].user_flags;
 }
 
@@ -382,7 +371,7 @@ short Get_UserFlags(int x, int y) {
 void Set_UserFlags(int x, int y, unsigned short value) {
     struct MapTile *tile;
 
-    tile = DAT_00801400[y >> 8];
+    tile = MapTileGrid[y >> 8];
     tile[x >> 8].user_flags = value;
 }
 
@@ -390,7 +379,7 @@ void Set_UserFlags(int x, int y, unsigned short value) {
 short Get_MapFlags(int x, int y) {
     struct MapTile *tile;
 
-    tile = DAT_00801400[y >> 8];
+    tile = MapTileGrid[y >> 8];
     return tile[x >> 8].flags;
 }
 
@@ -408,7 +397,7 @@ void SetMapTile(int x, int y, unsigned short value) {
     if (y > (int)lpConfig->field_16) {
         return;
     }
-    DAT_00801400[y][x].tile = value;
+    MapTileGrid[y][x].tile = value;
 }
 
 // FUNCTION: LEGOLAND 0x004617d0
@@ -418,7 +407,7 @@ unsigned short GetMapFlags(int x, int y) {
     if (x < 0 || x > 0x100 || y < 0 || y > 0x100) {
         return 0x40;
     }
-    tile = DAT_00801400[y];
+    tile = MapTileGrid[y];
     return tile[x].flags;
 }
 
@@ -430,7 +419,7 @@ void SetMapFlags(int x, int y, short value) {
     if (y < 0 || y > 256) {
         return;
     }
-    DAT_00801400[y][x].flags = value;
+    MapTileGrid[y][x].flags = value;
 }
 
 // FUNCTION: LEGOLAND 0x00461850
@@ -540,7 +529,7 @@ int FUN_00463520(void) {
     }
     curr = FUN_00499460();
     diff = curr - DAT_00667d58;
-    quotient = 0x168 / DAT_00832980;
+    quotient = 0x168 / (int)DAT_00832980;
     if (diff > quotient) {
         DAT_00667d58 = FUN_00499460();
         return 1;

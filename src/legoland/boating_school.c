@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "objclass.h"
@@ -10,22 +11,6 @@ struct NameNode {
     struct NameNode *next;
 };
 
-extern struct NameNode *DAT_004cc03c;
-
-extern unsigned int EditMode;
-extern struct Cursor EditCursor;
-extern void *DAT_008119b8;
-extern unsigned int DAT_0082c658;
-extern unsigned int DAT_0082adf8;
-extern void *DAT_0082adf0;
-extern struct KeyNode *DAT_004d823c;
-extern unsigned int *DAT_004cc088;
-extern unsigned int *DAT_004cc070;
-extern unsigned int DAT_004cc078;
-extern unsigned int DAT_004cc060;
-extern unsigned int DAT_004cc048;
-extern unsigned int DAT_004b53c0[5];
-
 struct RideNode {
     unsigned short id;
     unsigned char pad_2[6];
@@ -34,8 +19,6 @@ struct RideNode {
     struct RideNode *next;
     unsigned int value;
 };
-
-extern struct RideNode *DAT_004cc074;
 
 struct RideBuilding {
     unsigned char pad_0[0x3c];

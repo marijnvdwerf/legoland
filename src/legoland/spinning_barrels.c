@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "binv.h"
@@ -27,22 +28,6 @@ struct BarrelRide {
     BarrelVtblFn var_b8;
     BarrelVtblFn var_bc;
 };
-
-extern struct BarrelNode *DAT_0062fe08;
-extern unsigned int DAT_0062fde4;
-extern void *DAT_008119b8;
-extern unsigned int EditMode;
-extern struct Cursor EditCursor;
-extern unsigned int DAT_0062fdb0;
-extern unsigned int DAT_0062fdb4;
-extern unsigned int DAT_0062fdb8;
-extern unsigned short DAT_0062fdbc;
-extern void *DAT_0062fdd0;
-extern void *DAT_0062fdcc;
-extern void *DAT_0062fe04;
-extern void *DAT_0062fde8;
-extern void *DAT_0062fdfc;
-extern void *DAT_0062fdc8;
 
 extern void *_malloc(unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);

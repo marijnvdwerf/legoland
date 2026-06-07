@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "binv.h"
@@ -6,21 +7,6 @@
 #include "llidb.h"
 #include "map_object.h"
 #include "safari_ride.h"
-
-extern void *DAT_004cbf0c;
-extern unsigned int DAT_004cbec4;
-extern void *DAT_004cbef8;
-extern void *DAT_004cbefc;
-extern void *DAT_004cbf00;
-extern unsigned int DAT_004cbf08;
-extern unsigned int DAT_004cbed0;
-extern unsigned int DAT_004cbed4;
-extern unsigned int DAT_004cbed8;
-extern unsigned short DAT_004cbedc;
-extern unsigned char SAFARI_SFX[8];
-extern unsigned int EditMode;
-extern void *DAT_008119b8;
-extern struct Cursor EditCursor;
 
 #include "image_sprite.h"
 extern void *_malloc(unsigned int size);

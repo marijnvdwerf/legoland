@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "binv.h"
@@ -51,22 +52,6 @@ struct JoustInterface {
     JoustMethod field_b8;
     JoustMethod field_bc;
 };
-
-extern struct JoustNode *DAT_004c1250;
-extern unsigned int DAT_004c121c;
-extern void *DAT_004c1218;
-extern unsigned int DAT_004c1240;
-extern unsigned int DAT_004c1244;
-extern unsigned int DAT_004c1248;
-extern unsigned int DAT_004c124c;
-extern unsigned int DAT_004c1228;
-extern unsigned int DAT_004c122c;
-extern unsigned int DAT_004c1230;
-extern unsigned short DAT_004c1234;
-extern unsigned char JOUST_SFX[12];
-extern unsigned int EditMode;
-extern void *DAT_008119b8;
-extern struct Cursor EditCursor;
 
 #include "image_sprite.h"
 extern int __strcmpi(const char *s1, const char *s2);

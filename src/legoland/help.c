@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 #include <windows.h>
 
 #include "help.h"
@@ -15,22 +16,6 @@ struct HelpAdvisor {
     unsigned char pad_0[0xc];
     unsigned int field_c;
 };
-
-extern unsigned int DAT_007fe040;
-extern unsigned int DAT_007fe044;
-extern unsigned int DAT_007fe048;
-extern unsigned int DAT_007fe04c;
-extern unsigned int DAT_007fe050;
-extern unsigned int DAT_007fe054;
-extern unsigned int DAT_007fe920;
-extern struct HelpAdvisor *DAT_00668724;
-extern unsigned int DAT_00668618;
-extern unsigned int DAT_004b9f88;
-extern unsigned int DAT_004b9f8c;
-extern unsigned int DAT_006687a4;
-extern unsigned int DAT_006687a8;
-extern unsigned int DAT_006687ac;
-extern unsigned int DAT_004b9f78[4];
 
 extern void FUN_0049e4d0(void *block);
 
@@ -59,7 +44,7 @@ unsigned int FUN_0046cee0(void) {
         return 1;
     }
     if (DAT_00668724 != NULL) {
-        if (DAT_00668724->field_c == 0) {
+        if (((struct HelpAdvisor *)DAT_00668724)->field_c == 0) {
             if (DAT_00668618 == 0) {
                 return 0;
             }
@@ -85,7 +70,7 @@ unsigned int FUN_0046cf20(void) {
     if (DAT_00668724 == NULL) {
         goto return_0;
     }
-    if (DAT_00668724->field_c == 0) {
+    if (((struct HelpAdvisor *)DAT_00668724)->field_c == 0) {
         goto return_0;
     }
 return_1:

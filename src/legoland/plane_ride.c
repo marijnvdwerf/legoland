@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "globals.h"
 
 #include "gamemap.h"
 #include "binv.h"
@@ -53,22 +54,6 @@ struct PlaneRideInterface {
     PlaneRideMethod field_b8;
     PlaneRideMethod field_bc;
 };
-
-extern void *DAT_0062fe9c;
-extern unsigned int DAT_0062fe58;
-extern unsigned int DAT_0062fe60;
-extern unsigned int DAT_0062fe64;
-extern unsigned int DAT_0062fe68;
-extern unsigned short DAT_0062fe6c;
-extern void *DAT_0062fe78;
-extern void *DAT_0062fe90;
-extern void *DAT_0062fe94;
-extern unsigned int DAT_0081cae0;
-extern unsigned char DAT_004beba0;
-extern unsigned char DAT_004b79d0[0x18];
-extern unsigned int EditMode;
-extern void *DAT_008119b8;
-extern struct Cursor EditCursor;
 
 extern void *_malloc(unsigned int size);
 extern int FUN_0049e4b2(void);
