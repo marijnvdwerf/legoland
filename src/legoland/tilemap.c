@@ -47,7 +47,7 @@ unsigned int FUN_0045ac20(void) {
     unsigned int handle;
 
     if (DAT_00667c9c != 0) {
-        FUN_0049e4d0(DAT_00667c9c);
+        free(DAT_00667c9c);
     }
     // STRING: LEGOLAND 0x004b9be4
     LLIDB_FindElement("MAPPING 1", &handle, 0);

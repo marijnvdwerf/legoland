@@ -220,7 +220,7 @@ unsigned int FUN_004907a0(const char *param_1) {
     FUN_00490740(param_1);
     FUN_00490850();
     // STRING: LEGOLAND 0x004bf678
-    FUN_0049e573(buffer, "Intervals\\%s", param_1);
+    sprintf(buffer, "Intervals\\%s", param_1);
     result = FUN_00490680(buffer, &DAT_007cafa0, 100);
     DAT_0079887c = result;
     if (result != 0) {
@@ -237,14 +237,14 @@ void FUN_00490800(const char *param_1) {
 
     FUN_00490770(param_1);
     FUN_00490880();
-    FUN_0049e573(buffer, "Intervals\\%s", param_1);
+    sprintf(buffer, "Intervals\\%s", param_1);
     DAT_00798880 = FUN_00490680(buffer, &DAT_007cb140, 32);
 }
 
 // FUNCTION: LEGOLAND 0x00490850
 void FUN_00490850(void) {
     if (DAT_0079887c != 0) {
-        FUN_0049e4d0(DAT_007cafa0);
+        free(DAT_007cafa0);
     }
     DAT_0079887c = 0;
 }
@@ -252,7 +252,7 @@ void FUN_00490850(void) {
 // FUNCTION: LEGOLAND 0x00490880
 void FUN_00490880(void) {
     if (DAT_00798880 != 0) {
-        FUN_0049e4d0(DAT_007cb140);
+        free(DAT_007cb140);
     }
     DAT_00798880 = 0;
 }
@@ -322,7 +322,7 @@ void FUN_00490a20(unsigned int param_1) {
     char buffer[256];
 
     // STRING: LEGOLAND 0x004bf688
-    FUN_0049e573(buffer, "%s%02d.wav", DAT_007cae80, param_1 + 1);
+    sprintf(buffer, "%s%02d.wav", DAT_007cae80, param_1 + 1);
     FUN_00498920();
     FUN_00498630(buffer);
     FUN_00498b00();
@@ -333,7 +333,7 @@ void FUN_00490a20(unsigned int param_1) {
 void FUN_00490a60(unsigned int param_1) {
     char buffer[256];
 
-    FUN_0049e573(buffer, "%s%02d.wav", DAT_007cb1e0, param_1 + 1);
+    sprintf(buffer, "%s%02d.wav", DAT_007cb1e0, param_1 + 1);
     FUN_00498920();
     FUN_00498630(buffer);
     FUN_00498b00();

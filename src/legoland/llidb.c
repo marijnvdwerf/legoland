@@ -119,10 +119,10 @@ LEGO_EXPORT void LLIDB_FreeILFTable(struct ILFTable *table) {
     }
 
     if (table->data_c != NULL) {
-        FUN_0049e4d0(table->data_c);
+        free(table->data_c);
     }
     if (table->data_10 != NULL) {
-        FUN_0049e4d0(table->data_10);
+        free(table->data_10);
     }
 
     if (table->sprites != NULL) {
@@ -136,10 +136,10 @@ LEGO_EXPORT void LLIDB_FreeILFTable(struct ILFTable *table) {
                 i++;
             } while (i < table->count);
         }
-        FUN_0049e4d0(table->sprites);
+        free(table->sprites);
     }
 
-    FUN_0049e4d0(table);
+    free(table);
 }
 
 // FUNCTION: LEGOLAND 0x0047bf70
@@ -159,8 +159,8 @@ void FUN_0047cdd0(struct SpriteManager *param_1) {
     struct SpriteManager *si = (struct SpriteManager *)param_1->data_c;
     int i;
 
-    FUN_0049e4d0(si->data_c);
-    FUN_0049e4d0(si->data_10);
+    free(si->data_c);
+    free(si->data_10);
 
     i = 0;
     if (si->count > 0) {
@@ -175,7 +175,7 @@ void FUN_0047cdd0(struct SpriteManager *param_1) {
         LLIDB_UnLoadData((unsigned int)si->data_14);
     }
 
-    FUN_0049e4d0(si);
+    free(si);
 }
 
 // FUNCTION: LEGOLAND 0x0047ce40
@@ -289,10 +289,10 @@ LEGO_EXPORT void LLS555To565(struct LLSImage *param_1) {
 
 // FUNCTION: LEGOLAND 0x0047d730
 LEGO_EXPORT unsigned int SaveGameRead(void *buffer, unsigned int count) {
-    return FUN_0049f4ca(DAT_006691b0, buffer, count) == count;
+    return _read(DAT_006691b0, buffer, count) == count;
 }
 
 // FUNCTION: LEGOLAND 0x0047d760
 LEGO_EXPORT unsigned int SaveGameWrite(void *buffer, unsigned int count) {
-    return (unsigned int)FUN_004a63e4(DAT_006691b0, buffer, count) == count;
+    return (unsigned int)_write(DAT_006691b0, buffer, count) == count;
 }

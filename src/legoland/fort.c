@@ -67,7 +67,7 @@ void FUN_00406880(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x004068b0
 void FUN_004068b0(const char **name, struct FortInterface *ci) {
     // STRING: LEGOLAND 0x004b45a0
-    if (__strcmpi("FORT", *name) != 0) {
+    if (_stricmp("FORT", *name) != 0) {
         return;
     }
     ci->field_a4 = FUN_00406240;

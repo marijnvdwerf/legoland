@@ -228,7 +228,7 @@ unsigned int *FUN_00434740(struct JungleFishHolder *param_1, unsigned short para
         }
     } else {
         if (lls1->field_0 == 1) {
-            if (FUN_0049e4b2() % 7 == 0) {
+            if (rand() % 7 == 0) {
                 node->field_4 = 1;
             }
         }

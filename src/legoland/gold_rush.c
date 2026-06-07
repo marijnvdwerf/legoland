@@ -162,7 +162,7 @@ void FUN_00407170(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00407230
 void FUN_00407230(struct GoldRandItem *param) {
-    int value = FUN_0049e4b2() % 31;
+    int value = rand() % 31;
     param->field_8->field_58 = value + 15;
 }
 
@@ -195,7 +195,7 @@ LEGO_EXPORT void LoadGoldWash(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x004078f0
 void FUN_004078f0(const char **str, struct GoldRushModule *module) {
     // STRING: LEGOLAND 0x004b4670
-    if (__strcmpi("GOLD RUSH", *str) == 0) {
+    if (_stricmp("GOLD RUSH", *str) == 0) {
         module->field_a4 = FUN_00406a10;
         module->field_ac = FUN_00406ab0;
         module->field_8c = FUN_004075b0;

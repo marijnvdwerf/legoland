@@ -26,7 +26,7 @@ LEGO_EXPORT void __DEBUG_CALLOC(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00453bf0
 LEGO_EXPORT void __DEBUG_FREE(void *ptr) {
     void *block_base = (char *)ptr - 0x10;
-    unsigned int block_size = FUN_0049fdc2(block_base);
+    unsigned int block_size = _msize(block_base);
     DAT_00813a10 += 0x10 - block_size;
-    FUN_0049e4d0(block_base);
+    free(block_base);
 }

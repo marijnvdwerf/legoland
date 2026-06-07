@@ -61,7 +61,7 @@ struct RideObject {
 // FUNCTION: LEGOLAND 0x004158f0
 int FUN_004158f0(struct SpiderNode *arg0)
 {
-    struct SpiderNode *node = (struct SpiderNode *)_malloc(0x30);
+    struct SpiderNode *node = (struct SpiderNode *)malloc(0x30);
     if (node == NULL) {
         return;
     }
@@ -177,7 +177,7 @@ unsigned int *FUN_00416120(unsigned int *a1, unsigned short a2)
 void SpiderRide(char **name_ptr, struct RideObject *obj)
 {
     // STRING: LEGOLAND 0x004b4eb8
-    if (__strcmpi("SPIDER RIDE", *name_ptr) == 0) {
+    if (_stricmp("SPIDER RIDE", *name_ptr) == 0) {
         obj->field_a4 = FUN_00415e80;
         obj->field_ac = FUN_00415fd0;
         obj->field_8c = FUN_00416060;

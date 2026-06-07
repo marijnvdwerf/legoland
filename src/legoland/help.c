@@ -24,7 +24,7 @@ struct HelpAdvisor {
 // FUNCTION: LEGOLAND 0x0046ce20
 void FUN_0046ce20(void) {
     if ((DAT_007fe040 & 0x3) != 0) {
-        FUN_0049e4d0((void *)DAT_007fe048);
+        free((void *)DAT_007fe048);
         FUN_004748a0((void *)1);
     }
     DAT_007fe040 &= ~0x3;

@@ -53,7 +53,7 @@ struct CopterSub {
 
 // FUNCTION: LEGOLAND 0x00403c40
 void FUN_00403c40(struct CopterSource *src) {
-    struct CopterNode *node = (struct CopterNode *)_malloc(0xd8);
+    struct CopterNode *node = (struct CopterNode *)malloc(0xd8);
     if (node != NULL) {
         memset(node, 0, 0xd8);
         node->field_0 = src->field_0;
@@ -225,7 +225,7 @@ LEGO_EXPORT void Copters_Load(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00405110
 void FUN_00405110(const char **name, struct CopterInterface *interfaces) {
     // STRING: LEGOLAND 0x004b43e4
-    if (__strcmpi("COPTERS", *name) == 0) {
+    if (_stricmp("COPTERS", *name) == 0) {
         interfaces->field_a4 = FUN_00403d90;
         interfaces->field_8c = FUN_00404450;
         interfaces->field_98 = FUN_00404600;

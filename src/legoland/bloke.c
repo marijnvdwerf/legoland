@@ -118,11 +118,11 @@ LEGO_EXPORT void GetVisitorName(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00482c60
 void FUN_00482c60(struct Person *person) {
     if (person->field_4->field_84 != 0) {
-        person->field_83 = (unsigned char)((unsigned int)FUN_0049e4b2() % 0x5a);
+        person->field_83 = (unsigned char)((unsigned int)rand() % 0x5a);
     } else {
-        person->field_83 = (unsigned char)((unsigned int)FUN_0049e4b2() % 0x53);
+        person->field_83 = (unsigned char)((unsigned int)rand() % 0x53);
     }
-    person->field_84 = (unsigned char)((unsigned int)FUN_0049e4b2() % 0x6b);
+    person->field_84 = (unsigned char)((unsigned int)rand() % 0x6b);
 }
 
 // FUNCTION: LEGOLAND 0x00482cb0
@@ -162,7 +162,7 @@ void FUN_00482e50(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00482ec0
 void FUN_00482ec0(void) {
     if (DAT_0066b57c != NULL) {
-        FUN_0049e4d0(DAT_0066b57c);
+        free(DAT_0066b57c);
     }
     FirstBloke = NULL;
     DAT_0066b57c = NULL;
@@ -173,7 +173,7 @@ LEGO_EXPORT struct Bloke *NewBloke(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482f70
 LEGO_EXPORT struct Bloke *NewBlokeWOList(void *param_2) {
-    struct Bloke *bloke = (struct Bloke *)_malloc(0xac);
+    struct Bloke *bloke = (struct Bloke *)malloc(0xac);
     if (bloke != NULL) {
         memset(bloke, 0, 0xac);
         bloke->flags = 1;

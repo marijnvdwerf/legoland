@@ -182,7 +182,7 @@ LEGO_EXPORT void SpaceTower_Load(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0043b780
 void SpaceTowerRide(const char **name, struct SpaceTowerObject *obj) {
     // STRING: LEGOLAND 0x004b789c
-    if (__strcmpi("SPACE TOWER RIDE", *name) == 0) {
+    if (_stricmp("SPACE TOWER RIDE", *name) == 0) {
         obj->field_a4 = FUN_0043b2b0;
         obj->field_8c = FUN_0043b420;
         obj->field_a8 = FUN_0043bac0;

@@ -121,16 +121,16 @@ LEGO_EXPORT void UnLoadRin(struct RinData *rin) {
         KillSprite((unsigned int)rin->sprites[i]);
         count = rin->sprite_count;
     }
-    FUN_0049e4d0(rin->sprites);
+    free(rin->sprites);
 
     count = rin->data_count;
     for (i = 0; i < count; i++) {
-        FUN_0049e4d0(rin->datas[i]);
+        free(rin->datas[i]);
         count = rin->data_count;
     }
-    FUN_0049e4d0(rin->datas);
+    free(rin->datas);
 
-    FUN_0049e4d0(rin);
+    free(rin);
 }
 
 // FUNCTION: LEGOLAND 0x00441d60
@@ -225,16 +225,16 @@ void FUN_00442980(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00442c70
 unsigned int FUN_00442c70(void) {
     if (DAT_00655a38) {
-        FUN_0049e4d0(DAT_00655a38);
+        free(DAT_00655a38);
     }
     if (DAT_0062fea8) {
-        FUN_0049e4d0(DAT_0062fea8);
+        free(DAT_0062fea8);
     }
     if (DAT_0062fef8) {
-        FUN_0049e4d0(DAT_0062fef8);
+        free(DAT_0062fef8);
     }
     if (DAT_0064cd8c) {
-        FUN_0049e4d0(DAT_0064cd8c);
+        free(DAT_0064cd8c);
     }
     return 0;
 }

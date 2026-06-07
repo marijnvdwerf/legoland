@@ -154,7 +154,7 @@ void FUN_0042c820(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0042cd20
 int FUN_0042cd20(struct CarouselSlotOwner *param1, unsigned char *param2, signed char divisor) {
     int count = divisor;
-    int eax = FUN_0049e4b2();
+    int eax = rand();
     int index = eax % count;
 
     while (param2[0x20 + index] != 0) {

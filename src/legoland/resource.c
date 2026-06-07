@@ -45,13 +45,13 @@ struct MasterDirNode *FUN_00489440(char *name) {
     char *copy;
 
     for (node = DAT_00798624; node != 0; node = node->next) {
-        if (__strcmpi(name, node->name) == 0) {
+        if (_stricmp(name, node->name) == 0) {
             return node;
         }
     }
 
-    new_node = (struct MasterDirNode *)_malloc(0xc);
-    copy = (char *)_malloc(strlen(name) + 1);
+    new_node = (struct MasterDirNode *)malloc(0xc);
+    copy = (char *)malloc(strlen(name) + 1);
     new_node->name = copy;
     strcpy(copy, name);
 
@@ -66,7 +66,7 @@ LEGO_EXPORT struct MasterDirNode *GetMasterDirPtr(const char *name) {
     struct MasterDirNode *node;
 
     for (node = DAT_00798624; node != 0; node = node->next) {
-        if (__strcmpi(name, node->name) == 0) {
+        if (_stricmp(name, node->name) == 0) {
             return node;
         }
     }
@@ -78,7 +78,7 @@ LEGO_EXPORT struct MasterVolNode *GetMasterVolPtr(const char *name) {
     struct MasterVolNode *node;
 
     for (node = DAT_00798628; node != 0; node = node->next) {
-        if (__strcmpi(name, node->name) == 0) {
+        if (_stricmp(name, node->name) == 0) {
             return node;
         }
     }
@@ -191,7 +191,7 @@ LEGO_EXPORT int RES_CloseFile(struct ResFile *file) {
     }
 
     RES_CloseVolume(volume);
-    FUN_0049e4d0(file);
+    free(file);
     return 0;
 }
 

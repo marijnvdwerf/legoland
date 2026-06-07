@@ -446,7 +446,7 @@ void FUN_00462c00(struct OverlayParam *param) {
         current = current->next;
     }
     if (OverlayILF != 0) {
-        node = (struct Overlay *)_malloc(0x24);
+        node = (struct Overlay *)malloc(0x24);
         node->next = 0;
         if (current != 0) {
             current->next = node;
@@ -470,7 +470,7 @@ LEGO_EXPORT void ClearOverlays(void) {
     current = OverlayList;
     while (current != 0) {
         next = current->next;
-        FUN_0049e4d0(current);
+        free(current);
         current = next;
     }
     OverlayList = 0;

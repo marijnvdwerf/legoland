@@ -13,7 +13,7 @@ void FUN_00453ce0(const char *format, ...) {
     va_list argptr;
 
     va_start(argptr, format);
-    FUN_0049fdeb(DAT_00667128, format, argptr);
+    vsprintf(DAT_00667128, format, argptr);
     va_end(argptr);
     FUN_00453cd0(DAT_00667128);
 }

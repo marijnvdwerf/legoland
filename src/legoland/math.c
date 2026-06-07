@@ -24,7 +24,7 @@ struct RectNode {
 
 // FUNCTION: LEGOLAND 0x004806a0
 LEGO_EXPORT unsigned int Rand_Max(unsigned int max_value) {
-    return (unsigned int)FUN_0049e4b2() % (max_value + 1);
+    return (unsigned int)rand() % (max_value + 1);
 }
 
 // FUNCTION: LEGOLAND 0x004806c0

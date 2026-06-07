@@ -175,7 +175,7 @@ void FUN_00417cb0(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00417cf0
 void FUN_00417cf0(void *node) {
     FUN_00417bd0(&DAT_004cc02c, node);
-    FUN_0049e4d0(node);
+    free(node);
 }
 
 // FUNCTION: LEGOLAND 0x00417d10
@@ -265,7 +265,7 @@ void FUN_00418260(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x004182a0
 void FUN_004182a0(void *node) {
     FUN_00417bd0(&DAT_004cc030, node);
-    FUN_0049e4d0(node);
+    free(node);
 }
 
 // FUNCTION: LEGOLAND 0x004182c0
@@ -360,7 +360,7 @@ void FUN_00418630(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00418670
 void FUN_00418670(void *node) {
     FUN_00417bd0(&DAT_004cc034, node);
-    FUN_0049e4d0(node);
+    free(node);
 }
 
 // FUNCTION: LEGOLAND 0x00418690
@@ -474,7 +474,7 @@ LEGO_EXPORT int Load_WaterBlock(void) {
         return 0;
     }
     while (count != 0) {
-        node = (struct WaterNode *)_malloc(12);
+        node = (struct WaterNode *)malloc(12);
         if (SaveGameRead(node, 12) == 0) {
             return 0;
         }
@@ -506,7 +506,7 @@ LEGO_EXPORT int Load_ElephantF(void) {
         return 0;
     }
     while (count != 0) {
-        node = (struct WaterNode *)_malloc(12);
+        node = (struct WaterNode *)malloc(12);
         if (SaveGameRead(node, 12) == 0) {
             return 0;
         }

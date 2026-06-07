@@ -115,10 +115,10 @@ void FUN_0046d3c0(struct IconNode *node) {
     }
     if (node->field_34 & 0x80) {
         if (node->field_30) {
-            FUN_0049e4d0(node->field_30);
+            free(node->field_30);
         }
     }
-    FUN_0049e4d0(node);
+    free(node);
     if (FocussedIconPtr == node) {
         FocussedIconPtr = NULL;
     }
@@ -457,7 +457,7 @@ void FUN_0046fb40(unsigned int group) {
         if (icon4) {
             FUN_0046d4e0(icon4);
         }
-        FUN_0049e4d0(icon1->field_30);
+        free(icon1->field_30);
         FUN_0046d4e0(icon1);
         RemoveIconGroup(group);
     }
@@ -480,7 +480,7 @@ LEGO_EXPORT struct TimedIndicator *AllocateTimedIndicator(struct Sprite *sprite,
     struct TimedIndicator *ind;
     struct IconNode *icon;
 
-    ind = _malloc(40);
+    ind = malloc(40);
     ind->next = DAT_006688d4;
     ind->field_4 = 0;
     ind->field_8 = GetGameTimer();
@@ -538,37 +538,37 @@ LEGO_EXPORT void DeleteIndicator(struct Indicator *ind) {
     if ((ind->field_4 & 0x8) != 0) {
         if (DAT_006688d8 == ind) {
             DAT_006688d8 = ((struct Indicator *)DAT_006688d8)->next;
-            FUN_0049e4d0(ind);
+            free(ind);
             return;
         }
         cur = DAT_006688d8;
         while (cur != 0) {
             if (cur->next == ind) {
                 cur->next = ind->next;
-                FUN_0049e4d0(ind);
+                free(ind);
                 return;
             }
             cur = cur->next;
         }
-        FUN_0049e4d0(ind);
+        free(ind);
         return;
     }
 
     if (DAT_006688d4 == ind) {
         DAT_006688d4 = ((struct Indicator *)DAT_006688d4)->next;
-        FUN_0049e4d0(ind);
+        free(ind);
         return;
     }
     cur = DAT_006688d4;
     while (cur != 0) {
         if (cur->next == ind) {
             cur->next = ind->next;
-            FUN_0049e4d0(ind);
+            free(ind);
             return;
         }
         cur = cur->next;
     }
-    FUN_0049e4d0(ind);
+    free(ind);
 }
 
 // FUNCTION: LEGOLAND 0x0046feb0

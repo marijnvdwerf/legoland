@@ -135,7 +135,7 @@ void FUN_004821e0(void) {
     node = (struct DirNode *)DAT_0066b450;
     while (node != NULL) {
         next = node->next;
-        FUN_0049e4d0(node);
+        free(node);
         node = next;
     }
     DAT_0066b450 = NULL;
@@ -149,7 +149,7 @@ void FUN_00482210(void) {
     node = (struct DirNode *)DAT_0066b458;
     while (node != NULL) {
         next = node->next;
-        FUN_0049e4d0(node);
+        free(node);
         node = next;
     }
     DAT_0066b458 = NULL;
@@ -162,7 +162,7 @@ void FUN_00482240(void) { STUB(); }
 struct DirNode *FUN_00482300(unsigned int x, unsigned int y) {
     struct DirNode *node;
 
-    node = _malloc(16);
+    node = malloc(16);
     if (node != NULL) {
         node->next = DAT_0066b458;
         DAT_0066b458 = node;

@@ -189,7 +189,7 @@ void FUN_004597e0(int param0, const char *param1)
     }
 
     if (param1) {
-        _strncpy(buffer, param1, 256);
+        strncpy(buffer, param1, 256);
         buffer[255] = 0;
     } else {
         buffer[0] = 0;

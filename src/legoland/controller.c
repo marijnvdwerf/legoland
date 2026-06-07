@@ -10,7 +10,7 @@ LEGO_EXPORT void SetupControllers(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00451f40
 void FUN_00451f40(void) {
     if (DAT_00667104 != 0) {
-        FUN_0049e4d0(CONTROLLERBUFFER);
+        free(CONTROLLERBUFFER);
         DAT_00667104 = 0;
     }
 }

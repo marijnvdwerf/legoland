@@ -281,7 +281,7 @@ void FUN_00492b20(struct Sample *sample) {
     if (sample != 0) {
         ((struct SampleDefVtbl *)sample->buffer->vtable)->func_8(sample->buffer);
         ((struct SampleCounter *)sample->active)->count--;
-        FUN_0049e4d0(sample);
+        free(sample);
     }
 }
 
@@ -338,10 +338,10 @@ LEGO_EXPORT void DeleteSampleDef(struct SampleDef *def) {
         return;
     }
     DeletePlayableSamples((unsigned int)def);
-    FUN_0049e4d0(def->block_30);
-    FUN_0049e4d0(def->block_34);
+    free(def->block_30);
+    free(def->block_34);
     ((struct SampleDefVtbl *)def->buffer->vtable)->func_8(def->buffer);
-    FUN_0049e4d0(def);
+    free(def);
 }
 
 // FUNCTION: LEGOLAND 0x00492c20

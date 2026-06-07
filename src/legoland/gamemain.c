@@ -165,7 +165,7 @@ void FUN_00478650(unsigned int param_1, unsigned int param_2) {
         return;
     }
     // STRING: LEGOLAND 0x004bb9ec
-    if (__strcmpi(entry->name, "PURGE") == 0) {
+    if (_stricmp(entry->name, "PURGE") == 0) {
         DAT_00669050 |= 0x8;
     } else {
         DAT_00669050 &= 0xf7;
@@ -194,10 +194,10 @@ unsigned int FUN_004786c0(unsigned int param_1, unsigned int param_2, unsigned i
 void FUN_00478700(int *param_1, char **param_2, int param_3) {
     int temp;
 
-    param_1[0] = FUN_004a04b9(param_2[param_3 + 0]);
-    param_1[1] = FUN_004a04b9(param_2[param_3 + 1]);
-    param_1[2] = FUN_004a04b9(param_2[param_3 + 2]);
-    param_1[3] = FUN_004a04b9(param_2[param_3 + 3]);
+    param_1[0] = atoi(param_2[param_3 + 0]);
+    param_1[1] = atoi(param_2[param_3 + 1]);
+    param_1[2] = atoi(param_2[param_3 + 2]);
+    param_1[3] = atoi(param_2[param_3 + 3]);
 
     if (param_1[0] > param_1[2]) {
         temp = param_1[0];
@@ -213,8 +213,8 @@ void FUN_00478700(int *param_1, char **param_2, int param_3) {
 
 // FUNCTION: LEGOLAND 0x00478770
 void FUN_00478770(int *param_1, char **param_2, int param_3) {
-    param_1[0] = FUN_004a04b9(param_2[param_3 + 0]);
-    param_1[1] = FUN_004a04b9(param_2[param_3 + 1]);
+    param_1[0] = atoi(param_2[param_3 + 0]);
+    param_1[1] = atoi(param_2[param_3 + 1]);
 }
 
 // FUNCTION: LEGOLAND 0x004787a0

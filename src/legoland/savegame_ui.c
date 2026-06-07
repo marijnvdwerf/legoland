@@ -23,17 +23,17 @@ LEGO_EXPORT int LoadDateIntoTempProfile(int a1, int a2) {
     void *file;
 
     // STRING: LEGOLAND 0x004bf2bc
-    FUN_0049e573(buffer, "profiles\\%dsave%d.sh", a1, a2);
+    sprintf(buffer, "profiles\\%dsave%d.sh", a1, a2);
 
     if (!Goto_ProfileDir()) {
         return 0;
     }
 
     // STRING: LEGOLAND 0x004bf2b8
-    file = FUN_0049f330(buffer, "r");
+    file = fopen(buffer, "r");
     if (file != 0) {
-        FUN_0049f044(&DAT_007cad60, 0x110, 1, file);
-        FUN_0049efee(file);
+        fread(&DAT_007cad60, 0x110, 1, file);
+        fclose(file);
         ReturnFrom_ProfileDir();
         return 1;
     }
@@ -126,7 +126,7 @@ LEGO_EXPORT void DeleteSavedGameList(void) {
     struct SaveNode *current = (struct SaveNode *)DAT_00798734;
     while (current != NULL) {
         struct SaveNode *next = current->next;
-        FUN_0049e4d0(current);
+        free(current);
         current = next;
     }
     DAT_00798734 = NULL;

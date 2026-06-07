@@ -255,7 +255,7 @@ void FUN_00408f90(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00409010
 void *FUN_00409010(void) {
-    void *block = _malloc(0x38);
+    void *block = malloc(0x38);
     if (block != NULL) {
         memset(block, 0, 0x38);
     }
@@ -270,7 +270,7 @@ void FUN_00409040(struct Node *node, struct Node *insert) {
     insert->next = node;
     if (node->prev != NULL) {
         // STRING: LEGOLAND 0x004b48e0
-        FUN_0049e5c5("bug");
+        printf("bug");
     }
     node->prev = insert;
 }
@@ -282,7 +282,7 @@ void FUN_00409080(struct Node *node, struct Node *insert) {
     }
     insert->prev = node;
     if (node->next != NULL) {
-        FUN_0049e5c5("bug");
+        printf("bug");
     }
     node->next = insert;
 }
@@ -708,10 +708,10 @@ void FUN_0040a410(void) {
             struct ChainNode *chain = current->chain;
             while (chain != NULL) {
                 struct ChainNode *next_chain = chain->next;
-                FUN_0049e4d0(chain);
+                free(chain);
                 chain = next_chain;
             }
-            FUN_0049e4d0(current);
+            free(current);
             current = next;
         }
         DAT_004cbe84 = current;
@@ -1760,7 +1760,7 @@ void FUN_00410c10(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00410d60
 void FUN_00410d60(struct FlumeObj *flume, struct FlumeVtbl *vtbl) {
-    if (__strcmpi("LOG FLUME ENTRANCE", flume->name) == 0) {
+    if (_stricmp("LOG FLUME ENTRANCE", flume->name) == 0) {
         vtbl->var_a4 = FUN_0040a2e0;
         vtbl->var_8c = FUN_0040a540;
         vtbl->var_90 = FUN_0040a930;
@@ -1776,7 +1776,7 @@ void FUN_00410d60(struct FlumeObj *flume, struct FlumeVtbl *vtbl) {
         return;
     }
     // STRING: LEGOLAND 0x004b4ba4
-    if (__strcmpi("LOG FLUME TRACK", flume->name) == 0) {
+    if (_stricmp("LOG FLUME TRACK", flume->name) == 0) {
         DAT_0082c688 = flume->field_c;
         vtbl->var_a4 = FUN_0040c350;
         vtbl->var_8c = FUN_0040dbb0;
@@ -1790,7 +1790,7 @@ void FUN_00410d60(struct FlumeObj *flume, struct FlumeVtbl *vtbl) {
         return;
     }
     // STRING: LEGOLAND 0x004b4b88
-    if (__strcmpi("LOG FLUME SPECIAL CORNER 1", flume->name) == 0) {
+    if (_stricmp("LOG FLUME SPECIAL CORNER 1", flume->name) == 0) {
         vtbl->var_a4 = FUN_0040e8b0;
         vtbl->var_8c = FUN_0040e630;
         vtbl->var_a0 = FUN_0040ed50;
@@ -1803,7 +1803,7 @@ void FUN_00410d60(struct FlumeObj *flume, struct FlumeVtbl *vtbl) {
         return;
     }
     // STRING: LEGOLAND 0x004b4b6c
-    if (__strcmpi("LOG FLUME SPECIAL CORNER 2", flume->name) == 0) {
+    if (_stricmp("LOG FLUME SPECIAL CORNER 2", flume->name) == 0) {
         vtbl->var_a4 = FUN_0040e920;
         vtbl->var_8c = FUN_0040e660;
         vtbl->var_a0 = FUN_0040ed50;
@@ -1816,7 +1816,7 @@ void FUN_00410d60(struct FlumeObj *flume, struct FlumeVtbl *vtbl) {
         return;
     }
     // STRING: LEGOLAND 0x004b4b50
-    if (__strcmpi("LOG FLUME SPECIAL CORNER 3", flume->name) == 0) {
+    if (_stricmp("LOG FLUME SPECIAL CORNER 3", flume->name) == 0) {
         vtbl->var_a4 = FUN_0040e970;
         vtbl->var_8c = FUN_0040e690;
         vtbl->var_a0 = FUN_0040ed50;
@@ -1829,7 +1829,7 @@ void FUN_00410d60(struct FlumeObj *flume, struct FlumeVtbl *vtbl) {
         return;
     }
     // STRING: LEGOLAND 0x004b4b34
-    if (__strcmpi("LOG FLUME SPECIAL CORNER 4", flume->name) == 0) {
+    if (_stricmp("LOG FLUME SPECIAL CORNER 4", flume->name) == 0) {
         vtbl->var_a4 = FUN_0040e9e0;
         vtbl->var_8c = FUN_0040e6c0;
         vtbl->var_a0 = FUN_0040ed50;
@@ -1842,7 +1842,7 @@ void FUN_00410d60(struct FlumeObj *flume, struct FlumeVtbl *vtbl) {
         return;
     }
     // STRING: LEGOLAND 0x004b4b24
-    if (__strcmpi("LOG FLUME CSAW", flume->name) == 0) {
+    if (_stricmp("LOG FLUME CSAW", flume->name) == 0) {
         vtbl->var_a4 = FUN_0040f8b0;
         vtbl->var_8c = FUN_0040fa00;
         vtbl->var_a0 = FUN_0040ed50;
@@ -1855,7 +1855,7 @@ void FUN_00410d60(struct FlumeObj *flume, struct FlumeVtbl *vtbl) {
         return;
     }
     // STRING: LEGOLAND 0x004b4b10
-    if (__strcmpi("LOG FLUME TUNNEL", flume->name) == 0) {
+    if (_stricmp("LOG FLUME TUNNEL", flume->name) == 0) {
         vtbl->var_a4 = FUN_0040f3e0;
         vtbl->var_8c = FUN_0040f4f0;
         vtbl->var_a0 = FUN_0040ed50;
@@ -1868,7 +1868,7 @@ void FUN_00410d60(struct FlumeObj *flume, struct FlumeVtbl *vtbl) {
         return;
     }
     // STRING: LEGOLAND 0x004b4b00
-    if (__strcmpi("LOG FLUME DROP", flume->name) == 0) {
+    if (_stricmp("LOG FLUME DROP", flume->name) == 0) {
         vtbl->var_a4 = FUN_004103e0;
         vtbl->var_8c = FUN_004106e0;
         vtbl->var_a0 = FUN_0040ed50;
@@ -1881,7 +1881,7 @@ void FUN_00410d60(struct FlumeObj *flume, struct FlumeVtbl *vtbl) {
         return;
     }
     // STRING: LEGOLAND 0x004b4aec
-    if (__strcmpi("LOG FLUME HOLD UP", flume->name) == 0) {
+    if (_stricmp("LOG FLUME HOLD UP", flume->name) == 0) {
         vtbl->var_a4 = FUN_0040ff30;
         vtbl->var_8c = FUN_004100b0;
         vtbl->var_a0 = FUN_0040ed50;

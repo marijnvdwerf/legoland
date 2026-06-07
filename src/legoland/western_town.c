@@ -155,7 +155,7 @@ LEGO_EXPORT unsigned int LoadJailCells(void) {
         return 0;
     }
     while (marker != 0) {
-        struct JailCell *cell = _malloc(0x1c);
+        struct JailCell *cell = malloc(0x1c);
         if (SaveGameRead(cell, 0x1c) == 0) {
             return 0;
         }

@@ -108,7 +108,7 @@ void FUN_00485f60(void)
 {
     DAT_0066be40 = 0x80;
     DAT_0066be44 = 0x78;
-    DAT_00701e5c = (unsigned int)_malloc(0xf000);
+    DAT_00701e5c = (unsigned int)malloc(0xf000);
     DAT_0066be4c = DAT_0066be40 * 4;
 }
 
@@ -116,7 +116,7 @@ void FUN_00485f60(void)
 void FUN_00485fa0(void)
 {
     if (DAT_00701e5c != 0) {
-        FUN_0049e4d0((void *)DAT_00701e5c);
+        free((void *)DAT_00701e5c);
     }
 }
 

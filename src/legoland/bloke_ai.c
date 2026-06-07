@@ -73,8 +73,8 @@ void FUN_0044ea50(void) {
     bloke = MakeBloke(0);
     if (bloke != 0) {
         DAT_006661c8 = 0;
-        bloke->field_72 = FUN_0049e4b2() & 0x7;
-        bloke->field_74 = FUN_0049e4b2() & 0x7;
+        bloke->field_72 = rand() & 0x7;
+        bloke->field_74 = rand() & 0x7;
         bloke->field_75 = 1;
         InitBlokeAI(bloke);
     }

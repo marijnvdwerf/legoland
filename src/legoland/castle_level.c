@@ -63,7 +63,7 @@ void FUN_00403060(unsigned int param1, unsigned int param2) {
 // FUNCTION: LEGOLAND 0x00403080
 void FUN_00403080(const char **name, struct CastleLevelInterface *ci) {
     // STRING: LEGOLAND 0x004b408c
-    if (__strcmpi("CASTLE LEVEL 1", *name) == 0) {
+    if (_stricmp("CASTLE LEVEL 1", *name) == 0) {
         ci->field_a4 = FUN_00402ca0;
         ci->field_ac = FUN_00402ce0;
         ci->field_8c = FUN_00402ff0;

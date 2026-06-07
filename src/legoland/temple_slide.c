@@ -172,7 +172,7 @@ LEGO_EXPORT void LoadTempleSlide(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00417a00
 LEGO_EXPORT void TempleSlide_GetInterfaces(const char **ctx, struct TempleSlideObject *interfaces) {
     // STRING: LEGOLAND 0x004b4f8c
-    if (__strcmpi("TEMPLE SLIDE", *ctx) == 0) {
+    if (_stricmp("TEMPLE SLIDE", *ctx) == 0) {
         interfaces->field_a4 = FUN_00417150;
         interfaces->field_ac = FUN_00417200;
         interfaces->field_8c = FUN_00417240;

@@ -59,7 +59,7 @@ int FUN_00499560(void) {
 
 // FUNCTION: LEGOLAND 0x00499570
 void *FUN_00499570(void) {
-    struct WorkOrder *node = FUN_004a020e(0x3c, 1);
+    struct WorkOrder *node = calloc(0x3c, 1);
     // STRING: LEGOLAND 0x004bff88
     DBPrintf("Allocated Workorder %x\n", node);
     if (DAT_0079a8b4 == 0) {
@@ -76,7 +76,7 @@ void *FUN_00499570(void) {
 
 // FUNCTION: LEGOLAND 0x004995d0
 void *FUN_004995d0(void) {
-    struct WorkOrder *node = FUN_004a020e(0x3c, 1);
+    struct WorkOrder *node = calloc(0x3c, 1);
     if (DAT_0079a8c4 == 0) {
         DAT_0079a8c4 = node;
         DAT_0079a8c8++;
@@ -213,8 +213,8 @@ void FUN_00499d60(void *order) { STUB(); }
 // FUNCTION: LEGOLAND 0x00499e30
 void FUN_00499e30(struct WorkOrder *order) {
     FUN_00499d60(order);
-    FUN_0049e4d0(order->var_10);
-    FUN_0049e4d0(order);
+    free(order->var_10);
+    free(order);
     DAT_0079a8b8--;
 }
 

@@ -441,7 +441,7 @@ LEGO_EXPORT void DelObjectList(void) {
     current = (struct ListNode *)DAT_00668e40;
     while (current != NULL) {
         next = current->next;
-        FUN_0049e4d0(current);
+        free(current);
         current = next;
     }
     DAT_00668e40 = NULL;
@@ -665,7 +665,7 @@ LEGO_EXPORT void DeleteReseachList(void) {
     current = (struct ResearchNode *)DAT_00668ed8;
     while (current != NULL) {
         next = current->next;
-        FUN_0049e4d0(current);
+        free(current);
         current = next;
     }
     DAT_00668ed8 = NULL;

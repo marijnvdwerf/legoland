@@ -20,7 +20,7 @@ LEGO_EXPORT void LoadBinV(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0044dd60
 LEGO_EXPORT void FreeBinV(void *binv) {
     if (binv != NULL) {
-        FUN_0049e4d0(binv);
+        free(binv);
     }
 }
 

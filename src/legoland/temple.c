@@ -70,7 +70,7 @@ void FUN_00416e20(struct TempleObject *a1, void *a2, unsigned int a3) {
 // FUNCTION: LEGOLAND 0x00416e50
 void FUN_00416e50(const char **str, struct TempleObj *obj) {
     // STRING: LEGOLAND 0x004b4ef0
-    if (__strcmpi("TEMPLE", *str) == 0) {
+    if (_stricmp("TEMPLE", *str) == 0) {
         obj->field_a4 = FUN_004169c0;
         obj->field_ac = FUN_00416a30;
         obj->field_8c = FUN_00416dc0;

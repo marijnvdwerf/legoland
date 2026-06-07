@@ -194,7 +194,7 @@ LEGO_EXPORT void Catapult_Load(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00403bb0
 void FUN_00403bb0(const char **name, struct CatapultInterface *ci) {
     // STRING: LEGOLAND 0x004b412c
-    if (__strcmpi("CATAPULT", *name) == 0) {
+    if (_stricmp("CATAPULT", *name) == 0) {
         ci->field_a4 = (CatapultVtblFn)FUN_004031e0;
         ci->field_ac = (CatapultVtblFn)FUN_00403250;
         ci->field_8c = (CatapultVtblFn)FUN_00403930;

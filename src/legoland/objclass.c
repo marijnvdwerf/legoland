@@ -112,7 +112,7 @@ struct ObjInstance {
 LEGO_EXPORT struct ObjectClass *AddNewObjectClass(void) {
     struct ObjectClass *cls;
 
-    cls = (struct ObjectClass *)_malloc(0xd0);
+    cls = (struct ObjectClass *)malloc(0xd0);
     memset(cls, 0, 0xd0);
     if (cls == 0) {
         return cls;
@@ -131,7 +131,7 @@ void FUN_004809d0(struct ObjectClass *cls) { STUB(); }
 // FUNCTION: LEGOLAND 0x00480aa0
 void FUN_00480aa0(struct ObjClassNames *names, struct ObjectInfo *info) {
     // STRING: LEGOLAND 0x004bce90
-    if (__strcmpi(names->name, "Water Works Shower") == 0) {
+    if (_stricmp(names->name, "Water Works Shower") == 0) {
         info->field_c = 1;
         info->field_10 = 0;
         info->field_24 = 1;
@@ -139,7 +139,7 @@ void FUN_00480aa0(struct ObjClassNames *names, struct ObjectInfo *info) {
         return;
     }
     // STRING: LEGOLAND 0x004b9828
-    if (__strcmpi(names->name, "Water Works Water Block") == 0) {
+    if (_stricmp(names->name, "Water Works Water Block") == 0) {
         info->field_c = 1;
         info->field_10 = 0;
         info->field_24 = 1;
@@ -148,7 +148,7 @@ void FUN_00480aa0(struct ObjClassNames *names, struct ObjectInfo *info) {
         return;
     }
     // STRING: LEGOLAND 0x004b9840
-    if (__strcmpi(names->name, "Water Works Elephant Fountain") == 0) {
+    if (_stricmp(names->name, "Water Works Elephant Fountain") == 0) {
         info->field_c = 6;
         info->field_10 = 2;
         info->field_24 = 6;
@@ -251,7 +251,7 @@ LEGO_EXPORT void AllocBlokeCounters(unsigned int size) {
 
     for (cls = ObjectClassList; cls != 0; cls = cls->next) {
         if (cls->flags != 0 && cls->flags != 2) {
-            cls->counters = _malloc(size);
+            cls->counters = malloc(size);
         } else {
             cls->counters = 0;
         }
@@ -264,7 +264,7 @@ LEGO_EXPORT void FreeBlokeCounters(void) {
 
     for (cls = ObjectClassList; cls != 0; cls = cls->next) {
         if (cls->counters != 0) {
-            FUN_0049e4d0(cls->counters);
+            free(cls->counters);
             cls->counters = 0;
         }
     }
@@ -360,7 +360,7 @@ LEGO_EXPORT void ResetBestPtr(void) {
 LEGO_EXPORT struct ObjInstance *CreateObjectInstance(unsigned int param_1, unsigned short *param_2) {
     struct ObjInstance *obj;
 
-    obj = (struct ObjInstance *)_malloc(0x14);
+    obj = (struct ObjInstance *)malloc(0x14);
     if (obj != 0) {
         memset(obj, 0, 0x14);
         obj->uid = *param_2;
@@ -392,7 +392,7 @@ unsigned int FUN_00481720(void) {
 struct BestNode *FUN_00481730(void) {
     struct BestNode *node;
 
-    node = (struct BestNode *)_malloc(0x24);
+    node = (struct BestNode *)malloc(0x24);
     node->field_20 = 0;
     node->field_1c = 0;
     node->next = DAT_0066b44c;
@@ -406,12 +406,12 @@ void FUN_00481750(struct BestNode *node) {
 
     if (DAT_0066b44c == node) {
         DAT_0066b44c = node->next;
-        FUN_0049e4d0(node);
+        free(node);
     } else {
         for (current = DAT_0066b44c; current->next != 0; current = current->next) {
             if (current->next == node) {
                 current->next = node->next;
-                FUN_0049e4d0(node);
+                free(node);
                 return;
             }
         }

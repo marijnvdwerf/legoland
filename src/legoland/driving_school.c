@@ -121,21 +121,21 @@ void FUN_00405460(void) {
 
     while (DAT_004cbeac != NULL) {
         void *next = ((struct Node0 *)DAT_004cbeac)->next;
-        FUN_0049e4d0((unsigned int)DAT_004cbeac);
+        free((unsigned int)DAT_004cbeac);
         DAT_004cbeac = (struct RideQueueEntry *)next;
     }
 
     while (DAT_004c11bc != NULL) {
         void *next = ((struct Node8 *)DAT_004c11bc)->next;
-        FUN_0049e4d0((unsigned int)DAT_004c11bc);
+        free((unsigned int)DAT_004c11bc);
         DAT_004c11bc = next;
     }
 
     Kill_FXList(DRIVING_SCHOOL_SFX, 6);
     KillSprite(DAT_0082c6c0);
-    FUN_0049e4d0(DAT_0082c6bc);
-    FUN_0049e4d0(DAT_0082c6b8);
-    FUN_0049e4d0(DAT_0082c690);
+    free(DAT_0082c6bc);
+    free(DAT_0082c6b8);
+    free(DAT_0082c690);
     KillSprite(DAT_00830f94);
     DAT_0082c694 = 0;
 }

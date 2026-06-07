@@ -152,7 +152,7 @@ LEGO_EXPORT void LoadJoust(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00408db0
 LEGO_EXPORT void Joust_GetInterfaces(const char **interface_name, struct JoustInterface *pInterface) {
     // STRING: LEGOLAND 0x004b4718
-    if (__strcmpi("JOUST", *interface_name) == 0) {
+    if (_stricmp("JOUST", *interface_name) == 0) {
         pInterface->field_a4 = (JoustMethod)FUN_00407b50;
         pInterface->field_ac = (JoustMethod)FUN_00408c00;
         pInterface->field_8c = (JoustMethod)FUN_00408bc0;

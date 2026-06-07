@@ -43,7 +43,7 @@ struct MapElement {
 
 // FUNCTION: LEGOLAND 0x00468810
 void FUN_00468810(char *name) {
-    _strncpy(DAT_0066869c, name, 0x80);
+    strncpy(DAT_0066869c, name, 0x80);
     DAT_0066869c[0x7f] = 0;
 }
 
@@ -101,7 +101,7 @@ void FUN_004688f0(int index, unsigned char param_2) {
 struct ObjectiveEvent *FUN_00468910(unsigned int type, int sort_key) {
     struct ObjectiveEvent *event;
 
-    event = (struct ObjectiveEvent *)FUN_004a020e(1, 0x44);
+    event = (struct ObjectiveEvent *)calloc(1, 0x44);
     if (event != NULL) {
         event->next = NULL;
         event->field_8 = 0;
@@ -115,10 +115,10 @@ struct ObjectiveEvent *FUN_00468910(unsigned int type, int sort_key) {
 void FUN_00468940(struct ObjectiveEvent *event) {
     if (event->flags_10 & 0x20) {
         if (event->field_8 != 0) {
-            FUN_0049e4d0((void *)event->field_8);
+            free((void *)event->field_8);
         }
     }
-    FUN_0049e4d0(event);
+    free(event);
 }
 
 // FUNCTION: LEGOLAND 0x00468970

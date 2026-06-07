@@ -146,7 +146,7 @@ LEGO_EXPORT void PopTarget(void) {
     if (renderEngineTargetIdx >= 0) {
         return;
     }
-    FUN_004a02b8(2);
+    exit(2);
 }
 
 // FUNCTION: LEGOLAND 0x00466640
@@ -187,6 +187,6 @@ void FUN_00468410(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004687f0
 void FUN_004687f0(const char *param_1) {
-    _strncpy((char *)&DAT_0066861c, param_1, 0x80);
+    strncpy((char *)&DAT_0066861c, param_1, 0x80);
     DAT_0066869b = 0;
 }

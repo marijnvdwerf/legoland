@@ -36,7 +36,7 @@ struct SafariObject {
 
 // FUNCTION: LEGOLAND 0x004149c0
 void FUN_004149c0(struct SafariNode *param) {
-    struct SafariNode *s = (struct SafariNode *)_malloc(sizeof(struct SafariNode));
+    struct SafariNode *s = (struct SafariNode *)malloc(sizeof(struct SafariNode));
     if (s) {
         memset(s, 0, sizeof(struct SafariNode));
         s->field_0 = param->field_0;

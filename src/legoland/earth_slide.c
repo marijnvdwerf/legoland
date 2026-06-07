@@ -82,7 +82,7 @@ struct ListNodeC {
 // FUNCTION: LEGOLAND 0x0042cd70
 void FUN_0042cd70(unsigned short *a1)
 {
-    struct EarthNode *v = (struct EarthNode *)_malloc(0x24);
+    struct EarthNode *v = (struct EarthNode *)malloc(0x24);
     if (v != NULL) {
         memset(v, 0, 0x24);
         v->field_0 = *a1;

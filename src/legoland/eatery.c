@@ -253,7 +253,7 @@ void FUN_0042ef70(struct BlokeNode *node) {
             current->next = node->next;
         }
     }
-    FUN_0049e4d0(node);
+    free(node);
 }
 
 // FUNCTION: LEGOLAND 0x0042efb0
@@ -530,7 +530,7 @@ int FUN_00432400(void) {
         return 1;
     }
     while (count != 0) {
-        current = _malloc(64);
+        current = malloc(64);
         if (!SaveGameRead(current, 64)) {
             return 0;
         }

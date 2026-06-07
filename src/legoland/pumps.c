@@ -54,7 +54,7 @@ void FUN_00411ad0(struct PumpNode *node) {
 
     if (DAT_004cbea4) {
         next = node->next;
-        FUN_0049e4d0(node);
+        free(node);
         if (DAT_004cbea4 == node) {
             DAT_004cbea4 = next;
         } else {

@@ -144,7 +144,7 @@ void FUN_00413a80(void) {
 
     while (entry != NULL) {
         next = entry->next;
-        FUN_0049e4d0(entry);
+        free(entry);
         entry = next;
     }
 }

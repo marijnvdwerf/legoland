@@ -622,7 +622,7 @@ void FUN_0046b2d0(void) { STUB(); }
 struct NerpsListNode *FUN_0046b4f0(unsigned int param_1) {
     struct NerpsListNode *node;
 
-    node = (struct NerpsListNode *)_malloc(0x14);
+    node = (struct NerpsListNode *)malloc(0x14);
     if (node != NULL) {
         node->field_8 = 0;
         node->field_4 = param_1;
@@ -650,9 +650,9 @@ void FUN_0046b520(struct WrapperNode *node) {
         FUN_00468970(node->field_10);
     }
     if (node->field_8 != NULL) {
-        FUN_0049e4d0(node->field_8);
+        free(node->field_8);
     }
-    FUN_0049e4d0(node);
+    free(node);
 }
 
 // FUNCTION: LEGOLAND 0x0046b560

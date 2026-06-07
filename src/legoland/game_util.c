@@ -209,7 +209,7 @@ int FUN_004791f0(struct CommandArgs *arg, int argc) {
     if (argc <= 1) {
         count = 1;
     } else {
-        count = FUN_004a04b9(arg->field_8);
+        count = atoi(arg->field_8);
         if (count == 0) {
             count = 1;
         }
@@ -245,9 +245,9 @@ int FUN_00479450(struct CommandArgs *arg, int argc) {
         return 0;
     }
     id = ElemID((const char *)arg->field_4);
-    v1 = FUN_004a04b9(arg->field_8);
+    v1 = atoi(arg->field_8);
     if (argc >= 3) {
-        v2 = FUN_004a04b9(arg->field_c);
+        v2 = atoi(arg->field_c);
     } else {
         v2 = 0;
     }
@@ -281,7 +281,7 @@ int FUN_004796d0(struct CommandArgs *arg, int argc) {
         return 0;
     }
     id = ElemID((const char *)arg->field_4);
-    count = FUN_004a04b9(arg->field_8);
+    count = atoi(arg->field_8);
     if (count == 0) {
         count = 1;
     }
@@ -305,7 +305,7 @@ int FUN_00479800(struct CommandArgs *arg, int argc) {
     if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
         return 0;
     }
-    FUN_0046c090(DAT_00669050, FUN_004a04b9((char *)arg->field_4));
+    FUN_0046c090(DAT_00669050, atoi((char *)arg->field_4));
     return 1;
 }
 
@@ -321,7 +321,7 @@ int FUN_00479850(struct CommandArgs *arg, int argc) {
         return 0;
     }
     id = ElemID((const char *)arg->field_4);
-    value = FUN_004a04b9(arg->field_8);
+    value = atoi(arg->field_8);
     if (id != 0) {
         FUN_0046c0c0(DAT_00669050, id, value);
     }
@@ -341,7 +341,7 @@ int FUN_00479930(struct CommandArgs *arg, int argc) {
     if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
         return 0;
     }
-    value = FUN_004a04b9((char *)arg->field_4);
+    value = atoi((char *)arg->field_4);
     FUN_0046c120(DAT_00669050, value);
     return 1;
 }
@@ -375,7 +375,7 @@ int FUN_00479cb0(struct CommandArgs *arg, int argc) {
     if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
         return 0;
     }
-    FUN_0046c290(DAT_00669050, FUN_004a04b9((char *)arg->field_4));
+    FUN_0046c290(DAT_00669050, atoi((char *)arg->field_4));
     return 1;
 }
 
@@ -390,7 +390,7 @@ int FUN_00479d60(struct CommandArgs *arg, int argc) {
     if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
         return 0;
     }
-    FUN_0046c2f0(DAT_00669050, FUN_004a04b9((char *)arg->field_4));
+    FUN_0046c2f0(DAT_00669050, atoi((char *)arg->field_4));
     return 1;
 }
 
@@ -402,7 +402,7 @@ int FUN_00479db0(struct CommandArgs *arg, int argc) {
     if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
         return 0;
     }
-    FUN_0046c320(DAT_00669050, FUN_004a04b9((char *)arg->field_4));
+    FUN_0046c320(DAT_00669050, atoi((char *)arg->field_4));
     return 1;
 }
 
@@ -420,8 +420,8 @@ int FUN_00479e80(struct CommandArgs *arg, int argc) {
     if (FUN_004786c0((unsigned int)arg, argc, 2, 2) == 0) {
         return 0;
     }
-    n1 = FUN_004a04b9((char *)arg->field_4);
-    n2 = FUN_004a04b9(arg->field_8);
+    n1 = atoi((char *)arg->field_4);
+    n2 = atoi(arg->field_8);
     FUN_0046c390(DAT_00669050, n1, n2);
     return 1;
 }
@@ -434,7 +434,7 @@ int FUN_00479ee0(struct CommandArgs *arg, int argc) {
     if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
         return 0;
     }
-    FUN_0046c3c0(DAT_00669050, FUN_004a04b9((char *)arg->field_4));
+    FUN_0046c3c0(DAT_00669050, atoi((char *)arg->field_4));
     return 1;
 }
 
@@ -452,9 +452,9 @@ int FUN_00479fa0(struct CommandArgs *arg, int argc) {
     if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
         return 0;
     }
-    n1 = FUN_004a04b9((char *)arg->field_4);
+    n1 = atoi((char *)arg->field_4);
     if (argc >= 2) {
-        n2 = FUN_004a04b9(arg->field_8);
+        n2 = atoi(arg->field_8);
     } else {
         n2 = 1;
     }
@@ -476,9 +476,9 @@ int FUN_0047a0b0(char **argv, int argc) {
     if (FUN_004786c0((unsigned int)argv, argc, 5, 1) == 0) {
         return 0;
     }
-    v1 = FUN_004a04b9(argv[1]);
+    v1 = atoi(argv[1]);
     if (argc >= 2) {
-        v2 = FUN_004a04b9(argv[2]);
+        v2 = atoi(argv[2]);
     } else {
         v2 = 1;
     }
@@ -522,7 +522,7 @@ int FUN_0047a480(struct CommandArgs *arg, int argc) {
     id = ElemID((const char *)arg->field_4);
     if (argc >= 2) {
         // STRING: LEGOLAND 0x004bc0c4
-        if (__strcmpi(arg->field_8, "NOPOPUP") == 0) {
+        if (_stricmp(arg->field_8, "NOPOPUP") == 0) {
             popup = 0;
         }
     }
@@ -614,7 +614,7 @@ int FUN_0047aa90(struct CommandArgs *arg, int argc) {
     if (FUN_004786c0((unsigned int)arg, argc, 1, 2) == 0) {
         return 0;
     }
-    n = FUN_004a04b9(arg->field_8);
+    n = atoi(arg->field_8);
     r = FUN_004781b0((char *)arg->field_4, &DAT_004bb688, 13);
     if (r == -1) {
         return 0;
@@ -635,7 +635,7 @@ int FUN_0047ab00(struct CommandArgs *arg, int argc) {
         return 0;
     }
     index = FUN_004781b0((char *)arg->field_4, &DAT_004bb6bc, 6);
-    value = FUN_004a04b9(arg->field_8);
+    value = atoi(arg->field_8);
     if (index == -1) {
         return 0;
     }
@@ -669,7 +669,7 @@ int FUN_0047ad40(struct CommandArgs *arg, int argc) {
     if (FUN_004786c0((unsigned int)arg, argc, 5, 1) == 0) {
         return 0;
     }
-    value = FUN_004a04b9((char *)arg->field_4);
+    value = atoi((char *)arg->field_4);
     if (DAT_00669054 == 1) {
         DAT_00832924 = value;
     } else {

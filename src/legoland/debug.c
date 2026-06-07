@@ -45,7 +45,7 @@ int FUN_0047f880(void) {
         DAT_007fd640[i] = RES_OpenVolume(DAT_004bcba4[i]);
         if (DAT_007fd640[i] == NULL) {
             // STRING: LEGOLAND 0x004bcd28
-            FUN_0049e573(buffer, "Failed to open resource %s", DAT_004bcba4[i]);
+            sprintf(buffer, "Failed to open resource %s", DAT_004bcba4[i]);
             // STRING: LEGOLAND 0x004bcd18
             MessageBoxA(GetDesktopWindow(), buffer, "LEGOLAND Error", 0x30);
             for (j = 0; j < i; j++) {
@@ -173,27 +173,27 @@ char *FUN_0047fc40(const char *haystack, const char *needle) {
     char *upper_needle;
     char *match;
 
-    upper_haystack = (char *)_malloc(strlen(haystack) + 1);
+    upper_haystack = (char *)malloc(strlen(haystack) + 1);
     if (upper_haystack == NULL) {
         return NULL;
     }
     strcpy(upper_haystack, haystack);
-    FUN_004a0600(upper_haystack);
+    _strupr(upper_haystack);
 
-    upper_needle = (char *)_malloc(strlen(needle) + 1);
+    upper_needle = (char *)malloc(strlen(needle) + 1);
     if (upper_needle == NULL) {
-        FUN_0049e4d0(upper_haystack);
+        free(upper_haystack);
         return NULL;
     }
     strcpy(upper_needle, needle);
-    FUN_004a0600(upper_needle);
+    _strupr(upper_needle);
 
-    match = _strstr(upper_haystack, upper_needle);
+    match = strstr(upper_haystack, upper_needle);
     if (match != NULL) {
         match = (char *)(haystack + (match - upper_haystack));
     }
-    FUN_0049e4d0(upper_haystack);
-    FUN_0049e4d0(upper_needle);
+    free(upper_haystack);
+    free(upper_needle);
     return match;
 }
 

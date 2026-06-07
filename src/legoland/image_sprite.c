@@ -142,7 +142,7 @@ int FUN_00497020(unsigned int value) {
         *entry = 0;
         DAT_0079a7cc--;
         if (DAT_0079a7cc == 0) {
-            FUN_0049e4d0(DAT_0079a7c4);
+            free(DAT_0079a7c4);
             DAT_0079a7c4 = NULL;
         }
         return 1;
@@ -234,7 +234,7 @@ LEGO_EXPORT struct Image *LoadSourceImage(unsigned int a, unsigned int b) {
 // FUNCTION: LEGOLAND 0x00497340
 LEGO_EXPORT int ReloadImageBitmap(struct Image *image) {
     if (image->field_4 != NULL) {
-        FUN_0049e4d0(image->field_4);
+        free(image->field_4);
     }
     if (image->field_0 != 0) {
         FreeBitmapResources(image);
@@ -260,15 +260,15 @@ LEGO_EXPORT int KillImage(struct Image *image) {
             LLSStop(image->field_0);
         }
         if (image->field_0 != 0) {
-            FUN_0049e4d0((void *)image->field_0);
+            free((void *)image->field_0);
         }
         if (image->field_4 != NULL) {
-            FUN_0049e4d0(image->field_4);
+            free(image->field_4);
         }
         if (image->field_e == 1) {
             FUN_00497020((unsigned int)image);
         }
-        FUN_0049e4d0(image);
+        free(image);
         return 1;
     }
     return 0;
@@ -278,7 +278,7 @@ LEGO_EXPORT int KillImage(struct Image *image) {
 struct Sprite *FUN_00497580(void) {
     struct Sprite *sprite;
 
-    sprite = (struct Sprite *)_malloc(0x20);
+    sprite = (struct Sprite *)malloc(0x20);
     if (sprite != NULL) {
         sprite->next = DAT_0079a7c0;
         DAT_0079a7c0 = sprite;
@@ -293,7 +293,7 @@ void FUN_004975b0(void) { STUB(); }
 LEGO_EXPORT void FreeBitmapResources(struct Image *image) {
     if (image->field_0 != 0) {
         LLSStop(image->field_0);
-        FUN_0049e4d0((void *)image->field_0);
+        free((void *)image->field_0);
         image->field_0 = 0;
     }
 }
@@ -528,7 +528,7 @@ void FUN_00498100(void) {
 
 // FUNCTION: LEGOLAND 0x00498120
 void FUN_00498120(void) {
-    FUN_004a56c3(DAT_007caca8, DAT_007cacb4, 0);
+    _lseek(DAT_007caca8, DAT_007cacb4, 0);
     DAT_007cacac = DAT_0079ac04;
 }
 

@@ -1,16 +1,16 @@
 #include "legoland.h"
 
 // STUB: LEGOLAND 0x0049e460
-void FUN_0049e460(void) { STUB(); }
+void _cfltcvt_init(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e4b2
-void FUN_0049e4b2(void) { STUB(); }
+void rand(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e4d0
-void FUN_0049e4d0(void) { STUB(); }
+void free(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e4ff
-void _malloc(void) { STUB(); }
+void malloc(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e511
 void __nh_malloc(void) { STUB(); }
@@ -19,22 +19,22 @@ void __nh_malloc(void) { STUB(); }
 void FUN_0049e53d(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e573
-void FUN_0049e573(void) { STUB(); }
+void sprintf(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e5c5
-void FUN_0049e5c5(void) { STUB(); }
+void printf(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e600
-void FUN_0049e600(void) { STUB(); }
+void _chkstk(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e62f
-void FUN_0049e62f(void) { STUB(); }
+void floor(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e6fe
-void FUN_0049e6fe(void) { STUB(); }
+void ceil(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e7d0
-void FUN_0049e7d0(void) { STUB(); }
+void _CIpow(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e7f2
 void FUN_0049e7f2(void) { STUB(); }
@@ -43,25 +43,25 @@ void FUN_0049e7f2(void) { STUB(); }
 void FUN_0049e9c5(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e9ed
-void FUN_0049e9ed(void) { STUB(); }
+void _findfirst(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049eab7
-void FUN_0049eab7(void) { STUB(); }
+void _findnext(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049eb7c
-void FUN_0049eb7c(void) { STUB(); }
+void _findclose(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049eb9b
 void ___timet_from_ft(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049ebff
-void FUN_0049ebff(void) { STUB(); }
+void _chdir(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049ec85
-void FUN_0049ec85(void) { STUB(); }
+void _splitpath(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049edcc
-void FUN_0049edcc(void) { STUB(); }
+void _getcwd(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049eddf
 void FUN_0049eddf(void) { STUB(); }
@@ -70,64 +70,64 @@ void FUN_0049eddf(void) { STUB(); }
 void FUN_0049eeb0(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049eee7
-void FUN_0049eee7(void) { STUB(); }
+void sscanf(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049ef23
-void FUN_0049ef23(void) { STUB(); }
+void tolower(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049efee
-void FUN_0049efee(void) { STUB(); }
+void fclose(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049f044
-void FUN_0049f044(void) { STUB(); }
+void fread(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049f12c
-void FUN_0049f12c(void) { STUB(); }
+void ftell(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049f284
-void FUN_0049f284(void) { STUB(); }
+void fseek(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049f310
 void FUN_0049f310(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049f330
-void FUN_0049f330(void) { STUB(); }
+void fopen(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049f34b
-void FUN_0049f34b(void) { STUB(); }
+void toupper(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049f417
-void FUN_0049f417(void) { STUB(); }
+void _close(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049f4ca
-void FUN_0049f4ca(void) { STUB(); }
+void _read(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049f6c0
-void FUN_0049f6c0(void) { STUB(); }
+void _open(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049f6d7
 void FUN_0049f6d7(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049f990
-void FUN_0049f990(void) { STUB(); }
+void asctime(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049fa3e
 void FUN_0049fa3e(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049fa66
-void FUN_0049fa66(void) { STUB(); }
+void localtime(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049fbc6
-void FUN_0049fbc6(void) { STUB(); }
+void time(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049fca2
-void FUN_0049fca2(void) { STUB(); }
+void realloc(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049fdc2
-void FUN_0049fdc2(void) { STUB(); }
+void _msize(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049fdeb
-void FUN_0049fdeb(void) { STUB(); }
+void vsprintf(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049fe3c
 void __global_unwind2(void) { STUB(); }
@@ -154,25 +154,25 @@ void FUN_0049ff30(void) { STUB(); }
 void __seh_longjmp_unwind(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a0010
-void _strrchr(void) { STUB(); }
+void strrchr(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a0050
-void _strchr(void) { STUB(); }
+void strchr(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a0110
-void _strncpy(void) { STUB(); }
+void strncpy(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a020e
-void FUN_004a020e(void) { STUB(); }
+void calloc(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a028b
 void FUN_004a028b(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a02b8
-void FUN_004a02b8(void) { STUB(); }
+void exit(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a02c9
-void __exit(void) { STUB(); }
+void _exit(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a02f8
 void FUN_004a02f8(void) { STUB(); }
@@ -181,43 +181,43 @@ void FUN_004a02f8(void) { STUB(); }
 void FUN_004a0391(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a03b0
-void FUN_004a03b0(void) { STUB(); }
+void strcspn(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a03f0
-void FUN_004a03f0(void) { STUB(); }
+void strspn(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a042e
 void FUN_004a042e(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a04b9
-void FUN_004a04b9(void) { STUB(); }
+void atoi(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a04c4
 void FUN_004a04c4(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a0580
-void _strstr(void) { STUB(); }
+void strstr(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a0600
-void FUN_004a0600(void) { STUB(); }
+void _strupr(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a069e
-void FUN_004a069e(void) { STUB(); }
+void fwrite(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a07a8
-void FUN_004a07a8(void) { STUB(); }
+void _rmdir(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a07dd
-void FUN_004a07dd(void) { STUB(); }
+void _mkdir(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a0833
-void FUN_004a0833(void) { STUB(); }
+void wcscpy(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a0858
-void FUN_004a0858(void) { STUB(); }
+void _isctype(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a08cd
-void entry(void) { STUB(); }
+void WinMainCRTStartup(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a09c3
 void __amsg_exit(void) { STUB(); }
@@ -226,13 +226,13 @@ void __amsg_exit(void) { STUB(); }
 void FUN_004a09e8(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a0a0c
-void FUN_004a0a0c(void) { STUB(); }
+void _setdefaultprecision(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a0a1e
 void FUN_004a0a1e(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a0a5c
-void FUN_004a0a5c(void) { STUB(); }
+void _ms_p5_mp_test_fdiv(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a0a85
 void FUN_004a0a85(void) { STUB(); }
@@ -412,7 +412,7 @@ void FUN_004a3353(void) { STUB(); }
 void FUN_004a33b0(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a33c1
-void FUN_004a33c1(void) { STUB(); }
+void _fFEXP(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a34b4
 void thunk_FUN_004a36c6(void) { STUB(); }
@@ -421,10 +421,10 @@ void thunk_FUN_004a36c6(void) { STUB(); }
 void FUN_004a34f0(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a3501
-void FUN_004a3501(void) { STUB(); }
+void rtforexpinf(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a350e
-void FUN_004a350e(void) { STUB(); }
+void _ffexpm1(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a3551
 void FUN_004a3551(void) { STUB(); }
@@ -433,22 +433,22 @@ void FUN_004a3551(void) { STUB(); }
 void FUN_004a3585(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a36b8
-void FUN_004a36b8(void) { STUB(); }
+void _rttospop(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a36c6
-void FUN_004a36c6(void) { STUB(); }
+void _rtzeronpop(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a36cd
-void FUN_004a36cd(void) { STUB(); }
+void _rtonenpop(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a36d2
-void FUN_004a36d2(void) { STUB(); }
+void _tosnan1(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a3766
-void FUN_004a3766(void) { STUB(); }
+void _rtindfpop(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a3779
-void FUN_004a3779(void) { STUB(); }
+void _rttosnpopde(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a3790
 void FUN_004a3790(void) { STUB(); }
@@ -568,7 +568,7 @@ void FUN_004a51c0(void) { STUB(); }
 void FUN_004a54f5(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a56c3
-void FUN_004a56c3(void) { STUB(); }
+void _lseek(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a575d
 void FUN_004a575d(void) { STUB(); }
@@ -616,7 +616,7 @@ void _memset(void) { STUB(); }
 void __allmul(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a63e4
-void FUN_004a63e4(void) { STUB(); }
+void _write(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a6591
 void FUN_004a6591(void) { STUB(); }
@@ -724,7 +724,7 @@ void FUN_004a7606(void) { STUB(); }
 void FUN_004a76c0(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a79f5
-void FUN_004a79f5(void) { STUB(); }
+void _fptrap(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004a79fe
 void FUN_004a79fe(void) { STUB(); }
@@ -1003,13 +1003,13 @@ void DeleteFileA(void) { STUB(); }
 void CreateDirectoryA(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004aab90
-void __strcmpi(void) { STUB(); }
+void _stricmp(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004aac20
-void FUN_004aac20(void) { STUB(); }
+void _memicmp(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004aacbd
-void FUN_004aacbd(void) { STUB(); }
+void _tell(void) { STUB(); }
 
 // STUB: LEGOLAND 0x004aacce
-void FUN_004aacce(void) { STUB(); }
+void _filelength(void) { STUB(); }

@@ -95,7 +95,7 @@ LEGO_EXPORT void DeleteProfileList(void) {
 
     while (current != NULL) {
         struct ProfileNode *next = current->next;
-        FUN_0049e4d0(current);
+        free(current);
         current = next;
     }
 
@@ -142,7 +142,7 @@ void FUN_004920a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004920e0
 struct ProfileObj *FUN_004920e0(void) {
-    struct ProfileObj *v = (struct ProfileObj *)_malloc(0x38);
+    struct ProfileObj *v = (struct ProfileObj *)malloc(0x38);
     v->next = 0;
     v->var_4 = 0;
     v->var_c = 0;

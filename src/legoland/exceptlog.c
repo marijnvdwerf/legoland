@@ -90,7 +90,7 @@ const char *FUN_00454700(unsigned int code) {
 
 // FUNCTION: LEGOLAND 0x004548f0
 char *FUN_004548f0(char *path) {
-    char *last_backslash = _strrchr(path, '\\');
+    char *last_backslash = strrchr(path, '\\');
     if (last_backslash != NULL) {
         return last_backslash + 1;
     }

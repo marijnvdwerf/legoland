@@ -34,7 +34,7 @@ struct BarrelRide {
 
 // FUNCTION: LEGOLAND 0x0043bdb0
 void FUN_0043bdb0(void *param1) {
-    struct BarrelNode *block = (struct BarrelNode *)_malloc(0x34);
+    struct BarrelNode *block = (struct BarrelNode *)malloc(0x34);
     if (block == NULL) {
         return;
     }
@@ -160,7 +160,7 @@ LEGO_EXPORT void LoadSBarrel(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0043c760
 void FUN_0043c760(const char **str, struct BarrelRide *ride) {
     // STRING: LEGOLAND 0x004b7978
-    if (__strcmpi("SPINNING BARRELS RIDE", *str) == 0) {
+    if (_stricmp("SPINNING BARRELS RIDE", *str) == 0) {
         ride->var_a4 = FUN_0043c340;
         ride->var_8c = FUN_0043c490;
         ride->var_a8 = FUN_0043c950;
@@ -194,7 +194,7 @@ unsigned char FUN_0043ce10(int param1, int param2, signed char param3) {
     int rnd;
     int idx;
 
-    rnd = FUN_0049e4b2();
+    rnd = rand();
     idx = rnd % param3;
 
     while (((unsigned char *)param2)[idx + 0x21] != 0) {

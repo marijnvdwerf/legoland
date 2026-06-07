@@ -69,12 +69,12 @@ LEGO_EXPORT void UnloadPos(struct Position *pos) {
     i = 0;
     if (pos->count > 0) {
         do {
-            FUN_0049e4d0(pos->entries[i]);
+            free(pos->entries[i]);
             i++;
         } while (i < pos->count);
     }
-    FUN_0049e4d0(pos->entries);
-    FUN_0049e4d0(pos);
+    free(pos->entries);
+    free(pos);
 }
 
 // FUNCTION: LEGOLAND 0x0043f810
@@ -103,9 +103,9 @@ void FUN_0043f840(struct Person *person) {
 // FUNCTION: LEGOLAND 0x0043f870
 void FUN_0043f870(struct PosHeader *param_1) {
     if (param_1->field_50 != 0) {
-        FUN_0049e4d0(param_1->field_50);
+        free(param_1->field_50);
     }
-    FUN_0049e4d0(param_1);
+    free(param_1);
 }
 
 // FUNCTION: LEGOLAND 0x0043f890
@@ -129,11 +129,11 @@ LEGO_EXPORT struct Person *Find3DPersonFromBloke(unsigned int id) {
 struct Person *FUN_0043f8c0(unsigned int param_1, unsigned int param_2) {
     struct Person *person;
 
-    person = _malloc(0x94);
+    person = malloc(0x94);
     if (person != 0) {
         memset(person, 0, 0x94);
         if (param_2 == 1) {
-            person->random = FUN_0049e4b2() & 1;
+            person->random = rand() & 1;
         } else {
             person->random = 0;
         }
@@ -176,11 +176,11 @@ void *FUN_0043f990(const char *param_1, const char *param_2) {
     void *buffer;
 
     // STRING: LEGOLAND 0x004b7b10
-    FUN_0049e573(path, ".\\3ddata\\new\\%s\\%s", param_2, param_1);
+    sprintf(path, ".\\3ddata\\new\\%s\\%s", param_2, param_1);
     file = RES_OpenFile(path);
     if (file != 0) {
         size = RES_GetFileSize(file);
-        buffer = _malloc(size);
+        buffer = malloc(size);
         if (buffer != 0) {
             RES_ReadFile(file, buffer, size);
             RES_CloseFile(file);
@@ -285,19 +285,19 @@ LEGO_EXPORT void UnInitMan(void) {
     unsigned int *p;
 
     if (DAT_0081c8c0 != 0) {
-        FUN_0049e4d0(DAT_0081c8c0);
+        free(DAT_0081c8c0);
     }
     if (DAT_0081c8c8 != 0) {
-        FUN_0049e4d0(DAT_0081c8c8);
+        free(DAT_0081c8c8);
     }
     if (DAT_0081c8c4 != 0) {
-        FUN_0049e4d0(DAT_0081c8c4);
+        free(DAT_0081c8c4);
     }
     if (DAT_00630100 != 0) {
-        FUN_0049e4d0(DAT_00630100);
+        free(DAT_00630100);
     }
     if (DAT_0062feac != 0) {
-        FUN_0049e4d0(DAT_0062feac);
+        free(DAT_0062feac);
     }
     p = DAT_0062febc;
     do {

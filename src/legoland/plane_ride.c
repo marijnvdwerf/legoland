@@ -60,7 +60,7 @@ struct PlaneRideInterface {
 
 // FUNCTION: LEGOLAND 0x0043d880
 void FUN_0043d880(void *param_1) {
-    void *node = _malloc(0x24);
+    void *node = malloc(0x24);
     if (node == NULL) {
         return;
     }
@@ -152,7 +152,7 @@ unsigned int *FUN_0043e010(struct PlaneRideRoot *param1, unsigned short param2) 
 // FUNCTION: LEGOLAND 0x0043e050
 unsigned int FUN_0043e050(int param2, int param1, signed char n) {
     int count = n;
-    int eax = FUN_0049e4b2();
+    int eax = rand();
     int index = eax % count;
     signed char slot = *((signed char *)param1 + index + 0x1c);
     int ecx;
@@ -199,7 +199,7 @@ LEGO_EXPORT void LoadZoomer(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0043e220
 void FUN_0043e220(const char **name, struct PlaneRideInterface *iface) {
     // STRING: LEGOLAND 0x004b7a6c
-    if (__strcmpi("PLANE RIDE", *name) == 0) {
+    if (_stricmp("PLANE RIDE", *name) == 0) {
         iface->field_a4 = (PlaneRideMethod)FUN_0043dda0;
         iface->field_ac = (PlaneRideMethod)FUN_0043dee0;
         iface->field_8c = (PlaneRideMethod)FUN_0043df50;

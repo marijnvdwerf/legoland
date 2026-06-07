@@ -129,7 +129,7 @@ void FUN_0048a040(void) {
         void *obj = node->instances;
         while (obj != 0) {
             void *next = *(void **)obj;
-            FUN_0049e4d0(obj);
+            free(obj);
             obj = next;
         }
         node->instances = 0;

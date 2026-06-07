@@ -111,7 +111,7 @@ void FUN_00411ed0(struct Queue *queue) {
     struct QueueNode *node = queue->head;
     while (node != NULL) {
         FUN_00411f00(queue);
-        FUN_0049e4d0(node);
+        free(node);
         node = queue->head;
     }
 }
@@ -154,7 +154,7 @@ void FUN_00412100(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00412290
 void FUN_00412290(void *param_1) {
     if (param_1 != NULL) {
-        FUN_0049e4d0(param_1);
+        free(param_1);
     }
 }
 
