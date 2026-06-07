@@ -1,8 +1,7 @@
 #include "legoland.h"
 #include <windows.h>
 
-extern void *g_hInstance;
-extern void *DAT_00669210;
+#include "globals.h"
 
 // FUNCTION: LEGOLAND 0x0047fe40
 void *WNDENV_GethInstance(void) { return g_hInstance; }

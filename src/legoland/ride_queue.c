@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "ride_queue.h"
+#include "globals.h"
 
 struct QueueItemInner {
     unsigned char pad_0[0xe];
@@ -55,9 +56,6 @@ struct RideSlot {
     unsigned char pad_54[0xc];
     unsigned char field_60;
 };
-
-extern struct LegoConfig *lpConfig;
-extern struct RideQueueEntry *DAT_004cbeac;
 
 extern void FUN_0049e4d0(void *ptr);
 

@@ -2,9 +2,7 @@
 
 #include "bricks.h"
 #include "llidb.h"
-
-extern unsigned int DAT_004b90fc;
-extern unsigned int DAT_004b90f8;
+#include "globals.h"
 
 // FUNCTION: LEGOLAND 0x00457870
 void FUN_00457870(int param_1) {

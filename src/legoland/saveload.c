@@ -3,9 +3,7 @@
 #include "timer.h"
 #include "saveload.h"
 #include "llidb.h"
-
-extern unsigned int *DAT_00669200;
-extern unsigned int DAT_00669204;
+#include "globals.h"
 
 // FUNCTION: LEGOLAND 0x0047d790
 void BeginMeasuredBlock(void) { STUB(); }

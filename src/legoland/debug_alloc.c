@@ -1,8 +1,7 @@
 #include "legoland.h"
 
 #include "debug_alloc.h"
-
-extern unsigned int DAT_00813a10;
+#include "globals.h"
 
 extern unsigned int FUN_0049fdc2(void *block);
 extern void FUN_0049e4d0(void *block);

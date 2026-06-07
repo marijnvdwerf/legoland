@@ -2,6 +2,7 @@
 
 #include "print_sprite.h"
 #include "render.h"
+#include "globals.h"
 
 struct PrintListNode {
     unsigned int field_0;
@@ -15,21 +16,6 @@ struct PersonBlock {
     unsigned char pad_10[12];
     unsigned int field_1c;
 };
-
-extern struct PrintListNode *DAT_0066b5a4;
-extern unsigned int DAT_0066b5a8;
-extern unsigned char DAT_007cb600[1];
-extern unsigned int DAT_004bdd00;
-extern unsigned int DAT_0066b630;
-extern unsigned int DAT_00797e68;
-extern unsigned int DAT_00701e58;
-extern unsigned int DAT_00701e60;
-extern unsigned int DAT_0066be48;
-extern unsigned int DAT_0066be40;
-extern unsigned int DAT_0066be44;
-extern unsigned int DAT_0066be4c;
-extern void *DAT_00701e5c;
-extern unsigned int DAT_007cb5e0;
 
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *ptr);
@@ -52,7 +38,7 @@ void PrintScaledSprite(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x004859b0
 void ClearPrintList(void)
 {
-    struct PrintListNode *node = DAT_0066b5a4;
+    struct PrintListNode *node = (struct PrintListNode *)DAT_0066b5a4;
 
     while (node != NULL) {
         node = node->next;
@@ -123,22 +109,22 @@ void FUN_00485f60(void)
 {
     DAT_0066be40 = 0x80;
     DAT_0066be44 = 0x78;
-    DAT_00701e5c = _malloc(0xf000);
+    DAT_00701e5c = (unsigned int)_malloc(0xf000);
     DAT_0066be4c = DAT_0066be40 * 4;
 }
 
 // FUNCTION: LEGOLAND 0x00485fa0
 void FUN_00485fa0(void)
 {
-    if (DAT_00701e5c != NULL) {
-        FUN_0049e4d0(DAT_00701e5c);
+    if (DAT_00701e5c != 0) {
+        FUN_0049e4d0((void *)DAT_00701e5c);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00485fc0
 void FUN_00485fc0(unsigned int param_1)
 {
-    DAT_007cb5e0 = param_1;
+    *(unsigned int *)&DAT_007cb5e0 = param_1;
     FUN_004860f0();
     FUN_00485f60();
     FUN_00486540();

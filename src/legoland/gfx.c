@@ -2,11 +2,7 @@
 #include <ddraw.h>
 
 #include "gfx.h"
-
-extern unsigned int DAT_00668088;
-extern void *DAT_00668070;
-extern unsigned int DAT_00668084;
-extern unsigned char DAT_00814020[];
+#include "globals.h"
 
 // FUNCTION: LEGOLAND 0x0044de90
 void GetGFXFName(void) { STUB(); }

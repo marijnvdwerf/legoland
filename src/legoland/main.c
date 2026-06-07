@@ -1,7 +1,7 @@
 #include "legoland.h"
 #include <stdarg.h>
 
-extern char DAT_00667128[512];
+#include "globals.h"
 
 extern int FUN_0049fdeb(char *buffer, const char *format, va_list ap);
 

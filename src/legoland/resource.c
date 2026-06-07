@@ -1,6 +1,7 @@
 #include <windows.h>
 #include "legoland.h"
 #include "resource.h"
+#include "globals.h"
 
 struct ResVolume;
 
@@ -40,9 +41,6 @@ extern void *_malloc(unsigned int size);
 extern int __strcmpi(const char *s1, const char *s2);
 extern unsigned int strlen(const char *s);
 extern char *strcpy(char *dst, const char *src);
-
-extern struct MasterDirNode *DAT_00798624;
-extern struct MasterVolNode *DAT_00798628;
 
 // FUNCTION: LEGOLAND 0x00489440
 struct MasterDirNode *FUN_00489440(char *name) {

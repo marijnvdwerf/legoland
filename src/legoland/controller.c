@@ -1,7 +1,6 @@
 #include "legoland.h"
 
-extern unsigned int DAT_00667104;
-extern void *CONTROLLERBUFFER;
+#include "globals.h"
 
 extern void FUN_0049e4d0(void *ptr);
 

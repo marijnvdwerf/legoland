@@ -1,10 +1,6 @@
 #include "legoland.h"
 #include "obj_instance.h"
-
-struct ObjTableEntry {
-    unsigned short key;
-    unsigned short value;
-};
+#include "globals.h"
 
 struct ObjClassKey {
     unsigned short hi;
@@ -51,11 +47,6 @@ struct Ride {
     unsigned char pad_0[0xcc];
     struct RideNode *riders;
 };
-
-extern struct ObjTableEntry DAT_007cb3e0[];
-extern struct ObjTableEntry DAT_007cb3e2[];
-extern struct ObjTableEntry DAT_007cb5e0;
-extern struct ObjClassNode *ObjectClassList;
 
 extern void FUN_0049e4d0(void *ptr);
 
@@ -134,7 +125,7 @@ void AddInstanceToList(void) { STUB(); }
 void FUN_0048a040(void) {
     struct ObjClassNode *node;
 
-    for (node = ObjectClassList; node != 0; node = node->next) {
+    for (node = (struct ObjClassNode *)ObjectClassList; node != 0; node = node->next) {
         void *obj = node->instances;
         while (obj != 0) {
             void *next = *(void **)obj;

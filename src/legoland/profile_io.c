@@ -1,11 +1,7 @@
 #include "legoland.h"
 
 #include "profile_io.h"
-
-extern unsigned char DAT_007cad60[0x110];
-extern void *DAT_00798890;
-extern unsigned int DAT_007cad80;
-extern void *DAT_007988cc;
+#include "globals.h"
 
 extern void *_malloc(unsigned int size);
 extern void FUN_0049e4d0(void *ptr);

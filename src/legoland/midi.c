@@ -2,9 +2,7 @@
 #include <windows.h>
 #include <mmsystem.h>
 
-extern unsigned int DAT_007fd630;
-extern void *DAT_007fd634;
-extern unsigned int DAT_007fd638;
+#include "globals.h"
 
 // FUNCTION: LEGOLAND 0x00480200
 void LoadMIDIFile(void) { STUB(); }

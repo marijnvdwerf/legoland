@@ -2,9 +2,7 @@
 
 #include "build.h"
 #include "objclass.h"
-
-extern unsigned int DAT_006664f8[768];
-extern unsigned int DAT_006670f8;
+#include "globals.h"
 
 // FUNCTION: LEGOLAND 0x00450b90
 void AddObjectToBuildList(void) { STUB(); }

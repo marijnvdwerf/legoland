@@ -2,10 +2,7 @@
 
 #include "llidb.h"
 #include "tilemap.h"
-
-extern unsigned int DAT_006691a4;
-extern unsigned int **DAT_006691a8;
-extern int DAT_006691b0;
+#include "globals.h"
 
 extern void FUN_0049e4d0(void *block);
 #include "image_sprite.h"
