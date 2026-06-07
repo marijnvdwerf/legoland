@@ -115,6 +115,9 @@ void FUN_0046cff0(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0046d080
 LEGO_EXPORT void ProcessFrontEndHelp(void) { STUB(); }
 
+// FUNCTION: LEGOLAND 0x0046d100
+LEGO_EXPORT void KillHelp(void) { FUN_0046c5c0(); }
+
 // FUNCTION: LEGOLAND 0x0046d110
 void FUN_0046d110(void) { STUB(); }
 

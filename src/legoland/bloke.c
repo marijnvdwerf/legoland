@@ -214,6 +214,9 @@ LEGO_EXPORT struct Bloke *MakeBloke(int param_1) {
     return bloke;
 }
 
+// FUNCTION: LEGOLAND 0x004830f0
+LEGO_EXPORT void InitialiseBlokes(void) { FUN_00482e50(); }
+
 // FUNCTION: LEGOLAND 0x00483130
 LEGO_EXPORT void RenderPeople(void) {
     struct Bloke *current;

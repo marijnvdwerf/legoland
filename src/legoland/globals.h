@@ -244,6 +244,8 @@ extern unsigned char DAT_004b8bbc[1];
 extern unsigned int DAT_004b90f8;
 // 0x004b90fc
 extern unsigned int DAT_004b90fc;
+// 0x004b9220
+extern LEGO_EXPORT unsigned int BGFullUpdate;
 // 0x004b9228
 extern const unsigned char DAT_004b9228[1];
 // 0x004b929c
@@ -1056,6 +1058,10 @@ extern struct Sprite *DAT_00667c2c;
 extern unsigned int DAT_00667c30;
 // 0x00667c34
 extern unsigned int DAT_00667c34;
+// 0x00667c54
+extern LEGO_EXPORT unsigned int QueryObj;
+// 0x00667c58
+extern LEGO_EXPORT void *QueryClass;
 // 0x00667c7c
 extern unsigned int DAT_00667c7c;
 // 0x00667c88
@@ -1078,6 +1084,10 @@ extern LEGO_EXPORT unsigned int OverlayILF;
 extern LEGO_EXPORT int ScrollX;
 // 0x00667cb8
 extern LEGO_EXPORT int ScrollY;
+// 0x00667cbc
+extern LEGO_EXPORT int ScrollSpeedX;
+// 0x00667cc0
+extern LEGO_EXPORT int ScrollSpeedY;
 // 0x00667cd8
 extern unsigned int DAT_00667cd8;
 // 0x00667ce0
@@ -1134,6 +1144,8 @@ extern unsigned int DAT_00668148;
 extern unsigned int DAT_0066814c;
 // 0x006681e8
 extern unsigned int DAT_006681e8;
+// 0x006681fc
+extern LEGO_EXPORT unsigned int LastFrameMS;
 // 0x00668204
 extern unsigned int DAT_00668204;
 // 0x00668208
@@ -1646,6 +1658,8 @@ extern unsigned int DAT_007caca8;
 extern unsigned int DAT_007cacac;
 // 0x007cacb4
 extern unsigned int DAT_007cacb4;
+// 0x007cacd4
+extern LEGO_EXPORT unsigned int FrameNumber;
 // 0x007cacd8
 extern void *DAT_007cacd8;
 // 0x007cacdc
@@ -1726,6 +1740,8 @@ extern struct ObjTableEntry DAT_007cb3e2[128];
 extern struct ObjTableEntry DAT_007cb5e0;
 // 0x007cb600
 extern unsigned char DAT_007cb600[1];
+// 0x007fd620
+extern LEGO_EXPORT void *NewObjectPtr;
 // 0x007fd624
 extern unsigned int DAT_007fd624;
 // 0x007fd630
@@ -1884,16 +1900,28 @@ extern unsigned char DAT_007fe930[10];
 extern unsigned int DAT_007fe9a8;
 // 0x007fe9c0
 extern unsigned int DAT_007fe9c0[9];
+// 0x007fea48
+extern LEGO_EXPORT unsigned int FramesPerSecond;
 // 0x007feb14
 extern unsigned int DAT_007feb14;
 // 0x007febc0
 extern LEGO_EXPORT struct Cursor EditCursor;
+// 0x00800400
+extern LEGO_EXPORT unsigned int ObjectPartArray[1024];
 // 0x00801400
 extern LEGO_EXPORT struct MapElement **GameMap;
+// 0x00801b24
+extern LEGO_EXPORT unsigned int ObjectPartCount;
+// 0x00801f40
+extern LEGO_EXPORT unsigned int TileSpriteInfo;
 // 0x00805f60
 extern LEGO_EXPORT void *TileSpriteArray[256];
 // 0x0080ff64
 extern unsigned int DAT_0080ff64;
+// 0x0080ff74
+extern LEGO_EXPORT unsigned int NEWFLC_AutoPlay;
+// 0x0080ff78
+extern LEGO_EXPORT unsigned int NEWFLC_PauseType;
 // 0x0080ff80
 extern unsigned int DAT_0080ff80;
 // 0x0080ff84
@@ -1906,6 +1934,8 @@ extern struct ScreenState DAT_0080ffa0;
 extern unsigned int DAT_00810140;
 // 0x00810148
 extern unsigned int SPRITE_TitleScreenBk;
+// 0x0081014c
+extern LEGO_EXPORT unsigned char NEWFLC_ID[20];
 // 0x00810160
 extern LEGO_EXPORT struct Cursor QueryCursor;
 // 0x008119a0
@@ -2268,6 +2298,10 @@ extern unsigned int DAT_00830f88;
 extern unsigned int DAT_00830f94;
 // 0x00830f98
 extern struct Position *DAT_00830f98;
+// 0x00830fc0
+extern LEGO_EXPORT struct Cursor PathCursor;
+// 0x00832800
+extern LEGO_EXPORT unsigned int MapStats;
 // 0x00832824
 extern unsigned int DAT_00832824[1];
 // 0x00832828
