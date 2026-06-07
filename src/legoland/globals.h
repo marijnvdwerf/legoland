@@ -1667,7 +1667,7 @@ extern char DAT_007cb2f0[0x10];
 // 0x007cb300
 extern char DAT_007cb300[0xc];
 // 0x007cb30c
-extern char DAT_007cb30c[0x18];
+extern char DAT_007cb30c[4];
 // 0x007cb310
 extern unsigned int DAT_007cb310;
 // 0x007cb314
