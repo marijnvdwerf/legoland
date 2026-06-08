@@ -5,6 +5,7 @@
 #include "ride_queue.h"
 #include "render3d.h"
 #include "map_object.h"
+#include "llidb.h"
 #include "globals.h"
 
 typedef void (*GoldVtblFn)(void);
@@ -48,6 +49,12 @@ struct GoldRandSub {
 struct GoldRandItem {
     unsigned char pad_0[8];
     struct GoldRandSub *field_8;
+};
+
+struct GoldNode {
+    unsigned char pad_0[0xc];
+    struct GoldNode *next;
+    unsigned char pad_10[0x1c];
 };
 
 #include "image_sprite.h"
@@ -187,10 +194,53 @@ void FUN_004075f0(void) { STUB(); }
 void FUN_004076e0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00407800
-LEGO_EXPORT void SaveGoldWash(void) { STUB(); }
+LEGO_EXPORT int SaveGoldWash(void) {
+    struct GoldNode *node;
+    unsigned int one;
+    unsigned int zero;
+
+    one = 1;
+    zero = 0;
+    node = DAT_004c1204;
+    while (node != NULL) {
+        if (SaveGameWrite(&one, 4) == 0) {
+            return 0;
+        }
+        if (SaveGameWrite(node, 0x2c) == 0) {
+            return 0;
+        }
+        node = node->next;
+    }
+    return SaveGameWrite(&zero, 4) != 0;
+}
 
 // FUNCTION: LEGOLAND 0x00407870
-LEGO_EXPORT void LoadGoldWash(void) { STUB(); }
+LEGO_EXPORT int LoadGoldWash(void) {
+    unsigned int count;
+    struct GoldNode *node;
+    struct GoldNode *prev = NULL;
+
+    if (!SaveGameRead(&count, 4)) {
+        return 0;
+    }
+    while (count != 0) {
+        node = malloc(0x2c);
+        if (!SaveGameRead(node, 0x2c)) {
+            return 0;
+        }
+        node->next = NULL;
+        if (prev != NULL) {
+            prev->next = node;
+        } else {
+            DAT_004c1204 = node;
+        }
+        prev = node;
+        if (!SaveGameRead(&count, 4)) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004078f0
 void FUN_004078f0(const char **str, struct GoldRushModule *module) {
