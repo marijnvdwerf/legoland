@@ -16,6 +16,8 @@
 #include "map_object.h"
 #include "help.h"
 
+#pragma intrinsic(strcpy, strlen)
+
 struct NerpsArg {
     unsigned char pad_0[0x4];
     unsigned int field_4;
@@ -746,7 +748,16 @@ struct StringHolder {
 };
 
 // FUNCTION: LEGOLAND 0x0046b650
-void FUN_0046b650(const char *src, struct StringHolder *holder) { STUB(); }
+void FUN_0046b650(const char *src, struct StringHolder *holder) {
+    char *dst;
+
+    if (holder->field_8 != NULL) {
+        free(holder->field_8);
+    }
+    dst = (char *)malloc(strlen(src) + 1);
+    holder->field_8 = dst;
+    strcpy(dst, src);
+}
 
 struct Ctx6b0 {
     unsigned char pad_0[0x8];
