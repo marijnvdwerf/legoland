@@ -1166,7 +1166,12 @@ void FUN_0040e690(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0040e6c0
-void FUN_0040e6c0(void) { STUB(); }
+void FUN_0040e6c0(void) {
+    struct CursorSource *src = DAT_004c74d4;
+    unsigned int local[5];
+    memcpy(local, src->var_3c, sizeof(local));
+    FUN_0040d3b0(src, local);
+}
 
 // FUNCTION: LEGOLAND 0x0040e6f0
 void FUN_0040e6f0(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
