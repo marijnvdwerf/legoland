@@ -9,7 +9,7 @@
 struct MapTile {
     unsigned char pad_0[8];
     unsigned short tile;
-    unsigned char pad_a[2];
+    unsigned short base_id;
     unsigned char flags_c;
     unsigned char pad_d[3];
     unsigned char flags_10;
@@ -19,6 +19,14 @@ struct LegoConfig {
     unsigned char pad_0[0x14];
     unsigned short field_14;
     unsigned short field_16;
+    unsigned char pad_18[0x20 - 0x18];
+    unsigned short field_20;
+    unsigned short field_22;
+};
+
+struct TileSprite {
+    unsigned char pad_0[0x16];
+    short size;
 };
 
 struct Point {
@@ -177,10 +185,26 @@ unsigned int FUN_0045ac20(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0045acc0
-LEGO_EXPORT void GetTileBounds(void) { STUB(); }
+LEGO_EXPORT void GetTileBounds(struct Point *ref, int *out) {
+    struct TileSprite *sprite = (struct TileSprite *)TileSpriteArray[DAT_00667ca4];
+    short size = sprite->size;
+    int top;
+
+    out[0] = (short)(((short)(size * 2) + 1) >> 1) * ((ref->x - ref->y) - 1) + lpConfig->field_20 - (ScrollX >> 8);
+    top = (short)((size + 1) >> 1) * (ref->x + ref->y) + lpConfig->field_22 - (ScrollY >> 8);
+    out[1] = top;
+    out[2] = (short)(size * 2) - 1 + out[0];
+    out[3] = top - 1 + size;
+}
 
 // FUNCTION: LEGOLAND 0x0045ad60
-LEGO_EXPORT void GetTileCentre(void) { STUB(); }
+LEGO_EXPORT void GetTileCentre(struct Point *ref, int *out) {
+    struct TileSprite *sprite = (struct TileSprite *)TileSpriteArray[DAT_00667ca4];
+    short size = sprite->size;
+
+    out[0] = (short)(((short)(size * 2) + 1) >> 1) * (ref->x - ref->y) + lpConfig->field_20 - (ScrollX >> 8);
+    out[1] = (short)((size + 1) >> 1) * (ref->y + 1 + ref->x) + lpConfig->field_22 - (ScrollY >> 8);
+}
 
 // FUNCTION: LEGOLAND 0x0045ade0
 void FUN_0045ade0(void) { STUB(); }
@@ -427,7 +451,13 @@ void FUN_0045d730(void) { STUB(); }
 void FUN_0045d770(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045da60
-LEGO_EXPORT void RestoreBaseMap(void) { STUB(); }
+LEGO_EXPORT unsigned short RestoreBaseMap(int tile_x, int row_y) {
+    struct MapTile *tile = (struct MapTile *)((char *)GameMap[row_y] + tile_x * 0x14);
+    unsigned short id = tile->base_id;
+
+    tile->tile = id;
+    return TileSpriteInfo[id].sprite & 0x20;
+}
 
 // FUNCTION: LEGOLAND 0x0045daa0
 LEGO_EXPORT void RemovePathTile(unsigned int param_1, unsigned short param_2) { STUB(); }
