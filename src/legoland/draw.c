@@ -135,7 +135,7 @@ void FUN_004663f0(void) { STUB(); }
 LEGO_EXPORT void RenderingComplete(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00466560
-LEGO_EXPORT void PushSetTarget(void) { STUB(); }
+LEGO_EXPORT void PushSetTarget(struct Sprite *sprite) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00466600
 LEGO_EXPORT void PopTarget(void) {

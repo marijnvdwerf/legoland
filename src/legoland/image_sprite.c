@@ -6,6 +6,7 @@
 #include "image_sprite.h"
 #include "gfx.h"
 #include "llidb.h"
+#include "draw.h"
 
 struct SpriteListNode;
 struct Layer;
@@ -404,7 +405,23 @@ void FUN_004978b0(void) { STUB(); }
 LEGO_EXPORT unsigned int LoadSprite(const char *name, int flags) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497b70
-LEGO_EXPORT void MakeSprite(unsigned int sprite) { STUB(); }
+LEGO_EXPORT unsigned int MakeSprite(unsigned int sprite) {
+    struct Sprite *s;
+    struct Image *image;
+
+    s = (struct Sprite *)sprite;
+    if ((s->field_10 & 0x20) != 0) {
+        PushSetTarget(s);
+        ((int(*)(struct Sprite *))s->image)(s);
+        PopTarget();
+        return 1;
+    }
+    image = s->image;
+    if (image->field_0 != 0 || __BMPLoader(image) != 0) {
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00497bb0
 LEGO_EXPORT short ReferenceSprite(struct Sprite *sprite) {
