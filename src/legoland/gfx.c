@@ -3,6 +3,7 @@
 
 #include "gfx.h"
 #include "globals.h"
+#include "resource.h"
 
 // FUNCTION: LEGOLAND 0x0044de90
 LEGO_EXPORT void GetGFXFName(void) { STUB(); }
@@ -11,7 +12,44 @@ LEGO_EXPORT void GetGFXFName(void) { STUB(); }
 LEGO_EXPORT struct Image *__BMPLoader(struct Image *image) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044e580
-LEGO_EXPORT void LoadColourTable(void) { STUB(); }
+LEGO_EXPORT void LoadColourTable(void) {
+    struct ResFile *file;
+    PALETTEENTRY entries[256];
+    PALETTEENTRY *entry;
+    unsigned char *src;
+    unsigned short *lookup;
+    LPDIRECTDRAW2 ddraw;
+    LPDIRECTDRAWSURFACE surface;
+
+    // STRING: LEGOLAND 0x004b82f4
+    file = RES_OpenFile(".\\graphics\\colours.tga");
+    RES_ReadFile(file, DAT_00813b20, 0x12);
+    RES_ReadFile(file, DAT_00813b20, 0x300);
+
+    entry = entries;
+    src = &DAT_00813b20[1];
+    lookup = DAT_00813e20;
+    do {
+        unsigned char blue;
+        entry->peRed = src[1];
+        entry->peGreen = src[0];
+        blue = src[-1];
+        entry->peBlue = blue;
+        src += 3;
+        lookup++;
+        entry->peFlags = 4;
+        lookup[-1] = (unsigned short)((((entry->peRed & 0xf8) << 5 | (entry->peGreen & 0xf8)) << 2) | (blue >> 3));
+        entry++;
+    } while ((int)src < (int)&DAT_00813b20[0x301]);
+
+    RES_ReadFile(file, DAT_00814020, 0x8000);
+
+    ddraw = (LPDIRECTDRAW2)DDRAWENV[1];
+    ddraw->lpVtbl->CreatePalette(ddraw, 0x44, entries, (LPDIRECTDRAWPALETTE *)&DAT_00668084, NULL);
+    surface = (LPDIRECTDRAWSURFACE)DAT_00668070;
+    surface->lpVtbl->SetPalette(surface, (LPDIRECTDRAWPALETTE)DAT_00668084);
+    RES_CloseFile(file);
+}
 
 // FUNCTION: LEGOLAND 0x0044e670
 LEGO_EXPORT void ResendPalette(void) {
