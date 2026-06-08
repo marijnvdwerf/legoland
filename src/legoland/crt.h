@@ -10,6 +10,8 @@ extern int fclose(void *stream);
 extern unsigned int fread(void *ptr, unsigned int size, unsigned int count, void *stream);
 extern unsigned int fwrite(const void *ptr, unsigned int size, unsigned int count, void *stream);
 extern void *fopen(const char *filename, const char *mode);
+extern int fseek(void *stream, long offset, int origin);
+extern long ftell(void *stream);
 extern unsigned int _read(int fd, void *buffer, unsigned int count);
 extern unsigned int _msize(void *block);
 extern int vsprintf(char *buffer, const char *format, va_list ap);
