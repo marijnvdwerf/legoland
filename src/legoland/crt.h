@@ -17,6 +17,7 @@ extern __declspec(noreturn) void exit(int status);
 extern int atoi(const char *str);
 extern unsigned int _lseek(unsigned int a, unsigned int b, unsigned int c);
 extern int _write(int fd, void *buffer, unsigned int count);
+extern int _rmdir(const char *path);
 
 extern unsigned int strlen(const char *s);
 extern char *strcpy(char *dst, const char *src);

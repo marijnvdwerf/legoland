@@ -5,6 +5,7 @@
 #include "profile.h"
 #include "profile_io.h"
 #include "savegame_ui.h"
+#include "debug_alloc.h"
 #include "icon.h"
 #include "sound_music.h"
 
@@ -178,7 +179,29 @@ void FUN_0048e810(void) { STUB(); }
 LEGO_EXPORT void StoreNewSaveGameToDisk(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048ea10
-LEGO_EXPORT void RemoveSaveGame(unsigned char slot) { STUB(); }
+LEGO_EXPORT void RemoveSaveGame(unsigned char slot) {
+    char path[132];
+
+    if (!Goto_ProfileDir()) {
+        return;
+    }
+
+    // STRING: LEGOLAND 0x004b9164
+    sprintf(path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffa0.field_43, slot);
+    if (_rmdir(path) != 0) {
+        // STRING: LEGOLAND 0x004bf3b0
+        DBPrintf("Failed to delete saved game %s\n", path);
+    }
+
+    // STRING: LEGOLAND 0x004bf3a0
+    sprintf(path, "%s\\%dsave%d.sh", "profiles", DAT_0080ffa0.field_43, slot);
+    if (_rmdir(path) != 0) {
+        // STRING: LEGOLAND 0x004bf378
+        DBPrintf("Failed to delete saved game Header %s\n", path);
+    }
+
+    ReturnFrom_ProfileDir();
+}
 
 // FUNCTION: LEGOLAND 0x0048eac0
 void FUN_0048eac0(void) { STUB(); }
