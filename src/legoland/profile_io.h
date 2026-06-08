@@ -9,5 +9,5 @@ LEGO_EXPORT void AddNodeToProfileList(int load, char *data, char slot);
 LEGO_EXPORT void UpDateCurrentSaveSlotInfo(void);
 LEGO_EXPORT void UpDateCurrentProfile(void);
 LEGO_EXPORT char SaveProfileToDisk(void);
-LEGO_EXPORT void RemoveProfile(unsigned char index);
+LEGO_EXPORT int RemoveProfile(unsigned char index);
 LEGO_EXPORT void DeleteProfileList(void);

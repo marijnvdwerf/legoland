@@ -257,7 +257,29 @@ LEGO_EXPORT void AddNodeToProfileList(int load, char *data, char slot) {
 }
 
 // FUNCTION: LEGOLAND 0x00491ab0
-LEGO_EXPORT void RemoveProfile(unsigned char index) { STUB(); }
+LEGO_EXPORT int RemoveProfile(unsigned char index) {
+    char path[120];
+    int slot;
+    int remaining;
+
+    if (Goto_ProfileDir() == 0) {
+        return -1;
+    }
+    sprintf(path, "profiles\\Profile%d.txt", index);
+    _rmdir(path);
+    slot = 8;
+    remaining = 8;
+    do {
+        // STRING: LEGOLAND 0x004bf730
+        sprintf(path, "profiles\\%dsave%d.sav", index, slot);
+        _rmdir(path);
+        sprintf(path, "profiles\\%dsave%d.sh", index, slot);
+        _rmdir(path);
+        slot--;
+        remaining--;
+    } while (remaining != 0);
+    return (ReturnFrom_ProfileDir() != 0) - 1;
+}
 
 // FUNCTION: LEGOLAND 0x00491b50
 LEGO_EXPORT void DeleteProfileList(void) {
