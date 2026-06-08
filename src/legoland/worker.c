@@ -24,6 +24,10 @@ struct WorkOrder {
     int var_18;
     int var_1c;
     unsigned char var_20;
+    unsigned char pad_21[3];
+    int var_24;
+    int var_28;
+    unsigned char var_2c;
 };
 
 struct Rect {
@@ -90,7 +94,42 @@ void *FUN_004995d0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00499620
-void FUN_00499620(void *order) { STUB(); }
+void FUN_00499620(void *order) {
+    struct WorkOrder *o = (struct WorkOrder *)order;
+    struct Rect *rect;
+
+    if (o->var_2c == 1) {
+        rect = (struct Rect *)o->var_10;
+        if (o->var_24 < (rect->maxx - rect->minx) + 1) {
+            o->var_24++;
+        } else {
+            o->var_2c = 7;
+        }
+    }
+    if (o->var_2c == 7) {
+        rect = (struct Rect *)o->var_10;
+        if (o->var_28 < (rect->maxy - rect->miny) + 1) {
+            o->var_28++;
+        } else {
+            o->var_2c = 5;
+        }
+    }
+    if (o->var_2c == 5) {
+        if (o->var_24 != -1) {
+            o->var_24--;
+            return;
+        }
+        o->var_2c = 3;
+        return;
+    }
+    if (o->var_2c == 3) {
+        if (o->var_28 != -1) {
+            o->var_28--;
+            return;
+        }
+        o->var_2c = 1;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004996a0
 int FUN_004996a0(void *order) { STUB(); }
