@@ -1,9 +1,12 @@
 #include "legoland.h"
+#include <windows.h>
+
 #include "crt.h"
 
 #include "llidb.h"
 #include "tilemap.h"
 #include "globals.h"
+#include "wndenv.h"
 
 #include "image_sprite.h"
 
@@ -56,16 +59,78 @@ LEGO_EXPORT int LLIDB_GetElement(unsigned int index, unsigned int *output) {
 }
 
 // FUNCTION: LEGOLAND 0x0047b330
-LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, int zero) { STUB(); }
+LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, unsigned int *index_out) {
+    unsigned int i;
+
+    if (name == NULL) {
+        if (out != NULL) {
+            *out = 0;
+        }
+        if (index_out != NULL) {
+            *index_out = 0;
+            return -3;
+        }
+    } else {
+        for (i = 0; i < DAT_006691a4; i++) {
+            if (_stricmp(name, *(char **)((unsigned int)DAT_006691a8[i >> 8] + (i & 0xff) * 20)) == 0) {
+                if (out != NULL) {
+                    *out = (unsigned int)DAT_006691a8[i >> 8] + (i & 0xff) * 20;
+                }
+                if (index_out != NULL) {
+                    *index_out = i;
+                }
+                return 0;
+            }
+        }
+        if (out != NULL) {
+            *out = 0;
+        }
+        if (index_out != NULL) {
+            *index_out = 0;
+        }
+    }
+    return -3;
+}
 
 // FUNCTION: LEGOLAND 0x0047b3f0
 LEGO_EXPORT unsigned int ElemID(const char *name) {
-    LLIDB_FindElement(name, (unsigned int *)&name, 0);
+    LLIDB_FindElement(name, (unsigned int *)&name, NULL);
     return (unsigned int)name;
 }
 
 // FUNCTION: LEGOLAND 0x0047b410
-LEGO_EXPORT void LLIDB_FindElementFromDataPtr(void) { STUB(); }
+LEGO_EXPORT int LLIDB_FindElementFromDataPtr(void *data, unsigned int *out, unsigned int *index_out) {
+    unsigned int i;
+
+    if (data == NULL) {
+        if (out != NULL) {
+            *out = 0;
+        }
+        if (index_out != NULL) {
+            *index_out = 0;
+            return -3;
+        }
+    } else {
+        for (i = 0; i < DAT_006691a4; i++) {
+            if (data == *(void **)((unsigned int)DAT_006691a8[i >> 8] + (i & 0xff) * 20 + 0xc)) {
+                if (out != NULL) {
+                    *out = (unsigned int)DAT_006691a8[i >> 8] + (i & 0xff) * 20;
+                }
+                if (index_out != NULL) {
+                    *index_out = i;
+                }
+                return 0;
+            }
+        }
+        if (out != NULL) {
+            *out = 0;
+        }
+        if (index_out != NULL) {
+            *index_out = 0;
+        }
+    }
+    return -3;
+}
 
 // FUNCTION: LEGOLAND 0x0047b4c0
 LEGO_EXPORT void LLIDB_ClearOnLevel(void) {
@@ -101,10 +166,25 @@ LEGO_EXPORT unsigned int LLIDB_RegisterNewElementB(unsigned int param_1, unsigne
 }
 
 // FUNCTION: LEGOLAND 0x0047b890
-void FUN_0047b890(void) { STUB(); }
+INT_PTR CALLBACK FUN_0047b890(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047bc20
-LEGO_EXPORT void LLIDB_SelectElement(void) { STUB(); }
+LEGO_EXPORT int LLIDB_SelectElement(unsigned int mask, unsigned int *output) {
+    INT_PTR result;
+
+    DAT_007fdb88 = mask;
+    result = DialogBoxParamA((HINSTANCE)WNDENV_GethInstance(), MAKEINTRESOURCEA(0x75), GetDesktopWindow(), FUN_0047b890, 0);
+    if (result != -1) {
+        if (result != 1) {
+            return -6;
+        }
+        if (output != NULL) {
+            LLIDB_GetElement(DAT_007fdca0, output);
+        }
+        return 0;
+    }
+    return -1;
+}
 
 // FUNCTION: LEGOLAND 0x0047bc80
 LEGO_EXPORT void LLIDB_SaveICM(void) { STUB(); }

@@ -2534,6 +2534,12 @@ unsigned int DAT_007fd638;
 // GLOBAL: LEGOLAND 0x007fd640
 struct ResVolume *DAT_007fd640[4];
 
+// GLOBAL: LEGOLAND 0x007fdb88
+unsigned int DAT_007fdb88;
+
+// GLOBAL: LEGOLAND 0x007fdca0
+int DAT_007fdca0;
+
 // GLOBAL: LEGOLAND 0x007fdca4
 unsigned int DAT_007fdca4;
 

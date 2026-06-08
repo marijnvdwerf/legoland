@@ -1772,6 +1772,10 @@ extern void *DAT_007fd634;
 extern unsigned int DAT_007fd638;
 // 0x007fd640
 extern struct ResVolume *DAT_007fd640[4];
+// 0x007fdb88
+extern unsigned int DAT_007fdb88;
+// 0x007fdca0
+extern int DAT_007fdca0;
 // 0x007fdca4
 extern unsigned int DAT_007fdca4;
 // 0x007fdcc0

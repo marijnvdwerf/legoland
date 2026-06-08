@@ -18,7 +18,8 @@ LEGO_EXPORT void LLS555To565(struct LLSImage *param_1);
 
 LEGO_EXPORT void LLIDB_FreeILFTable(struct ILFTable *table);
 
-LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, int zero);
+LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, unsigned int *index_out);
+LEGO_EXPORT int LLIDB_FindElementFromDataPtr(void *data, unsigned int *out, unsigned int *index_out);
 LEGO_EXPORT unsigned int ElemID(const char *name);
 LEGO_EXPORT void LLIDB_LoadICM(void);
 LEGO_EXPORT void LLIDB_CloseICM(void);
