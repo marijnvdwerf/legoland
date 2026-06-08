@@ -3,6 +3,7 @@
 #include "globals.h"
 #include "man3d.h"
 #include "render3d.h"
+#include "resource.h"
 #include "llidb.h"
 #include <math.h>
 
@@ -186,8 +187,43 @@ LEGO_EXPORT void StopLayerPlaying(unsigned int layerID, unsigned int someValue) 
     LLSStop(lls_handle);
 }
 
+#pragma intrinsic(memset)
+
 // FUNCTION: LEGOLAND 0x00441f20
-LEGO_EXPORT void LoadPalette(void) { STUB(); }
+LEGO_EXPORT unsigned short *LoadPalette(unsigned int path) {
+    unsigned short *palette;
+    unsigned short *out;
+    struct ResFile *file;
+    int i;
+    unsigned char g;
+    unsigned char b;
+    unsigned char header[8];
+
+    palette = (unsigned short *)malloc(0x200);
+    if (palette != NULL) {
+        memset(palette, 0, 0x200);
+        file = RES_OpenFile((const char *)path);
+        if (file != NULL) {
+            RES_ReadFile(file, header, 8);
+            out = palette;
+            for (i = 0x100; i != 0; i--) {
+                RES_ReadFile(file, &path, 1);
+                RES_ReadFile(file, &g, 1);
+                RES_ReadFile(file, &b, 1);
+                if (DAT_00668088 != 2) {
+                    *out = (unsigned short)((((((unsigned char)path & 0xf8) << 5) | (g & 0xf8)) << 2) | (b >> 3));
+                } else {
+                    *out = (unsigned short)((((((unsigned char)path & 0xf8) << 5) | (g & 0xfc)) << 3) | (b >> 3));
+                }
+                out++;
+            }
+            RES_CloseFile(file);
+        }
+    }
+    return palette;
+}
+
+#pragma function(memset)
 
 // FUNCTION: LEGOLAND 0x00442040
 void FUN_00442040(void) { STUB(); }

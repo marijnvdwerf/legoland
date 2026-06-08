@@ -14,6 +14,7 @@ struct BlokePos {
 
 LEGO_EXPORT void Put3DBlokesOnRide2(struct RideObject *ride, struct RideObject *obj);
 LEGO_EXPORT void UnLoadRin(struct RinData *rin);
+LEGO_EXPORT unsigned short *LoadPalette(unsigned int path);
 LEGO_EXPORT unsigned int GetLLSForSprite(struct SpriteLLS *sprite);
 LEGO_EXPORT unsigned int GetSpriteForLayer(struct LayerContainer *arg1, unsigned int arg2);
 unsigned int FUN_00442c70(void);
