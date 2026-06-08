@@ -15,6 +15,7 @@
 #include "interface.h"
 #include "map_object.h"
 #include "help.h"
+#include "llidb.h"
 
 #pragma intrinsic(strcpy, strlen)
 
@@ -1553,10 +1554,55 @@ void FUN_0046c5c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046c620
-void FUN_0046c620(void) { STUB(); }
+unsigned int FUN_0046c620(char *str) {
+    int len;
+    char *buf;
+
+    buf = str;
+    if (str == (char *)0x0) {
+        buf = (char *)&str;
+        str = (char *)0xffffffff;
+        len = 4;
+    } else {
+        str = (char *)strlen(str);
+        if (SaveGameWrite(&str, 4) == 0) {
+            goto fail;
+        }
+        len = (int)str;
+        if (str == (char *)0x0) {
+            goto ok;
+        }
+    }
+    if (SaveGameWrite(buf, len) == 0) {
+        goto fail;
+    }
+ok:
+    return 1;
+fail:
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046c680
-void FUN_0046c680(void) { STUB(); }
+void *FUN_0046c680(void) {
+    int len;
+    void *buffer;
+
+    if (SaveGameRead(&len, 4) == 0) {
+        DAT_006687a0++;
+        return NULL;
+    }
+    if (len == -1) {
+        return NULL;
+    }
+    buffer = malloc(len + 1);
+    if (SaveGameRead(buffer, len) == 0) {
+        free(buffer);
+        DAT_006687a0++;
+        return NULL;
+    }
+    ((char *)buffer)[len] = 0;
+    return buffer;
+}
 
 // FUNCTION: LEGOLAND 0x0046c700
 void FUN_0046c700(void) { STUB(); }
