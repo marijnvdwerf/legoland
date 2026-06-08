@@ -16,18 +16,21 @@ struct ILFTable {
     unsigned char pad_0[4];
     int count;
     unsigned int *sprites;
-    void *data_c;
-    void *data_10;
+    int *data_c;
+    int *data_10;
+    void *data_14;
 };
 
 struct SpriteManager {
-    unsigned short var_0;
-    unsigned char pad_2[0x4 - 0x2];
+    unsigned int var_0;
     int count;
     unsigned int *sprites;
-    void *data_c;
-    void *data_10;
-    void *data_14;
+    int *data_c;
+    int *data_10;
+    unsigned int data_14;
+    void *data_18;
+    void *data_1c;
+    void *data_20;
 };
 
 struct LLSImage {
@@ -459,7 +462,81 @@ void FUN_0047c6a0(struct LLIDBHead *head) {
 void FUN_0047c7f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047cba0
-LEGO_EXPORT void *LLIDB_LoadTSFData(struct LLIDBHead *head) { STUB(); }
+LEGO_EXPORT void *LLIDB_LoadTSFData(struct LLIDBHead *head) {
+    char filename[0x200];
+    char name[0x200];
+    unsigned int count;
+    int len;
+    int ret;
+    unsigned int element;
+    unsigned int tile_base;
+    struct ResFile *file;
+    struct SpriteManager *si;
+    int *anim;
+    int i;
+
+    sprintf(filename, "TileData\\%s", head->name);
+    file = RES_OpenFile(filename);
+    if (file == NULL) {
+        return NULL;
+    }
+
+    si = (struct SpriteManager *)malloc(0x24);
+    RES_ReadFile(file, &count, 4);
+    si->data_c = (int *)malloc(count * 4);
+    si->data_10 = (int *)malloc(count * 4);
+    si->count = count;
+    si->data_18 = NULL;
+    si->data_1c = NULL;
+    si->data_20 = NULL;
+    RES_ReadFile(file, &len, 4);
+    RES_ReadFile(file, name, len);
+
+    i = 0;
+    if ((int)count > 0) {
+        do {
+            RES_ReadFile(file, (char *)si->data_c + i * 4, 4);
+            RES_ReadFile(file, (char *)si->data_10 + i * 4, 4);
+            i++;
+        } while (i < (int)count);
+    }
+
+    si->sprites = AllocTileSpace(si, count, &tile_base);
+    si->var_0 = tile_base & 0xffff;
+
+    i = 0;
+    if ((int)count > 0) {
+        do {
+            RES_ReadFile(file, &len, 4);
+            RES_ReadFile(file, filename, len);
+            filename[len] = '\0';
+            si->sprites[i] = LoadSprite(filename, 1);
+            anim = *(int **)(si->sprites[i] + 8);
+            if ((anim[5] == 2 || anim[5] == 3) && *(short *)(*anim + 0x10) > 1) {
+                LLSPlay((struct LLS *)*anim, (unsigned int)anim);
+            }
+            i++;
+        } while (i < (int)count);
+    }
+
+    si->data_14 = 0;
+    ret = RES_ReadFile(file, &len, 4);
+    if (ret == 4 && len != 0) {
+        RES_ReadFile(file, name, len);
+        name[len] = '\0';
+        if (LLIDB_FindElement(name, &element, NULL) == 0) {
+            head->data = si;
+            si->data_14 = element;
+            LLIDB_LoadData((void *)element);
+            *(struct SpriteManager **)(*(int *)(element + 0xc) + 0x74) = si;
+        }
+    }
+
+    RES_CloseFile(file);
+    head->data = si;
+    head->flags |= 1;
+    return si;
+}
 
 // FUNCTION: LEGOLAND 0x0047cdd0
 void FUN_0047cdd0(struct SpriteManager *param_1) {
@@ -478,8 +555,8 @@ void FUN_0047cdd0(struct SpriteManager *param_1) {
     }
 
     FreeTileSpace(si->var_0, si->count);
-    if (si->data_14 != NULL) {
-        LLIDB_UnLoadData((unsigned int)si->data_14);
+    if (si->data_14 != 0) {
+        LLIDB_UnLoadData(si->data_14);
     }
 
     free(si);
@@ -555,7 +632,68 @@ void FUN_0047cf80(struct LLIDBHead *head) {
 }
 
 // FUNCTION: LEGOLAND 0x0047cfc0
-LEGO_EXPORT void *LLIDB_LoadILFData(struct LLIDBHead *head) { STUB(); }
+LEGO_EXPORT void *LLIDB_LoadILFData(struct LLIDBHead *head) {
+    char filename[0x200];
+    char name[0x200];
+    int count;
+    short unused;
+    int len;
+    struct ResFile *file;
+    struct ILFTable *table;
+    int i;
+
+    count = 0;
+    // STRING: LEGOLAND 0x004bc3b4
+    sprintf(filename, "ImageData\\%s", head->name);
+    file = RES_OpenFile(filename);
+    if (file == NULL) {
+        return NULL;
+    }
+
+    table = (struct ILFTable *)malloc(0x24);
+    RES_ReadFile(file, &count, 2);
+    RES_ReadFile(file, &unused, 2);
+    if (table != NULL) {
+        table->data_c = (int *)malloc(count * 4);
+        table->data_10 = (int *)malloc(count * 4);
+        table->sprites = (unsigned int *)malloc(count * 4);
+        table->count = count;
+        if (table->data_c != NULL && table->data_10 != NULL && table->sprites != NULL) {
+            RES_ReadFile(file, &len, 4);
+            RES_ReadFile(file, name, len);
+            i = 0;
+            if (count > 0) {
+                do {
+                    RES_ReadFile(file, (char *)table->data_c + i * 4, 4);
+                    RES_ReadFile(file, (char *)table->data_10 + i * 4, 4);
+                    table->data_c[i] = table->data_c[i] << 1;
+                    table->data_10[i] = table->data_10[i] << 1;
+                    i++;
+                } while (i < count);
+            }
+            i = 0;
+            if (count > 0) {
+                do {
+                    RES_ReadFile(file, &len, 4);
+                    RES_ReadFile(file, filename, len);
+                    filename[len] = '\0';
+                    table->sprites[i] = LoadSprite(filename, 1);
+                    i++;
+                } while (i < count);
+            }
+            if (i == count) {
+                table->data_14 = NULL;
+                RES_CloseFile(file);
+                head->data = table;
+                head->flags |= 1;
+                return table;
+            }
+        }
+    }
+    LLIDB_FreeILFTable(table);
+    RES_CloseFile(file);
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x0047d1a0
 LEGO_EXPORT void *LLIDB_LoadCSPData(struct LLIDBHead *head) { STUB(); }

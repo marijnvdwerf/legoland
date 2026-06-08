@@ -29,7 +29,7 @@ struct Point {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0045a9b0
-LEGO_EXPORT void AllocTileSpace(void) { STUB(); }
+LEGO_EXPORT unsigned int *AllocTileSpace(void *manager, int count, unsigned int *out) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045aa50
 void FUN_0045aa50(void) { STUB(); }
