@@ -41,6 +41,7 @@ char FUN_004688c0(int index);
 void FUN_004688e0(void);
 void FUN_004688f0(int index, unsigned char param_2);
 struct ObjectiveEvent *FUN_00468910(unsigned int type, int sort_key);
+void FUN_00468940(struct ObjectiveEvent *node);
 void FUN_00468970(struct ObjectiveEvent *node);
 void FUN_004689a0(void);
 unsigned int FUN_004689f0(unsigned int param_1, unsigned int param_2, unsigned int param_3);

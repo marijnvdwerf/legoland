@@ -1605,10 +1605,99 @@ void *FUN_0046c680(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046c700
-void FUN_0046c700(void) { STUB(); }
+unsigned int FUN_0046c700(struct ObjectiveEvent *node) {
+    unsigned int marker[17];
+
+    while (node != NULL) {
+        int ok;
+
+        node->timestamp -= DAT_007fe994;
+        // STRING: LEGOLAND 0x004ba808
+        DBPrintf("Saving Event, Timestamp = %d\n", node->timestamp);
+        ok = SaveGameWrite(node, 0x44);
+        node->timestamp += DAT_007fe994;
+        if (ok == 0) {
+            return 0;
+        }
+        if (node->field_4 != 0) {
+            if (FUN_0046c620(*(char **)node->field_4) == 0) {
+                return 0;
+            }
+        } else if (FUN_0046c620(NULL) == 0) {
+            return 0;
+        }
+        if (node->field_8 != 0) {
+            if (FUN_0046c620((char *)node->field_8) == 0) {
+                return 0;
+            }
+        } else if (FUN_0046c620(NULL) == 0) {
+            return 0;
+        }
+        node = node->next;
+    }
+    memset(marker, 0, sizeof(marker));
+    marker[0] = 0xffffffff;
+    return SaveGameWrite(marker, 0x44) != 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046c7e0
-void FUN_0046c7e0(void) { STUB(); }
+struct ObjectiveEvent *FUN_0046c7e0(void) {
+    struct ObjectiveEvent *node;
+    struct ObjectiveEvent *prev;
+    struct ObjectiveEvent *head;
+    char *str;
+
+    prev = NULL;
+    node = FUN_00468910((unsigned int)prev, (int)prev);
+    head = NULL;
+    while (SaveGameRead(node, 0x44) != 0) {
+        if ((unsigned int)node->next == 0xffffffff) {
+            free(node);
+            if (prev != NULL) {
+                prev->next = NULL;
+                return head;
+            }
+            return NULL;
+        }
+        // STRING: LEGOLAND 0x004ba838
+        DBPrintf("Loading Event, TimeStamp = %d", node->timestamp);
+        node->timestamp += DAT_007fe994;
+        // STRING: LEGOLAND 0x004ba828
+        DBPrintf("Fixed up to %d\n", node->timestamp);
+        str = (char *)FUN_0046c680();
+        if (DAT_006687a0 != 0) {
+            free(node);
+            FUN_00468970(head);
+            return NULL;
+        }
+        if (str != NULL) {
+            node->field_4 = ElemID(str);
+            free(str);
+        } else {
+            node->field_4 = 0;
+        }
+        node->field_8 = (unsigned int)FUN_0046c680();
+        if (node->field_8 != 0) {
+            node->flags_10 |= 0x20;
+        }
+        if (DAT_006687a0 != 0) {
+            FUN_00468940(node);
+            FUN_00468970(head);
+            return NULL;
+        }
+        if (head == NULL) {
+            head = node;
+        } else {
+            prev->next = node;
+        }
+        prev = node;
+        node = FUN_00468910(0, 0);
+    }
+    free(node);
+    FUN_00468970(head);
+    DAT_006687a0++;
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x0046c920
 void FUN_0046c920(void) { STUB(); }
