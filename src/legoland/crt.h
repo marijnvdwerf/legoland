@@ -19,6 +19,7 @@ extern void *calloc(unsigned int count, unsigned int size);
 extern __declspec(noreturn) void exit(int status);
 extern int atoi(const char *str);
 extern unsigned int _lseek(unsigned int a, unsigned int b, unsigned int c);
+extern int _tell(int fd);
 extern int _write(int fd, void *buffer, unsigned int count);
 extern int _rmdir(const char *path);
 extern char *_getcwd(char *buffer, int maxlen);

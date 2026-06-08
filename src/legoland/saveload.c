@@ -4,9 +4,22 @@
 #include "saveload.h"
 #include "llidb.h"
 #include "globals.h"
+#include "crt.h"
 
 // FUNCTION: LEGOLAND 0x0047d790
-LEGO_EXPORT void BeginMeasuredBlock(void) { STUB(); }
+LEGO_EXPORT int BeginMeasuredBlock(void) {
+    int pos;
+    int marker;
+
+    pos = _tell(DAT_006691b0);
+    marker = 0;
+    if (pos == -1) {
+        return 0;
+    }
+    DAT_006691bc[DAT_006691fc] = pos;
+    DAT_006691fc = DAT_006691fc + 1;
+    return SaveGameWrite(&marker, 4) != 0;
+}
 
 // FUNCTION: LEGOLAND 0x0047d7e0
 void FUN_0047d7e0(void) {
@@ -16,7 +29,22 @@ void FUN_0047d7e0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d800
-LEGO_EXPORT void EndMeasuredBlock(void) { STUB(); }
+LEGO_EXPORT int EndMeasuredBlock(void) {
+    int end_pos;
+
+    end_pos = _tell(DAT_006691b0);
+    if (end_pos == -1) {
+        return 0;
+    }
+    DAT_006691fc = DAT_006691fc - 1;
+    if (_lseek(DAT_006691b0, DAT_006691bc[DAT_006691fc], 0) == -1) {
+        return 0;
+    }
+    if (SaveGameWrite(&end_pos, 4) == 0) {
+        return 0;
+    }
+    return _lseek(DAT_006691b0, end_pos, 0) != -1;
+}
 
 // FUNCTION: LEGOLAND 0x0047d880
 LEGO_EXPORT void FindeIneList(void) { STUB(); }
