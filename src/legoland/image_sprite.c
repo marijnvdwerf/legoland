@@ -8,6 +8,7 @@
 #include "llidb.h"
 #include "draw.h"
 #include "debug_alloc.h"
+#include "timer.h"
 
 struct SpriteListNode;
 struct Layer;
@@ -347,7 +348,34 @@ LEGO_EXPORT void FreeBitmapResources(struct Image *image) {
 }
 
 // FUNCTION: LEGOLAND 0x00497640
-LEGO_EXPORT void CreateSprite(void) { STUB(); }
+LEGO_EXPORT struct Sprite *CreateSprite(struct Image *image) {
+    struct Sprite *sprite;
+
+    sprite = FUN_00497580();
+    if (sprite == NULL) {
+        return NULL;
+    }
+    sprite->field_4 = 0;
+    sprite->image = image;
+    sprite->field_1c = 1;
+    sprite->field_18 = 0;
+    sprite->field_1a = 0;
+    sprite->field_10 = 0;
+    sprite->field_c = DAT_008119a4 - 1;
+    if (image != NULL) {
+        *(unsigned short *)((char *)image + 0xc) += 1;
+        if (image->field_0 == 0) {
+            if (__BMPLoader(image) == 0) {
+                KillSprite((unsigned int)sprite);
+                return NULL;
+            }
+        }
+        sprite->field_14 = *(unsigned short *)((char *)image + 8);
+        sprite->field_16 = *(unsigned short *)((char *)image + 0xa);
+        FUN_00499500(sprite);
+    }
+    return sprite;
+}
 
 // FUNCTION: LEGOLAND 0x004976c0
 LEGO_EXPORT struct Sprite *CreateFunctionBasedSprite(unsigned int source, unsigned short a, unsigned short b) {

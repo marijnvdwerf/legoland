@@ -14,6 +14,7 @@ LEGO_EXPORT int KillImage(struct Image *image);
 LEGO_EXPORT void ReloadImageBitmapAndBuildSprites(struct Image *image);
 LEGO_EXPORT void FreeBitmapResources(struct Image *image);
 
+LEGO_EXPORT struct Sprite *CreateSprite(struct Image *image);
 LEGO_EXPORT struct Sprite *CreateFunctionBasedSprite(unsigned int source, unsigned short a, unsigned short b);
 LEGO_EXPORT unsigned int LoadSprite(const char *name, int flags);
 LEGO_EXPORT unsigned int MakeSprite(unsigned int sprite);
