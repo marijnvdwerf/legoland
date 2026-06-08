@@ -12,8 +12,11 @@ struct LLS {
 };
 
 struct LLSImage;
+struct ILFTable;
 
 LEGO_EXPORT void LLS555To565(struct LLSImage *param_1);
+
+LEGO_EXPORT void LLIDB_FreeILFTable(struct ILFTable *table);
 
 LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, int zero);
 LEGO_EXPORT unsigned int ElemID(const char *name);

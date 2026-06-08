@@ -307,7 +307,7 @@ struct Sprite *FUN_00497580(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004975b0
-void FUN_004975b0(void) { STUB(); }
+void FUN_004975b0(struct Sprite *sprite) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497610
 LEGO_EXPORT void FreeBitmapResources(struct Image *image) {
@@ -433,7 +433,31 @@ LEGO_EXPORT short ReferenceSprite(struct Sprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x00497bd0
-LEGO_EXPORT int KillSprite(unsigned int sprite) { STUB(); }
+LEGO_EXPORT int KillSprite(unsigned int sprite) {
+    struct Sprite *s;
+    struct LayerHost *host;
+
+    s = (struct Sprite *)sprite;
+    if (s != NULL) {
+        s->field_1c--;
+        if (s->field_1c == 0) {
+            host = (struct LayerHost *)s->field_4;
+            if (host != NULL) {
+                host->vtable->func_8(host);
+            }
+            if ((s->field_10 & 0x20) == 0) {
+                if ((s->field_10 & 0x8000) != 0) {
+                    LLIDB_FreeILFTable((struct ILFTable *)s->image);
+                } else if (s->image != NULL) {
+                    KillImage(s->image);
+                }
+            }
+            FUN_004975b0(s);
+            return 1;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00497c30
 LEGO_EXPORT void GetSprite(void) { STUB(); }
