@@ -261,13 +261,15 @@ void FUN_0041d0b0(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0041d100
 void FUN_0041d100(void) { STUB(); }
 
-// FUNCTION: LEGOLAND 0x0041d170
-void FUN_0041d170(void) { STUB(); }
-
 struct Indexed {
     unsigned char pad_0[0xc];
     unsigned int field_c;
 };
+
+// FUNCTION: LEGOLAND 0x0041d170
+unsigned int FUN_0041d170(struct Indexed *obj, unsigned int param) {
+    return FUN_0041d1d0(obj, obj->field_c + 0xc, param);
+}
 
 // FUNCTION: LEGOLAND 0x0041d190
 unsigned int FUN_0041d190(struct Indexed *obj, unsigned int param) {

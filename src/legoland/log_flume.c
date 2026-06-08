@@ -209,6 +209,12 @@ struct FlumeDims {
     int field2;
 };
 
+struct FlumeBytes {
+    unsigned char b0;
+    unsigned char pad_1[3];
+    unsigned char b4;
+};
+
 typedef void (*FlumeVtblFn)(void);
 
 struct FlumeObj {
@@ -1055,7 +1061,7 @@ void FUN_0040d520(void) { STUB(); }
 unsigned int FUN_0040d6f0(struct CursorSource *param_1, unsigned int param_2, unsigned int param_3, unsigned int *param_4, void (*param_5)(void), void (*param_6)(void)) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040d900
-void FUN_0040d900(void) { STUB(); }
+unsigned int FUN_0040d900(unsigned int param_1, unsigned int *param_2, int param_3, void (*param_4)(void), void (*param_5)(void), void (*param_6)(void)) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040da10
 void FUN_0040da10(struct Context *a, struct LinkList *list) {
@@ -1426,7 +1432,12 @@ void FUN_0040f510(unsigned int param_1, unsigned int param_2, unsigned int param
 }
 
 // FUNCTION: LEGOLAND 0x0040f540
-void FUN_0040f540(void) { STUB(); }
+void FUN_0040f540(unsigned int param_1, struct FlumeBytes *param_2) {
+    unsigned int packed;
+    *((unsigned char *)&packed) = param_2->b0;
+    *((unsigned char *)&packed + 1) = param_2->b4;
+    FUN_0040d900(packed, DAT_004cbe18->var_3c, (int)DAT_004cbe48, FUN_0040f050, FUN_0040f360, FUN_0040f300);
+}
 
 // FUNCTION: LEGOLAND 0x0040f580
 void FUN_0040f580(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
@@ -1513,7 +1524,13 @@ void FUN_0040fa50(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0040fa60
-void FUN_0040fa60(void) { STUB(); }
+void FUN_0040fa60(unsigned int param_1, struct FlumeBytes *param_2) {
+    unsigned int packed;
+    *((unsigned char *)&packed) = param_2->b0;
+    *((unsigned char *)&packed + 1) = param_2->b4;
+    DAT_004c2af4 = 0;
+    FUN_0040d900(packed, DAT_004c2bf0->var_3c, (int)DAT_004c4460, FUN_0040f5b0, FUN_0040f830, FUN_0040f7d0);
+}
 
 // FUNCTION: LEGOLAND 0x0040fab0
 unsigned int FUN_0040fab0(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
@@ -1590,7 +1607,10 @@ void FUN_004100b0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004100d0
-void FUN_004100d0(void) { STUB(); }
+unsigned int FUN_004100d0(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+    struct CursorSource *src = DAT_004c2b60;
+    return FUN_0040d6f0(src, param_2, param_3, src->var_3c, FUN_0040feb0, FUN_0040fe80);
+}
 
 // FUNCTION: LEGOLAND 0x00410100
 void FUN_00410100(unsigned int param_1, unsigned int param_2) {
@@ -1598,7 +1618,13 @@ void FUN_00410100(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00410110
-void FUN_00410110(void) { STUB(); }
+void FUN_00410110(unsigned int param_1, struct FlumeBytes *param_2) {
+    unsigned int packed;
+    *((unsigned char *)&packed) = param_2->b0;
+    *((unsigned char *)&packed + 1) = param_2->b4;
+    DAT_004c2af4 = 0;
+    FUN_0040d900(packed, DAT_004c2b60->var_3c, (int)DAT_004c2b50, FUN_0040fad0, FUN_0040feb0, FUN_0040fe50);
+}
 
 // FUNCTION: LEGOLAND 0x00410160
 unsigned int FUN_00410160(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
@@ -1704,7 +1730,13 @@ void FUN_00410730(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00410740
-void FUN_00410740(void) { STUB(); }
+void FUN_00410740(unsigned int param_1, struct FlumeBytes *param_2) {
+    unsigned int packed;
+    *((unsigned char *)&packed) = param_2->b0;
+    *((unsigned char *)&packed + 1) = param_2->b4;
+    DAT_004c2af4 = 0;
+    FUN_0040d900(packed, DAT_004c8d6c->var_3c, (int)DAT_004c8d4c, FUN_00410180, FUN_00410360, FUN_004102e0);
+}
 
 // FUNCTION: LEGOLAND 0x00410790
 unsigned int FUN_00410790(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
