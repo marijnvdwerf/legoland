@@ -23,7 +23,7 @@ LEGO_EXPORT int LLIDB_FindElementFromDataPtr(void *data, unsigned int *out, unsi
 LEGO_EXPORT unsigned int ElemID(const char *name);
 LEGO_EXPORT void LLIDB_LoadICM(void);
 LEGO_EXPORT void LLIDB_CloseICM(void);
-LEGO_EXPORT unsigned int LLIDB_RegisterNewElement(const char *param_1, unsigned int param_2, unsigned int param_3);
+LEGO_EXPORT unsigned int LLIDB_RegisterNewElement(const char *param_1, const char *param_2, unsigned int param_3);
 LEGO_EXPORT void LLIDB_ClearOnLevel(void);
 LEGO_EXPORT void *LLIDB_LoadData(void *head);
 LEGO_EXPORT void LLIDB_UnLoadData(unsigned int handle);

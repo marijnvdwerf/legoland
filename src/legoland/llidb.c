@@ -201,7 +201,51 @@ unsigned int FUN_0047b5a0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0047b610
-LEGO_EXPORT unsigned int LLIDB_RegisterNewElement(const char *param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
+LEGO_EXPORT unsigned int LLIDB_RegisterNewElement(const char *param_1, const char *param_2, unsigned int param_3) {
+    unsigned int index;
+    char *page_off;
+    unsigned int slot_off;
+    char *copy;
+    unsigned int found;
+
+    if (param_1 == NULL || param_1[0] == '\0') {
+        return (unsigned int)-4;
+    }
+    if ((param_2 == NULL || param_2[0] == '\0') && param_3 != 0x200) {
+        return (unsigned int)-5;
+    }
+
+    if (LLIDB_FindElement(param_1, &found, NULL) == 0) {
+        if (param_3 != 0x200 && _stricmp(param_2, *(char **)(found + 4)) != 0) {
+            return (unsigned int)-1;
+        }
+        return 0;
+    }
+
+    index = FUN_0047b5a0();
+    page_off = (char *)((index >> 8) * 4);
+    slot_off = (index & 0xff) * 20;
+
+    copy = (char *)malloc(strlen(param_1) + 1);
+    *(char **)(*(char **)(page_off + (unsigned int)DAT_006691a8) + slot_off) = copy;
+    strcpy(*(char **)(*(char **)(page_off + (unsigned int)DAT_006691a8) + slot_off), param_1);
+
+    if (param_2 == NULL) {
+        copy = (char *)malloc(1);
+        *(char **)(*(char **)(page_off + (unsigned int)DAT_006691a8) + slot_off + 4) = copy;
+        *(*(char **)(*(char **)(page_off + (unsigned int)DAT_006691a8) + slot_off + 4)) = '\0';
+    } else {
+        copy = (char *)malloc(strlen(param_2) + 1);
+        *(char **)(*(char **)(page_off + (unsigned int)DAT_006691a8) + slot_off + 4) = copy;
+        strcpy(*(char **)(*(char **)(page_off + (unsigned int)DAT_006691a8) + slot_off + 4), param_2);
+    }
+
+    *(unsigned int *)(*(char **)(page_off + (unsigned int)DAT_006691a8) + slot_off + 8) = param_3 & 0xfff0;
+    *(unsigned int *)(*(char **)(page_off + (unsigned int)DAT_006691a8) + slot_off + 0x10) = 0;
+
+    DAT_006691a4++;
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0047b7b0
 void FUN_0047b7b0(int param_1) {
@@ -236,7 +280,7 @@ void FUN_0047b7b0(int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0047b860
-LEGO_EXPORT unsigned int LLIDB_RegisterNewElementB(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+LEGO_EXPORT unsigned int LLIDB_RegisterNewElementB(const char *param_1, const char *param_2, unsigned int param_3) {
     unsigned int result = LLIDB_RegisterNewElement(param_1, param_2, param_3);
     if (result != 0) {
         FUN_0047b7b0(result);
