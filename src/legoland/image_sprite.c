@@ -461,7 +461,36 @@ LEGO_EXPORT struct Sprite *CreatePartialSprite(struct Image *image, unsigned sho
 }
 
 // FUNCTION: LEGOLAND 0x00497810
-LEGO_EXPORT void RecreatePartialSprite(void) { STUB(); }
+LEGO_EXPORT int RecreatePartialSprite(struct Sprite *sprite, struct Image *image, unsigned short a, unsigned short b, unsigned short c, unsigned short d) {
+    struct LayerHost *host;
+    int had_host;
+
+    ReferenceImage(image);
+    KillImage(sprite->image);
+    host = (struct LayerHost *)sprite->field_4;
+    if (host != NULL) {
+        host->vtable->func_8(host);
+        had_host = 1;
+    } else {
+        had_host = 0;
+    }
+    sprite->field_18 = a;
+    sprite->field_4 = 0;
+    sprite->image = image;
+    sprite->field_1a = b;
+    sprite->field_10 = 0;
+    sprite->field_14 = c;
+    sprite->field_16 = d;
+    if (image->field_0 == 0) {
+        if (__BMPLoader(image) == 0) {
+            return 0;
+        }
+    }
+    if (had_host != 0) {
+        FUN_00499500(sprite);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004978b0
 int FUN_004978b0(struct Sprite *sprite, const char *name, unsigned int flags) {
