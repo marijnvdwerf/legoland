@@ -1434,7 +1434,9 @@ void FUN_0040f580(unsigned int param_1, unsigned int param_2, unsigned int param
 }
 
 // FUNCTION: LEGOLAND 0x0040f5a0
-void FUN_0040f5a0(void) { STUB(); }
+void FUN_0040f5a0(unsigned int param_1, unsigned int param_2) {
+    FUN_0040d2d0(param_2);
+}
 
 // FUNCTION: LEGOLAND 0x0040f5b0
 void FUN_0040f5b0(void) { STUB(); }
@@ -1495,7 +1497,9 @@ void FUN_0040f900(void) {
 void FUN_0040f920(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040fa00
-void FUN_0040fa00(void) { STUB(); }
+void FUN_0040fa00(void) {
+    FUN_0040d3b0(DAT_004c2bf0, DAT_004c2bf0->var_3c);
+}
 
 // FUNCTION: LEGOLAND 0x0040fa20
 void FUN_0040fa20(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
@@ -1504,7 +1508,9 @@ void FUN_0040fa20(unsigned int param_1, unsigned int param_2, unsigned int param
 }
 
 // FUNCTION: LEGOLAND 0x0040fa50
-void FUN_0040fa50(void) { STUB(); }
+void FUN_0040fa50(unsigned int param_1, unsigned int param_2) {
+    FUN_0040d2d0(param_2);
+}
 
 // FUNCTION: LEGOLAND 0x0040fa60
 void FUN_0040fa60(void) { STUB(); }

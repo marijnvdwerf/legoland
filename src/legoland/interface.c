@@ -467,7 +467,7 @@ LEGO_EXPORT void UpdateMenu(void) {
 LEGO_EXPORT void RedrawObjectList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00475960
-LEGO_EXPORT void MakeUpObjectList(void) { STUB(); }
+LEGO_EXPORT void MakeUpObjectList(int param_1, int param_2, int param_3, int param_4) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00475bb0
 LEGO_EXPORT void ListChildrenBar(void) { STUB(); }
@@ -476,10 +476,24 @@ LEGO_EXPORT void ListChildrenBar(void) { STUB(); }
 LEGO_EXPORT void CloseChildrenBar(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00475c50
-void FUN_00475c50(void) { STUB(); }
+char FUN_00475c50(int param_1, unsigned char param_2) {
+    if (param_2 & 2) {
+        DAT_004bdd00 = 0x100;
+        *(unsigned int *)(*(int *)(*(int *)(*(int *)(param_1 + 0x18) + 4) + 0xc4) + 8) |= 8;
+        MakeUpObjectList(0xd2, 3, 0x21, 0x154);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00475c90
-void FUN_00475c90(void) { STUB(); }
+char FUN_00475c90(int param_1, unsigned char param_2) {
+    if (param_2 & 2) {
+        DAT_004bdd00 = 0x100;
+        *(unsigned int *)(*(int *)(*(int *)(*(int *)(param_1 + 0x18) + 4) + 0xc4) + 8) &= ~8;
+        MakeUpObjectList(0xd2, 3, 0x21, 0x154);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00475cd0
 LEGO_EXPORT void RAndDLinkedList(void) { STUB(); }

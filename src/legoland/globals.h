@@ -882,6 +882,16 @@ extern void *DAT_00629c50;
 extern unsigned int DAT_0062fd2c;
 // 0x0062fd3c
 extern struct JailCell *DAT_0062fd3c;
+// 0x0062fd48
+extern unsigned int DAT_0062fd48;
+// 0x0062fd4c
+extern unsigned int DAT_0062fd4c;
+// 0x0062fd50
+extern unsigned int DAT_0062fd50;
+// 0x0062fd54
+extern unsigned short DAT_0062fd54;
+// 0x0062fd60
+extern void *DAT_0062fd60;
 // 0x0062fd68
 extern void *DAT_0062fd68;
 // 0x0062fd6c
@@ -2346,8 +2356,12 @@ extern void *DAT_00829bf0;
 extern void *DAT_00829bf4;
 // 0x00829bf8
 extern unsigned int DAT_00829bf8;
+// 0x00829c00
+extern int DAT_00829c00;
 // 0x00829c04
 extern unsigned int DAT_00829c04;
+// 0x00829c34
+extern int DAT_00829c34;
 // 0x0082ac60
 extern void *DAT_0082ac60[1];
 // 0x0082ad20

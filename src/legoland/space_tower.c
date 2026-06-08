@@ -174,7 +174,22 @@ void FUN_0043b460(void) { STUB(); }
 void FUN_0043b4b0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043b4e0
-void FUN_0043b4e0(void) { STUB(); }
+void *FUN_0043b4e0(int param_1, unsigned short param_2) {
+    int ride;
+
+    ride = *(int *)(param_1 + 0xc);
+    DAT_0062fd48 = *(unsigned int *)(ride + 0x64);
+    DAT_0062fd4c = *(unsigned int *)(ride + 0x14);
+    DAT_0062fd50 = *(unsigned int *)(ride + 0x18);
+    DAT_0062fd54 = param_2;
+    *(unsigned int *)(*(int *)(ride + 0x64) + 0x10) |= 0x2000;
+    HideLayer(DAT_0062fd60, 6);
+    HideLayer(DAT_0062fd60, 4);
+    HideLayer(DAT_0062fd60, 0);
+    HideLayer(DAT_0062fd60, 2);
+    HideLayer(DAT_0062fd60, 5);
+    return &DAT_0062fd48;
+}
 
 // FUNCTION: LEGOLAND 0x0043b570
 void FUN_0043b570(void) {

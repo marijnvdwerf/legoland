@@ -152,7 +152,7 @@ void FUN_004689a0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004689f0
-unsigned int FUN_004689f0(unsigned int param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
+unsigned int FUN_004689f0(char *param_1, char *param_2, int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00468b00
 void FUN_00468b00(struct ObjectiveEvent *event) {

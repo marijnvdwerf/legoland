@@ -793,7 +793,9 @@ void FUN_0041e950(struct ObjAtC8 *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0041e970
-void FUN_0041e970(void) { STUB(); }
+void FUN_0041e970(int param_1) {
+    FUN_004266e0((struct ListLink *)(param_1 + 0xc8));
+}
 
 // FUNCTION: LEGOLAND 0x0041e990
 void FUN_0041e990(void) { STUB(); }
@@ -825,7 +827,9 @@ void *FUN_0041eb30(unsigned int arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0041eb60
-void FUN_0041eb60(void) { STUB(); }
+void FUN_0041eb60(unsigned int param_1) {
+    FUN_004775d0(param_1);
+}
 
 // FUNCTION: LEGOLAND 0x0041eb70
 void FUN_0041eb70(void) {
@@ -2026,7 +2030,14 @@ void FUN_00424820(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00424830
-void FUN_00424830(void) { STUB(); }
+void FUN_00424830(int param_1) {
+    int inner;
+
+    inner = *(int *)(param_1 + 0xc);
+    DAT_00829c00 = param_1;
+    DAT_00829c34 = inner;
+    *(unsigned int *)(*(int *)(inner + 0x64) + 0x10) |= 0x2000;
+}
 
 // FUNCTION: LEGOLAND 0x00424850
 void FUN_00424850(void) { STUB(); }
