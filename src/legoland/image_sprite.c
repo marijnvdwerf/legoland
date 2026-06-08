@@ -6,6 +6,7 @@
 #include "image_sprite.h"
 #include "gfx.h"
 #include "llidb.h"
+#include "resource.h"
 #include "draw.h"
 #include "debug_alloc.h"
 #include "timer.h"
@@ -85,6 +86,14 @@ struct KLIBAUDIO_Stop {
 
 struct KLIBAUDIO_Object {
     void *vtable;
+};
+
+struct ILFTable {
+    unsigned char pad_0[4];
+    int count;
+    struct Sprite **sprites;
+    void *data_c;
+    void *data_10;
 };
 
 
@@ -455,7 +464,74 @@ LEGO_EXPORT struct Sprite *CreatePartialSprite(struct Image *image, unsigned sho
 LEGO_EXPORT void RecreatePartialSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004978b0
-int FUN_004978b0(struct Sprite *sprite, const char *name, unsigned int flags) { STUB(); }
+int FUN_004978b0(struct Sprite *sprite, const char *name, unsigned int flags) {
+    struct ILFTable *table;
+    struct ResFile *file;
+    struct Image *image;
+    struct Sprite *element;
+    int count;
+    int length;
+    int i;
+    char tag[2];
+    char path[512];
+    char element_name[512];
+
+    i = 0;
+    count = 0;
+    if (sprite == NULL) {
+        return 0;
+    }
+    // STRING: LEGOLAND 0x004bfec8
+    sprintf(path, ".\\CompSprite\\%s", name);
+    file = RES_OpenFile(path);
+    if (file == NULL) {
+        return 0;
+    }
+    table = (struct ILFTable *)malloc(0x24);
+    if (table != NULL) {
+        RES_ReadFile(file, &count, 2);
+        RES_ReadFile(file, tag, 2);
+        table->data_c = malloc(count * 4);
+        table->data_10 = malloc(count * 4);
+        table->sprites = (struct Sprite **)malloc(count * 4);
+        table->count = count;
+        if (table->data_c != NULL && table->data_10 != NULL && table->sprites != NULL) {
+            RES_ReadFile(file, &length, 4);
+            RES_ReadFile(file, element_name, length);
+            if (count > 0) {
+                do {
+                    RES_ReadFile(file, (char *)table->data_c + i * 4, 4);
+                    RES_ReadFile(file, (char *)table->data_10 + i * 4, 4);
+                    i++;
+                } while (i < count);
+            }
+            i = 0;
+            if (count > 0) {
+                do {
+                    RES_ReadFile(file, &length, 4);
+                    RES_ReadFile(file, path, length);
+                    path[length] = 0;
+                    table->sprites[i] = (struct Sprite *)LoadSprite(path, flags);
+                    element = table->sprites[i];
+                    if (element != NULL) {
+                        image = element->image;
+                        if (image->field_14 == 2 || image->field_14 == 3) {
+                            LLSPlay((struct LLS *)image->field_0, (unsigned int)image);
+                        }
+                    }
+                    i++;
+                } while (i < count);
+            }
+            RES_CloseFile(file);
+            sprite->image = (struct Image *)table;
+            sprite->field_10 |= 0x8000;
+            return 1;
+        }
+    }
+    LLIDB_FreeILFTable((struct ILFTable *)table);
+    RES_CloseFile(file);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00497ab0
 LEGO_EXPORT unsigned int LoadSprite(const char *name, int flags) {

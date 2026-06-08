@@ -28,6 +28,7 @@ LEGO_EXPORT void *LLIDB_LoadData(void *head);
 LEGO_EXPORT void LLIDB_UnLoadData(unsigned int handle);
 
 LEGO_EXPORT void LLSStop(unsigned int handle);
+LEGO_EXPORT void LLSPlay(struct LLS *param_1, unsigned int param_2);
 LEGO_EXPORT void LLSSetFrame(struct LLS *lls, int index);
 
 LEGO_EXPORT unsigned int SaveGameRead(void *buffer, unsigned int count);
