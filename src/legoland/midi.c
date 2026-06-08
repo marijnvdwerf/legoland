@@ -3,9 +3,52 @@
 #include <mmsystem.h>
 
 #include "globals.h"
+#include "crt.h"
+#include "resource.h"
+#include "wndenv.h"
+
+struct MidiFile {
+    unsigned int field_0;
+    unsigned int field_4;
+    unsigned char pad_8[4];
+    short trackCount;
+    unsigned char pad_e[2];
+    void **trackArray;
+    unsigned char pad_14[4];
+};
+
+struct MidiTrack {
+    struct MidiFile *parent;
+};
 
 // FUNCTION: LEGOLAND 0x00480200
-LEGO_EXPORT void LoadMIDIFile(void) { STUB(); }
+LEGO_EXPORT struct MidiFile *LoadMIDIFile(const char *filename) {
+    struct MidiFile *midi;
+    struct ResFile *file;
+    unsigned int header;
+    unsigned int division;
+    unsigned int chunkSize;
+    unsigned short formatType;
+    int i;
+
+    header = 0;
+    midi = (struct MidiFile *)malloc(0x18);
+    file = RES_OpenFile(filename);
+    RES_ReadFile(file, &header, 4);
+    FUN_00480150(file, &chunkSize);
+    FUN_00480170(file, &formatType);
+    FUN_00480170(file, &midi->trackCount);
+    FUN_00480170(file, &division);
+    midi->field_0 = division * 5 * 5 * 5 * 5 * 32;
+    midi->trackArray = (void **)malloc(midi->trackCount * 4);
+    for (i = 0; i < midi->trackCount; ++i) {
+        midi->trackArray[i] = FUN_004801a0(file);
+        ((struct MidiTrack *)midi->trackArray[i])->parent = midi;
+    }
+    midi->field_4 = 0x100;
+    RES_CloseFile(file);
+    return midi;
+}
 
 // FUNCTION: LEGOLAND 0x004802c0
 void FUN_004802c0(void) { STUB(); }

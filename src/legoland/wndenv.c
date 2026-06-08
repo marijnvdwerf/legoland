@@ -2,6 +2,7 @@
 #include <windows.h>
 
 #include "globals.h"
+#include "wndenv.h"
 
 // FUNCTION: LEGOLAND 0x0047fe40
 LEGO_EXPORT void *WNDENV_GethInstance(void) { return g_hInstance; }
@@ -25,10 +26,10 @@ LEGO_EXPORT LRESULT CALLBACK LegoLandWindowProc(HWND hWnd, UINT msg, WPARAM wPar
 LEGO_EXPORT void ProcessSystemEvents(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00480150
-void FUN_00480150(void) { STUB(); }
+void FUN_00480150(struct ResFile *file, void *out) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00480170
-void FUN_00480170(void) { STUB(); }
+void FUN_00480170(struct ResFile *file, void *out) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004801a0
-void FUN_004801a0(void) { STUB(); }
+void *FUN_004801a0(struct ResFile *file) { STUB(); }
