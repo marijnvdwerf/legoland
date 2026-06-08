@@ -1110,8 +1110,12 @@ extern unsigned int DAT_00667c34;
 extern LEGO_EXPORT unsigned int QueryObj;
 // 0x00667c58
 extern LEGO_EXPORT void *QueryClass;
+// 0x00667c64
+extern unsigned int DAT_00667c64;
 // 0x00667c7c
 extern unsigned int DAT_00667c7c;
+// 0x00667c80
+extern unsigned int DAT_00667c80;
 // 0x00667c88
 extern unsigned int DAT_00667c88;
 // 0x00667c8c

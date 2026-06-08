@@ -1496,8 +1496,14 @@ LEGO_EXPORT unsigned int QueryObj;
 // GLOBAL: LEGOLAND 0x00667c58
 LEGO_EXPORT void *QueryClass;
 
+// GLOBAL: LEGOLAND 0x00667c64
+unsigned int DAT_00667c64;
+
 // GLOBAL: LEGOLAND 0x00667c7c
 unsigned int DAT_00667c7c;
+
+// GLOBAL: LEGOLAND 0x00667c80
+unsigned int DAT_00667c80;
 
 // GLOBAL: LEGOLAND 0x00667c88
 unsigned int DAT_00667c88;

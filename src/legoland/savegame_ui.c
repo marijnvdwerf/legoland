@@ -11,6 +11,8 @@
 #include "debug_alloc.h"
 #include "icon.h"
 #include "sound_music.h"
+#include "options.h"
+#include "screens.h"
 
 #include "image_sprite.h"
 
@@ -22,6 +24,9 @@ struct SaveNode {
     int has_header;
     unsigned char slot;
 };
+
+LEGO_EXPORT void KillSaveScreenSprites(void);
+LEGO_EXPORT void DeleteSavedGameList(void);
 
 // FUNCTION: LEGOLAND 0x0048d4b0
 LEGO_EXPORT void InitSavedGameScreen(void) { STUB(); }
@@ -51,7 +56,30 @@ LEGO_EXPORT int LoadDateIntoTempProfile(int a1, int a2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048d970
-void FUN_0048d970(void) { STUB(); }
+unsigned char FUN_0048d970(unsigned int a1, unsigned char flags) {
+    if (DAT_004bef9c != 0 && (flags & 2) && DAT_0080ffa0.field_44 != 0) {
+        FUN_00498920();
+        DAT_006687b0 = 4;
+        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
+        if (LoadDateIntoTempProfile(DAT_0080ffa0.field_43, DAT_0080ffa0.field_44 & 0xff) != 0) {
+            DAT_0080ffa0.field_45 = DAT_007cad60.field_24;
+            DAT_0080ffa0.field_20 = DAT_007cad60.field_20;
+            DAT_0080ffa0.field_24 = DAT_007cad60.field_28;
+            DAT_0080ffa0.field_28 = DAT_007cad60.field_2c;
+            DAT_0080ffa0.field_2c = DAT_007cad60.field_30;
+            DAT_00667c64 = 1;
+            DAT_00667c80 = 1;
+        }
+        RemoveIconGroup(7);
+        KillSaveScreenSprites();
+        KillTitleScreenSprites();
+        DeleteSavedGameList();
+        if (DAT_007cb324 == 0) {
+            FUN_00458b20();
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0048da50
 void FUN_0048da50(void) { STUB(); }

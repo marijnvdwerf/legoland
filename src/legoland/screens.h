@@ -1,6 +1,7 @@
 #pragma once
 
 void FUN_00458a50(void);
+void FUN_00458b20(void);
 void FUN_00458be0(void);
 void FUN_00459520(void);
 void FUN_004597e0(int param0, const char *param1);
