@@ -7,6 +7,7 @@
 #include "tilemap.h"
 #include "globals.h"
 #include "wndenv.h"
+#include "objclass.h"
 
 #include "image_sprite.h"
 
@@ -45,6 +46,36 @@ struct LLIDBHead {
     unsigned int flags;
     void *data;
     int refcount;
+};
+
+struct ODFAnim {
+    unsigned int handle;
+    unsigned char pad_4[0x14 - 0x4];
+    unsigned int type;
+};
+
+struct ODFSprite {
+    unsigned char pad_0[8];
+    struct ODFAnim *anim;
+};
+
+struct ODFObject {
+    struct ODFObject *next;
+    unsigned char pad_4[0x1c - 0x4];
+    unsigned int flags;
+    unsigned char pad_20[0x64 - 0x20];
+    struct ODFSprite *sprite_0;
+    struct ODFSprite *sprite_1;
+    struct ODFSprite *sprite_2;
+    unsigned int handle;
+    unsigned char pad_74[0x78 - 0x74];
+    void *data_78;
+    void *data_7c;
+    void *data_80;
+    unsigned char pad_84[0xac - 0x84];
+    void (*cleanup)(void *);
+    unsigned char pad_b0[0xc4 - 0xb0];
+    void *cleanup_arg;
 };
 
 // FUNCTION: LEGOLAND 0x0047aff0
@@ -356,7 +387,71 @@ LEGO_EXPORT void LLIDB_FreeILFTable(struct ILFTable *table) {
 LEGO_EXPORT void *LLIDB_LoadODFData(struct LLIDBHead *head) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047c6a0
-void FUN_0047c6a0(struct LLIDBHead *head) { STUB(); }
+void FUN_0047c6a0(struct LLIDBHead *head) {
+    struct ODFObject *obj = (struct ODFObject *)head->data;
+    struct ODFObject *node;
+
+    if (obj == NULL) {
+        return;
+    }
+
+    if (obj->cleanup != NULL) {
+        obj->cleanup(obj->cleanup_arg);
+    }
+    if (obj->flags & 0x10000) {
+        UnLoadObjectLibrary(obj);
+    }
+
+    node = (struct ODFObject *)ObjectClassList;
+    if (node == obj) {
+        ObjectClassList = obj->next;
+    } else {
+        while (node != NULL) {
+            if (node->next == obj) {
+                break;
+            }
+            node = node->next;
+        }
+        if (node != NULL) {
+            node->next = obj->next;
+        }
+    }
+
+    if (obj->sprite_0 != NULL) {
+        if (obj->sprite_0->anim->type == 2 || obj->sprite_0->anim->type == 3) {
+            LLSStop(obj->sprite_0->anim->handle);
+        }
+        KillSprite((unsigned int)obj->sprite_0);
+    }
+    if (obj->sprite_1 != NULL) {
+        if (obj->sprite_1->anim->type == 2 || obj->sprite_1->anim->type == 3) {
+            LLSStop(obj->sprite_1->anim->handle);
+        }
+        KillSprite((unsigned int)obj->sprite_1);
+    }
+    if (obj->sprite_2 != NULL) {
+        if (obj->sprite_2->anim->type == 2 || obj->sprite_2->anim->type == 3) {
+            LLSStop(obj->sprite_2->anim->handle);
+        }
+        KillSprite((unsigned int)obj->sprite_2);
+    }
+
+    if (obj->handle != 0) {
+        LLIDB_UnLoadData(obj->handle);
+    }
+    if (obj->data_78 != NULL) {
+        free(obj->data_78);
+    }
+    if (obj->data_7c != NULL) {
+        free(obj->data_7c);
+    }
+    if (obj->data_80 != NULL) {
+        free(obj->data_80);
+    }
+    free(obj);
+
+    head->data = NULL;
+}
 
 // FUNCTION: LEGOLAND 0x0047c7f0
 void FUN_0047c7f0(void) { STUB(); }

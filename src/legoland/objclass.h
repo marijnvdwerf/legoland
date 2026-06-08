@@ -15,6 +15,7 @@ LEGO_EXPORT void ClearObjectCounters(void);
 LEGO_EXPORT unsigned int ObjCount(struct ObjCountWrap *wrap);
 LEGO_EXPORT void FreeBlokeCounters(void);
 LEGO_EXPORT void ClearBlokeCounters(unsigned int index, struct Bloke *bloke);
+LEGO_EXPORT void UnLoadObjectLibrary(void *library);
 void FUN_00481170(void);
 LEGO_EXPORT void SetEditObject(struct EditObject *obj);
 struct BestNode *FUN_00481730(void);
