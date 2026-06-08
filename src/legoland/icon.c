@@ -220,7 +220,15 @@ LEGO_EXPORT struct IconNode *AddFullScreenIcon(void *icon) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d7b0
-LEGO_EXPORT struct SpriteIcon *LoadSpriteIcon(const char *filename, unsigned int param_2, unsigned int param_3, unsigned int param_4, unsigned int param_5) { STUB(); }
+LEGO_EXPORT struct SpriteIcon *LoadSpriteIcon(const char *filename, unsigned int param_2, int param_3, int param_4, int param_5) {
+    struct SpriteIcon *result = NULL;
+    unsigned int sprite = LoadSprite(filename, param_2);
+    if (sprite != 0) {
+        result = (struct SpriteIcon *)InsertIcon(param_3, param_4, param_5, (void *)sprite);
+    }
+    KillSprite(sprite);
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x0046d850
 void FUN_0046d850(void) { STUB(); }
