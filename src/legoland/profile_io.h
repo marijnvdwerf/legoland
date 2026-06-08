@@ -2,6 +2,8 @@
 
 #include "legoland.h"
 
+#include <windows.h>
+
 LEGO_EXPORT int Goto_ProfileDir(void);
 LEGO_EXPORT int ReturnFrom_ProfileDir(void);
 LEGO_EXPORT char LoadProfilesFormDisk(void);
@@ -11,3 +13,4 @@ LEGO_EXPORT char UpDateCurrentProfile(void);
 LEGO_EXPORT char SaveProfileToDisk(void);
 LEGO_EXPORT int RemoveProfile(unsigned char index);
 LEGO_EXPORT void DeleteProfileList(void);
+int FUN_00491e40(char *text, int font, RECT rc, int color_flag);

@@ -13,6 +13,9 @@
 #include "sound_music.h"
 #include "options.h"
 #include "screens.h"
+#include "title.h"
+#include "input.h"
+#include "timer.h"
 
 #include "image_sprite.h"
 
@@ -249,8 +252,90 @@ void FUN_0048e4a0(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0048e4f0
 void FUN_0048e4f0(void) { STUB(); }
 
+struct EditSprite {
+    unsigned char pad_0[0xc];
+    short field_c;
+    short field_e;
+};
+
 // FUNCTION: LEGOLAND 0x0048e550
-LEGO_EXPORT void EnterSaveGameDetails(void) { STUB(); }
+LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite) {
+    char cursor_str[10];
+    unsigned char count;
+    char input;
+    int left;
+    int right;
+    int bottom;
+    int center_x;
+    int top;
+    char *blink;
+    struct EditSprite *focus;
+
+    *(short *)cursor_str = *(short *)"|";
+    count = DAT_007cad60.field_1e;
+    cursor_str[2] = count;
+    input = GetInputChar();
+    if (input != '\0') {
+        if (input == -1 && count != 0) {
+            count--;
+            cursor_str[2] = count;
+            *((char *)&DAT_007cad60 + count) = 0;
+        }
+        if (count < 0x1f && DAT_00798738 < 0xcb) {
+            if (input > '\0') {
+                unsigned int index = (unsigned int)(unsigned char)cursor_str[2];
+                count++;
+                cursor_str[2] = count;
+                *((char *)&DAT_007cad60 + index) = input;
+                *((char *)&DAT_007cad60 + count) = 0;
+            } else if (input == ' ') {
+                if (count != 0) {
+                    unsigned int index = (unsigned int)(unsigned char)cursor_str[2];
+                    count++;
+                    cursor_str[2] = count;
+                    *((char *)&DAT_007cad60 + index) = ' ';
+                    *((char *)&DAT_007cad60 + count) = 0;
+                }
+            }
+        }
+    }
+    left = sprite->field_c + 0x28;
+    bottom = sprite->field_e + 0x35;
+    right = sprite->field_c + 0xff;
+    if (count != 0) {
+        RECT rc;
+        rc.left = left;
+        rc.top = sprite->field_e + 0x24;
+        rc.right = right;
+        rc.bottom = bottom;
+        center_x = FUN_00491e40((char *)&DAT_007cad60, 2, rc, 1);
+    } else {
+        center_x = (right + left) >> 1;
+    }
+    DAT_00798738 = (center_x - ((right + left) >> 1)) * 2;
+    top = sprite->field_e + 0x20;
+    blink = "|";
+    if (GetBlink() == 0) {
+        blink = " ";
+    }
+    strcpy(cursor_str, blink);
+    {
+        RECT rc;
+        rc.left = center_x;
+        rc.top = top;
+        rc.right = center_x + 100;
+        rc.bottom = bottom;
+        FUN_00490fa0(cursor_str, 2, rc, 1);
+    }
+    DAT_007cad60.field_1e = count;
+    focus = (struct EditSprite *)DAT_007986d8;
+    if (focus->field_c + 0x48 < (int)DAT_00813a44 || (int)DAT_00813a44 < focus->field_c) {
+        FUN_0048e420();
+    }
+    if (focus->field_e + 0x1b < (int)DAT_00813a48 || (int)DAT_00813a48 < focus->field_e) {
+        FUN_0048e420();
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0048e720
 void FUN_0048e720(void) { STUB(); }
