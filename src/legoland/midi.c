@@ -19,6 +19,11 @@ struct MidiFile {
 
 struct MidiTrack {
     struct MidiFile *parent;
+    unsigned char pad_4[4];
+    unsigned char *data;
+    int pos;
+    unsigned int status;
+    unsigned char pad_14[10];
 };
 
 // FUNCTION: LEGOLAND 0x00480200
@@ -51,10 +56,39 @@ LEGO_EXPORT struct MidiFile *LoadMIDIFile(const char *filename) {
 }
 
 // FUNCTION: LEGOLAND 0x004802c0
-void FUN_004802c0(void) { STUB(); }
+int FUN_004802c0(struct MidiTrack *track) {
+    unsigned int value;
+    unsigned int b;
+
+    value = 0;
+    b = 0;
+    do {
+        value <<= 7;
+        b = track->data[track->pos];
+        ++track->pos;
+        value |= b & 0x7f;
+    } while (b & 0x80);
+    return value;
+}
 
 // FUNCTION: LEGOLAND 0x004802f0
-void FUN_004802f0(void) { STUB(); }
+unsigned int FUN_004802f0(struct MidiTrack *track) {
+    unsigned int b;
+
+    b = track->data[track->pos];
+    ++track->pos;
+    if ((b & 0x80) == 0) {
+        --track->pos;
+        return track->status;
+    }
+    if (b == 0xff) {
+        unsigned int meta = track->data[track->pos] | 0xff00;
+        ++track->pos;
+        return meta;
+    }
+    track->status = b;
+    return b;
+}
 
 // FUNCTION: LEGOLAND 0x00480330
 void FUN_00480330(void) { STUB(); }
