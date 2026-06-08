@@ -16,6 +16,7 @@
 #include "map_object.h"
 #include "help.h"
 #include "llidb.h"
+#include "timer.h"
 
 #pragma intrinsic(strcpy, strlen)
 
@@ -1700,7 +1701,69 @@ struct ObjectiveEvent *FUN_0046c7e0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046c920
-void FUN_0046c920(void) { STUB(); }
+unsigned int FUN_0046c920(void) {
+    struct NerpsListNode *node;
+    int i;
+    int scratch;
+
+    DAT_006687a0 = 0;
+    DAT_007fe994 = GetGameTimer();
+    if (FUN_00474920() == 0) {
+        return 0;
+    }
+    if (SaveGameWrite(&DAT_0066861c, 0x80) == 0) {
+        return 0;
+    }
+    if (SaveGameWrite(DAT_0066869c, 0x80) == 0) {
+        return 0;
+    }
+    if (SaveGameWrite(&DAT_00668720, 4) == 0) {
+        return 0;
+    }
+    for (i = 0; i < (int)DAT_00668720; i++) {
+        if (FUN_0046c620((char *)DAT_007fe120[i]) == 0) {
+            return 0;
+        }
+    }
+    scratch = DAT_007fe994 - DAT_00668780;
+    if (SaveGameWrite(&scratch, 4) == 0) {
+        return 0;
+    }
+    scratch = 0xa;
+    if (SaveGameWrite(&scratch, 4) == 0) {
+        return 0;
+    }
+    if (SaveGameWrite(DAT_007fe930, 0xa) == 0) {
+        return 0;
+    }
+    if (FUN_0046c700(DAT_00668784) == 0) {
+        return 0;
+    }
+    for (node = (struct NerpsListNode *)DAT_00668798; node != NULL; node = node->field_0) {
+        if (SaveGameWrite(&node->field_4, 4) == 0) {
+            return 0;
+        }
+        if (FUN_0046c700((struct ObjectiveEvent *)node->field_c) == 0) {
+            return 0;
+        }
+        if (FUN_0046c700((struct ObjectiveEvent *)node->field_10) == 0) {
+            return 0;
+        }
+        if (FUN_0046c620((char *)node->field_8) == 0) {
+            return 0;
+        }
+    }
+    scratch = 0xffffffff;
+    if (SaveGameWrite(&scratch, 4) == 0) {
+        return 0;
+    }
+    if (DAT_0066879c != 0) {
+        scratch = ((int)(DAT_0066879c - (unsigned int)DAT_00668798) / 0x14) + 1;
+    } else {
+        scratch = 0;
+    }
+    return SaveGameWrite(&scratch, 4) != 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046cb20
 unsigned int FUN_0046cb20(void) {
@@ -1718,7 +1781,107 @@ unsigned int FUN_0046cb20(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046cb60
-void FUN_0046cb60(void) { STUB(); }
+unsigned int FUN_0046cb60(void) {
+    struct NerpsListNode *node;
+    struct NerpsListNode *prev;
+    int i;
+    int marker;
+    int base;
+    unsigned char skip;
+
+    DAT_006687a0 = 0;
+    DAT_007fe994 = GetGameTimer();
+    if (DAT_006687a0 != 0) {
+        return 0;
+    }
+    if (FUN_00474970() == 0) {
+        return 0;
+    }
+    if (SaveGameRead(&DAT_0066861c, 0x80) == 0) {
+        return 0;
+    }
+    if (SaveGameRead(DAT_0066869c, 0x80) == 0) {
+        return 0;
+    }
+    if (SaveGameRead(&DAT_00668720, 4) == 0) {
+        return 0;
+    }
+    for (i = 0; i < (int)DAT_00668720; i++) {
+        DAT_007fe120[i] = (unsigned int)FUN_0046c680();
+        if (DAT_006687a0 != 0) {
+            return 0;
+        }
+    }
+    if (SaveGameRead(&base, 4) == 0) {
+        return 0;
+    }
+    DAT_00668780 = DAT_007fe994 + base;
+    DAT_00668614 = 0;
+    FUN_004748a0((void *)1);
+    if (SaveGameRead(&i, 4) == 0) {
+        return 0;
+    }
+    if (i > 0xa) {
+        if (SaveGameRead(DAT_007fe930, 10) == 0) {
+            return 0;
+        }
+        for (i -= 10; i != 0; i--) {
+            if (SaveGameRead(&skip, 1) == 0) {
+                return 0;
+            }
+        }
+    } else {
+        FUN_00468840();
+        FUN_004688e0();
+        if (SaveGameRead(DAT_007fe930, i) == 0) {
+            return 0;
+        }
+    }
+    DAT_00668784 = FUN_0046c7e0();
+    if (DAT_006687a0 != 0) {
+        return 0;
+    }
+    prev = NULL;
+    if (SaveGameRead(&marker, 4) == 0) {
+        return 0;
+    }
+    while (marker != -1) {
+        node = FUN_0046b4f0(marker);
+        if (node == NULL) {
+            return 0;
+        }
+        node->field_c = (unsigned int)FUN_0046c7e0();
+        if (DAT_006687a0 != 0) {
+            return 0;
+        }
+        node->field_10 = (unsigned int)FUN_0046c7e0();
+        if (DAT_006687a0 != 0) {
+            return 0;
+        }
+        node->field_8 = (unsigned int)FUN_0046c680();
+        if (DAT_006687a0 != 0) {
+            return 0;
+        }
+        if (prev != NULL) {
+            prev->field_0 = node;
+        } else {
+            DAT_00668798 = node;
+        }
+        if (SaveGameRead(&marker, 4) == 0) {
+            return 0;
+        }
+        prev = node;
+    }
+    if (SaveGameRead(&base, 4) == 0) {
+        return 0;
+    }
+    if (base != 0) {
+        DAT_0066879c = (unsigned int)((struct NerpsListNode *)DAT_00668798 + base - 1);
+        return 1;
+    }
+    DAT_0066879c = 0;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0046ce00
 void FUN_0046ce00(void) {

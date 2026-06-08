@@ -1218,6 +1218,8 @@ extern unsigned char DAT_0066869b;
 extern char DAT_0066869c[128];
 // 0x0066871c
 extern unsigned int DAT_0066871c;
+// 0x00668720
+extern unsigned int DAT_00668720;
 // 0x00668724
 extern struct ObjectiveEvent *DAT_00668724;
 // 0x00668728

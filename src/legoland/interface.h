@@ -6,6 +6,8 @@ struct CastleObj;
 
 void FUN_00474880(void);
 void FUN_004748a0(void *a);
+int FUN_00474920(void);
+int FUN_00474970(void);
 LEGO_EXPORT int InitGameInterface(int a);
 void FUN_00474ed0(void);
 unsigned char FUN_00474f80(unsigned int a, unsigned int flags);
