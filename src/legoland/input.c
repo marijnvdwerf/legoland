@@ -103,7 +103,7 @@ unsigned int FUN_00474080(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004740b0
-LEGO_EXPORT void GetInputChar(void) { STUB(); }
+LEGO_EXPORT char GetInputChar(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00474130
 void FUN_00474130(void) { STUB(); }

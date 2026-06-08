@@ -10,6 +10,7 @@ LEGO_EXPORT void KillHostSystemGPU(void);
 LEGO_EXPORT int InitScreen(void);
 LEGO_EXPORT unsigned int SetPointer(unsigned int param_1);
 LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void);
+LEGO_EXPORT void PushRenderingStatusAndUnlockVideoSurface(void);
 LEGO_EXPORT void PopRenderingStatus(void);
 LEGO_EXPORT int GetVideoSurface(struct VideoArg *arg);
 LEGO_EXPORT void SetOverridePalette(unsigned int param_1);

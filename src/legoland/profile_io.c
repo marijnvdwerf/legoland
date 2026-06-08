@@ -1,12 +1,26 @@
 #include "legoland.h"
 #include "crt.h"
 
+#include <windows.h>
+#include <ddraw.h>
+
 #include "profile_io.h"
 #include "savegame_ui.h"
 #include "clipping.h"
+#include "title.h"
+#include "input.h"
+#include "timer.h"
+#include "draw.h"
+#include "text.h"
 #include "globals.h"
 
-#pragma intrinsic(memset, memcpy, strcpy)
+#pragma intrinsic(memset, memcpy, strcpy, strlen)
+
+struct ProfileSprite {
+    unsigned char pad_0[0xc];
+    short field_c;
+    short field_e;
+};
 
 
 struct ProfileNode {
@@ -352,13 +366,122 @@ LEGO_EXPORT void DeleteProfileList(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00491bd0
-LEGO_EXPORT void EnterNewProfile(void) { STUB(); }
+LEGO_EXPORT void EnterNewProfile(struct ProfileSprite *sprite) {
+    char cursor_str[10];
+    unsigned char count;
+    char input;
+    int left;
+    int right;
+    int bottom;
+    int center_x;
+    int top;
+    char *blink;
+
+    count = DAT_007cad60.field_1e;
+    // STRING: LEGOLAND 0x004bf2e4
+    *(short *)cursor_str = *(short *)"|";
+    input = GetInputChar();
+    if (input != '\0') {
+        if (input == -1 && count != 0) {
+            count--;
+            *((char *)&DAT_007cad60 + count) = 0;
+        }
+        if (count < 0x1f && DAT_00798894 < 0x7b && input > '\0') {
+            if (input == ' ') {
+                if (count != 0) {
+                    *((char *)&DAT_007cad60 + count) = ' ';
+                    count++;
+                    *((char *)&DAT_007cad60 + count) = 0;
+                }
+            } else {
+                *((char *)&DAT_007cad60 + count) = input;
+                count++;
+                *((char *)&DAT_007cad60 + count) = 0;
+            }
+        }
+    }
+    top = sprite->field_e + 7;
+    left = sprite->field_c + 0x14;
+    bottom = top + 0x13;
+    right = left + 0xc0;
+    if (count != 0) {
+        RECT rc;
+        rc.left = left;
+        rc.top = top;
+        rc.right = right;
+        rc.bottom = bottom;
+        center_x = FUN_00491e40((char *)&DAT_007cad60, 2, rc, 1);
+    } else {
+        center_x = (right + left) >> 1;
+    }
+    DAT_00798894 = (center_x - ((right + left) >> 1)) * 2;
+    top = sprite->field_e + 5;
+    blink = "|";
+    if (GetBlink() == 0) {
+        // STRING: LEGOLAND 0x004b8ad4
+        blink = " ";
+    }
+    strcpy(cursor_str, blink);
+    {
+        RECT rc;
+        rc.left = center_x;
+        rc.top = top;
+        rc.right = center_x + 100;
+        rc.bottom = bottom;
+        FUN_00490fa0(cursor_str, 2, rc, 1);
+    }
+    DAT_007cad60.field_1e = count;
+}
 
 // FUNCTION: LEGOLAND 0x00491d60
-LEGO_EXPORT void NewPrintCent(void) { STUB(); }
+LEGO_EXPORT void NewPrintCent(char *text, int font, RECT rc, int color_flag) {
+    HRGN region = CreateRectRgn(SPRITE_ClipRect.left, SPRITE_ClipRect.top, SPRITE_ClipRect.right, SPRITE_ClipRect.bottom);
+    HDC hdc;
+    HGDIOBJ old_region;
+
+    PushRenderingStatusAndUnlockVideoSurface();
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->GetDC((LPDIRECTDRAWSURFACE)renderEngine, &hdc);
+    SetBkMode(hdc, 1);
+    if ((char)color_flag == 1) {
+        SetTextColor(hdc, 0xffffff);
+    }
+    old_region = SelectObject(hdc, region);
+    color_flag = (int)SelectFont(hdc, font);
+    DrawTextA(hdc, text, strlen(text), &rc, 0x25);
+    SelectObject(hdc, (HGDIOBJ)color_flag);
+    SelectObject(hdc, old_region);
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->ReleaseDC((LPDIRECTDRAWSURFACE)renderEngine, hdc);
+    PopRenderingStatus();
+    DeleteObject(region);
+}
 
 // FUNCTION: LEGOLAND 0x00491e40
-void FUN_00491e40(void) { STUB(); }
+int FUN_00491e40(char *text, int font, RECT rc, int color_flag) {
+    RECT measured;
+    HRGN region;
+    HDC hdc;
+    HGDIOBJ old_region;
+
+    measured.right = rc.left;
+    measured.bottom = rc.top;
+    region = CreateRectRgn(SPRITE_ClipRect.left, SPRITE_ClipRect.top, SPRITE_ClipRect.right, SPRITE_ClipRect.bottom);
+    PushRenderingStatusAndUnlockVideoSurface();
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->GetDC((LPDIRECTDRAWSURFACE)renderEngine, &hdc);
+    SetBkMode(hdc, 1);
+    if ((char)color_flag == 1) {
+        SetTextColor(hdc, 0xffffff);
+    }
+    old_region = SelectObject(hdc, region);
+    color_flag = (int)SelectFont(hdc, font);
+    DrawTextA(hdc, text, strlen(text), &measured, 0x425);
+    DrawTextA(hdc, text, strlen(text), &rc, 0x25);
+    SelectObject(hdc, (HGDIOBJ)color_flag);
+    SelectObject(hdc, old_region);
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->ReleaseDC((LPDIRECTDRAWSURFACE)renderEngine, hdc);
+    PopRenderingStatus();
+    DeleteObject(region);
+    return (rc.left + rc.right) / 2 + (measured.left - measured.right) / 2;
+}
 
 // FUNCTION: LEGOLAND 0x00491f90
 unsigned char FUN_00491f90(struct RideState *state, unsigned char flags) {

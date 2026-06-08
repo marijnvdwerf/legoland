@@ -2,11 +2,14 @@
 
 #include "legoland.h"
 
+#include <windows.h>
+
 struct Profile;
 
 void FUN_00490600(unsigned int param_1);
 void FUN_00490610(const char *param_1);
 void FUN_00490850(void);
 void FUN_00490880(void);
+void FUN_00490fa0(char *text, int font, RECT rc, int color_flag);
 void FUN_004911c0(const char *a, const char *b);
 LEGO_EXPORT void InitNewProfilePoPUp(struct Profile *profile);

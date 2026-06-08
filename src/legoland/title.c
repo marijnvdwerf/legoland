@@ -367,7 +367,7 @@ void FUN_00490c70(void) { STUB(); }
 void FUN_00490ea0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00490fa0
-void FUN_00490fa0(void) { STUB(); }
+void FUN_00490fa0(char *text, int font, RECT rc, int color_flag) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491080
 void FUN_00491080(void) { STUB(); }
