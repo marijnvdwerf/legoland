@@ -8,6 +8,7 @@
 #include "sound_sfx.h"
 #include "sound_music.h"
 #include "map_object.h"
+#include "llidb.h"
 #include "globals.h"
 
 typedef void (*CopterVtblFn)(void);
@@ -217,7 +218,65 @@ void FUN_00404be0(void) { STUB(); }
 void FUN_00404f20(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00404f60
-LEGO_EXPORT void Copters_Save(void) { STUB(); }
+LEGO_EXPORT int Copters_Save(void) {
+    unsigned int *original;
+    unsigned int *cursor;
+    int i;
+    int *saved;
+    int *restore;
+    int *field;
+    int index;
+    char *node;
+    unsigned int one;
+    unsigned int zero;
+    int saved_vals[6];
+
+    one = 1;
+    zero = 0;
+    node = (char *)DAT_004c11b4;
+    while (node != NULL) {
+        if (SaveGameWrite(&one, 4) == 0) {
+            return 0;
+        }
+        saved = saved_vals;
+        i = 6;
+        restore = (int *)(node + 0x30);
+        field = restore;
+        do {
+            original = (unsigned int *)*field;
+            index = 0;
+            *saved = (int)original;
+            for (cursor = *(unsigned int **)((char *)DAT_004c1198 + 0xcc); cursor != NULL; cursor = (unsigned int *)*cursor) {
+                if (cursor == original) {
+                    if (cursor != NULL) {
+                        *field = index + 1;
+                        goto next;
+                    }
+                    break;
+                }
+                index = index + 1;
+            }
+            *field = 0;
+        next:
+            saved++;
+            field += 8;
+            i--;
+        } while (i != 0);
+        if (SaveGameWrite(node, 0xd8) == 0) {
+            return 0;
+        }
+        saved = saved_vals;
+        i = 6;
+        do {
+            *restore = *saved;
+            saved++;
+            restore += 8;
+            i--;
+        } while (i != 0);
+        node = *(char **)(node + 4);
+    }
+    return SaveGameWrite(&zero, 4) != 0;
+}
 
 // FUNCTION: LEGOLAND 0x00405050
 LEGO_EXPORT void Copters_Load(void) { STUB(); }

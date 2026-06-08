@@ -7,6 +7,7 @@
 #include "space_tower.h"
 #include "render3d.h"
 #include "map_object.h"
+#include "llidb.h"
 #include "globals.h"
 
 struct RideObject {
@@ -174,7 +175,57 @@ void FUN_0043b570(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043b5d0
-LEGO_EXPORT void SpaceTower_Save(void) { STUB(); }
+LEGO_EXPORT int SpaceTower_Save(void) {
+    int *field;
+    int *cursor;
+    int target;
+    int index;
+    unsigned int i;
+    unsigned int one;
+    unsigned int zero;
+    char *node;
+
+    one = 1;
+    zero = 0;
+    node = (char *)DAT_0062fda8;
+    while (node != NULL) {
+        if (SaveGameWrite(&one, 4) == 0) {
+            return 0;
+        }
+        i = 0;
+        do {
+            if (i & 1) {
+                field = (int *)(node + 0x30 + ((int)i >> 1) * 0x24);
+            } else {
+                field = (int *)(node + 0x2c + ((int)i >> 1) * 0x24);
+            }
+            index = 0;
+            cursor = *(int **)((char *)DAT_0062fd74 + 0xcc);
+            if (cursor != NULL) {
+                target = *field;
+                do {
+                    if (cursor == (int *)target) {
+                        if (cursor != NULL) {
+                            *field = index + 1;
+                            goto next;
+                        }
+                        break;
+                    }
+                    cursor = (int *)*cursor;
+                    index = index + 1;
+                } while (cursor != NULL);
+            }
+            *field = 0;
+        next:
+            i = i + 1;
+        } while ((int)i < 8);
+        if (SaveGameWrite(node, 0xb4) == 0) {
+            return 0;
+        }
+        node = *(char **)(node + 8);
+    }
+    return SaveGameWrite(&zero, 4) != 0;
+}
 
 // FUNCTION: LEGOLAND 0x0043b6a0
 LEGO_EXPORT void SpaceTower_Load(void) { STUB(); }

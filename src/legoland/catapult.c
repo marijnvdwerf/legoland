@@ -5,6 +5,7 @@
 #include "render3d.h"
 #include "sound_music.h"
 #include "map_object.h"
+#include "llidb.h"
 #include "globals.h"
 
 typedef void (*CatapultVtblFn)(void);
@@ -186,7 +187,51 @@ unsigned int *FUN_004039e0(struct CatapultLayer *arg1, unsigned short arg2) {
 }
 
 // FUNCTION: LEGOLAND 0x00403a20
-LEGO_EXPORT void Catapult_Save(void) { STUB(); }
+LEGO_EXPORT int Catapult_Save(void) {
+    struct CatapultSaveBuf { unsigned int data[15]; };
+    struct CatapultNode *node;
+    int *field;
+    unsigned int *cursor;
+    int i;
+    int index;
+    unsigned int one;
+    unsigned int zero;
+    struct CatapultSaveBuf scratch;
+
+    one = 1;
+    zero = 0;
+    node = DAT_004c1118;
+    while (node != NULL) {
+        scratch = *(struct CatapultSaveBuf *)node;
+        if (SaveGameWrite(&one, 4) == 0) {
+            return 0;
+        }
+        field = (int *)&scratch.data[4];
+        i = 4;
+        do {
+            index = 0;
+            for (cursor = *(unsigned int **)((char *)DAT_004c10f4 + 0xcc); cursor != NULL; cursor = (unsigned int *)*cursor) {
+                if (cursor == (unsigned int *)*field) {
+                    if (cursor != NULL) {
+                        *field = index + 1;
+                        goto next;
+                    }
+                    break;
+                }
+                index = index + 1;
+            }
+            *field = 0;
+        next:
+            field++;
+            i--;
+        } while (i != 0);
+        if (SaveGameWrite(&scratch, 0x3c) == 0) {
+            return 0;
+        }
+        node = node->next;
+    }
+    return SaveGameWrite(&zero, 4) != 0;
+}
 
 // FUNCTION: LEGOLAND 0x00403af0
 LEGO_EXPORT void Catapult_Load(void) { STUB(); }
