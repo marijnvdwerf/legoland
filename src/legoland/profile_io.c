@@ -2,6 +2,7 @@
 #include "crt.h"
 
 #include "profile_io.h"
+#include "clipping.h"
 #include "globals.h"
 
 #pragma intrinsic(memset, memcpy, strcpy)
@@ -13,6 +14,8 @@ struct ProfileNode {
     int has_header;
     unsigned char slot;
 };
+
+struct ProfileNode *FUN_004919a0(unsigned char slot);
 
 struct RideState {
     unsigned char pad_0[0x18];
@@ -38,7 +41,23 @@ struct ProfileObj {
 };
 
 // FUNCTION: LEGOLAND 0x004912e0
-LEGO_EXPORT void ResetTempProfile(void) { STUB(); }
+LEGO_EXPORT void ResetTempProfile(void) {
+    DAT_007cad60.field_28 = 0x4b;
+    DAT_007cad60.field_2c = 0x4b;
+    DAT_007cad60.field_30 = 0x4b;
+    DAT_007cad60.field_34 = 0;
+    DAT_007cad60.field_38 = 0;
+    DAT_007cad60.field_3c = 0;
+    DAT_007cad60.field_40 = 0;
+    DAT_007cad60.field_0 = 0;
+    DAT_007cad60.field_20 = 5;
+    DAT_007cad60.field_1e = 0;
+    DAT_007cad60.field_42 = 0;
+    memset(DAT_007cad60.field_43, 0, 200);
+    *(int *)&DAT_007cad60.field_10b = 0;
+    DAT_007cad60.field_10b = 1;
+    FUN_0048a780(DAT_007cad60.field_43);
+}
 
 // FUNCTION: LEGOLAND 0x00491360
 LEGO_EXPORT int Goto_ProfileDir(void) {
@@ -142,7 +161,38 @@ LEGO_EXPORT void UpDateCurrentSaveSlotInfo(void) { STUB(); }
 LEGO_EXPORT void UpDateCurrentProfile(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004917c0
-void FUN_004917c0(void) { STUB(); }
+int FUN_004917c0(int slot) {
+    char data[272];
+    char path[120];
+    struct ProfileNode *node;
+    void *stream;
+
+    node = FUN_004919a0((unsigned char)slot);
+    if (node == NULL) {
+        return 0;
+    }
+    memset(data, 0, 0x110);
+    strcpy(data, node->name);
+    *(int *)&data[0x20] = *(int *)&node->name[0x20];
+    *(int *)&data[0x28] = *(int *)&node->name[0x28];
+    *(int *)&data[0x2c] = *(int *)&node->name[0x2c];
+    *(int *)&data[0x30] = *(int *)&node->name[0x30];
+    memcpy(&data[0x34], &node->name[0x34], 15);
+    memcpy(&data[0x43], &node->name[0x43], 200);
+    *(int *)&data[0x10b] = *(int *)&node->name[0x10b];
+    if (Goto_ProfileDir() == 0) {
+        return -1;
+    }
+    sprintf(path, "profiles\\Profile%d.txt", slot & 0xff);
+    stream = fopen(path, "w+");
+    if (stream == 0) {
+        printf("\ncannot open output file");
+        return 0;
+    }
+    fwrite(data, 0x110, 1, stream);
+    fclose(stream);
+    return ReturnFrom_ProfileDir() != 0;
+}
 
 // FUNCTION: LEGOLAND 0x00491910
 LEGO_EXPORT char SaveProfileToDisk(void) {

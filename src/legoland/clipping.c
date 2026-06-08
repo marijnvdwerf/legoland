@@ -75,7 +75,7 @@ void FUN_0048a750(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048a780
-void FUN_0048a780(void) {
+void FUN_0048a780(void *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0048a790

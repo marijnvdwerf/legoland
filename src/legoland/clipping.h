@@ -11,5 +11,6 @@ struct ClipQueryResult {
 
 LEGO_EXPORT void SetClipping(int *rect);
 void FUN_0048a750(void);
+void FUN_0048a780(void *arg);
 void FUN_0048a800(void);
 unsigned int FUN_0048a840(unsigned int arg, struct ClipQueryResult **out);

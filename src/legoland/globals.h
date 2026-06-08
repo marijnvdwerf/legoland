@@ -90,14 +90,23 @@ struct EditFootPrint {
 
 struct Settings {
     unsigned char field_0;
-    unsigned char gap_1[0x1f];
+    unsigned char gap_1[0x1d];
+    unsigned char field_1e;
+    unsigned char gap_1f;
     unsigned int field_20;
     unsigned char field_24;
     unsigned char gap_25[3];
     unsigned int field_28;
     unsigned int field_2c;
     unsigned int field_30;
-    unsigned char gap_34[0xdc];
+    unsigned int field_34;
+    unsigned int field_38;
+    unsigned int field_3c;
+    unsigned short field_40;
+    unsigned char field_42;
+    unsigned char field_43[200];
+    unsigned char field_10b;
+    unsigned char gap_10c[4];
 };
 
 struct ScreenState {
