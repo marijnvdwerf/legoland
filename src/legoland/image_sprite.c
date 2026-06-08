@@ -455,10 +455,35 @@ LEGO_EXPORT struct Sprite *CreatePartialSprite(struct Image *image, unsigned sho
 LEGO_EXPORT void RecreatePartialSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004978b0
-void FUN_004978b0(void) { STUB(); }
+int FUN_004978b0(struct Sprite *sprite, const char *name, unsigned int flags) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497ab0
-LEGO_EXPORT unsigned int LoadSprite(const char *name, int flags) { STUB(); }
+LEGO_EXPORT unsigned int LoadSprite(const char *name, int flags) {
+    char ext[256];
+    struct Image *image;
+    struct Sprite *sprite;
+    unsigned int result;
+
+    result = 0;
+    _splitpath(name, NULL, NULL, NULL, ext);
+    // STRING: LEGOLAND 0x004bfed8
+    if (_stricmp(ext, ".csp") == 0) {
+        sprite = CreateSprite(NULL);
+        if (sprite != NULL) {
+            if (FUN_004978b0(sprite, name, flags & 0xff) == 0) {
+                KillSprite((unsigned int)sprite);
+                return 0;
+            }
+        }
+        return (unsigned int)sprite;
+    }
+    image = CreateSourceImage(name, (unsigned char)flags);
+    if (image != NULL) {
+        result = (unsigned int)CreateSprite(image);
+        KillImage(image);
+    }
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x00497b70
 LEGO_EXPORT unsigned int MakeSprite(unsigned int sprite) {
