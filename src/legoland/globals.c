@@ -262,6 +262,9 @@ void *PTR_004b92c0;
 // GLOBAL: LEGOLAND 0x004b9550
 unsigned char DAT_004b9550[8];
 
+// GLOBAL: LEGOLAND 0x004b95f0
+struct DeferredSprite *PTR_DAT_004b95f0;
+
 // GLOBAL: LEGOLAND 0x004b9ca4
 void (*DAT_004b9ca4)(const char *);
 
@@ -1565,6 +1568,9 @@ int DAT_00667d08;
 // GLOBAL: LEGOLAND 0x00667d10
 unsigned int DAT_00667d10;
 
+// GLOBAL: LEGOLAND 0x00667d44
+int DAT_00667d44;
+
 // GLOBAL: LEGOLAND 0x00667d54
 unsigned int DAT_00667d54;
 
@@ -2787,6 +2793,9 @@ LEGO_EXPORT unsigned int ObjectPartArray[1024];
 
 // GLOBAL: LEGOLAND 0x00801400
 LEGO_EXPORT struct MapElement **GameMap;
+
+// GLOBAL: LEGOLAND 0x00801420
+struct DeferredSprite DAT_00801420[100];
 
 // GLOBAL: LEGOLAND 0x00801a6c
 void *DAT_00801a6c;

@@ -4,6 +4,7 @@
 
 #include "gamemap.h"
 #include "map_object.h"
+#include "print_sprite.h"
 #include "timer.h"
 #include "tilemap.h"
 
@@ -461,7 +462,21 @@ void FUN_00460e90(void) { STUB(); }
 void FUN_00460f50(int *coord, unsigned int a, unsigned int b, unsigned int c) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00461020
-void FUN_00461020(void) { STUB(); }
+void FUN_00461020(void) {
+    int i;
+
+    i = 0;
+    PTR_DAT_004b95f0 = DAT_00801420;
+    if (DAT_00667d44 > 0) {
+        do {
+            PrintSprite(PTR_DAT_004b95f0->sprite, PTR_DAT_004b95f0->x, PTR_DAT_004b95f0->y, PTR_DAT_004b95f0->flags, 0);
+            i++;
+            PTR_DAT_004b95f0++;
+        } while (i < DAT_00667d44);
+    }
+    DAT_00667d44 = 0;
+    PTR_DAT_004b95f0 = DAT_00801420;
+}
 
 // FUNCTION: LEGOLAND 0x00461080
 void FUN_00461080(int *coord, unsigned int param2, unsigned int param3, unsigned int param4) {

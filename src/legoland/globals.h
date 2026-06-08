@@ -70,6 +70,13 @@ struct TileSpriteEntry {
     unsigned short pad_6;
 };
 
+struct DeferredSprite {
+    unsigned int sprite;
+    unsigned int x;
+    unsigned int y;
+    unsigned int flags;
+};
+
 struct ListLink {
     unsigned char pad_0[0x14];
     struct ListLink *var_14;
@@ -280,6 +287,8 @@ extern const unsigned char DAT_004b9228[1];
 extern void *DAT_004b929c;
 // 0x004b92c0
 extern void *PTR_004b92c0;
+// 0x004b95f0
+extern struct DeferredSprite *PTR_DAT_004b95f0;
 // 0x004b9550
 extern unsigned char DAT_004b9550[8];
 // 0x004b9ca4
@@ -1140,6 +1149,8 @@ extern int DAT_00667cfc;
 extern int DAT_00667d08;
 // 0x00667d10
 extern unsigned int DAT_00667d10;
+// 0x00667d44
+extern int DAT_00667d44;
 // 0x00667d54
 extern unsigned int DAT_00667d54;
 // 0x00667d58
@@ -1954,6 +1965,8 @@ extern unsigned int DAT_008003f8;
 extern LEGO_EXPORT unsigned int ObjectPartArray[1024];
 // 0x00801400
 extern LEGO_EXPORT struct MapElement **GameMap;
+// 0x00801420
+extern struct DeferredSprite DAT_00801420[100];
 // 0x00801a6c
 extern void *DAT_00801a6c;
 // 0x00801b20
