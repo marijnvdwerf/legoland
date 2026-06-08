@@ -510,6 +510,8 @@ extern struct CursorSource *DAT_004c74d4;
 extern struct Sprite *DAT_004c8d2c;
 // 0x004c8d4c
 extern void *DAT_004c8d4c;
+// 0x004c8d50
+extern unsigned int DAT_004c8d50;
 // 0x004c8d68
 extern struct Sprite *DAT_004c8d68;
 // 0x004c8d6c

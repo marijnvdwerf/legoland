@@ -1314,16 +1314,48 @@ void FUN_0040eab0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0040ead0
-void FUN_0040ead0(void) { STUB(); }
+void FUN_0040ead0(unsigned int param_1, struct FlumeBytes *param_2) {
+    unsigned int packed;
+    unsigned int local[5];
+    *((unsigned char *)&packed) = param_2->b0;
+    *((unsigned char *)&packed + 1) = param_2->b4;
+    memcpy(local, DAT_004c445c->var_3c, 20);
+    DAT_004c2af4 = 0;
+    FUN_0040d900(packed, local, (int)DAT_004c2b98, FUN_0040dc00, FUN_0040e440, FUN_0040e340);
+}
 
 // FUNCTION: LEGOLAND 0x0040eb40
-void FUN_0040eb40(void) { STUB(); }
+void FUN_0040eb40(unsigned int param_1, struct FlumeBytes *param_2) {
+    unsigned int packed;
+    unsigned int local[5];
+    *((unsigned char *)&packed) = param_2->b0;
+    *((unsigned char *)&packed + 1) = param_2->b4;
+    memcpy(local, DAT_004c2aa0->var_3c, 20);
+    DAT_004c2af4 = 1;
+    FUN_0040d900(packed, local, (int)DAT_004cbe10, FUN_0040dc00, FUN_0040e440, FUN_0040e340);
+}
 
 // FUNCTION: LEGOLAND 0x0040ebb0
-void FUN_0040ebb0(void) { STUB(); }
+void FUN_0040ebb0(unsigned int param_1, struct FlumeBytes *param_2) {
+    unsigned int packed;
+    unsigned int local[5];
+    *((unsigned char *)&packed) = param_2->b0;
+    *((unsigned char *)&packed + 1) = param_2->b4;
+    memcpy(local, DAT_004c2b0c->var_3c, 20);
+    DAT_004c2af4 = 2;
+    FUN_0040d900(packed, local, (int)DAT_004c8d50, FUN_0040dc00, FUN_0040e440, FUN_0040e340);
+}
 
 // FUNCTION: LEGOLAND 0x0040ec20
-void FUN_0040ec20(void) { STUB(); }
+void FUN_0040ec20(unsigned int param_1, struct FlumeBytes *param_2) {
+    unsigned int packed;
+    unsigned int local[5];
+    *((unsigned char *)&packed) = param_2->b0;
+    *((unsigned char *)&packed + 1) = param_2->b4;
+    memcpy(local, DAT_004c74d4->var_3c, 20);
+    DAT_004c2af4 = 3;
+    FUN_0040d900(packed, local, (int)DAT_004c2ba0, FUN_0040dc00, FUN_0040e440, FUN_0040e340);
+}
 
 // FUNCTION: LEGOLAND 0x0040ec90
 void FUN_0040ec90(unsigned int param_1, unsigned int param_2, unsigned int param_3) {

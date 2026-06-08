@@ -587,6 +587,9 @@ struct Sprite *DAT_004c8d2c;
 // GLOBAL: LEGOLAND 0x004c8d4c
 void *DAT_004c8d4c;
 
+// GLOBAL: LEGOLAND 0x004c8d50
+unsigned int DAT_004c8d50;
+
 // GLOBAL: LEGOLAND 0x004c8d68
 struct Sprite *DAT_004c8d68;
 
