@@ -1,6 +1,7 @@
 #include <windows.h>
 #include "legoland.h"
 #include "crt.h"
+#include "cdcheck.h"
 #include "resource.h"
 #include "globals.h"
 
@@ -48,6 +49,16 @@ struct ResVolEntry {
     unsigned char pad_0[8];
     struct ResVolEntry *next;
     struct ResDirNode *dir;
+    struct ResVolume *volume;
+    int size;
+    int base;
+    char *name;
+};
+
+struct ResDirEntry {
+    unsigned char pad_0[4];
+    struct ResDirEntry *next;
+    unsigned char pad_8[8];
     struct ResVolume *volume;
     int size;
     int base;
@@ -198,7 +209,78 @@ LEGO_EXPORT struct ResFile *RES_OpenFileFromVolume(const char *path, const char 
 }
 
 // FUNCTION: LEGOLAND 0x00489b60
-LEGO_EXPORT struct ResFile *RES_OpenFile(const char *path) { STUB(); }
+LEGO_EXPORT struct ResFile *RES_OpenFile(const char *path) {
+    char base_name[0x104];
+    char orig_str[0x104];
+    struct MasterDirNode *dir;
+    struct ResDirEntry *entry;
+    struct ResFile *file;
+    char *scan;
+    char *last_slash;
+    char *prefix;
+    char *file_name;
+    int prefix_len;
+
+    base_name[0] = '\0';
+    memset(base_name + 1, 0, sizeof(base_name) - 1);
+    orig_str[0] = '\0';
+
+    if (FUN_004515e0(0) == 0) {
+        exit(1);
+    }
+
+    memcpy(orig_str, path, strlen(path) + 1);
+
+    last_slash = 0;
+    scan = orig_str;
+    while (*scan != '\0') {
+        if (*scan == ':') {
+            *scan = '\0';
+            return RES_OpenFileFromVolume(scan + 1, orig_str);
+        }
+        if (*scan == '\\') {
+            last_slash = scan;
+        }
+        scan++;
+    }
+
+    if (last_slash == 0) {
+        file_name = orig_str;
+    } else {
+        prefix = orig_str;
+        prefix_len = (int)(last_slash - orig_str) + 1;
+        if (orig_str[0] == '.') {
+            while (prefix[1] == '\\') {
+                prefix += 2;
+                prefix_len -= 2;
+                if (prefix[0] != '.') {
+                    break;
+                }
+            }
+        }
+        memcpy(base_name, prefix, prefix_len);
+        base_name[prefix_len] = '\0';
+        file_name = last_slash + 1;
+    }
+
+    dir = GetMasterDirPtr(base_name);
+    if (dir == 0) {
+        return 0;
+    }
+
+    for (entry = (struct ResDirEntry *)dir->pad_4; entry != 0; entry = entry->next) {
+        if (_stricmp(entry->name, file_name) == 0) {
+            file = (struct ResFile *)malloc(0x10);
+            file->size = entry->size;
+            file->base = entry->base;
+            file->volume = entry->volume;
+            entry->volume->refcount++;
+            file->position = 0;
+            return file;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00489ce0
 LEGO_EXPORT unsigned int RES_GetFileSize(struct ResFile *file) {
