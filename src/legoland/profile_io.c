@@ -145,7 +145,23 @@ LEGO_EXPORT void UpDateCurrentProfile(void) { STUB(); }
 void FUN_004917c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491910
-LEGO_EXPORT void SaveProfileToDisk(void) { STUB(); }
+LEGO_EXPORT char SaveProfileToDisk(void) {
+    char path[120];
+    void *stream;
+
+    if (Goto_ProfileDir() == 0) {
+        return -1;
+    }
+    sprintf(path, "profiles\\Profile%d.txt", DAT_0080ffa0.field_43);
+    stream = fopen(path, "w+");
+    if (stream == 0) {
+        printf("\ncannot open output file");
+        return ReturnFrom_ProfileDir() != 0 ? 1 : -1;
+    }
+    fwrite(&DAT_007cad60, 0x110, 1, stream);
+    fclose(stream);
+    return ReturnFrom_ProfileDir() != 0 ? 1 : -1;
+}
 
 // FUNCTION: LEGOLAND 0x004919a0
 struct ProfileNode *FUN_004919a0(unsigned char slot) {
