@@ -28,8 +28,53 @@ struct Point {
 
 #include "image_sprite.h"
 
+struct FXSpriteList {
+    unsigned char pad_0[0xc];
+    int *sprite_ids;
+};
+
 // FUNCTION: LEGOLAND 0x0045a9b0
-LEGO_EXPORT unsigned int *AllocTileSpace(void *manager, int count, unsigned int *out) { STUB(); }
+LEGO_EXPORT unsigned int *AllocTileSpace(void *manager, int count, unsigned int *out) {
+    struct FXSpriteList *src = (struct FXSpriteList *)manager;
+    int base;
+    int run;
+    unsigned int *slot;
+    unsigned int *cursor;
+    unsigned int i;
+    int slot_value;
+
+    count = count & 0xffff;
+    base = 0;
+    while (count + base <= 0x800) {
+        slot = (unsigned int *)&TileSpriteArray[base];
+        run = 0;
+        slot_value = (int)TileSpriteArray[base];
+        while (slot_value == -1) {
+            run++;
+            slot++;
+            if (run >= count) {
+                cursor = (unsigned int *)&TileSpriteArray[base];
+                for (i = (unsigned int)count; i != 0; i--) {
+                    *cursor = 0;
+                    cursor++;
+                }
+                for (i = 0; (int)i < count; i++) {
+                    TileSpriteInfo[base + i].src = src;
+                    if (src != NULL) {
+                        TileSpriteInfo[base + i].sprite = (unsigned short)src->sprite_ids[i];
+                    } else {
+                        TileSpriteInfo[base + i].sprite = 0;
+                    }
+                }
+                *(unsigned short *)out = (unsigned short)base;
+                return (unsigned int *)&TileSpriteArray[base];
+            }
+            slot_value = (int)*slot;
+        }
+        base = base + 1 + run;
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x0045aa50
 void FUN_0045aa50(void) { STUB(); }

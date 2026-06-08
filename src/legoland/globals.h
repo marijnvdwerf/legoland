@@ -16,6 +16,7 @@ struct CursorSource;
 struct Building;
 struct JailCell;
 struct LegoConfig;
+struct FXSpriteList;
 struct ResVolume;
 struct RideQueueEntry;
 struct ObjectiveEvent;
@@ -61,6 +62,12 @@ struct ClipRect {
     int top;
     int right;
     int bottom;
+};
+
+struct TileSpriteEntry {
+    struct FXSpriteList *src;
+    unsigned short sprite;
+    unsigned short pad_6;
 };
 
 struct ListLink {
@@ -1939,9 +1946,9 @@ extern LEGO_EXPORT struct MapElement **GameMap;
 // 0x00801b24
 extern LEGO_EXPORT unsigned int ObjectPartCount;
 // 0x00801f40
-extern LEGO_EXPORT unsigned int TileSpriteInfo;
+extern LEGO_EXPORT struct TileSpriteEntry TileSpriteInfo[2048];
 // 0x00805f60
-extern LEGO_EXPORT void *TileSpriteArray[256];
+extern LEGO_EXPORT void *TileSpriteArray[2048];
 // 0x0080ff64
 extern unsigned int DAT_0080ff64;
 // 0x0080ff74

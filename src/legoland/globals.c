@@ -2786,10 +2786,10 @@ LEGO_EXPORT struct MapElement **GameMap;
 LEGO_EXPORT unsigned int ObjectPartCount;
 
 // GLOBAL: LEGOLAND 0x00801f40
-LEGO_EXPORT unsigned int TileSpriteInfo;
+LEGO_EXPORT struct TileSpriteEntry TileSpriteInfo[2048];
 
 // GLOBAL: LEGOLAND 0x00805f60
-LEGO_EXPORT void *TileSpriteArray[256];
+LEGO_EXPORT void *TileSpriteArray[2048];
 
 // GLOBAL: LEGOLAND 0x0080ff64
 unsigned int DAT_0080ff64;
