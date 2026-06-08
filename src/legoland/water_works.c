@@ -493,7 +493,25 @@ LEGO_EXPORT int Load_WaterBlock(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00418b90
-LEGO_EXPORT void Save_ElephantF(void) { STUB(); }
+LEGO_EXPORT int Save_ElephantF(void) {
+    struct WaterListItem *current;
+    unsigned int one;
+    unsigned int zero;
+
+    one = 1;
+    zero = 0;
+    current = (struct WaterListItem *)DAT_004cc034;
+    while (current != NULL) {
+        if (SaveGameWrite(&one, 4) == 0) {
+            return 0;
+        }
+        if (SaveGameWrite(current, 12) == 0) {
+            return 0;
+        }
+        current = current->next;
+    }
+    return SaveGameWrite(&zero, 4) != 0;
+}
 
 // FUNCTION: LEGOLAND 0x00418c00
 LEGO_EXPORT int Load_ElephantF(void) {
