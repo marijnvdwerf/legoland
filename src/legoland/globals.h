@@ -1432,6 +1432,8 @@ extern void *DAT_00798590;
 extern void *DAT_00798624;
 // 0x00798628
 extern void *DAT_00798628;
+// 0x0079862c
+extern void *DAT_0079862c;
 // 0x00798630
 extern unsigned int DAT_00798630;
 // 0x00798634

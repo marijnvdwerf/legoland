@@ -20,6 +20,7 @@ extern int _write(int fd, void *buffer, unsigned int count);
 
 extern unsigned int strlen(const char *s);
 extern char *strcpy(char *dst, const char *src);
+extern char *strcat(char *dst, const char *src);
 extern int strcmp(const char *s1, const char *s2);
 extern void *memcpy(void *dst, const void *src, unsigned int n);
 extern void *memset(void *dst, int c, unsigned int n);

@@ -51,13 +51,23 @@ struct ResDirNode {
 };
 
 struct ResVolEntry {
-    unsigned char pad_0[8];
+    struct ResVolEntry *next_all;
+    struct ResVolEntry *next_dir;
     struct ResVolEntry *next;
     struct ResDirNode *dir;
     struct ResVolume *volume;
     int size;
     int base;
     char *name;
+};
+
+struct ResDirRecord {
+    int child;
+    int sibling;
+    int is_dir;
+    int size;
+    int base;
+    char name[1];
 };
 
 struct ResDirEntry {
@@ -136,7 +146,43 @@ struct ResDirNode *FUN_00489550(const char *vol_name, const char *file_name, str
 }
 
 // FUNCTION: LEGOLAND 0x004895a0
-void FUN_004895a0(void *dir_data, struct ResVolume *volume, void *dir_base, void *master) { STUB(); }
+void FUN_004895a0(struct ResDirRecord *node, struct ResVolume *volume, struct ResDirRecord *base, char *path) {
+    char buffer[0x104];
+    struct MasterDirNode *master;
+    struct ResVolEntry *entry;
+
+    strcpy(buffer, path);
+    master = FUN_00489440(buffer);
+
+    if (node->is_dir == 0) {
+        entry = (struct ResVolEntry *)malloc(0x20);
+        entry->next_all = (struct ResVolEntry *)DAT_0079862c;
+        DAT_0079862c = entry;
+        entry->next_dir = (struct ResVolEntry *)master->pad_4;
+        master->pad_4 = (unsigned int)entry;
+        entry->next = (struct ResVolEntry *)base->sibling;
+        base->sibling = (int)entry;
+        entry->size = node->size;
+        entry->base = node->base;
+        entry->name = (char *)malloc(strlen(node->name) + 1);
+        strcpy(entry->name, node->name);
+        entry->dir = (struct ResDirNode *)master;
+        entry->volume = volume;
+    }
+
+    if (node->sibling != -1) {
+        node->sibling += (int)base;
+        FUN_004895a0((struct ResDirRecord *)node->sibling, volume, base, buffer);
+    }
+
+    if (node->child != -1) {
+        strcat(buffer, node->name);
+        // STRING: LEGOLAND 0x004bdd7c
+        strcat(buffer, "\\");
+        node->child += (int)base;
+        FUN_004895a0((struct ResDirRecord *)node->child, volume, base, buffer);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00489740
 LEGO_EXPORT unsigned int RES_GetResourcePath(void) {
