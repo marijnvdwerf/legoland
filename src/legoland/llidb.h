@@ -13,6 +13,7 @@ struct LLS {
 
 struct LLSImage;
 struct ILFTable;
+struct LLIDBHead;
 
 LEGO_EXPORT void LLS555To565(struct LLSImage *param_1);
 

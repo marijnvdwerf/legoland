@@ -40,6 +40,13 @@ struct Element {
     unsigned int field[5];
 };
 
+struct LLIDBHead {
+    unsigned char pad_0[8];
+    unsigned int flags;
+    void *data;
+    int refcount;
+};
+
 // FUNCTION: LEGOLAND 0x0047aff0
 LEGO_EXPORT void LLIDB_LoadICM(void) { STUB(); }
 
@@ -346,16 +353,16 @@ LEGO_EXPORT void LLIDB_FreeILFTable(struct ILFTable *table) {
 }
 
 // FUNCTION: LEGOLAND 0x0047bf70
-LEGO_EXPORT void LLIDB_LoadODFData(void) { STUB(); }
+LEGO_EXPORT void *LLIDB_LoadODFData(struct LLIDBHead *head) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047c6a0
-void FUN_0047c6a0(void) { STUB(); }
+void FUN_0047c6a0(struct LLIDBHead *head) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047c7f0
 void FUN_0047c7f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047cba0
-LEGO_EXPORT void LLIDB_LoadTSFData(void) { STUB(); }
+LEGO_EXPORT void *LLIDB_LoadTSFData(struct LLIDBHead *head) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047cdd0
 void FUN_0047cdd0(struct SpriteManager *param_1) {
@@ -382,22 +389,103 @@ void FUN_0047cdd0(struct SpriteManager *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0047ce40
-LEGO_EXPORT void LLIDB_LoadTSMData(void) { STUB(); }
+LEGO_EXPORT void *LLIDB_LoadTSMData(struct LLIDBHead *head) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047cf80
-void FUN_0047cf80(void) { STUB(); }
+void FUN_0047cf80(struct LLIDBHead *head) {
+    unsigned int *base = (unsigned int *)head->data;
+    unsigned int *entry = base;
+    int sentinel = base[1];
+
+    while (sentinel != -1) {
+        LLIDB_UnLoadData(*entry);
+        entry += 2;
+        sentinel = entry[1];
+    }
+    free(base);
+}
 
 // FUNCTION: LEGOLAND 0x0047cfc0
-LEGO_EXPORT void LLIDB_LoadILFData(void) { STUB(); }
+LEGO_EXPORT void *LLIDB_LoadILFData(struct LLIDBHead *head) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d1a0
-LEGO_EXPORT void LLIDB_LoadCSPData(void) { STUB(); }
+LEGO_EXPORT void *LLIDB_LoadCSPData(struct LLIDBHead *head) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d3a0
-LEGO_EXPORT void *LLIDB_LoadData(void *head) { STUB(); }
+LEGO_EXPORT void *LLIDB_LoadData(void *handle) {
+    struct LLIDBHead *head = (struct LLIDBHead *)handle;
+    unsigned int flags = head->flags;
+    void *data;
+
+    if (flags & 1) {
+        head->refcount++;
+        return head->data;
+    }
+
+    head->data = NULL;
+    flags |= 1;
+    head->flags = flags;
+    switch (flags & 0xfff0) {
+    case 0x10:
+    case 0x1010:
+        head->data = LLIDB_LoadODFData(head);
+        break;
+    case 0x20:
+        head->data = LLIDB_LoadTSMData(head);
+        break;
+    case 0x40:
+        head->data = LLIDB_LoadTSFData(head);
+        break;
+    case 0x400:
+        head->data = LLIDB_LoadILFData(head);
+        break;
+    case 0x2000:
+        head->data = LLIDB_LoadCSPData(head);
+        break;
+    case 0x200:
+    case 0x800:
+        return NULL;
+    }
+
+    data = head->data;
+    if (data == NULL) {
+        head->flags &= 0xfffffffe;
+        return data;
+    }
+    head->refcount++;
+    return data;
+}
 
 // FUNCTION: LEGOLAND 0x0047d450
-LEGO_EXPORT void LLIDB_UnLoadData(unsigned int handle) { STUB(); }
+LEGO_EXPORT void LLIDB_UnLoadData(unsigned int handle) {
+    struct LLIDBHead *head = (struct LLIDBHead *)handle;
+    unsigned int flags;
+
+    if (head->refcount == 0 || --head->refcount != 0) {
+        return;
+    }
+    flags = head->flags;
+    if ((flags & 1) == 0) {
+        return;
+    }
+    flags &= 0xfffcfff0;
+    head->flags = flags;
+    switch (flags & 0xfff0) {
+    case 0x10:
+    case 0x1010:
+        FUN_0047c6a0(head);
+        break;
+    case 0x20:
+        FUN_0047cf80(head);
+        break;
+    case 0x40:
+        FUN_0047cdd0((struct SpriteManager *)head);
+        break;
+    case 0x400:
+        LLIDB_FreeILFTable((struct ILFTable *)head->data);
+        break;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0047d4c0
 LEGO_EXPORT void LLSStop(unsigned int handle) { STUB(); }
