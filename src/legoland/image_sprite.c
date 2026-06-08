@@ -28,7 +28,8 @@ struct Sprite {
 struct Image {
     unsigned int field_0;
     void *field_4;
-    unsigned char pad_8[0xc - 0x8];
+    unsigned short width;
+    unsigned short height;
     unsigned short refcount;
     unsigned char field_e;
     unsigned char pad_f[0x10 - 0xf];
@@ -242,7 +243,7 @@ LEGO_EXPORT struct Image *LoadSourceImage(unsigned int a, unsigned int b) {
     if (image == NULL) {
         return NULL;
     }
-    if (__BMPLoader(image) == NULL) {
+    if (__BMPLoader(image) == 0) {
         KillImage(image);
         return NULL;
     }
@@ -256,7 +257,7 @@ LEGO_EXPORT int ReloadImageBitmap(struct Image *image) {
     }
     if (image->field_0 != 0) {
         FreeBitmapResources(image);
-        return __BMPLoader(image) != NULL;
+        return __BMPLoader(image) != 0;
     }
     return 1;
 }
@@ -356,7 +357,7 @@ LEGO_EXPORT struct Sprite *CreateSysmemSprite(struct Image *image) {
     sprite->field_10 = 0x10;
     sprite->field_c = DAT_008119a4 - 1;
     if (image->field_0 == 0) {
-        if (__BMPLoader(image) == NULL) {
+        if (__BMPLoader(image) == 0) {
             KillSprite((unsigned int)sprite);
             return NULL;
         }
@@ -383,7 +384,7 @@ LEGO_EXPORT struct Sprite *CreatePartialSprite(struct Image *image, unsigned sho
     sprite->field_10 = 0;
     sprite->field_c = DAT_008119a4 - 1;
     if (image->field_0 == 0) {
-        if (__BMPLoader(image) == NULL) {
+        if (__BMPLoader(image) == 0) {
             KillSprite((unsigned int)sprite);
             return NULL;
         }

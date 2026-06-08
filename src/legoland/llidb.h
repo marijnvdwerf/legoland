@@ -11,6 +11,10 @@ struct LLS {
     unsigned int flags;
 };
 
+struct LLSImage;
+
+LEGO_EXPORT void LLS555To565(struct LLSImage *param_1);
+
 LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, int zero);
 LEGO_EXPORT unsigned int ElemID(const char *name);
 LEGO_EXPORT void LLIDB_LoadICM(void);
