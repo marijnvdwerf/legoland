@@ -38,7 +38,13 @@ void FUN_004324c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004324d0
-void FUN_004324d0(void) { STUB(); }
+void FUN_004324d0(void) {
+    void *var = (void *)DAT_0081cd08;
+    EditMode = 1;
+    DAT_008119b8 = var;
+    DefaultCursor(&EditCursor);
+    SetEditCursorFootPrint(&((struct EditTarget *)DAT_008119b8)->field_3c);
+}
 
 // FUNCTION: LEGOLAND 0x00432510
 void FUN_00432510(void) { STUB(); }
@@ -79,7 +85,16 @@ void FUN_004328c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00432900
-void FUN_00432900(void) { STUB(); }
+void FUN_00432900(int param_1, int *param_2) {
+    unsigned short packed;
+    *((unsigned char *)&packed) = (unsigned char)param_2[0];
+    *((unsigned char *)&packed + 1) = (unsigned char)param_2[1];
+    AddObjectToMap(param_1, packed, 0);
+    if (DAT_00616158 != 0) {
+        int r = rand();
+        Set_UserFlags(param_2[0] << 8, param_2[1] << 8, (unsigned short)(r % *(int *)(DAT_00616158 + 4)));
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00432960
 void FUN_00432960(void) { STUB(); }

@@ -131,7 +131,7 @@ struct Overlay {
 
 
 // FUNCTION: LEGOLAND 0x0045dd80
-LEGO_EXPORT void AddObjectToMap(void) { STUB(); }
+LEGO_EXPORT void AddObjectToMap(int param_1, unsigned short param_2, int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045dee0
 LEGO_EXPORT void SetObjRectFlags(void) { STUB(); }
