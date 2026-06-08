@@ -77,7 +77,25 @@ LEGO_EXPORT unsigned int *AllocTileSpace(void *manager, int count, unsigned int 
 }
 
 // FUNCTION: LEGOLAND 0x0045aa50
-void FUN_0045aa50(void) { STUB(); }
+int FUN_0045aa50(struct FXSpriteList **out) {
+    int count = 0;
+    struct FXSpriteList *prev = NULL;
+    void **slot = TileSpriteArray;
+    struct TileSpriteEntry *info = TileSpriteInfo;
+    struct FXSpriteList *src;
+
+    do {
+        if (*slot != (void *)-1 && (src = info->src) != NULL && src != prev) {
+            *out = src;
+            count++;
+            prev = src;
+            out++;
+        }
+        slot++;
+        info++;
+    } while ((int)slot < (int)&TileSpriteArray[2048]);
+    return count;
+}
 
 // FUNCTION: LEGOLAND 0x0045aa90
 LEGO_EXPORT void FreeTileSpace(unsigned short index, unsigned short count) {
@@ -85,7 +103,49 @@ LEGO_EXPORT void FreeTileSpace(unsigned short index, unsigned short count) {
 }
 
 // FUNCTION: LEGOLAND 0x0045aad0
-LEGO_EXPORT void LoadMapTiles(void) { STUB(); }
+LEGO_EXPORT unsigned int LoadMapTiles(void) {
+    unsigned short alloc_index;
+    unsigned int handle;
+    int offset;
+    unsigned int row;
+    unsigned int p;
+
+    if (DAT_00667c9c == 0) {
+        p = (unsigned int)calloc(0x14041f, 1);
+        GameMap = (struct MapElement **)((p + 0x1f) & 0xffffffe0);
+        row = (p + 0x41f) & 0xffffffe0;
+        DAT_00667c9c = (void *)p;
+        offset = 0;
+        do {
+            *(unsigned int *)((char *)GameMap + offset) = row;
+            offset += 4;
+            row += 0x1400;
+        } while (offset < 0x400);
+    }
+    FreeTileSpace(0, 0x800);
+    AllocTileSpace(0, 1, (unsigned int *)&alloc_index);
+    LLIDB_FindElement("MAPPING 1", &handle, 0);
+    LLIDB_LoadData((void *)handle);
+    LLIDB_FindElement("BASIC TILES 1", &handle, 0);
+    DAT_00801a6c = *(void **)(handle + 0xc);
+    DAT_00667ca4 = *(unsigned int *)DAT_00801a6c;
+    DAT_008003f8 = 0;
+    DAT_00801b20 = 1;
+    DAT_0080ff60 = 2;
+    DAT_00805f48 = 3;
+    DAT_0080ff68 = 4;
+    LLIDB_FindElement("NORMAL PATH TILES", &handle, 0);
+    PathSprite = *(void **)(handle + 0xc);
+    // STRING: LEGOLAND 0x004b9bc4
+    DAT_00667c8c = LoadSprite("arrow01.lls", 1);
+    // STRING: LEGOLAND 0x004b9bb8
+    DAT_00667c88 = LoadSprite("arrow02.lls", 1);
+    // STRING: LEGOLAND 0x004b9bac
+    DAT_00667c94 = LoadSprite("arrow03.lls", 1);
+    // STRING: LEGOLAND 0x004b9ba0
+    DAT_00667c90 = LoadSprite("arrow04.lls", 1);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0045ac20
 unsigned int FUN_0045ac20(void) {

@@ -2776,11 +2776,20 @@ unsigned int DAT_007feb14;
 // GLOBAL: LEGOLAND 0x007febc0
 LEGO_EXPORT struct Cursor EditCursor;
 
+// GLOBAL: LEGOLAND 0x008003f8
+unsigned int DAT_008003f8;
+
 // GLOBAL: LEGOLAND 0x00800400
 LEGO_EXPORT unsigned int ObjectPartArray[1024];
 
 // GLOBAL: LEGOLAND 0x00801400
 LEGO_EXPORT struct MapElement **GameMap;
+
+// GLOBAL: LEGOLAND 0x00801a6c
+void *DAT_00801a6c;
+
+// GLOBAL: LEGOLAND 0x00801b20
+unsigned int DAT_00801b20;
 
 // GLOBAL: LEGOLAND 0x00801b24
 LEGO_EXPORT unsigned int ObjectPartCount;
@@ -2788,11 +2797,20 @@ LEGO_EXPORT unsigned int ObjectPartCount;
 // GLOBAL: LEGOLAND 0x00801f40
 LEGO_EXPORT struct TileSpriteEntry TileSpriteInfo[2048];
 
+// GLOBAL: LEGOLAND 0x00805f48
+unsigned int DAT_00805f48;
+
 // GLOBAL: LEGOLAND 0x00805f60
 LEGO_EXPORT void *TileSpriteArray[2048];
 
+// GLOBAL: LEGOLAND 0x0080ff60
+unsigned int DAT_0080ff60;
+
 // GLOBAL: LEGOLAND 0x0080ff64
 unsigned int DAT_0080ff64;
+
+// GLOBAL: LEGOLAND 0x0080ff68
+unsigned int DAT_0080ff68;
 
 // GLOBAL: LEGOLAND 0x0080ff74
 LEGO_EXPORT unsigned int NEWFLC_AutoPlay;

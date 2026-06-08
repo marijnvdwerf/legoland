@@ -1939,18 +1939,30 @@ extern LEGO_EXPORT unsigned int FramesPerSecond;
 extern unsigned int DAT_007feb14;
 // 0x007febc0
 extern LEGO_EXPORT struct Cursor EditCursor;
+// 0x008003f8
+extern unsigned int DAT_008003f8;
 // 0x00800400
 extern LEGO_EXPORT unsigned int ObjectPartArray[1024];
 // 0x00801400
 extern LEGO_EXPORT struct MapElement **GameMap;
+// 0x00801a6c
+extern void *DAT_00801a6c;
+// 0x00801b20
+extern unsigned int DAT_00801b20;
 // 0x00801b24
 extern LEGO_EXPORT unsigned int ObjectPartCount;
 // 0x00801f40
 extern LEGO_EXPORT struct TileSpriteEntry TileSpriteInfo[2048];
+// 0x00805f48
+extern unsigned int DAT_00805f48;
 // 0x00805f60
 extern LEGO_EXPORT void *TileSpriteArray[2048];
+// 0x0080ff60
+extern unsigned int DAT_0080ff60;
 // 0x0080ff64
 extern unsigned int DAT_0080ff64;
+// 0x0080ff68
+extern unsigned int DAT_0080ff68;
 // 0x0080ff74
 extern LEGO_EXPORT unsigned int NEWFLC_AutoPlay;
 // 0x0080ff78
