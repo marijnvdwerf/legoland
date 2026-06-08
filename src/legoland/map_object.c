@@ -90,6 +90,11 @@ struct ObjNode {
     struct ObjBox *field_c;
 };
 
+struct TileSpriteSrc {
+    unsigned char pad_0[0x18];
+    unsigned char (*get_rf_flags)(int x, int y);
+};
+
 struct ObjDef {
     unsigned char pad_0[8];
     unsigned char field_8;
@@ -520,7 +525,37 @@ LEGO_EXPORT unsigned char Get_RFFlags(int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x00461630
-LEGO_EXPORT void GetCurrentRFFlags(void) { STUB(); }
+LEGO_EXPORT unsigned char GetCurrentRFFlags(int x, int y) {
+    struct MapTile *tile;
+    unsigned char rf;
+    unsigned char (*callback)(int x, int y);
+    int tx;
+    int ty;
+
+    if (x < 0 || x >= (int)((unsigned int)lpConfig->field_14 * 0x100) ||
+        y < 0 || y >= (int)((unsigned int)lpConfig->field_16 * 0x100)) {
+        return 2;
+    }
+    rf = Get_RFFlags(x, y);
+    if ((rf & 2) == 0) {
+        return rf;
+    }
+    if ((rf & 1) == 0) {
+        return rf;
+    }
+    tx = x >> 8;
+    ty = y >> 8;
+    if (tx < 0 || tx >= (int)lpConfig->field_14 || ty < 0 || ty >= (int)lpConfig->field_16) {
+        tile = 0;
+    } else {
+        tile = (struct MapTile *)((int)MapTileGrid[ty] + tx * 0x14);
+    }
+    callback = ((struct TileSpriteSrc *)TileSpriteInfo[tile->tile].src)->get_rf_flags;
+    if (callback != 0) {
+        return callback(x, y);
+    }
+    return 2;
+}
 
 // FUNCTION: LEGOLAND 0x004616e0
 LEGO_EXPORT void Set_RFFlags(int x, int y, unsigned char value) {
