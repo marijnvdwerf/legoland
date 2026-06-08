@@ -1,12 +1,54 @@
 #include "legoland.h"
 #include <ddraw.h>
 
+#include "crt.h"
 #include "gfx.h"
 #include "globals.h"
 #include "resource.h"
 
 // FUNCTION: LEGOLAND 0x0044de90
-LEGO_EXPORT void GetGFXFName(void) { STUB(); }
+LEGO_EXPORT char *GetGFXFName(const char *name, unsigned int type, char *out) {
+    char *result = out;
+    if (result == NULL) {
+        result = DAT_006660b0;
+    }
+    switch (type & 0xff) {
+    case 0:
+        // STRING: LEGOLAND 0x004b7a90
+        sprintf(result, "%s%s", DAT_004b81c0, name);
+        break;
+    case 1:
+        sprintf(result, "%s%s", DAT_004b81c8, name);
+        break;
+    case 2:
+        sprintf(result, "%s%s", DAT_004b81c4, name);
+        break;
+    case 3:
+        sprintf(result, "%s%s", DAT_004b81c8, name);
+        break;
+    case 5:
+        sprintf(result, "%s%s", DAT_004b81cc, name);
+        break;
+    case 6:
+        sprintf(result, "%s%s", DAT_004b81d0, name);
+        break;
+    case 4:
+        sprintf(result, "%s%s", DAT_004b81d4, name);
+        break;
+    case 7:
+        // STRING: LEGOLAND 0x004b8278
+        sprintf(result, ".\\graphics\\duke\\%s", name);
+        break;
+    case 8:
+        // STRING: LEGOLAND 0x004b826c
+        sprintf(result, "%s%s.MDL", DAT_004b81d8, name);
+        break;
+    case 9:
+        sprintf(result, "%s%s", DAT_004b81d8, name);
+        break;
+    }
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x0044e010
 LEGO_EXPORT struct Image *__BMPLoader(struct Image *image) { STUB(); }

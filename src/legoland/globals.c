@@ -187,6 +187,33 @@ unsigned int DAT_004b7d84;
 // GLOBAL: LEGOLAND 0x004b7e9c
 unsigned int DAT_004b7e9c;
 
+// GLOBAL: LEGOLAND 0x004b81c0
+// STRING: LEGOLAND 0x004b8260
+char *DAT_004b81c0 = ".\\graphics\\";
+
+// GLOBAL: LEGOLAND 0x004b81c4
+char *DAT_004b81c4 = ".\\graphics\\";
+
+// GLOBAL: LEGOLAND 0x004b81c8
+// STRING: LEGOLAND 0x004b824c
+char *DAT_004b81c8 = ".\\graphics\\small\\";
+
+// GLOBAL: LEGOLAND 0x004b81cc
+// STRING: LEGOLAND 0x004b8238
+char *DAT_004b81cc = ".\\graphics\\masks\\";
+
+// GLOBAL: LEGOLAND 0x004b81d0
+// STRING: LEGOLAND 0x004b8220
+char *DAT_004b81d0 = ".\\graphics\\masks\\small\\";
+
+// GLOBAL: LEGOLAND 0x004b81d4
+// STRING: LEGOLAND 0x004b820c
+char *DAT_004b81d4 = ".\\graphics\\icons\\";
+
+// GLOBAL: LEGOLAND 0x004b81d8
+// STRING: LEGOLAND 0x004b81f8
+char *DAT_004b81d8 = ".\\graphics\\models\\";
+
 // GLOBAL: LEGOLAND 0x004b8334
 int DAT_004b8334;
 
@@ -1405,6 +1432,9 @@ unsigned int DAT_006660a8;
 
 // GLOBAL: LEGOLAND 0x006660ac
 unsigned int DAT_006660ac;
+
+// GLOBAL: LEGOLAND 0x006660b0
+char DAT_006660b0[256];
 
 // GLOBAL: LEGOLAND 0x006661bc
 int DAT_006661bc;

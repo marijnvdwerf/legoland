@@ -222,6 +222,20 @@ extern unsigned short DAT_004b7d7e;
 extern unsigned int DAT_004b7d84;
 // 0x004b7e9c
 extern unsigned int DAT_004b7e9c;
+// 0x004b81c0
+extern char *DAT_004b81c0;
+// 0x004b81c4
+extern char *DAT_004b81c4;
+// 0x004b81c8
+extern char *DAT_004b81c8;
+// 0x004b81cc
+extern char *DAT_004b81cc;
+// 0x004b81d0
+extern char *DAT_004b81d0;
+// 0x004b81d4
+extern char *DAT_004b81d4;
+// 0x004b81d8
+extern char *DAT_004b81d8;
 // 0x004b8334
 extern int DAT_004b8334;
 // 0x004b8340
@@ -1024,6 +1038,8 @@ extern unsigned int DAT_00666098;
 extern unsigned int DAT_006660a8;
 // 0x006660ac
 extern unsigned int DAT_006660ac;
+// 0x006660b0
+extern char DAT_006660b0[256];
 // 0x006661bc
 extern int DAT_006661bc;
 // 0x006661c4
