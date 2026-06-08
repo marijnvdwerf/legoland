@@ -67,6 +67,20 @@ struct MapTile {
     unsigned char rf_flags[4];
 };
 
+struct ObjRect {
+    int v[5];
+};
+
+struct ObjBox {
+    unsigned char pad_0[12];
+    int field_c;
+    int field_10;
+    unsigned char pad_14[0x20 - 0x14];
+    short state;
+    unsigned char pad_22[0x3c - 0x22];
+    struct ObjRect rect;
+};
+
 struct OverlayParam {
     unsigned int field_0;
     unsigned int field_4;
@@ -105,7 +119,19 @@ void FUN_0045e300(void) { STUB(); }
 void FUN_0045e4a0(int element, void *data) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045e620
-void FUN_0045e620(void) { STUB(); }
+int FUN_0045e620(struct ObjBox *obj) {
+    struct ObjRect rect;
+
+    if (obj != 0) {
+        rect = obj->rect;
+        if (obj->state != 3 && obj->state != 2 && obj->state != 0 &&
+            (rect.v[0] > obj->field_c || obj->field_c > rect.v[2] ||
+             rect.v[1] > obj->field_10 || obj->field_10 > rect.v[3])) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0045e690
 int FUN_0045e690(struct ObjInfo *obj) {
@@ -116,7 +142,20 @@ int FUN_0045e690(struct ObjInfo *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0045e6b0
-void FUN_0045e6b0(void) { STUB(); }
+int FUN_0045e6b0(struct ObjBox *obj) {
+    int x;
+    struct ObjRect rect;
+
+    x = obj->field_c;
+    rect = obj->rect;
+    if (rect.v[2] < x) {
+        return 4;
+    }
+    if (x < rect.v[0]) {
+        return 8;
+    }
+    return (rect.v[3] >= obj->field_10) + 1;
+}
 
 // FUNCTION: LEGOLAND 0x0045e710
 void FUN_0045e710(void) { STUB(); }
