@@ -31,7 +31,8 @@ struct Image {
     unsigned char pad_8[0xc - 0x8];
     unsigned short refcount;
     unsigned char field_e;
-    unsigned char pad_f[0x14 - 0xf];
+    unsigned char pad_f[0x10 - 0xf];
+    char *name;
     unsigned int field_14;
 };
 
@@ -214,7 +215,24 @@ LEGO_EXPORT void MarkSpriteResized(struct Sprite *sprite) {
 LEGO_EXPORT void RemakeAllDetailDependentSprites(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00497280
-LEGO_EXPORT unsigned int CreateSourceImage(unsigned int a, unsigned int b) { STUB(); }
+LEGO_EXPORT struct Image *CreateSourceImage(const char *str, unsigned char type) {
+    struct Image *image;
+
+    image = (struct Image *)malloc(strlen(str) + 0x19);
+    if (image == NULL) {
+        return NULL;
+    }
+    image->field_e = type;
+    image->refcount = 1;
+    image->field_0 = 0;
+    image->field_4 = NULL;
+    image->name = (char *)image + 0x18;
+    strcpy(image->name, str);
+    if (type == 1) {
+        FUN_00496fc0((unsigned int)image);
+    }
+    return image;
+}
 
 // FUNCTION: LEGOLAND 0x00497300
 LEGO_EXPORT struct Image *LoadSourceImage(unsigned int a, unsigned int b) {
