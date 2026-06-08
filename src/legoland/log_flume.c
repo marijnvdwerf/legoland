@@ -1169,16 +1169,40 @@ void FUN_0040e690(void) {
 void FUN_0040e6c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040e6f0
-void FUN_0040e6f0(void) { STUB(); }
+void FUN_0040e6f0(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+    struct CursorSource *src = DAT_004c445c;
+    unsigned int local[5];
+    DAT_004c2af4 = 0;
+    memcpy(local, src->var_3c, 20);
+    FUN_0040d6f0(src, param_2, param_3, local, FUN_0040e440, FUN_0040e3b0);
+}
 
 // FUNCTION: LEGOLAND 0x0040e740
-void FUN_0040e740(void) { STUB(); }
+void FUN_0040e740(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+    struct CursorSource *src = DAT_004c2aa0;
+    unsigned int local[5];
+    DAT_004c2af4 = 1;
+    memcpy(local, src->var_3c, 20);
+    FUN_0040d6f0(src, param_2, param_3, local, FUN_0040e440, FUN_0040e3b0);
+}
 
 // FUNCTION: LEGOLAND 0x0040e790
-void FUN_0040e790(void) { STUB(); }
+void FUN_0040e790(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+    struct CursorSource *src = DAT_004c2b0c;
+    unsigned int local[5];
+    DAT_004c2af4 = 2;
+    memcpy(local, src->var_3c, 20);
+    FUN_0040d6f0(src, param_2, param_3, local, FUN_0040e440, FUN_0040e3b0);
+}
 
 // FUNCTION: LEGOLAND 0x0040e7e0
-void FUN_0040e7e0(void) { STUB(); }
+void FUN_0040e7e0(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+    struct CursorSource *src = DAT_004c74d4;
+    unsigned int local[5];
+    DAT_004c2af4 = 3;
+    memcpy(local, src->var_3c, 20);
+    FUN_0040d6f0(src, param_2, param_3, local, FUN_0040e440, FUN_0040e3b0);
+}
 
 // FUNCTION: LEGOLAND 0x0040e830
 void FUN_0040e830(unsigned int param_1, unsigned int param_2) {
