@@ -36,6 +36,10 @@ struct LLSImage {
     unsigned char flags;
 };
 
+struct Element {
+    unsigned int field[5];
+};
+
 // FUNCTION: LEGOLAND 0x0047aff0
 LEGO_EXPORT void LLIDB_LoadICM(void) { STUB(); }
 
@@ -145,16 +149,91 @@ LEGO_EXPORT void LLIDB_ClearOnLevel(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0047b500
-void FUN_0047b500(void) { STUB(); }
+unsigned int FUN_0047b500(unsigned int param_1) {
+    unsigned int slot;
+    unsigned int page;
+    unsigned int count;
+    int offset;
+    int page_base;
+
+    count = DAT_006691a4;
+    if (param_1 < count) {
+        page = param_1 >> 8;
+        slot = param_1 & 0xff;
+        if (page <= count >> 8) {
+            do {
+                if (slot == 0xffffffff) {
+                    *(struct Element *)((int)DAT_006691a8[page - 1] + 0x13ec) = *(struct Element *)DAT_006691a8[page];
+                    slot = 0;
+                } else if ((int)slot >= 0xfe) {
+                    slot = 0xffffffff;
+                    page++;
+                    continue;
+                }
+                offset = slot * 0x14;
+                do {
+                    page_base = (int)DAT_006691a8[page];
+                    *(struct Element *)(page_base + offset) = *(struct Element *)(page_base + offset + 0x14);
+                    offset += 0x14;
+                    count = DAT_006691a4;
+                } while (offset < 0x13d8);
+                slot = 0xffffffff;
+                page++;
+            } while (page <= count >> 8);
+        }
+        DAT_006691a4 = count - 1;
+        return 0;
+    }
+    return 0xfffffffd;
+}
 
 // FUNCTION: LEGOLAND 0x0047b5a0
-void FUN_0047b5a0(void) { STUB(); }
+unsigned int FUN_0047b5a0(void) {
+    unsigned int capacity;
+
+    if (((DAT_006691a0 ^ DAT_006691a4) & 0xffffff00) == 0) {
+        capacity = (DAT_006691a4 + 0x100) & 0xffffff00;
+        DAT_006691a0 = capacity;
+        DAT_006691a8 = (unsigned int **)realloc(DAT_006691a8, (capacity >> 8) * 4);
+        DAT_006691a8[(DAT_006691a0 >> 8) - 1] = (unsigned int *)malloc(0x1400);
+    }
+    return DAT_006691a4;
+}
 
 // FUNCTION: LEGOLAND 0x0047b610
 LEGO_EXPORT unsigned int LLIDB_RegisterNewElement(const char *param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047b7b0
-void FUN_0047b7b0(unsigned int param_1) { STUB(); }
+void FUN_0047b7b0(int param_1) {
+    // STRING: LEGOLAND 0x004bc208
+    const char *title = "LEGOLAND Installation & Configuration Manager";
+    switch (param_1) {
+    case -1:
+        // STRING: LEGOLAND 0x004bc1dc
+        MessageBoxA(NULL, "An element of the same name already exists.", title, 0x30);
+        break;
+    case -2:
+        // STRING: LEGOLAND 0x004bc1ac
+        MessageBoxA(NULL, "LEGOLAND.ICM could not be created or updated.", title, 0x30);
+        break;
+    case -3:
+        // STRING: LEGOLAND 0x004bc184
+        MessageBoxA(NULL, "The given element could not be found.", title, 0x30);
+        break;
+    case -4:
+        // STRING: LEGOLAND 0x004bc160
+        MessageBoxA(NULL, "No identification key was given.", title, 0x30);
+        break;
+    case -5:
+        // STRING: LEGOLAND 0x004bc148
+        MessageBoxA(NULL, "No file name was given.", title, 0x30);
+        break;
+    case -6:
+        // STRING: LEGOLAND 0x004bc130
+        MessageBoxA(NULL, "Operation was canceled.", title, 0x30);
+        break;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0047b860
 LEGO_EXPORT unsigned int LLIDB_RegisterNewElementB(unsigned int param_1, unsigned int param_2, unsigned int param_3) {

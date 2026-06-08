@@ -26,6 +26,7 @@ extern void *memcpy(void *dst, const void *src, unsigned int n);
 extern void *memset(void *dst, int c, unsigned int n);
 
 extern void *malloc(unsigned int size);
+extern void *realloc(void *block, unsigned int size);
 extern char *strncpy(char *dest, const char *src, unsigned int count);
 extern char *strrchr(const char *s, int c);
 extern int _stricmp(const char *s1, const char *s2);
