@@ -5,3 +5,4 @@
 LEGO_EXPORT char *GetString(int n);
 LEGO_EXPORT void DeleteStrings(void);
 void FUN_004993c0(void);
+void FUN_00498f80(const char *text, int key);

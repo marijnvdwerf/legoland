@@ -21,6 +21,8 @@ extern int atoi(const char *str);
 extern unsigned int _lseek(unsigned int a, unsigned int b, unsigned int c);
 extern int _write(int fd, void *buffer, unsigned int count);
 extern int _rmdir(const char *path);
+extern char *_getcwd(char *buffer, int maxlen);
+extern int _chdir(const char *dirname);
 
 extern unsigned int strlen(const char *s);
 extern char *strcpy(char *dst, const char *src);
