@@ -3,6 +3,7 @@
 #include "legoland.h"
 #include "globals.h"
 #include "crt.h"
+#include "debug.h"
 #include "debug_alloc.h"
 #include "cdcheck.h"
 #include "draw.h"
@@ -22,7 +23,7 @@ struct LegoConfig {
 };
 
 // FUNCTION: LEGOLAND 0x0047f870
-void FUN_0047f870(const char *msg) {}
+void FUN_0047f870(const char *fmt, ...) {}
 
 // FUNCTION: LEGOLAND 0x0047f880
 int FUN_0047f880(void) {

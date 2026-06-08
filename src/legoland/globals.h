@@ -1986,6 +1986,8 @@ extern unsigned int DAT_00813a44;
 extern unsigned int DAT_00813a48;
 // 0x00813b00
 extern LEGO_EXPORT void *CONTROLLERBUFFER;
+// 0x00813b04
+extern char DAT_00813b04[260];
 // 0x00814020
 extern unsigned char DAT_00814020[1];
 // 0x0081c028
