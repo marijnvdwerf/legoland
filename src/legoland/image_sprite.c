@@ -7,6 +7,7 @@
 #include "gfx.h"
 #include "llidb.h"
 #include "draw.h"
+#include "debug_alloc.h"
 
 struct SpriteListNode;
 struct Layer;
@@ -307,7 +308,34 @@ struct Sprite *FUN_00497580(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004975b0
-void FUN_004975b0(struct Sprite *sprite) { STUB(); }
+void FUN_004975b0(struct Sprite *sprite) {
+    struct Sprite *current;
+    struct Sprite *prev;
+
+    current = DAT_0079a7c0;
+    prev = NULL;
+    if (current != sprite) {
+        while (current != NULL) {
+            prev = current;
+            current = current->next;
+            if (current == sprite) {
+                break;
+            }
+        }
+        if (current == NULL) {
+            // STRING: LEGOLAND 0x004bfeb0
+            DBPrintf("Couldn't unlink sprite\n");
+            free(sprite);
+            return;
+        }
+    }
+    if (prev == NULL) {
+        DAT_0079a7c0 = sprite->next;
+    } else {
+        prev->next = sprite->next;
+    }
+    free(sprite);
+}
 
 // FUNCTION: LEGOLAND 0x00497610
 LEGO_EXPORT void FreeBitmapResources(struct Image *image) {
