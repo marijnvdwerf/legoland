@@ -4,10 +4,13 @@
 #include "profile_io.h"
 #include "globals.h"
 
+#pragma intrinsic(memset, memcpy, strcpy)
+
 
 struct ProfileNode {
     struct ProfileNode *next;
-    unsigned char pad_4[276];
+    char name[0x110];
+    int has_header;
     unsigned char slot;
 };
 
@@ -98,7 +101,36 @@ LEGO_EXPORT char ScanForProfiles(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00491470
-LEGO_EXPORT void LoadProfilesFormDisk(void) { STUB(); }
+LEGO_EXPORT char LoadProfilesFormDisk(void) {
+    char path[120];
+    char data[272];
+    char slot;
+    char result;
+    int index;
+    void *stream;
+
+    if (Goto_ProfileDir() == 0) {
+        return -1;
+    }
+    slot = 8;
+    index = 8;
+    do {
+        sprintf(path, "profiles\\Profile%d.txt", index);
+        stream = fopen(path, "r");
+        if (stream == 0) {
+            printf("\ncannot open output file");
+            AddNodeToProfileList(0, data, slot);
+        } else {
+            fread(data, 0x110, 1, stream);
+            AddNodeToProfileList(1, data, slot);
+            fclose(stream);
+        }
+        slot--;
+        index--;
+    } while (slot != 0);
+    result = (ReturnFrom_ProfileDir() != 0) - 1;
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x00491540
 unsigned int FUN_00491540(void) { return DAT_007cad60.field_0 != 0; }
@@ -135,7 +167,28 @@ struct ProfileNode *FUN_004919a0(unsigned char slot) {
 }
 
 // FUNCTION: LEGOLAND 0x004919c0
-LEGO_EXPORT void AddNodeToProfileList(void) { STUB(); }
+LEGO_EXPORT void AddNodeToProfileList(int load, char *data, char slot) {
+    struct ProfileNode *node = (struct ProfileNode *)malloc(0x11c);
+    memset(node, 0, 0x11c);
+    if (load != 0) {
+        strcpy(node->name, data);
+        *(int *)&node->name[0x20] = *(int *)&data[0x20];
+        *(int *)&node->name[0x28] = *(int *)&data[0x28];
+        *(int *)&node->name[0x2c] = *(int *)&data[0x2c];
+        *(int *)&node->name[0x30] = *(int *)&data[0x30];
+        node->slot = slot;
+        node->has_header = 1;
+        memcpy(&node->name[0x34], &data[0x34], 15);
+        memcpy(&node->name[0x43], &data[0x43], 200);
+        *(int *)&node->name[0x10b] = *(int *)&data[0x10b];
+        node->next = (struct ProfileNode *)DAT_00798890;
+        DAT_00798890 = node;
+        return;
+    }
+    node->slot = slot;
+    node->next = (struct ProfileNode *)DAT_00798890;
+    DAT_00798890 = node;
+}
 
 // FUNCTION: LEGOLAND 0x00491ab0
 LEGO_EXPORT void RemoveProfile(unsigned char index) { STUB(); }

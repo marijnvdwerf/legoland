@@ -4,7 +4,8 @@
 
 LEGO_EXPORT int Goto_ProfileDir(void);
 LEGO_EXPORT int ReturnFrom_ProfileDir(void);
-LEGO_EXPORT void LoadProfilesFormDisk(void);
+LEGO_EXPORT char LoadProfilesFormDisk(void);
+LEGO_EXPORT void AddNodeToProfileList(int load, char *data, char slot);
 LEGO_EXPORT void UpDateCurrentSaveSlotInfo(void);
 LEGO_EXPORT void UpDateCurrentProfile(void);
 LEGO_EXPORT void SaveProfileToDisk(void);
