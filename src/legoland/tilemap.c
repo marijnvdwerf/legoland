@@ -339,7 +339,7 @@ int FUN_0045ce10(struct MapTile *tile) {
 void FUN_0045ce30(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045ceb0
-void FUN_0045ceb0(void) { STUB(); }
+unsigned char FUN_0045ceb0(int *coords) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045d080
 unsigned char FUN_0045d080(unsigned char flags, int *coords) {
