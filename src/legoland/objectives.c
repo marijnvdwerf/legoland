@@ -132,7 +132,24 @@ void FUN_00468970(struct ObjectiveEvent *event) {
 }
 
 // FUNCTION: LEGOLAND 0x004689a0
-void FUN_004689a0(void) { STUB(); }
+void FUN_004689a0(void) {
+    int i;
+    unsigned int *p;
+
+    i = 0;
+    if ((int)DAT_00668720 > 0) {
+        p = DAT_007fe120;
+        do {
+            if (*p != 0) {
+                free((void *)*p);
+                *p = 0;
+            }
+            i++;
+            p++;
+        } while (i < (int)DAT_00668720);
+    }
+    DAT_00668720 = 0;
+}
 
 // FUNCTION: LEGOLAND 0x004689f0
 unsigned int FUN_004689f0(unsigned int param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
@@ -222,7 +239,20 @@ void FUN_00468d80(struct NerpsArg *object, unsigned int a, int b) {
 }
 
 // FUNCTION: LEGOLAND 0x00468dc0
-void FUN_00468dc0(void) { STUB(); }
+void FUN_00468dc0(struct NerpsArg *object, unsigned int a) {
+    struct ObjectiveEvent *event;
+
+    if (FUN_00468d10() == 0) {
+        return;
+    }
+    if (FUN_00468d30(object) != 0) {
+        return;
+    }
+    event = FUN_00468cd0(2, 1);
+    event->field_4 = a;
+    event->field_1c = 0;
+    FUN_00468c80(event);
+}
 
 // FUNCTION: LEGOLAND 0x00468e00
 void FUN_00468e00(struct NerpsArg *object, unsigned int a) {
@@ -247,7 +277,19 @@ void FUN_00468e40(struct NerpsArg *arg, unsigned int class_id, int count, int su
 void FUN_00468ea0(struct NerpsArg *arg, unsigned int class_id, int count, int sum) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00468f00
-void FUN_00468f00(void) { STUB(); }
+void FUN_00468f00(struct NerpsArg *object, int a) {
+    struct ObjectiveEvent *event;
+
+    if (FUN_00468d10() == 0) {
+        return;
+    }
+    if (FUN_00468d30(object) != 0) {
+        return;
+    }
+    event = FUN_00468cd0(5, 1);
+    event->field_1c = a;
+    FUN_00468c80(event);
+}
 
 // FUNCTION: LEGOLAND 0x00468f40
 void FUN_00468f40(struct NerpsArg *arg, unsigned int class_id, int count) { STUB(); }
@@ -268,7 +310,19 @@ void FUN_00468f80(struct NerpsArg *object, int a) {
 }
 
 // FUNCTION: LEGOLAND 0x00468fc0
-void FUN_00468fc0(void) { STUB(); }
+void FUN_00468fc0(struct NerpsArg *object, int a) {
+    struct ObjectiveEvent *event;
+
+    if (FUN_00468d10() == 0) {
+        return;
+    }
+    if (FUN_00468d30(object) != 0) {
+        return;
+    }
+    event = FUN_00468cd0(8, 1);
+    event->field_1c = a;
+    FUN_00468c80(event);
+}
 
 // FUNCTION: LEGOLAND 0x00469000
 void FUN_00469000(struct NerpsArg *object, int a) {
@@ -301,7 +355,19 @@ void FUN_00469040(struct NerpsArg *object, unsigned int a) {
 }
 
 // FUNCTION: LEGOLAND 0x00469080
-void FUN_00469080(void) { STUB(); }
+void FUN_00469080(struct NerpsArg *object, int a) {
+    struct ObjectiveEvent *event;
+
+    if (FUN_00468d10() == 0) {
+        return;
+    }
+    if (FUN_00468d30(object) != 0) {
+        return;
+    }
+    event = FUN_00468cd0(9, 1);
+    event->field_1c = -a;
+    FUN_00468c80(event);
+}
 
 // FUNCTION: LEGOLAND 0x004690c0
 void FUN_004690c0(struct NerpsArg *arg, int count) { STUB(); }
@@ -417,7 +483,28 @@ void FUN_00469390(struct NerpsArg *object) {
 }
 
 // FUNCTION: LEGOLAND 0x004693b0
-void FUN_004693b0(void) { STUB(); }
+void FUN_004693b0(unsigned int type) {
+    struct ObjectiveEvent *node;
+    struct ObjectiveEvent *next;
+    struct ObjectiveEvent *prev;
+
+    prev = NULL;
+    node = DAT_00668728;
+    while (node != NULL) {
+        next = node->next;
+        if (node->type == type) {
+            if (prev != NULL) {
+                prev->next = next;
+            } else {
+                DAT_00668728 = next;
+            }
+            FUN_00468940(node);
+        } else {
+            prev = node;
+        }
+        node = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00469400
 unsigned int FUN_00469400(void) { STUB(); }
@@ -536,10 +623,13 @@ int FUN_00469bb0(struct ObjectiveEvent *event) {
 }
 
 // FUNCTION: LEGOLAND 0x00469bd0
-void FUN_00469bd0(void) { STUB(); }
+void FUN_00469bd0(unsigned int a, void *b) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00469c40
-void FUN_00469c40(void) { STUB(); }
+int FUN_00469c40(struct ObjectiveEvent *event) {
+    FUN_00469bd0(event->field_4, &event->field_20);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00469c60
 int FUN_00469c60(unsigned int handle) {

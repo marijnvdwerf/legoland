@@ -65,5 +65,7 @@ void FUN_00469310(struct NerpsArg *object, unsigned int param_2, int count);
 void FUN_00469350(struct NerpsArg *object, int count);
 void FUN_00469390(struct NerpsArg *object);
 unsigned int FUN_00469400(void);
+void FUN_00469bd0(unsigned int a, void *b);
+int FUN_00469c40(struct ObjectiveEvent *event);
 int FUN_00469ae0(struct RewardArg *arg);
 int FUN_00469b00(struct RewardArg *arg);
