@@ -8,6 +8,7 @@
 #include "globals.h"
 #include "wndenv.h"
 #include "objclass.h"
+#include "resource.h"
 
 #include "image_sprite.h"
 
@@ -42,7 +43,8 @@ struct Element {
 };
 
 struct LLIDBHead {
-    unsigned char pad_0[8];
+    unsigned char pad_0[4];
+    const char *name;
     unsigned int flags;
     void *data;
     int refcount;
@@ -484,7 +486,59 @@ void FUN_0047cdd0(struct SpriteManager *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0047ce40
-LEGO_EXPORT void *LLIDB_LoadTSMData(struct LLIDBHead *head) { STUB(); }
+LEGO_EXPORT void *LLIDB_LoadTSMData(struct LLIDBHead *head) {
+    char filename[0x200];
+    char name[0x200];
+    int count;
+    int len;
+    unsigned int element;
+    struct ResFile *file;
+    unsigned int *entries;
+    unsigned int *entry;
+    int i;
+
+    // STRING: LEGOLAND 0x004bc3a8
+    sprintf(filename, "TileData\\%s", head->name);
+    file = RES_OpenFile(filename);
+    if (file == NULL) {
+        goto fail;
+    }
+
+    RES_ReadFile(file, &count, 4);
+    entries = (unsigned int *)malloc(count * 8 + 8);
+    if (entries == NULL) {
+        goto closefail;
+    }
+
+    RES_ReadFile(file, &len, 4);
+    RES_ReadFile(file, name, len);
+
+    i = 0;
+    if (count > 0) {
+        entry = entries;
+        do {
+            RES_ReadFile(file, &len, 4);
+            RES_ReadFile(file, name, len);
+            name[len] = '\0';
+            LLIDB_FindElement(name, &element, NULL);
+            entry[0] = element;
+            entry[1] = (unsigned int)LLIDB_LoadData((void *)element);
+            i++;
+            entry += 2;
+        } while (i < count);
+    }
+
+    entries[i * 2] = 0xffffffff;
+    entries[i * 2 + 1] = 0xffffffff;
+    RES_CloseFile(file);
+    head->flags |= 1;
+    head->data = entries;
+    return entries;
+closefail:
+    RES_CloseFile(file);
+fail:
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x0047cf80
 void FUN_0047cf80(struct LLIDBHead *head) {
