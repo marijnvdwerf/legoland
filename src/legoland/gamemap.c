@@ -8,6 +8,12 @@
 #include "llidb.h"
 #include "map_object.h"
 
+struct LegoConfig {
+    unsigned char pad_0[0x14];
+    unsigned short field_14;
+    unsigned short field_16;
+};
+
 struct RenderObjectVtable {
     unsigned char pad_0[0xc];
     void *get_power;
@@ -15,7 +21,12 @@ struct RenderObjectVtable {
 
 struct RenderObject {
     struct RenderObjectVtable *vtable;
-    unsigned char pad_4[8];
+    unsigned char pad_4[2];
+    union {
+        unsigned short word;
+        unsigned char bytes[2];
+    } coords;
+    unsigned char pad_8[4];
     union {
         unsigned short word;
         unsigned char bytes[2];
@@ -146,10 +157,41 @@ LEGO_EXPORT void CalculateMapRenderOrder(void) { STUB(); }
 void FUN_0045a660(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a850
-LEGO_EXPORT struct RenderObject *GetFirstRenderObject(void) { STUB(); }
+LEGO_EXPORT struct RenderObject *GetFirstRenderObject(void) {
+    int x;
+    int y;
+    struct RenderObject *element;
+
+    x = (unsigned char)DAT_007febb8;
+    y = (unsigned char)(DAT_007febb8 >> 8);
+    if (x < 0 || x >= (int)lpConfig->field_14 || y < 0 || y >= (int)lpConfig->field_16) {
+        return 0;
+    }
+    element = (struct RenderObject *)((char *)GameMap[y] + x * 0x14);
+    if (element == 0) {
+        return 0;
+    }
+    if (DAT_007febb8 == 0 && (element->flags.bytes[0] & 0xa8) == 0) {
+        return 0;
+    }
+    return element;
+}
 
 // FUNCTION: LEGOLAND 0x0045a8b0
-LEGO_EXPORT struct RenderObject *GetNextRenderObject(struct RenderObject *object) { STUB(); }
+LEGO_EXPORT struct RenderObject *GetNextRenderObject(struct RenderObject *object) {
+    int x;
+    int y;
+
+    if (object == 0 || object->coords.word == 0) {
+        return 0;
+    }
+    x = object->coords.bytes[0];
+    y = object->coords.bytes[1];
+    if (x >= 0 && x < (int)lpConfig->field_14 && y >= 0 && y < (int)lpConfig->field_16) {
+        return (struct RenderObject *)((char *)GameMap[y] + x * 0x14);
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0045a910
 LEGO_EXPORT struct RenderObject *GetFirstObjectMatching(struct RenderObjectVtable *vtable) {

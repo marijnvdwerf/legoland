@@ -1944,6 +1944,8 @@ extern unsigned int DAT_007fe9c0[9];
 extern LEGO_EXPORT unsigned int FramesPerSecond;
 // 0x007feb14
 extern unsigned int DAT_007feb14;
+// 0x007febb8
+extern unsigned short DAT_007febb8;
 // 0x007febc0
 extern LEGO_EXPORT struct Cursor EditCursor;
 // 0x008003f8

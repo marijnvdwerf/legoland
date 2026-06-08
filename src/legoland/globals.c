@@ -2773,6 +2773,9 @@ LEGO_EXPORT unsigned int FramesPerSecond;
 // GLOBAL: LEGOLAND 0x007feb14
 unsigned int DAT_007feb14;
 
+// GLOBAL: LEGOLAND 0x007febb8
+unsigned short DAT_007febb8;
+
 // GLOBAL: LEGOLAND 0x007febc0
 LEGO_EXPORT struct Cursor EditCursor;
 
