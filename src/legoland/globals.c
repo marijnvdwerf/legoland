@@ -2324,6 +2324,9 @@ unsigned int DAT_0079a84c;
 // GLOBAL: LEGOLAND 0x0079a850
 void *strings[10];
 
+// GLOBAL: LEGOLAND 0x0079a878
+unsigned int DAT_0079a878[6];
+
 // GLOBAL: LEGOLAND 0x0079a890
 unsigned int DAT_0079a890;
 

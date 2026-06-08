@@ -36,10 +36,68 @@ void FUN_00498f80(const char *text, int key) {
 }
 
 // FUNCTION: LEGOLAND 0x00498ff0
-LEGO_EXPORT void DeleteStrings(void) { STUB(); }
+LEGO_EXPORT void DeleteStrings(void) {
+    void **slot;
+    struct StringNode *node;
+    struct StringNode *next;
+
+    next = NULL;
+    slot = (void **)strings;
+    do {
+        node = (struct StringNode *)*slot;
+        if (node != NULL) {
+            next = node->next;
+        }
+        while (next != NULL) {
+            void *text = node->text;
+            next = node->next;
+            free(text);
+            free(node);
+            node = next;
+        }
+        *slot = NULL;
+        slot++;
+    } while ((int)slot < (int)DAT_0079a878);
+}
 
 // FUNCTION: LEGOLAND 0x00499040
-void FUN_00499040(void) { STUB(); }
+void FUN_00499040(const char *path, char *directory, char *filename) {
+    int len = strlen(path);
+    int dot = len;
+    int i = len;
+    int j;
+    int k;
+
+    while (path[i] != '\\') {
+        if (i <= 0) {
+            break;
+        }
+        if (path[i] == '.') {
+            dot = i;
+        }
+        i--;
+    }
+
+    j = i + 1;
+    while (j < dot) {
+        *filename = path[j];
+        filename++;
+        j++;
+    }
+    *filename = '\0';
+
+    if (i <= 0) {
+        *directory = '\0';
+        return;
+    }
+    k = 0;
+    while (k < i) {
+        *directory = path[k];
+        directory++;
+        k++;
+    }
+    *directory = '\0';
+}
 
 // FUNCTION: LEGOLAND 0x004990c0
 void FUN_004990c0(void) { STUB(); }
@@ -54,7 +112,19 @@ void FUN_00499190(void) { STUB(); }
 void FUN_00499240(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00499300
-void FUN_00499300(void) { STUB(); }
+int FUN_00499300(char *str) {
+    int i = 0;
+
+    str[0] = (char)toupper(str[0]);
+    if (str[0] != '\0') {
+        do {
+            int c = str[i + 1];
+            i++;
+            str[i] = (char)toupper(c);
+        } while (str[i] != '\0');
+    }
+    return i;
+}
 
 // FUNCTION: LEGOLAND 0x00499380
 unsigned int FUN_00499380(void) {

@@ -1632,6 +1632,8 @@ extern void *DAT_0079a848;
 extern unsigned int DAT_0079a84c;
 // 0x0079a850
 extern void *strings[10];
+// 0x0079a878
+extern unsigned int DAT_0079a878[6];
 // 0x0079a890
 extern unsigned int DAT_0079a890;
 // 0x0079a894
