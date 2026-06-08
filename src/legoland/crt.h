@@ -24,6 +24,19 @@ extern int _rmdir(const char *path);
 extern char *_getcwd(char *buffer, int maxlen);
 extern int _chdir(const char *dirname);
 
+struct _finddata_t {
+    unsigned int attrib;
+    long time_create;
+    long time_access;
+    long time_write;
+    unsigned long size;
+    char name[260];
+};
+
+extern long _findfirst(const char *spec, struct _finddata_t *data);
+extern int _findnext(long handle, struct _finddata_t *data);
+extern int _findclose(long handle);
+
 extern unsigned int strlen(const char *s);
 extern char *strcpy(char *dst, const char *src);
 extern char *strcat(char *dst, const char *src);

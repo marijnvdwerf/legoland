@@ -38,13 +38,64 @@ struct ProfileObj {
 LEGO_EXPORT void ResetTempProfile(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00491360
-LEGO_EXPORT int Goto_ProfileDir(void) { STUB(); }
+LEGO_EXPORT int Goto_ProfileDir(void) {
+    struct _finddata_t find_data;
+    long handle;
+    int found;
+    int next;
+
+    found = 0;
+    handle = _findfirst("profiles", &find_data);
+    next = (int)handle;
+    while (next != -1) {
+        if ((find_data.attrib & 0x10) != 0) {
+            found = 1;
+        }
+        next = _findnext(handle, &find_data);
+    }
+    _findclose(handle);
+    if (!found) {
+        return _chdir("profiles") == 0;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004913e0
 LEGO_EXPORT int ReturnFrom_ProfileDir(void) { return 1; }
 
 // FUNCTION: LEGOLAND 0x004913f0
-LEGO_EXPORT void ScanForProfiles(void) { STUB(); }
+LEGO_EXPORT char ScanForProfiles(void) {
+    char path[120];
+    char count;
+    int index;
+    int remaining;
+    void *stream;
+
+    count = 0;
+    if (Goto_ProfileDir() == 0) {
+        return -1;
+    }
+    index = 1;
+    remaining = 7;
+    do {
+        // STRING: LEGOLAND 0x004bf718
+        sprintf(path, "profiles\\Profile%d.txt", index);
+        stream = fopen(path, "r");
+        if (stream == 0) {
+            // STRING: LEGOLAND 0x004bf6fc
+            printf("\ncannot open output file");
+        } else {
+            count++;
+            fclose(stream);
+        }
+        index++;
+        remaining--;
+    } while (remaining != 0);
+    if (ReturnFrom_ProfileDir() == 0) {
+        return -1;
+    }
+    return count;
+}
 
 // FUNCTION: LEGOLAND 0x00491470
 LEGO_EXPORT void LoadProfilesFormDisk(void) { STUB(); }
