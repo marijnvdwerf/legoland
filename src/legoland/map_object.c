@@ -64,7 +64,8 @@ struct MapTile {
     unsigned char pad_a[2];
     unsigned short flags;
     unsigned short user_flags;
-    unsigned char rf_flags[4];
+    unsigned char rf_flags[2];
+    unsigned short obj_region;
 };
 
 struct ObjRect {
@@ -77,8 +78,28 @@ struct ObjBox {
     int field_10;
     unsigned char pad_14[0x20 - 0x14];
     short state;
-    unsigned char pad_22[0x3c - 0x22];
+    unsigned char pad_22[0x24 - 0x22];
+    signed char field_24;
+    signed char field_25;
+    unsigned char pad_26[0x3c - 0x26];
     struct ObjRect rect;
+};
+
+struct ObjNode {
+    unsigned char pad_0[12];
+    struct ObjBox *field_c;
+};
+
+struct ObjDef {
+    unsigned char pad_0[8];
+    unsigned char field_8;
+};
+
+struct ObjData {
+    unsigned char pad_0[0x1c];
+    unsigned int flags;
+    unsigned char pad_20[0x58 - 0x20];
+    struct ObjDef *field_58;
 };
 
 struct OverlayParam {
@@ -158,13 +179,78 @@ int FUN_0045e6b0(struct ObjBox *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0045e710
-void FUN_0045e710(void) { STUB(); }
+int FUN_0045e710(struct ObjBox *obj) {
+    struct ObjRect rect;
+
+    rect = obj->rect;
+    if (rect.v[2] < obj->field_24) {
+        return 0x80;
+    }
+    if (obj->field_24 < rect.v[0]) {
+        return 0x40;
+    }
+    return (((rect.v[3] >= obj->field_25) - 1) & 0x10) + 0x10;
+}
 
 // FUNCTION: LEGOLAND 0x0045e770
-void FUN_0045e770(void) { STUB(); }
+void FUN_0045e770(struct ObjNode *node, int *offset) {
+    struct ObjBox *obj;
+    struct MapTile *tile;
+    int x;
+    int y;
+
+    obj = node->field_c;
+    if (FUN_0045e620(obj) != 0) {
+        x = obj->field_c + offset[0];
+        y = obj->field_10 + offset[1];
+        if (x >= 0 && x < lpConfig->field_14 && y >= 0 && y < lpConfig->field_16) {
+            tile = (struct MapTile *)((int)MapTileGrid[y] + x * 0x14);
+            if (tile != 0) {
+                tile->obj_region |= (unsigned short)FUN_0045e6b0(obj);
+            }
+        }
+        if (FUN_0045e690((struct ObjInfo *)obj) != 0) {
+            x = obj->field_24 + offset[0];
+            y = obj->field_25 + offset[1];
+            if (x >= 0 && x < lpConfig->field_14 && y >= 0 && y < lpConfig->field_16) {
+                tile = (struct MapTile *)((int)MapTileGrid[y] + x * 0x14);
+                if (tile != 0) {
+                    tile->obj_region |= (unsigned short)FUN_0045e710(obj);
+                }
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045e850
-void FUN_0045e850(void) { STUB(); }
+void FUN_0045e850(struct ObjNode *node, int *offset) {
+    struct ObjBox *obj;
+    struct MapTile *tile;
+    int x;
+    int y;
+
+    obj = node->field_c;
+    if (FUN_0045e620(obj) != 0) {
+        x = obj->field_c + offset[0];
+        y = obj->field_10 + offset[1];
+        if (x >= 0 && x < lpConfig->field_14 && y >= 0 && y < lpConfig->field_16) {
+            tile = (struct MapTile *)((int)MapTileGrid[y] + x * 0x14);
+            if (tile != 0) {
+                tile->obj_region &= ~(unsigned short)FUN_0045e6b0(obj);
+            }
+        }
+        if (FUN_0045e690((struct ObjInfo *)obj) != 0) {
+            x = obj->field_24 + offset[0];
+            y = obj->field_25 + offset[1];
+            if (x >= 0 && x < lpConfig->field_14 && y >= 0 && y < lpConfig->field_16) {
+                tile = (struct MapTile *)((int)MapTileGrid[y] + x * 0x14);
+                if (tile != 0) {
+                    tile->obj_region &= ~(unsigned short)FUN_0045e710(obj);
+                }
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045e930
 int FUN_0045e930(struct ObjEntry *obj) {
@@ -183,10 +269,48 @@ int FUN_0045e930(struct ObjEntry *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0045e960
-void FUN_0045e960(void) { STUB(); }
+int FUN_0045e960(struct ObjNode *node, int *offset) {
+    struct ObjBox *obj;
+    struct MapTile *tile;
+    int x;
+    int y;
+
+    obj = node->field_c;
+    if (FUN_0045e620(obj) != 0) {
+        x = offset[0] + obj->field_c;
+        y = offset[1] + obj->field_10;
+        if (x >= 0 && x < lpConfig->field_14 && y >= 0 && y < lpConfig->field_16) {
+            tile = (struct MapTile *)((int)MapTileGrid[y] + x * 0x14);
+            if (tile != 0 && FUN_0045e930((struct ObjEntry *)tile) == 0) {
+                return 0;
+            }
+        }
+        if (FUN_0045e690((struct ObjInfo *)obj) != 0) {
+            x = offset[0] + obj->field_c;
+            y = offset[1] + obj->field_10;
+            if (x >= 0 && x < lpConfig->field_14 && y >= 0 && y < lpConfig->field_16) {
+                tile = (struct MapTile *)((int)MapTileGrid[y] + x * 0x14);
+                if (tile != 0 && FUN_0045e930((struct ObjEntry *)tile) == 0) {
+                    return 0;
+                }
+            }
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0045ea40
-void FUN_0045ea40(void) { STUB(); }
+void FUN_0045ea40(struct ObjBox *obj, int *out) {
+    if ((obj->field_c < obj->rect.v[0] || obj->field_c > obj->rect.v[2] ||
+         obj->field_10 < obj->rect.v[1] || obj->field_10 > obj->rect.v[3]) &&
+        (obj->state == 1 || obj->state == 4 || obj->state == 5)) {
+        out[0] = obj->field_c;
+        out[1] = obj->field_10;
+        return;
+    }
+    out[0] = obj->rect.v[2] + 1;
+    out[1] = (obj->rect.v[3] + obj->rect.v[1]) / 2;
+}
 
 // FUNCTION: LEGOLAND 0x0045eab0
 unsigned int FUN_0045eab0(struct ObjFlags *obj) {
@@ -205,7 +329,16 @@ int FUN_0045ead0(struct ObjState *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0045eaf0
-void FUN_0045eaf0(void) { STUB(); }
+int FUN_0045eaf0(struct ObjData *obj) {
+    if (FUN_0045ead0((struct ObjState *)obj) != 0) {
+        return 1;
+    }
+    if (obj != 0 && obj->field_58 != 0 && (obj->field_58->field_8 & 0x10) != 0 &&
+        (obj->flags & 0x600000) == 0) {
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0045eb30
 LEGO_EXPORT void BuildObject(void) { STUB(); }
