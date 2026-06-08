@@ -37,6 +37,19 @@ struct MasterVolNode {
     char name[1];
 };
 
+struct ResVolEntry;
+
+struct ResDirNode {
+    unsigned char pad_0[8];
+    char *name;
+};
+
+struct ResVolEntry {
+    unsigned char pad_0[8];
+    struct ResVolEntry *next;
+    struct ResDirNode *dir;
+};
+
 
 // FUNCTION: LEGOLAND 0x00489440
 struct MasterDirNode *FUN_00489440(char *name) {
@@ -86,7 +99,21 @@ LEGO_EXPORT struct MasterVolNode *GetMasterVolPtr(const char *name) {
 }
 
 // FUNCTION: LEGOLAND 0x00489550
-void FUN_00489550(void) { STUB(); }
+struct ResDirNode *FUN_00489550(const char *vol_name, const char *file_name, struct ResVolEntry **out_entry) {
+    struct MasterVolNode *master;
+    struct ResVolEntry *entry;
+
+    master = GetMasterVolPtr(vol_name);
+    if (master != 0) {
+        for (entry = (struct ResVolEntry *)master->pad_4; entry != 0; entry = entry->next) {
+            if (_stricmp(file_name, entry->dir->name) == 0) {
+                *out_entry = entry;
+                return entry->dir;
+            }
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x004895a0
 void FUN_004895a0(void) { STUB(); }
