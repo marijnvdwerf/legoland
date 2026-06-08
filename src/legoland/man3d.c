@@ -38,9 +38,14 @@ struct Person {
 };
 
 struct Position {
-    unsigned char pad_0[4];
+    int count_inner;
     int count;
-    unsigned char pad_8[0x24 - 0x8];
+    float field_8;
+    float field_c;
+    float field_10;
+    int field_14;
+    int field_18;
+    unsigned char pad_1c[0x24 - 0x1c];
     void **entries;
 };
 
@@ -60,7 +65,63 @@ struct Bloke {
 
 
 // FUNCTION: LEGOLAND 0x0043f660
-LEGO_EXPORT void LoadPos(void) { STUB(); }
+LEGO_EXPORT struct Position *LoadPos(const char *path) {
+    struct ResFile *file;
+    int *pos;
+    int mat;
+    int walk;
+    float rot[3][3];
+    float tmp[3][3];
+    int i;
+    int j;
+    int row;
+    int col;
+
+    file = RES_OpenFile(path);
+    pos = (int *)malloc(0x28);
+    pos[2] = 0x3f800000;
+    pos[3] = 0x3f800000;
+    pos[4] = 0x3f800000;
+    pos[5] = 0;
+    pos[6] = 0;
+    RES_ReadFile(file, pos, 4);
+    RES_ReadFile(file, pos + 1, 4);
+    pos[9] = (int)malloc(pos[1] << 2);
+    i = 0;
+    if (pos[1] > 0) {
+        do {
+            *(int *)(pos[9] + i * 4) = (int)malloc(*pos * 0x30);
+            j = 0;
+            if (*pos > 0) {
+                mat = *(int *)(pos[9] + i * 4) + 0xc;
+                do {
+                    RES_ReadFile(file, (void *)(mat - 0xc), 4);
+                    RES_ReadFile(file, (void *)(mat - 8), 4);
+                    RES_ReadFile(file, (void *)(mat - 4), 4);
+                    row = 3;
+                    walk = mat;
+                    do {
+                        col = 3;
+                        do {
+                            RES_ReadFile(file, (void *)walk, 4);
+                            walk += 4;
+                            col--;
+                        } while (col != 0);
+                        row--;
+                    } while (row != 0);
+                    BuildYRotationMatrix(1.5707963f, &rot[0][0]);
+                    MatrixMultiply(&rot[0][0], (float *)mat, &tmp[0][0]);
+                    CopyMatrix((struct Matrix3x3 *)&tmp[0][0], (struct Matrix3x3 *)mat);
+                    j++;
+                    mat += 0x30;
+                } while (j < *pos);
+            }
+            i++;
+        } while (i < pos[1]);
+    }
+    RES_CloseFile(file);
+    return (struct Position *)pos;
+}
 
 // FUNCTION: LEGOLAND 0x0043f7d0
 LEGO_EXPORT void UnloadPos(struct Position *pos) {

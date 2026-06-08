@@ -515,7 +515,7 @@ LEGO_EXPORT void MatrixMultiply(float *A, float *B, float *C) {
 }
 
 // FUNCTION: LEGOLAND 0x00443360
-LEGO_EXPORT void BuildYRotationMatrix(void) { STUB(); }
+LEGO_EXPORT void BuildYRotationMatrix(float angle, float *out) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004433b0
 LEGO_EXPORT void TransformVectorsL(void) { STUB(); }

@@ -6,6 +6,7 @@ struct Position;
 struct Person;
 struct Bloke;
 
+LEGO_EXPORT struct Position *LoadPos(const char *path);
 LEGO_EXPORT void UnloadPos(struct Position *pos);
 LEGO_EXPORT void RenderBlokeIn3D(struct Bloke *bloke);
 LEGO_EXPORT void SortBlokeIn3D(struct Bloke *bloke);
