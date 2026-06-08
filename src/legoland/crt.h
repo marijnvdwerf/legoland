@@ -30,3 +30,5 @@ extern char *strrchr(const char *s, int c);
 extern int _stricmp(const char *s1, const char *s2);
 extern char *strstr(const char *haystack, const char *needle);
 extern char *_strupr(char *s);
+extern int toupper(int c);
+extern void _splitpath(const char *path, char *drive, char *dir, char *fname, char *ext);

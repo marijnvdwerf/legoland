@@ -2,13 +2,18 @@
 #include "legoland.h"
 #include "crt.h"
 #include "cdcheck.h"
+#include "debug.h"
+#include "saveload.h"
 #include "resource.h"
 #include "globals.h"
 
 struct ResVolume;
+struct ResVolEntry;
 
 struct ResVolume {
-    unsigned char pad_0[0x1c];
+    struct ResVolume *next;
+    struct ResVolEntry *dir;
+    char name[0x14];
     HANDLE handle;
     struct ResFile *current;
     unsigned int refcount;
@@ -131,7 +136,7 @@ struct ResDirNode *FUN_00489550(const char *vol_name, const char *file_name, str
 }
 
 // FUNCTION: LEGOLAND 0x004895a0
-void FUN_004895a0(void) { STUB(); }
+void FUN_004895a0(void *dir_data, struct ResVolume *volume, void *dir_base, void *master) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489740
 LEGO_EXPORT unsigned int RES_GetResourcePath(void) {
@@ -139,7 +144,106 @@ LEGO_EXPORT unsigned int RES_GetResourcePath(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00489750
-LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) { STUB(); }
+LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) {
+    char fname[0x100];
+    char res_path[0x104];
+    struct ResVolume *volume;
+    struct ResVolume *cur;
+    unsigned int file_size;
+    unsigned int dir_offset;
+    unsigned int bytes_read;
+    void *dir_data;
+    int name_len;
+    int i;
+
+    volume = (struct ResVolume *)malloc(0x28);
+    cur = DAT_00798628;
+
+    _splitpath(path, 0, 0, fname, 0);
+    // STRING: LEGOLAND 0x004bde74
+    FUN_0047f870("Attempting to open Resource %s", fname);
+    FUN_0047f850();
+
+    name_len = strlen(fname);
+    for (i = 0; i < 0x14; i++) {
+        if (i < name_len) {
+            volume->name[i] = (char)toupper(fname[i]);
+        } else {
+            volume->name[i] = '\0';
+        }
+    }
+
+    while (cur != 0) {
+        if (_stricmp(volume->name, cur->name) == 0) {
+            free(volume);
+            // STRING: LEGOLAND 0x004bddc8
+            FUN_0047f870("Volume Already open");
+            return cur;
+        }
+        cur = cur->next;
+    }
+
+    // STRING: LEGOLAND 0x004bde60
+    sprintf(res_path, ".\\volumes\\%s.res", fname);
+    // STRING: LEGOLAND 0x004bde48
+    FUN_0047f870("Trying to open from %s", res_path);
+    FUN_0047f850();
+
+    volume->handle = CreateFileA(res_path, 0x80000000, 1, 0, 3, 0x8000000, 0);
+    if (volume->handle == INVALID_HANDLE_VALUE) {
+        // STRING: LEGOLAND 0x004bde3c
+        sprintf(res_path, "%s%s.res", DAT_00813b04, fname);
+        FUN_0047f870("Trying to open from %s", res_path);
+        FUN_0047f850();
+        volume->handle = CreateFileA(res_path, 0x80000000, 1, 0, 3, 0x8000000, 0);
+    }
+
+    if (volume->handle == INVALID_HANDLE_VALUE) {
+        free(volume);
+        return 0;
+    }
+
+    // STRING: LEGOLAND 0x004bde28
+    FUN_0047f870("Openned resource %s", res_path);
+
+    file_size = GetFileSize(volume->handle, 0);
+    SetFilePointer(volume->handle, 0, 0, 0);
+    ReadFile(volume->handle, &dir_offset, 4, &bytes_read, 0);
+    // STRING: LEGOLAND 0x004bde04
+    FUN_0047f870("FileSize = %x, Directory is at %x", file_size, dir_offset);
+
+    dir_data = malloc(file_size - dir_offset);
+    if (dir_data == 0) {
+        // STRING: LEGOLAND 0x004bdddc
+        FUN_0047f870("Failed to allocate space for directory");
+        CloseHandle(volume->handle);
+        free(volume);
+        return 0;
+    }
+
+    SetFilePointer(volume->handle, dir_offset, 0, 0);
+    ReadFile(volume->handle, dir_data, file_size - dir_offset, &bytes_read, 0);
+    if (bytes_read != file_size - dir_offset) {
+        // STRING: LEGOLAND 0x004bdd94
+        FUN_0047f870("Failed to load directory fully (%x of %x loaded)", bytes_read, file_size - dir_offset);
+        free(dir_data);
+        CloseHandle(volume->handle);
+        free(volume);
+        return 0;
+    }
+
+    // STRING: LEGOLAND 0x004bdd80
+    FUN_0047f870("Directory read OK");
+    volume->dir = 0;
+    FUN_004895a0(dir_data, volume, dir_data, DAT_004d8bb0);
+    free(dir_data);
+
+    volume->next = DAT_00798628;
+    DAT_00798628 = volume;
+    volume->refcount = 1;
+    volume->current = 0;
+    return volume;
+}
 
 // FUNCTION: LEGOLAND 0x00489a00
 LEGO_EXPORT struct ResFile *RES_OpenFileFromVolume(const char *path, const char *vol_name) {
