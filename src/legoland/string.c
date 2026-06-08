@@ -1,6 +1,7 @@
 #include <windows.h>
 #include "legoland.h"
 
+#include "crt.h"
 #include "timer.h"
 #include "string.h"
 #include "globals.h"
@@ -24,7 +25,15 @@ LEGO_EXPORT char *GetString(int n) {
 }
 
 // FUNCTION: LEGOLAND 0x00498f80
-void FUN_00498f80(void) { STUB(); }
+void FUN_00498f80(const char *text, int key) {
+    struct StringNode *node = (struct StringNode *)malloc(sizeof(struct StringNode));
+    int index = key % 10;
+    node->next = (struct StringNode *)strings[index];
+    strings[index] = node;
+    node->text = (char *)malloc(strlen(text) + 1);
+    memcpy(node->text, text, strlen(text) + 1);
+    node->key = key;
+}
 
 // FUNCTION: LEGOLAND 0x00498ff0
 LEGO_EXPORT void DeleteStrings(void) { STUB(); }
