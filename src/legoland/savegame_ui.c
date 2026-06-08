@@ -11,8 +11,13 @@
 
 #include "image_sprite.h"
 
+#pragma intrinsic(memset, strcpy)
+
 struct SaveNode {
     struct SaveNode *next;
+    char name[0x110];
+    int has_header;
+    unsigned char slot;
 };
 
 // FUNCTION: LEGOLAND 0x0048d4b0
@@ -120,7 +125,23 @@ LEGO_EXPORT void KillSaveScreenSprites(void) {
 LEGO_EXPORT void PrintSavedGameDetails(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048e0c0
-void FUN_0048e0c0(void) { STUB(); }
+void FUN_0048e0c0(int has_header, char *header, unsigned char slot) {
+    struct SaveNode *node = (struct SaveNode *)malloc(0x11c);
+    memset(node, 0, 0x11c);
+    if (has_header != 0) {
+        node->has_header = 1;
+        strcpy(node->name, header);
+        node->slot = slot;
+        node->name[0x24] = header[0x24];
+        node->next = (struct SaveNode *)DAT_00798734;
+        DAT_00798734 = node;
+        return;
+    }
+    node->has_header = 0;
+    node->slot = slot;
+    node->next = (struct SaveNode *)DAT_00798734;
+    DAT_00798734 = node;
+}
 
 // FUNCTION: LEGOLAND 0x0048e160
 LEGO_EXPORT void DeleteSavedGameList(void) {
@@ -134,7 +155,38 @@ LEGO_EXPORT void DeleteSavedGameList(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048e190
-LEGO_EXPORT void LoadSavedGamesList(void) { STUB(); }
+LEGO_EXPORT unsigned char LoadSavedGamesList(unsigned char profile) {
+    char path[120];
+    char header[0x110];
+    char slot;
+    int n;
+    int rc;
+    void *file;
+
+    if (!Goto_ProfileDir()) {
+        return 0xff;
+    }
+
+    slot = 8;
+    n = 8;
+    do {
+        sprintf(path, "profiles\\%dsave%d.sh", profile, n);
+        file = fopen(path, "r");
+        if (file == 0) {
+            FUN_0048e0c0(0, header, slot);
+        } else {
+            fread(header, 0x110, 1, file);
+            FUN_0048e0c0(1, header, slot);
+            fclose(file);
+        }
+        memset(header, 0, 0x110);
+        slot = slot - 1;
+        n = n - 1;
+    } while (slot != 0);
+
+    rc = ReturnFrom_ProfileDir();
+    return (rc != 0) - 1;
+}
 
 // FUNCTION: LEGOLAND 0x0048e280
 LEGO_EXPORT void InitNewSaveGamePOPUP(void) { STUB(); }
