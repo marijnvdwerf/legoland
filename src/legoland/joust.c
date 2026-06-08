@@ -11,6 +11,7 @@
 struct JoustNode {
     unsigned char pad_0[4];
     struct JoustNode *next;
+    unsigned int field_8;
 };
 
 struct JoustObject {
@@ -146,8 +147,70 @@ LEGO_EXPORT int SaveJoust(void) {
     return 0;
 }
 
+struct JoustCar {
+    unsigned char pad_0[0x2c];
+    void *field_2c;
+    unsigned int field_30;
+};
+
+struct JoustListNode {
+    struct JoustListNode *next;
+    unsigned char pad_4[0xc];
+    struct JoustCar *field_10;
+};
+
+struct JoustGameObject {
+    unsigned char pad_0[0xcc];
+    struct JoustListNode *field_cc;
+};
+
+struct JoustLoadArg {
+    unsigned char pad_0[0xc];
+    struct JoustGameObject *field_c;
+};
+
 // FUNCTION: LEGOLAND 0x00408d00
-LEGO_EXPORT void LoadJoust(void) { STUB(); }
+LEGO_EXPORT int LoadJoust(struct JoustLoadArg *arg) {
+    struct JoustGameObject *obj = arg->field_c;
+    struct JoustNode *prev = NULL;
+    struct JoustListNode *list;
+    struct JoustCar *car;
+    unsigned int marker;
+
+    if (!SaveGameRead(&marker, 4)) {
+        return 0;
+    }
+    while (marker != 0) {
+        struct JoustNode *node = (struct JoustNode *)malloc(0x24);
+        if (!SaveGameRead(node, 0x24)) {
+            return 0;
+        }
+        node->next = NULL;
+        if (prev != NULL) {
+            prev->next = node;
+        } else {
+            DAT_004c1250 = node;
+        }
+        node->field_8 = 0;
+        prev = node;
+        if (!SaveGameRead(&marker, 4)) {
+            return 0;
+        }
+    }
+
+    list = obj->field_cc;
+    while (list != NULL) {
+        car = list->field_10;
+        if (car->field_30 != 0) {
+            car->field_2c = DAT_004c123c[car->field_30];
+        } else {
+            car->field_2c = NULL;
+            list->field_10->field_30 = 0;
+        }
+        list = list->next;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00408db0
 LEGO_EXPORT void Joust_GetInterfaces(const char **interface_name, struct JoustInterface *pInterface) {

@@ -10,5 +10,5 @@ struct SpiderNode {
 
 int FUN_00415a90(struct SpiderNode *node);
 void FUN_00416330(void);
-LEGO_EXPORT void SaveSpider(void);
-LEGO_EXPORT void LoadSpider(void);
+LEGO_EXPORT int SaveSpider(void);
+LEGO_EXPORT int LoadSpider(void);

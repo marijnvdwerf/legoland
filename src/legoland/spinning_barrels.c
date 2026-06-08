@@ -154,8 +154,88 @@ LEGO_EXPORT int SaveSBarrel(void) {
     return SaveGameWrite(&terminator, 4) != 0;
 }
 
+struct BarrelTypeC {
+    void *field_0;
+    unsigned int field_4;
+};
+
+struct BarrelData {
+    unsigned char pad_0[0x54];
+    struct BarrelTypeC *field_54;
+};
+
+struct BarrelCar {
+    unsigned char pad_0[0x2c];
+    void *field_2c;
+    unsigned int field_30;
+};
+
+struct BarrelListNode {
+    struct BarrelListNode *next;
+    unsigned char pad_4[4];
+    struct BarrelData *field_8;
+    unsigned char pad_c[4];
+    struct BarrelCar *field_10;
+};
+
+struct BarrelGameObject {
+    unsigned char pad_0[0xcc];
+    struct BarrelListNode *field_cc;
+};
+
+struct BarrelLoadArg {
+    unsigned char pad_0[0xc];
+    struct BarrelGameObject *field_c;
+};
+
 // FUNCTION: LEGOLAND 0x0043c690
-LEGO_EXPORT void LoadSBarrel(void) { STUB(); }
+LEGO_EXPORT int LoadSBarrel(struct BarrelLoadArg *arg) {
+    struct BarrelGameObject *obj = arg->field_c;
+    struct BarrelNode *prev = NULL;
+    struct BarrelListNode *list;
+    struct BarrelCar *car;
+    struct BarrelData *data;
+    struct BarrelTypeC *tc;
+    unsigned int marker;
+
+    if (!SaveGameRead(&marker, 4)) {
+        return 0;
+    }
+    while (marker != 0) {
+        struct BarrelNode *node = (struct BarrelNode *)malloc(0x34);
+        if (!SaveGameRead(node, 0x34)) {
+            return 0;
+        }
+        node->next = NULL;
+        if (prev != NULL) {
+            prev->next = node;
+        } else {
+            DAT_0062fe08 = node;
+        }
+        prev = node;
+        if (!SaveGameRead(&marker, 4)) {
+            return 0;
+        }
+    }
+
+    list = obj->field_cc;
+    while (list != NULL) {
+        car = list->field_10;
+        if (car->field_30 != 0) {
+            car->field_2c = DAT_0062fe00[car->field_30];
+        } else {
+            car->field_2c = NULL;
+            list->field_10->field_30 = 0;
+        }
+        data = list->field_8;
+        tc = data->field_54;
+        if (tc != NULL) {
+            tc->field_0 = DAT_0062fdf0[tc->field_4];
+        }
+        list = list->next;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0043c760
 void FUN_0043c760(const char **str, struct BarrelRide *ride) {

@@ -152,5 +152,85 @@ LEGO_EXPORT int SaveSafariRide(void) {
     return 1;
 }
 
+struct SafariTypeC {
+    void *field_0;
+    unsigned int field_4;
+};
+
+struct SafariData {
+    unsigned char pad_0[0x54];
+    struct SafariTypeC *field_54;
+};
+
+struct SafariCar {
+    unsigned char pad_0[0x2c];
+    void *field_2c;
+    unsigned int field_30;
+};
+
+struct SafariListNode {
+    struct SafariListNode *next;
+    unsigned char pad_4[4];
+    struct SafariData *field_8;
+    unsigned char pad_c[4];
+    struct SafariCar *field_10;
+};
+
+struct SafariGameObject {
+    unsigned char pad_0[0xcc];
+    struct SafariListNode *field_cc;
+};
+
+struct SafariLoadArg {
+    unsigned char pad_0[0xc];
+    struct SafariGameObject *field_c;
+};
+
 // FUNCTION: LEGOLAND 0x00415820
-LEGO_EXPORT void LoadSafariRide(void) { STUB(); }
+LEGO_EXPORT int LoadSafariRide(struct SafariLoadArg *arg) {
+    struct SafariGameObject *obj = arg->field_c;
+    struct SafariNode *prev = NULL;
+    struct SafariListNode *list;
+    struct SafariCar *car;
+    struct SafariData *data;
+    struct SafariTypeC *tc;
+    unsigned int marker;
+
+    if (!SaveGameRead(&marker, 4)) {
+        return 0;
+    }
+    while (marker != 0) {
+        struct SafariNode *node = (struct SafariNode *)malloc(0x28);
+        if (!SaveGameRead(node, 0x28)) {
+            return 0;
+        }
+        node->next = NULL;
+        if (prev != NULL) {
+            prev->next = node;
+        } else {
+            DAT_004cbf0c = node;
+        }
+        prev = node;
+        if (!SaveGameRead(&marker, 4)) {
+            return 0;
+        }
+    }
+
+    list = obj->field_cc;
+    while (list != NULL) {
+        car = list->field_10;
+        if (car->field_30 != 0) {
+            car->field_2c = DAT_004cbf04[car->field_30];
+        } else {
+            car->field_2c = NULL;
+            list->field_10->field_30 = 0;
+        }
+        data = list->field_8;
+        tc = data->field_54;
+        if (tc != NULL) {
+            tc->field_0 = (&DAT_004cbef8)[tc->field_4];
+        }
+        list = list->next;
+    }
+    return 1;
+}

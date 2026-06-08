@@ -3,6 +3,7 @@
 #include "globals.h"
 
 #include "binv.h"
+#include "llidb.h"
 #include "sound_music.h"
 #include "spider_ride.h"
 
@@ -211,7 +212,102 @@ void FUN_00416330(void) { STUB(); }
 void FUN_00416830(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00416880
-LEGO_EXPORT void SaveSpider(void) { STUB(); }
+LEGO_EXPORT int SaveSpider(void) {
+    struct SpiderNode *node = (struct SpiderNode *)DAT_004cbf58;
+    unsigned int one = 1;
+    unsigned int zero = 0;
+
+    while (node != NULL) {
+        if (SaveGameWrite(&one, 4) == 0) {
+            return 0;
+        }
+        if (SaveGameWrite(node, 0x30) == 0) {
+            return 0;
+        }
+        node = node->next;
+    }
+    return SaveGameWrite(&zero, 4) != 0;
+}
+
+struct SpiderTypeC {
+    void *field_0;
+    unsigned int field_4;
+};
+
+struct SpiderData {
+    unsigned char pad_0[0x54];
+    struct SpiderTypeC *field_54;
+};
+
+struct SpiderCar2 {
+    unsigned char pad_0[0x2c];
+    void *field_2c;
+    unsigned int field_30;
+};
+
+struct SpiderListNode {
+    struct SpiderListNode *next;
+    unsigned char pad_4[4];
+    struct SpiderData *field_8;
+    unsigned char pad_c[4];
+    struct SpiderCar2 *field_10;
+};
+
+struct SpiderGameObject {
+    unsigned char pad_0[0xcc];
+    struct SpiderListNode *field_cc;
+};
+
+struct SpiderLoadArg {
+    unsigned char pad_0[0xc];
+    struct SpiderGameObject *field_c;
+};
 
 // FUNCTION: LEGOLAND 0x004168f0
-LEGO_EXPORT void LoadSpider(void) { STUB(); }
+LEGO_EXPORT int LoadSpider(struct SpiderLoadArg *arg) {
+    struct SpiderGameObject *obj = arg->field_c;
+    struct SpiderNode *prev = NULL;
+    struct SpiderListNode *list;
+    struct SpiderCar2 *car;
+    struct SpiderData *data;
+    struct SpiderTypeC *tc;
+    unsigned int marker;
+
+    if (!SaveGameRead(&marker, 4)) {
+        return 0;
+    }
+    while (marker != 0) {
+        struct SpiderNode *node = (struct SpiderNode *)malloc(0x30);
+        if (!SaveGameRead(node, 0x30)) {
+            return 0;
+        }
+        node->next = NULL;
+        if (prev != NULL) {
+            prev->next = node;
+        } else {
+            DAT_004cbf58 = node;
+        }
+        prev = node;
+        if (!SaveGameRead(&marker, 4)) {
+            return 0;
+        }
+    }
+
+    list = obj->field_cc;
+    while (list != NULL) {
+        car = list->field_10;
+        if (car->field_30 != 0) {
+            car->field_2c = DAT_004cbf38[car->field_30];
+        } else {
+            car->field_2c = NULL;
+            list->field_10->field_30 = 0;
+        }
+        data = list->field_8;
+        tc = data->field_54;
+        if (tc != NULL) {
+            tc->field_0 = DAT_004cbf30[tc->field_4];
+        }
+        list = list->next;
+    }
+    return 1;
+}

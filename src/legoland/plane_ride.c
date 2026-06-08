@@ -6,6 +6,7 @@
 #include "binv.h"
 #include "obj_instance.h"
 #include "sound_music.h"
+#include "sound_sfx.h"
 #include "llidb.h"
 #include "map_object.h"
 #include "plane_ride.h"
@@ -193,8 +194,100 @@ LEGO_EXPORT int SaveZoomer(void) {
     return 0;
 }
 
+struct ZoomerSampleParams {
+    int field_0;
+    unsigned char pad_4[4];
+    unsigned int field_8;
+    unsigned int field_c;
+};
+
+struct ZoomerTypeC {
+    void *field_0;
+    unsigned int field_4;
+};
+
+struct ZoomerData {
+    unsigned char pad_0[0x54];
+    struct ZoomerTypeC *field_54;
+};
+
+struct ZoomerCar {
+    unsigned char pad_0[0x2c];
+    void *field_2c;
+    unsigned int field_30;
+};
+
+struct ZoomerListNode {
+    struct ZoomerListNode *next;
+    unsigned char pad_4[4];
+    struct ZoomerData *field_8;
+    unsigned char pad_c[4];
+    struct ZoomerCar *field_10;
+};
+
+struct ZoomerGameObject {
+    unsigned char pad_0[0xcc];
+    struct ZoomerListNode *field_cc;
+};
+
+struct ZoomerLoadArg {
+    unsigned char pad_0[0xc];
+    struct ZoomerGameObject *field_c;
+};
+
 // FUNCTION: LEGOLAND 0x0043e110
-LEGO_EXPORT void LoadZoomer(void) { STUB(); }
+LEGO_EXPORT int LoadZoomer(struct ZoomerLoadArg *arg) {
+    struct ZoomerGameObject *obj = arg->field_c;
+    struct PlaneRideNode *prev = NULL;
+    struct ZoomerListNode *list;
+    struct ZoomerCar *car;
+    struct ZoomerData *data;
+    struct ZoomerTypeC *tc;
+    struct ZoomerSampleParams params;
+    unsigned int marker;
+
+    if (!SaveGameRead(&marker, 4)) {
+        return 0;
+    }
+    while (marker != 0) {
+        struct PlaneRideNode *node = (struct PlaneRideNode *)malloc(0x24);
+        if (!SaveGameRead(node, 0x24)) {
+            return 0;
+        }
+        node->next = NULL;
+        if (prev != NULL) {
+            prev->next = node;
+        } else {
+            DAT_0062fe9c = node;
+        }
+        params.field_8 = ((unsigned char *)node)[0];
+        params.field_0 = 2;
+        params.field_c = ((unsigned char *)node)[1];
+        PauseSingleSample(PlayInstanceOfSample(*(void **)(DAT_004b79d0 + 8), 1, 1, &params));
+        prev = node;
+        if (!SaveGameRead(&marker, 4)) {
+            return 0;
+        }
+    }
+
+    list = obj->field_cc;
+    while (list != NULL) {
+        car = list->field_10;
+        if (car->field_30 != 0) {
+            car->field_2c = (&DAT_0062fe94)[car->field_30];
+        } else {
+            car->field_2c = NULL;
+            list->field_10->field_30 = 0;
+        }
+        data = list->field_8;
+        tc = data->field_54;
+        if (tc != NULL) {
+            tc->field_0 = DAT_0062fe84[tc->field_4];
+        }
+        list = list->next;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0043e220
 void FUN_0043e220(const char **name, struct PlaneRideInterface *iface) {
