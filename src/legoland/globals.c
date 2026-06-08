@@ -2798,7 +2798,7 @@ unsigned int DAT_0080ff64;
 LEGO_EXPORT unsigned int NEWFLC_AutoPlay;
 
 // GLOBAL: LEGOLAND 0x0080ff78
-LEGO_EXPORT unsigned int NEWFLC_PauseType;
+LEGO_EXPORT unsigned char NEWFLC_PauseType;
 
 // GLOBAL: LEGOLAND 0x0080ff80
 unsigned int DAT_0080ff80;

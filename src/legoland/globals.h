@@ -1947,7 +1947,7 @@ extern unsigned int DAT_0080ff64;
 // 0x0080ff74
 extern LEGO_EXPORT unsigned int NEWFLC_AutoPlay;
 // 0x0080ff78
-extern LEGO_EXPORT unsigned int NEWFLC_PauseType;
+extern LEGO_EXPORT unsigned char NEWFLC_PauseType;
 // 0x0080ff80
 extern unsigned int DAT_0080ff80;
 // 0x0080ff84

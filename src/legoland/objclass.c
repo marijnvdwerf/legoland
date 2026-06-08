@@ -303,7 +303,7 @@ LEGO_EXPORT int GetBlokeCounter(struct ObjectClass *cls, int index) {
 }
 
 // FUNCTION: LEGOLAND 0x00480f00
-LEGO_EXPORT void LoadObjectLibrary(void) { STUB(); }
+LEGO_EXPORT int LoadObjectLibrary(void *obj, const char *name) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004810f0
 LEGO_EXPORT void UnLoadObjectLibrary(void *library) { STUB(); }

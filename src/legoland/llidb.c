@@ -9,6 +9,9 @@
 #include "wndenv.h"
 #include "objclass.h"
 #include "resource.h"
+#include "render3d.h"
+#include "debug.h"
+#include "setcustomcallbacks.h"
 
 #include "image_sprite.h"
 
@@ -66,18 +69,30 @@ struct ODFSprite {
 
 struct ODFObject {
     struct ODFObject *next;
-    unsigned char pad_4[0x1c - 0x4];
+    int data_4;
+    unsigned int data_8;
+    unsigned char pad_c[0x1c - 0xc];
     unsigned int flags;
-    unsigned char pad_20[0x64 - 0x20];
+    unsigned char pad_20[0x2a - 0x20];
+    short order;
+    unsigned char pad_2c[0x4c - 0x2c];
+    unsigned int data_4c;
+    void *desc;
+    void *script;
+    unsigned int elem_58;
+    unsigned int elem_5c;
+    unsigned int elem_60;
     struct ODFSprite *sprite_0;
     struct ODFSprite *sprite_1;
     struct ODFSprite *sprite_2;
     unsigned int handle;
-    unsigned char pad_74[0x78 - 0x74];
+    unsigned int data_74;
     void *data_78;
     void *data_7c;
     void *data_80;
-    unsigned char pad_84[0xac - 0x84];
+    unsigned char pad_84[0xa4 - 0x84];
+    void (*callback)(void *);
+    unsigned char pad_a8[0xac - 0xa8];
     void (*cleanup)(void *);
     unsigned char pad_b0[0xc4 - 0xb0];
     void *cleanup_arg;
@@ -389,7 +404,249 @@ LEGO_EXPORT void LLIDB_FreeILFTable(struct ILFTable *table) {
 }
 
 // FUNCTION: LEGOLAND 0x0047bf70
-LEGO_EXPORT void *LLIDB_LoadODFData(struct LLIDBHead *head) { STUB(); }
+LEGO_EXPORT void *LLIDB_LoadODFData(struct LLIDBHead *head) {
+    char name[0x100];
+    char text[0x100];
+    char filename[0x100];
+    char dllname[0x100];
+    unsigned int size;
+    unsigned int element;
+    int lang_count;
+    struct ResFile *file;
+    struct ODFObject *obj;
+    unsigned int *sprite_anim;
+    int sprite;
+    int i;
+    int j;
+
+    DAT_00813a10 = 0;
+    // STRING: LEGOLAND 0x004bc39c
+    sprintf(filename, "Objdesc\\%s", head->name);
+    file = RES_OpenFile(filename);
+    if (file == NULL) {
+        return NULL;
+    }
+
+    obj = (struct ODFObject *)malloc(0xd0);
+    memset(obj, 0, 0xd0);
+    if (obj == NULL) {
+        return NULL;
+    }
+
+    obj->cleanup_arg = head;
+    head->data = obj;
+    RES_ReadFile(file, &size, 4);
+    RES_ReadFile(file, &obj->data_4, size - 4);
+    obj->data_4c = 0;
+    obj->next = (struct ODFObject *)ObjectClassList;
+    ObjectClassList = obj;
+    lang_count = obj->data_4;
+    obj->data_4 = 0;
+    obj->data_8 = 0;
+
+    RES_ReadFile(file, &size, 4);
+    if (size != 0) {
+        obj->desc = malloc(size);
+        RES_ReadFile(file, obj->desc, size);
+        free(obj->desc);
+    } else {
+        obj->desc = NULL;
+    }
+
+    RES_ReadFile(file, &size, 4);
+    if (size != 0) {
+        obj->script = malloc(size);
+        RES_ReadFile(file, obj->script, size);
+        free(obj->script);
+    } else {
+        obj->script = NULL;
+    }
+
+    RES_ReadFile(file, &size, 4);
+    RES_ReadFile(file, dllname, size);
+    dllname[size] = '\0';
+
+    RES_ReadFile(file, &size, 4);
+    RES_ReadFile(file, name, size);
+    name[size] = '\0';
+    if (name[0] != '\0') {
+        LLIDB_FindElement(name, &element, NULL);
+        obj->elem_58 = element;
+    } else {
+        obj->elem_58 = 0;
+    }
+
+    RES_ReadFile(file, &size, 4);
+    RES_ReadFile(file, text, size);
+    text[size] = '\0';
+
+    RES_ReadFile(file, &size, 4);
+    RES_ReadFile(file, name, size);
+    name[size] = '\0';
+    if (name[0] != '\0') {
+        LLIDB_FindElement(name, &element, NULL);
+        obj->elem_5c = element;
+    } else {
+        obj->elem_5c = 0;
+    }
+
+    RES_ReadFile(file, &size, 4);
+    RES_ReadFile(file, name, size);
+    name[size] = '\0';
+    if (name[0] != '\0') {
+        LLIDB_FindElement(name, &element, NULL);
+        obj->elem_60 = element;
+    } else {
+        obj->elem_60 = 0;
+    }
+
+    NEWFLC_PauseType = 1;
+    NEWFLC_AutoPlay = 1;
+    RES_ReadFile(file, &size, 4);
+    RES_ReadFile(file, name, size);
+    name[size] = '\0';
+    if ((obj->flags & 0x40000) == 0) {
+        if (name[0] != '\0') {
+            sprite = LoadSprite(name, 1);
+            obj->sprite_0 = (struct ODFSprite *)sprite;
+            if (sprite != 0 && (sprite_anim = *(unsigned int **)(sprite + 8)) != NULL) {
+                if ((*(unsigned int *)(sprite + 0x10) & 0x8000) == 0 &&
+                    (sprite_anim[5] == 2 || sprite_anim[5] == 3)) {
+                    LLSPlay((struct LLS *)*sprite_anim, (unsigned int)sprite_anim);
+                }
+                obj->flags |= 4;
+            }
+            goto icon;
+        }
+        // STRING: LEGOLAND 0x004bc37c
+        FUN_0047f870("Class %s has no sprite name.", *(char **)obj->cleanup_arg);
+    }
+    obj->sprite_0 = NULL;
+
+icon:
+    NEWFLC_PauseType = 2;
+    NEWFLC_AutoPlay = 0;
+    RES_ReadFile(file, &size, 4);
+    RES_ReadFile(file, name, size);
+    name[size] = '\0';
+    if (name[0] != '\0') {
+        obj->sprite_1 = (struct ODFSprite *)LoadSprite(name, 4);
+    } else {
+        // STRING: LEGOLAND 0x004bc360
+        FUN_0047f870("Class %s has no icon name.", *(char **)obj->cleanup_arg);
+        obj->sprite_1 = NULL;
+    }
+    if (obj->sprite_1 == NULL) {
+        // STRING: LEGOLAND 0x004bc34c
+        obj->sprite_1 = (struct ODFSprite *)LoadSprite("InstituteIcon.lls", 4);
+    }
+
+    RES_ReadFile(file, &size, 4);
+    RES_ReadFile(file, name, size);
+    name[size] = '\0';
+    if (name[0] != '\0') {
+        sprite = LoadSprite(name, 1);
+        obj->sprite_2 = (struct ODFSprite *)sprite;
+        if (sprite != 0 && (*(unsigned int *)(sprite + 0x10) & 0x8000) != 0 &&
+            *(int *)(*(int *)(sprite + 8) + 4) > 0) {
+            j = 0;
+            do {
+                sprite = GetSpriteForLayer((struct LayerContainer *)obj->sprite_2, j);
+                if (sprite != 0 && (sprite = GetLLSForSprite((struct SpriteLLS *)sprite)) != 0) {
+                    LLSStop(sprite);
+                }
+                j++;
+            } while (j < *(int *)(*(int *)((char *)obj->sprite_2 + 8) + 4));
+        }
+    } else {
+        // STRING: LEGOLAND 0x004bc328
+        FUN_0047f870("Class %s has no build anim name.", *(char **)obj->cleanup_arg);
+        obj->sprite_2 = NULL;
+    }
+
+    RES_ReadFile(file, &size, 4);
+    RES_ReadFile(file, name, size);
+    name[size] = '\0';
+    obj->handle = 0;
+    if (name[0] != '\0' && (obj->flags & 0x40000) == 0) {
+        LLIDB_FindElement(name, &element, NULL);
+        obj->handle = element;
+        LLIDB_LoadData((void *)element);
+    }
+
+    i = 0;
+    if (lang_count > 0) {
+        do {
+            RES_ReadFile(file, &size, 4);
+            RES_ReadFile(file, name, size);
+            name[size] = '\0';
+            // STRING: LEGOLAND 0x004bc0ec
+            if (i == 0 || _stricmp("english", name) == 0) {
+                if (obj->data_78 != NULL) {
+                    free(obj->data_78);
+                }
+                RES_ReadFile(file, &size, 4);
+                obj->data_78 = malloc(size + 1);
+                RES_ReadFile(file, obj->data_78, size);
+                ((char *)obj->data_78)[size] = '\0';
+                if (obj->data_7c != NULL) {
+                    free(obj->data_7c);
+                }
+                RES_ReadFile(file, &size, 4);
+                obj->data_7c = malloc(size + 1);
+                RES_ReadFile(file, obj->data_7c, size);
+                ((char *)obj->data_7c)[size] = '\0';
+                if (obj->data_80 != NULL) {
+                    free(obj->data_80);
+                }
+                RES_ReadFile(file, &size, 4);
+                obj->data_80 = malloc(size + 1);
+                RES_ReadFile(file, obj->data_80, size);
+                ((char *)obj->data_80)[size] = '\0';
+            } else {
+                RES_ReadFile(file, &size, 4);
+                RES_ReadFile(file, name, size);
+                RES_ReadFile(file, &size, 4);
+                RES_ReadFile(file, name, size);
+                RES_ReadFile(file, &size, 4);
+                RES_ReadFile(file, name, size);
+            }
+            i++;
+        } while (i < lang_count);
+    }
+
+    obj->data_74 = 0;
+    RES_CloseFile(file);
+    SetStandardCallbacks((struct CallbackTable *)obj);
+    if ((obj->flags & 0x10000) == 0 || text[0] == '\0') {
+        SetCustomCallbacks(obj->cleanup_arg);
+    } else if (LoadObjectLibrary(obj, text) == 0) {
+        obj->flags &= 0xfffeffff;
+        SetCustomCallbacks(obj->cleanup_arg);
+        if (obj->callback != NULL) {
+            obj->callback(obj->cleanup_arg);
+        }
+        // STRING: LEGOLAND 0x004bc2ec
+        FUN_0047f870("Class %s has OC_USEDLL attribute and DLL failed to load.", *(char **)obj->cleanup_arg);
+    }
+
+    if ((obj->flags & 0x40000) != 0) {
+        if (obj->desc != NULL) {
+            free(obj->desc);
+            obj->desc = NULL;
+        }
+        if (obj->script != NULL) {
+            free(obj->script);
+            obj->script = NULL;
+        }
+    }
+
+    if (obj->order < 1) {
+        obj->order = 1;
+    }
+    FUN_00480aa0((struct ObjClassNames *)head, (struct ObjectInfo *)obj);
+    return obj;
+}
 
 // FUNCTION: LEGOLAND 0x0047c6a0
 void FUN_0047c6a0(struct LLIDBHead *head) {
@@ -696,7 +953,79 @@ LEGO_EXPORT void *LLIDB_LoadILFData(struct LLIDBHead *head) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d1a0
-LEGO_EXPORT void *LLIDB_LoadCSPData(struct LLIDBHead *head) { STUB(); }
+LEGO_EXPORT void *LLIDB_LoadCSPData(struct LLIDBHead *head) {
+    char filename[0x200];
+    char name[0x200];
+    int count;
+    short unused;
+    int len;
+    struct ResFile *file;
+    struct ILFTable *table;
+    int i;
+
+    count = 0;
+    // STRING: LEGOLAND 0x004bc3c4
+    sprintf(filename, "CompSprite\\%s", head->name);
+    file = RES_OpenFile(filename);
+    if (file == NULL) {
+        return NULL;
+    }
+
+    table = (struct ILFTable *)malloc(0x24);
+    if (table != NULL) {
+        RES_ReadFile(file, &count, 2);
+        RES_ReadFile(file, &unused, 2);
+        table->data_c = (int *)malloc(count * 4);
+        table->data_10 = (int *)malloc(count * 4);
+        table->sprites = (unsigned int *)malloc(count * 4);
+        table->count = count;
+        if (table->data_c != NULL && table->data_10 != NULL && table->sprites != NULL) {
+            RES_ReadFile(file, &len, 4);
+            RES_ReadFile(file, name, len);
+            i = 0;
+            if (count > 0) {
+                do {
+                    RES_ReadFile(file, (char *)table->data_c + i * 4, 4);
+                    RES_ReadFile(file, (char *)table->data_10 + i * 4, 4);
+                    table->data_c[i] = table->data_c[i] << 1;
+                    table->data_10[i] = table->data_10[i] << 1;
+                    i++;
+                } while (i < count);
+            }
+            i = 0;
+            if (count > 0) {
+                do {
+                    RES_ReadFile(file, &len, 4);
+                    RES_ReadFile(file, filename, len);
+                    filename[len] = '\0';
+                    table->sprites[i] = LoadSprite(filename, 1);
+                    i++;
+                } while (i < count);
+            }
+            i = 0;
+            if (count > 0) {
+                unsigned int *sprite = table->sprites;
+                do {
+                    if (*sprite == 0) {
+                        break;
+                    }
+                    i++;
+                    sprite++;
+                } while (i < count);
+            }
+            if (i == count) {
+                table->data_14 = NULL;
+                head->data = table;
+                head->flags |= 1;
+                RES_CloseFile(file);
+                return head->data;
+            }
+        }
+    }
+    LLIDB_FreeILFTable(table);
+    RES_CloseFile(file);
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x0047d3a0
 LEGO_EXPORT void *LLIDB_LoadData(void *handle) {
