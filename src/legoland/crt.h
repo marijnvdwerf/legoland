@@ -8,6 +8,7 @@ extern int sprintf(char *buffer, const char *format, ...);
 extern void printf(const char *msg);
 extern int fclose(void *stream);
 extern unsigned int fread(void *ptr, unsigned int size, unsigned int count, void *stream);
+extern unsigned int fwrite(const void *ptr, unsigned int size, unsigned int count, void *stream);
 extern void *fopen(const char *filename, const char *mode);
 extern unsigned int _read(int fd, void *buffer, unsigned int count);
 extern unsigned int _msize(void *block);

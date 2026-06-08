@@ -3,6 +3,7 @@
 #include <stdarg.h>
 
 #include "globals.h"
+#include "main.h"
 
 
 // FUNCTION: LEGOLAND 0x00453cd0

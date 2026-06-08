@@ -5,6 +5,9 @@
 #include "profile.h"
 #include "profile_io.h"
 #include "savegame_ui.h"
+#include "saveload.h"
+#include "draw.h"
+#include "main.h"
 #include "debug_alloc.h"
 #include "icon.h"
 #include "sound_music.h"
@@ -228,7 +231,58 @@ void FUN_0048e720(void) { STUB(); }
 void FUN_0048e810(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048e870
-LEGO_EXPORT void StoreNewSaveGameToDisk(void) { STUB(); }
+LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void) {
+    char header_path[200];
+    char save_path[256];
+    void *file;
+
+    // STRING: LEGOLAND 0x004b9174
+    sprintf(save_path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffa0.field_43, DAT_0080ffa0.field_44 & 0xff);
+    FUN_00466360(0, 0);
+    FUN_0047f810();
+    if (SaveGame(save_path) == 0) {
+        // STRING: LEGOLAND 0x004bf360
+        FUN_00453ce0("Failed to save game %s", save_path);
+        DAT_0080ffa0.field_44 = 0;
+        _rmdir(save_path);
+        FUN_004663c0();
+        return 0xff;
+    }
+    FUN_004663c0();
+
+    DAT_007cad60.field_24 = DAT_0080ffa0.field_45;
+    DAT_007cad60.field_20 = DAT_0080ffa0.field_20;
+    DAT_007cad60.field_28 = DAT_0080ffa0.field_24;
+    DAT_007cad60.field_2c = DAT_0080ffa0.field_28;
+    DAT_007cad60.field_30 = DAT_0080ffa0.field_2c;
+
+    sprintf(header_path, "profiles\\%dsave%d.sh", DAT_0080ffa0.field_43, DAT_0080ffa0.field_44 & 0xff);
+    if (!Goto_ProfileDir()) {
+        // STRING: LEGOLAND 0x004bf33c
+        FUN_00453ce0("Failed to move to profile folder");
+        return 0xff;
+    }
+
+    // STRING: LEGOLAND 0x004beb70
+    file = fopen(header_path, "w+");
+    if (file == 0) {
+        // STRING: LEGOLAND 0x004bf320
+        FUN_00453ce0("\ncannot open output file %s", header_path);
+    } else {
+        if (fwrite(&DAT_007cad60, 0x110, 1, file) == 0) {
+            // STRING: LEGOLAND 0x004bf2fc
+            FUN_00453ce0("Failed to write to save header %s", header_path);
+        }
+        fclose(file);
+    }
+
+    if (!ReturnFrom_ProfileDir()) {
+        return 0xff;
+    }
+    // STRING: LEGOLAND 0x004bf2f0
+    FUN_00453ce0("Saved OK %s", header_path);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0048ea10
 LEGO_EXPORT void RemoveSaveGame(unsigned char slot) {

@@ -85,11 +85,17 @@ struct Settings {
     unsigned char field_0;
     unsigned char gap_1[0x1f];
     unsigned int field_20;
-    unsigned char gap_24[0xec];
+    unsigned char field_24;
+    unsigned char gap_25[3];
+    unsigned int field_28;
+    unsigned int field_2c;
+    unsigned int field_30;
+    unsigned char gap_34[0xdc];
 };
 
 struct ScreenState {
-    unsigned char gap_0[0x24];
+    unsigned char gap_0[0x20];
+    unsigned int field_20;
     unsigned int field_24;
     unsigned int field_28;
     unsigned int field_2c;
@@ -97,7 +103,8 @@ struct ScreenState {
     unsigned char field_34[0xf];
     unsigned char field_43;
     unsigned char field_44;
-    unsigned char gap_45[0xcb];
+    unsigned char field_45;
+    unsigned char gap_46[0xca];
 };
 
 // ---------------------------------------------------------------------------
