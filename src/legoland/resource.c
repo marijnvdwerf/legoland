@@ -48,6 +48,10 @@ struct ResVolEntry {
     unsigned char pad_0[8];
     struct ResVolEntry *next;
     struct ResDirNode *dir;
+    struct ResVolume *volume;
+    int size;
+    int base;
+    char *name;
 };
 
 
@@ -127,7 +131,71 @@ LEGO_EXPORT unsigned int RES_GetResourcePath(void) {
 LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489a00
-LEGO_EXPORT struct ResFile *RES_OpenFileFromVolume(void *param_1, void *name) { STUB(); }
+LEGO_EXPORT struct ResFile *RES_OpenFileFromVolume(const char *path, const char *vol_name) {
+    char prefix[0x104];
+    char path_copy[0x104];
+    struct ResVolEntry *entry;
+    struct ResDirNode *dir;
+    struct ResFile *file;
+    char *last_bs;
+    char *file_name;
+    char *scan;
+    char *src;
+    int prefix_len;
+
+    prefix[0] = '\0';
+    memset(prefix + 1, 0, sizeof(prefix) - 1);
+    memcpy(path_copy, path, strlen(path) + 1);
+
+    last_bs = 0;
+    scan = path_copy;
+    while (*scan != '\0') {
+        if (*scan == '\\') {
+            last_bs = scan;
+        }
+        scan++;
+    }
+
+    if (last_bs == 0) {
+        file_name = path_copy;
+    } else {
+        src = path_copy;
+        prefix_len = (int)(last_bs - path_copy) + 1;
+        if (path_copy[0] == '.') {
+            while (src[1] == '\\') {
+                src += 2;
+                prefix_len -= 2;
+                if (src[0] != '.') {
+                    break;
+                }
+            }
+        }
+        memcpy(prefix, src, prefix_len);
+        prefix[prefix_len] = '\0';
+        file_name = last_bs + 1;
+    }
+
+    dir = FUN_00489550(vol_name, prefix, &entry);
+    if (dir == 0) {
+        return 0;
+    }
+
+    while (entry != 0) {
+        if (entry->dir == dir) {
+            if (_stricmp(entry->name, file_name) == 0) {
+                file = (struct ResFile *)malloc(0x10);
+                file->size = entry->size;
+                file->base = entry->base;
+                file->volume = entry->volume;
+                entry->volume->refcount++;
+                file->position = 0;
+                return file;
+            }
+        }
+        entry = entry->next;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00489b60
 LEGO_EXPORT struct ResFile *RES_OpenFile(const char *path) { STUB(); }
