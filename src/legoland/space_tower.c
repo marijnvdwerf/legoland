@@ -63,6 +63,13 @@ struct ListNode {
     struct ListNode *next;
 };
 
+struct FadeParams {
+    unsigned int field_0;
+    unsigned char pad_4[4];
+    unsigned int field_8;
+    unsigned int field_c;
+};
+
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0043a7a0
@@ -91,7 +98,13 @@ void FUN_0043aa10(unsigned char *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0043aa50
-void FUN_0043aa50(void) { STUB(); }
+void FUN_0043aa50(unsigned char *arg) {
+    struct FadeParams params;
+    params.field_0 = 2;
+    params.field_8 = arg[0];
+    params.field_c = arg[1];
+    UnSourceAndFadeAllSamplesFromSource(&params, 0xffffff38);
+}
 
 // FUNCTION: LEGOLAND 0x0043aa90
 void FUN_0043aa90(struct RideObject *arg) {
