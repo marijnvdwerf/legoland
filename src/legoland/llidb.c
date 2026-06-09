@@ -217,7 +217,7 @@ unsigned int FUN_0047b500(unsigned int param_1) {
         if (page <= count >> 8) {
             do {
                 if (slot == 0xffffffff) {
-                    *(struct Element *)((int)DAT_006691a8[page - 1] + 0x13ec) = *(struct Element *)DAT_006691a8[page];
+                    DAT_006691a8[page - 1][0xff] = DAT_006691a8[page][0];
                     slot = 0;
                 } else if ((int)slot >= 0xfe) {
                     slot = 0xffffffff;
@@ -238,7 +238,7 @@ unsigned int FUN_0047b500(unsigned int param_1) {
         DAT_006691a4 = count - 1;
         return 0;
     }
-    return 0xfffffffd;
+    return (unsigned int)LLIDB_ERR_NOTFOUND;
 }
 
 // FUNCTION: LEGOLAND 0x0047b5a0
