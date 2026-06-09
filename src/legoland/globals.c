@@ -1496,8 +1496,17 @@ unsigned int DAT_006664f8[768];
 // GLOBAL: LEGOLAND 0x006670f8
 unsigned int DAT_006670f8;
 
+// GLOBAL: LEGOLAND 0x006670fc
+unsigned int DAT_006670fc;
+
 // GLOBAL: LEGOLAND 0x00667104
 unsigned int DAT_00667104;
+
+// GLOBAL: LEGOLAND 0x00667108
+unsigned int DAT_00667108;
+
+// GLOBAL: LEGOLAND 0x0066710c
+unsigned int DAT_0066710c;
 
 // GLOBAL: LEGOLAND 0x00667114
 unsigned int DAT_00667114;
@@ -3013,14 +3022,98 @@ unsigned int DAT_00813a44;
 // GLOBAL: LEGOLAND 0x00813a48
 unsigned int DAT_00813a48;
 
+// GLOBAL: LEGOLAND 0x00813a4c
+unsigned int DAT_00813a4c;
+
+// GLOBAL: LEGOLAND 0x00813a50
+unsigned int DAT_00813a50;
+
+// GLOBAL: LEGOLAND 0x00813a54
+unsigned int DAT_00813a54;
+
+// GLOBAL: LEGOLAND 0x00813a5c
+unsigned int DAT_00813a5c;
+
+// GLOBAL: LEGOLAND 0x00813a60
+unsigned int DAT_00813a60;
+
+// GLOBAL: LEGOLAND 0x00813a64
+unsigned int DAT_00813a64;
+
+// GLOBAL: LEGOLAND 0x00813a68
+unsigned int DAT_00813a68;
+
+// GLOBAL: LEGOLAND 0x00813a6c
+unsigned int DAT_00813a6c;
+
+// GLOBAL: LEGOLAND 0x00813a70
+unsigned int DAT_00813a70;
+
+// GLOBAL: LEGOLAND 0x00813a7c
+unsigned int DAT_00813a7c;
+
+// GLOBAL: LEGOLAND 0x00813a80
+unsigned int DAT_00813a80;
+
+// GLOBAL: LEGOLAND 0x00813a94
+unsigned int DAT_00813a94;
+
+// GLOBAL: LEGOLAND 0x00813a98
+unsigned int DAT_00813a98;
+
+// GLOBAL: LEGOLAND 0x00813a9c
+unsigned int DAT_00813a9c;
+
+// GLOBAL: LEGOLAND 0x00813aa0
+unsigned int DAT_00813aa0;
+
+// GLOBAL: LEGOLAND 0x00813aa4
+unsigned int DAT_00813aa4;
+
+// GLOBAL: LEGOLAND 0x00813aa8
+unsigned int DAT_00813aa8;
+
+// GLOBAL: LEGOLAND 0x00813aac
+unsigned int DAT_00813aac;
+
+// GLOBAL: LEGOLAND 0x00813ab0
+unsigned int DAT_00813ab0;
+
+// GLOBAL: LEGOLAND 0x00813ab4
+unsigned int DAT_00813ab4;
+
+// GLOBAL: LEGOLAND 0x00813ab8
+unsigned int DAT_00813ab8;
+
+// GLOBAL: LEGOLAND 0x00813abc
+unsigned int DAT_00813abc;
+
+// GLOBAL: LEGOLAND 0x00813ac0
+unsigned int DAT_00813ac0;
+
 // GLOBAL: LEGOLAND 0x00813ac4
 unsigned int DAT_00813ac4;
+
+// GLOBAL: LEGOLAND 0x00813ac8
+unsigned int DAT_00813ac8;
+
+// GLOBAL: LEGOLAND 0x00813acc
+unsigned int DAT_00813acc;
+
+// GLOBAL: LEGOLAND 0x00813ad0
+unsigned int DAT_00813ad0;
 
 // GLOBAL: LEGOLAND 0x00813ad4
 unsigned int DAT_00813ad4;
 
+// GLOBAL: LEGOLAND 0x00813ad8
+unsigned int DAT_00813ad8;
+
 // GLOBAL: LEGOLAND 0x00813adc
 unsigned int DAT_00813adc;
+
+// GLOBAL: LEGOLAND 0x00813ae0
+unsigned int DAT_00813ae0;
 
 // GLOBAL: LEGOLAND 0x00813b00
 LEGO_EXPORT void *CONTROLLERBUFFER;

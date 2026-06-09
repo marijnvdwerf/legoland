@@ -2,5 +2,5 @@
 
 #include "legoland.h"
 
-LEGO_EXPORT void SetupControllers(void);
+LEGO_EXPORT int SetupControllers(void);
 LEGO_EXPORT void ReadGameButtons(void);

@@ -22,7 +22,69 @@ struct PopUp {
 
 
 // FUNCTION: LEGOLAND 0x0048fc40
-LEGO_EXPORT void InitTitleScreen(void) { STUB(); }
+LEGO_EXPORT void InitTitleScreen(void) {
+    struct SpriteIcon *icon;
+
+    FUN_00474ed0();
+    // STRING: LEGOLAND 0x004bf574
+    SPRITE_TitleScreenBk = LoadSprite("TitleScreenBk.lls", 0);
+
+    // STRING: LEGOLAND 0x004bf560
+    icon = LoadSpriteIcon("New_on_Title.lls", 4, 0xca, 0x138, 7);
+    icon->field_3c = 7;
+    icon->field_38 = GetString(7);
+    icon->field_34 |= 0x6002;
+    icon->event_handler = FUN_0048feb0;
+    if (FUN_0048fc30() == 0) {
+        // STRING: LEGOLAND 0x004bf548
+        icon->field_18 = LoadSprite("Dark_New_On_Title.lls", 4);
+        icon->field_28 = (void *)FUN_0046e920;
+        icon->field_34 |= 8;
+    } else {
+        icon->field_18 = 0;
+    }
+    DAT_006687bc = FUN_0048feb0;
+
+    // STRING: LEGOLAND 0x004bf534
+    icon = LoadSpriteIcon("Free_on_Title.lls", 4, 0x9a, 8, 7);
+    icon->field_3c = 8;
+    icon->field_38 = GetString(8);
+    icon->field_34 |= 0x6002;
+    icon->event_handler = FUN_0048ff20;
+    if (FUN_0048fc30() == 0) {
+        icon->field_34 |= 0x400;
+    }
+
+    // STRING: LEGOLAND 0x004bf520
+    icon = LoadSpriteIcon("Reg_on_Title.lls", 4, 0x18, 0x71, 7);
+    icon->field_3c = 10;
+    icon->field_38 = GetString(10);
+    icon->field_34 |= 0x6002;
+    icon->event_handler = FUN_0048ff70;
+
+    // STRING: LEGOLAND 0x004bf50c
+    icon = LoadSpriteIcon("Exit_On_Title.lls", 4, 0x1e1, 0x13, 7);
+    icon->field_3c = 1000;
+    icon->field_38 = GetString(1000);
+    icon->field_34 |= 0x6002;
+    icon->event_handler = FUN_0048f0a0;
+    DAT_006687c0 = FUN_0048f0a0;
+
+    // STRING: LEGOLAND 0x004bf4f8
+    icon = LoadSpriteIcon("Load_on_Title.lls", 4, 0x19, 0x118, 7);
+    icon->field_3c = 9;
+    icon->field_38 = GetString(9);
+    icon->field_34 |= 0x6002;
+    icon->event_handler = FUN_0048fe20;
+
+    // STRING: LEGOLAND 0x004bf4e0
+    icon = LoadSpriteIcon("MovieOn_On_Title.lls", 4, 0x10e, 0xa1, 7);
+    icon->field_3c = 0x2bf;
+    icon->field_38 = GetString(0x2bf);
+    icon->field_34 |= 0x6002;
+    icon->event_handler = FUN_0048ffe0;
+    DAT_0080ff80 = 0x898;
+}
 
 // FUNCTION: LEGOLAND 0x0048fe20
 unsigned char FUN_0048fe20(unsigned int param_1, unsigned char param_2) {
@@ -36,7 +98,7 @@ unsigned char FUN_0048fe20(unsigned int param_1, unsigned char param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048feb0
-void FUN_0048feb0(void) { STUB(); }
+unsigned char FUN_0048feb0(unsigned int param_1, unsigned int param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048ff20
 unsigned char FUN_0048ff20(unsigned int param_1, unsigned int param_2) {
@@ -69,7 +131,7 @@ void FUN_0048ffb0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048ffe0
-void FUN_0048ffe0(void) { STUB(); }
+unsigned char FUN_0048ffe0(unsigned int param_1, unsigned int param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00490050
 unsigned char FUN_00490050(unsigned int param_1, unsigned char param_2) {

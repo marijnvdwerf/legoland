@@ -238,6 +238,6 @@ void FUN_0048fc00(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048fc30
-unsigned char FUN_0048fc30(void) {
+int FUN_0048fc30(void) {
     return DAT_0080ffa0.field_34[5] != 0;
 }

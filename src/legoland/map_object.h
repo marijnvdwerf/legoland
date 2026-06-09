@@ -22,6 +22,7 @@ LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, unsigned int param);
 LEGO_EXPORT void CalcBasicObjectCursor(struct CursorObj *obj, unsigned int a2, unsigned int a3);
 LEGO_EXPORT void GetTileDimensions(int *width, int *height);
 void FUN_00460560(int index);
+LEGO_EXPORT void MouseScrollMap(void);
 LEGO_EXPORT unsigned char Get_RFFlags(int x, int y);
 LEGO_EXPORT void Set_UserFlags(int x, int y, unsigned short value);
 LEGO_EXPORT void SetMapTile(int x, int y, unsigned short value);

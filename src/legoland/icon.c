@@ -357,7 +357,7 @@ LEGO_EXPORT void RenderGBarSpriteIcon(void) { STUB(); }
 LEGO_EXPORT void RenderFlashingSpriteIcon(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e920
-void FUN_0046e920(void) { STUB(); }
+int FUN_0046e920(int param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e9d0
 LEGO_EXPORT void RenderGBarSprite(void) { STUB(); }

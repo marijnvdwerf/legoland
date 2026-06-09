@@ -1110,8 +1110,14 @@ extern int DAT_006661c8;
 extern unsigned int DAT_006664f8[768];
 // 0x006670f8
 extern unsigned int DAT_006670f8;
+// 0x006670fc
+extern unsigned int DAT_006670fc;
 // 0x00667104
 extern unsigned int DAT_00667104;
+// 0x00667108
+extern unsigned int DAT_00667108;
+// 0x0066710c
+extern unsigned int DAT_0066710c;
 // 0x00667114
 extern unsigned int DAT_00667114;
 // 0x00667118
@@ -2117,12 +2123,68 @@ extern LEGO_EXPORT unsigned int GamePad;
 extern unsigned int DAT_00813a44;
 // 0x00813a48
 extern unsigned int DAT_00813a48;
+// 0x00813a4c
+extern unsigned int DAT_00813a4c;
+// 0x00813a50
+extern unsigned int DAT_00813a50;
+// 0x00813a54
+extern unsigned int DAT_00813a54;
+// 0x00813a5c
+extern unsigned int DAT_00813a5c;
+// 0x00813a60
+extern unsigned int DAT_00813a60;
+// 0x00813a64
+extern unsigned int DAT_00813a64;
+// 0x00813a68
+extern unsigned int DAT_00813a68;
+// 0x00813a6c
+extern unsigned int DAT_00813a6c;
+// 0x00813a70
+extern unsigned int DAT_00813a70;
+// 0x00813a7c
+extern unsigned int DAT_00813a7c;
+// 0x00813a80
+extern unsigned int DAT_00813a80;
+// 0x00813a94
+extern unsigned int DAT_00813a94;
+// 0x00813a98
+extern unsigned int DAT_00813a98;
+// 0x00813a9c
+extern unsigned int DAT_00813a9c;
+// 0x00813aa0
+extern unsigned int DAT_00813aa0;
+// 0x00813aa4
+extern unsigned int DAT_00813aa4;
+// 0x00813aa8
+extern unsigned int DAT_00813aa8;
+// 0x00813aac
+extern unsigned int DAT_00813aac;
+// 0x00813ab0
+extern unsigned int DAT_00813ab0;
+// 0x00813ab4
+extern unsigned int DAT_00813ab4;
+// 0x00813ab8
+extern unsigned int DAT_00813ab8;
+// 0x00813abc
+extern unsigned int DAT_00813abc;
+// 0x00813ac0
+extern unsigned int DAT_00813ac0;
 // 0x00813ac4
 extern unsigned int DAT_00813ac4;
+// 0x00813ac8
+extern unsigned int DAT_00813ac8;
+// 0x00813acc
+extern unsigned int DAT_00813acc;
+// 0x00813ad0
+extern unsigned int DAT_00813ad0;
 // 0x00813ad4
 extern unsigned int DAT_00813ad4;
+// 0x00813ad8
+extern unsigned int DAT_00813ad8;
 // 0x00813adc
 extern unsigned int DAT_00813adc;
+// 0x00813ae0
+extern unsigned int DAT_00813ae0;
 // 0x00813b00
 extern LEGO_EXPORT void *CONTROLLERBUFFER;
 // 0x00813b04
