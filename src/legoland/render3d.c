@@ -105,7 +105,7 @@ struct RinData {
     unsigned char pad_0[0x10];
     int sprite_count;
     int data_count;
-    void **sprites;
+    struct Sprite **sprites;
     void **datas;
 };
 
@@ -126,7 +126,7 @@ LEGO_EXPORT struct RinData *LoadRin(const char *path, const char *dir) {
     if (file != NULL) {
         memset(rin, 0, 0x20);
         RES_ReadFile(file, &rin->sprite_count, 4);
-        rin->sprites = (void **)malloc(rin->sprite_count << 2);
+        rin->sprites = (struct Sprite **)malloc(rin->sprite_count << 2);
         i = 0;
         if (rin->sprite_count > 0) {
             do {
@@ -138,7 +138,7 @@ LEGO_EXPORT struct RinData *LoadRin(const char *path, const char *dir) {
                 } while (c != '\0');
                 // STRING: LEGOLAND 0x004b7cf4
                 sprintf(sprite_name, "%s\\%s.lls", dir, name);
-                rin->sprites[i] = (void *)LoadSprite(sprite_name, 1);
+                rin->sprites[i] = LoadSprite(sprite_name, 1);
                 i++;
             } while (i < rin->sprite_count);
         }
@@ -165,7 +165,7 @@ LEGO_EXPORT void UnLoadRin(struct RinData *rin) {
 
     count = rin->sprite_count;
     for (i = 0; i < count; i++) {
-        KillSprite((unsigned int)rin->sprites[i]);
+        KillSprite(rin->sprites[i]);
         count = rin->sprite_count;
     }
     free(rin->sprites);
