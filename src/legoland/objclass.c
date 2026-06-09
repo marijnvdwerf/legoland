@@ -360,9 +360,9 @@ LEGO_EXPORT void ResetBestPtr(void) {
 LEGO_EXPORT struct ObjInstance *CreateObjectInstance(unsigned int param_1, unsigned short *param_2) {
     struct ObjInstance *obj;
 
-    obj = (struct ObjInstance *)malloc(0x14);
+    obj = (struct ObjInstance *)malloc(sizeof(struct ObjInstance));
     if (obj != 0) {
-        memset(obj, 0, 0x14);
+        memset(obj, 0, sizeof(struct ObjInstance));
         obj->uid = *param_2;
         obj->field_8 = param_1;
     }
