@@ -32,7 +32,14 @@ void FUN_004529c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004529e0
-void FUN_004529e0(void) { STUB(); }
+void FUN_004529e0(unsigned int param_1, int *param_2) {
+    struct SampleParams params;
+    AddBasicObject(param_1, (unsigned int)param_2);
+    params.field_8 = param_2[0];
+    params.field_0 = 2;
+    params.field_c = param_2[1];
+    PlayInstanceOfSample(*(void **)&DAT_004b8710[8], 1, 1, &params);
+}
 
 // FUNCTION: LEGOLAND 0x00452a30
 LEGO_EXPORT void RemoveSoundObject(unsigned int a, unsigned int b, unsigned int c) { STUB(); }
