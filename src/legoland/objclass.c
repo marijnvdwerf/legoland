@@ -384,8 +384,8 @@ LEGO_EXPORT void SetEditObject(struct EditObject *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00481720
-unsigned int FUN_00481720(void) {
-    return (unsigned int)DAT_0066b44c;
+void *FUN_00481720(void) {
+    return DAT_0066b44c;
 }
 
 // FUNCTION: LEGOLAND 0x00481730
