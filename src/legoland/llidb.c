@@ -18,7 +18,7 @@
 struct ILFTable {
     unsigned char pad_0[4];
     int count;
-    unsigned int *sprites;
+    struct Sprite **sprites;
     int *data_c;
     int *data_10;
     void *data_14;
@@ -503,7 +503,7 @@ LEGO_EXPORT void *LLIDB_LoadODFData(struct LLIDBHead *head) {
     name[size] = '\0';
     if ((obj->flags & LLIDB_FLAG_NODATA) == 0) {
         if (name[0] != '\0') {
-            sprite = LoadSprite(name, 1);
+            sprite = (int)LoadSprite(name, 1);
             obj->sprite_0 = (struct ODFSprite *)sprite;
             if (sprite != 0 && (sprite_anim = *(unsigned int **)(sprite + 8)) != NULL) {
                 if ((*(unsigned int *)(sprite + 0x10) & 0x8000) == 0 &&
@@ -679,19 +679,19 @@ void FUN_0047c6a0(struct LLIDBHead *head) {
         if (obj->sprite_0->anim->type == 2 || obj->sprite_0->anim->type == 3) {
             LLSStop(obj->sprite_0->anim->handle);
         }
-        KillSprite((unsigned int)obj->sprite_0);
+        KillSprite((struct Sprite *)obj->sprite_0);
     }
     if (obj->sprite_1 != NULL) {
         if (obj->sprite_1->anim->type == 2 || obj->sprite_1->anim->type == 3) {
             LLSStop(obj->sprite_1->anim->handle);
         }
-        KillSprite((unsigned int)obj->sprite_1);
+        KillSprite((struct Sprite *)obj->sprite_1);
     }
     if (obj->sprite_2 != NULL) {
         if (obj->sprite_2->anim->type == 2 || obj->sprite_2->anim->type == 3) {
             LLSStop(obj->sprite_2->anim->handle);
         }
-        KillSprite((unsigned int)obj->sprite_2);
+        KillSprite((struct Sprite *)obj->sprite_2);
     }
 
     if (obj->handle != 0) {
@@ -909,7 +909,7 @@ LEGO_EXPORT void *LLIDB_LoadILFData(struct LLIDBHead *head) {
     if (table != NULL) {
         table->data_c = (int *)malloc(count * 4);
         table->data_10 = (int *)malloc(count * 4);
-        table->sprites = (unsigned int *)malloc(count * 4);
+        table->sprites = (struct Sprite **)malloc(count * 4);
         table->count = count;
         if (table->data_c != NULL && table->data_10 != NULL && table->sprites != NULL) {
             RES_ReadFile(file, &len, 4);
@@ -973,7 +973,7 @@ LEGO_EXPORT void *LLIDB_LoadCSPData(struct LLIDBHead *head) {
         RES_ReadFile(file, &unused, 2);
         table->data_c = (int *)malloc(count * 4);
         table->data_10 = (int *)malloc(count * 4);
-        table->sprites = (unsigned int *)malloc(count * 4);
+        table->sprites = (struct Sprite **)malloc(count * 4);
         table->count = count;
         if (table->data_c != NULL && table->data_10 != NULL && table->sprites != NULL) {
             RES_ReadFile(file, &len, 4);
