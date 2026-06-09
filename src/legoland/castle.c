@@ -214,24 +214,24 @@ struct SearchNode {
 };
 
 struct SearchHost {
-    unsigned char flags;
-    unsigned char pad_1[4 - 1];
-    struct SearchNode *list1;
-    unsigned char pad_8[0xc0 - 0x8];
-    struct SearchNode *list2;
+    /* 0x00 */ unsigned char flags;
+    /* 0x01 */ unsigned char pad_1[4 - 1];
+    /* 0x04 */ struct SearchNode head;
+    /* 0x30 */ unsigned char pad_30[0xc0 - 0x30];
+    /* 0xc0 */ struct SearchNode *list2;
 };
 
 // FUNCTION: LEGOLAND 0x0041d060
 struct SearchNode *FUN_0041d060(struct SearchHost *host, unsigned int *key) {
     if (host->flags & 0x2) {
-        struct SearchNode *current = (struct SearchNode *)((unsigned char *)host + 0x4);
+        struct SearchNode *current = &host->head;
         unsigned int search = *key;
         if (current->value == search) {
             return current;
         }
         while (1) {
             current = current->next;
-            if (current == (struct SearchNode *)((unsigned char *)host + 0x4)) {
+            if (current == &host->head) {
                 break;
             }
             if (current->value == search) {
