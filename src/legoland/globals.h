@@ -1430,35 +1430,35 @@ extern unsigned int DAT_00668e38;
 // 0x00668e40
 extern struct InterfaceListNode *DAT_00668e40;
 // 0x00668e68
-extern unsigned int DAT_00668e68;
+extern struct Sprite *DAT_00668e68;
 // 0x00668e6c
-extern unsigned int DAT_00668e6c;
+extern struct Sprite *DAT_00668e6c;
 // 0x00668e70
-extern unsigned int DAT_00668e70;
+extern struct Sprite *DAT_00668e70;
 // 0x00668e74
-extern unsigned int DAT_00668e74;
+extern struct Sprite *DAT_00668e74;
 // 0x00668e78
-extern unsigned int DAT_00668e78;
+extern struct Sprite *DAT_00668e78;
 // 0x00668e7c
-extern unsigned int DAT_00668e7c;
+extern struct Sprite *DAT_00668e7c;
 // 0x00668e80
-extern unsigned int DAT_00668e80;
+extern struct Sprite *DAT_00668e80;
 // 0x00668e84
-extern unsigned int DAT_00668e84;
+extern struct Sprite *DAT_00668e84;
 // 0x00668e88
-extern unsigned int DAT_00668e88;
+extern struct Sprite *DAT_00668e88;
 // 0x00668e8c
-extern unsigned int DAT_00668e8c;
+extern struct Sprite *DAT_00668e8c;
 // 0x00668e90
-extern unsigned int DAT_00668e90;
+extern struct Sprite *DAT_00668e90;
 // 0x00668e94
-extern unsigned int DAT_00668e94;
+extern struct Sprite *DAT_00668e94;
 // 0x00668e98
-extern unsigned int DAT_00668e98;
+extern struct Sprite *DAT_00668e98;
 // 0x00668e9c
 extern void *DAT_00668e9c;
 // 0x00668ea0
-extern unsigned int DAT_00668ea0;
+extern struct Sprite *DAT_00668ea0;
 // 0x00668ea4
 extern unsigned int DAT_00668ea4;
 // 0x00668eb0
@@ -1898,43 +1898,43 @@ extern int DAT_007fdca0;
 // 0x007fdca4
 extern unsigned int DAT_007fdca4;
 // 0x007fdcc0
-extern unsigned int DAT_007fdcc0;
+extern struct Sprite *DAT_007fdcc0;
 // 0x007fdcc4
-extern unsigned int DAT_007fdcc4;
+extern struct Sprite *DAT_007fdcc4;
 // 0x007fdcc8
-extern unsigned int DAT_007fdcc8;
+extern struct Sprite *DAT_007fdcc8;
 // 0x007fdccc
-extern unsigned int DAT_007fdccc;
+extern struct Sprite *DAT_007fdccc;
 // 0x007fdcd0
-extern unsigned int DAT_007fdcd0;
+extern struct Sprite *DAT_007fdcd0;
 // 0x007fdcd4
-extern unsigned int DAT_007fdcd4;
+extern struct Sprite *DAT_007fdcd4;
 // 0x007fdcd8
-extern unsigned int DAT_007fdcd8;
+extern struct Sprite *DAT_007fdcd8;
 // 0x007fdcdc
-extern unsigned int DAT_007fdcdc;
+extern struct Sprite *DAT_007fdcdc;
 // 0x007fdce0
-extern unsigned int DAT_007fdce0;
+extern struct Sprite *DAT_007fdce0;
 // 0x007fdd00
 extern unsigned int DAT_007fdd00[9];
 // 0x007fdd40
-extern unsigned int DAT_007fdd40;
+extern struct Sprite *DAT_007fdd40;
 // 0x007fdd44
-extern unsigned int DAT_007fdd44;
+extern struct Sprite *DAT_007fdd44;
 // 0x007fdd48
-extern unsigned int DAT_007fdd48;
+extern struct Sprite *DAT_007fdd48;
 // 0x007fdd4c
-extern unsigned int DAT_007fdd4c;
+extern struct Sprite *DAT_007fdd4c;
 // 0x007fdd50
-extern unsigned int DAT_007fdd50;
+extern struct Sprite *DAT_007fdd50;
 // 0x007fdd54
-extern unsigned int DAT_007fdd54;
+extern struct Sprite *DAT_007fdd54;
 // 0x007fdd58
-extern unsigned int DAT_007fdd58;
+extern struct Sprite *DAT_007fdd58;
 // 0x007fdd5c
-extern unsigned int DAT_007fdd5c;
+extern struct Sprite *DAT_007fdd5c;
 // 0x007fdd60
-extern unsigned int DAT_007fdd60;
+extern struct Sprite *DAT_007fdd60;
 // 0x007fdd70
 extern struct InterfaceProfileObj *DAT_007fdd70[4];
 // 0x007fdd80

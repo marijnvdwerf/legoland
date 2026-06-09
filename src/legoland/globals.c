@@ -1944,49 +1944,49 @@ unsigned int DAT_00668e38;
 struct InterfaceListNode *DAT_00668e40;
 
 // GLOBAL: LEGOLAND 0x00668e68
-unsigned int DAT_00668e68;
+struct Sprite *DAT_00668e68;
 
 // GLOBAL: LEGOLAND 0x00668e6c
-unsigned int DAT_00668e6c;
+struct Sprite *DAT_00668e6c;
 
 // GLOBAL: LEGOLAND 0x00668e70
-unsigned int DAT_00668e70;
+struct Sprite *DAT_00668e70;
 
 // GLOBAL: LEGOLAND 0x00668e74
-unsigned int DAT_00668e74;
+struct Sprite *DAT_00668e74;
 
 // GLOBAL: LEGOLAND 0x00668e78
-unsigned int DAT_00668e78;
+struct Sprite *DAT_00668e78;
 
 // GLOBAL: LEGOLAND 0x00668e7c
-unsigned int DAT_00668e7c;
+struct Sprite *DAT_00668e7c;
 
 // GLOBAL: LEGOLAND 0x00668e80
-unsigned int DAT_00668e80;
+struct Sprite *DAT_00668e80;
 
 // GLOBAL: LEGOLAND 0x00668e84
-unsigned int DAT_00668e84;
+struct Sprite *DAT_00668e84;
 
 // GLOBAL: LEGOLAND 0x00668e88
-unsigned int DAT_00668e88;
+struct Sprite *DAT_00668e88;
 
 // GLOBAL: LEGOLAND 0x00668e8c
-unsigned int DAT_00668e8c;
+struct Sprite *DAT_00668e8c;
 
 // GLOBAL: LEGOLAND 0x00668e90
-unsigned int DAT_00668e90;
+struct Sprite *DAT_00668e90;
 
 // GLOBAL: LEGOLAND 0x00668e94
-unsigned int DAT_00668e94;
+struct Sprite *DAT_00668e94;
 
 // GLOBAL: LEGOLAND 0x00668e98
-unsigned int DAT_00668e98;
+struct Sprite *DAT_00668e98;
 
 // GLOBAL: LEGOLAND 0x00668e9c
 void *DAT_00668e9c;
 
 // GLOBAL: LEGOLAND 0x00668ea0
-unsigned int DAT_00668ea0;
+struct Sprite *DAT_00668ea0;
 
 // GLOBAL: LEGOLAND 0x00668ea4
 unsigned int DAT_00668ea4;
@@ -2646,61 +2646,61 @@ int DAT_007fdca0;
 unsigned int DAT_007fdca4;
 
 // GLOBAL: LEGOLAND 0x007fdcc0
-unsigned int DAT_007fdcc0;
+struct Sprite *DAT_007fdcc0;
 
 // GLOBAL: LEGOLAND 0x007fdcc4
-unsigned int DAT_007fdcc4;
+struct Sprite *DAT_007fdcc4;
 
 // GLOBAL: LEGOLAND 0x007fdcc8
-unsigned int DAT_007fdcc8;
+struct Sprite *DAT_007fdcc8;
 
 // GLOBAL: LEGOLAND 0x007fdccc
-unsigned int DAT_007fdccc;
+struct Sprite *DAT_007fdccc;
 
 // GLOBAL: LEGOLAND 0x007fdcd0
-unsigned int DAT_007fdcd0;
+struct Sprite *DAT_007fdcd0;
 
 // GLOBAL: LEGOLAND 0x007fdcd4
-unsigned int DAT_007fdcd4;
+struct Sprite *DAT_007fdcd4;
 
 // GLOBAL: LEGOLAND 0x007fdcd8
-unsigned int DAT_007fdcd8;
+struct Sprite *DAT_007fdcd8;
 
 // GLOBAL: LEGOLAND 0x007fdcdc
-unsigned int DAT_007fdcdc;
+struct Sprite *DAT_007fdcdc;
 
 // GLOBAL: LEGOLAND 0x007fdce0
-unsigned int DAT_007fdce0;
+struct Sprite *DAT_007fdce0;
 
 // GLOBAL: LEGOLAND 0x007fdd00
 unsigned int DAT_007fdd00[9];
 
 // GLOBAL: LEGOLAND 0x007fdd40
-unsigned int DAT_007fdd40;
+struct Sprite *DAT_007fdd40;
 
 // GLOBAL: LEGOLAND 0x007fdd44
-unsigned int DAT_007fdd44;
+struct Sprite *DAT_007fdd44;
 
 // GLOBAL: LEGOLAND 0x007fdd48
-unsigned int DAT_007fdd48;
+struct Sprite *DAT_007fdd48;
 
 // GLOBAL: LEGOLAND 0x007fdd4c
-unsigned int DAT_007fdd4c;
+struct Sprite *DAT_007fdd4c;
 
 // GLOBAL: LEGOLAND 0x007fdd50
-unsigned int DAT_007fdd50;
+struct Sprite *DAT_007fdd50;
 
 // GLOBAL: LEGOLAND 0x007fdd54
-unsigned int DAT_007fdd54;
+struct Sprite *DAT_007fdd54;
 
 // GLOBAL: LEGOLAND 0x007fdd58
-unsigned int DAT_007fdd58;
+struct Sprite *DAT_007fdd58;
 
 // GLOBAL: LEGOLAND 0x007fdd5c
-unsigned int DAT_007fdd5c;
+struct Sprite *DAT_007fdd5c;
 
 // GLOBAL: LEGOLAND 0x007fdd60
-unsigned int DAT_007fdd60;
+struct Sprite *DAT_007fdd60;
 
 // GLOBAL: LEGOLAND 0x007fdd70
 struct InterfaceProfileObj *DAT_007fdd70[4];

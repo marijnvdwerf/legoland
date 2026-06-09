@@ -194,16 +194,16 @@ LEGO_EXPORT void UnLoad_Interface_ThemeIcons(void) {
 void FUN_00474750(void) {
     if (DAT_004bb094 == 0) {
         DAT_004bb094 = 1;
-        FUN_0046d680((struct IconNode *)DAT_00668eb0, (struct Sprite *)DAT_007fdd40);
+        FUN_0046d680((struct IconNode *)DAT_00668eb0, DAT_007fdd40);
     } else if (DAT_004bb098 == 0) {
         DAT_004bb098 = 1;
-        FUN_0046d680((struct IconNode *)DAT_00668eb0, (struct Sprite *)DAT_007fdd48);
+        FUN_0046d680((struct IconNode *)DAT_00668eb0, DAT_007fdd48);
     } else if (DAT_004bb09c == 0) {
         DAT_004bb09c = 1;
-        FUN_0046d680((struct IconNode *)DAT_00668eb0, (struct Sprite *)DAT_007fdd44);
+        FUN_0046d680((struct IconNode *)DAT_00668eb0, DAT_007fdd44);
     } else if (DAT_004bb0a0 == 0) {
         DAT_004bb0a0 = 1;
-        FUN_0046d680((struct IconNode *)DAT_00668eb0, (struct Sprite *)DAT_007fdd4c);
+        FUN_0046d680((struct IconNode *)DAT_00668eb0, DAT_007fdd4c);
     }
 }
 
