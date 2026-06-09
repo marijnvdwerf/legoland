@@ -376,7 +376,7 @@ unsigned int FUN_004186b0(struct WaterArg *arg) {
     DAT_004cbfec = (unsigned int)DAT_004cbfdc->field_64;
     // STRING: LEGOLAND 0x004b5078
     DAT_004cc020 = LoadSprite("ww_elsquirt.lls", 1);
-    return DAT_004cc020;
+    return (unsigned int)DAT_004cc020;
 }
 
 // FUNCTION: LEGOLAND 0x004186f0
