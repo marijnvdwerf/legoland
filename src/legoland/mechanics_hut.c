@@ -27,7 +27,7 @@ unsigned int FUN_0043d250(struct HutContext *ctx) {
     ((struct HutObject *)DAT_0081caf4)->field_1c |= 0x2000;
     // STRING: LEGOLAND 0x004b79a4
     DAT_0062fe54 = LoadSprite("MechHutMask.lls", 1);
-    return DAT_0062fe54;
+    return (unsigned int)DAT_0062fe54;
 }
 
 // FUNCTION: LEGOLAND 0x0043d2a0

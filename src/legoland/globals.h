@@ -972,11 +972,11 @@ extern unsigned short DAT_0062fe1c;
 // 0x0062fe48
 extern unsigned int DAT_0062fe48;
 // 0x0062fe4c
-extern unsigned int DAT_0062fe4c;
+extern struct Sprite *DAT_0062fe4c;
 // 0x0062fe50
 extern unsigned int DAT_0062fe50;
 // 0x0062fe54
-extern unsigned int DAT_0062fe54;
+extern struct Sprite *DAT_0062fe54;
 // 0x0062fe58
 extern unsigned int DAT_0062fe58;
 // 0x0062fe60

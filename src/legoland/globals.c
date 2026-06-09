@@ -1254,13 +1254,13 @@ unsigned short DAT_0062fe1c;
 unsigned int DAT_0062fe48;
 
 // GLOBAL: LEGOLAND 0x0062fe4c
-unsigned int DAT_0062fe4c;
+struct Sprite *DAT_0062fe4c;
 
 // GLOBAL: LEGOLAND 0x0062fe50
 unsigned int DAT_0062fe50;
 
 // GLOBAL: LEGOLAND 0x0062fe54
-unsigned int DAT_0062fe54;
+struct Sprite *DAT_0062fe54;
 
 // GLOBAL: LEGOLAND 0x0062fe58
 unsigned int DAT_0062fe58;
