@@ -142,7 +142,23 @@ int FUN_00497020(unsigned int value) {
 }
 
 // FUNCTION: LEGOLAND 0x00497070
-LEGO_EXPORT void ReloadAllDetailDependentImages(void) { STUB(); }
+LEGO_EXPORT void ReloadAllDetailDependentImages(void) {
+    int count1;
+    int count2;
+    struct Image **array;
+
+    count1 = DAT_0079a7cc;
+    count2 = DAT_0079a7c8;
+    array = DAT_0079a7c4;
+    while (count2 != 0 && count1 != 0) {
+        if (*array != NULL) {
+            ReloadImageBitmapAndBuildSprites(*array);
+            count1--;
+        }
+        count2--;
+        array++;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004970b0
 LEGO_EXPORT void ReloadAllDetailDependentImagesAndBuildSprites(void) {
@@ -640,10 +656,32 @@ LEGO_EXPORT void ReleaseSprite(struct Sprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x00497de0
-LEGO_EXPORT void HideLayer(void *layer, unsigned int flag) { STUB(); }
+LEGO_EXPORT void HideLayer(struct LayerOwner *owner, unsigned int index) {
+    struct Sprite *layer;
+
+    if ((owner->flags & 0x8000) != 0) {
+        if (index < (unsigned int)owner->arrays->count) {
+            layer = (struct Sprite *)owner->arrays->array_8[index];
+            if (layer != NULL) {
+                layer->field_10 |= 0x4000;
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00497e10
-LEGO_EXPORT void ShowLayer(void) { STUB(); }
+LEGO_EXPORT void ShowLayer(struct LayerOwner *owner, unsigned int index) {
+    struct Sprite *layer;
+
+    if ((owner->flags & 0x8000) != 0) {
+        if (index < (unsigned int)owner->arrays->count) {
+            layer = (struct Sprite *)owner->arrays->array_8[index];
+            if (layer != NULL) {
+                layer->field_10 &= 0xffffbfff;
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00497e80
 LEGO_EXPORT void GetLayer(struct LayerOwner *owner, struct LayerResult *result, int index) {
@@ -670,7 +708,19 @@ LEGO_EXPORT void GetLayer(struct LayerOwner *owner, struct LayerResult *result, 
 LEGO_EXPORT void SetLayerAnimatingState(struct LayerOwner *owner, int index, int state) {}
 
 // FUNCTION: LEGOLAND 0x00497ee0
-LEGO_EXPORT void TellAllLayersToAnimate(void) { STUB(); }
+LEGO_EXPORT void TellAllLayersToAnimate(struct LayerOwner *owner) {
+    int i;
+
+    if ((owner->flags & 0x8000) != 0) {
+        i = 0;
+        if (owner->arrays->count > 0) {
+            do {
+                SetLayerAnimatingState(owner, i, 1);
+                i++;
+            } while (i < owner->arrays->count);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00497f20
 LEGO_EXPORT void TellAllLayersToStopAnimating(struct LayerOwner *owner) {
