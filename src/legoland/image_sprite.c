@@ -374,15 +374,15 @@ LEGO_EXPORT struct Sprite *CreateSprite(struct Image *image) {
     sprite->field_10 = 0;
     sprite->field_c = DAT_008119a4 - 1;
     if (image != NULL) {
-        *(unsigned short *)((char *)image + 0xc) += 1;
+        image->refcount += 1;
         if (image->field_0 == 0) {
             if (__BMPLoader(image) == 0) {
                 KillSprite((unsigned int)sprite);
                 return NULL;
             }
         }
-        sprite->field_14 = *(unsigned short *)((char *)image + 8);
-        sprite->field_16 = *(unsigned short *)((char *)image + 0xa);
+        sprite->field_14 = image->width;
+        sprite->field_16 = image->height;
         FUN_00499500(sprite);
     }
     return sprite;
@@ -418,7 +418,7 @@ LEGO_EXPORT struct Sprite *CreateSysmemSprite(struct Image *image) {
     }
     sprite->field_4 = 0;
     sprite->image = image;
-    *(unsigned short *)((char *)image + 0xc) += 1;
+    image->refcount += 1;
     sprite->field_1c = 1;
     sprite->field_18 = 0;
     sprite->field_1a = 0;
@@ -430,8 +430,8 @@ LEGO_EXPORT struct Sprite *CreateSysmemSprite(struct Image *image) {
             return NULL;
         }
     }
-    sprite->field_14 = *(unsigned short *)((char *)image + 8);
-    sprite->field_16 = *(unsigned short *)((char *)image + 0xa);
+    sprite->field_14 = image->width;
+    sprite->field_16 = image->height;
     return sprite;
 }
 
@@ -445,7 +445,7 @@ LEGO_EXPORT struct Sprite *CreatePartialSprite(struct Image *image, unsigned sho
     }
     sprite->field_4 = 0;
     sprite->image = image;
-    *(unsigned short *)((char *)image + 0xc) += 1;
+    image->refcount += 1;
     sprite->field_18 = a;
     sprite->field_1c = 1;
     sprite->field_1a = b;
