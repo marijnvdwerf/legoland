@@ -507,10 +507,10 @@ struct Sprite *DAT_004c1258;
 unsigned int DAT_004c2a88;
 
 // GLOBAL: LEGOLAND 0x004c2a94
-unsigned int DAT_004c2a94;
+struct Sprite *DAT_004c2a94;
 
 // GLOBAL: LEGOLAND 0x004c2a98
-unsigned int DAT_004c2a98;
+struct Sprite *DAT_004c2a98;
 
 // GLOBAL: LEGOLAND 0x004c2aa0
 struct CursorSource *DAT_004c2aa0;
@@ -525,10 +525,10 @@ struct Sprite *DAT_004c2ae4;
 void *DAT_004c2ae8;
 
 // GLOBAL: LEGOLAND 0x004c2aec
-unsigned int DAT_004c2aec;
+struct Sprite *DAT_004c2aec;
 
 // GLOBAL: LEGOLAND 0x004c2af0
-unsigned int DAT_004c2af0;
+struct Sprite *DAT_004c2af0;
 
 // GLOBAL: LEGOLAND 0x004c2af4
 unsigned int DAT_004c2af4;
@@ -552,13 +552,13 @@ void *DAT_004c2b50;
 struct CursorSource *DAT_004c2b60;
 
 // GLOBAL: LEGOLAND 0x004c2b64
-unsigned int DAT_004c2b64;
+struct Sprite *DAT_004c2b64;
 
 // GLOBAL: LEGOLAND 0x004c2b6c
-unsigned int DAT_004c2b6c;
+struct Sprite *DAT_004c2b6c;
 
 // GLOBAL: LEGOLAND 0x004c2b70
-unsigned int DAT_004c2b70;
+struct Sprite *DAT_004c2b70;
 
 // GLOBAL: LEGOLAND 0x004c2b98
 unsigned int DAT_004c2b98;
@@ -618,7 +618,7 @@ struct Sprite *DAT_004cbe0c;
 void *DAT_004cbe10;
 
 // GLOBAL: LEGOLAND 0x004cbe14
-unsigned int DAT_004cbe14;
+struct Sprite *DAT_004cbe14;
 
 // GLOBAL: LEGOLAND 0x004cbe18
 struct CursorSource *DAT_004cbe18;

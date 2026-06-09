@@ -1280,7 +1280,7 @@ void FUN_0040e920(struct Obj *obj_ptr) {
 
     DAT_004cbe10 = obj_ptr;
     // STRING: LEGOLAND 0x004b4a64
-    DAT_004c8d2c = (struct Sprite *)LoadSprite("fc2_m1.lls", 1);
+    DAT_004c8d2c = LoadSprite("fc2_m1.lls", 1);
 }
 
 // FUNCTION: LEGOLAND 0x0040e970
@@ -1305,16 +1305,16 @@ void FUN_0040e9e0(struct Obj *obj_ptr) {
     }
 
     // STRING: LEGOLAND 0x004b4a88
-    DAT_004c8d70 = (struct Sprite *)LoadSprite("fc4_m.lls", 1);
+    DAT_004c8d70 = LoadSprite("fc4_m.lls", 1);
 }
 
 // FUNCTION: LEGOLAND 0x0040ea30
 void FUN_0040ea30(void) {
     if (DAT_004c2b6c != 0) {
-        KillSprite((struct Sprite *)DAT_004c2b6c);
+        KillSprite(DAT_004c2b6c);
     }
     if (DAT_004c2b70 != 0) {
-        KillSprite((struct Sprite *)DAT_004c2b70);
+        KillSprite(DAT_004c2b70);
     }
 }
 
@@ -1469,7 +1469,7 @@ void FUN_0040f3e0(struct Obj *obj_ptr) {
     }
 
     // STRING: LEGOLAND 0x004b4a94
-    DAT_004c1258 = (struct Sprite *)LoadSprite("tunel_m.lls", 1);
+    DAT_004c1258 = LoadSprite("tunel_m.lls", 1);
 }
 
 // FUNCTION: LEGOLAND 0x0040f430
@@ -1561,7 +1561,7 @@ unsigned int FUN_0040f8b0(struct Obj *obj_ptr) {
 // FUNCTION: LEGOLAND 0x0040f900
 void FUN_0040f900(void) {
     if (DAT_004cbe14 != 0) {
-        KillSprite((struct Sprite *)DAT_004cbe14);
+        KillSprite(DAT_004cbe14);
     }
 }
 
@@ -1652,10 +1652,10 @@ void FUN_0040ff30(struct Obj *obj_ptr) {
 // FUNCTION: LEGOLAND 0x0040ffa0
 void FUN_0040ffa0(void) {
     if (DAT_004c2a94 != 0) {
-        KillSprite((struct Sprite *)DAT_004c2a94);
+        KillSprite(DAT_004c2a94);
     }
     if (DAT_004c2a98 != 0) {
-        KillSprite((struct Sprite *)DAT_004c2a98);
+        KillSprite(DAT_004c2a98);
     }
 }
 
@@ -1758,15 +1758,15 @@ unsigned int FUN_004103e0(struct Obj *obj_ptr) {
 // FUNCTION: LEGOLAND 0x00410450
 void FUN_00410450(void) {
     if (DAT_004c2b64 != 0) {
-        KillSprite((struct Sprite *)DAT_004c2b64);
+        KillSprite(DAT_004c2b64);
         DAT_004c2b64 = 0;
     }
     if (DAT_004c2af0 != 0) {
-        KillSprite((struct Sprite *)DAT_004c2af0);
+        KillSprite(DAT_004c2af0);
         DAT_004c2af0 = 0;
     }
     if (DAT_004c2aec != 0) {
-        KillSprite((struct Sprite *)DAT_004c2aec);
+        KillSprite(DAT_004c2aec);
         DAT_004c2aec = 0;
     }
 }
