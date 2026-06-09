@@ -47,6 +47,6 @@ int FUN_00499500(struct Sprite *sprite) {
             return 0;
         }
     }
-    MakeSprite((unsigned int)sprite); /* TODO-fold: timer.c keeps its own struct Sprite view; MakeSprite's canonical param is the uint sprite handle */
+    MakeSprite(sprite);
     return 1;
 }

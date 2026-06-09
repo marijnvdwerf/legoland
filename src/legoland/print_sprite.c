@@ -24,7 +24,7 @@ struct PersonBlock {
 struct SpriteGroup {
     /* 0x00 */ unsigned char pad_0[4];
     /* 0x04 */ int count;
-    /* 0x08 */ unsigned int *subs;
+    /* 0x08 */ struct Sprite **subs;
     /* 0x0c */ int *xoffs;
     /* 0x10 */ int *yoffs;
 };
@@ -66,15 +66,15 @@ LEGO_EXPORT unsigned int PrintSprite(struct Sprite *sprite, unsigned int x, unsi
                         yoff = yoff >> 1;
                     }
                     if (param_4 == 0) {
-                        if (*(int *)GetVRAMAddress(s->group->subs[i]) == 0) {
-                            if (FUN_00499500((struct Sprite *)s->group->subs[i]) == 0) {
+                        if (*(int *)GetVRAMAddress((unsigned int)s->group->subs[i]) == 0) {
+                            if (FUN_00499500(s->group->subs[i]) == 0) {
                                 goto cont;
                             }
                         }
-                        RenderSprite((struct Sprite *)s->group->subs[i], xoff + x, yoff + y);
+                        RenderSprite(s->group->subs[i], xoff + x, yoff + y);
                     } else {
-                        if (*(int *)GetVRAMAddress(s->group->subs[i]) != 0 || FUN_00499500((struct Sprite *)s->group->subs[i]) != 0) {
-                            RenderSpriteX((struct Sprite *)s->group->subs[i], xoff + x, yoff + y, param_4);
+                        if (*(int *)GetVRAMAddress((unsigned int)s->group->subs[i]) != 0 || FUN_00499500(s->group->subs[i]) != 0) {
+                            RenderSpriteX(s->group->subs[i], xoff + x, yoff + y, param_4);
                         }
                     }
                 }
