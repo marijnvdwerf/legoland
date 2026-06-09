@@ -15,6 +15,18 @@
 
 #include "image_sprite.h"
 
+struct Element {
+    /* 0x00 */ char *name;
+    /* 0x04 */ char *path;
+    /* 0x08 */ unsigned int flags;
+    /* 0x0c */ void *data;
+    /* 0x10 */ unsigned int field_10;
+};
+
+#define LLIDB_PAGE(id) ((id) >> 8)
+#define LLIDB_SLOT(id) ((id) & 0xff)
+#define LLIDB_ELEM(id) (&DAT_006691a8[LLIDB_PAGE(id)][LLIDB_SLOT(id)])
+
 struct ILFTable {
     unsigned char pad_0[4];
     int count;
@@ -103,15 +115,15 @@ LEGO_EXPORT unsigned int LLIDB_GetCount(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0047b2e0
-LEGO_EXPORT int LLIDB_GetElement(unsigned int index, unsigned int *output) {
+LEGO_EXPORT int LLIDB_GetElement(unsigned int index, struct Element **output) {
     if (index < DAT_006691a4) {
         if (output != NULL) {
-            *output = (unsigned int)LLIDB_ELEM(index);
+            *output = LLIDB_ELEM(index);
         }
         return 0;
     }
     if (output != NULL) {
-        *output = 0;
+        *output = NULL;
     }
     return LLIDB_ERR_NOTFOUND;
 }
@@ -346,7 +358,7 @@ LEGO_EXPORT unsigned int LLIDB_RegisterNewElementB(const char *param_1, const ch
 INT_PTR CALLBACK FUN_0047b890(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047bc20
-LEGO_EXPORT int LLIDB_SelectElement(unsigned int mask, unsigned int *output) {
+LEGO_EXPORT int LLIDB_SelectElement(unsigned int mask, struct Element **output) {
     INT_PTR result;
 
     DAT_007fdb88 = mask;
