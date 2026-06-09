@@ -3,6 +3,8 @@
 #include "globals.h"
 
 #include "draw.h"
+#include "text.h"
+#include "wndenv.h"
 
 #include "image_sprite.h"
 
@@ -114,7 +116,7 @@ void FUN_00465ee0(void) { STUB(); }
 void FUN_00466080(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004661d0
-void FUN_004661d0(const char *msg) { STUB(); }
+int FUN_004661d0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00466360
 void FUN_00466360(int a, int b) { STUB(); }
@@ -132,7 +134,31 @@ void FUN_004663c0(void) {
 void FUN_004663f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00466500
-LEGO_EXPORT void RenderingComplete(void) { STUB(); }
+LEGO_EXPORT int RenderingComplete(void) {
+    int result;
+
+    ProcessSystemEvents();
+    FUN_00455f70(0);
+    __asm {
+        pushad
+        rdtsc
+        mov ebx, DAT_00813a18
+        sub eax, ebx
+        mov DAT_00813a18, eax
+        add DAT_00813a2c, eax
+        popad
+    }
+    DAT_00667d68 = GetTickCount();
+    result = DAT_004b9ca4();
+    DAT_00813a2c = 0;
+    __asm {
+        pushad
+        rdtsc
+        mov DAT_00813a18, eax
+        popad
+    }
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x00466560
 LEGO_EXPORT void PushSetTarget(struct Sprite *sprite) { STUB(); }

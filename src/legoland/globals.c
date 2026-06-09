@@ -266,7 +266,7 @@ unsigned char DAT_004b9550[8];
 struct DeferredSprite *PTR_DAT_004b95f0;
 
 // GLOBAL: LEGOLAND 0x004b9ca4
-void (*DAT_004b9ca4)(const char *);
+int (*DAT_004b9ca4)(void);
 
 // GLOBAL: LEGOLAND 0x004b9ca8
 unsigned int DAT_004b9ca8;
@@ -1646,6 +1646,9 @@ unsigned int DAT_00667d54;
 // GLOBAL: LEGOLAND 0x00667d58
 int DAT_00667d58;
 
+// GLOBAL: LEGOLAND 0x00667d68
+unsigned int DAT_00667d68;
+
 // GLOBAL: LEGOLAND 0x00667d6c
 int DAT_00667d6c;
 
@@ -3015,6 +3018,12 @@ void *DAT_00813a0c;
 
 // GLOBAL: LEGOLAND 0x00813a10
 unsigned int DAT_00813a10;
+
+// GLOBAL: LEGOLAND 0x00813a18
+int DAT_00813a18;
+
+// GLOBAL: LEGOLAND 0x00813a2c
+int DAT_00813a2c;
 
 // GLOBAL: LEGOLAND 0x00813a40
 LEGO_EXPORT unsigned int GamePad;

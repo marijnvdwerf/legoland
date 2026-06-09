@@ -301,7 +301,7 @@ extern struct DeferredSprite *PTR_DAT_004b95f0;
 // 0x004b9550
 extern unsigned char DAT_004b9550[8];
 // 0x004b9ca4
-extern void (*DAT_004b9ca4)(const char *);
+extern int (*DAT_004b9ca4)(void);
 // 0x004b9ca8
 extern unsigned int DAT_004b9ca8;
 // 0x004b9e5c
@@ -1208,6 +1208,8 @@ extern int DAT_00667d44;
 extern unsigned int DAT_00667d54;
 // 0x00667d58
 extern int DAT_00667d58;
+// 0x00667d68
+extern unsigned int DAT_00667d68;
 // 0x00667d6c
 extern int DAT_00667d6c;
 // 0x00667d70
@@ -2119,6 +2121,10 @@ extern void *DAT_00813a08;
 extern void *DAT_00813a0c;
 // 0x00813a10
 extern unsigned int DAT_00813a10;
+// 0x00813a18
+extern int DAT_00813a18;
+// 0x00813a2c
+extern int DAT_00813a2c;
 // 0x00813a40
 extern LEGO_EXPORT unsigned int GamePad;
 // 0x00813a44

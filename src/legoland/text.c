@@ -128,7 +128,7 @@ void FUN_00455ec0(struct TextSprite *param_0, unsigned int param_1, unsigned int
 void FUN_00455ee0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00455f70
-void FUN_00455f70(void) { STUB(); }
+void FUN_00455f70(int param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00455fc0
 void FUN_00455fc0(void) { STUB(); }
