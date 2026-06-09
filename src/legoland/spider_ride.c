@@ -7,12 +7,6 @@
 #include "sound_music.h"
 #include "spider_ride.h"
 
-struct SampleParams {
-    int field_0;
-    unsigned int pad_4;
-    int field_8;
-    int field_c;
-};
 
 struct FadeParams {
     unsigned int field_0;

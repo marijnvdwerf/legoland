@@ -4,6 +4,13 @@
 
 struct Sample;
 
+struct SampleParams {
+    /* 0x00 */ int field_0;
+    /* 0x04 */ unsigned int pad_4;
+    /* 0x08 */ int field_8;
+    /* 0x0c */ int field_c;
+};
+
 LEGO_EXPORT struct Sample *PlayInstanceOfSample(void *def, unsigned int looping,
                                     unsigned int oneshot, void *config);
 LEGO_EXPORT void UnSourceAndFadeAllSamplesFromSource(void *source, int fade);

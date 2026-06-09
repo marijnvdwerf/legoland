@@ -4,12 +4,6 @@
 #include "map_object.h"
 #include "power.h"
 
-struct SampleParams {
-    int field_0;
-    unsigned int pad_4;
-    int field_8;
-    int field_c;
-};
 
 
 // FUNCTION: LEGOLAND 0x00452990
