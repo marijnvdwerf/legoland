@@ -146,7 +146,7 @@ void FUN_0048b740(void) {
 
     esi = (int *)&DAT_004beb94[0].field_4;
     do {
-        ReferenceSprite((struct Sprite *)esi[-1]); /* TODO-fold: esi walks the slot array as int*; ReferenceSprite's canonical param is struct Sprite* */
+        ReferenceSprite((struct Sprite *)esi[-1]);
         ReferenceSprite((struct Sprite *)esi[0]);
         esi += 7;
     } while ((long)esi < (long)DAT_004becb0);

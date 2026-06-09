@@ -3158,13 +3158,13 @@ struct Sprite *DAT_0081c034;
 unsigned int DAT_0081c038;
 
 // GLOBAL: LEGOLAND 0x0081c040
-unsigned int DAT_0081c040[1];
+struct Sprite *DAT_0081c040[1];
 
 // GLOBAL: LEGOLAND 0x0081c054
-unsigned int DAT_0081c054[1];
+struct Sprite *DAT_0081c054[1];
 
 // GLOBAL: LEGOLAND 0x0081c068
-unsigned int DAT_0081c068[1];
+struct Sprite *DAT_0081c068[1];
 
 // GLOBAL: LEGOLAND 0x0081c080
 struct Sprite *DAT_0081c080;

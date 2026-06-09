@@ -2237,11 +2237,11 @@ extern struct Sprite *DAT_0081c034;
 // 0x0081c038
 extern unsigned int DAT_0081c038;
 // 0x0081c040
-extern unsigned int DAT_0081c040[1];
+extern struct Sprite *DAT_0081c040[1];
 // 0x0081c054
-extern unsigned int DAT_0081c054[1];
+extern struct Sprite *DAT_0081c054[1];
 // 0x0081c068
-extern unsigned int DAT_0081c068[1];
+extern struct Sprite *DAT_0081c068[1];
 // 0x0081c080
 extern struct Sprite *DAT_0081c080;
 // 0x0081c084
