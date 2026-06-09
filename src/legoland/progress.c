@@ -8,10 +8,6 @@
 #include "sound_music.h"
 #include "globals.h"
 
-struct LegoConfig {
-    unsigned char pad_0[0x28];
-    unsigned int field_28;
-};
 
 #include "image_sprite.h"
 

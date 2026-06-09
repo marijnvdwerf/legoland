@@ -48,16 +48,6 @@ struct TileSprite {
     short size;
 };
 
-struct LegoConfig {
-    unsigned char pad_0[0x10];
-    unsigned short field_10;
-    unsigned short field_12;
-    unsigned short field_14;
-    unsigned short field_16;
-    unsigned char pad_18[0x20 - 0x18];
-    unsigned short field_20;
-    unsigned short field_22;
-};
 
 struct MapTile {
     unsigned char pad_0[8];
@@ -209,7 +199,7 @@ void FUN_0045e770(struct ObjNode *node, int *offset) {
     if (FUN_0045e620(obj) != 0) {
         x = obj->field_c + offset[0];
         y = obj->field_10 + offset[1];
-        if (x >= 0 && x < lpConfig->field_14 && y >= 0 && y < lpConfig->field_16) {
+        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
             tile = (struct MapTile *)((int)MapTileGrid[y] + x * 0x14);
             if (tile != 0) {
                 tile->obj_region |= (unsigned short)FUN_0045e6b0(obj);
@@ -218,7 +208,7 @@ void FUN_0045e770(struct ObjNode *node, int *offset) {
         if (FUN_0045e690((struct ObjInfo *)obj) != 0) {
             x = obj->field_24 + offset[0];
             y = obj->field_25 + offset[1];
-            if (x >= 0 && x < lpConfig->field_14 && y >= 0 && y < lpConfig->field_16) {
+            if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
                 tile = (struct MapTile *)((int)MapTileGrid[y] + x * 0x14);
                 if (tile != 0) {
                     tile->obj_region |= (unsigned short)FUN_0045e710(obj);
@@ -239,7 +229,7 @@ void FUN_0045e850(struct ObjNode *node, int *offset) {
     if (FUN_0045e620(obj) != 0) {
         x = obj->field_c + offset[0];
         y = obj->field_10 + offset[1];
-        if (x >= 0 && x < lpConfig->field_14 && y >= 0 && y < lpConfig->field_16) {
+        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
             tile = (struct MapTile *)((int)MapTileGrid[y] + x * 0x14);
             if (tile != 0) {
                 tile->obj_region &= ~(unsigned short)FUN_0045e6b0(obj);
@@ -248,7 +238,7 @@ void FUN_0045e850(struct ObjNode *node, int *offset) {
         if (FUN_0045e690((struct ObjInfo *)obj) != 0) {
             x = obj->field_24 + offset[0];
             y = obj->field_25 + offset[1];
-            if (x >= 0 && x < lpConfig->field_14 && y >= 0 && y < lpConfig->field_16) {
+            if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
                 tile = (struct MapTile *)((int)MapTileGrid[y] + x * 0x14);
                 if (tile != 0) {
                     tile->obj_region &= ~(unsigned short)FUN_0045e710(obj);
@@ -285,7 +275,7 @@ int FUN_0045e960(struct ObjNode *node, int *offset) {
     if (FUN_0045e620(obj) != 0) {
         x = offset[0] + obj->field_c;
         y = offset[1] + obj->field_10;
-        if (x >= 0 && x < lpConfig->field_14 && y >= 0 && y < lpConfig->field_16) {
+        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
             tile = (struct MapTile *)((int)MapTileGrid[y] + x * 0x14);
             if (tile != 0 && FUN_0045e930((struct ObjEntry *)tile) == 0) {
                 return 0;
@@ -294,7 +284,7 @@ int FUN_0045e960(struct ObjNode *node, int *offset) {
         if (FUN_0045e690((struct ObjInfo *)obj) != 0) {
             x = offset[0] + obj->field_c;
             y = offset[1] + obj->field_10;
-            if (x >= 0 && x < lpConfig->field_14 && y >= 0 && y < lpConfig->field_16) {
+            if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
                 tile = (struct MapTile *)((int)MapTileGrid[y] + x * 0x14);
                 if (tile != 0 && FUN_0045e930((struct ObjEntry *)tile) == 0) {
                     return 0;
@@ -514,8 +504,8 @@ void FUN_00461020(void) {
 void FUN_00461080(int *coord, unsigned int param2, unsigned int param3, unsigned int param4) {
     struct MapTile *tile;
 
-    if (coord[0] >= 0 && coord[0] < lpConfig->field_14 &&
-        coord[1] >= 0 && coord[1] < lpConfig->field_16) {
+    if (coord[0] >= 0 && coord[0] < lpConfig->width &&
+        coord[1] >= 0 && coord[1] < lpConfig->height) {
         tile = MapTileGrid[coord[1]];
         tile = tile + coord[0];
         if (tile != 0 && FUN_0045ce10(tile) != 0 && tile->tile != 0) {
@@ -579,8 +569,8 @@ LEGO_EXPORT unsigned char GetCurrentRFFlags(int x, int y) {
     int tx;
     int ty;
 
-    if (x < 0 || x >= (int)((unsigned int)lpConfig->field_14 * 0x100) ||
-        y < 0 || y >= (int)((unsigned int)lpConfig->field_16 * 0x100)) {
+    if (x < 0 || x >= (int)((unsigned int)lpConfig->width * 0x100) ||
+        y < 0 || y >= (int)((unsigned int)lpConfig->height * 0x100)) {
         return 2;
     }
     rf = Get_RFFlags(x, y);
@@ -592,7 +582,7 @@ LEGO_EXPORT unsigned char GetCurrentRFFlags(int x, int y) {
     }
     tx = x >> 8;
     ty = y >> 8;
-    if (tx < 0 || tx >= (int)lpConfig->field_14 || ty < 0 || ty >= (int)lpConfig->field_16) {
+    if (tx < 0 || tx >= (int)lpConfig->width || ty < 0 || ty >= (int)lpConfig->height) {
         tile = 0;
     } else {
         tile = (struct MapTile *)((int)MapTileGrid[ty] + tx * 0x14);
@@ -641,13 +631,13 @@ LEGO_EXPORT void SetMapTile(int x, int y, unsigned short value) {
     if (x < 0) {
         return;
     }
-    if (x > (int)lpConfig->field_14) {
+    if (x > (int)lpConfig->width) {
         return;
     }
     if (y < 0) {
         return;
     }
-    if (y > (int)lpConfig->field_16) {
+    if (y > (int)lpConfig->height) {
         return;
     }
     MapTileGrid[y][x].tile = value;

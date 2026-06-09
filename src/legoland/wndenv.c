@@ -8,10 +8,6 @@
 #include "input.h"
 #include "gfx.h"
 
-struct LegoConfig {
-    /* 0x00 */ unsigned char gap_0[0x1c];
-    /* 0x1c */ unsigned char field_1c;
-};
 
 struct MidiTrack {
     unsigned char pad_0[4];

@@ -50,11 +50,6 @@ struct QueryNode {
 };
 
 
-struct LegoConfig {
-    unsigned char pad_0[0x14];
-    unsigned short width;
-    unsigned short height;
-};
 
 #include "image_sprite.h"
 

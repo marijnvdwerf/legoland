@@ -8,10 +8,6 @@
 
 #include <windows.h>
 
-struct LegoConfig {
-    /* 0x00 */ unsigned char gap_0[0x1e];
-    /* 0x1e */ unsigned short field_1e;
-};
 
 struct CtrlBuffer {
     /* 0x00 */ unsigned char pad_0[8];

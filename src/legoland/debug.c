@@ -15,12 +15,6 @@
 #include "screens.h"
 #include "string.h"
 
-struct LegoConfig {
-    unsigned char gap_0[0x1e];
-    unsigned short field_1e;
-    unsigned char gap_20[0x20];
-    unsigned int field_40;
-};
 
 // FUNCTION: LEGOLAND 0x0047f870
 void FUN_0047f870(const char *fmt, ...) {}

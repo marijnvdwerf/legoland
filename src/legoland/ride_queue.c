@@ -27,11 +27,6 @@ struct Queue {
     struct QueueNode *tail;
 };
 
-struct LegoConfig {
-    unsigned char pad_0[0x14];
-    short width;
-    short height;
-};
 
 struct RideQueueEntry {
     struct RideQueueEntry *next;

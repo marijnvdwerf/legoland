@@ -31,11 +31,6 @@ struct NerpsArg {
     unsigned int field_20;
 };
 
-struct LegoConfig {
-    unsigned char pad_0[0x34];
-    unsigned int field_34;
-    unsigned int field_38;
-};
 
 struct ObjectClass {
     struct ObjectClass *next;

@@ -29,14 +29,6 @@ struct GameMainEntry {
     char *name;
 };
 
-struct LegoConfig {
-    unsigned char pad_0[0x1a];
-    unsigned short field_1a;
-    unsigned char pad_1c[0x30 - 0x1c];
-    unsigned int field_30;
-    unsigned int field_34;
-    unsigned int field_38;
-};
 
 
 // FUNCTION: LEGOLAND 0x004777c0

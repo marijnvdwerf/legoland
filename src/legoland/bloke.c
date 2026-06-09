@@ -14,11 +14,6 @@ struct BestNode {
     unsigned char flags_20;
 };
 
-struct LegoConfig {
-    unsigned char pad_0[0x14];
-    unsigned short field_14;
-    unsigned short field_16;
-};
 
 struct PendingObject {
     unsigned char pad_0[0xe];
@@ -233,11 +228,11 @@ int FUN_00483160(int x, int y) {
     if (x <= 0) {
         return 0;
     }
-    if (x < (lpConfig->field_14 << 8)) {
+    if (x < (lpConfig->width << 8)) {
         if (y <= 0) {
             return 0;
         }
-        if (y < (lpConfig->field_16 << 8)) {
+        if (y < (lpConfig->height << 8)) {
             return 1;
         }
     }

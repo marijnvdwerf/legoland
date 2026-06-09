@@ -15,7 +15,6 @@ struct Sprite;
 struct CursorSource;
 struct Building;
 struct JailCell;
-struct LegoConfig;
 struct FXSpriteList;
 struct ResVolume;
 struct RideQueueEntry;
@@ -46,6 +45,29 @@ struct InterfaceResearchNode;
 struct InfoIcon;
 
 // Full definitions needed by typed globals defined in globals.c.
+struct LegoConfig {
+    /* 0x00 */ unsigned char pad_0[0x10];
+    /* 0x10 */ unsigned short field_10;
+    /* 0x12 */ unsigned short field_12;
+    /* 0x14 */ unsigned short width;
+    /* 0x16 */ unsigned short height;
+    /* 0x18 */ unsigned char pad_18[2];
+    /* 0x1a */ unsigned short field_1a;
+    /* 0x1c */ unsigned char field_1c;
+    /* 0x1d */ unsigned char pad_1d[1];
+    /* 0x1e */ unsigned short field_1e;
+    /* 0x20 */ unsigned short field_20;
+    /* 0x22 */ unsigned short field_22;
+    /* 0x24 */ unsigned char pad_24[4];
+    /* 0x28 */ unsigned int field_28;
+    /* 0x2c */ unsigned char pad_2c[4];
+    /* 0x30 */ unsigned int field_30;
+    /* 0x34 */ unsigned int field_34;
+    /* 0x38 */ unsigned int field_38;
+    /* 0x3c */ unsigned char pad_3c[4];
+    /* 0x40 */ unsigned int field_40;
+};
+
 struct ObjTableEntry {
     unsigned short key;
     unsigned short value;

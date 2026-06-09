@@ -8,11 +8,6 @@
 #include "llidb.h"
 #include "map_object.h"
 
-struct LegoConfig {
-    unsigned char pad_0[0x14];
-    unsigned short field_14;
-    unsigned short field_16;
-};
 
 struct RenderObjectVtable {
     unsigned char pad_0[0xc];
@@ -164,7 +159,7 @@ LEGO_EXPORT struct RenderObject *GetFirstRenderObject(void) {
 
     x = (unsigned char)DAT_007febb8;
     y = (unsigned char)(DAT_007febb8 >> 8);
-    if (x < 0 || x >= (int)lpConfig->field_14 || y < 0 || y >= (int)lpConfig->field_16) {
+    if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
         return 0;
     }
     element = (struct RenderObject *)((char *)GameMap[y] + x * 0x14);
@@ -187,7 +182,7 @@ LEGO_EXPORT struct RenderObject *GetNextRenderObject(struct RenderObject *object
     }
     x = object->coords.bytes[0];
     y = object->coords.bytes[1];
-    if (x >= 0 && x < (int)lpConfig->field_14 && y >= 0 && y < (int)lpConfig->field_16) {
+    if (x >= 0 && x < (int)lpConfig->width && y >= 0 && y < (int)lpConfig->height) {
         return (struct RenderObject *)((char *)GameMap[y] + x * 0x14);
     }
     return 0;

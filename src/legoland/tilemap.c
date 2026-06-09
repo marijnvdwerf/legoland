@@ -15,14 +15,6 @@ struct MapTile {
     unsigned char flags_10;
 };
 
-struct LegoConfig {
-    unsigned char pad_0[0x14];
-    unsigned short field_14;
-    unsigned short field_16;
-    unsigned char pad_18[0x20 - 0x18];
-    unsigned short field_20;
-    unsigned short field_22;
-};
 
 struct TileSprite {
     unsigned char pad_0[0x16];
@@ -351,7 +343,7 @@ unsigned char FUN_0045d080(unsigned char flags, int *coords) {
     if ((flags & 0xc) == 0xc) {
         x = coords[0] - 1;
         y = coords[1] + 1;
-        if (x >= 0 && x < lpConfig->field_14 && y >= 0 && y < lpConfig->field_16) {
+        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
             map_row = (unsigned int *)GameMap[y];
             memcpy(tile_data, map_row + x * 5, sizeof(tile_data));
         } else {
@@ -366,7 +358,7 @@ unsigned char FUN_0045d080(unsigned char flags, int *coords) {
     if ((flags & 0x3) == 0x3) {
         x = coords[0] + 1;
         y = coords[1] - 1;
-        if (x >= 0 && x < lpConfig->field_14 && y >= 0 && y < lpConfig->field_16) {
+        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
             map_row = (unsigned int *)GameMap[y];
             memcpy(tile_data, map_row + x * 5, sizeof(tile_data));
         } else {
