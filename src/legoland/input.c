@@ -87,10 +87,10 @@ LEGO_EXPORT void KillInputSystem(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00473b00
-LEGO_EXPORT void UpdateControllerFromMouseData(void) { STUB(); }
+LEGO_EXPORT void UpdateControllerFromMouseData(void *buffer) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00473c10
-LEGO_EXPORT void UpdateControllerFromKeyboardData(void) { STUB(); }
+LEGO_EXPORT void UpdateControllerFromKeyboardData(void *buffer) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00474070
 unsigned int FUN_00474070(void) {

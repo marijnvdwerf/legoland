@@ -5,6 +5,13 @@
 #include "crt.h"
 #include "resource.h"
 #include "wndenv.h"
+#include "input.h"
+#include "gfx.h"
+
+struct LegoConfig {
+    /* 0x00 */ unsigned char gap_0[0x1c];
+    /* 0x1c */ unsigned char field_1c;
+};
 
 struct MidiTrack {
     unsigned char pad_0[4];
@@ -33,7 +40,35 @@ void FUN_0047fe80(void) { ShowWindow((HWND)WNDENV_Gethwnd(), 9); }
 LEGO_EXPORT LRESULT CALLBACK LegoLandWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00480050
-LEGO_EXPORT void ProcessSystemEvents(void) { STUB(); }
+LEGO_EXPORT int ProcessSystemEvents(void) {
+    MSG msg;
+    int peeked;
+
+    WNDENV_Gethwnd();
+    peeked = 0;
+    do {
+        while (PeekMessageA(&msg, (HWND)WNDENV_Gethwnd(), 0, 0, 0) != 0) {
+            if (GetMessageA(&msg, (HWND)WNDENV_Gethwnd(), 0, 0) == 0) {
+                return 1;
+            }
+            TranslateMessage(&msg);
+            DispatchMessageA(&msg);
+            SetCursor(NULL);
+        }
+        if ((lpConfig->field_1c & 1) != 0) {
+            peeked = 1;
+            WaitMessage();
+        }
+    } while ((lpConfig->field_1c & 1) != 0);
+    if (peeked) {
+        ResendPalette();
+    }
+    ScanKeyboard();
+    ScanMouse();
+    UpdateControllerFromMouseData(CONTROLLERBUFFER);
+    UpdateControllerFromKeyboardData(CONTROLLERBUFFER);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00480150
 void FUN_00480150(struct ResFile *file, void *dst) {

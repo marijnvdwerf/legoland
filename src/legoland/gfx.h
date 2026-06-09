@@ -9,3 +9,4 @@ struct Image;
 LEGO_EXPORT char *GetGFXFName(const char *name, unsigned int type, char *out);
 LEGO_EXPORT int __BMPLoader(struct Image *image);
 LEGO_EXPORT unsigned int GetNearestColour(int r, int g, int b);
+LEGO_EXPORT void ResendPalette(void);
