@@ -106,14 +106,14 @@ LEGO_EXPORT unsigned int LLIDB_GetCount(void) {
 LEGO_EXPORT int LLIDB_GetElement(unsigned int index, unsigned int *output) {
     if (index < DAT_006691a4) {
         if (output != NULL) {
-            *output = (unsigned int)DAT_006691a8[index >> 8] + (index & 0xff) * 20;
+            *output = (unsigned int)LLIDB_ELEM(index);
         }
         return 0;
     }
     if (output != NULL) {
         *output = 0;
     }
-    return -3;
+    return LLIDB_ERR_NOTFOUND;
 }
 
 // FUNCTION: LEGOLAND 0x0047b330
@@ -126,13 +126,13 @@ LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, unsigned 
         }
         if (index_out != NULL) {
             *index_out = 0;
-            return -3;
+            return LLIDB_ERR_NOTFOUND;
         }
     } else {
         for (i = 0; i < DAT_006691a4; i++) {
-            if (_stricmp(name, *(char **)((unsigned int)DAT_006691a8[i >> 8] + (i & 0xff) * 20)) == 0) {
+            if (_stricmp(name, LLIDB_ELEM(i)->name) == 0) {
                 if (out != NULL) {
-                    *out = (unsigned int)DAT_006691a8[i >> 8] + (i & 0xff) * 20;
+                    *out = (unsigned int)LLIDB_ELEM(i);
                 }
                 if (index_out != NULL) {
                     *index_out = i;
@@ -147,7 +147,7 @@ LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, unsigned 
             *index_out = 0;
         }
     }
-    return -3;
+    return LLIDB_ERR_NOTFOUND;
 }
 
 // FUNCTION: LEGOLAND 0x0047b3f0
@@ -166,13 +166,13 @@ LEGO_EXPORT int LLIDB_FindElementFromDataPtr(void *data, unsigned int *out, unsi
         }
         if (index_out != NULL) {
             *index_out = 0;
-            return -3;
+            return LLIDB_ERR_NOTFOUND;
         }
     } else {
         for (i = 0; i < DAT_006691a4; i++) {
-            if (data == *(void **)((unsigned int)DAT_006691a8[i >> 8] + (i & 0xff) * 20 + 0xc)) {
+            if (data == LLIDB_ELEM(i)->data) {
                 if (out != NULL) {
-                    *out = (unsigned int)DAT_006691a8[i >> 8] + (i & 0xff) * 20;
+                    *out = (unsigned int)LLIDB_ELEM(i);
                 }
                 if (index_out != NULL) {
                     *index_out = i;
@@ -187,7 +187,7 @@ LEGO_EXPORT int LLIDB_FindElementFromDataPtr(void *data, unsigned int *out, unsi
             *index_out = 0;
         }
     }
-    return -3;
+    return LLIDB_ERR_NOTFOUND;
 }
 
 // FUNCTION: LEGOLAND 0x0047b4c0
