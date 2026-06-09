@@ -48,8 +48,9 @@ an unmatched function from scratch** — that's slow, separate work, not for the
 - **Clean everything else:** real types (`uint32_t`, not `unk32_t`); named locals
   (not `uVar1`); real `struct` definitions with named fields when you understand the
   layout (not `pad_0[0x14]`); correct signatures and calling conventions.
-- **Comments: the ONLY comments allowed are reccmp annotations** — `// FUNCTION:`,
-  `// GLOBAL:`, and `// STRING:`. For a pooled string constant, put `// STRING: LEGOLAND
+- **Comments: the only comments allowed are reccmp annotations** — `// FUNCTION:`,
+  `// GLOBAL:`, and `// STRING:` — **plus struct-field offset comments** (`/* 0x18 */`,
+  see project-owner conventions below). For a pooled string constant, put `// STRING: LEGOLAND
   0x<addr>` directly above the **source line that contains the string literal** (inside the
   body — NOT above `// FUNCTION:`; a STRING marker above FUNCTION makes reccmp drop the
   function). One per literal; write the literal normally (`"PATH CONTROL"`) — it compiles
@@ -91,6 +92,32 @@ an unmatched function from scratch** — that's slow, separate work, not for the
   implicit function declarations. (If you ever add a helper whose prototype *does* de-match
   a function under reccmp, leave that one implicit and record the asm reason.)
 
+## Project-owner conventions (apply to all new + cleaned code)
+
+These refine the house style above; where they conflict, these win.
+
+- **Shared structs live in shared headers.** When 2+ TUs use the same layout, define
+  the `struct` once in the owning `<tu>.h` (or `globals.h` for cross-cutting types)
+  and `#include` it — never redefine per-TU. Merging existing duplicate struct
+  definitions into shared headers is an active goal.
+- **Prefix every struct field with its byte offset:** `/* 0x00 */ char name[8];`.
+  This is the one explanatory-comment exception — offset comments don't affect
+  codegen and make the layout auditable. Keep them accurate.
+- **`malloc`/`calloc` sizes use `sizeof(struct Foo)`**, never a magic byte count
+  (`malloc(0x2c)` → `malloc(sizeof(struct Foo))`; a count*stride array →
+  `n * sizeof(struct Foo)`). The struct's size must equal the original allocation.
+- **No pointer↔int casts.** A value that is a pointer should be *typed* as that
+  pointer. A function that returns a pointer should be declared returning the pointer
+  (returning `int`/`unsigned int` and casting at the call site usually matches
+  identically — prefer the pointer type). Don't cast a pointer to `int` to pass/return/store it.
+- **`pointer + offset` access becomes a struct member.** `*(int *)((char *)p + 0x18)`
+  → `p->field_18` (name the field when known); extend the struct rather than
+  hand-computing offsets.
+- **Suspect "byte-correct but semantically fake" matches.** A match that needs odd
+  `stream + offset` casts or a `#pragma intrinsic` a real developer wouldn't write is
+  a red flag — prefer natural C even at equal score, and flag such functions for
+  re-audit (e.g. `FUN_00498d00`).
+
 ## Gotchas (from real TUs)
 
 - **Keep every function signature on ONE line.** reccmp's source parser drops a function
@@ -112,8 +139,9 @@ an unmatched function from scratch** — that's slow, separate work, not for the
   at `0x00499450` is one.) Do **not** confuse it with the linker's own import-thunk
   *tables*: dense packed runs of `jmp [__imp_*]` grouped away from user code (e.g.
   `0x49d050`, `0x49e3a0`) are linker-generated, not source — don't hand-write those.
-- **Structs are per-TU for now.** Define the struct you need locally in the TU; a
-  shared, consolidated struct header is a later coordinated pass.
+- **Shared structs go in shared headers** (see project-owner conventions below) — a
+  struct used by 2+ TUs is defined once in the owning `<tu>.h`/`globals.h`, not
+  redefined per-TU.
 
 ## Done criteria for a TU
 
