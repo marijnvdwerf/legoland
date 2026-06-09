@@ -598,9 +598,9 @@ LEGO_EXPORT void ClearAGardenersWorkList(int param) {
 
 // FUNCTION: LEGOLAND 0x0049b580
 LEGO_EXPORT void RemoveRepairOrderAT(struct Worker *worker, unsigned int x, unsigned int y) {
-    if ((*(unsigned int *)((char *)worker + 0x1c) & 0x200000) && (*(unsigned int *)((char *)lpConfig + 0x38) != 0)) {
+    if ((worker->flags_1c & 0x200000) && (lpConfig->field_38 != 0)) {
         RemoveGardenersWorkOrderAt(x, y);
-    } else if ((*(unsigned int *)((char *)worker + 0x1c) & 0x400000) && (*(unsigned int *)((char *)lpConfig + 0x34) != 0)) {
+    } else if ((worker->flags_1c & 0x400000) && (lpConfig->field_34 != 0)) {
         RemoveMechanicsWorkOrderAt(x, y);
     } else {
         RemoveNoneWorkersRepairOrderAT(x, y);

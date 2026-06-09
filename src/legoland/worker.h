@@ -3,17 +3,19 @@
 #include "legoland.h"
 
 struct Worker {
-    struct Worker *next;
-    unsigned char pad_4[10];
-    unsigned short state;
-    unsigned char pad_10[38];
-    unsigned char progress;
-    unsigned char pad_37[15];
-    unsigned short var_46;
-    unsigned char pad_48[20];
-    unsigned long ticks;
-    unsigned char pad_60[2];
-    unsigned char flags;
+    /* 0x00 */ struct Worker *next;
+    /* 0x04 */ unsigned char pad_4[10];
+    /* 0x0e */ unsigned short state;
+    /* 0x10 */ unsigned char pad_10[12];
+    /* 0x1c */ unsigned int flags_1c;
+    /* 0x20 */ unsigned char pad_20[22];
+    /* 0x36 */ unsigned char progress;
+    /* 0x37 */ unsigned char pad_37[15];
+    /* 0x46 */ unsigned short var_46;
+    /* 0x48 */ unsigned char pad_48[20];
+    /* 0x5c */ unsigned long ticks;
+    /* 0x60 */ unsigned char pad_60[2];
+    /* 0x62 */ unsigned char flags;
 };
 
 LEGO_EXPORT void GenerateGardener(void *object, int param_2);
