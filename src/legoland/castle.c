@@ -76,12 +76,14 @@ void FUN_0041ce10(struct Anim *anim) {
 }
 
 struct AnimPair {
-    unsigned int field_0;
-    unsigned short field_4;
-    unsigned short field_6;
-    unsigned char pad_8[0xc - 0x8];
-    unsigned int field_c;
-    unsigned int field_10;
+    /* 0x00 */ unsigned int field_0;
+    /* 0x04 */ unsigned short field_4;
+    /* 0x06 */ unsigned short field_6;
+    /* 0x08 */ unsigned char pad_8[0xc - 0x8];
+    /* 0x0c */ unsigned int field_c;
+    /* 0x10 */ unsigned int field_10;
+    /* 0x14 */ struct Anim anim_14;
+    /* 0x20 */ struct Anim anim_20;
 };
 
 // FUNCTION: LEGOLAND 0x0041ce30
@@ -91,8 +93,8 @@ void FUN_0041ce30(struct AnimPair *pair) {
     pair->field_6 = 0;
     pair->field_c = 0;
     pair->field_10 = 0;
-    FUN_0041ce10((struct Anim *)((unsigned char *)pair + 0x20));
-    FUN_0041ce10((struct Anim *)((unsigned char *)pair + 0x14));
+    FUN_0041ce10(&pair->anim_20);
+    FUN_0041ce10(&pair->anim_14);
 }
 
 // FUNCTION: LEGOLAND 0x0041ce60
