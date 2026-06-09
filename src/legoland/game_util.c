@@ -78,7 +78,18 @@ int FUN_00478870(unsigned int *param_1) {
 void FUN_00478890(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00478930
-void FUN_00478930(void) { STUB(); }
+int FUN_00478930(unsigned int param_1, unsigned int param_2) {
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786a0(param_1, param_2, 7) == 0) {
+            return 0;
+        }
+        FUN_004785d0(*(char **)param_1, 2);
+        FUN_00478610(1);
+        FUN_004787d0();
+        FUN_004787f0();
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00478980
 int FUN_00478980(unsigned int param_1, unsigned int param_2) {
