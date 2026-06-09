@@ -33,8 +33,8 @@ unsigned int FUN_004700c0(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x004700f0
-unsigned int FUN_004700f0(void) {
-    return (unsigned int)DAT_007fdff0;
+void *FUN_004700f0(void) {
+    return DAT_007fdff0;
 }
 
 // FUNCTION: LEGOLAND 0x00470100
