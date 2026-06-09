@@ -1,7 +1,15 @@
 #include "legoland.h"
 #include "globals.h"
 #include "sound_music.h"
+#include "map_object.h"
 #include "power.h"
+
+struct SampleParams {
+    int field_0;
+    unsigned int pad_4;
+    int field_8;
+    int field_c;
+};
 
 
 // FUNCTION: LEGOLAND 0x00452990
@@ -49,10 +57,24 @@ void FUN_00452ab0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00452ad0
-void FUN_00452ad0(void) { STUB(); }
+void FUN_00452ad0(unsigned int param_1, int *param_2) {
+    struct SampleParams params;
+    AddBasicObject(param_1, (unsigned int)param_2);
+    params.field_8 = param_2[0];
+    params.field_0 = 2;
+    params.field_c = param_2[1];
+    PlayInstanceOfSample(*(void **)&DAT_004b8750[0x14], 1, 1, &params);
+}
 
 // FUNCTION: LEGOLAND 0x00452b20
-void FUN_00452b20(void) { STUB(); }
+void FUN_00452b20(unsigned int param_1, int *param_2) {
+    struct SampleParams params;
+    AddBasicObject(param_1, (unsigned int)param_2);
+    params.field_8 = param_2[0];
+    params.field_0 = 2;
+    params.field_c = param_2[1];
+    PlayInstanceOfSample(*(void **)&DAT_004b8750[8], 1, 1, &params);
+}
 
 // FUNCTION: LEGOLAND 0x00452b70
 void FUN_00452b70(void) {
