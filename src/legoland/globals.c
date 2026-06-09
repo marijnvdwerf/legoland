@@ -1542,7 +1542,7 @@ struct Sprite *DAT_00667c2c;
 unsigned int DAT_00667c30;
 
 // GLOBAL: LEGOLAND 0x00667c34
-unsigned int DAT_00667c34;
+struct Sprite *DAT_00667c34;
 
 // GLOBAL: LEGOLAND 0x00667c40
 const char *DAT_00667c40;

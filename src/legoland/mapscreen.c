@@ -43,7 +43,7 @@ LEGO_EXPORT void InitMapScreen(void) {
 // FUNCTION: LEGOLAND 0x00456370
 LEGO_EXPORT void KillMapScreen(void) {
     if (DAT_00667c2c != NULL) {
-        KillSprite((unsigned int)DAT_00667c2c);
+        KillSprite(DAT_00667c2c);
         DAT_00667c2c = NULL;
         if (DAT_00667c34 != 0) {
             KillSprite(DAT_00667c34);
