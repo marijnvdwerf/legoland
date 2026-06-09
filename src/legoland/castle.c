@@ -3122,11 +3122,23 @@ void FUN_00427ff0(struct Struct427ff0Point *point) {
 }
 
 
+struct CastleCarNode {
+    /* 0x00 */ unsigned char pad_0[0x10];
+    /* 0x10 */ unsigned int field_10;
+    /* 0x14 */ unsigned char pad_14[0x50];
+    /* 0x64 */ struct CastleCarNode *next;
+};
+
+struct CastleRideObj {
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ struct CastleCarNode *car;
+};
+
 // FUNCTION: LEGOLAND 0x00428070
-void FUN_00428070(void *param_1) {
-    unsigned int a = *(unsigned int *)((unsigned char *)param_1 + 0xc);
-    unsigned int b = *(unsigned int *)((unsigned char *)a + 0x64);
-    *(unsigned int *)((unsigned char *)b + 0x10) |= 0x2000;
+void FUN_00428070(struct CastleRideObj *param_1) {
+    struct CastleCarNode *a = param_1->car;
+    struct CastleCarNode *b = a->next;
+    b->field_10 |= 0x2000;
     *(unsigned int *)((unsigned char *)&DAT_00611688 + DAT_00611958 * 8) = (unsigned int)param_1;
     *(unsigned int *)((unsigned char *)&DAT_0061168c + DAT_00611958 * 8) = (unsigned int)DAT_004b5dc8;
     DAT_00611958++;
