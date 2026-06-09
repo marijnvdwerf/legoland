@@ -286,6 +286,9 @@ unsigned int DAT_004b9f8c;
 // GLOBAL: LEGOLAND 0x004ba87c
 void *PTR_some_list_head_004ba87c;
 
+// GLOBAL: LEGOLAND 0x004ba880
+void *PTR_DAT_004ba880;
+
 // GLOBAL: LEGOLAND 0x004ba9ac
 unsigned int DAT_004ba9ac[1];
 

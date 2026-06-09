@@ -314,6 +314,8 @@ extern unsigned int DAT_004b9f88;
 extern unsigned int DAT_004b9f8c;
 // 0x004ba87c
 extern void *PTR_some_list_head_004ba87c;
+// 0x004ba880
+extern void *PTR_DAT_004ba880;
 // 0x004ba9ac
 extern unsigned int DAT_004ba9ac[1];
 // 0x004bad54

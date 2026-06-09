@@ -151,7 +151,20 @@ void FUN_0046d460(struct IconNode **slot) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d4a0
-void FUN_0046d4a0(void) { STUB(); }
+void FUN_0046d4a0(struct IconNode **slot) {
+    struct IconNode *node = *slot;
+    struct IconNode *next;
+    if (FocussedIconPtr == node->next) {
+        FocussedIconPtr = NULL;
+    }
+    if (PTR_DAT_004ba880 == *slot) {
+        PTR_DAT_004ba880 = slot;
+    }
+    node = *slot;
+    next = node->next;
+    FUN_0046d3c0(node);
+    *slot = next;
+}
 
 // FUNCTION: LEGOLAND 0x0046d4e0
 void FUN_0046d4e0(struct IconNode *node) { STUB(); }
