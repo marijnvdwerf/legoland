@@ -7,3 +7,5 @@ LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void);
 LEGO_EXPORT void RemoveSaveGame(unsigned char slot);
 LEGO_EXPORT void InitSavedGameScreen(void);
 LEGO_EXPORT void PrintSavedGameDetails(void);
+LEGO_EXPORT void KillSaveScreenSprites(void);
+LEGO_EXPORT void DeleteSavedGameList(void);

@@ -43,10 +43,6 @@ struct ScreenConfig {
 #include "image_sprite.h"
 #include "stream.h"
 
-void RenderFrontEndScreen(unsigned char param_1);
-void FUN_00458ee0(void);
-void FUN_00459360(void);
-
 
 // FUNCTION: LEGOLAND 0x004585c0
 void FUN_004585c0(void) { STUB(); }

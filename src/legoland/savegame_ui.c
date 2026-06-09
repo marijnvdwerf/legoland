@@ -29,9 +29,6 @@ struct SaveNode {
     unsigned char slot;
 };
 
-LEGO_EXPORT void KillSaveScreenSprites(void);
-LEGO_EXPORT void DeleteSavedGameList(void);
-
 // FUNCTION: LEGOLAND 0x0048d4b0
 LEGO_EXPORT void InitSavedGameScreen(void) { STUB(); }
 

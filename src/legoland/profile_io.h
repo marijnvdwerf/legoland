@@ -14,3 +14,12 @@ LEGO_EXPORT char SaveProfileToDisk(void);
 LEGO_EXPORT int RemoveProfile(unsigned char index);
 LEGO_EXPORT void DeleteProfileList(void);
 int FUN_00491e40(char *text, int font, RECT rc, int color_flag);
+
+struct ProfileNode {
+    /* 0x00 */ struct ProfileNode *next;
+    /* 0x04 */ char name[0x110];
+    /* 0x114 */ int has_header;
+    /* 0x118 */ unsigned char slot;
+};
+
+struct ProfileNode *FUN_004919a0(unsigned char slot);

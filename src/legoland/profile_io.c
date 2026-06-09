@@ -23,15 +23,6 @@ struct ProfileSprite {
 };
 
 
-struct ProfileNode {
-    struct ProfileNode *next;
-    char name[0x110];
-    int has_header;
-    unsigned char slot;
-};
-
-struct ProfileNode *FUN_004919a0(unsigned char slot);
-
 struct RideState {
     unsigned char pad_0[0x18];
     unsigned char var_18;
