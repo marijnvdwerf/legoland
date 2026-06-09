@@ -2747,19 +2747,19 @@ struct Struct427070Obj {
 void FUN_00427070(struct Struct427070Src *param_1, struct Struct427070Obj *param_2) { STUB(); }
 
 struct Struct4270c0Node {
-    unsigned char pad_0[0x14];
-    struct Struct4270c0Node *next;
+    /* 0x00 */ unsigned char pad_0[0x14];
+    /* 0x14 */ struct Struct4270c0Node *next;
 };
 
 struct Struct4270c0Host {
-    unsigned char pad_0[0xf8];
-    struct Struct4270c0Node *list;
+    /* 0x00 */ unsigned char pad_0[0xe4];
+    /* 0xe4 */ struct Struct4270c0Node head;
 };
 
 // FUNCTION: LEGOLAND 0x004270c0
 void FUN_004270c0(struct Struct4270c0Host *a1, struct Struct427050Dst *a2) {
-    struct Struct4270c0Node *node = a1->list;
-    struct Struct4270c0Node *end = (struct Struct4270c0Node *)((unsigned char *)a1 + 0xe4);
+    struct Struct4270c0Node *node = a1->head.next;
+    struct Struct4270c0Node *end = &a1->head;
     if (node != end) {
         struct Struct427050Dst *out = a2;
         do {
