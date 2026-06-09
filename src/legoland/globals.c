@@ -2031,7 +2031,7 @@ unsigned int DAT_006691a0;
 unsigned int DAT_006691a4;
 
 // GLOBAL: LEGOLAND 0x006691a8
-unsigned int **DAT_006691a8;
+struct Element **DAT_006691a8;
 
 // GLOBAL: LEGOLAND 0x006691b0
 int DAT_006691b0;

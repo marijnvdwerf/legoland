@@ -11,6 +11,29 @@ struct LLS {
     unsigned int flags;
 };
 
+struct Element {
+    /* 0x00 */ char *name;
+    /* 0x04 */ char *path;
+    /* 0x08 */ unsigned int flags;
+    /* 0x0c */ void *data;
+    /* 0x10 */ unsigned int field_10;
+};
+
+#define LLIDB_PAGE(id) ((id) >> 8)
+#define LLIDB_SLOT(id) ((id) & 0xff)
+#define LLIDB_ELEM(id) (&DAT_006691a8[LLIDB_PAGE(id)][LLIDB_SLOT(id)])
+
+#define LLIDB_FLAG_LEVEL 0x4
+#define LLIDB_FLAG_LOADED 0x1
+#define LLIDB_FLAG_USEDLL 0x10000
+#define LLIDB_TYPE_MASK 0xfff0
+
+#define LLIDB_ERR_NOTFOUND (-3)
+#define LLIDB_ERR_CANCELED (-6)
+#define LLIDB_ERR_MISMATCH (-1)
+#define LLIDB_ERR_NOKEY (-4)
+#define LLIDB_ERR_NOFILE (-5)
+
 struct LLSImage;
 struct ILFTable;
 struct LLIDBHead;

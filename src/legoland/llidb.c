@@ -44,10 +44,6 @@ struct LLSImage {
     unsigned char flags;
 };
 
-struct Element {
-    unsigned int field[5];
-};
-
 struct LLIDBHead {
     unsigned char pad_0[4];
     const char *name;
@@ -200,7 +196,7 @@ LEGO_EXPORT void LLIDB_ClearOnLevel(void) {
 
     if (DAT_006691a4 > 0) {
         do {
-            DAT_006691a8[i >> 8][(i & 0xff) * 5 + 2] &= 0xfffffffb;
+            LLIDB_ELEM(i)->flags &= ~LLIDB_FLAG_LEVEL;
             i++;
         } while (i < DAT_006691a4);
     }
@@ -252,8 +248,8 @@ unsigned int FUN_0047b5a0(void) {
     if (((DAT_006691a0 ^ DAT_006691a4) & 0xffffff00) == 0) {
         capacity = (DAT_006691a4 + 0x100) & 0xffffff00;
         DAT_006691a0 = capacity;
-        DAT_006691a8 = (unsigned int **)realloc(DAT_006691a8, (capacity >> 8) * 4);
-        DAT_006691a8[(DAT_006691a0 >> 8) - 1] = (unsigned int *)malloc(0x1400);
+        DAT_006691a8 = (struct Element **)realloc(DAT_006691a8, (capacity >> 8) * 4);
+        DAT_006691a8[(DAT_006691a0 >> 8) - 1] = (struct Element *)malloc(0x1400);
     }
     return DAT_006691a4;
 }

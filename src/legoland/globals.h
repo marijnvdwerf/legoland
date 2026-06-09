@@ -43,6 +43,7 @@ struct InterfaceQueryNode;
 struct InterfaceEventNode;
 struct InterfaceResearchNode;
 struct InfoIcon;
+struct Element;
 
 // Full definitions needed by typed globals defined in globals.c.
 struct LegoConfig {
@@ -1487,7 +1488,7 @@ extern unsigned int DAT_006691a0;
 // 0x006691a4
 extern unsigned int DAT_006691a4;
 // 0x006691a8
-extern unsigned int **DAT_006691a8;
+extern struct Element **DAT_006691a8;
 // 0x006691b0
 extern int DAT_006691b0;
 // 0x006691bc
