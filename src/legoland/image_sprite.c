@@ -268,7 +268,7 @@ LEGO_EXPORT int KillImage(struct Image *image) {
             LLSStop((unsigned int)image->data);
         }
         if (image->data != 0) {
-            free((void *)image->data);
+            free(image->data);
         }
         if (image->field_4 != NULL) {
             free(image->field_4);
@@ -328,7 +328,7 @@ void FUN_004975b0(struct Sprite *sprite) {
 LEGO_EXPORT void FreeBitmapResources(struct Image *image) {
     if (image->data != 0) {
         LLSStop((unsigned int)image->data);
-        free((void *)image->data);
+        free(image->data);
         image->data = 0;
     }
 }
