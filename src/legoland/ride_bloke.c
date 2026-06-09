@@ -7,12 +7,7 @@
 #include "draw.h"
 #include "map_object.h"
 #include "globals.h"
-
-struct Sprite {
-    unsigned char pad_0[0x14];
-    unsigned short width;
-    unsigned short height;
-};
+#include "image_sprite.h"
 
 struct CountNode {
     struct CountNode *next;
@@ -61,7 +56,7 @@ void FUN_00401080(void) { STUB(); }
 void FUN_00401320(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004015c0
-LEGO_EXPORT void GetSpriteSize(struct Sprite *sprite, unsigned short *pWidth, unsigned short *pHeight) { *pWidth = sprite->width; *pHeight = sprite->height; }
+LEGO_EXPORT void GetSpriteSize(struct Sprite *sprite, unsigned short *pWidth, unsigned short *pHeight) { *pWidth = sprite->field_14; *pHeight = sprite->field_16; }
 
 // FUNCTION: LEGOLAND 0x004015e0
 void FUN_004015e0(void) { STUB(); }

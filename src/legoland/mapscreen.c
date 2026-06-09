@@ -4,12 +4,6 @@
 #include "interface.h"
 #include "globals.h"
 
-struct Sprite {
-    unsigned char pad_0[0x18];
-    unsigned short field_18;
-    unsigned short field_1a;
-};
-
 struct MapPoint {
     int field0;
     int field1;

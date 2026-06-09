@@ -18,19 +18,6 @@ struct Layer;
 struct LayerHost;
 struct LayerResult;
 
-struct Sprite {
-    struct Sprite *next;
-    unsigned int field_4;
-    struct Image *image;
-    unsigned int field_c;
-    unsigned int field_10;
-    unsigned short field_14;
-    unsigned short field_16;
-    unsigned short field_18;
-    unsigned short field_1a;
-    unsigned short field_1c;
-};
-
 struct Image {
     unsigned int field_0;
     void *field_4;

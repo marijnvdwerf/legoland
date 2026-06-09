@@ -3,11 +3,6 @@
 #include "timer.h"
 #include "draw.h"
 
-struct Sprite {
-    unsigned char pad_0[0x10];
-    unsigned char flags;
-};
-
 #include "image_sprite.h"
 #include "globals.h"
 
@@ -47,7 +42,7 @@ LEGO_EXPORT unsigned int GetBlink(void) {
 
 // FUNCTION: LEGOLAND 0x00499500
 int FUN_00499500(struct Sprite *sprite) {
-    if (sprite->flags & 0x20) {
+    if (sprite->field_10 & 0x20) {
         if (RecreateSprite(sprite) == 0) {
             return 0;
         }

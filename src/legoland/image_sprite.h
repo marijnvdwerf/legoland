@@ -2,12 +2,23 @@
 
 #include "legoland.h"
 
-/* struct Sprite / struct Image are forward-declared only: every prototype below
- * uses them through a pointer. Their full layouts live in image_sprite.c, and
- * several callers (mapscreen.c, timer.c, ...) keep their own divergent
- * struct Sprite views, so the full definition is deliberately NOT moved here. */
-struct Sprite;
+/* Shared layouts: struct Sprite and struct Image are defined once here and
+ * #included by every TU that touches them (image_sprite.c, gfx.c, mapscreen.c,
+ * ride_bloke.c, timer.c, ...). Field names carry their byte offset. */
 struct Image;
+
+struct Sprite {
+    /* 0x00 */ struct Sprite *next;
+    /* 0x04 */ unsigned int field_4;
+    /* 0x08 */ struct Image *image;
+    /* 0x0c */ unsigned int field_c;
+    /* 0x10 */ unsigned int field_10;
+    /* 0x14 */ unsigned short field_14;
+    /* 0x16 */ unsigned short field_16;
+    /* 0x18 */ unsigned short field_18;
+    /* 0x1a */ unsigned short field_1a;
+    /* 0x1c */ unsigned short field_1c;
+};
 
 LEGO_EXPORT struct Image *CreateSourceImage(const char *str, unsigned char type);
 LEGO_EXPORT int KillImage(struct Image *image);
