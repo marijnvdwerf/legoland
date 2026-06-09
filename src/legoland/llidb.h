@@ -27,6 +27,7 @@ struct Element {
 #define LLIDB_FLAG_LOADED 0x1
 #define LLIDB_FLAG_USEDLL 0x10000
 #define LLIDB_TYPE_MASK 0xfff0
+#define LLIDB_TYPE_NOFILE 0x200
 
 #define LLIDB_ERR_NOTFOUND (-3)
 #define LLIDB_ERR_CANCELED (-6)

@@ -263,15 +263,15 @@ LEGO_EXPORT unsigned int LLIDB_RegisterNewElement(const char *param_1, const cha
     unsigned int found;
 
     if (param_1 == NULL || param_1[0] == '\0') {
-        return (unsigned int)-4;
+        return (unsigned int)LLIDB_ERR_NOKEY;
     }
-    if ((param_2 == NULL || param_2[0] == '\0') && param_3 != 0x200) {
-        return (unsigned int)-5;
+    if ((param_2 == NULL || param_2[0] == '\0') && param_3 != LLIDB_TYPE_NOFILE) {
+        return (unsigned int)LLIDB_ERR_NOFILE;
     }
 
     if (LLIDB_FindElement(param_1, &found, NULL) == 0) {
-        if (param_3 != 0x200 && _stricmp(param_2, *(char **)(found + 4)) != 0) {
-            return (unsigned int)-1;
+        if (param_3 != LLIDB_TYPE_NOFILE && _stricmp(param_2, ((struct Element *)found)->path) != 0) {
+            return (unsigned int)LLIDB_ERR_MISMATCH;
         }
         return 0;
     }
@@ -294,7 +294,7 @@ LEGO_EXPORT unsigned int LLIDB_RegisterNewElement(const char *param_1, const cha
         strcpy(*(char **)(*(char **)(page_off + (unsigned int)DAT_006691a8) + slot_off + 4), param_2);
     }
 
-    *(unsigned int *)(*(char **)(page_off + (unsigned int)DAT_006691a8) + slot_off + 8) = param_3 & 0xfff0;
+    *(unsigned int *)(*(char **)(page_off + (unsigned int)DAT_006691a8) + slot_off + 8) = param_3 & LLIDB_TYPE_MASK;
     *(unsigned int *)(*(char **)(page_off + (unsigned int)DAT_006691a8) + slot_off + 0x10) = 0;
 
     DAT_006691a4++;
