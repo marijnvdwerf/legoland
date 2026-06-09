@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "math.h"
 #include "crt.h"
 
 struct Navigator {
@@ -8,10 +9,6 @@ struct Navigator {
     short dy;
 };
 
-struct Point {
-    int x;
-    int y;
-};
 
 struct RectNode {
     int field_0;

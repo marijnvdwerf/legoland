@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "math.h"
 #include "crt.h"
 #include "globals.h"
 
@@ -58,10 +59,6 @@ struct Config {
     unsigned short field_2;
 };
 
-struct Point {
-    int x;
-    int y;
-};
 
 struct Bbox {
     int min_x;

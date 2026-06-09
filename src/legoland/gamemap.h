@@ -6,6 +6,11 @@
 struct RenderObject;
 struct RenderObjectVtable;
 
+struct EditCursorData {
+    /* 0x00 */ unsigned char pad_0[0x3c];
+    /* 0x3c */ unsigned char field_3c;
+};
+
 // The map edit cursor. EditCursor / QueryCursor / DAT_0082f760 are instances of
 // this 0x1834-byte structure. Only the fields actually touched are named; the
 // gaps are explicit padding so the layout matches the original byte-for-byte.

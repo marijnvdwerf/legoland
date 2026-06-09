@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "math.h"
 #include "crt.h"
 
 #include "pathfind.h"
@@ -21,10 +22,6 @@ struct TileSprite {
     short size;
 };
 
-struct Point {
-    int x;
-    int y;
-};
 
 #include "image_sprite.h"
 

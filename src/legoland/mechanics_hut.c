@@ -16,10 +16,6 @@ struct HutContext {
     struct HutObject *field_c;
 };
 
-struct EditCursorData {
-    unsigned char pad_0[0x3c];
-    unsigned char field_3c;
-};
 
 #include "image_sprite.h"
 

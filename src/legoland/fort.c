@@ -21,10 +21,6 @@ struct FortInterface {
     FortVtblFn field_b0;
 };
 
-struct EditCursorData {
-    unsigned char pad_0[0x3c];
-    unsigned char field_3c;
-};
 
 #include "image_sprite.h"
 
