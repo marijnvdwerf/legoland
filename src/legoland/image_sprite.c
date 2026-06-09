@@ -311,7 +311,7 @@ LEGO_EXPORT int KillImage(struct Image *image) {
 struct Sprite *FUN_00497580(void) {
     struct Sprite *sprite;
 
-    sprite = (struct Sprite *)malloc(0x20);
+    sprite = (struct Sprite *)malloc(sizeof(struct Sprite));
     if (sprite != NULL) {
         sprite->next = DAT_0079a7c0;
         DAT_0079a7c0 = sprite;
