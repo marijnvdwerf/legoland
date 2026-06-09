@@ -100,16 +100,60 @@ void FUN_00499040(const char *path, char *directory, char *filename) {
 }
 
 // FUNCTION: LEGOLAND 0x004990c0
-void FUN_004990c0(void) { STUB(); }
+void FUN_004990c0(char *path, char *ext)
+{
+    int i = strlen(path);
+    while (path[i] != '.' && path[i] != '\\' && i > 0) {
+        i--;
+    }
+    if (path[i] != '.') {
+        strcat(path, ext);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00499120
-void FUN_00499120(void) { STUB(); }
+void FUN_00499120(char *path, char *ext)
+{
+    int i = strlen(path);
+    while (path[i] != '.' && path[i] != '\\' && i > 0) {
+        i--;
+    }
+    if (path[i] == '.') {
+        path[i] = '\0';
+    }
+    strcat(path, ext);
+}
 
 // FUNCTION: LEGOLAND 0x00499190
-void FUN_00499190(void) { STUB(); }
+void FUN_00499190(char *path, char *dir)
+{
+    char tmp[200];
+    int i = strlen(path);
+    while (path[i] != '\\' && path[i] != ':' && i > 0) {
+        i--;
+    }
+    if (i == 0) {
+        strcpy(tmp, path);
+        strcpy(path, dir);
+        strcat(path, tmp);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00499240
-void FUN_00499240(void) { STUB(); }
+void FUN_00499240(char *path, char *dir)
+{
+    char tmp[200];
+    int i = strlen(path);
+    while (path[i] != '\\' && path[i] != ':' && i > 0) {
+        i--;
+    }
+    if (i != 0) {
+        i++;
+    }
+    strcpy(tmp, dir);
+    strcat(tmp, path + i);
+    strcpy(path, tmp);
+}
 
 // FUNCTION: LEGOLAND 0x00499300
 int FUN_00499300(char *str) {

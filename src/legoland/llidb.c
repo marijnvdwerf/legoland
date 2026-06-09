@@ -1112,7 +1112,7 @@ LEGO_EXPORT void LLIDB_UnLoadData(unsigned int handle) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d4c0
-LEGO_EXPORT void LLSStop(unsigned int handle) { STUB(); }
+LEGO_EXPORT int LLSStop(unsigned int handle) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d520
 LEGO_EXPORT void LLSPlay(struct LLS *param_1, unsigned int param_2) { STUB(); }

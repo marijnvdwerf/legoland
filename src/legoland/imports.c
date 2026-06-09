@@ -34,22 +34,22 @@ void GetFileVersionInfoA(void) { STUB(); }
 void GetFileVersionInfoSizeA(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e3b2
-void acmStreamClose(void) { STUB(); }
+void __stdcall acmStreamClose(void *has, unsigned int flags) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e3b8
-void acmStreamSize(void) { STUB(); }
+void __stdcall acmStreamSize(void *has, unsigned int cbInput, unsigned int *pdwOutputBytes, unsigned int fdwSize) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e3be
-void acmStreamOpen(void) { STUB(); }
+void __stdcall acmStreamOpen(void *phas, void *had, void *pwfxSrc, void *pwfxDst, void *pwfltr, unsigned int dwCallback, unsigned int dwInstance, unsigned int fdwOpen) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e3c4
-void acmStreamUnprepareHeader(void) { STUB(); }
+void __stdcall acmStreamUnprepareHeader(void *has, void *hdr, unsigned int flags) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e3ca
-void acmStreamConvert(void) { STUB(); }
+void __stdcall acmStreamConvert(void *has, void *pash, unsigned int fdwConvert) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e3d0
-void acmStreamPrepareHeader(void) { STUB(); }
+void __stdcall acmStreamPrepareHeader(void *has, void *pash, unsigned int fdwPrepare) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e3d6
 void AVIFileExit(void) { STUB(); }

@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "man3d.h"
+#include "math.h"
 #include "print_sprite.h"
 #include "ride_queue.h"
 #include "ride_bloke.h"
@@ -12,6 +13,13 @@
 struct CountNode {
     struct CountNode *next;
     unsigned short var_4;
+};
+
+struct SPHandlers {
+    unsigned char pad_0[0x18];
+    unsigned int (*get_rf_flags)(int x, int y);
+    void (*sp_enter)(unsigned int x, unsigned int y);
+    void (*sp_leave)(unsigned int x, unsigned int y);
 };
 
 struct TimerStruct {
@@ -47,7 +55,17 @@ struct BlokeSprite {
 };
 
 // FUNCTION: LEGOLAND 0x00401000
-void FUN_00401000(void) { STUB(); }
+__int64 FUN_00401000(int x, int y, int rot)
+{
+    union { __int64 i; struct { int lo; int hi; } p; } r;
+    switch (rot) {
+    case 1: r.p.lo = y; r.p.hi = -x; return r.i;
+    case 3: r.p.lo = x; r.p.hi = y; return r.i;
+    case 5: r.p.lo = -y; r.p.hi = x; return r.i;
+    case 7: r.p.lo = -x; r.p.hi = -y; return r.i;
+    default: return r.i;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00401080
 void FUN_00401080(void) { STUB(); }
@@ -59,28 +77,130 @@ void FUN_00401320(void) { STUB(); }
 LEGO_EXPORT void GetSpriteSize(struct Sprite *sprite, unsigned short *pWidth, unsigned short *pHeight) { *pWidth = sprite->field_14; *pHeight = sprite->field_16; }
 
 // FUNCTION: LEGOLAND 0x004015e0
-void FUN_004015e0(void) { STUB(); }
+void FUN_004015e0(unsigned char *param_1)
+{
+    struct Point local;
+    unsigned int frame;
+
+    local.x = *(int *)(param_1 + 0x20);
+    local.y = *(int *)(param_1 + 0x24);
+    frame = *(unsigned char *)(param_1 + 0xbb);
+    FUN_00480840(&local, &local, *(unsigned char *)(param_1 + 0xba));
+    FUN_00480840(&local, &local, *(unsigned char *)(param_1 + 0xba));
+    *(int *)(param_1 + 0x20) = local.x;
+    *(int *)(param_1 + 0x24) = local.y;
+    *(int *)(param_1 + 0x30 + frame * 8) = local.x << 16;
+    *(int *)(param_1 + 0x34 + frame * 8) = local.y << 16;
+    *(unsigned char *)(param_1 + 0xbb) = frame + 1;
+}
 
 // FUNCTION: LEGOLAND 0x00401660
 void FUN_00401660(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004017c0
-LEGO_EXPORT void MapToPlayfield(void) { STUB(); }
+LEGO_EXPORT __int64 MapToPlayfield(int param_1, int param_2)
+{
+    int w;
+    int h;
+    union { __int64 i; struct { int lo; int hi; } p; } r;
+    GetTileDimensions(&w, &h);
+    r.p.lo = (param_1 - param_2) * w >> 9;
+    r.p.hi = (param_1 + param_2) * h >> 9;
+    return r.i;
+}
 
 // FUNCTION: LEGOLAND 0x00401800
 LEGO_EXPORT unsigned int IsSemiPermiable(int param_1, int param_2) { unsigned char rf_flags = Get_RFFlags(param_1, param_2); return (rf_flags & 0x3) == 0x3; }
 
 // FUNCTION: LEGOLAND 0x00401820
-LEGO_EXPORT void SPGetRFFlags(void) { STUB(); }
+LEGO_EXPORT unsigned char SPGetRFFlags(int param_1, int param_2)
+{
+    struct SPHandlers *src;
+    int tile_ptr;
+    int tx, ty;
+    unsigned int tile_id;
+
+    tx = param_1 >> 8;
+    ty = param_2 >> 8;
+    if (tx < 0 || tx >= (int)(unsigned int)lpConfig->width ||
+        ty < 0 || ty >= (int)(unsigned int)lpConfig->height) {
+        tile_ptr = 0;
+    } else {
+        tile_ptr = (int)GameMap[ty] + tx * 0x14;
+    }
+    tile_id = *(unsigned short *)(tile_ptr + 8);
+    src = (struct SPHandlers *)TileSpriteInfo[tile_id].src;
+    if (src->get_rf_flags != 0) {
+        return src->get_rf_flags(param_1, param_2);
+    }
+    return 2;
+}
 
 // FUNCTION: LEGOLAND 0x00401890
-LEGO_EXPORT void SPEnter(void) { STUB(); }
+LEGO_EXPORT void SPEnter(unsigned int param_1, unsigned int param_2)
+{
+    struct SPHandlers *src;
+    int tile_ptr;
+    int tx, ty;
+    unsigned int tile_id;
+
+    tx = param_1 >> 8;
+    ty = param_2 >> 8;
+    if (tx < 0 || tx >= (int)(unsigned int)lpConfig->width ||
+        ty < 0 || ty >= (int)(unsigned int)lpConfig->height) {
+        tile_ptr = 0;
+    } else {
+        tile_ptr = (int)GameMap[ty] + tx * 0x14;
+    }
+    tile_id = *(unsigned short *)(tile_ptr + 8);
+    src = (struct SPHandlers *)TileSpriteInfo[tile_id].src;
+    if (src->sp_enter != 0) {
+        src->sp_enter(param_1, param_2);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00401900
-LEGO_EXPORT void SPLeave(void) { STUB(); }
+LEGO_EXPORT void SPLeave(unsigned int param_1, unsigned int param_2)
+{
+    struct SPHandlers *src;
+    int tile_ptr;
+    int tx, ty;
+    unsigned int tile_id;
+
+    tx = param_1 >> 8;
+    ty = param_2 >> 8;
+    if (tx < 0 || tx >= (int)(unsigned int)lpConfig->width ||
+        ty < 0 || ty >= (int)(unsigned int)lpConfig->height) {
+        tile_ptr = 0;
+    } else {
+        tile_ptr = (int)GameMap[ty] + tx * 0x14;
+    }
+    tile_id = *(unsigned short *)(tile_ptr + 8);
+    src = (struct SPHandlers *)TileSpriteInfo[tile_id].src;
+    if (src->sp_enter != 0) {
+        src->sp_leave(param_1, param_2);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00401970
-void FUN_00401970(void) { STUB(); }
+int *FUN_00401970(int *param_1, int param_2, int param_3)
+{
+    int *piVar1;
+
+    if (DAT_004c10d4 == 0) {
+        return 0;
+    }
+    piVar1 = (int *)DAT_004c10d4;
+    do {
+        if ((piVar1[6] <= param_2 + 1) && (param_2 <= piVar1[6] + 1) &&
+            (piVar1[7] <= param_3 + 1) && (param_3 <= piVar1[7] + 1) &&
+            (piVar1 != param_1)) {
+            return piVar1;
+        }
+        piVar1 = (int *)*piVar1;
+    } while (piVar1 != 0);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x004019c0
 void FUN_004019c0(void) { STUB(); }
@@ -173,7 +293,25 @@ int FUN_00402340(int a1) {
 }
 
 // FUNCTION: LEGOLAND 0x00402390
-void FUN_00402390(void) { STUB(); }
+int FUN_00402390(unsigned char *param_1)
+{
+    void *iVar1;
+    struct Point local;
+
+    iVar1 = FUN_004125f0(*(unsigned int *)(param_1 + 0x20), *(unsigned int *)(param_1 + 0x24));
+    if (iVar1 == 0) {
+        return 0;
+    }
+    local.x = *(int *)((char *)iVar1 + 0xc);
+    local.y = *(int *)((char *)iVar1 + 0x10);
+    FUN_004808d0((int *)&local, (int *)&local,
+                 DAT_004b4034[(unsigned int)*(unsigned char *)(param_1 + 0xb8)]);
+    iVar1 = FUN_004125a0(local.x, local.y);
+    if ((iVar1 != 0) && ((*(unsigned char *)((char *)iVar1 + 0x14) & 0xf) == 5)) {
+        return FUN_00402340(DAT_004b4034[(unsigned int)*(unsigned char *)(param_1 + 0xb8)]);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00402430
 int FUN_00402430(struct PairArg *a, struct PairArg *b) {
