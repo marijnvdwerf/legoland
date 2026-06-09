@@ -20,10 +20,12 @@ struct EateryInner;
 struct BlokeNode;
 
 struct EateryFX {
-    unsigned char pad_0[0x1c];
-    unsigned int flags_1c;
-    unsigned char pad_20[0x44];
-    struct EateryInner *inner_64;
+    /* 0x00 */ unsigned char pad_0[0x14];
+    /* 0x14 */ unsigned int field_14;
+    /* 0x18 */ unsigned int field_18;
+    /* 0x1c */ unsigned int flags_1c;
+    /* 0x20 */ unsigned char pad_20[0x44];
+    /* 0x64 */ struct EateryInner *inner_64;
 };
 
 struct EateryInner {
@@ -323,8 +325,8 @@ void *FUN_004304a0(struct EateryObj *obj, unsigned short a2) {
     struct EateryFX *fx = obj->fx_c;
     struct EateryInner *inner = fx->inner_64;
     DAT_00616120 = (unsigned int)inner;
-    DAT_00616124 = *(unsigned int *)((unsigned char *)fx + 0x14);
-    DAT_00616128 = *(unsigned int *)((unsigned char *)fx + 0x18);
+    DAT_00616124 = fx->field_14;
+    DAT_00616128 = fx->field_18;
     DAT_0061612c = a2;
     inner = fx->inner_64;
     inner->flags_10 |= 0x2000;
