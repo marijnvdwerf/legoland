@@ -32,8 +32,9 @@ struct GoldArray {
 };
 
 struct GoldItem {
-    unsigned char pad_0[8];
-    struct GoldSub *field_8;
+    /* 0x00 */ unsigned char pad_0[8];
+    /* 0x08 */ struct GoldSub *field_8;
+    /* 0x0c */ unsigned char field_c;
 };
 
 struct GoldSub {
@@ -137,7 +138,7 @@ void FUN_00406ec0(struct GoldItem *item, void *param2) {
 // FUNCTION: LEGOLAND 0x00406f00
 struct GoldArray *FUN_00406f00(struct GoldItem *item) {
     unsigned int idx = item->field_8->field_36;
-    struct GoldArray *a = (struct GoldArray *)FUN_004069e0((unsigned char *)item + 0xc);
+    struct GoldArray *a = (struct GoldArray *)FUN_004069e0(&item->field_c);
 
     if (a != NULL) {
         a->field_14[idx] = 0;
