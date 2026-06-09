@@ -2223,7 +2223,7 @@ struct Sprite *DAT_007986b0;
 struct Sprite *DAT_007986b4;
 
 // GLOBAL: LEGOLAND 0x007986b8
-unsigned int DAT_007986b8;
+struct Sprite *DAT_007986b8;
 
 // GLOBAL: LEGOLAND 0x007986bc
 struct Sprite *DAT_007986bc;
@@ -2316,7 +2316,7 @@ unsigned int DAT_0079873c;
 unsigned int DAT_00798740;
 
 // GLOBAL: LEGOLAND 0x00798764
-unsigned int DAT_00798764;
+struct Sprite *DAT_00798764;
 
 // GLOBAL: LEGOLAND 0x00798768
 unsigned int DAT_00798768;
@@ -2520,7 +2520,7 @@ struct Settings DAT_007cad60;
 char DAT_007cae80[0x100];
 
 // GLOBAL: LEGOLAND 0x007caf80
-unsigned int DAT_007caf80;
+struct Sprite *DAT_007caf80;
 
 // GLOBAL: LEGOLAND 0x007cafa0
 void *DAT_007cafa0;
@@ -2529,7 +2529,7 @@ void *DAT_007cafa0;
 void *DAT_007cb140;
 
 // GLOBAL: LEGOLAND 0x007cb1c4
-unsigned int DAT_007cb1c4;
+struct Sprite *DAT_007cb1c4;
 
 // GLOBAL: LEGOLAND 0x007cb1e0
 char DAT_007cb1e0[0x100];
@@ -2948,7 +2948,7 @@ char DAT_008100c0[0x80];
 unsigned int DAT_00810140;
 
 // GLOBAL: LEGOLAND 0x00810148
-unsigned int SPRITE_TitleScreenBk;
+struct Sprite *SPRITE_TitleScreenBk;
 
 // GLOBAL: LEGOLAND 0x0081014c
 LEGO_EXPORT unsigned char NEWFLC_ID[20];
@@ -3143,16 +3143,16 @@ unsigned short DAT_00813e20[256];
 unsigned char DAT_00814020[0x8000];
 
 // GLOBAL: LEGOLAND 0x0081c028
-unsigned int DAT_0081c028;
+struct Sprite *DAT_0081c028;
 
 // GLOBAL: LEGOLAND 0x0081c02c
-unsigned int DAT_0081c02c;
+struct Sprite *DAT_0081c02c;
 
 // GLOBAL: LEGOLAND 0x0081c030
-unsigned int DAT_0081c030;
+struct Sprite *DAT_0081c030;
 
 // GLOBAL: LEGOLAND 0x0081c034
-unsigned int DAT_0081c034;
+struct Sprite *DAT_0081c034;
 
 // GLOBAL: LEGOLAND 0x0081c038
 unsigned int DAT_0081c038;
@@ -3167,10 +3167,10 @@ unsigned int DAT_0081c054[1];
 unsigned int DAT_0081c068[1];
 
 // GLOBAL: LEGOLAND 0x0081c080
-unsigned int DAT_0081c080;
+struct Sprite *DAT_0081c080;
 
 // GLOBAL: LEGOLAND 0x0081c084
-unsigned int DAT_0081c084;
+struct Sprite *DAT_0081c084;
 
 // GLOBAL: LEGOLAND 0x0081c088
 unsigned int DAT_0081c088;
@@ -3611,7 +3611,7 @@ unsigned int DAT_00830b74;
 unsigned int DAT_00830f88;
 
 // GLOBAL: LEGOLAND 0x00830f94
-unsigned int DAT_00830f94;
+struct Sprite *DAT_00830f94;
 
 // GLOBAL: LEGOLAND 0x00830f98
 struct Position *DAT_00830f98;

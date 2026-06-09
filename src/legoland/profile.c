@@ -121,7 +121,7 @@ LEGO_EXPORT void KillListProfileSprite(void) {
         KillSprite(sprite);
         DAT_007986b4 = NULL;
     }
-    sprite = (struct Sprite *)DAT_007986b8;
+    sprite = DAT_007986b8;
     if (sprite != NULL) {
         KillSprite(sprite);
         DAT_007986b8 = 0;

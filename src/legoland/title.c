@@ -217,7 +217,7 @@ unsigned char FUN_00490300(unsigned int param_1, unsigned int param_2) {
 // FUNCTION: LEGOLAND 0x00490350
 unsigned int FUN_00490350(void) {
     struct SpriteIcon *icon;
-    unsigned int result;
+    struct Sprite *result;
 
     // STRING: LEGOLAND 0x004bf654
     SPRITE_TitleScreenBk = LoadSprite("CertificateScreen.lls", 0);
@@ -242,7 +242,7 @@ unsigned int FUN_00490350(void) {
     DAT_00798764 = result;
     DAT_00798768 = 0;
     DAT_0079876c = 0;
-    return result;
+    return (unsigned int)result;
 }
 
 // FUNCTION: LEGOLAND 0x00490410
@@ -401,7 +401,7 @@ void FUN_00490b20(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00490b90
 unsigned char FUN_00490b90(unsigned int param_1, unsigned int param_2) {
-    FUN_0046d680((struct IconNode *)DAT_007cb2e0, (struct Sprite *)DAT_0081c084);
+    FUN_0046d680((struct IconNode *)DAT_007cb2e0, DAT_0081c084);
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         DAT_004bf670 -= 14;
