@@ -14,9 +14,20 @@ struct BarrelSource {
     unsigned short field_0;
 };
 
+struct BarrelCarNode {
+    /* 0x00 */ unsigned char pad_0[0x10];
+    /* 0x10 */ unsigned int field_10;
+    /* 0x14 */ unsigned int field_14;
+    /* 0x18 */ unsigned int field_18;
+    /* 0x1c */ unsigned char pad_1c[0x48];
+    /* 0x64 */ struct BarrelCarNode *next;
+};
+
 struct BarrelRide {
-    unsigned char pad_0[0x8c];
-    BarrelVtblFn var_8c;
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ struct BarrelCarNode *car;
+    /* 0x10 */ unsigned char pad_10[0x7c];
+    /* 0x8c */ BarrelVtblFn var_8c;
     unsigned char pad_1[8];
     BarrelVtblFn var_98;
     BarrelVtblFn var_9c;
@@ -102,15 +113,15 @@ void FUN_0043c540(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043c570
 unsigned int *FUN_0043c570(struct BarrelRide *ride, unsigned short param2) {
-    unsigned int *target = *(unsigned int **)((unsigned char *)ride + 0xc);
+    struct BarrelCarNode *target = ride->car;
 
-    DAT_0062fdb0 = target[0x19];
-    DAT_0062fdb4 = target[0x5];
-    DAT_0062fdb8 = target[0x6];
+    DAT_0062fdb0 = (unsigned int)target->next;
+    DAT_0062fdb4 = target->field_14;
+    DAT_0062fdb8 = target->field_18;
     DAT_0062fdbc = param2;
 
-    target = (unsigned int *)target[0x19];
-    target[0x4] |= 0x2000;
+    target = target->next;
+    target->field_10 |= 0x2000;
     return &DAT_0062fdb0;
 }
 
