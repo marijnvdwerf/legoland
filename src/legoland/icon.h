@@ -6,6 +6,10 @@ struct Sprite;
 struct SpriteIcon;
 struct IconNode;
 
+LEGO_EXPORT void RenderIcons(void);
+LEGO_EXPORT void RenderIcons2(short param_1, short param_2, short param_3);
+LEGO_EXPORT void CheckFocussedIcon(void);
+LEGO_EXPORT void UpdateFocussedIconPtr(void);
 LEGO_EXPORT void RemoveIconGroup(unsigned int group);
 void FUN_0046d590(unsigned int val);
 void FUN_0046d680(struct IconNode *node, struct Sprite *sprite);

@@ -6,6 +6,12 @@
 
 struct Profile;
 
+LEGO_EXPORT void InitTitleScreen(void);
+unsigned int FUN_00490350(void);
+void FUN_00490150(void);
+void FUN_00490410(void);
+void FUN_00490c70(void);
+void FUN_004910f0(void);
 void FUN_00490600(unsigned int param_1);
 void FUN_00490610(const char *param_1);
 void FUN_00490850(void);

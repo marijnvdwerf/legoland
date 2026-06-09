@@ -46,7 +46,10 @@ struct Sample {
 LEGO_EXPORT struct Sample *CreatePlayableSample(unsigned int def);
 LEGO_EXPORT int PlaySample(struct Sample *sample, unsigned int looping, unsigned int oneshot);
 LEGO_EXPORT void PauseSingleSample(struct Sample *sample);
+void FUN_00492830(void);
 void FUN_00492850(void);
+LEGO_EXPORT void DeletePlayableSamples(unsigned int param_1);
+LEGO_EXPORT void UpdateSoundVols(void);
 LEGO_EXPORT int ResumeSinglyPausedSample(struct Sample *sample);
 void FUN_00492980(void);
 void FUN_00492990(void);

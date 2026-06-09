@@ -22,3 +22,5 @@ void FUN_00476140(int index, int value);
 void FUN_004771f0(const char *filename, unsigned int param_2, unsigned int param_3);
 struct CastleObj *FUN_004775b0(unsigned int size, unsigned int a, unsigned int b, unsigned int c);
 void FUN_004775d0(unsigned int param);
+LEGO_EXPORT void DisableSidePanelIcons(void);
+LEGO_EXPORT void EnableSidePanelIcons(void);

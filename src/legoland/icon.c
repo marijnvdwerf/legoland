@@ -373,7 +373,7 @@ void FUN_0046ee00(void) { STUB(); }
 LEGO_EXPORT void RenderIcons(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046f010
-LEGO_EXPORT void RenderIcons2(void) { STUB(); }
+LEGO_EXPORT void RenderIcons2(short param_1, short param_2, short param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046f100
 void FUN_0046f100(void) { STUB(); }

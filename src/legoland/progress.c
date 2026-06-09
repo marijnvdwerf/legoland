@@ -1,4 +1,5 @@
 #include "legoland.h"
+#include "progress.h"
 #include "freeplay.h"
 #include "screens.h"
 #include "options.h"

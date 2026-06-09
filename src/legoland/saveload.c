@@ -61,7 +61,7 @@ LEGO_EXPORT unsigned int GeteListPtr(int idx) {
 LEGO_EXPORT int SaveGame(char *filename) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047e980
-LEGO_EXPORT void LoadGame(void) { STUB(); }
+LEGO_EXPORT void LoadGame(char *path) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047f760
 LEGO_EXPORT void UnloadSaveGameMap(void) { STUB(); }

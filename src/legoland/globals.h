@@ -1139,7 +1139,9 @@ extern LEGO_EXPORT unsigned int QueryObj;
 // 0x00667c58
 extern LEGO_EXPORT void *QueryClass;
 // 0x00667c64
+extern const char *DAT_00667c40;
 extern unsigned int DAT_00667c64;
+extern unsigned int DAT_00667c78;
 // 0x00667c7c
 extern unsigned int DAT_00667c7c;
 // 0x00667c80
@@ -2040,6 +2042,7 @@ extern unsigned int DAT_0080ff60;
 extern unsigned int DAT_0080ff64;
 // 0x0080ff68
 extern unsigned int DAT_0080ff68;
+extern unsigned int DAT_0080ff70;
 // 0x0080ff74
 extern LEGO_EXPORT unsigned int NEWFLC_AutoPlay;
 // 0x0080ff78
@@ -2052,6 +2055,8 @@ extern unsigned int DAT_0080ff84;
 extern unsigned int DAT_0080ff88;
 // 0x0080ffa0
 extern struct ScreenState DAT_0080ffa0;
+// 0x008100c0
+extern char DAT_008100c0[0x80];
 // 0x00810140
 extern unsigned int DAT_00810140;
 // 0x00810148
@@ -2074,6 +2079,8 @@ extern LEGO_EXPORT unsigned int EditMode;
 extern unsigned int DAT_008119b4;
 // 0x008119b8
 extern void *DAT_008119b8;
+// 0x008119bc
+extern unsigned int DAT_008119bc;
 // 0x008139e0
 extern void *DAT_008139e0;
 // 0x008139e4
@@ -2472,6 +2479,7 @@ extern char DAT_00832a98[256];
 extern unsigned int DAT_00832b9c;
 // 0x00832ba0
 extern unsigned int DAT_00832ba0;
+extern unsigned int DAT_00832bac;
 // 0x00832ba4
 extern unsigned int DAT_00832ba4;
 // 0x00832ba8
