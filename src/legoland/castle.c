@@ -2775,20 +2775,20 @@ void FUN_004270c0(struct Struct4270c0Host *a1, struct Struct427050Dst *a2) {
 void FUN_00427100(void) { STUB(); }
 
 struct Struct427130Node {
-    unsigned char pad_0[0x14];
-    struct Struct427130Node *next;
+    /* 0x00 */ unsigned char pad_0[0x14];
+    /* 0x14 */ struct Struct427130Node *next;
 };
 
 struct Struct427130Main {
-    unsigned char pad_0[0xf8];
-    struct Struct427130Node *list;
+    /* 0x00 */ unsigned char pad_0[0xe4];
+    /* 0xe4 */ struct Struct427130Node head;
 };
 
 // FUNCTION: LEGOLAND 0x00427130
 unsigned int FUN_00427130(struct Struct427130Main *main) {
     unsigned int counter = 0;
-    struct Struct427130Node *node = main->list;
-    struct Struct427130Node *end = (struct Struct427130Node *)((unsigned char *)main + 0xe4);
+    struct Struct427130Node *node = main->head.next;
+    struct Struct427130Node *end = &main->head;
     while (node != end) {
         node = node->next;
         counter++;
