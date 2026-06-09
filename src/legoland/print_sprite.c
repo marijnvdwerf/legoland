@@ -174,7 +174,7 @@ LEGO_EXPORT void ResetHitInfo(void)
 }
 
 // FUNCTION: LEGOLAND 0x00485f00
-void FUN_00485f00(unsigned int param_1, unsigned int param_2, unsigned int param_3)
+void FUN_00485f00(struct Sprite *param_1, unsigned int param_2, unsigned int param_3)
 {
     PrintSprite(param_1, param_2, param_3, 0, 0);
 }

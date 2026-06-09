@@ -94,7 +94,7 @@ struct TileSpriteEntry {
 };
 
 struct DeferredSprite {
-    unsigned int sprite;
+    struct Sprite *sprite;
     unsigned int x;
     unsigned int y;
     unsigned int flags;

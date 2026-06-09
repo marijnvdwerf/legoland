@@ -450,16 +450,16 @@ void FUN_00460e90(int *coords, unsigned int x, unsigned int y) {
     unsigned char dir = FUN_0045ceb0(coords);
     unsigned int mode = FUN_0045d080(dir, coords);
 
-    FUN_00485f00((unsigned int)TileSpriteArray[3 + (unsigned int)dir + *(int *)PathSprite], x, y);
+    FUN_00485f00(TileSpriteArray[3 + (unsigned int)dir + *(int *)PathSprite], x, y);
     switch (mode) {
     case 1:
-        FUN_00485f00((unsigned int)TileSpriteArray[19 + *(int *)PathSprite], x, y);
+        FUN_00485f00(TileSpriteArray[19 + *(int *)PathSprite], x, y);
         break;
     case 2:
-        FUN_00485f00((unsigned int)TileSpriteArray[20 + *(int *)PathSprite], x, y);
+        FUN_00485f00(TileSpriteArray[20 + *(int *)PathSprite], x, y);
         break;
     case 3:
-        FUN_00485f00((unsigned int)TileSpriteArray[21 + *(int *)PathSprite], x, y);
+        FUN_00485f00(TileSpriteArray[21 + *(int *)PathSprite], x, y);
         break;
     }
 }
@@ -469,16 +469,16 @@ void FUN_00460f50(int *coords, unsigned int x, unsigned int y, unsigned int para
     unsigned char dir = FUN_0045ceb0(coords);
     unsigned int mode = FUN_0045d080(dir, coords);
 
-    FUN_00485f00((unsigned int)TileSpriteArray[3 + (unsigned int)dir + *(int *)PathSprite], x, y);
+    FUN_00485f00(TileSpriteArray[3 + (unsigned int)dir + *(int *)PathSprite], x, y);
     switch (mode) {
     case 1:
-        PrintSprite((unsigned int)TileSpriteArray[19 + *(int *)PathSprite], x, y, param_4, 0);
+        PrintSprite(TileSpriteArray[19 + *(int *)PathSprite], x, y, param_4, 0);
         break;
     case 2:
-        PrintSprite((unsigned int)TileSpriteArray[20 + *(int *)PathSprite], x, y, param_4, 0);
+        PrintSprite(TileSpriteArray[20 + *(int *)PathSprite], x, y, param_4, 0);
         break;
     case 3:
-        PrintSprite((unsigned int)TileSpriteArray[21 + *(int *)PathSprite], x, y, param_4, 0);
+        PrintSprite(TileSpriteArray[21 + *(int *)PathSprite], x, y, param_4, 0);
         break;
     }
 }
