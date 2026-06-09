@@ -29,6 +29,8 @@ void FUN_0046bbb0(unsigned int param_1, unsigned int param_2);
 void FUN_0046bc40(void);
 void FUN_0046bc60(void);
 void FUN_0046bcb0(unsigned int param_1, unsigned int param_2);
+void FUN_0046bd10(unsigned int param_1);
+void FUN_0046bd40(unsigned int param_1);
 void FUN_0046bdd0(unsigned char param_1, unsigned int param_2, unsigned int param_3);
 void FUN_0046bef0(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 void FUN_0046c030(unsigned char param_1, unsigned int param_2, unsigned int param_3);

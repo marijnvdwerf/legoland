@@ -10,6 +10,7 @@
 #include "objclass.h"
 #include "bloke.h"
 #include "objectives.h"
+#include "draw.h"
 #include "llidb.h"
 #include "map_object.h"
 #include "globals.h"
@@ -204,10 +205,42 @@ void FUN_00478cd0(void) { STUB(); }
 void FUN_00478d30(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00478e20
-void FUN_00478e20(void) { STUB(); }
+int FUN_00478e20(int param_1, int param_2) {
+    char *name = DAT_004d8bb0;
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0(param_1, param_2, 5, 0) == 0) {
+            return 0;
+        }
+        if (param_2 >= 1) {
+            name = *(char **)(param_1 + 4);
+        }
+        if (DAT_00669054 == 1) {
+            FUN_004687f0(name);
+            return 1;
+        }
+        FUN_0046bd10((unsigned int)name);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00478e90
-void FUN_00478e90(void) { STUB(); }
+int FUN_00478e90(int param_1, int param_2) {
+    char *name = DAT_004d8bb0;
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0(param_1, param_2, 5, 0) == 0) {
+            return 0;
+        }
+        if (param_2 >= 1) {
+            name = *(char **)(param_1 + 4);
+        }
+        if (DAT_00669054 == 1) {
+            FUN_00468810(name);
+            return 1;
+        }
+        FUN_0046bd40((unsigned int)name);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00478f00
 void FUN_00478f00(void) { STUB(); }
