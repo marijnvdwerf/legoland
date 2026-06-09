@@ -128,7 +128,7 @@ void FUN_0046d3c0(struct IconNode *node) {
         FocussedIconPtr = NULL;
     }
     if (DAT_004bdd00 == 2 && DAT_004bdd04 == (unsigned int)node) {
-        DAT_004bdd04 = NULL;
+        DAT_004bdd04 = 0;
         DAT_004bdd00 = 0x100;
     }
 }
@@ -397,7 +397,7 @@ LEGO_EXPORT void RenderIcons(void) {
                 ((void (*)(struct IconNode *))node->field_28)(node);
             } else if (node->sprite) {
                 ctx.node = node;
-                PrintSprite(node->sprite, node->field_c, node->field_e, 0, (unsigned int)&ctx);
+                PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
             }
             if (node == (struct IconNode *)FocussedIconPtr) {
                 if (node->sprite) {
@@ -435,7 +435,7 @@ LEGO_EXPORT void RenderIcons2(short param_1, short param_2, short param_3) {
                 ((void (*)(struct IconNode *))node->field_28)(node);
             } else if (node->sprite) {
                 ctx.node = node;
-                PrintSprite(node->sprite, node->field_c, node->field_e, 0, (unsigned int)&ctx);
+                PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
             }
         }
         if (node == (struct IconNode *)FocussedIconPtr && node->sprite) {
