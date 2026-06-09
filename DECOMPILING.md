@@ -15,28 +15,11 @@ cmake --build build              # compile + link (wibo + MSVC6)
 For each function in the TU: write C → build → `verify -v <addr>` → read the asm diff
 → adjust types/order/locals → repeat until `100% match`. Then move to the next.
 
-## Only do functions port2 already matched
+## Reference material
 
-Only fill in functions port2 already got byte-perfect — `current_score == 0` in
-`port2/project/functions.csv`. Leave everything else as `STUB()`. **Do not try to match
-an unmatched function from scratch** — that's slow, separate work, not for these runs.
-
-**Don't get stuck.** A few port2-matched functions still won't reach 100% under reccmp
-(objdiff hid relocations reccmp checks — e.g. an unpairable `call`, or reccmp prints
-"Failed to find a match"). After a few honest attempts on one function, revert it to
-`<its signature> { STUB(); }` and move on. Never loop on a single function.
-
-## Reference material (not the deliverable)
-
-- **`port2/project/c/0x00<ADDR>.c` is the START for every function — read it FIRST.**
-  Filename is UPPERCASE hex: address `0x0041cc50` → `port2/project/c/0x0041CC50.c`. These
-  are already byte-matched in port2, so the logic is correct — you are **translating and
-  cleaning** (raw Ghidra names, `pad[0x14]`, `uVar1` → real types, named locals, real
-  structs), **not reverse-engineering**. Do not write a body from scratch.
-- **Do NOT call Ghidra to derive a function body.** The port2 C already has it. Ghidra MCP
-  (see `../ghidra/CLAUDE.md`) is a last resort *only* to look up a single struct field
-  name/type when the port2 draft is genuinely unclear — and even that is optional. Re-deriving
-  from disassembly when a byte-matched port2 draft exists is wasted, off-task work.
+- **Use Ghidra MCP** (`mcp__ghidra__decompile_function`) to get the decompiled C for a
+  function. This is your starting point — translate it into clean C matching the project's
+  style, then iterate against the asm diff.
 - The original asm is the ground truth; the asm diff from `verify -v` is what you tune against.
 
 ## Style rules

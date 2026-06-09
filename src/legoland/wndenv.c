@@ -69,23 +69,47 @@ LEGO_EXPORT int ProcessSystemEvents(void) {
 // FUNCTION: LEGOLAND 0x00480150
 void FUN_00480150(struct ResFile *file, void *dst) {
     RES_ReadFile(file, dst, 4);
+#if defined(_MSC_VER) && (_MSC_VER <= 1200) && defined(_M_IX86)
     __asm {
         mov eax, dst
         mov edx, [eax]
         bswap edx
         mov [eax], edx
     }
+#elif defined(__GNUC__) || defined(__clang__)
+    *(unsigned int *)dst = __builtin_bswap32(*(unsigned int *)dst);
+#elif defined(_MSC_VER)
+    *(unsigned long *)dst = _byteswap_ulong(*(unsigned long *)dst);
+#else
+    {
+        unsigned char *p = (unsigned char *)dst;
+        unsigned char t;
+        t = p[0]; p[0] = p[3]; p[3] = t;
+        t = p[1]; p[1] = p[2]; p[2] = t;
+    }
+#endif
 }
 
 // FUNCTION: LEGOLAND 0x00480170
 void FUN_00480170(struct ResFile *file, void *dst) {
     RES_ReadFile(file, dst, 2);
+#if defined(_MSC_VER) && (_MSC_VER <= 1200) && defined(_M_IX86)
     __asm {
         mov eax, dst
         movzx edx, word ptr [eax]
         xchg dh, dl
         mov word ptr [eax], dx
     }
+#elif defined(__GNUC__) || defined(__clang__)
+    *(unsigned short *)dst = __builtin_bswap16(*(unsigned short *)dst);
+#elif defined(_MSC_VER)
+    *(unsigned short *)dst = _byteswap_ushort(*(unsigned short *)dst);
+#else
+    {
+        unsigned short *p = (unsigned short *)dst;
+        *p = (*p >> 8) | (*p << 8);
+    }
+#endif
 }
 
 // FUNCTION: LEGOLAND 0x004801a0

@@ -139,6 +139,7 @@ LEGO_EXPORT int RenderingComplete(void) {
 
     ProcessSystemEvents();
     FUN_00455f70(0);
+#if defined(_MSC_VER) && (_MSC_VER <= 1200) && defined(_M_IX86)
     __asm {
         pushad
         rdtsc
@@ -148,15 +149,27 @@ LEGO_EXPORT int RenderingComplete(void) {
         add DAT_00813a2c, eax
         popad
     }
+#else
+    {
+        int tsc = (int)GetTickCount();
+        tsc -= DAT_00813a18;
+        DAT_00813a18 = tsc;
+        DAT_00813a2c += tsc;
+    }
+#endif
     DAT_00667d68 = GetTickCount();
     result = DAT_004b9ca4();
     DAT_00813a2c = 0;
+#if defined(_MSC_VER) && (_MSC_VER <= 1200) && defined(_M_IX86)
     __asm {
         pushad
         rdtsc
         mov DAT_00813a18, eax
         popad
     }
+#else
+    DAT_00813a18 = (int)GetTickCount();
+#endif
     return result;
 }
 

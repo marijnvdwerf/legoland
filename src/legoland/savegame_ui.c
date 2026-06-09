@@ -349,7 +349,6 @@ LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void) {
     char save_path[256];
     void *file;
 
-    // STRING: LEGOLAND 0x004b9174
     sprintf(save_path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffa0.field_43, DAT_0080ffa0.field_44 & 0xff);
     FUN_00466360(0, 0);
     FUN_0047f810();

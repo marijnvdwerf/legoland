@@ -17,7 +17,7 @@ per-function by `reccmp`. We do **not** reproduce the binary's layout — reccmp
 
 ```sh
 cmake --preset msvc6 && cmake --build build   # -> build/legoland.exe + PDB
-./tools/verify                                 # per-function + aggregate match %
+./tools/verify                                 # per-function + total match %
 ./tools/verify -v 0x004015c0                   # asm diff for one function
 ```
 

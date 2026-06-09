@@ -1,63 +1,131 @@
 #!/usr/bin/env python3
-"""Which functions of a TU actually NEED a declaration (i.e. were pre-declared).
+# /// script
+# requires-python = ">=3.11"
+# dependencies = ["tree-sitter>=0.22", "tree-sitter-c"]
+# ///
+"""Which functions of a TU actually NEED a declaration in a header.
 
 A function needs a header decl ONLY if it was pre-declared somewhere:
-  - cross-TU: referenced (called / address-taken) from a .c other than its own, or
-  - in-file forward: referenced in its own .c at a line BEFORE its definition.
-Everything else is defined-and-used-in-order and needs no declaration at all.
+  - cross-TU: referenced from a .c other than its own, or
+  - in-file forward: referenced in its own .c before its definition.
+Everything else is defined-and-used-in-order and needs no declaration.
 
 Usage:
   uv run --no-project tools/needsdecl.py <tu>     # per-function verdict for one TU
   uv run --no-project tools/needsdecl.py          # summary: declared-but-unneeded per header
 """
 import re, sys, glob, pathlib
+import tree_sitter_c as tsc
+from tree_sitter import Language, Parser
+
+C_LANG = Language(tsc.language())
 
 SRC = "src/legoland"
 
-def defs_in(path):
-    """name -> def line number, for functions defined in this .c"""
-    out = {}
-    lines = pathlib.Path(path).read_text().splitlines()
-    for i, l in enumerate(lines):
-        if re.match(r'//\s*FUNCTION:\s*LEGOLAND', l):
-            sig = lines[i+1] if i+1 < len(lines) else ""
-            m = re.search(r'([A-Za-z_]\w*)\s*\(', sig)
-            if m:
-                out[m.group(1)] = i + 1
-    return out, lines
+# ── Caching ──────────────────────────────────────────────────────────
 
-def referenced(name, text, exclude_def_line=None, lines=None, before=None):
-    """is `name` used as a call / &addr / assignment target in text?"""
-    pat = re.compile(r'(?<![A-Za-z0-9_])' + re.escape(name) + r'(?![A-Za-z0-9_])')
-    for m in pat.finditer(text):
-        ln = text.count("\n", 0, m.start())
-        if before is not None and ln >= before:
+_trees = {}
+_ident_maps = {}
+
+
+def _get_tree(path):
+    """Parse a .c file with tree-sitter, cached."""
+    if path not in _trees:
+        src = pathlib.Path(path).read_bytes()
+        _trees[path] = Parser(C_LANG).parse(src)
+    return _trees[path]
+
+
+def _get_idents(path):
+    """Return {name: [(start_byte, is_func_def_name), ...]} for all identifiers.
+
+    Uses tree-sitter to walk the AST.  `identifier` nodes are real symbol
+    references; `field_identifier` (struct member access via -> or .) is a
+    different node type and never appears here — no heuristic filtering needed.
+    """
+    if path not in _ident_maps:
+        tree = _get_tree(path)
+        result = {}
+        stack = [tree.root_node]
+        while stack:
+            node = stack.pop()
+            if node.type == "identifier":
+                name = node.text.decode()
+                result.setdefault(name, []).append(
+                    (node.start_byte, _is_func_def_name(node))
+                )
+            stack.extend(reversed(node.children))
+        _ident_maps[path] = result
+    return _ident_maps[path]
+
+
+# ── AST helpers ──────────────────────────────────────────────────────
+
+def _is_func_def_name(node):
+    """True if this identifier is the name in a function_definition's declarator.
+
+    Walks up through pointer_declarator / parenthesized_declarator to handle
+    pointer-returning functions like `struct Foo *bar(...)`.
+    """
+    parent = node.parent
+    if not parent or parent.type != "function_declarator":
+        return False
+    ancestor = parent.parent
+    while ancestor and ancestor.type in ("pointer_declarator", "parenthesized_declarator"):
+        ancestor = ancestor.parent
+    return ancestor is not None and ancestor.type == "function_definition"
+
+
+# ── Core logic ───────────────────────────────────────────────────────
+
+def defs_in(path):
+    """Return {name: def_byte_offset} for annotated functions in this .c file.
+
+    Uses the // FUNCTION: LEGOLAND annotation (regex) to identify which functions
+    belong to this TU, then computes the byte offset of the name on the next line.
+    This is more robust than pure tree-sitter for definition finding because
+    LEGO_EXPORT / __asm can cause parse errors that swallow function_definition
+    nodes.
+    """
+    lines = pathlib.Path(path).read_text().splitlines()
+    out = {}
+    byte_offset = 0
+    for i, line in enumerate(lines):
+        if re.match(r"//\s*FUNCTION:\s*LEGOLAND", line):
+            sig = lines[i + 1] if i + 1 < len(lines) else ""
+            m = re.search(r"([A-Za-z_]\w*)\s*\(", sig)
+            if m:
+                out[m.group(1)] = byte_offset + len(line) + 1 + m.start(1)
+        byte_offset += len(line) + 1
+    return out
+
+
+def has_reference(path, name, *, before_byte=None):
+    """Is `name` used as an identifier (not a struct field) in this file?
+
+    Optionally restrict to references before `before_byte` (for forward-decl check).
+    Skips the identifier that is the function's own definition name.
+    """
+    for byte_off, is_def in _get_idents(path).get(name, []):
+        if is_def:
             continue
-        # skip the definition line itself
-        if exclude_def_line is not None and ln == exclude_def_line:
+        if before_byte is not None and byte_off >= before_byte:
             continue
-        # skip struct member access (->name / .name) — that's a field, not the free fn
-        head2 = text[max(0, m.start()-2):m.start()]
-        if head2.endswith("->") or text[max(0, m.start()-1):m.start()] == ".":
-            continue
-        # context: a real use is followed by ( or , or ; or ) or is &name
-        tail = text[m.end():m.end()+1]
-        head = text[max(0, m.start()-1):m.start()]
-        if tail in "(" or head == "&" or tail in ";),":
-            return True
+        return True
     return False
+
 
 def analyze(tu):
     cpath = f"{SRC}/{tu}.c"
-    d, lines = defs_in(cpath)
-    own = "\n".join(lines)
-    others = {p: pathlib.Path(p).read_text() for p in glob.glob(f"{SRC}/*.c") if p != cpath}
+    defs = defs_in(cpath)
+    others = [p for p in glob.glob(f"{SRC}/*.c") if p != cpath]
     verdicts = {}
-    for name, defln in d.items():
-        cross = any(referenced(name, t) for t in others.values())
-        fwd = referenced(name, own, exclude_def_line=defln, before=defln)
+    for name, def_byte in defs.items():
+        cross = any(has_reference(p, name) for p in others)
+        fwd = has_reference(cpath, name, before_byte=def_byte)
         verdicts[name] = ("cross-TU" if cross else "") + ("+fwd" if fwd else "") or "NOT NEEDED"
     return verdicts
+
 
 def main():
     if len(sys.argv) == 2:
@@ -76,11 +144,12 @@ def main():
         v = analyze(tu)
         need = sum(1 for r in v.values() if r != "NOT NEEDED")
         # count actual function prototypes declared in the .h (not structs/typedefs)
-        protos = [n for n in v if re.search(r'(?<![A-Za-z0-9_])' + re.escape(n) + r'\s*\(',
-                                            pathlib.Path(hp).read_text())]
+        htext = pathlib.Path(hp).read_text()
+        protos = [n for n in v if re.search(r'(?<![A-Za-z0-9_])' + re.escape(n) + r'\s*\(', htext)]
         extra = len(protos) - need
         flag = "  <-- OVER-DECLARED" if extra > 0 else ""
         print(f"  {tu+'.h':28} declares {len(protos):2} / needs {need:2}{flag}")
+
 
 if __name__ == "__main__":
     main()
