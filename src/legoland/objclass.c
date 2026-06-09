@@ -98,6 +98,13 @@ struct InstancePos {
     unsigned int y;
 };
 
+struct RideStats {
+    /* 0x00 */ unsigned char pad_0[0x34];
+    /* 0x34 */ short base_code;
+    /* 0x36 */ unsigned char pad_36[2];
+    /* 0x38 */ short rating;
+};
+
 struct ObjInstance {
     unsigned int field_0;
     unsigned int field_4;
@@ -318,20 +325,20 @@ LEGO_EXPORT void BuildObjInfoList(void) { STUB(); }
 LEGO_EXPORT void CalculateViewRideCode(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00481480
-LEGO_EXPORT unsigned int CalculateRideCode(unsigned int param_1, void *param_2, unsigned int param_3) {
+LEGO_EXPORT unsigned int CalculateRideCode(unsigned int param_1, struct RideStats *param_2, unsigned int param_3) {
     int diff;
     int value;
 
-    if (*(short *)((char *)param_2 + 0x38) > (int)param_1) {
-        diff = (*(short *)((char *)param_2 + 0x38) - (int)param_1) * 3;
+    if (param_2->rating > (int)param_1) {
+        diff = (param_2->rating - (int)param_1) * 3;
     } else {
-        diff = ((int)param_1 - *(short *)((char *)param_2 + 0x38)) * 3;
+        diff = ((int)param_1 - param_2->rating) * 3;
     }
     diff -= 10;
     if (diff < 0) {
         diff = 0;
     }
-    value = *(short *)((char *)param_2 + 0x34) - diff;
+    value = param_2->base_code - diff;
     value += 200;
     return value >> param_3;
 }
