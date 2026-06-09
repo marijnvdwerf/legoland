@@ -93,10 +93,29 @@ int FUN_00478980(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x004789c0
-void FUN_004789c0(void) { STUB(); }
+int FUN_004789c0(unsigned int param_1, unsigned int param_2) {
+    if (DAT_004bb5b0 == 0) {
+        return 1;
+    }
+    if (FUN_004786a0(param_1, param_2, 2) == 0) {
+        return 0;
+    }
+    FUN_00478610(1);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00478a00
-void FUN_00478a00(void) { STUB(); }
+int FUN_00478a00(unsigned int param_1, unsigned int param_2) {
+    if (DAT_004bb5b0 == 0) {
+        return 1;
+    }
+    if (FUN_004786a0(param_1, param_2, 2) == 0) {
+        return 0;
+    }
+    FUN_00478610(2);
+    FUN_00478650(param_1, param_2);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00478a40
 int FUN_00478a40(unsigned int param_1, unsigned int param_2) {
