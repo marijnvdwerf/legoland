@@ -690,7 +690,7 @@ unsigned int FUN_0041e720(struct SlotHost *host, unsigned int arg) {
             return 1;
         }
         i++;
-        slot = (struct Slot *)((unsigned char *)slot + 0x20);
+        slot++;
     }
     return 0;
 }
@@ -704,7 +704,7 @@ struct Slot *FUN_0041e760(struct SlotHost *host) {
             return slot;
         }
         i++;
-        slot = (struct Slot *)((unsigned char *)slot + 0x20);
+        slot++;
     }
     return NULL;
 }
@@ -719,7 +719,7 @@ void FUN_0041e790(struct SlotHost *host) {
             break;
         }
         i++;
-        slot = (struct Slot *)((unsigned char *)slot + 0x20);
+        slot++;
     }
 }
 
