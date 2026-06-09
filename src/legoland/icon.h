@@ -32,7 +32,7 @@ struct SpriteIcon {
     /* 0x12 */ short field_12;
     /* 0x14 */ unsigned short id;
     /* 0x16 */ unsigned char pad_16[0x18 - 0x16];
-    /* 0x18 */ unsigned int field_18;
+    /* 0x18 */ struct Sprite *field_18;
     /* 0x1c */ unsigned char pad_1c[0x28 - 0x1c];
     /* 0x28 */ void *field_28;
     /* 0x2c */ unsigned char (*event_handler)(unsigned int param_1, unsigned int param_2);

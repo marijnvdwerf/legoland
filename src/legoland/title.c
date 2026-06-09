@@ -41,7 +41,7 @@ LEGO_EXPORT void InitTitleScreen(void) {
         icon->field_28 = (void *)FUN_0046e920;
         icon->field_34 |= 8;
     } else {
-        icon->field_18 = 0;
+        icon->field_18 = NULL;
     }
     DAT_006687bc = FUN_0048feb0;
 

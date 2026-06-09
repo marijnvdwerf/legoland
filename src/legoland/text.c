@@ -8,7 +8,7 @@
 
 struct TextSprite {
     unsigned char pad_0[0x1c];
-    unsigned int field_1c;
+    struct Sprite *field_1c;
 };
 
 #include "image_sprite.h"

@@ -694,17 +694,17 @@ void FUN_00445000(void) {
     while ((int)current < (int)&DAT_0081c068) {
         val1 = *(unsigned int *)(current - 0x14);
         if (val1 != 0) {
-            KillSprite(val1);
+            KillSprite((struct Sprite *)val1);
             *(unsigned int *)(current - 0x14) = 0;
         }
         val2 = *(unsigned int *)current;
         if (val2 != 0) {
-            KillSprite(val2);
+            KillSprite((struct Sprite *)val2);
             *(unsigned int *)current = 0;
         }
         val3 = *(unsigned int *)(current + 0x14);
         if (val3 != 0) {
-            KillSprite(val3);
+            KillSprite((struct Sprite *)val3);
             *(unsigned int *)(current + 0x14) = 0;
         }
         current += 4;

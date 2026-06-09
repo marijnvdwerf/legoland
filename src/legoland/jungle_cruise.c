@@ -238,7 +238,7 @@ unsigned int *FUN_00434740(struct JungleFishHolder *param_1, unsigned short para
         lls2 = (struct JungleLLS *)GetLLSForSprite((struct SpriteLLS *)DAT_0081cb6c);
         frame = lls1->field_0;
         LLSSetFrame((struct LLS *)lls2, frame); /* TODO: fold struct JungleLLS into struct LLS */
-        DAT_0082c6a0 = DAT_0081cb6c;
+        DAT_0082c6a0 = (unsigned int)DAT_0081cb6c;
     } else {
         DAT_0082c6a0 = obj->field_64;
     }
