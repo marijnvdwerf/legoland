@@ -18,18 +18,6 @@ struct Layer;
 struct LayerHost;
 struct LayerResult;
 
-struct Image {
-    unsigned int field_0;
-    void *field_4;
-    unsigned short width;
-    unsigned short height;
-    unsigned short refcount;
-    unsigned char field_e;
-    unsigned char pad_f[0x10 - 0xf];
-    char *name;
-    unsigned int field_14;
-};
-
 struct LayerVtbl {
     void *func_0;
     void *func_4;
@@ -197,7 +185,7 @@ LEGO_EXPORT unsigned int MarkAllSpritesForResizing(void) {
     node = DAT_0079a7c0;
     count = 0;
     while (node != NULL) {
-        if (node->image->field_e == 1) {
+        if (node->image->type == 1) {
             node->field_10 &= 0xfffffbff;
             count++;
         } else {
@@ -224,9 +212,9 @@ LEGO_EXPORT struct Image *CreateSourceImage(const char *str, unsigned char type)
     if (image == NULL) {
         return NULL;
     }
-    image->field_e = type;
+    image->type = type;
     image->refcount = 1;
-    image->field_0 = 0;
+    image->data = 0;
     image->field_4 = NULL;
     image->name = (char *)image + 0x18;
     strcpy(image->name, str);
@@ -256,7 +244,7 @@ LEGO_EXPORT int ReloadImageBitmap(struct Image *image) {
     if (image->field_4 != NULL) {
         free(image->field_4);
     }
-    if (image->field_0 != 0) {
+    if (image->data != 0) {
         FreeBitmapResources(image);
         return __BMPLoader(image) != 0;
     }
@@ -277,15 +265,15 @@ LEGO_EXPORT int KillImage(struct Image *image) {
     image->refcount--;
     if (image->refcount == 0) {
         if (image->field_14 == 2 || image->field_14 == 3) {
-            LLSStop(image->field_0);
+            LLSStop((unsigned int)image->data);
         }
-        if (image->field_0 != 0) {
-            free((void *)image->field_0);
+        if (image->data != 0) {
+            free((void *)image->data);
         }
         if (image->field_4 != NULL) {
             free(image->field_4);
         }
-        if (image->field_e == 1) {
+        if (image->type == 1) {
             FUN_00497020((unsigned int)image);
         }
         free(image);
@@ -338,10 +326,10 @@ void FUN_004975b0(struct Sprite *sprite) {
 
 // FUNCTION: LEGOLAND 0x00497610
 LEGO_EXPORT void FreeBitmapResources(struct Image *image) {
-    if (image->field_0 != 0) {
-        LLSStop(image->field_0);
-        free((void *)image->field_0);
-        image->field_0 = 0;
+    if (image->data != 0) {
+        LLSStop((unsigned int)image->data);
+        free((void *)image->data);
+        image->data = 0;
     }
 }
 
@@ -362,7 +350,7 @@ LEGO_EXPORT struct Sprite *CreateSprite(struct Image *image) {
     sprite->field_c = DAT_008119a4 - 1;
     if (image != NULL) {
         image->refcount += 1;
-        if (image->field_0 == 0) {
+        if (image->data == 0) {
             if (__BMPLoader(image) == 0) {
                 KillSprite((unsigned int)sprite);
                 return NULL;
@@ -411,7 +399,7 @@ LEGO_EXPORT struct Sprite *CreateSysmemSprite(struct Image *image) {
     sprite->field_1a = 0;
     sprite->field_10 = 0x10;
     sprite->field_c = DAT_008119a4 - 1;
-    if (image->field_0 == 0) {
+    if (image->data == 0) {
         if (__BMPLoader(image) == 0) {
             KillSprite((unsigned int)sprite);
             return NULL;
@@ -438,7 +426,7 @@ LEGO_EXPORT struct Sprite *CreatePartialSprite(struct Image *image, unsigned sho
     sprite->field_1a = b;
     sprite->field_10 = 0;
     sprite->field_c = DAT_008119a4 - 1;
-    if (image->field_0 == 0) {
+    if (image->data == 0) {
         if (__BMPLoader(image) == 0) {
             KillSprite((unsigned int)sprite);
             return NULL;
@@ -470,7 +458,7 @@ LEGO_EXPORT int RecreatePartialSprite(struct Sprite *sprite, struct Image *image
     sprite->field_10 = 0;
     sprite->field_14 = c;
     sprite->field_16 = d;
-    if (image->field_0 == 0) {
+    if (image->data == 0) {
         if (__BMPLoader(image) == 0) {
             return 0;
         }
@@ -534,7 +522,7 @@ int FUN_004978b0(struct Sprite *sprite, const char *name, unsigned int flags) {
                     if (element != NULL) {
                         image = element->image;
                         if (image->field_14 == 2 || image->field_14 == 3) {
-                            LLSPlay((struct LLS *)image->field_0, (unsigned int)image);
+                            LLSPlay((struct LLS *)image->data, (unsigned int)image);
                         }
                     }
                     i++;
@@ -592,7 +580,7 @@ LEGO_EXPORT unsigned int MakeSprite(unsigned int sprite) {
         return 1;
     }
     image = s->image;
-    if (image->field_0 != 0 || __BMPLoader(image) != 0) {
+    if (image->data != 0 || __BMPLoader(image) != 0) {
         return 1;
     }
     return 0;

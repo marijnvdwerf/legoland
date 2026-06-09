@@ -5,7 +5,17 @@
 /* Shared layouts: struct Sprite and struct Image are defined once here and
  * #included by every TU that touches them (image_sprite.c, gfx.c, mapscreen.c,
  * ride_bloke.c, timer.c, ...). Field names carry their byte offset. */
-struct Image;
+struct Image {
+    /* 0x00 */ void *data;
+    /* 0x04 */ void *field_4;
+    /* 0x08 */ short width;
+    /* 0x0a */ short height;
+    /* 0x0c */ unsigned short refcount;
+    /* 0x0e */ unsigned char type;
+    /* 0x0f */ unsigned char pad_f[0x10 - 0xf];
+    /* 0x10 */ char *name;
+    /* 0x14 */ unsigned int field_14;
+};
 
 struct Sprite {
     /* 0x00 */ struct Sprite *next;

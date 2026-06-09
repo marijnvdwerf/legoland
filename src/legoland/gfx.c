@@ -6,20 +6,9 @@
 #include "debug_alloc.h"
 #include "gfx.h"
 #include "globals.h"
+#include "image_sprite.h"
 #include "llidb.h"
 #include "resource.h"
-
-struct Image {
-    void *data;
-    void *field_4;
-    short width;
-    short height;
-    unsigned short refcount;
-    unsigned char type;
-    unsigned char pad_f[0x10 - 0xf];
-    char *name;
-    unsigned int field_14;
-};
 
 struct LLSFileHeader {
     unsigned short field_0;
