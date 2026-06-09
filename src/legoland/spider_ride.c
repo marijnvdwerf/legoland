@@ -28,10 +28,12 @@ struct SpiderState {
 };
 
 struct CarNode {
-    unsigned char pad_0[0x10];
-    unsigned int field_10;
-    unsigned char pad_14[0x50];
-    unsigned int field_64;
+    /* 0x00 */ unsigned char pad_0[0x10];
+    /* 0x10 */ unsigned int field_10;
+    /* 0x14 */ unsigned int field_14;
+    /* 0x18 */ unsigned int field_18;
+    /* 0x1c */ unsigned char pad_1c[0x48];
+    /* 0x64 */ struct CarNode *next;
 };
 
 struct RideObject {
@@ -159,11 +161,11 @@ void FUN_004160f0(void) { STUB(); }
 unsigned int *FUN_00416120(unsigned int *a1, unsigned short a2)
 {
     struct CarNode *car = *(struct CarNode **)((unsigned char *)a1 + 0xc);
-    DAT_004cbf40 = car->field_64;
-    DAT_004cbf44 = *(unsigned int *)((unsigned char *)car + 0x14);
-    DAT_004cbf48 = *(unsigned int *)((unsigned char *)car + 0x18);
+    DAT_004cbf40 = (unsigned int)car->next;
+    DAT_004cbf44 = car->field_14;
+    DAT_004cbf48 = car->field_18;
     DAT_004cbf4c = a2;
-    car = *(struct CarNode **)((unsigned char *)car + 0x64);
+    car = car->next;
     car->field_10 = car->field_10 | 0x2000;
     return &DAT_004cbf40;
 }
