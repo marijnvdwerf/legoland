@@ -1548,7 +1548,7 @@ extern unsigned int DAT_0066be4c;
 // 0x00701e58
 extern unsigned int DAT_00701e58;
 // 0x00701e5c
-extern unsigned int DAT_00701e5c;
+extern unsigned char *DAT_00701e5c;
 // 0x00701e60
 extern unsigned int DAT_00701e60;
 // 0x00797e68

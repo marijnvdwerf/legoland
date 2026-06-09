@@ -190,15 +190,15 @@ void FUN_00485f60(void)
 {
     DAT_0066be40 = 0x80;
     DAT_0066be44 = 0x78;
-    DAT_00701e5c = (unsigned int)malloc(0xf000);
+    DAT_00701e5c = malloc(0xf000);
     DAT_0066be4c = DAT_0066be40 * 4;
 }
 
 // FUNCTION: LEGOLAND 0x00485fa0
 void FUN_00485fa0(void)
 {
-    if (DAT_00701e5c != 0) {
-        free((void *)DAT_00701e5c);
+    if (DAT_00701e5c != NULL) {
+        free(DAT_00701e5c);
     }
 }
 
