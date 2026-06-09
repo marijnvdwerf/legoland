@@ -3329,13 +3329,13 @@ struct EateryFX *DAT_0081cd18;
 struct EateryFX *DAT_0081cd1c;
 
 // GLOBAL: LEGOLAND 0x0081cd20
-unsigned int DAT_0081cd20;
+struct Sprite *DAT_0081cd20;
 
 // GLOBAL: LEGOLAND 0x0081cd28
-unsigned int DAT_0081cd28;
+struct Sprite *DAT_0081cd28;
 
 // GLOBAL: LEGOLAND 0x0081cd34
-unsigned int DAT_0081cd34;
+struct Sprite *DAT_0081cd34;
 
 // GLOBAL: LEGOLAND 0x0081cd38
 unsigned int DAT_0081cd38;
@@ -3347,97 +3347,97 @@ unsigned int DAT_0081cd3c;
 struct EateryFX *DAT_0081cd44;
 
 // GLOBAL: LEGOLAND 0x0081cd48
-unsigned int DAT_0081cd48;
+struct Sprite *DAT_0081cd48;
 
 // GLOBAL: LEGOLAND 0x0081cd60
-void *DAT_0081cd60;
+struct Sprite *DAT_0081cd60;
 
 // GLOBAL: LEGOLAND 0x0081cd64
-void *DAT_0081cd64;
+struct Sprite *DAT_0081cd64;
 
 // GLOBAL: LEGOLAND 0x0081cd68
-void *DAT_0081cd68;
+struct Sprite *DAT_0081cd68;
 
 // GLOBAL: LEGOLAND 0x0081cd6c
-void *DAT_0081cd6c;
+struct Sprite *DAT_0081cd6c;
 
 // GLOBAL: LEGOLAND 0x0081cd70
-void *DAT_0081cd70;
+struct Sprite *DAT_0081cd70;
 
 // GLOBAL: LEGOLAND 0x0081cd74
-void *DAT_0081cd74;
+struct Sprite *DAT_0081cd74;
 
 // GLOBAL: LEGOLAND 0x0081cd78
-void *DAT_0081cd78;
+struct Sprite *DAT_0081cd78;
 
 // GLOBAL: LEGOLAND 0x0081cd7c
-void *DAT_0081cd7c;
+struct Sprite *DAT_0081cd7c;
 
 // GLOBAL: LEGOLAND 0x0081cd80
-void *DAT_0081cd80;
+struct Sprite *DAT_0081cd80;
 
 // GLOBAL: LEGOLAND 0x0081cd84
-unsigned int DAT_0081cd84;
+struct Sprite *DAT_0081cd84;
 
 // GLOBAL: LEGOLAND 0x0081cd88
-unsigned int DAT_0081cd88;
+struct Sprite *DAT_0081cd88;
 
 // GLOBAL: LEGOLAND 0x0081cd8c
-unsigned int DAT_0081cd8c;
+struct Sprite *DAT_0081cd8c;
 
 // GLOBAL: LEGOLAND 0x0081cd90
-unsigned int DAT_0081cd90;
+struct Sprite *DAT_0081cd90;
 
 // GLOBAL: LEGOLAND 0x0081cd94
-unsigned int DAT_0081cd94;
+struct Sprite *DAT_0081cd94;
 
 // GLOBAL: LEGOLAND 0x0081cda0
-void *DAT_0081cda0;
+struct Sprite *DAT_0081cda0;
 
 // GLOBAL: LEGOLAND 0x0081cda4
-void *DAT_0081cda4;
+struct Sprite *DAT_0081cda4;
 
 // GLOBAL: LEGOLAND 0x0081cda8
-void *DAT_0081cda8;
+struct Sprite *DAT_0081cda8;
 
 // GLOBAL: LEGOLAND 0x0081cdac
-void *DAT_0081cdac;
+struct Sprite *DAT_0081cdac;
 
 // GLOBAL: LEGOLAND 0x0081cdb0
-void *DAT_0081cdb0;
+struct Sprite *DAT_0081cdb0;
 
 // GLOBAL: LEGOLAND 0x0081cdb4
-void *DAT_0081cdb4;
+struct Sprite *DAT_0081cdb4;
 
 // GLOBAL: LEGOLAND 0x0081cdb8
-void *DAT_0081cdb8;
+struct Sprite *DAT_0081cdb8;
 
 // GLOBAL: LEGOLAND 0x0081cdbc
-void *DAT_0081cdbc;
+struct Sprite *DAT_0081cdbc;
 
 // GLOBAL: LEGOLAND 0x0081cdc0
-void *DAT_0081cdc0;
+struct Sprite *DAT_0081cdc0;
 
 // GLOBAL: LEGOLAND 0x0081cdc4
-void *DAT_0081cdc4;
+struct Sprite *DAT_0081cdc4;
 
 // GLOBAL: LEGOLAND 0x0081cdc8
-void *DAT_0081cdc8;
+struct Sprite *DAT_0081cdc8;
 
 // GLOBAL: LEGOLAND 0x0081cdcc
-void *DAT_0081cdcc;
+struct Sprite *DAT_0081cdcc;
 
 // GLOBAL: LEGOLAND 0x0081cdd0
-void *DAT_0081cdd0;
+struct Sprite *DAT_0081cdd0;
 
 // GLOBAL: LEGOLAND 0x0081cdd4
-void *DAT_0081cdd4;
+struct Sprite *DAT_0081cdd4;
 
 // GLOBAL: LEGOLAND 0x0081cdd8
-void *DAT_0081cdd8;
+struct Sprite *DAT_0081cdd8;
 
 // GLOBAL: LEGOLAND 0x0081cddc
-void *DAT_0081cddc;
+struct Sprite *DAT_0081cddc;
 
 // GLOBAL: LEGOLAND 0x0081cde0
 struct EateryFX *DAT_0081cde0;

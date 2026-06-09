@@ -275,11 +275,11 @@ void FUN_0042f4c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0042f720
 void FUN_0042f720(void) {
-    KillSprite((void *)DAT_0081cd28);
-    KillSprite((void *)DAT_0081cd8c);
-    KillSprite((void *)DAT_0081cd88);
-    KillSprite((void *)DAT_0081cd94);
-    KillSprite((void *)DAT_0081cd90);
+    KillSprite(DAT_0081cd28);
+    KillSprite(DAT_0081cd8c);
+    KillSprite(DAT_0081cd88);
+    KillSprite(DAT_0081cd94);
+    KillSprite(DAT_0081cd90);
     KillMoneySFX();
 }
 
@@ -343,10 +343,10 @@ void FUN_00430b10(void) { STUB(); }
 void FUN_00431120(void) {
     Kill_FXList(OCTOPUS_SFX, 3);
     KillMoneySFX();
-    KillSprite((void *)DAT_0081cd34);
-    KillSprite((void *)DAT_0081cd84);
-    KillSprite((void *)DAT_0081cd20);
-    KillSprite((void *)DAT_0081cd48);
+    KillSprite(DAT_0081cd34);
+    KillSprite(DAT_0081cd84);
+    KillSprite(DAT_0081cd20);
+    KillSprite(DAT_0081cd48);
 }
 
 // FUNCTION: LEGOLAND 0x00431170

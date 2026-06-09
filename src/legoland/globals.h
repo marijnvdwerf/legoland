@@ -2351,11 +2351,11 @@ extern struct EateryFX *DAT_0081cd18;
 // 0x0081cd1c
 extern struct EateryFX *DAT_0081cd1c;
 // 0x0081cd20
-extern unsigned int DAT_0081cd20;
+extern struct Sprite *DAT_0081cd20;
 // 0x0081cd28
-extern unsigned int DAT_0081cd28;
+extern struct Sprite *DAT_0081cd28;
 // 0x0081cd34
-extern unsigned int DAT_0081cd34;
+extern struct Sprite *DAT_0081cd34;
 // 0x0081cd38
 extern unsigned int DAT_0081cd38;
 // 0x0081cd3c
@@ -2363,67 +2363,67 @@ extern unsigned int DAT_0081cd3c;
 // 0x0081cd44
 extern struct EateryFX *DAT_0081cd44;
 // 0x0081cd48
-extern unsigned int DAT_0081cd48;
+extern struct Sprite *DAT_0081cd48;
 // 0x0081cd60
-extern void *DAT_0081cd60;
+extern struct Sprite *DAT_0081cd60;
 // 0x0081cd64
-extern void *DAT_0081cd64;
+extern struct Sprite *DAT_0081cd64;
 // 0x0081cd68
-extern void *DAT_0081cd68;
+extern struct Sprite *DAT_0081cd68;
 // 0x0081cd6c
-extern void *DAT_0081cd6c;
+extern struct Sprite *DAT_0081cd6c;
 // 0x0081cd70
-extern void *DAT_0081cd70;
+extern struct Sprite *DAT_0081cd70;
 // 0x0081cd74
-extern void *DAT_0081cd74;
+extern struct Sprite *DAT_0081cd74;
 // 0x0081cd78
-extern void *DAT_0081cd78;
+extern struct Sprite *DAT_0081cd78;
 // 0x0081cd7c
-extern void *DAT_0081cd7c;
+extern struct Sprite *DAT_0081cd7c;
 // 0x0081cd80
-extern void *DAT_0081cd80;
+extern struct Sprite *DAT_0081cd80;
 // 0x0081cd84
-extern unsigned int DAT_0081cd84;
+extern struct Sprite *DAT_0081cd84;
 // 0x0081cd88
-extern unsigned int DAT_0081cd88;
+extern struct Sprite *DAT_0081cd88;
 // 0x0081cd8c
-extern unsigned int DAT_0081cd8c;
+extern struct Sprite *DAT_0081cd8c;
 // 0x0081cd90
-extern unsigned int DAT_0081cd90;
+extern struct Sprite *DAT_0081cd90;
 // 0x0081cd94
-extern unsigned int DAT_0081cd94;
+extern struct Sprite *DAT_0081cd94;
 // 0x0081cda0
-extern void *DAT_0081cda0;
+extern struct Sprite *DAT_0081cda0;
 // 0x0081cda4
-extern void *DAT_0081cda4;
+extern struct Sprite *DAT_0081cda4;
 // 0x0081cda8
-extern void *DAT_0081cda8;
+extern struct Sprite *DAT_0081cda8;
 // 0x0081cdac
-extern void *DAT_0081cdac;
+extern struct Sprite *DAT_0081cdac;
 // 0x0081cdb0
-extern void *DAT_0081cdb0;
+extern struct Sprite *DAT_0081cdb0;
 // 0x0081cdb4
-extern void *DAT_0081cdb4;
+extern struct Sprite *DAT_0081cdb4;
 // 0x0081cdb8
-extern void *DAT_0081cdb8;
+extern struct Sprite *DAT_0081cdb8;
 // 0x0081cdbc
-extern void *DAT_0081cdbc;
+extern struct Sprite *DAT_0081cdbc;
 // 0x0081cdc0
-extern void *DAT_0081cdc0;
+extern struct Sprite *DAT_0081cdc0;
 // 0x0081cdc4
-extern void *DAT_0081cdc4;
+extern struct Sprite *DAT_0081cdc4;
 // 0x0081cdc8
-extern void *DAT_0081cdc8;
+extern struct Sprite *DAT_0081cdc8;
 // 0x0081cdcc
-extern void *DAT_0081cdcc;
+extern struct Sprite *DAT_0081cdcc;
 // 0x0081cdd0
-extern void *DAT_0081cdd0;
+extern struct Sprite *DAT_0081cdd0;
 // 0x0081cdd4
-extern void *DAT_0081cdd4;
+extern struct Sprite *DAT_0081cdd4;
 // 0x0081cdd8
-extern void *DAT_0081cdd8;
+extern struct Sprite *DAT_0081cdd8;
 // 0x0081cddc
-extern void *DAT_0081cddc;
+extern struct Sprite *DAT_0081cddc;
 // 0x0081cde0
 extern struct EateryFX *DAT_0081cde0;
 // 0x0081cde4
