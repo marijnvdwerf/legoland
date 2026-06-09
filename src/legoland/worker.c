@@ -452,12 +452,11 @@ LEGO_EXPORT int RenderWorkerInterfaceGFX(void) {
 
 // FUNCTION: LEGOLAND 0x0049b0d0
 unsigned int FUN_0049b0d0(struct Worker *a, void *b) {
-    unsigned char *counter = (unsigned char *)a + 0x11;
-    *counter = *counter + 1;
+    a->counter_11 = a->counter_11 + 1;
 
-    if (*counter == (*((unsigned char *)b + 0x2c) >> 2)) {
+    if (a->counter_11 == (*((unsigned char *)b + 0x2c) >> 2)) {
         int result = FindObjectsPower(b);
-        *(unsigned short *)((char *)a + 0xc) &= 0xfdff;
+        a->flags_c &= 0xfdff;
         if (result > 0) {
             DAT_00832bd0 += result;
             if (DAT_00832bd8) {
@@ -466,7 +465,7 @@ unsigned int FUN_0049b0d0(struct Worker *a, void *b) {
         }
     }
 
-    return *counter;
+    return a->counter_11;
 }
 
 // FUNCTION: LEGOLAND 0x0049b130

@@ -4,9 +4,12 @@
 
 struct Worker {
     /* 0x00 */ struct Worker *next;
-    /* 0x04 */ unsigned char pad_4[10];
+    /* 0x04 */ unsigned char pad_4[8];
+    /* 0x0c */ unsigned short flags_c;
     /* 0x0e */ unsigned short state;
-    /* 0x10 */ unsigned char pad_10[12];
+    /* 0x10 */ unsigned char pad_10[1];
+    /* 0x11 */ unsigned char counter_11;
+    /* 0x12 */ unsigned char pad_12[10];
     /* 0x1c */ unsigned int flags_1c;
     /* 0x20 */ unsigned char pad_20[22];
     /* 0x36 */ unsigned char progress;
