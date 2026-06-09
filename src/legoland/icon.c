@@ -240,9 +240,9 @@ LEGO_EXPORT struct IconNode *AddFullScreenIcon(void *icon) {
 // FUNCTION: LEGOLAND 0x0046d7b0
 LEGO_EXPORT struct SpriteIcon *LoadSpriteIcon(const char *filename, unsigned int param_2, int param_3, int param_4, int param_5) {
     struct SpriteIcon *result = NULL;
-    unsigned int sprite = LoadSprite(filename, param_2);
-    if (sprite != 0) {
-        result = (struct SpriteIcon *)InsertIcon(param_3, param_4, param_5, (void *)sprite);
+    struct Sprite *sprite = LoadSprite(filename, param_2);
+    if (sprite != NULL) {
+        result = (struct SpriteIcon *)InsertIcon(param_3, param_4, param_5, sprite);
     }
     KillSprite(sprite);
     return result;
@@ -397,7 +397,7 @@ LEGO_EXPORT void RenderIcons(void) {
                 ((void (*)(struct IconNode *))node->field_28)(node);
             } else if (node->sprite) {
                 ctx.node = node;
-                PrintSprite((unsigned int)node->sprite, node->field_c, node->field_e, 0, (unsigned int)&ctx);
+                PrintSprite(node->sprite, node->field_c, node->field_e, 0, (unsigned int)&ctx);
             }
             if (node == (struct IconNode *)FocussedIconPtr) {
                 if (node->sprite) {
@@ -435,7 +435,7 @@ LEGO_EXPORT void RenderIcons2(short param_1, short param_2, short param_3) {
                 ((void (*)(struct IconNode *))node->field_28)(node);
             } else if (node->sprite) {
                 ctx.node = node;
-                PrintSprite((unsigned int)node->sprite, node->field_c, node->field_e, 0, (unsigned int)&ctx);
+                PrintSprite(node->sprite, node->field_c, node->field_e, 0, (unsigned int)&ctx);
             }
         }
         if (node == (struct IconNode *)FocussedIconPtr && node->sprite) {

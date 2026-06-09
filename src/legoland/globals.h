@@ -1328,13 +1328,13 @@ extern struct InterfaceIconNode *DAT_006687cc;
 // 0x006687d0
 extern LEGO_EXPORT void *FocussedIconPtr;
 // 0x00668828
-extern void *DAT_00668828;
+extern struct Sprite *DAT_00668828;
 // 0x0066882c
-extern void *DAT_0066882c;
+extern struct Sprite *DAT_0066882c;
 // 0x00668830
-extern void *DAT_00668830;
+extern struct Sprite *DAT_00668830;
 // 0x00668834
-extern void *DAT_00668834;
+extern struct Sprite *DAT_00668834;
 // 0x006688a8
 extern void *DAT_006688a8;
 // 0x006688ac
