@@ -53,16 +53,16 @@ unsigned int DAT_004b4734;
 // 0x008003e8 is EditCursor.field_1828 — see struct Cursor in gamemap.h.
 
 // GLOBAL: LEGOLAND 0x004b47f8
-unsigned int DAT_004b47f8;
+struct Sprite *DAT_004b47f8;
 
 // GLOBAL: LEGOLAND 0x004b4804
-unsigned int DAT_004b4804;
+struct Sprite *DAT_004b4804;
 
 // GLOBAL: LEGOLAND 0x004b4838
-unsigned int DAT_004b4838;
+struct Sprite *DAT_004b4838;
 
 // GLOBAL: LEGOLAND 0x004b4850
-unsigned int DAT_004b4850;
+struct Sprite *DAT_004b4850;
 
 // GLOBAL: LEGOLAND 0x004b4bd0
 unsigned char DAT_004b4bd0[0x14];

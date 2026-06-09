@@ -1536,7 +1536,7 @@ unsigned int FUN_0040f800(unsigned int *param_1) {
 void *FUN_0040f830(void *context, void *result) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0040f8b0
-unsigned int FUN_0040f8b0(struct Obj *obj_ptr) {
+struct Sprite *FUN_0040f8b0(struct Obj *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
@@ -1728,7 +1728,7 @@ int FUN_00410310(struct FlumeInput *param) {
 void FUN_00410360(unsigned char a, unsigned char b, unsigned int *result, unsigned char c) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004103e0
-unsigned int FUN_004103e0(struct Obj *obj_ptr) {
+struct Sprite *FUN_004103e0(struct Obj *obj_ptr) {
     struct ResA *resA;
     struct ResB *resB;
 
