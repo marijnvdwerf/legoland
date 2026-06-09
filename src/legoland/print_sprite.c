@@ -37,7 +37,7 @@ struct SpriteRec {
 };
 
 // FUNCTION: LEGOLAND 0x004853a0
-LEGO_EXPORT unsigned int PrintSprite(unsigned int sprite, unsigned int x, unsigned int y, unsigned int param_4, int *param_5)
+LEGO_EXPORT unsigned int PrintSprite(struct Sprite *sprite, unsigned int x, unsigned int y, unsigned int param_4, int *param_5)
 {
     struct SpriteRec *s;
     int i;
@@ -71,10 +71,10 @@ LEGO_EXPORT unsigned int PrintSprite(unsigned int sprite, unsigned int x, unsign
                                 goto cont;
                             }
                         }
-                        RenderSprite(s->group->subs[i], xoff + x, yoff + y);
+                        RenderSprite((struct Sprite *)s->group->subs[i], xoff + x, yoff + y);
                     } else {
                         if (*(int *)GetVRAMAddress(s->group->subs[i]) != 0 || FUN_00499500((struct Sprite *)s->group->subs[i]) != 0) {
-                            RenderSpriteX(s->group->subs[i], xoff + x, yoff + y, param_4);
+                            RenderSpriteX((struct Sprite *)s->group->subs[i], xoff + x, yoff + y, param_4);
                         }
                     }
                 }
@@ -85,20 +85,20 @@ LEGO_EXPORT unsigned int PrintSprite(unsigned int sprite, unsigned int x, unsign
         goto writeback;
     }
     if (param_4 == 0) {
-        if (*(int *)GetVRAMAddress(sprite) != 0) {
+        if (*(int *)GetVRAMAddress((unsigned int)sprite) != 0) {
             result = RenderSprite(sprite, x, y);
             goto writeback;
         }
-        if (FUN_00499500((struct Sprite *)sprite) != 0) {
+        if (FUN_00499500(sprite) != 0) {
             result = RenderSprite(sprite, x, y);
             goto writeback;
         }
     } else {
-        if (*(int *)GetVRAMAddress(sprite) != 0) {
+        if (*(int *)GetVRAMAddress((unsigned int)sprite) != 0) {
             result = RenderSpriteX(sprite, x, y, param_4);
             goto writeback;
         }
-        if (FUN_00499500((struct Sprite *)sprite) != 0) {
+        if (FUN_00499500(sprite) != 0) {
             result = RenderSpriteX(sprite, x, y, param_4);
             goto writeback;
         }

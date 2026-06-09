@@ -38,10 +38,10 @@ LEGO_EXPORT void FreeBitmapResources(struct Image *image);
 LEGO_EXPORT unsigned int GetVRAMAddress(unsigned int address);
 LEGO_EXPORT struct Sprite *CreateSprite(struct Image *image);
 LEGO_EXPORT struct Sprite *CreateFunctionBasedSprite(unsigned int source, unsigned short a, unsigned short b);
-LEGO_EXPORT unsigned int LoadSprite(const char *name, int flags);
-LEGO_EXPORT unsigned int MakeSprite(unsigned int sprite);
+LEGO_EXPORT struct Sprite *LoadSprite(const char *name, int flags);
+LEGO_EXPORT unsigned int MakeSprite(struct Sprite *sprite);
 LEGO_EXPORT short ReferenceSprite(struct Sprite *sprite);
-LEGO_EXPORT int KillSprite(unsigned int sprite);
+LEGO_EXPORT int KillSprite(struct Sprite *sprite);
 
 LEGO_EXPORT void HideLayer(void *layer, unsigned int flag);
 

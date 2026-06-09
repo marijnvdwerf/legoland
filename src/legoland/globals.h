@@ -1258,7 +1258,7 @@ extern int renderEngineTargetIdx;
 // 0x0066811c
 extern void *renderEngineTargets[1];
 // 0x00668148
-extern unsigned int DAT_00668148;
+extern struct Sprite *DAT_00668148;
 // 0x0066814c
 extern unsigned int DAT_0066814c;
 // 0x006681e8
@@ -2044,7 +2044,7 @@ extern unsigned int DAT_007fe994;
 // 0x007fe9a8
 extern unsigned int DAT_007fe9a8;
 // 0x007fe9c0
-extern unsigned int DAT_007fe9c0[9];
+extern struct Sprite *DAT_007fe9c0[9];
 // 0x007fea48
 extern LEGO_EXPORT unsigned int FramesPerSecond;
 // 0x007feb14

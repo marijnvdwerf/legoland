@@ -1686,7 +1686,7 @@ int renderEngineTargetIdx;
 void *renderEngineTargets[1];
 
 // GLOBAL: LEGOLAND 0x00668148
-unsigned int DAT_00668148;
+struct Sprite *DAT_00668148;
 
 // GLOBAL: LEGOLAND 0x0066814c
 unsigned int DAT_0066814c;
@@ -2867,7 +2867,7 @@ unsigned int DAT_007fe994;
 unsigned int DAT_007fe9a8;
 
 // GLOBAL: LEGOLAND 0x007fe9c0
-unsigned int DAT_007fe9c0[9];
+struct Sprite *DAT_007fe9c0[9];
 
 // GLOBAL: LEGOLAND 0x007fea48
 LEGO_EXPORT unsigned int FramesPerSecond;

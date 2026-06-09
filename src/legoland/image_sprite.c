@@ -352,7 +352,7 @@ LEGO_EXPORT struct Sprite *CreateSprite(struct Image *image) {
         image->refcount += 1;
         if (image->data == 0) {
             if (__BMPLoader(image) == 0) {
-                KillSprite((unsigned int)sprite);
+                KillSprite(sprite);
                 return NULL;
             }
         }
@@ -401,7 +401,7 @@ LEGO_EXPORT struct Sprite *CreateSysmemSprite(struct Image *image) {
     sprite->field_c = DAT_008119a4 - 1;
     if (image->data == 0) {
         if (__BMPLoader(image) == 0) {
-            KillSprite((unsigned int)sprite);
+            KillSprite(sprite);
             return NULL;
         }
     }
@@ -428,7 +428,7 @@ LEGO_EXPORT struct Sprite *CreatePartialSprite(struct Image *image, unsigned sho
     sprite->field_c = DAT_008119a4 - 1;
     if (image->data == 0) {
         if (__BMPLoader(image) == 0) {
-            KillSprite((unsigned int)sprite);
+            KillSprite(sprite);
             return NULL;
         }
     }
@@ -517,7 +517,7 @@ int FUN_004978b0(struct Sprite *sprite, const char *name, unsigned int flags) {
                     RES_ReadFile(file, &length, 4);
                     RES_ReadFile(file, path, length);
                     path[length] = 0;
-                    table->sprites[i] = (struct Sprite *)LoadSprite(path, flags);
+                    table->sprites[i] = LoadSprite(path, flags);
                     element = table->sprites[i];
                     if (element != NULL) {
                         image = element->image;
@@ -540,46 +540,44 @@ int FUN_004978b0(struct Sprite *sprite, const char *name, unsigned int flags) {
 }
 
 // FUNCTION: LEGOLAND 0x00497ab0
-LEGO_EXPORT unsigned int LoadSprite(const char *name, int flags) {
+LEGO_EXPORT struct Sprite *LoadSprite(const char *name, int flags) {
     char ext[256];
     struct Image *image;
     struct Sprite *sprite;
-    unsigned int result;
+    struct Sprite *result;
 
-    result = 0;
+    result = NULL;
     _splitpath(name, NULL, NULL, NULL, ext);
     // STRING: LEGOLAND 0x004bfed8
     if (_stricmp(ext, ".csp") == 0) {
         sprite = CreateSprite(NULL);
         if (sprite != NULL) {
             if (FUN_004978b0(sprite, name, flags & 0xff) == 0) {
-                KillSprite((unsigned int)sprite);
-                return 0;
+                KillSprite(sprite);
+                return NULL;
             }
         }
-        return (unsigned int)sprite;
+        return sprite;
     }
     image = CreateSourceImage(name, (unsigned char)flags);
     if (image != NULL) {
-        result = (unsigned int)CreateSprite(image);
+        result = CreateSprite(image);
         KillImage(image);
     }
     return result;
 }
 
 // FUNCTION: LEGOLAND 0x00497b70
-LEGO_EXPORT unsigned int MakeSprite(unsigned int sprite) {
-    struct Sprite *s;
+LEGO_EXPORT unsigned int MakeSprite(struct Sprite *sprite) {
     struct Image *image;
 
-    s = (struct Sprite *)sprite;
-    if ((s->field_10 & 0x20) != 0) {
-        PushSetTarget(s);
-        ((int(*)(struct Sprite *))s->image)(s);
+    if ((sprite->field_10 & 0x20) != 0) {
+        PushSetTarget(sprite);
+        ((int(*)(struct Sprite *))sprite->image)(sprite);
         PopTarget();
         return 1;
     }
-    image = s->image;
+    image = sprite->image;
     if (image->data != 0 || __BMPLoader(image) != 0) {
         return 1;
     }
@@ -596,26 +594,24 @@ LEGO_EXPORT short ReferenceSprite(struct Sprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x00497bd0
-LEGO_EXPORT int KillSprite(unsigned int sprite) {
-    struct Sprite *s;
+LEGO_EXPORT int KillSprite(struct Sprite *sprite) {
     struct LayerHost *host;
 
-    s = (struct Sprite *)sprite;
-    if (s != NULL) {
-        s->field_1c--;
-        if (s->field_1c == 0) {
-            host = (struct LayerHost *)s->field_4;
+    if (sprite != NULL) {
+        sprite->field_1c--;
+        if (sprite->field_1c == 0) {
+            host = (struct LayerHost *)sprite->field_4;
             if (host != NULL) {
                 host->vtable->func_8(host);
             }
-            if ((s->field_10 & 0x20) == 0) {
-                if ((s->field_10 & 0x8000) != 0) {
-                    LLIDB_FreeILFTable((struct ILFTable *)s->image);
-                } else if (s->image != NULL) {
-                    KillImage(s->image);
+            if ((sprite->field_10 & 0x20) == 0) {
+                if ((sprite->field_10 & 0x8000) != 0) {
+                    LLIDB_FreeILFTable((struct ILFTable *)sprite->image);
+                } else if (sprite->image != NULL) {
+                    KillImage(sprite->image);
                 }
             }
-            FUN_004975b0(s);
+            FUN_004975b0(sprite);
             return 1;
         }
     }
