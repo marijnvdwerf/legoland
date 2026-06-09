@@ -15,19 +15,21 @@
 struct LegoConfig;
 
 struct WorkOrder {
-    struct WorkOrder *next;
-    unsigned char pad_4[4];
-    int var_8;
-    int var_c;
-    int *var_10;
-    unsigned char pad_14[4];
-    int var_18;
-    int var_1c;
-    unsigned char var_20;
-    unsigned char pad_21[3];
-    int var_24;
-    int var_28;
-    unsigned char var_2c;
+    /* 0x00 */ struct WorkOrder *next;
+    /* 0x04 */ int var_4;
+    /* 0x08 */ int var_8;
+    /* 0x0c */ int var_c;
+    /* 0x10 */ int *var_10;
+    /* 0x14 */ unsigned char pad_14[4];
+    /* 0x18 */ int var_18;
+    /* 0x1c */ int var_1c;
+    /* 0x20 */ unsigned char var_20;
+    /* 0x21 */ unsigned char pad_21[3];
+    /* 0x24 */ int var_24;
+    /* 0x28 */ int var_28;
+    /* 0x2c */ unsigned char var_2c;
+    /* 0x2d */ unsigned char pad_2d[3];
+    /* 0x30 */ int var_30;
 };
 
 struct Rect {
@@ -524,13 +526,13 @@ LEGO_EXPORT void EraseMechanicOrder(struct WorkOrder *order) {
     if (order->var_18 != 0) {
         NewLongTermAction((struct Bloke *)order->var_1c, 0x11);
     }
-    if (*(unsigned int *)((char *)order + 4) == DAT_0080ff64) {
+    if ((unsigned int)order->var_4 == DAT_0080ff64) {
         if (DAT_0079a8d0 != 0) {
             DAT_0079a8d0 = 0;
         }
     }
     if (order->var_20 == 1) {
-        FUN_0045e4a0(*(int *)((char *)order + 4), (char *)order + 8);
+        FUN_0045e4a0(order->var_4, &order->var_8);
     }
     FUN_00499eb0(order);
 }
@@ -541,7 +543,7 @@ LEGO_EXPORT void EraseGardenerOrder(struct WorkOrder *order) {
         NewLongTermAction((struct Bloke *)order->var_1c, 0x10);
     }
     if (order->var_20 == 1) {
-        FUN_0045e4a0(*(int *)((char *)order + 4), (char *)order + 8);
+        FUN_0045e4a0(order->var_4, &order->var_8);
     }
     FUN_00499e30(order);
 }
@@ -569,7 +571,7 @@ LEGO_EXPORT void ClearAMechanicsWorkList(int value) {
         while (node != 0) {
             if (node->var_1c == value) {
                 node->var_18 = 0;
-                *(int *)((char *)node + 0x30) = 0;
+                node->var_30 = 0;
                 node->var_1c = 0;
                 DAT_0079a8c8++;
             }
