@@ -18,6 +18,7 @@
 #include "timer.h"
 
 #include "image_sprite.h"
+#include "stream.h"
 
 #pragma intrinsic(memset, strcpy)
 

@@ -4,6 +4,7 @@
 #include <windows.h>
 
 #include "image_sprite.h"
+#include "stream.h"
 
 // FUNCTION: LEGOLAND 0x0046d340
 void FUN_0046d340(unsigned int param_1) {

@@ -15,6 +15,7 @@ struct InfoIcon {
 
 
 #include "image_sprite.h"
+#include "stream.h"
 
 // FUNCTION: LEGOLAND 0x00470bb0
 LEGO_EXPORT void InitPopUpInfo(void) { STUB(); }

@@ -20,6 +20,7 @@ struct HelpAdvisor {
 
 
 #include "image_sprite.h"
+#include "stream.h"
 
 // FUNCTION: LEGOLAND 0x0046ce20
 void FUN_0046ce20(void) {

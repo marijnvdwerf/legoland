@@ -18,6 +18,7 @@ struct PopUp {
 };
 
 #include "image_sprite.h"
+#include "stream.h"
 #include "help.h"
 
 

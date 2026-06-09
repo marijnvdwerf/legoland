@@ -10,6 +10,7 @@
 #include "sound_music.h"
 
 #include "image_sprite.h"
+#include "stream.h"
 #include "help.h"
 
 // FUNCTION: LEGOLAND 0x0048eb40

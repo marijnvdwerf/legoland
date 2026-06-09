@@ -8,6 +8,7 @@
 #include "cdcheck.h"
 #include "draw.h"
 #include "image_sprite.h"
+#include "stream.h"
 #include "input.h"
 #include "llidb.h"
 #include "resource.h"

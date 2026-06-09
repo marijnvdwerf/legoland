@@ -41,6 +41,7 @@ struct ScreenConfig {
 };
 
 #include "image_sprite.h"
+#include "stream.h"
 
 void RenderFrontEndScreen(unsigned char param_1);
 void FUN_00458ee0(void);

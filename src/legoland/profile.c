@@ -19,6 +19,7 @@ struct Profile {
 };
 
 #include "image_sprite.h"
+#include "stream.h"
 
 // FUNCTION: LEGOLAND 0x0048c260
 LEGO_EXPORT void InitListProfiles(void) { STUB(); }

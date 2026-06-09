@@ -1,10 +1,119 @@
 #include <windows.h>
+#include <ctype.h>
 #include "legoland.h"
 
 #include "crt.h"
 #include "timer.h"
 #include "string.h"
 #include "globals.h"
+
+#pragma intrinsic(memset)
+// FUNCTION: LEGOLAND 0x00498d00
+void FUN_00498d00(void) {
+    char cwd[256];
+    char token[240];
+    int current_id;
+    char num_str[4];
+    char *data_buf;
+    int file_size;
+    FILE *stream;
+    int total;
+    int offset;
+    int len;
+    char c;
+    int quote_count;
+
+    memset(token, 0, sizeof(token));
+    memset(num_str, 0, sizeof(num_str));
+    total = 0;
+    offset = 0;
+
+    if (_getcwd(cwd, 256) == 0) {
+        return;
+    }
+
+    // STRING: LEGOLAND 0x004bfef4
+    stream = fopen(".\\strings\\stab.str", "r");
+    if (stream == 0) {
+        exit(1);
+    }
+
+    while (!feof(stream)) {
+        len = fread(token, 1, 0xf0, stream);
+        if (ferror(stream)) {
+            break;
+        }
+        total += len;
+    }
+    file_size = total;
+
+    data_buf = (char *)malloc(file_size + 1);
+    fseek(stream, 0, 0);
+    fread(data_buf, 1, file_size, stream);
+    fclose(stream);
+
+    if (_chdir(cwd) != 0) {
+        return;
+    }
+
+    while (offset < file_size) {
+        c = data_buf[offset];
+        offset++;
+        if (c == 0) {
+            break;
+        }
+        if (isdigit(c)) {
+            len = 0;
+            while (isdigit(c)) {
+                num_str[len] = c;
+                len++;
+                if (offset < file_size) {
+                    c = data_buf[offset];
+                    offset++;
+                } else {
+                    c = 0;
+                }
+            }
+            if (offset != 0) {
+                offset--;
+            }
+            num_str[len] = 0;
+            current_id = atoi(num_str);
+        } else if ((isalpha(c) | ispunct(c)) != 0) {
+            len = 0;
+            quote_count = 0;
+            while (1) {
+                if (c == '"') {
+                    if (offset < file_size) {
+                        c = data_buf[offset];
+                        offset++;
+                        if (c == '"') {
+                            goto store;
+                        }
+                    } else {
+                        c = 0;
+                    }
+                    quote_count++;
+                }
+            store:
+                if (quote_count == 2) {
+                    break;
+                }
+                token[len] = c;
+                len++;
+                if (offset < file_size) {
+                    c = data_buf[offset];
+                    offset++;
+                } else {
+                    c = 0;
+                }
+            }
+            token[len] = 0;
+            FUN_00498f80(token, current_id);
+        }
+    }
+    free(data_buf);
+}
 
 struct StringNode {
     int key;

@@ -52,6 +52,7 @@ struct QueryNode {
 
 
 #include "image_sprite.h"
+#include "stream.h"
 
 
 // FUNCTION: LEGOLAND 0x004741f0

@@ -10,6 +10,7 @@
 
 
 #include "image_sprite.h"
+#include "stream.h"
 
 // FUNCTION: LEGOLAND 0x0048b7e0
 LEGO_EXPORT void InitProgressScreen(void) { STUB(); }
