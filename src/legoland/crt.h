@@ -12,6 +12,19 @@ extern unsigned int fwrite(const void *ptr, unsigned int size, unsigned int coun
 extern void *fopen(const char *filename, const char *mode);
 extern int fseek(void *stream, long offset, int origin);
 extern long ftell(void *stream);
+
+typedef struct _iobuf {
+    /* 0x00 */ char *_ptr;
+    /* 0x04 */ int _cnt;
+    /* 0x08 */ char *_base;
+    /* 0x0c */ int _flag;
+    /* 0x10 */ int _file;
+    /* 0x14 */ int _charbuf;
+    /* 0x18 */ int _bufsiz;
+    /* 0x1c */ char *_tmpfname;
+} FILE;
+#define feof(stream)   ((stream)->_flag & 0x10)
+#define ferror(stream) ((stream)->_flag & 0x20)
 extern unsigned int _read(int fd, void *buffer, unsigned int count);
 extern unsigned int _msize(void *block);
 extern int vsprintf(char *buffer, const char *format, va_list ap);

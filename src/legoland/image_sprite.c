@@ -886,7 +886,7 @@ void FUN_00498d00(void) {
     char num_str[4];
     char *data_buf;
     int file_size;
-    void *stream;
+    FILE *stream;
     int total;
     int offset;
     int len;
@@ -908,9 +908,9 @@ void FUN_00498d00(void) {
         exit(1);
     }
 
-    while ((*(unsigned int *)((char *)stream + 0xc) & 0x10) == 0) {
+    while (!feof(stream)) {
         len = fread(token, 1, 0xf0, stream);
-        if ((*(unsigned int *)((char *)stream + 0xc) & 0x20) != 0) {
+        if (ferror(stream)) {
             break;
         }
         total += len;
