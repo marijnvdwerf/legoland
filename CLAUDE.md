@@ -1,7 +1,7 @@
 # legoland — matching decompilation (instructions for Claude)
 
-This is an **isledecomp/reccmp-style matching decomp** of `legoland.exe` (MSVC6, x86). Goal: write C
-that the *original* MSVC6 compiler turns into bytes identical to the original binary, verified
+This is a matching decomp of `legoland.exe` (MSVC6, x86) in the isledecomp/reccmp style. Goal: write C
+that the *original* MSVC6 compiler turns into bytes identical to the original binary, checked
 per-function by `reccmp`. We do **not** reproduce the binary's layout — reccmp normalizes addresses.
 
 ## Toolchain
@@ -33,18 +33,18 @@ stub. The image links with `/NODEFAULTLIB` and a dummy `/ENTRY` (`legoland_entry
 
 ## Conventions
 
-- One `.c` per translation unit under `src/legoland/`, named from `ghidra/functions.csv`'s `tu`
+- One `.c` per TU (translation unit) under `src/legoland/`, named from `ghidra/functions.csv`'s `tu`
   column (`TU_RIDE_BLOKE` → `ride_bloke.c`). Functions appear in **address order**.
 - Every function is tagged `// FUNCTION: LEGOLAND 0x<addr>` immediately above it.
-- **Unmatched** functions have a `STUB();` body (macro in `legoland.h`). Remaining work: `grep -rn 'STUB()' src/`.
+- Unmatched functions have a `STUB();` body (macro in `legoland.h`). Remaining work: `grep -rn 'STUB()' src/`.
 - When you decompile a function: replace its `STUB()` body with real C, build, run reccmp, iterate to 100%.
 - No `ctx.h` — include real MSVC6 headers; shared decls go in `src/legoland/legoland.h`.
-- **`TU_CRT` and `TU_IMPORTS` are NOT decompiled, but they exist as stub symbol files**
+- **`TU_CRT` and `TU_IMPORTS` are NOT decompiled** — they exist as stub symbol files
   (`src/legoland/crt.c`, `imports.c`) using `// STUB: LEGOLAND 0x<addr>` annotations. Game functions
   call into them (CRT helpers like `memcpy`/`__ftol`/heap routines, and import thunks), so the symbols
   must be present for callers to *link* and for reccmp to *match* the call. **Leave every function in
-  them as `STUB()` — never integrate them.** `// STUB:` keeps them out of the accuracy denominator
-  (so the % reflects game functions only). One day they could be satisfied by a real CRT lib instead.
+  them as `STUB()` — never fill them in.** `// STUB:` keeps them out of the match % (so it reflects
+  game functions only). One day they could be satisfied by a real CRT lib instead.
 
 ## Don't
 

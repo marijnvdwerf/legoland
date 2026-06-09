@@ -1,15 +1,15 @@
 # Decompiling a TU
 
-The unit of work is one **translation unit** (a `src/legoland/<tu>.c`, grouped by the
-`tu` column of `ghidra/functions.csv`). You take it from all-`STUB()` to clean,
-idiomatic C where **every function is a 100% reccmp match**.
+The unit of work is one **TU** (a `src/legoland/<tu>.c`, grouped by the `tu` column of
+`ghidra/functions.csv`). You take it from all-`STUB()` to clean C where **every function
+is a 100% reccmp match**.
 
 ## The loop
 
 ```sh
 cmake --build build              # compile + link (wibo + MSVC6)
 ./tools/verify -v 0x004XXXXX     # asm diff for one function
-./tools/verify                   # whole-binary aggregate
+./tools/verify                   # whole-binary total
 ```
 
 For each function in the TU: write C → build → `verify -v <addr>` → read the asm diff
@@ -17,7 +17,7 @@ For each function in the TU: write C → build → `verify -v <addr>` → read t
 
 ## Only do functions port2 already matched
 
-Only integrate functions port2 already got byte-perfect — `current_score == 0` in
+Only fill in functions port2 already got byte-perfect — `current_score == 0` in
 `port2/project/functions.csv`. Leave everything else as `STUB()`. **Do not try to match
 an unmatched function from scratch** — that's slow, separate work, not for these runs.
 
@@ -39,12 +39,12 @@ an unmatched function from scratch** — that's slow, separate work, not for the
   from disassembly when a byte-matched port2 draft exists is wasted, off-task work.
 - The original asm is the ground truth; the asm diff from `verify -v` is what you tune against.
 
-## House style
+## Style rules
 
-- **Symbol names stay canonical.** Use the `name` from `ghidra/functions.csv` (a real
-  name like `GetGameTimer`, or `FUN_<addr>`). Do **not** rename exported functions or
-  globals yet — other TUs reference them by that name, and there is no shared
-  declaration header to coordinate a rename. Renaming is a later, coordinated pass.
+- **Keep the original names.** Use the `name` from `ghidra/functions.csv` (a real name
+  like `GetGameTimer`, or `FUN_<addr>`). Do **not** rename functions or globals — other
+  TUs reference them by that name, and there is no shared declaration header to coordinate
+  a rename. Renaming is a later, coordinated pass.
 - **Clean everything else:** real types (`uint32_t`, not `unk32_t`); named locals
   (not `uVar1`); real `struct` definitions with named fields when you understand the
   layout (not `pad_0[0x14]`); correct signatures and calling conventions.
@@ -59,13 +59,13 @@ an unmatched function from scratch** — that's slow, separate work, not for the
   it. The address is how reccmp matches — never drop or change it.
 - **Globals** go in `src/legoland/globals.c`, one definition each, with
   `// GLOBAL: LEGOLAND 0x<addr>` above them (reccmp needs this to match data refs).
-  Name them `DAT_<addr>` for now (canonical), real type.
+  Name them `DAT_<addr>` for now (the original name), real type.
 - **Cross-TU calls / data:** declare what you use with `extern` at the top of the TU
-  file, by canonical name. The callee already exists as a stub in its own TU, so the
+  file, using the original name. The callee already exists as a stub in its own TU, so the
   link resolves and reccmp matches the call by symbol. Confirm the target's address/name
   in `ghidra/functions.csv`.
-- **Calling a not-yet-integrated function with arguments — NO function-pointer casts.**
-  When a function you're integrating calls one that's still a `STUB()`, give the call its
+- **Calling a not-yet-filled-in function with arguments — NO function-pointer casts.**
+  When a function you're filling in calls one that's still a `STUB()`, give the call its
   real signature the clean way, never `((ret(*)(args))FUN_x)(...)`:
   - **Callee in *another* TU:** `extern <ret> FUN_<addr>(<args>);` at the top of your file.
     Leave the other TU's stub alone — the linker doesn't check signatures, so it still
@@ -85,16 +85,16 @@ an unmatched function from scratch** — that's slow, separate work, not for the
   has one, just write the literal with no annotation.
 - **CRT mem/str helpers (`memset`, `memcpy`, `strlen`, `strcpy`, …):** declare them in
   `crt.h` (NOT `#include <string.h>`) so we control exactly what's visible, and `#include
-  "crt.h"` in the caller. A visible prototype does **not** make MSVC6 `/O2` intrinsify
-  these to inline `rep movs`/`stos` — verified empirically: every caller (including
+  "crt.h"` in the caller. A visible prototype does **not** make MSVC6 `/O2` turn these
+  into inline `rep movs`/`stos` — verified empirically: every caller (including
   constant-size `memcpy(dst, src, 84)` / `memset(p, 0, 0xac)`) stays byte-identical with
   the prototype present, keeping the `call _memset`/`call _memcpy` form. The tree has ZERO
-  implicit function declarations. (If you ever add a helper whose prototype *does* de-match
-  a function under reccmp, leave that one implicit and record the asm reason.)
+  implicit function declarations. (If you ever add a helper whose prototype *does* break
+  a match under reccmp, leave that one implicit and record the asm reason.)
 
 ## Project-owner conventions (apply to all new + cleaned code)
 
-These refine the house style above; where they conflict, these win.
+These refine the style rules above; where they conflict, these win.
 
 - **Shared structs live in shared headers.** When 2+ TUs use the same layout, define
   the `struct` once in the owning `<tu>.h` (or `globals.h` for cross-cutting types)
@@ -102,7 +102,7 @@ These refine the house style above; where they conflict, these win.
   definitions into shared headers is an active goal.
 - **Prefix every struct field with its byte offset:** `/* 0x00 */ char name[8];`.
   This is the one explanatory-comment exception — offset comments don't affect
-  codegen and make the layout auditable. Keep them accurate.
+  the compiled output and make the layout easy to check. Keep them accurate.
 - **`malloc`/`calloc` sizes use `sizeof(struct Foo)`**, never a magic byte count
   (`malloc(0x2c)` → `malloc(sizeof(struct Foo))`; a count*stride array →
   `n * sizeof(struct Foo)`). The struct's size must equal the original allocation.
@@ -118,20 +118,19 @@ These refine the house style above; where they conflict, these win.
   particular: a global/struct-field/local that holds a heap pointer is typed `void *`
   (or the real struct pointer) — then `free(p)` and `p = malloc(...)` need no cast and
   no `(void *)`/`(unsigned int)` round-trips. Fix the *type at the source* (the
-  function signature, the global, the field) and let it propagate to all callers; a
+  function signature, the global, the field) and let it flow to all callers; a
   pointer↔`unsigned int` retype is byte-identical on x86, so the match holds — don't
   flinch because it ripples to many files.
-- **No internal "fake" duplicate struct views.** Don't define a private `struct XRec`
+- **No duplicate struct views.** Don't define a private `struct XRec`
   in a `.c` that re-describes the same object a shared struct already models — add the
   needed fields (offset-commented) to the *real* shared struct and use it. At most one
   genuine reinterpret cast is allowed where a field is a tagged union (e.g. a `Sprite`'s
   image pointer reused as a group list when a flag is set).
-- **Keep a subsystem's internal representation private.** Encoding details (e.g. an
-  id's page/slot split, a table's layout) live in the owning `.c`, not its public
-  `.h` — other TUs reach data through accessor functions, not leaked macros. An
-  out-param that yields a pointer is `T **`, never `int *`/`unsigned int *` holding an
-  address-as-int.
-- **Suspect "byte-correct but semantically fake" matches.** A match that needs odd
+- **Keep internal details private.** Encoding details (e.g. an id's page/slot split,
+  a table's layout) live in the owning `.c`, not its public `.h` — other TUs reach
+  data through accessor functions, not leaked macros. An out-param that yields a
+  pointer is `T **`, never `int *`/`unsigned int *` holding an address-as-int.
+- **Watch out for "byte-correct but semantically fake" matches.** A match that needs odd
   `stream + offset` casts or a `#pragma intrinsic` a real developer wouldn't write is
   a red flag — prefer natural C even at equal score, and flag such functions for
   re-audit (e.g. `FUN_00498d00`).
@@ -142,7 +141,7 @@ These refine the house style above; where they conflict, these win.
   with a multi-line signature (it gets stuck waiting for the `{`) — AND silently swallows
   the functions after it until it recovers. They show as "Failed to find a match". Long
   parameter lists go on a single line, even if it's wide.
-- **Missing functions / inventory gaps.** `ghidra/functions.csv` is not complete. If a
+- **Missing functions / gaps in the inventory.** `ghidra/functions.csv` is not complete. If a
   function `call`s an address that has no `// FUNCTION` annotation and isn't in the CSV
   (often a small thunk in the gap between two listed functions), it's a real function
   the inventory missed — add it to the right TU with its own
@@ -157,13 +156,13 @@ These refine the house style above; where they conflict, these win.
   at `0x00499450` is one.) Do **not** confuse it with the linker's own import-thunk
   *tables*: dense packed runs of `jmp [__imp_*]` grouped away from user code (e.g.
   `0x49d050`, `0x49e3a0`) are linker-generated, not source — don't hand-write those.
-- **Shared structs go in shared headers** (see project-owner conventions below) — a
+- **Shared structs go in shared headers** (see project-owner conventions above) — a
   struct used by 2+ TUs is defined once in the owning `<tu>.h`/`globals.h`, not
   redefined per-TU.
 
-## Done criteria for a TU
+## When is a TU done?
 
 1. Every function in the TU has a real body (no `STUB()` left — `grep -n 'STUB()' src/legoland/<tu>.c`).
 2. `./tools/verify` shows **100%** for every address in the TU (`verify -v <addr>` per function).
-3. The whole project still builds and the aggregate did not regress.
-4. Code is clean per the house style above.
+3. The whole project still builds and the total match % didn't drop.
+4. Code is clean per the style rules above.

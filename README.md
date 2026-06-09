@@ -31,7 +31,7 @@ through `wibo`, no wine.
 
 | path | what |
 |------|------|
-| `src/legoland/*.c` | one translation unit per `tu` (99 of them); functions annotated `// FUNCTION: LEGOLAND 0x...` |
+| `src/legoland/*.c` | one `.c` per TU (99 of them); functions annotated `// FUNCTION: LEGOLAND 0x...` |
 | `src/legoland/legoland.h` | shared forward declarations + globals + the `STUB()` marker |
 | `cmake/` | CMake toolchain file driving MSVC6 through `wibo` |
 | `setup.py` | downloads the toolchain (hardcoded, pinned URLs) |
@@ -44,5 +44,4 @@ through `wibo`, no wine.
 - **Matched functions** have a real body that compiles (with MSVC6) to bytes identical to the original.
 - Each function is tagged with its original virtual address; `reccmp` matches by that address via the build's PDB.
 
-The function inventory (name → offset → translation unit) comes from `ghidra/functions.csv` in the
-parent project.
+The function inventory (name → offset → TU) comes from `ghidra/functions.csv` in the parent project.
