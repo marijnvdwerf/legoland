@@ -211,7 +211,7 @@ void *FUN_00499c40(int *point) {
     int minDist = 0x7fffffff;
 
     while (current != NULL) {
-        if (*(unsigned short *)((char *)current + 0xc) == 0x10) {
+        if (current->flags_c == 0x10) {
             int *fields = (int *)current;
             int dx = (fields[0x1a] >> 8) - point[0];
             int dy = (fields[0x1b] >> 8) - point[1];
