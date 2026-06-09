@@ -350,6 +350,9 @@ unsigned int DAT_004bdd00;
 // GLOBAL: LEGOLAND 0x004bdd04
 unsigned int DAT_004bdd04;
 
+// GLOBAL: LEGOLAND 0x004bdd08
+unsigned int DAT_004bdd08;
+
 // GLOBAL: LEGOLAND 0x004bdea0
 LEGO_EXPORT struct ClipRect SPRITE_ClipRect;
 

@@ -169,10 +169,10 @@ unsigned int FUN_00488820(unsigned int x, unsigned int y) {
 LEGO_EXPORT void GenerateNewImageFromZBuffer(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00488a10
-LEGO_EXPORT void RenderSprite(void) { STUB(); }
+LEGO_EXPORT unsigned int RenderSprite(unsigned int sprite, unsigned int x, unsigned int y) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00488b90
-LEGO_EXPORT void RenderSpriteX(void) { STUB(); }
+LEGO_EXPORT unsigned int RenderSpriteX(unsigned int sprite, unsigned int x, unsigned int y, unsigned int param_4) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00488c50
 LEGO_EXPORT void RenderTiledSprite(void) { STUB(); }

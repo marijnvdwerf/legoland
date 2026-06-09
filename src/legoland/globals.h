@@ -352,6 +352,8 @@ extern LEGO_EXPORT struct LegoConfig *lpConfig;
 extern unsigned int DAT_004bdd00;
 // 0x004bdd04
 extern unsigned int DAT_004bdd04;
+// 0x004bdd08
+extern unsigned int DAT_004bdd08;
 // 0x004bdea0
 extern LEGO_EXPORT struct ClipRect SPRITE_ClipRect;
 // 0x004beb94

@@ -4,6 +4,8 @@
 #include "print_sprite.h"
 #include "render.h"
 #include "globals.h"
+#include "image_sprite.h"
+#include "timer.h"
 
 struct PrintListNode {
     unsigned int field_0;
@@ -19,8 +21,97 @@ struct PersonBlock {
 };
 
 
+struct SpriteGroup {
+    /* 0x00 */ unsigned char pad_0[4];
+    /* 0x04 */ int count;
+    /* 0x08 */ unsigned int *subs;
+    /* 0x0c */ int *xoffs;
+    /* 0x10 */ int *yoffs;
+};
+
+struct SpriteRec {
+    /* 0x00 */ unsigned char pad_0[8];
+    /* 0x08 */ struct SpriteGroup *group;
+    /* 0x0c */ unsigned char pad_c[4];
+    /* 0x10 */ unsigned int flags;
+};
+
 // FUNCTION: LEGOLAND 0x004853a0
-LEGO_EXPORT void PrintSprite(unsigned int sprite, unsigned int x, unsigned int y, unsigned int param_4, unsigned int param_5) { STUB(); }
+LEGO_EXPORT unsigned int PrintSprite(unsigned int sprite, unsigned int x, unsigned int y, unsigned int param_4, int *param_5)
+{
+    struct SpriteRec *s;
+    int i;
+    int xoff;
+    int yoff;
+    unsigned int result;
+
+    s = (struct SpriteRec *)sprite;
+    result = 1;
+    DAT_007feb14 = 0;
+    if ((s->flags & 0x8000) != 0) {
+        i = 0;
+        if (s->group->count > 0) {
+            do {
+                if ((((struct SpriteRec *)s->group->subs[i])->flags & 0x4000) == 0) {
+                    xoff = s->group->xoffs[i];
+                    yoff = s->group->yoffs[i];
+                    if (xoff < 0) {
+                        xoff = -(-xoff >> 1);
+                    } else {
+                        xoff = xoff >> 1;
+                    }
+                    if (yoff < 0) {
+                        yoff = -(-yoff >> 1);
+                    } else {
+                        yoff = yoff >> 1;
+                    }
+                    if (param_4 == 0) {
+                        if (*(int *)GetVRAMAddress(s->group->subs[i]) == 0) {
+                            if (FUN_00499500((struct Sprite *)s->group->subs[i]) == 0) {
+                                goto cont;
+                            }
+                        }
+                        RenderSprite(s->group->subs[i], xoff + x, yoff + y);
+                    } else {
+                        if (*(int *)GetVRAMAddress(s->group->subs[i]) != 0 || FUN_00499500((struct Sprite *)s->group->subs[i]) != 0) {
+                            RenderSpriteX(s->group->subs[i], xoff + x, yoff + y, param_4);
+                        }
+                    }
+                }
+            cont:
+                i = i + 1;
+            } while (i < s->group->count);
+        }
+        goto writeback;
+    }
+    if (param_4 == 0) {
+        if (*(int *)GetVRAMAddress(sprite) != 0) {
+            result = RenderSprite(sprite, x, y);
+            goto writeback;
+        }
+        if (FUN_00499500((struct Sprite *)sprite) != 0) {
+            result = RenderSprite(sprite, x, y);
+            goto writeback;
+        }
+    } else {
+        if (*(int *)GetVRAMAddress(sprite) != 0) {
+            result = RenderSpriteX(sprite, x, y, param_4);
+            goto writeback;
+        }
+        if (FUN_00499500((struct Sprite *)sprite) != 0) {
+            result = RenderSpriteX(sprite, x, y, param_4);
+            goto writeback;
+        }
+    }
+    result = 0;
+writeback:
+    if (param_5 != NULL && DAT_007feb14 != 0 && *param_5 != 0x100) {
+        DAT_004bdd00 = *param_5;
+        DAT_004bdd04 = param_5[1];
+        DAT_004bdd08 = param_5[2];
+    }
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x004855d0
 void FUN_004855d0(void) { STUB(); }
