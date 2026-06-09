@@ -26,14 +26,24 @@ struct Element {
 #define LLIDB_FLAG_LEVEL 0x4
 #define LLIDB_FLAG_LOADED 0x1
 #define LLIDB_FLAG_USEDLL 0x10000
-#define LLIDB_TYPE_MASK 0xfff0
-#define LLIDB_TYPE_NOFILE 0x200
+#define LLIDB_FLAG_NODATA 0x40000
 
-#define LLIDB_ERR_NOTFOUND (-3)
-#define LLIDB_ERR_CANCELED (-6)
+#define LLIDB_TYPE_MASK 0xfff0
+#define LLIDB_TYPE_ODF 0x10
+#define LLIDB_TYPE_TSM 0x20
+#define LLIDB_TYPE_TSF 0x40
+#define LLIDB_TYPE_NOFILE 0x200
+#define LLIDB_TYPE_TXT 0x800
+#define LLIDB_TYPE_ILF 0x400
+#define LLIDB_TYPE_ODF_DLL 0x1010
+#define LLIDB_TYPE_CSP 0x2000
+
 #define LLIDB_ERR_MISMATCH (-1)
+#define LLIDB_ERR_ICMWRITE (-2)
+#define LLIDB_ERR_NOTFOUND (-3)
 #define LLIDB_ERR_NOKEY (-4)
 #define LLIDB_ERR_NOFILE (-5)
+#define LLIDB_ERR_CANCELED (-6)
 
 struct LLSImage;
 struct ILFTable;

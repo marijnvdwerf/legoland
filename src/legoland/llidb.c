@@ -306,27 +306,27 @@ void FUN_0047b7b0(int param_1) {
     // STRING: LEGOLAND 0x004bc208
     const char *title = "LEGOLAND Installation & Configuration Manager";
     switch (param_1) {
-    case -1:
+    case LLIDB_ERR_MISMATCH:
         // STRING: LEGOLAND 0x004bc1dc
         MessageBoxA(NULL, "An element of the same name already exists.", title, 0x30);
         break;
-    case -2:
+    case LLIDB_ERR_ICMWRITE:
         // STRING: LEGOLAND 0x004bc1ac
         MessageBoxA(NULL, "LEGOLAND.ICM could not be created or updated.", title, 0x30);
         break;
-    case -3:
+    case LLIDB_ERR_NOTFOUND:
         // STRING: LEGOLAND 0x004bc184
         MessageBoxA(NULL, "The given element could not be found.", title, 0x30);
         break;
-    case -4:
+    case LLIDB_ERR_NOKEY:
         // STRING: LEGOLAND 0x004bc160
         MessageBoxA(NULL, "No identification key was given.", title, 0x30);
         break;
-    case -5:
+    case LLIDB_ERR_NOFILE:
         // STRING: LEGOLAND 0x004bc148
         MessageBoxA(NULL, "No file name was given.", title, 0x30);
         break;
-    case -6:
+    case LLIDB_ERR_CANCELED:
         // STRING: LEGOLAND 0x004bc130
         MessageBoxA(NULL, "Operation was canceled.", title, 0x30);
         break;
@@ -353,7 +353,7 @@ LEGO_EXPORT int LLIDB_SelectElement(unsigned int mask, unsigned int *output) {
     result = DialogBoxParamA((HINSTANCE)WNDENV_GethInstance(), MAKEINTRESOURCEA(0x75), GetDesktopWindow(), FUN_0047b890, 0);
     if (result != -1) {
         if (result != 1) {
-            return -6;
+            return LLIDB_ERR_CANCELED;
         }
         if (output != NULL) {
             LLIDB_GetElement(DAT_007fdca0, output);
@@ -501,7 +501,7 @@ LEGO_EXPORT void *LLIDB_LoadODFData(struct LLIDBHead *head) {
     RES_ReadFile(file, &size, 4);
     RES_ReadFile(file, name, size);
     name[size] = '\0';
-    if ((obj->flags & 0x40000) == 0) {
+    if ((obj->flags & LLIDB_FLAG_NODATA) == 0) {
         if (name[0] != '\0') {
             sprite = LoadSprite(name, 1);
             obj->sprite_0 = (struct ODFSprite *)sprite;
@@ -564,7 +564,7 @@ icon:
     RES_ReadFile(file, name, size);
     name[size] = '\0';
     obj->handle = 0;
-    if (name[0] != '\0' && (obj->flags & 0x40000) == 0) {
+    if (name[0] != '\0' && (obj->flags & LLIDB_FLAG_NODATA) == 0) {
         LLIDB_FindElement(name, &element, NULL);
         obj->handle = element;
         LLIDB_LoadData((void *)element);
@@ -614,10 +614,10 @@ icon:
     obj->data_74 = 0;
     RES_CloseFile(file);
     SetStandardCallbacks((struct CallbackTable *)obj);
-    if ((obj->flags & 0x10000) == 0 || text[0] == '\0') {
+    if ((obj->flags & LLIDB_FLAG_USEDLL) == 0 || text[0] == '\0') {
         SetCustomCallbacks(obj->cleanup_arg);
     } else if (LoadObjectLibrary(obj, text) == 0) {
-        obj->flags &= 0xfffeffff;
+        obj->flags &= ~LLIDB_FLAG_USEDLL;
         SetCustomCallbacks(obj->cleanup_arg);
         if (obj->callback != NULL) {
             obj->callback(obj->cleanup_arg);
@@ -626,7 +626,7 @@ icon:
         FUN_0047f870("Class %s has OC_USEDLL attribute and DLL failed to load.", *(char **)obj->cleanup_arg);
     }
 
-    if ((obj->flags & 0x40000) != 0) {
+    if ((obj->flags & LLIDB_FLAG_NODATA) != 0) {
         if (obj->desc != NULL) {
             free(obj->desc);
             obj->desc = NULL;
@@ -656,7 +656,7 @@ void FUN_0047c6a0(struct LLIDBHead *head) {
     if (obj->cleanup != NULL) {
         obj->cleanup(obj->cleanup_arg);
     }
-    if (obj->flags & 0x10000) {
+    if (obj->flags & LLIDB_FLAG_USEDLL) {
         UnLoadObjectLibrary(obj);
     }
 
@@ -787,7 +787,7 @@ LEGO_EXPORT void *LLIDB_LoadTSFData(struct LLIDBHead *head) {
 
     RES_CloseFile(file);
     head->data = si;
-    head->flags |= 1;
+    head->flags |= LLIDB_FLAG_LOADED;
     return si;
 }
 
@@ -861,7 +861,7 @@ LEGO_EXPORT void *LLIDB_LoadTSMData(struct LLIDBHead *head) {
     entries[i * 2] = 0xffffffff;
     entries[i * 2 + 1] = 0xffffffff;
     RES_CloseFile(file);
-    head->flags |= 1;
+    head->flags |= LLIDB_FLAG_LOADED;
     head->data = entries;
     return entries;
 closefail:
@@ -938,7 +938,7 @@ LEGO_EXPORT void *LLIDB_LoadILFData(struct LLIDBHead *head) {
                 table->data_14 = NULL;
                 RES_CloseFile(file);
                 head->data = table;
-                head->flags |= 1;
+                head->flags |= LLIDB_FLAG_LOADED;
                 return table;
             }
         }
@@ -1012,7 +1012,7 @@ LEGO_EXPORT void *LLIDB_LoadCSPData(struct LLIDBHead *head) {
             if (i == count) {
                 table->data_14 = NULL;
                 head->data = table;
-                head->flags |= 1;
+                head->flags |= LLIDB_FLAG_LOADED;
                 RES_CloseFile(file);
                 return head->data;
             }
@@ -1029,39 +1029,39 @@ LEGO_EXPORT void *LLIDB_LoadData(void *handle) {
     unsigned int flags = head->flags;
     void *data;
 
-    if (flags & 1) {
+    if (flags & LLIDB_FLAG_LOADED) {
         head->refcount++;
         return head->data;
     }
 
     head->data = NULL;
-    flags |= 1;
+    flags |= LLIDB_FLAG_LOADED;
     head->flags = flags;
-    switch (flags & 0xfff0) {
-    case 0x10:
-    case 0x1010:
+    switch (flags & LLIDB_TYPE_MASK) {
+    case LLIDB_TYPE_ODF:
+    case LLIDB_TYPE_ODF_DLL:
         head->data = LLIDB_LoadODFData(head);
         break;
-    case 0x20:
+    case LLIDB_TYPE_TSM:
         head->data = LLIDB_LoadTSMData(head);
         break;
-    case 0x40:
+    case LLIDB_TYPE_TSF:
         head->data = LLIDB_LoadTSFData(head);
         break;
-    case 0x400:
+    case LLIDB_TYPE_ILF:
         head->data = LLIDB_LoadILFData(head);
         break;
-    case 0x2000:
+    case LLIDB_TYPE_CSP:
         head->data = LLIDB_LoadCSPData(head);
         break;
-    case 0x200:
-    case 0x800:
+    case LLIDB_TYPE_NOFILE:
+    case LLIDB_TYPE_TXT:
         return NULL;
     }
 
     data = head->data;
     if (data == NULL) {
-        head->flags &= 0xfffffffe;
+        head->flags &= ~LLIDB_FLAG_LOADED;
         return data;
     }
     head->refcount++;
@@ -1077,23 +1077,23 @@ LEGO_EXPORT void LLIDB_UnLoadData(unsigned int handle) {
         return;
     }
     flags = head->flags;
-    if ((flags & 1) == 0) {
+    if ((flags & LLIDB_FLAG_LOADED) == 0) {
         return;
     }
     flags &= 0xfffcfff0;
     head->flags = flags;
-    switch (flags & 0xfff0) {
-    case 0x10:
-    case 0x1010:
+    switch (flags & LLIDB_TYPE_MASK) {
+    case LLIDB_TYPE_ODF:
+    case LLIDB_TYPE_ODF_DLL:
         FUN_0047c6a0(head);
         break;
-    case 0x20:
+    case LLIDB_TYPE_TSM:
         FUN_0047cf80(head);
         break;
-    case 0x40:
+    case LLIDB_TYPE_TSF:
         FUN_0047cdd0((struct SpriteManager *)head);
         break;
-    case 0x400:
+    case LLIDB_TYPE_ILF:
         LLIDB_FreeILFTable((struct ILFTable *)head->data);
         break;
     }
