@@ -157,7 +157,7 @@ void FUN_00458830(void) { STUB(); }
 void FUN_004588c0(void)
 {
     struct ScreenConfig *config;
-    unsigned int sprite;
+    struct Sprite *sprite;
 
     config = (struct ScreenConfig *)lpConfig;
     DAT_007fe020[0] = 0;
@@ -172,7 +172,7 @@ void FUN_004588c0(void)
     PopRenderingStatus();
     RenderingComplete();
 
-    if (sprite != 0) {
+    if (sprite != NULL) {
         KillSprite(sprite);
     }
 }

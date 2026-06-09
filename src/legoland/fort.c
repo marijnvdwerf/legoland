@@ -29,8 +29,8 @@ void FUN_00406240(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004062a0
 void FUN_004062a0(void) {
-    unsigned int sprite = DAT_004c11cc;
-    if (sprite != 0) {
+    struct Sprite *sprite = DAT_004c11cc;
+    if (sprite != NULL) {
         KillSprite(sprite);
     }
 }

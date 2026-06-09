@@ -438,7 +438,7 @@ unsigned int DAT_004c11c4;
 unsigned int DAT_004c11c8;
 
 // GLOBAL: LEGOLAND 0x004c11cc
-unsigned int DAT_004c11cc;
+struct Sprite *DAT_004c11cc;
 
 // GLOBAL: LEGOLAND 0x004c11dc
 unsigned int DAT_004c11dc;
