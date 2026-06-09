@@ -14,14 +14,6 @@
 #include "sound_music.h"
 #include "llidb.h"
 
-struct IconNode {
-    struct IconNode *next;
-    unsigned char pad_4[0x10];
-    unsigned short id;
-    unsigned char pad_16[0x34 - 0x16];
-    unsigned int flags;
-};
-
 struct ProfileObj {
     unsigned char pad_0[0x34];
     unsigned int flags;
@@ -504,8 +496,8 @@ LEGO_EXPORT void DisableSidePanelIcons(void) {
 
     node = (struct IconNode *)DAT_006687c8;
     while (node != NULL) {
-        if (node->id == 0xd2 || node->id == 0xd5 || node->id == 0xd6 || node->id == 0xd7) {
-            node->flags |= 0x400;
+        if (node->field_14 == 0xd2 || node->field_14 == 0xd5 || node->field_14 == 0xd6 || node->field_14 == 0xd7) {
+            node->field_34 |= 0x400;
         }
         node = node->next;
     }
@@ -517,8 +509,8 @@ LEGO_EXPORT void EnableSidePanelIcons(void) {
 
     node = (struct IconNode *)DAT_006687c8;
     while (node != NULL) {
-        if (node->id == 0xd2 || node->id == 0xd5 || node->id == 0xd6 || node->id == 0xd7) {
-            node->flags &= 0xfffffbff;
+        if (node->field_14 == 0xd2 || node->field_14 == 0xd5 || node->field_14 == 0xd6 || node->field_14 == 0xd7) {
+            node->field_34 &= 0xfffffbff;
         }
         node = node->next;
     }

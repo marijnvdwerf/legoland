@@ -12,15 +12,6 @@
 #include "interface.h"
 #include "sound_music.h"
 
-struct SpriteIcon {
-    unsigned char pad_0[0x2c];
-    unsigned char (*event_handler)(unsigned int param_1, unsigned int param_2);
-    unsigned char pad_30[0x34 - 0x30];
-    unsigned int field_34;
-    unsigned int field_38;
-    unsigned int field_3c;
-};
-
 struct PopUp {
     unsigned char pad_0[0x34];
     unsigned int field_34;

@@ -17,6 +17,7 @@ LEGO_EXPORT void DelObjectList(void);
 LEGO_EXPORT unsigned int ObjectLinkedList(unsigned int *entry);
 void FUN_00476000(void);
 void FUN_00476050(void);
+void FUN_004760a0(void);
 void FUN_00476070(int mask, unsigned int value);
 void FUN_00476140(int index, int value);
 void FUN_004771f0(const char *filename, unsigned int param_2, unsigned int param_3);
