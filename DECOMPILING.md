@@ -113,6 +113,24 @@ These refine the house style above; where they conflict, these win.
 - **`pointer + offset` access becomes a struct member.** `*(int *)((char *)p + 0x18)`
   → `p->field_18` (name the field when known); extend the struct rather than
   hand-computing offsets.
+- **The only cast that should survive is `(struct Foo *)malloc(...)` at an allocation
+  site.** Aim to eliminate every other cast by giving values their real type. In
+  particular: a global/struct-field/local that holds a heap pointer is typed `void *`
+  (or the real struct pointer) — then `free(p)` and `p = malloc(...)` need no cast and
+  no `(void *)`/`(unsigned int)` round-trips. Fix the *type at the source* (the
+  function signature, the global, the field) and let it propagate to all callers; a
+  pointer↔`unsigned int` retype is byte-identical on x86, so the match holds — don't
+  flinch because it ripples to many files.
+- **No internal "fake" duplicate struct views.** Don't define a private `struct XRec`
+  in a `.c` that re-describes the same object a shared struct already models — add the
+  needed fields (offset-commented) to the *real* shared struct and use it. At most one
+  genuine reinterpret cast is allowed where a field is a tagged union (e.g. a `Sprite`'s
+  image pointer reused as a group list when a flag is set).
+- **Keep a subsystem's internal representation private.** Encoding details (e.g. an
+  id's page/slot split, a table's layout) live in the owning `.c`, not its public
+  `.h` — other TUs reach data through accessor functions, not leaked macros. An
+  out-param that yields a pointer is `T **`, never `int *`/`unsigned int *` holding an
+  address-as-int.
 - **Suspect "byte-correct but semantically fake" matches.** A match that needs odd
   `stream + offset` casts or a `#pragma intrinsic` a real developer wouldn't write is
   a red flag — prefer natural C even at equal score, and flag such functions for
