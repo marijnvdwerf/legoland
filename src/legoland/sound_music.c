@@ -9,6 +9,7 @@
 #include "globals.h"
 #include "math.h"
 #include "debug_alloc.h"
+#include "stream.h"
 
 struct AVISoundBuffer;
 struct AVISoundBufferVtbl;
@@ -103,6 +104,7 @@ extern int FUN_00492130(void *hwnd);
 extern int FUN_00495a10(void *hwnd);
 extern LEGO_EXPORT void GetTileCentre(struct Point *ref, int *out);
 extern void FUN_00492b20(struct Sample *sample);
+extern struct SampleDef *CreateSampleFromWAV(const char *path);
 
 struct MusicPerformanceVtbl {
     unsigned char pad_0[8];
@@ -157,13 +159,9 @@ struct SampleConfig {
 };
 
 struct FXItem {
-    struct SampleDef *sample;
-    unsigned char pad_4[0xc - 0x4];
-};
-
-struct FXList {
-    unsigned char pad_0[8];
-    struct FXItem items[1];
+    /* 0x00 */ char *name;
+    /* 0x04 */ unsigned char pad_4[0x8 - 0x4];
+    /* 0x08 */ struct SampleDef *sample;
 };
 
 // FUNCTION: LEGOLAND 0x00495b90
@@ -976,7 +974,27 @@ LEGO_EXPORT void AddSFX_Callback(struct CallbackEntry *entry, unsigned int delay
 }
 
 // FUNCTION: LEGOLAND 0x00496dd0
-LEGO_EXPORT void Load_FXList(const unsigned char *list, unsigned int count) { STUB(); }
+LEGO_EXPORT void Load_FXList(const unsigned char *list, int count) {
+    char path[100];
+    struct FXItem *item;
+
+    if (count > 0) {
+        item = (struct FXItem *)list;
+        do {
+            // STRING: LEGOLAND 0x004bfea0
+            sprintf(path, ".\\sfx\\%s", item->name);
+            item->sample = CreateSampleFromWAV(path);
+            if (item->sample != 0) {
+                item->sample->field_10 = item->name;
+            } else {
+                // STRING: LEGOLAND 0x004bfe88
+                DBPrintf("Failed to load SFX %s\n", item->name);
+            }
+            item = item + 1;
+            count = count - 1;
+        } while (count != 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00496e30
 LEGO_EXPORT void Kill_FXList(const unsigned char *list, int count) {
@@ -985,16 +1003,46 @@ LEGO_EXPORT void Kill_FXList(const unsigned char *list, int count) {
     if (count <= 0) {
         return;
     }
-    item = (struct FXItem *)((unsigned char *)list + 8); /* SFX arrays are raw byte buffers (varied sizes per TU); not a struct view to fold */
+    item = (struct FXItem *)list;
     do {
         if (item->sample != 0) {
             DeleteSampleDef(item->sample);
         }
         item->sample = 0;
-        item = (struct FXItem *)((unsigned char *)item + 12);
+        item = item + 1;
         count--;
     } while (count != 0);
 }
 
 // FUNCTION: LEGOLAND 0x00496e60
-void FUN_00496e60(void) { STUB(); }
+void FUN_00496e60(int param_1, int param_2) {
+    int savedC4;
+    int savedCC;
+    unsigned int start;
+    unsigned int now;
+
+    savedC4 = DAT_0080ffc4;
+    savedCC = DAT_0080ffcc;
+    while (DAT_0080ffcc > 0 || DAT_0080ffc4 > 0) {
+        start = GetTicks();
+        DAT_0080ffcc = DAT_0080ffcc - param_1;
+        if (DAT_0080ffcc <= 0) {
+            DAT_0080ffcc = 0;
+        }
+        DAT_0080ffc4 = DAT_0080ffc4 - param_1;
+        if (DAT_0080ffc4 <= 0) {
+            DAT_0080ffc4 = 0;
+        }
+        UpdateSoundVols();
+        now = GetTicks();
+        while ((int)(start + param_2) > (int)now) {
+            now = GetTicks();
+        }
+    }
+    FUN_00492830();
+    FUN_00498920();
+    DAT_006687b0 = 4;
+    DAT_0080ffc4 = savedC4;
+    DAT_0080ffcc = savedCC;
+    UpdateSoundVols();
+}

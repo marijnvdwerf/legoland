@@ -2243,6 +2243,10 @@ extern unsigned int DAT_0080ff80;
 extern unsigned int DAT_0080ff84;
 // 0x0080ff88
 extern unsigned int DAT_0080ff88;
+// 0x0080ffc4
+extern int DAT_0080ffc4;
+// 0x0080ffcc
+extern int DAT_0080ffcc;
 // 0x0080ffe5
 extern unsigned char DAT_0080ffe5;
 // 0x0080ffa0
