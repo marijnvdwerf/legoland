@@ -6,6 +6,7 @@
 
 #include "draw.h"
 #include "debug_alloc.h"
+#include "gfx.h"
 #include "print_sprite.h"
 #include "text.h"
 #include "llidb.h"
@@ -356,7 +357,42 @@ struct TextCell *FUN_00455a10(struct Sprite *sprite, int *out_index) {
 }
 
 // FUNCTION: LEGOLAND 0x00455a50
-int FUN_00455a50(struct Sprite *sprite) { STUB(); }
+int FUN_00455a50(struct Sprite *sprite) {
+    RECT rc;
+    struct TextCell *cell;
+    HDC hdc;
+    COLORREF color;
+    HBRUSH brush;
+    HGDIOBJ old_font;
+    DDCOLORKEY ck;
+    LPDIRECTDRAWSURFACE surface;
+
+    rc.top = 0;
+    rc.left = 0;
+    cell = FUN_00455a10(sprite, 0);
+    if (cell != NULL) {
+        rc.right = cell->width;
+        rc.bottom = cell->height;
+        PushRenderingStatusAndUnlockVideoSurface();
+        ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->GetDC((LPDIRECTDRAWSURFACE)renderEngine, &hdc);
+        color = GetNearestColor(hdc, cell->bg_color & 0xffffff);
+        SetBkMode(hdc, 1);
+        SetBkColor(hdc, color);
+        brush = CreateSolidBrush(color);
+        FillRect(hdc, &rc, brush);
+        DeleteObject(brush);
+        SetTextColor(hdc, cell->text_color & 0xffffff);
+        old_font = SelectFont(hdc, cell->font);
+        DrawTextA(hdc, cell->name, strlen(cell->name), &rc, cell->format);
+        SelectObject(hdc, old_font);
+        ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->ReleaseDC((LPDIRECTDRAWSURFACE)renderEngine, hdc);
+        PopRenderingStatus();
+        ck.dwColorSpaceLowValue = GetNearestColour(color & 0xff, color >> 8 & 0xff, color >> 0x10 & 0xff);
+        ck.dwColorSpaceHighValue = ck.dwColorSpaceLowValue;
+        surface = (LPDIRECTDRAWSURFACE)cell->sprite->surface;
+        surface->lpVtbl->SetColorKey(surface, 8, &ck);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00455bb0
 struct TextCell *FUN_00455bb0(char *name, int width, int height, int font, unsigned int format, unsigned int bg_color, unsigned int text_color) {
