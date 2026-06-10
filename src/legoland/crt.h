@@ -29,7 +29,7 @@ extern unsigned int _read(int fd, void *buffer, unsigned int count);
 extern unsigned int _msize(void *block);
 extern int vsprintf(char *buffer, const char *format, va_list ap);
 extern void *calloc(unsigned int count, unsigned int size);
-extern __declspec(noreturn) void exit(int status);
+extern void exit(int status);
 extern int atoi(const char *str);
 extern unsigned int _lseek(unsigned int a, unsigned int b, unsigned int c);
 extern int _tell(int fd);

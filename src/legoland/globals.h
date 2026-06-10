@@ -1244,6 +1244,8 @@ extern LEGO_EXPORT unsigned int DDRAWENV[246];
 extern void *DAT_00668070;
 // 0x0066807c
 extern void *renderEngine;
+// 0x00668080
+extern void *DAT_00668080;
 // 0x00668084
 extern unsigned int DAT_00668084;
 // 0x00668088

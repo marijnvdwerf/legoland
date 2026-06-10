@@ -1,3 +1,6 @@
+#include <windows.h>
+#include <ddraw.h>
+
 #include "legoland.h"
 #include "crt.h"
 
@@ -5,6 +8,13 @@
 #include "render.h"
 #include "challenge.h"
 #include "globals.h"
+#include "image_sprite.h"
+#include "draw.h"
+
+extern void FUN_00464ee0(RECT *rect);
+extern void SoftPrint_XBltFast(struct Sprite *sprite, RECT *a, RECT *b, unsigned int param_4);
+extern void SoftPrint_Clear(void);
+extern unsigned int GetTransparentColour(void);
 
 struct CursorCacheNode {
     struct CursorCacheNode *next;
@@ -169,13 +179,97 @@ unsigned int FUN_00488820(unsigned int x, unsigned int y) {
 LEGO_EXPORT void GenerateNewImageFromZBuffer(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00488a10
-LEGO_EXPORT unsigned int RenderSprite(struct Sprite *sprite, unsigned int x, unsigned int y) { STUB(); }
+LEGO_EXPORT unsigned int RenderSprite(struct Sprite *sprite, int x, int y) {
+    RECT dst;
+    RECT src;
+    DDBLTFX fx;
+
+    src.right = (short)sprite->width;
+    dst.left = x;
+    dst.right = src.right + x;
+    dst.top = y;
+    src.bottom = (short)sprite->height;
+    dst.bottom = src.bottom + y;
+    src.left = 0;
+    src.top = 0;
+    if ((sprite->flags & 0x60) != 0) {
+        if (IntersectRect(&dst, &dst, (RECT *)&SPRITE_ClipRect) != 0) {
+            int i;
+            unsigned int *p;
+            src.top = dst.top;
+            sprite->field_c = DAT_008119a4;
+            src.left = dst.left;
+            src.right = dst.right;
+            src.bottom = dst.bottom;
+            OffsetRect(&src, -x, -y);
+            p = (unsigned int *)&fx;
+            for (i = 0x19; i != 0; i--) {
+                *p = 0;
+                p++;
+            }
+            fx.dwSize = 100;
+            PushRenderingStatusAndUnlockVideoSurface();
+            if ((sprite->flags & 0x40) == 0) {
+                ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Blt((LPDIRECTDRAWSURFACE)renderEngine, &dst, (LPDIRECTDRAWSURFACE)sprite->surface, &src, 0x1000000, &fx);
+            } else {
+                ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Blt((LPDIRECTDRAWSURFACE)renderEngine, &dst, (LPDIRECTDRAWSURFACE)sprite->surface, &src, 0x1008000, &fx);
+            }
+            PopRenderingStatus();
+            return 1;
+        }
+    } else {
+        if (IntersectRect(&dst, &dst, (RECT *)&SPRITE_ClipRect) != 0) {
+            src.top = dst.top;
+            sprite->field_c = DAT_008119a4;
+            src.left = dst.left;
+            src.right = dst.right;
+            src.bottom = dst.bottom;
+            OffsetRect(&src, -x, -y);
+            FUN_00464ee0(&dst);
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00488b90
-LEGO_EXPORT unsigned int RenderSpriteX(struct Sprite *sprite, unsigned int x, unsigned int y, unsigned int param_4) { STUB(); }
+LEGO_EXPORT unsigned int RenderSpriteX(struct Sprite *sprite, int x, int y, unsigned int param_4) {
+    RECT dst;
+    RECT src;
+
+    src.right = (short)sprite->width;
+    dst.right = src.right + x;
+    src.bottom = (short)sprite->height;
+    dst.bottom = src.bottom + y;
+    dst.left = x;
+    dst.top = y;
+    src.left = 0;
+    src.top = 0;
+    if (IntersectRect(&dst, &dst, (RECT *)&SPRITE_ClipRect) != 0) {
+        src.top = dst.top;
+        sprite->field_c = DAT_008119a4;
+        src.left = dst.left;
+        src.right = dst.right;
+        src.bottom = dst.bottom;
+        OffsetRect(&src, -x, -y);
+        SoftPrint_XBltFast(sprite, &src, &dst, param_4);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00488c50
-LEGO_EXPORT void RenderTiledSprite(void) { STUB(); }
+LEGO_EXPORT void RenderTiledSprite(int param_1, int x, int y, int w, int h) {
+    int left;
+    int top;
+    int right;
+    int bottom;
+
+    left = x;
+    right = x + w;
+    top = y;
+    bottom = y + h;
+
+    exit(1);
+}
 
 // FUNCTION: LEGOLAND 0x00488c80
 void FUN_00488c80(void) { STUB(); }
@@ -184,13 +278,43 @@ void FUN_00488c80(void) { STUB(); }
 LEGO_EXPORT void RenderScaledSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004890c0
-LEGO_EXPORT void RenderBlock(void) { STUB(); }
+LEGO_EXPORT unsigned int RenderBlock(int x, int y, int w, int h, unsigned int color) {
+    RECT dst;
+    DDBLTFX fx;
+
+    dst.left = x;
+    dst.top = y;
+    dst.right = x + w;
+    dst.bottom = y + h;
+    fx.dwSize = 100;
+    fx.dwFillColor = color;
+    if (IntersectRect(&dst, &dst, (RECT *)&SPRITE_ClipRect) == 0) {
+        return 1;
+    }
+    PushRenderingStatusAndUnlockVideoSurface();
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->SetClipper((LPDIRECTDRAWSURFACE)renderEngine, (LPDIRECTDRAWCLIPPER)DAT_00668080);
+    if (((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Blt((LPDIRECTDRAWSURFACE)renderEngine, &dst, NULL, NULL, 0x1000400, &fx) == 0) {
+        ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->SetClipper((LPDIRECTDRAWSURFACE)renderEngine, NULL);
+        PopRenderingStatus();
+        return 1;
+    }
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->SetClipper((LPDIRECTDRAWSURFACE)renderEngine, NULL);
+    PopRenderingStatus();
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00489190
 LEGO_EXPORT void RenderTransSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489390
-LEGO_EXPORT void RenderThickBox(unsigned int a1, unsigned int a2, unsigned int a3, unsigned int a4, unsigned int a5, unsigned int a6) { STUB(); }
+LEGO_EXPORT void RenderThickBox(int x, int y, int w, int h, int thickness, unsigned int color) {
+    int inner;
+    RenderBlock(x, y, w, thickness, color);
+    inner = h + thickness * -2;
+    RenderBlock(x, y + thickness, thickness, inner, color);
+    RenderBlock((x - thickness) + w, y + thickness, thickness, inner, color);
+    RenderBlock(x, (y - thickness) + h, w, thickness, color);
+}
 
 // FUNCTION: LEGOLAND 0x00489410
 LEGO_EXPORT void RenderBox(unsigned int a1, unsigned int a2, unsigned int a3, unsigned int a4, unsigned int a5) {
