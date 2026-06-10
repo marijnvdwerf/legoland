@@ -609,7 +609,52 @@ int FUN_0046f330(struct Point *point, struct IconNode *icon) {
 }
 
 // FUNCTION: LEGOLAND 0x0046f360
-LEGO_EXPORT void GetIconAtPos(void) { STUB(); }
+LEGO_EXPORT struct IconNode *GetIconAtPos(struct Point *param_1, unsigned char *param_2) {
+    short x = (short)param_1->x;
+    short y = (short)param_1->y;
+    struct IconNode *found = NULL;
+    int doGeom = 1;
+    int i = 0;
+    struct Bbox bbox;
+
+    do {
+        struct IconNode *cur = (i != 0) ? DAT_006687cc : DAT_006687c8;
+        for (; cur != NULL; cur = cur->next) {
+            struct IconNode *candidate = found;
+            unsigned int flags = cur->field_34;
+            if (doGeom &&
+                (((flags & 0x10) == 0 || (flags & 0x400) != 0) ||
+                 (x < cur->field_c) ||
+                 (y < cur->field_e) ||
+                 (cur->field_10 + cur->field_c < x) ||
+                 (candidate = cur, cur->field_12 + cur->field_e < y)) &&
+                (candidate = found, (flags & 0x40) != 0 && (flags & 0x400) == 0) &&
+                FUN_0046f330(param_1, cur) != 0) {
+                *param_2 = *param_2 | 4;
+                if (found != NULL && (found->field_34 & 0x800) != 0) {
+                    if ((unsigned short)(cur->field_14 - 1) == (unsigned short)(found->field_14 - 3) ||
+                        (unsigned short)(cur->field_14 - 1) == (unsigned short)(found->field_14 - 4)) {
+                        goto next;
+                    }
+                }
+                candidate = NULL;
+            }
+        next:
+            if ((cur->field_34 & 0x20) != 0 && (cur->field_34 & 0x400) == 0) {
+                FUN_0046de50((struct Rect16 *)cur, (struct Rect32 *)&bbox);
+                if (x < bbox.min_x || bbox.max_x < x || y < bbox.min_y || bbox.max_y < y) {
+                    doGeom = 0;
+                } else {
+                    doGeom = 1;
+                }
+            }
+            found = candidate;
+        }
+        i++;
+    } while (i <= 1);
+
+    return found;
+}
 
 // FUNCTION: LEGOLAND 0x0046f4c0
 LEGO_EXPORT unsigned char CheckFocussedIcon(void) {
