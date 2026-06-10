@@ -3,7 +3,10 @@
 #include "legoland.h"
 
 struct Ride;
+struct ObjClassNode;
+struct ObjInstance;
 
+LEGO_EXPORT struct ObjInstance *GetInstanceOfClass(struct ObjClassNode *cls, const unsigned short *uid);
 void FUN_00489ee0(void);
 void FUN_0048a040(void);
 LEGO_EXPORT void RemoveBlokeFromRide(void *ride, void *node);

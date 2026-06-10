@@ -7,6 +7,7 @@
 #include "llidb.h"
 #include "math.h"
 #include "tilemap.h"
+#include "obj_instance.h"
 #include <math.h>
 
 #include "image_sprite.h"
@@ -565,11 +566,55 @@ LEGO_EXPORT void RenderBlokeList(struct BlokeListHead *list) {
     }
 }
 
+struct MapCellElement {
+    struct RenderObjectVtable3 *vtable;
+};
+
+struct RenderObjectVtable3 {
+    unsigned char pad_0[0xc];
+    struct ObjClassNode *class_node;
+};
+
+struct RideInstance {
+    unsigned char pad_0[0xc];
+    unsigned short flags;
+};
+
 // FUNCTION: LEGOLAND 0x00442fa0
-LEGO_EXPORT void Ride_SetFlagToNotLetAnyoneOn(struct RideObject *ride) { STUB(); }
+LEGO_EXPORT void Ride_SetFlagToNotLetAnyoneOn(unsigned char *param_1) {
+    struct MapCellElement *cell;
+    struct RideInstance *instance;
+    int x = param_1[0];
+    int y = param_1[1];
+
+    if (x >= 0 && x < (int)lpConfig->width && y >= 0 && y < (int)lpConfig->height) {
+        cell = (struct MapCellElement *)((char *)GameMap[y] + x * 0x14);
+    } else {
+        cell = 0;
+    }
+    instance = (struct RideInstance *)GetInstanceOfClass(cell->vtable->class_node, (const unsigned short *)param_1);
+    if (instance != 0) {
+        *(unsigned char *)&instance->flags |= 2;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00443000
-LEGO_EXPORT void Ride_ClearFlagToNotLetAnyoneOn(struct RideObject *ride) { STUB(); }
+LEGO_EXPORT void Ride_ClearFlagToNotLetAnyoneOn(unsigned char *param_1) {
+    struct MapCellElement *cell;
+    struct RideInstance *instance;
+    int x = param_1[0];
+    int y = param_1[1];
+
+    if (x >= 0 && x < (int)lpConfig->width && y >= 0 && y < (int)lpConfig->height) {
+        cell = (struct MapCellElement *)((char *)GameMap[y] + x * 0x14);
+    } else {
+        cell = 0;
+    }
+    instance = (struct RideInstance *)GetInstanceOfClass(cell->vtable->class_node, (const unsigned short *)param_1);
+    if (instance != 0) {
+        instance->flags &= 0xfffd;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00443060
 LEGO_EXPORT void RenderItems2_New(void) {
