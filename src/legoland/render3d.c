@@ -301,7 +301,35 @@ void FUN_004424e0(void) { STUB(); }
 void FUN_00442580(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004427e0
-void FUN_004427e0(void) { STUB(); }
+char *FUN_004427e0(struct ResFile *param_1, char *param_2, int param_3) {
+    struct ResFile *file = param_1;
+    char *c = (char *)&param_1;
+    int count = 0;
+    int read;
+    char *dst = param_2;
+
+    do {
+        read = RES_ReadFile(file, &param_1, 1);
+        if (read != 0) {
+            if (*c == '\r') goto skip_lf;
+            if (*c == '\n') goto terminate;
+            *dst = *c;
+            dst++;
+            count++;
+        }
+        if (*c == '\r') goto skip_lf;
+    } while (*c != '\n' && count < param_3 && read != 0);
+    if (*c == '\r') {
+skip_lf:
+        RES_ReadFile(file, &param_1, 1);
+    }
+terminate:
+    *dst = '\0';
+    if (read == 0 && count == 0) {
+        return NULL;
+    }
+    return param_2;
+}
 
 // FUNCTION: LEGOLAND 0x00442860
 void FUN_00442860(void) { STUB(); }
