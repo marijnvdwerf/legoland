@@ -6,6 +6,8 @@
 #include "tilemap.h"
 #include "llidb.h"
 #include "gamemap.h"
+#include "clipping.h"
+#include "print_sprite.h"
 #include "globals.h"
 
 extern void FUN_004779d0(struct Point *p);
@@ -200,7 +202,133 @@ LEGO_EXPORT void GetTileCentre(struct Point *ref, int *out) {
 }
 
 // FUNCTION: LEGOLAND 0x0045ade0
-void FUN_0045ade0(void) { STUB(); }
+void FUN_0045ade0(void) {
+    int iVar1;
+    int iVar2;
+    int iVar3;
+    char cVar4;
+    int iVar7;
+    int iVar8;
+    int iVar9;
+    int iVar10;
+    int iVar11;
+    int iVar13;
+    int local_50;
+    int local_4c;
+    int local_44;
+    int local_2c;
+    unsigned int local_24[4];
+    short size;
+    struct MapTile tile;
+
+    local_24[0] = lpConfig->field_20;
+    local_24[1] = lpConfig->field_22;
+    local_24[2] = lpConfig->field_0;
+    local_24[3] = lpConfig->field_2;
+    SetClipping((int *)local_24);
+    size = ((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
+    iVar9 = (int)size;
+    iVar13 = (short)(size * 2);
+    iVar1 = iVar9 + 1 >> 1;
+    local_4c = (ScrollY >> 8) - iVar1;
+    iVar2 = (ScrollX >> 8) / iVar13;
+    iVar7 = iVar13 + 1 >> 1;
+    local_50 = (ScrollX >> 8) % iVar13;
+    iVar3 = local_4c / iVar9;
+    local_4c = local_4c % iVar9;
+    local_2c = iVar3 + -3 + iVar2;
+    iVar3 = iVar3 - iVar2;
+    cVar4 = (iVar7 <= local_50) + '\x01';
+    if (iVar1 < local_4c) {
+        cVar4 = (iVar7 <= local_50) + '\x03';
+    }
+    switch (cVar4) {
+    case '\x01':
+        if (local_50 < iVar7 + local_4c * -2) {
+            local_50 = local_50 + iVar7;
+            local_2c = local_2c + -1;
+            local_4c = local_4c + iVar1;
+        }
+        break;
+    case '\x02':
+        if (iVar7 + local_4c * 2 <= local_50) {
+            local_50 = local_50 - iVar7;
+            iVar3 = iVar3 + -1;
+            local_4c = local_4c + iVar1;
+        }
+        break;
+    case '\x03':
+        if (iVar7 + (local_4c - iVar9) * 2 <= local_50) {
+            break;
+        }
+        iVar3 = iVar3 + 1;
+        iVar2 = iVar7;
+        local_50 = local_50 + iVar2;
+        local_4c = local_4c - iVar1;
+        break;
+    case '\x04':
+        if (local_50 < iVar7 + (iVar9 - local_4c) * 2) {
+            break;
+        }
+        local_2c = local_2c + 1;
+        iVar2 = -iVar7;
+        local_50 = local_50 + iVar2;
+        local_4c = local_4c - iVar1;
+    }
+    local_4c = (local_24[1] + iVar9 * -2) - local_4c;
+    if (local_4c < (int)(iVar9 * 2 + local_24[3])) {
+        do {
+            iVar2 = local_2c;
+            iVar8 = (local_24[0] + iVar13 * -2) - local_50;
+            if (iVar8 < (int)(iVar13 * 2 + local_24[2])) {
+                iVar11 = local_2c * 0x14;
+                iVar10 = iVar3;
+                do {
+                    if (iVar11 < 0 || local_2c >= (int)lpConfig->width || iVar10 < 0 ||
+                        iVar10 >= (int)lpConfig->height) {
+                        tile.flags_10 = 0;
+                    } else {
+                        tile = *(struct MapTile *)((char *)GameMap[iVar10] + iVar11);
+                    }
+                    if ((tile.flags_10 & 2) != 0) {
+                        PrintSprite((struct Sprite *)TileSpriteArray[(DAT_00805f48 & 0xff) + *(unsigned int *)DAT_00801a6c], iVar8, local_4c, 0xff6868, 0);
+                    }
+                    local_2c = local_2c + 1;
+                    iVar11 = iVar11 + 0x14;
+                    iVar8 = iVar8 + iVar13;
+                    iVar10 = iVar10 + -1;
+                } while (iVar8 < (int)(iVar13 * 2 + local_24[2]));
+            }
+            iVar2 = iVar2 + 1;
+            iVar8 = (local_24[0] + iVar13 * -2) - local_50;
+            if (iVar8 < (int)(iVar13 * 2 + local_24[2])) {
+                local_44 = iVar2 * 0x14;
+                iVar10 = iVar8 + iVar7;
+                iVar11 = iVar3;
+                local_2c = iVar2;
+                do {
+                    if (local_44 < 0 || local_2c >= (int)lpConfig->width || iVar11 < 0 ||
+                        iVar11 >= (int)lpConfig->height) {
+                        tile.flags_10 = 0;
+                    } else {
+                        tile = *(struct MapTile *)((char *)GameMap[iVar11] + local_44);
+                    }
+                    if ((tile.flags_10 & 2) != 0) {
+                        PrintSprite((struct Sprite *)TileSpriteArray[(DAT_00805f48 & 0xff) + *(unsigned int *)DAT_00801a6c], iVar10, local_4c + iVar1, 0xff6868, 0);
+                    }
+                    local_2c = local_2c + 1;
+                    local_44 = local_44 + 0x14;
+                    iVar8 = iVar8 + iVar13;
+                    iVar11 = iVar11 + -1;
+                    iVar10 = iVar10 + iVar13;
+                } while (iVar8 < (int)(iVar13 * 2 + local_24[2]));
+            }
+            iVar3 = iVar3 + 1;
+            local_4c = local_4c + iVar9;
+            local_2c = iVar2;
+        } while (local_4c < (int)(iVar9 * 2 + local_24[3]));
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045b170
 void FUN_0045b170(void) {
