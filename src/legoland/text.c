@@ -279,10 +279,59 @@ LEGO_EXPORT void PrintCentColref(COLORREF color, int cx, int y, int width, const
 }
 
 // FUNCTION: LEGOLAND 0x004551a0
-void FUN_004551a0(void) { STUB(); }
+int FUN_004551a0(const char *text, int font, int width) {
+    RECT rc;
+    HDC hdc;
+
+    rc.left = 0;
+    rc.top = 0;
+    rc.right = 0;
+    rc.bottom = 0;
+    hdc = CreateCompatibleDC(NULL);
+    rc.right = width - 1;
+    SetBkMode(hdc, 1);
+    SelectFont(hdc, font);
+    DrawTextA(hdc, text, strlen(text), &rc, 0x450);
+    DeleteDC(hdc);
+    return (rc.bottom - rc.top) + 1;
+}
 
 // FUNCTION: LEGOLAND 0x00455220
-void FUN_00455220(void) { STUB(); }
+void FUN_00455220(int x, int y, const char *text, int font, int width) {
+    RECT rc;
+    HDC hdc;
+    HRGN region;
+    HDC ddhdc;
+    HGDIOBJ old_region;
+    HGDIOBJ old_font;
+
+    rc.left = 0;
+    rc.top = 0;
+    rc.right = 0;
+    rc.bottom = 0;
+    hdc = CreateCompatibleDC(NULL);
+    region = CreateRectRgnIndirect((RECT *)&SPRITE_ClipRect);
+    rc.right = width - 1;
+    SetBkMode(hdc, 1);
+    SelectFont(hdc, font);
+    DrawTextA(hdc, text, strlen(text), &rc, 0x450);
+    DeleteDC(hdc);
+    rc.left = rc.left + x;
+    rc.top = rc.top + y;
+    rc.right = rc.right + x;
+    rc.bottom = rc.bottom + y;
+    PushRenderingStatusAndUnlockVideoSurface();
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->GetDC((LPDIRECTDRAWSURFACE)renderEngine, &ddhdc);
+    SetBkMode(ddhdc, 1);
+    old_region = SelectObject(ddhdc, region);
+    old_font = SelectFont(ddhdc, font);
+    DrawTextA(ddhdc, text, strlen(text), &rc, 0x50);
+    SelectObject(ddhdc, old_font);
+    SelectObject(ddhdc, old_region);
+    DeleteObject(region);
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->ReleaseDC((LPDIRECTDRAWSURFACE)renderEngine, ddhdc);
+    PopRenderingStatus();
+}
 
 // FUNCTION: LEGOLAND 0x00455370
 LEGO_EXPORT void BubbleHelp(unsigned int *table, unsigned int a2, unsigned int a3) { STUB(); }
