@@ -18,6 +18,11 @@ struct TextCell *FUN_00455bb0(char *name, int width, int height, int font, unsig
 struct TextCell *FUN_00455d40(char *name, int font, unsigned int format, unsigned int bg_color, unsigned int text_color);
 void FUN_00455ec0(struct TextCell *cell, unsigned int x, unsigned int y);
 
+struct BubbleGfx {
+    /* 0x00 */ unsigned char pad_0[8];
+    /* 0x08 */ struct Sprite **sprites;
+};
+
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x00454910
@@ -335,7 +340,132 @@ void FUN_00455220(int x, int y, const char *text, int font, int width) {
 }
 
 // FUNCTION: LEGOLAND 0x00455370
-LEGO_EXPORT void BubbleHelp(unsigned int *table, unsigned int a2, unsigned int a3) { STUB(); }
+LEGO_EXPORT void BubbleHelp(int *rect, char *text, int font) {
+    RECT box;
+    struct TextCell *cell;
+    HDC hdc;
+    HGDIOBJ old_font;
+    int sprite_arg[3];
+    struct Sprite **sprites;
+    unsigned int color;
+    short corner_h;
+    int text_h;
+    int cx;
+    int box_w;
+    int corner_w;
+    int row_y;
+    int right4;
+    int left4;
+    int width;
+    int top4;
+    int bottom4;
+    int left_corner_w;
+    int mid_top;
+    int mid_h;
+    int hit_left;
+    struct Sprite *top_sprite;
+    int fits_above;
+
+    sprite_arg[1] = 0;
+    sprite_arg[0] = 5;
+    sprite_arg[2] = 0;
+    box.left = 0;
+    box.top = 0;
+    box.bottom = 0;
+    box.right = 200;
+    cell = FUN_00455d40(text, font, 0x10, 0xd6dede, 0);
+    if (cell == NULL) {
+        hdc = CreateCompatibleDC(NULL);
+        SetBkMode(hdc, 1);
+        old_font = SelectFont(hdc, font);
+        text_h = DrawTextA(hdc, text, strlen(text), &box, 0x410);
+        box.top = rect[1];
+        box.bottom = box.top + text_h;
+        SelectObject(hdc, old_font);
+        DeleteDC(hdc);
+        cell = FUN_00455bb0(text, box.right - box.left, text_h, font, 0x10, 0xd6dede, 0);
+    } else {
+        box.left = 0;
+        box.top = 0;
+        box.right = cell->width;
+        box.bottom = cell->height;
+        text_h = cell->height;
+    }
+    sprites = ((struct BubbleGfx *)DAT_00813a0c)->sprites;
+    cx = (short)sprites[0]->width;
+    box_w = (rect[2] - cx) + rect[0] >> 1;
+    if (box_w < cx || (cx = (unsigned int)lpConfig->field_0 - cx, cx < box_w)) {
+        box_w = cx;
+    }
+    cx = box_w;
+    corner_h = (short)sprites[2]->height;
+    box_w = box.right - box.left;
+    box.left = cx - (box_w >> 1);
+    box.right = ((box_w + 1) >> 1) + cx;
+    corner_w = (short)sprites[2]->width;
+    if (box.left < corner_w) {
+        box.left = corner_w;
+        box.right = box_w + corner_w;
+    } else {
+        corner_w = (unsigned int)lpConfig->field_0 - corner_w;
+        if (corner_w <= box.right) {
+            box.left = corner_w - box_w;
+            box.right = corner_w;
+        }
+    }
+    fits_above = (box.bottom - box.top) + 8 <= rect[1];
+    if (fits_above) {
+        box.bottom = rect[1] + -6;
+        row_y = box.bottom - text_h;
+    } else {
+        row_y = rect[3] + 6;
+        box.bottom = text_h + row_y;
+    }
+    right4 = box.right + 4;
+    left4 = box.left + -4;
+    width = right4 - left4;
+    top4 = row_y + -4;
+    bottom4 = box.bottom + 4;
+    box.top = row_y;
+    box.left = left4;
+    RenderBlock(left4, top4, width, 1, 0);
+    color = GetNearestColour(0xde, 0xde, 0xd6);
+    RenderBlock(left4, row_y + -3, width, (bottom4 - top4) + -1, color);
+    RenderBlock(left4, bottom4, width, 1, 0);
+    if (fits_above) {
+        top_sprite = sprites[1];
+    } else {
+        row_y = top4 - corner_h;
+        top_sprite = sprites[0];
+    }
+    PrintSprite(top_sprite, cx, row_y, 0, sprite_arg);
+    corner_h = (short)sprites[2]->height;
+    left_corner_w = (short)sprites[2]->width;
+    left4 = left4 - left_corner_w;
+    PrintSprite(sprites[2], left4, top4, 0, sprite_arg);
+    mid_top = bottom4 - corner_h;
+    width = corner_h + top4;
+    PrintSprite(sprites[4], left4, mid_top + 1, 0, sprite_arg);
+    mid_h = (mid_top - width) + 1;
+    RenderBlock(left4, width, 1, mid_h, 0);
+    color = GetNearestColour(0xde, 0xde, 0xd6);
+    RenderBlock(left4 + 1, width, left_corner_w + -1, mid_h, color);
+    PrintSprite(sprites[3], right4, top4, 0, sprite_arg);
+    PrintSprite(sprites[5], right4, mid_top + 1, 0, sprite_arg);
+    RenderBlock(left_corner_w + right4 + -1, width, 1, mid_h, 0);
+    color = GetNearestColour(0xde, 0xde, 0xd6);
+    RenderBlock(right4, width, left_corner_w + -1, mid_h, color);
+    FUN_00455ec0(cell, box.left, box.top);
+    hit_left = left4;
+    if (box.left <= (int)DAT_00813a44 && (int)DAT_00813a44 <= right4 && top4 <= (int)DAT_00813a48 &&
+        (int)DAT_00813a48 <= bottom4) {
+        DAT_004bdd00 = 5;
+    }
+    if (hit_left <= (int)DAT_00813a44 && (int)DAT_00813a44 <= left_corner_w + right4 &&
+        width <= (int)DAT_00813a48 && (int)DAT_00813a48 <= mid_top) {
+        DAT_004bdd00 = 5;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004557c0
 LEGO_EXPORT void HTBubbleHelp(int *rect, char *text, int font) {
