@@ -654,16 +654,148 @@ LEGO_EXPORT void AdjustTileRFFlags(int *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0045c900
-void FUN_0045c900(void) { STUB(); }
+int FUN_0045c900(struct MapRect *param_1) {
+    int x;
+    int x1;
+    int y0;
+    int y1;
+    int xoff;
+    int y;
+    struct MapTile tile;
+
+    x = param_1->x0;
+    x1 = param_1->x1;
+    if (x <= x1) {
+        y0 = param_1->y0;
+        y1 = param_1->y1;
+        xoff = x * 0x14;
+        y = y0;
+        do {
+            for (; y <= y1; y = y + 1) {
+                if (xoff < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
+                    tile.flags_c = 0;
+                    tile.flags_10 = 0;
+                } else {
+                    tile = *(struct MapTile *)((char *)GameMap[y] + xoff);
+                }
+                if ((tile.flags_c & 0x10) == 0 || (tile.flags_10 & 2) != 0) {
+                    return 0;
+                }
+            }
+            x = x + 1;
+            xoff = xoff + 0x14;
+            y = y0;
+        } while (x <= x1);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0045c9c0
-void FUN_0045c9c0(void) { STUB(); }
+unsigned int FUN_0045c9c0(int *param_1) {
+    int y;
+    int yend;
+    unsigned int result;
+    unsigned int acc;
+    unsigned int bit;
+    int x;
+    int xoff;
+    int xi;
+    struct MapTile tile;
+
+    y = param_1[1];
+    result = 0;
+    acc = 0;
+    bit = 0x1000000;
+    yend = y + 5;
+    if (y < yend) {
+        x = *param_1;
+        do {
+            if (x < x + 5) {
+                xoff = x * 0x14;
+                xi = x;
+                do {
+                    if (xoff < 0 || xi >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
+                        tile.flags_c = 0;
+                        tile.flags_10 = 0;
+                    } else {
+                        tile = *(struct MapTile *)((char *)GameMap[y] + xoff);
+                    }
+                    if ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0) {
+                        acc = acc | bit;
+                    }
+                    xoff = xoff + 0x14;
+                    bit = bit >> 1;
+                    xi = xi + 1;
+                    result = acc;
+                } while (xi < x + 5);
+            }
+            y = y + 1;
+        } while (y < yend);
+        return result;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0045ca90
-unsigned int FUN_0045ca90(unsigned int arg, unsigned int *buf) { STUB(); }
+int FUN_0045ca90(int *param_1, int *param_2) {
+    int dx;
+    int x;
+    unsigned int mask;
+    unsigned int *tbl;
+    int i;
+    int local_8;
+    int local_4;
+
+    local_8 = *param_1 + -2;
+    local_4 = param_1[1] + -2;
+    mask = FUN_0045c9c0(&local_8);
+    i = 0;
+    tbl = DAT_004b9558;
+    do {
+        if ((*tbl & mask) == *tbl) {
+            dx = DAT_004b957c[i];
+            x = *param_1;
+            param_2[0] = dx + x;
+            i = DAT_004b95a0[i] + param_1[1];
+            param_2[1] = i;
+            param_2[2] = dx + x + 2;
+            param_2[3] = i + 2;
+            return 1;
+        }
+        tbl = tbl + 1;
+        i = i + 1;
+    } while ((int)tbl < (int)&DAT_004b957c);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0045cb20
-void FUN_0045cb20(unsigned int *buf) { STUB(); }
+void FUN_0045cb20(struct MapRect *param_1) {
+    unsigned int parity;
+    int x;
+    int xoff;
+    unsigned int sum;
+    int y;
+
+    y = param_1->y0;
+    if (y <= param_1->y1) {
+        do {
+            x = param_1->x0;
+            if (x <= param_1->x1) {
+                sum = x + y;
+                xoff = x * 0x14;
+                do {
+                    parity = sum & 1;
+                    xoff = xoff + 0x14;
+                    x = x + 1;
+                    sum = sum + 1;
+                    *(unsigned short *)((char *)GameMap[y] + -0xc + xoff) =
+                        (unsigned short)((2 - (parity != 0) & 0xff) + *(unsigned int *)PathSprite);
+                } while (x <= param_1->x1);
+            }
+            y = y + 1;
+        } while (y <= param_1->y1);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045cb90
 void FUN_0045cb90(struct Point *param) {
@@ -676,15 +808,65 @@ void FUN_0045cb90(struct Point *param) {
 }
 
 // FUNCTION: LEGOLAND 0x0045cbc0
-unsigned int FUN_0045cbc0(unsigned int buf, unsigned int index) { STUB(); }
+int FUN_0045cbc0(int *param_1, int param_2) {
+    int result;
+    struct MapRect r;
+
+    switch (param_2) {
+    case 2:
+        r.x1 = param_1[2];
+        r.y0 = param_1[1] + -1;
+        r.x0 = *param_1;
+        r.y1 = r.y0;
+        result = FUN_0045c900(&r);
+        if (result != 0) {
+            param_1[1] = param_1[1] + -1;
+            return 1;
+        }
+        break;
+    case 0:
+        r.x1 = param_1[2];
+        r.y0 = param_1[3] + 1;
+        r.x0 = *param_1;
+        r.y1 = r.y0;
+        result = FUN_0045c900(&r);
+        if (result != 0) {
+            param_1[3] = param_1[3] + 1;
+            return 1;
+        }
+        break;
+    case 1:
+        r.y0 = param_1[1];
+        r.y1 = param_1[3];
+        r.x0 = param_1[2] + 1;
+        r.x1 = r.x0;
+        result = FUN_0045c900(&r);
+        if (result != 0) {
+            param_1[2] = param_1[2] + 1;
+            return 1;
+        }
+        break;
+    case 3:
+        r.y0 = param_1[1];
+        r.y1 = param_1[3];
+        r.x0 = *param_1 + -1;
+        r.x1 = r.x0;
+        result = FUN_0045c900(&r);
+        if (result != 0) {
+            *param_1 = *param_1 + -1;
+            return 1;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0045cd00
-void FUN_0045cd00(unsigned int *buf) {
+void FUN_0045cd00(int *buf) {
     int zero_count = 0;
     int count = 0;
 
     do {
-        if (FUN_0045cbc0((unsigned int)buf, (unsigned int)count) != 0) {
+        if (FUN_0045cbc0(buf, count) != 0) {
             zero_count = 0;
         } else {
             zero_count++;
@@ -695,12 +877,12 @@ void FUN_0045cd00(unsigned int *buf) {
 }
 
 // FUNCTION: LEGOLAND 0x0045cd30
-void FUN_0045cd30(unsigned int arg) {
-    unsigned int buf[4];
+void FUN_0045cd30(int *arg) {
+    struct MapRect buf;
 
-    if (FUN_0045ca90(arg, buf) != 0) {
-        FUN_0045cd00(buf);
-        FUN_0045cb20(buf);
+    if (FUN_0045ca90(arg, (int *)&buf) != 0) {
+        FUN_0045cd00((int *)&buf);
+        FUN_0045cb20(&buf);
     }
 }
 

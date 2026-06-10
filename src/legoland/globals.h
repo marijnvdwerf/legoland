@@ -398,6 +398,12 @@ extern void *DAT_004b92d8;
 extern struct DeferredSprite *PTR_DAT_004b95f0;
 // 0x004b9550
 extern unsigned char DAT_004b9550[8];
+// 0x004b9558
+extern unsigned int DAT_004b9558[9];
+// 0x004b957c
+extern int DAT_004b957c[9];
+// 0x004b95a0
+extern int DAT_004b95a0[9];
 // 0x004b9ca4
 extern int (*DAT_004b9ca4)(void);
 // 0x004b9ca8

@@ -327,6 +327,18 @@ void *DAT_004b92d8;
 // GLOBAL: LEGOLAND 0x004b9550
 unsigned char DAT_004b9550[8];
 
+// GLOBAL: LEGOLAND 0x004b9558
+unsigned int DAT_004b9558[9] = {
+    0x01ce7000, 0x00e73800, 0x00739c00, 0x000e7380, 0x000739c0,
+    0x00039ce0, 0x0000739c, 0x000039ce, 0x00001ce7,
+};
+
+// GLOBAL: LEGOLAND 0x004b957c
+int DAT_004b957c[9] = {-2, -1, 0, -2, -1, 0, -2, -1, 0};
+
+// GLOBAL: LEGOLAND 0x004b95a0
+int DAT_004b95a0[9] = {-2, -2, -2, -1, -1, -1, 0, 0, 0};
+
 // GLOBAL: LEGOLAND 0x004b95f0
 struct DeferredSprite *PTR_DAT_004b95f0;
 
