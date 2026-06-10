@@ -8,10 +8,20 @@
 #include "controller.h"
 #include "input.h"
 #include "crt.h"
+#include "debug_alloc.h"
+#include "bricks.h"
+#include "screens.h"
+#include "nerps.h"
+#include "map_object.h"
 
 LEGO_EXPORT void *WNDENV_Gethwnd(void);
 int FUN_004738b0(void);
 int FUN_00473970(void);
+void FUN_00492ce0(int param_1);
+BOOL FUN_00492d80(void);
+char FUN_00474130(void);
+unsigned int FUN_00474070(void);
+unsigned int FUN_00474080(void);
 
 struct DInputDeviceVtbl {
     void *pad_0[2];
@@ -200,7 +210,127 @@ LEGO_EXPORT void UpdateControllerFromMouseData(struct CtrlBuffer *buffer) {
 }
 
 // FUNCTION: LEGOLAND 0x00473c10
-LEGO_EXPORT void UpdateControllerFromKeyboardData(struct CtrlBuffer *buffer) { STUB(); }
+LEGO_EXPORT void UpdateControllerFromKeyboardData(struct CtrlBuffer *buffer) {
+    char c;
+    int arg;
+
+    buffer->field_18 = buffer->field_18 & 0xfffff807;
+    c = FUN_00474130();
+    if (c == 0) {
+        goto flags;
+    }
+    memcpy(DAT_00668d94, DAT_00668d94 + 1, 19);
+    DAT_00668d94[0x13] = c;
+    if (_memicmp(":THEME", &DAT_00668d94[0xe], 6) == 0) {
+        FUN_00492ce0(0);
+        // STRING: LEGOLAND 0x004baf88
+        DBPrintf("CHEATTHEME=THEME\n");
+    } else if (_memicmp(":EGYPT", &DAT_00668d94[0xe], 6) == 0) {
+        FUN_00492ce0(1);
+        // STRING: LEGOLAND 0x004baf58
+        DBPrintf("CHEATTHEME=EGYPTIAN\n");
+    } else if (_memicmp(":INCA", &DAT_00668d94[0xf], 5) == 0) {
+        FUN_00492ce0(2);
+        // STRING: LEGOLAND 0x004baf3c
+        DBPrintf("CHEATTHEME=INCA\n");
+    } else if (_memicmp(":CASTLE", &DAT_00668d94[0xd], 7) == 0) {
+        FUN_00492ce0(3);
+        // STRING: LEGOLAND 0x004baf20
+        DBPrintf("CHEATTHEME=CASTLE\n");
+    } else if (_memicmp(":WEST", &DAT_00668d94[0xf], 5) == 0) {
+        FUN_00492ce0(4);
+        // STRING: LEGOLAND 0x004baf04
+        DBPrintf("CHEATTHEME=WEST\n");
+    } else if (_memicmp(":STOP", &DAT_00668d94[0xf], 5) == 0) {
+        FUN_00492d80();
+        // STRING: LEGOLAND 0x004baee8
+        DBPrintf("CHEAT:STOPMUSIC\n");
+    } else if (_memicmp("::DIE", &DAT_00668d94[0xf], 5) == 0) {
+        _exit(1);
+    }
+    if (DAT_008119b4 == 3) {
+        if (_memicmp(":ILIKETOTRAVEL", &DAT_00668d94[4], 0xe) == 0) {
+            if (DAT_00668d94[0x12] == '1') {
+                if (DAT_00668d94[0x13] != '0') {
+                    goto flags;
+                }
+                arg = 0xa;
+                lpConfig->field_28 = 0xf;
+            } else if (DAT_00668d94[0x12] == '0') {
+                if (DAT_00668d94[0x13] < '1' || DAT_00668d94[0x13] > '9') {
+                    goto flags;
+                }
+                lpConfig->field_28 = DAT_00668d94[0x13] - 0x2b;
+                arg = lpConfig->field_28;
+            } else {
+                if (DAT_00668d94[0x12] != 'T' || DAT_00668d94[0x13] < '1' || DAT_00668d94[0x13] > '5') {
+                    goto flags;
+                }
+                lpConfig->field_28 = DAT_00668d94[0x13] - 0x30;
+                arg = lpConfig->field_28;
+            }
+            // STRING: LEGOLAND 0x004baed0
+            DBPrintf("CHEAT:Level %d\n", arg);
+            DAT_00832ba0 = 2;
+        } else if (_memicmp(":COLDHARDCASH", &DAT_00668d94[7], 0xd) == 0) {
+            // STRING: LEGOLAND 0x004baeac
+            DBPrintf("CHEAT:More Money\n");
+            AddBricks(5000);
+        } else if (_memicmp(":HARDASNAILS", &DAT_00668d94[8], 0xc) == 0) {
+            // STRING: LEGOLAND 0x004bae88
+            DBPrintf("CHEAT:No Ride Wear\n");
+            DAT_00832980 = 0;
+        } else if (_memicmp(":PRAISEME", &DAT_00668d94[0xb], 9) == 0) {
+            // STRING: LEGOLAND 0x004bae60
+            DBPrintf("CHEAT:Instant Appraisal\n");
+            DAT_00666098 = 1;
+        } else if (_memicmp(":WELOVELEGOLAND", &DAT_00668d94[5], 0xf) == 0) {
+            // STRING: LEGOLAND 0x004bae3c
+            DBPrintf("CHEAT:Win Level\n", lpConfig->field_28);
+            FUN_00459820(1);
+        } else if (_memicmp(":IMPROVISE", &DAT_00668d94[9], 9) == 0) {
+            // STRING: LEGOLAND 0x004bae1c
+            DBPrintf("CHEAT:Stop Script\n", lpConfig->field_28);
+            FUN_0046b240(1);
+        } else if (_memicmp(":DIGGER", &DAT_00668d94[0xd], 7) == 0) {
+            // STRING: LEGOLAND 0x004bae00
+            DBPrintf("CHEAT:Set Switch 1\n");
+            FUN_00460560(0);
+            FUN_00460560(1);
+            FUN_00460560(2);
+            FUN_00460560(3);
+        } else if (_memicmp(":SHOWCAPACITY", &DAT_00668d94[7], 0xd) == 0) {
+            DAT_00832994 = 1;
+            // STRING: LEGOLAND 0x004badd0
+            DBPrintf("CHEAT: Capacity Calcs visible\n");
+        }
+    }
+flags:
+    if ((DAT_007fdda0[0xcb] & 0x80) != 0) {
+        buffer->field_18 = buffer->field_18 | 8;
+    }
+    if ((DAT_007fdda0[0xcd] & 0x80) != 0) {
+        buffer->field_18 = buffer->field_18 | 0x10;
+    }
+    if ((DAT_007fdda0[0xc8] & 0x80) != 0) {
+        buffer->field_18 = buffer->field_18 | 0x20;
+    }
+    if ((DAT_007fdda0[0xd0] & 0x80) != 0) {
+        buffer->field_18 = buffer->field_18 | 0x40;
+    }
+    if ((DAT_007fdda0[0x39] & 0x80) != 0) {
+        buffer->field_18 = buffer->field_18 | 0x80;
+    }
+    if ((DAT_007fdda0[0xf] & 0x80) != 0) {
+        buffer->field_18 = buffer->field_18 | 0x100;
+    }
+    if ((DAT_007fdda0[1] & 0x80) != 0) {
+        buffer->field_18 = buffer->field_18 | 0x200;
+    }
+    if ((DAT_007fdda0[0x1c] & 0x80) != 0) {
+        buffer->field_18 = buffer->field_18 | 0x400;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00474070
 unsigned int FUN_00474070(void) {
