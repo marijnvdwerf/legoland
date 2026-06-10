@@ -1406,6 +1406,8 @@ extern unsigned int DAT_006688b8;
 extern int DAT_006688bc;
 // 0x006688c0
 extern int DAT_006688c0;
+// 0x006688c4
+extern int DAT_006688c4;
 // 0x006688c8
 extern unsigned int DAT_006688c8;
 // 0x006688cc

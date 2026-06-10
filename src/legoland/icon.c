@@ -131,6 +131,8 @@ void FUN_00471ca0(void *param);
 LEGO_EXPORT void *PlayInstanceOfSample(void *def, unsigned int looping, unsigned int a3, unsigned int a4);
 LEGO_EXPORT int GetBrickCount(void);
 int FUN_0048aef0(void *param_1, void *param_2);
+int FUN_00457890(void);
+void FUN_00455e50(char *text, int x, int y, int w, int h, int a6, int a7, unsigned int color1, unsigned int color2);
 LEGO_EXPORT void MoveIcons(unsigned short mask, unsigned short id, short dx, short dy);
 int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned short param_4, int param_5);
 void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3);
@@ -814,7 +816,61 @@ skip:
 }
 
 // FUNCTION: LEGOLAND 0x0046e670
-LEGO_EXPORT void RenderMoneyBar(void) { STUB(); }
+LEGO_EXPORT int RenderMoneyBar(struct IconNode *node) {
+    struct PrintCtx ctx;
+    int fill;
+    int width;
+    int bricks;
+    int clip[4];
+    char buf[100];
+
+    ctx.flags = 1;
+    ctx.node = NULL;
+    ctx.field_8 = 0;
+    if (FUN_00457890() == 0) {
+        return 0;
+    }
+    width = node->field_10;
+    bricks = GetBrickCount();
+    fill = (bricks * width) / (int)DAT_00832974;
+    if (fill < 0) {
+        fill = 0;
+    }
+    if (fill > width) {
+        fill = width;
+    }
+    if (DAT_006688c4 < fill) {
+        DAT_006688c4 = DAT_006688c4 + 6;
+        if (DAT_006688c4 <= fill) {
+            goto skip;
+        }
+    } else {
+        DAT_006688c4 = DAT_006688c4 - 6;
+        if (fill <= DAT_006688c4) {
+            goto skip;
+        }
+    }
+    DAT_006688c4 = fill;
+skip:
+    StoreClipping();
+    clip[0] = node->field_c;
+    clip[2] = DAT_006688c4 + clip[0];
+    clip[1] = node->field_e;
+    clip[3] = node->field_12 + clip[1];
+    SetClipping(&clip[0]);
+    if (node->sprite != NULL) {
+        PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
+    }
+    RestoreClipping();
+    bricks = GetBrickCount();
+    if (bricks < 0) {
+        bricks = 0;
+    }
+    // STRING: LEGOLAND 0x004ba890
+    sprintf(buf, "%5d", bricks);
+    FUN_00455e50(buf, node->field_c + 10 + node->field_10, node->field_e - 3, 200, node->field_12, 0, 0, 0xff0000, 0xffffff);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046e7b0
 LEGO_EXPORT int RenderFreePlayBar(struct IconNode *node) {
