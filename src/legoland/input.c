@@ -216,17 +216,15 @@ unsigned int FUN_00474080(void) {
 LEGO_EXPORT char GetInputChar(void) {
     int i;
     int result;
-    signed char *p;
     unsigned int prev;
     unsigned char state;
     int alt;
 
     result = 0;
     i = 0;
-    p = &DAT_004bad58[0].code;
     do {
         prev = DAT_00668da8[i];
-        state = DAT_007fdda0[(unsigned char)p[-1]];
+        state = DAT_007fdda0[DAT_004bad58[i].flags];
         prev = (prev >> 7) & 1;
         DAT_00668da8[i] = state;
         if ((state & 0x80) != 0 && prev == 0) {
@@ -234,19 +232,40 @@ LEGO_EXPORT char GetInputChar(void) {
             if (FUN_00474070() != 0 || FUN_00474080() != 0) {
                 alt = (alt == 0);
             }
-            result = *p;
+            result = DAT_004bad58[i].code;
             if (alt == 0) {
                 result = tolower(result);
             }
         }
         i = i + 1;
-        p = p + 2;
-    } while ((int)p < 0x4badcf);
+    } while (i < 0x3b);
     return (char)result;
 }
 
 // FUNCTION: LEGOLAND 0x00474130
-void FUN_00474130(void) { STUB(); }
+char FUN_00474130(void) {
+    int i;
+    int result;
+    unsigned char state;
+    unsigned int prev;
+
+    result = 0;
+    i = 0;
+    do {
+        prev = DAT_00668de4[i];
+        state = DAT_007fdda0[DAT_004bad58[i].flags];
+        prev = (prev >> 7) & 1;
+        DAT_00668de4[i] = state;
+        if ((state & 0x80) != 0 && prev == 0) {
+            result = DAT_004bad58[i].code;
+        }
+        i = i + 1;
+    } while (i < 0x3b);
+    if (result == -10) {
+        result = 0x3a;
+    }
+    return (char)result;
+}
 
 // FUNCTION: LEGOLAND 0x00474190
 void FUN_00474190(void) {
