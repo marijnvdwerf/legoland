@@ -154,6 +154,10 @@ int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned 
 void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3);
 unsigned char FUN_0046d980(struct IconNode *icon, unsigned char buttons, int a3, int a4);
 unsigned char FUN_0046da20(struct IconNode *icon, unsigned char buttons, int a3, int a4);
+LEGO_EXPORT int RenderBoxIcon(struct IconNode *node);
+LEGO_EXPORT int RenderGBarSprite(struct IconNode *node);
+LEGO_EXPORT int RenderScroll_Icons(struct IconNode *node);
+LEGO_EXPORT int RenderGBarSpriteIcon(struct IconNode *node);
 
 
 // FUNCTION: LEGOLAND 0x0046d3a0
@@ -549,7 +553,33 @@ void FUN_0046db40(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046dbc0
-LEGO_EXPORT void AddGBarIcons(void) { STUB(); }
+LEGO_EXPORT struct IconNode *AddGBarIcons(unsigned int param_1, unsigned int param_2, int param_3, int param_4, int param_5, int param_6) {
+    struct IconNode *icon;
+
+    AddFullScreenIcon((void *)(param_6 + 6));
+    icon = InsertIcon(param_2, param_3, param_6 + 3, DAT_0066882c);
+    icon->field_30 = (void *)param_1;
+    icon->field_3c = 0x95;
+    icon->field_38 = (unsigned int)GetString(0x95);
+    icon->field_12 = 0x1e;
+    icon->field_34 = icon->field_34 | 0x2013;
+    icon->field_2c = (void *)FUN_0046d980;
+    icon = InsertIcon(param_2, param_5 - 0x1e + param_3, param_6 + 4, DAT_00668830);
+    icon->field_30 = (void *)param_1;
+    icon->field_3c = 0x94;
+    icon->field_38 = (unsigned int)GetString(0x94);
+    icon->field_12 = 0x1e;
+    icon->field_34 = icon->field_34 | 0x2013;
+    icon->field_2c = (void *)FUN_0046da20;
+    icon = InsertIcon(param_2, param_3 + 0x1e, param_6 + 5, 0);
+    icon->field_30 = (void *)param_1;
+    icon->field_10 = 0x79;
+    icon->field_12 = (short)param_5 - 0x3c;
+    icon->box.box_color = GetNearestColour(0, 10, 0x14);
+    icon->field_34 = icon->field_34 | 0x29;
+    icon->field_28 = (void *)RenderBoxIcon;
+    return icon;
+}
 
 // FUNCTION: LEGOLAND 0x0046dcd0
 LEGO_EXPORT void MoveIcons(unsigned short mask, unsigned short id, short dx, short dy) {
@@ -1082,7 +1112,44 @@ int FUN_0046eaa0(struct IconNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0046eaf0
-LEGO_EXPORT void SetupInterfacePanelIcons(void) { STUB(); }
+LEGO_EXPORT struct IconNode *SetupInterfacePanelIcons(unsigned int param_1, int param_2, int param_3, int param_4, int param_5, int param_6) {
+    struct IconNode *icon;
+
+    DAT_006688b8 = 0;
+    AddFullScreenIcon((void *)(param_6 + 6));
+    icon = InsertIcon(param_2 - 3, 0x20, param_6, DAT_00668834);
+    icon->field_28 = (void *)RenderGBarSprite;
+    icon->field_18 = 10;
+    icon->field_34 = icon->field_34 | 9;
+    icon = InsertIcon(param_2 - 1, param_3, param_6 + 3, DAT_0066882c);
+    icon->field_30 = (void *)param_1;
+    icon->field_3c = 0x95;
+    icon->field_38 = (unsigned int)GetString(0x95);
+    icon->field_10 = 0x79;
+    icon->field_12 = 0x1e;
+    icon->field_34 = icon->field_34 | 0x201b;
+    icon->field_28 = (void *)RenderScroll_Icons;
+    icon->field_2c = (void *)FUN_0046d980;
+    icon->field_18 = 1;
+    icon = InsertIcon(param_2 - 1, param_5 - 0x20 + param_3, param_6 + 4, DAT_00668830);
+    icon->field_30 = (void *)param_1;
+    icon->field_3c = 0x94;
+    icon->field_38 = (unsigned int)GetString(0x94);
+    icon->field_10 = 0x79;
+    icon->field_12 = 0x1e;
+    icon->field_34 = icon->field_34 | 0x201b;
+    icon->field_28 = (void *)RenderScroll_Icons;
+    icon->field_2c = (void *)FUN_0046da20;
+    icon->field_18 = 2;
+    icon = InsertIcon(param_2, param_3 + 0x1e, param_6 + 5, 0);
+    icon->field_30 = (void *)param_1;
+    icon->field_10 = 0x79;
+    icon->field_12 = (short)param_5 - 0x3e;
+    icon->box.box_color = GetNearestColour(0, 10, 0x14);
+    icon->field_34 = icon->field_34 | 0x29;
+    icon->field_28 = (void *)RenderBoxIcon;
+    return icon;
+}
 
 // FUNCTION: LEGOLAND 0x0046ec50
 void FUN_0046ec50(char param) {
