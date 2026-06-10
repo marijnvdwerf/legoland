@@ -201,7 +201,42 @@ unsigned char FUN_00490110(unsigned int param_1, unsigned char param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00490150
-void FUN_00490150(void) { STUB(); }
+void FUN_00490150(void) {
+    struct SpriteIcon *icon;
+
+    // STRING: LEGOLAND 0x004bf5f4
+    SPRITE_TitleScreenBk = LoadSprite("AdvertScreen.lls", 0);
+
+    // STRING: LEGOLAND 0x004bf5dc
+    icon = LoadSpriteIcon("GoBack_On_Advert.lls", 4, 0x13, 0x14b, 7);
+    icon->field_3c = 0x26;
+    icon->field_38 = GetString(0x26);
+    icon->field_34 |= 0x6002;
+    icon->event_handler = FUN_00490050;
+    DAT_006687c0 = FUN_00490050;
+    DAT_006687bc = 0;
+
+    // STRING: LEGOLAND 0x004bf5cc
+    icon = LoadSpriteIcon("California.lls", 4, 0x1c, 0x24, 7);
+    icon->field_3c = 700;
+    icon->field_38 = GetString(700);
+    icon->field_34 |= 0x6002;
+    icon->event_handler = FUN_00490110;
+
+    // STRING: LEGOLAND 0x004bf5c0
+    icon = LoadSpriteIcon("Windsor.lls", 4, 0xea, 0x24, 7);
+    icon->field_3c = 0x2bd;
+    icon->field_38 = GetString(0x2bd);
+    icon->field_34 |= 0x6002;
+    icon->event_handler = FUN_004900d0;
+
+    // STRING: LEGOLAND 0x004bf5b4
+    icon = LoadSpriteIcon("billund.lls", 4, 0x1b8, 0x24, 7);
+    icon->field_3c = 0x2be;
+    icon->field_38 = GetString(0x2be);
+    icon->field_34 |= 0x6002;
+    icon->event_handler = FUN_00490090;
+}
 
 // FUNCTION: LEGOLAND 0x00490270
 void FUN_00490270(void) {
