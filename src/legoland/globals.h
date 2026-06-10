@@ -183,10 +183,12 @@ extern float FLOAT_004ab458;
 extern float FLOAT_004ab45c;
 // 0x004ab480
 extern float FLOAT_004ab480;
+// 0x004ab560 c_dfDIKeyboard, 0x004ab578 c_dfDIMouse — declared in <dinput.h>, defined in globals.c
 // 0x004ab6d0
 extern GUID GUID_PerfMasterGrooveLevel;
 // 0x004ab8b0
 extern GUID DAT_004ab8b0;
+// 0x004ac090 GUID_SysKeyboard, 0x004ac0a0 GUID_SysMouse — declared in <dinput.h>, defined in globals.c
 // 0x004acf80
 extern GUID DAT_004acf80;
 // 0x004b4034

@@ -9,6 +9,10 @@
 #include "input.h"
 #include "crt.h"
 
+LEGO_EXPORT void *WNDENV_Gethwnd(void);
+int FUN_004738b0(void);
+int FUN_00473970(void);
+
 struct DInputDeviceVtbl {
     void *pad_0[2];
     void(__stdcall *Release)(void *self);
@@ -21,10 +25,31 @@ struct DInputDevice {
 };
 
 // FUNCTION: LEGOLAND 0x00473870
-LEGO_EXPORT int InitInputSystem(void) { STUB(); }
+LEGO_EXPORT int InitInputSystem(void) {
+    HINSTANCE hinst;
+
+    hinst = (HINSTANCE)GetWindowLongA((HWND)WNDENV_Gethwnd(), GWL_HINSTANCE);
+    DirectInputCreateA(hinst, 0x300, (LPDIRECTINPUTA *)&dinput, NULL);
+    if (FUN_004738b0() == 0) {
+        return 0;
+    }
+    return FUN_00473970() != 0;
+}
 
 // FUNCTION: LEGOLAND 0x004738b0
-void FUN_004738b0(void) { STUB(); }
+int FUN_004738b0(void) {
+    DIDEVCAPS caps;
+
+    if (IDirectInput_CreateDevice((LPDIRECTINPUTA)dinput, &GUID_SysKeyboard, (LPDIRECTINPUTDEVICEA *)&dinput_keyboard, NULL) == 0) {
+        IDirectInputDevice_SetDataFormat((LPDIRECTINPUTDEVICEA)dinput_keyboard, &c_dfDIKeyboard);
+        caps.dwSize = 0x2c;
+        IDirectInputDevice_GetCapabilities((LPDIRECTINPUTDEVICEA)dinput_keyboard, &caps);
+        if (caps.dwFlags != 0) {
+            return IDirectInput_GetDeviceStatus((LPDIRECTINPUTA)dinput, &GUID_SysKeyboard) == 0;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00473930
 LEGO_EXPORT void ScanKeyboard(void) {
@@ -45,10 +70,35 @@ LEGO_EXPORT void ScanKeyboard(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00473970
-void FUN_00473970(void) { STUB(); }
+int FUN_00473970(void) {
+    DIPROPDWORD prop;
+    DIDEVCAPS caps;
+
+    if (IDirectInput_CreateDevice((LPDIRECTINPUTA)dinput, &GUID_SysMouse, (LPDIRECTINPUTDEVICEA *)&dintput_mouse, NULL) == 0) {
+        IDirectInputDevice_SetCooperativeLevel((LPDIRECTINPUTDEVICEA)dintput_mouse, (HWND)WNDENV_Gethwnd(), 5);
+        IDirectInputDevice_SetDataFormat((LPDIRECTINPUTDEVICEA)dintput_mouse, &c_dfDIMouse);
+        prop.diph.dwSize = 0x14;
+        prop.diph.dwHeaderSize = 0x10;
+        prop.diph.dwObj = 8;
+        prop.diph.dwHow = 1;
+        if (IDirectInputDevice_GetProperty((LPDIRECTINPUTDEVICEA)dintput_mouse, (REFGUID)3, &prop.diph) == 0) {
+            mouse_granularity = prop.dwData;
+        }
+        caps.dwSize = 0x2c;
+        IDirectInputDevice_GetCapabilities((LPDIRECTINPUTDEVICEA)dintput_mouse, &caps);
+        if (caps.dwFlags != 0) {
+            return IDirectInput_GetDeviceStatus((LPDIRECTINPUTA)dinput, &GUID_SysMouse) == 0;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00473a50
-void FUN_00473a50(void) { STUB(); }
+void FUN_00473a50(void) {
+    if (dinput_keyboard != NULL) {
+        IDirectInputDevice_Release((LPDIRECTINPUTDEVICEA)dinput_keyboard);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00473a60
 void FUN_00473a60(void) {
