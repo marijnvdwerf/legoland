@@ -1,5 +1,9 @@
 #include "legoland.h"
+#include <windows.h>
+#include <ddraw.h>
+
 #include "crt.h"
+#include "debug_alloc.h"
 #include "globals.h"
 
 #include "draw.h"
@@ -8,11 +12,43 @@
 
 #include "image_sprite.h"
 
+LEGO_EXPORT unsigned int GetTransparentColour(void);
+
 // FUNCTION: LEGOLAND 0x004636f0
 LEGO_EXPORT int InstallDirectDraw(void) { return 0; }
 
 // FUNCTION: LEGOLAND 0x00463700
-LEGO_EXPORT void InitHostSystemGPU(void) { STUB(); }
+LEGO_EXPORT int InitHostSystemGPU(void) {
+    LPDIRECTDRAW ddraw;
+    LPDIRECTDRAW2 ddraw2;
+
+    if (DDRAWENV[1] != 0) {
+        return 1;
+    }
+    if (DirectDrawCreate(NULL, (LPDIRECTDRAW *)&DDRAWENV[0], NULL) == 0) {
+        ddraw = (LPDIRECTDRAW)DDRAWENV[0];
+        if (ddraw->lpVtbl->QueryInterface(ddraw, &DAT_004acf80, (LPVOID *)&DDRAWENV[1]) != 0) {
+            ((LPDIRECTDRAW)DDRAWENV[0])->lpVtbl->Release((LPDIRECTDRAW)DDRAWENV[0]);
+            // STRING: LEGOLAND 0x004b9cd0
+            DBPrintf("Can't Create DDCOM");
+            return 0;
+        }
+        DDRAWENV[2] = 0x17c;
+        DDRAWENV[97] = 0x17c;
+        ddraw2 = (LPDIRECTDRAW2)DDRAWENV[1];
+        if (ddraw2->lpVtbl->GetCaps(ddraw2, (LPDDCAPS)&DDRAWENV[2], (LPDDCAPS)&DDRAWENV[97]) != 0) {
+            ((LPDIRECTDRAW2)DDRAWENV[1])->lpVtbl->Release((LPDIRECTDRAW2)DDRAWENV[1]);
+            ((LPDIRECTDRAW)DDRAWENV[0])->lpVtbl->Release((LPDIRECTDRAW)DDRAWENV[0]);
+            // STRING: LEGOLAND 0x004b9cb8
+            DBPrintf("Can't get DDCOM caps");
+            return 0;
+        }
+        // STRING: LEGOLAND 0x004b9cac
+        AddFontResourceA("Lego.ttf");
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x004637c0
 LEGO_EXPORT int CheckHostSystemGPU(void) {
@@ -24,7 +60,22 @@ LEGO_EXPORT int CheckHostSystemGPU(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004637e0
-LEGO_EXPORT void KillHostSystemGPU(void) { STUB(); }
+LEGO_EXPORT void KillHostSystemGPU(void) {
+    // STRING: LEGOLAND 0x004b9ce4
+    RemoveFontResourceA("lego.ttf");
+    if (DDRAWENV[1] != 0) {
+        ((LPDIRECTDRAW2)DDRAWENV[1])->lpVtbl->Release((LPDIRECTDRAW2)DDRAWENV[1]);
+        DDRAWENV[1] = 0;
+    }
+    DeleteObject((HGDIOBJ)PTR_00668090);
+    DeleteObject((HGDIOBJ)PTR_00668098);
+    DeleteObject((HGDIOBJ)PTR_0066808c);
+    DeleteObject((HGDIOBJ)PTR_00668094);
+    if (DDRAWENV[0] != 0) {
+        ((LPDIRECTDRAW)DDRAWENV[0])->lpVtbl->Release((LPDIRECTDRAW)DDRAWENV[0]);
+        DDRAWENV[0] = 0;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00463850
 LEGO_EXPORT unsigned int SetPointer(unsigned int param_1) {
@@ -41,25 +92,145 @@ LEGO_EXPORT int InitScreen(void) { STUB(); }
 void FUN_00463ef0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00463fc0
-LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void) { STUB(); }
+LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void) {
+    RECT local;
+    LPDIRECTDRAWSURFACE surface;
+
+    local.left = DAT_00668144;
+    DAT_00668164[DAT_006681e4] = DAT_00668144;
+    DAT_006681e4 = DAT_006681e4 + 1;
+    if (local.left == 0) {
+        local.top = local.left;
+        local.right = lpConfig->field_0 - 1;
+        local.bottom = lpConfig->field_2 - 1;
+        DAT_0066809c.field_0 = 0x6c;
+        IntersectRect((LPRECT)&DAT_00668108, &local, (RECT *)&SPRITE_ClipRect);
+        surface = (LPDIRECTDRAWSURFACE)renderEngine;
+        if (surface->lpVtbl->Lock(surface, NULL, (LPDDSURFACEDESC)&DAT_0066809c, 0x21, NULL) == 0x887601c2) {
+            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)renderEngine);
+            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Lock((LPDIRECTDRAWSURFACE)renderEngine, NULL, (LPDDSURFACEDESC)&DAT_0066809c, 0x21, NULL);
+        }
+        DAT_007fea44 = GetTransparentColour();
+    }
+    DAT_00668144 = 1;
+}
 
 // FUNCTION: LEGOLAND 0x00464080
-LEGO_EXPORT void PushRenderingStatusAndUnlockVideoSurface(void) { STUB(); }
+LEGO_EXPORT void PushRenderingStatusAndUnlockVideoSurface(void) {
+    LPDIRECTDRAWSURFACE surface;
+
+    DAT_00668164[DAT_006681e4] = DAT_00668144;
+    DAT_006681e4 = DAT_006681e4 + 1;
+    if (DAT_00668144 != 0) {
+        surface = (LPDIRECTDRAWSURFACE)renderEngine;
+        if (surface->lpVtbl->Unlock(surface, DAT_0066809c.pixels) == 0x887601c2) {
+            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)renderEngine);
+            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Unlock((LPDIRECTDRAWSURFACE)renderEngine, DAT_0066809c.pixels);
+        }
+    }
+    DAT_00668144 = 0;
+}
 
 // FUNCTION: LEGOLAND 0x004640f0
-void FUN_004640f0(void) { STUB(); }
+void FUN_004640f0(void) {
+    RECT local;
+    LPDIRECTDRAWSURFACE surface;
+    int wasLocked;
+
+    wasLocked = DAT_00668144;
+    local.left = 0;
+    local.top = 0;
+    local.right = lpConfig->field_0 - 1;
+    local.bottom = lpConfig->field_2 - 1;
+    DAT_00668164[DAT_006681e4] = DAT_00668144;
+    DAT_006681e4 = DAT_006681e4 + 1;
+    if (wasLocked != 0) {
+        surface = (LPDIRECTDRAWSURFACE)renderEngine;
+        if (surface->lpVtbl->Unlock(surface, DAT_0066809c.pixels) == 0x887601c2) {
+            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)renderEngine);
+            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Unlock((LPDIRECTDRAWSURFACE)renderEngine, DAT_0066809c.pixels);
+        }
+    }
+    DAT_0066809c.field_0 = 0x6c;
+    IntersectRect((LPRECT)&DAT_00668108, &local, (RECT *)&SPRITE_ClipRect);
+    surface = (LPDIRECTDRAWSURFACE)renderEngine;
+    if (surface->lpVtbl->Lock(surface, NULL, (LPDDSURFACEDESC)&DAT_0066809c, 0x21, NULL) == 0x887601c2) {
+        ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)renderEngine);
+        ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Lock((LPDIRECTDRAWSURFACE)renderEngine, NULL, (LPDDSURFACEDESC)&DAT_0066809c, 0x21, NULL);
+    }
+    DAT_007fea44 = GetTransparentColour();
+    DAT_00668144 = 1;
+}
 
 // FUNCTION: LEGOLAND 0x004641f0
-LEGO_EXPORT void PopRenderingStatus(void) { STUB(); }
+LEGO_EXPORT void PopRenderingStatus(void) {
+    RECT local;
+    LPDIRECTDRAWSURFACE surface;
+
+    DAT_006681e4 = DAT_006681e4 - 1;
+    if (DAT_00668164[DAT_006681e4] != 0) {
+        if (DAT_00668144 == 0) {
+            local.left = 0;
+            local.top = 0;
+            local.right = lpConfig->field_0 - 1;
+            local.bottom = lpConfig->field_2 - 1;
+            DAT_0066809c.field_0 = 0x6c;
+            IntersectRect((LPRECT)&DAT_00668108, &local, (RECT *)&SPRITE_ClipRect);
+            surface = (LPDIRECTDRAWSURFACE)renderEngine;
+            if (surface->lpVtbl->Lock(surface, NULL, (LPDDSURFACEDESC)&DAT_0066809c, 0x21, NULL) == 0x887601c2) {
+                ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)renderEngine);
+                ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Lock((LPDIRECTDRAWSURFACE)renderEngine, NULL, (LPDDSURFACEDESC)&DAT_0066809c, 0x21, NULL);
+            }
+            DAT_007fea44 = GetTransparentColour();
+            DAT_00668144 = 1;
+        }
+        return;
+    }
+    if (DAT_00668144 != 0) {
+        surface = (LPDIRECTDRAWSURFACE)renderEngine;
+        if (surface->lpVtbl->Unlock(surface, DAT_0066809c.pixels) == 0x887601c2) {
+            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)renderEngine);
+            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Unlock((LPDIRECTDRAWSURFACE)renderEngine, DAT_0066809c.pixels);
+        }
+        DAT_00668144 = 0;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00464310
-LEGO_EXPORT int GetVideoSurface(struct VideoArg *arg) { STUB(); }
+LEGO_EXPORT int GetVideoSurface(struct VideoArg *arg) {
+    if (DAT_00668144 == 0) {
+        return 0;
+    }
+    arg->field_0 = DAT_0066809c.pitch;
+    arg->field_4 = lpConfig->field_0;
+    arg->field_8 = lpConfig->field_2;
+    arg->field_c = DAT_0066809c.pixels;
+    arg->field_14 = 2;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00464360
 LEGO_EXPORT void PrintBackground(void) { return; }
 
 // FUNCTION: LEGOLAND 0x00464370
-LEGO_EXPORT void CommitCliprectToHardware(void) { STUB(); }
+LEGO_EXPORT void CommitCliprectToHardware(void) {
+    struct ClipRgnData {
+        /* 0x00 */ RGNDATAHEADER rdh;
+        /* 0x20 */ RECT rect;
+    } *rgn;
+    LPDIRECTDRAWCLIPPER clipper;
+
+    rgn = (struct ClipRgnData *)malloc(0x33);
+    rgn->rdh.iType = 1;
+    rgn->rdh.nCount = 1;
+    rgn->rdh.dwSize = 0x20;
+    rgn->rdh.nRgnSize = 0x10;
+    rgn->rdh.rcBound = *(RECT *)&SPRITE_ClipRect;
+    rgn->rect = *(RECT *)&SPRITE_ClipRect;
+    clipper = (LPDIRECTDRAWCLIPPER)DAT_00668080;
+    clipper->lpVtbl->SetClipList(clipper, (LPRGNDATA)rgn, 0);
+    free(rgn);
+}
 
 // FUNCTION: LEGOLAND 0x00464400
 LEGO_EXPORT void SetOverridePalette(unsigned int param_1) { DAT_006681e8 = param_1; }

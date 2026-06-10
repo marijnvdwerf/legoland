@@ -27,6 +27,9 @@ GUID GUID_PerfMasterGrooveLevel = {0xd2ac28b2, 0xb39b, 0x11d1, {0x87, 0x04, 0x00
 // GLOBAL: LEGOLAND 0x004ab8b0
 GUID DAT_004ab8b0 = {0xd2ac2893, 0xb39b, 0x11d1, {0x87, 0x04, 0x00, 0x60, 0x08, 0x93, 0xb1, 0xbd}};
 
+// GLOBAL: LEGOLAND 0x004acf80
+GUID DAT_004acf80 = {0xb3a6f3e0, 0x2b43, 0x11cf, {0xa2, 0xde, 0x00, 0xaa, 0x00, 0xb9, 0x33, 0x56}};
+
 // GLOBAL: LEGOLAND 0x004b4034
 int DAT_004b4034[16];
 
@@ -1706,11 +1709,20 @@ int renderEngineTargetIdx;
 // GLOBAL: LEGOLAND 0x0066811c
 void *renderEngineTargets[1];
 
+// GLOBAL: LEGOLAND 0x00668144
+int DAT_00668144;
+
 // GLOBAL: LEGOLAND 0x00668148
 struct Sprite *DAT_00668148;
 
 // GLOBAL: LEGOLAND 0x0066814c
 unsigned int DAT_0066814c;
+
+// GLOBAL: LEGOLAND 0x00668164
+int DAT_00668164[32];
+
+// GLOBAL: LEGOLAND 0x006681e4
+int DAT_006681e4;
 
 // GLOBAL: LEGOLAND 0x006681e8
 unsigned int DAT_006681e8;

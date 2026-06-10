@@ -48,7 +48,9 @@ struct Element;
 
 // Full definitions needed by typed globals defined in globals.c.
 struct LegoConfig {
-    /* 0x00 */ unsigned char pad_0[0x10];
+    /* 0x00 */ unsigned short field_0;
+    /* 0x02 */ unsigned short field_2;
+    /* 0x04 */ unsigned char pad_4[0x10 - 0x04];
     /* 0x10 */ unsigned short field_10;
     /* 0x12 */ unsigned short field_12;
     /* 0x14 */ unsigned short width;
@@ -181,6 +183,8 @@ extern float FLOAT_004ab480;
 extern GUID GUID_PerfMasterGrooveLevel;
 // 0x004ab8b0
 extern GUID DAT_004ab8b0;
+// 0x004acf80
+extern GUID DAT_004acf80;
 // 0x004b4034
 extern int DAT_004b4034[16];
 // 0x004b40c8
@@ -1283,10 +1287,16 @@ extern int DAT_00668114;
 extern int renderEngineTargetIdx;
 // 0x0066811c
 extern void *renderEngineTargets[1];
+// 0x00668144
+extern int DAT_00668144;
 // 0x00668148
 extern struct Sprite *DAT_00668148;
 // 0x0066814c
 extern unsigned int DAT_0066814c;
+// 0x00668164
+extern int DAT_00668164[32];
+// 0x006681e4
+extern int DAT_006681e4;
 // 0x006681e8
 extern unsigned int DAT_006681e8;
 // 0x006681fc

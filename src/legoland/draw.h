@@ -2,10 +2,17 @@
 
 #include "legoland.h"
 
-struct VideoArg;
+struct VideoArg {
+    /* 0x00 */ int field_0;
+    /* 0x04 */ int field_4;
+    /* 0x08 */ int field_8;
+    /* 0x0c */ void *field_c;
+    /* 0x10 */ int field_10;
+    /* 0x14 */ int field_14;
+};
 struct Sprite;
 
-LEGO_EXPORT void InitHostSystemGPU(void);
+LEGO_EXPORT int InitHostSystemGPU(void);
 LEGO_EXPORT void KillHostSystemGPU(void);
 LEGO_EXPORT int InitScreen(void);
 LEGO_EXPORT unsigned int SetPointer(unsigned int param_1);

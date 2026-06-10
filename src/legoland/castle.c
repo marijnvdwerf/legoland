@@ -1853,12 +1853,6 @@ void FUN_00423740(void) {
     FUN_0041fd30();
 }
 
-struct VideoArg {
-    int field_0;
-    unsigned char pad_4[8];
-    void *field_c;
-};
-
 // FUNCTION: LEGOLAND 0x00423760
 int FUN_00423760(struct VideoArg *arg) {
     int result = GetVideoSurface(arg);
