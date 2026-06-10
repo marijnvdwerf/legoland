@@ -1833,10 +1833,10 @@ unsigned int DAT_006687bc;
 unsigned int DAT_006687c0;
 
 // GLOBAL: LEGOLAND 0x006687c8
-struct InterfaceIconNode *DAT_006687c8;
+struct IconNode *DAT_006687c8;
 
 // GLOBAL: LEGOLAND 0x006687cc
-struct InterfaceIconNode *DAT_006687cc;
+struct IconNode *DAT_006687cc;
 
 // GLOBAL: LEGOLAND 0x006687d0
 LEGO_EXPORT void *FocussedIconPtr;

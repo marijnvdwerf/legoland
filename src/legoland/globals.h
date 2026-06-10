@@ -38,6 +38,7 @@ struct GoldNode;
 struct CarouselNode;
 struct JoustNode;
 struct InterfaceIconNode;
+struct IconNode;
 struct InterfaceProfileObj;
 struct InterfaceListNode;
 struct InterfaceQueryNode;
@@ -1370,9 +1371,9 @@ extern unsigned int DAT_006687bc;
 // 0x006687c0
 extern unsigned int DAT_006687c0;
 // 0x006687c8
-extern struct InterfaceIconNode *DAT_006687c8;
+extern struct IconNode *DAT_006687c8;
 // 0x006687cc
-extern struct InterfaceIconNode *DAT_006687cc;
+extern struct IconNode *DAT_006687cc;
 // 0x006687d0
 extern LEGO_EXPORT void *FocussedIconPtr;
 // 0x00668828

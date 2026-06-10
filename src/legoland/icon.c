@@ -172,13 +172,90 @@ void FUN_0046d4a0(struct IconNode **slot) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d4e0
-void FUN_0046d4e0(struct IconNode *node) { STUB(); }
+void FUN_0046d4e0(struct IconNode *node) {
+    struct IconNode *cur;
+    struct IconNode *next;
+    if (DAT_006687c8 == node) {
+        FUN_0046d460(&DAT_006687c8);
+        return;
+    }
+    cur = DAT_006687c8;
+    if (cur != NULL) {
+        while ((next = cur->next) != node) {
+            cur = next;
+            if (next == NULL) {
+                return;
+            }
+        }
+        if (cur != NULL) {
+            FUN_0046d460((struct IconNode **)cur);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046d520
-LEGO_EXPORT void RemoveIconGroup(unsigned int group) { STUB(); }
+LEGO_EXPORT void RemoveIconGroup(unsigned short group) {
+    struct IconNode **slot;
+    struct IconNode *node;
+    int removed = 0;
+
+    slot = &DAT_006687c8;
+    node = DAT_006687c8;
+    while (node != NULL) {
+        if (node->field_14 == group) {
+            node = node->next;
+            FUN_0046d460(slot);
+            removed++;
+        } else {
+            slot = &node->next;
+            node = node->next;
+        }
+    }
+    slot = &DAT_006687cc;
+    node = DAT_006687cc;
+    while (node != NULL) {
+        if (node->field_14 == group) {
+            node = node->next;
+            FUN_0046d4a0(slot);
+            removed++;
+        } else {
+            slot = &node->next;
+            node = node->next;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046d590
-void FUN_0046d590(unsigned int val) { STUB(); }
+void FUN_0046d590(unsigned short val) {
+    struct IconNode **slot;
+    struct IconNode *node;
+    int removed = 0;
+
+    slot = &DAT_006687c8;
+    node = DAT_006687c8;
+    while (node != NULL) {
+        if (node->field_14 < val || (int)node->field_14 >= val + 7) {
+            slot = &node->next;
+            node = node->next;
+        } else {
+            node = node->next;
+            FUN_0046d460(slot);
+            removed++;
+        }
+    }
+    slot = &DAT_006687cc;
+    node = DAT_006687cc;
+    while (node != NULL) {
+        if (node->field_14 < val || (int)node->field_14 >= val + 7) {
+            slot = &node->next;
+            node = node->next;
+        } else {
+            node = node->next;
+            FUN_0046d4a0(slot);
+            removed++;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046d630
 LEGO_EXPORT struct IconNode *FindIcon(unsigned short id) {
