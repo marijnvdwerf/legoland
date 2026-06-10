@@ -28,8 +28,13 @@ struct InterfaceObj {
     unsigned int field_3c;
 };
 
-struct ListNode {
-    struct ListNode *next;
+struct BuildObject {
+    unsigned char pad_0[0x58];
+    /* 0x58 */ void *field_58;
+    /* 0x5c */ void *field_5c;
+    /* 0x60 */ void *field_60;
+    unsigned char pad_64[0xc4 - 0x64];
+    /* 0xc4 */ void *field_c4;
 };
 
 struct ResearchNode {
@@ -505,14 +510,48 @@ void FUN_004755c0(void *data) {
 }
 
 // FUNCTION: LEGOLAND 0x00475630
-LEGO_EXPORT void InsertChildIntoList(void) { STUB(); }
+LEGO_EXPORT void InsertChildIntoList(struct BuildObject *param_1) {
+    struct InterfaceListNode *node;
+    struct InterfaceListNode *current;
+    struct InterfaceListNode *prev;
+
+    current = DAT_00668e40;
+    node = (struct InterfaceListNode *)malloc(sizeof(struct InterfaceListNode));
+    node->data = param_1;
+    node->flag = 0;
+    node->next = NULL;
+    while (current != NULL) {
+        if (((struct BuildObject *)current->data)->field_c4 == param_1->field_58) {
+            prev = current;
+            current = current->next;
+            while (current != NULL) {
+                if (((struct BuildObject *)node->data)->field_58 != ((struct BuildObject *)current->data)->field_58) {
+                    break;
+                }
+                if (GetObjCost((struct CostInfo *)node->data) <= GetObjCost((struct CostInfo *)current->data)) {
+                    break;
+                }
+                prev = current;
+                current = current->next;
+            }
+            prev->next = node;
+            node->next = current;
+            return;
+        }
+        current = current->next;
+    }
+    if (DAT_00668e34 != 0) {
+        FUN_004755c0(param_1);
+    }
+    free(node);
+}
 
 // FUNCTION: LEGOLAND 0x004756e0
 LEGO_EXPORT void DelObjectList(void) {
-    struct ListNode *current;
-    struct ListNode *next;
+    struct InterfaceListNode *current;
+    struct InterfaceListNode *next;
 
-    current = (struct ListNode *)DAT_00668e40;
+    current = DAT_00668e40;
     while (current != NULL) {
         next = current->next;
         free(current);
