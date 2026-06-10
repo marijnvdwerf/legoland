@@ -99,6 +99,12 @@ struct ClipRect {
     int bottom;
 };
 
+struct InfoTimedEntry {
+    /* 0x00 */ void *sample;
+    /* 0x04 */ int interval;
+    /* 0x08 */ int last_time;
+};
+
 struct MapRect {
     /* 0x00 */ int x0;
     /* 0x04 */ int y0;
@@ -422,6 +428,8 @@ extern void *PTR_some_list_head_004ba87c;
 extern void *PTR_DAT_004ba880;
 // 0x004ba884
 extern unsigned int DAT_004ba884;
+// 0x004ba8e0
+extern struct InfoTimedEntry DAT_004ba8e0[17];
 // 0x004ba9ac
 extern unsigned int DAT_004ba9ac[1];
 // 0x004bad54
@@ -1523,6 +1531,8 @@ extern struct Sprite *DAT_00668904;
 extern struct Sprite *DAT_00668908;
 // 0x0066890c
 extern struct Sprite *DAT_0066890c;
+// 0x00668910
+extern struct Sprite *DAT_00668910;
 // 0x00668914
 extern struct Sprite *DAT_00668914;
 // 0x00668918
@@ -1561,6 +1571,10 @@ extern unsigned int DAT_00668954;
 extern struct Sprite *DAT_00668958;
 // 0x00668960
 extern unsigned int DAT_00668960;
+// 0x00668964
+extern int DAT_00668964;
+// 0x00668968
+extern char DAT_00668968[0x400];
 // 0x00668d68
 extern unsigned int DAT_00668d68;
 // 0x00668d78  (DIMOUSESTATE; full type in <dinput.h>, dereferenced only by input.c)
@@ -2151,18 +2165,38 @@ extern struct InfoIcon *DAT_007fdea8;
 extern struct Sprite *DAT_007fdeac;
 // 0x007fdeb0
 extern struct Sprite *DAT_007fdeb0;
+// 0x007fdec0
+extern unsigned int DAT_007fdec0;
+// 0x007fdec4
+extern void *DAT_007fdec4;
+// 0x007fdec8
+extern unsigned int DAT_007fdec8;
+// 0x007fdecc
+extern int DAT_007fdecc;
+// 0x007fded0
+extern int DAT_007fded0;
 // 0x007fded4
 extern unsigned int DAT_007fded4;
+// 0x007fdf24
+extern struct Sprite *DAT_007fdf24;
 // 0x007fdf74
 extern unsigned int DAT_007fdf74;
 // 0x007fdf78
 extern int DAT_007fdf78;
 // 0x007fdf7c
 extern unsigned int DAT_007fdf7c;
+// 0x007fdf80
+extern void *DAT_007fdf80;
 // 0x007fdf84
 extern unsigned int DAT_007fdf84;
+// 0x007fdf88
+extern unsigned short DAT_007fdf88;
 // 0x007fdf8c
 extern unsigned int DAT_007fdf8c;
+// 0x007fdf90
+extern unsigned int DAT_007fdf90;
+// 0x007fdf94
+extern unsigned int DAT_007fdf94;
 // 0x007fdf98
 extern unsigned int DAT_007fdf98;
 // 0x007fdf9c
@@ -2175,6 +2209,14 @@ extern unsigned int DAT_007fdfa4;
 extern unsigned int DAT_007fdfa8;
 // 0x007fdfac
 extern unsigned char DAT_007fdfac;
+// 0x007fdfb0
+extern unsigned int DAT_007fdfb0;
+// 0x007fdfb4
+extern unsigned int DAT_007fdfb4;
+// 0x007fdfb8
+extern unsigned int DAT_007fdfb8;
+// 0x007fdfbc
+extern unsigned int DAT_007fdfbc;
 // 0x007fdfc0
 extern struct InfoIcon *DAT_007fdfc0;
 // 0x007fdfc4
@@ -2205,6 +2247,10 @@ extern struct InfoIcon *DAT_007fe000;
 extern struct Sprite *DAT_007fe004;
 // 0x007fe008
 extern struct Sprite *DAT_007fe008;
+// 0x007fe010
+extern int DAT_007fe010;
+// 0x007fe014
+extern int DAT_007fe014;
 // 0x007fe018
 extern struct Sprite *DAT_007fe018;
 // 0x007fe020

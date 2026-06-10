@@ -7,10 +7,12 @@
 struct Sprite;
 
 struct InfoIcon {
-    unsigned char pad_0[0x2c];
-    void (*handler)(void);
-    unsigned char pad_30[0x4];
-    unsigned int flags;
+    /* 0x00 */ unsigned char pad_0[0x2c];
+    /* 0x2c */ void (*handler)(void);
+    /* 0x30 */ unsigned char pad_30[0x4];
+    /* 0x34 */ unsigned int flags;
+    /* 0x38 */ char *string;
+    /* 0x3c */ unsigned int string_id;
 };
 
 
@@ -240,7 +242,43 @@ void FUN_004717a0(void) { STUB(); }
 void FUN_00471840(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004718c0
-void FUN_004718c0(void) { STUB(); }
+void FUN_004718c0(int param_1) {
+    int x;
+    int y;
+    int iVar1;
+    int edx;
+
+    x = DAT_007fdecc;
+    y = DAT_007fded0;
+    iVar1 = param_1 * 0x20 + 0xc8;
+    edx = param_1 * 0x14 + 0x96;
+    if (x > 0x27b - iVar1) {
+        x = x + (-5 - iVar1);
+        if (x < 0) {
+            x = 5;
+            goto LAB_0047190b;
+        }
+    }
+    if (x >= 0x82) {
+        goto LAB_00471919;
+    }
+LAB_0047190b:
+    if (DAT_007fdd80 != 2) {
+        x = 0x82;
+    }
+LAB_00471919:
+    if (y < 0x25) {
+        DAT_007fdecc = x;
+        DAT_007fded0 = 0x25;
+        return;
+    }
+    iVar1 = 0x16f - edx;
+    DAT_007fdecc = x;
+    DAT_007fded0 = iVar1;
+    if (y <= iVar1) {
+        DAT_007fded0 = y;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00471950
 LEGO_EXPORT void PopUpInfoSetUp(void) { STUB(); }
