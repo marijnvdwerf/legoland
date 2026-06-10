@@ -1,8 +1,14 @@
 #include "legoland.h"
+#include "crt.h"
+#include <windows.h>
+#include <ddraw.h>
 #include "globals.h"
 #include "worker_mouse.h"
 #include "popupinfo.h"
 #include "icon.h"
+#include "text.h"
+
+#pragma intrinsic(strlen)
 
 struct Sprite;
 
@@ -236,10 +242,50 @@ void FUN_00471610(void) {
 LEGO_EXPORT void InfoPrintCent(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004717a0
-void FUN_004717a0(void) { STUB(); }
+int FUN_004717a0(const char *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) {
+    HDC hdc;
+    int iVar2;
+    int iVar4;
+    RECT local_10;
+
+    local_10.left = 0;
+    local_10.top = 0;
+    local_10.right = 0;
+    local_10.bottom = 0;
+    hdc = CreateCompatibleDC(NULL);
+    iVar4 = param_2;
+    param_2 = 0;
+    local_10.right = param_4;
+    SelectFont(hdc, param_6);
+    while (1) {
+        iVar2 = DrawTextA(hdc, param_1, strlen(param_1), &local_10, 0x411);
+        if (iVar2 <= iVar4) {
+            return param_2;
+        }
+        iVar4 = iVar4 + param_3;
+        local_10.right = local_10.right + param_5;
+        param_2 = param_2 + 1;
+        if (iVar2 <= iVar4) {
+            return param_2;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00471840
-void FUN_00471840(void) { STUB(); }
+int FUN_00471840(const char *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) {
+    HDC hdc;
+    RECT local_10;
+
+    local_10.left = 0;
+    local_10.top = 0;
+    local_10.right = 0;
+    local_10.bottom = 0;
+    hdc = CreateCompatibleDC(NULL);
+    local_10.right = param_4;
+    SelectFont(hdc, param_6);
+    DrawTextA(hdc, param_1, strlen(param_1), &local_10, 0x401);
+    return (((local_10.right - local_10.left) - param_4) + 0x1f) >> 5;
+}
 
 // FUNCTION: LEGOLAND 0x004718c0
 void FUN_004718c0(int param_1) {
