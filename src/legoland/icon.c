@@ -86,6 +86,21 @@ struct CtrlBuffer {
     int field_8;
 };
 
+struct ScrollRegion {
+    /* 0x00 */ short field_0;
+    /* 0x02 */ unsigned char pad_2[0x4 - 0x2];
+    /* 0x04 */ unsigned char field_4;
+    /* 0x05 */ unsigned char pad_5[0xc - 0x5];
+    /* 0x0c */ int field_c;
+    /* 0x10 */ int field_10;
+    /* 0x14 */ int field_14;
+    /* 0x18 */ int field_18;
+    /* 0x1c */ int field_1c;
+    /* 0x20 */ int field_20;
+    /* 0x24 */ int field_24;
+    /* 0x28 */ int field_28;
+};
+
 struct IndicatorFuncs {
     unsigned char pad_0[4];
     unsigned int field_4;
@@ -106,6 +121,12 @@ struct TimedIndicator {
 };
 
 #include "image_sprite.h"
+
+LEGO_EXPORT void MoveIcons(unsigned short mask, unsigned short id, short dx, short dy);
+int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned short param_4, int param_5);
+void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3);
+unsigned char FUN_0046d980(struct IconNode *icon, unsigned char buttons, int a3, int a4);
+unsigned char FUN_0046da20(struct IconNode *icon, unsigned char buttons, int a3, int a4);
 
 
 // FUNCTION: LEGOLAND 0x0046d3a0
@@ -345,13 +366,108 @@ LEGO_EXPORT struct SpriteIcon *LoadSpriteIcon(const char *filename, unsigned int
 }
 
 // FUNCTION: LEGOLAND 0x0046d850
-void FUN_0046d850(void) { STUB(); }
+void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3) {
+    int dx;
+    int dy;
+    int ebp;
+
+    if ((r->field_4 & 1) != 0) {
+        if (r->field_18 - r->field_10 <= r->field_28 - r->field_20) {
+            MoveIcons(0xffff, r->field_0, 0, (short)(r->field_20 - r->field_10));
+            return;
+        }
+    } else {
+        if (r->field_14 - r->field_c <= r->field_24 - r->field_1c) {
+            MoveIcons(0xffff, r->field_0, (short)(r->field_1c - r->field_c), 0);
+            return;
+        }
+    }
+
+    dy = FUN_0046dd10(0xffff, (short)((r->field_20 - r->field_10) - param_3), (short)(r->field_10 + param_3), r->field_0, param_3);
+    dx = param_3;
+    ebp = r->field_c + param_3;
+    if ((r->field_4 & 1) != 0) {
+        if (r->field_10 + dy <= r->field_20) {
+            ebp = r->field_18 + dy;
+            if (ebp < r->field_28) {
+                dy = dy + (r->field_28 - ebp);
+            }
+        } else {
+            dy = dy + (r->field_20 - (r->field_10 + dy));
+        }
+    } else {
+        if (ebp > r->field_1c) {
+            dx = dx + (r->field_1c - ebp);
+        } else {
+            ebp = r->field_14 + param_3;
+            if (ebp < r->field_24) {
+                dx = dx + (r->field_24 - ebp);
+            }
+        }
+    }
+    r->field_c = r->field_c + dx;
+    r->field_10 = r->field_10 + dy;
+    r->field_14 = r->field_14 + dx;
+    r->field_18 = r->field_18 + dy;
+    DAT_00668e44[DAT_00668e64] = DAT_00668e44[DAT_00668e64] + dy;
+    MoveIcons(0xffff, r->field_0, (short)dx, (short)dy);
+}
 
 // FUNCTION: LEGOLAND 0x0046d980
-void FUN_0046d980(void) { STUB(); }
+unsigned char FUN_0046d980(struct IconNode *icon, unsigned char buttons, int a3, int a4) {
+    struct ScrollRegion *region;
+    if ((buttons & 1) != 0) {
+        region = (struct ScrollRegion *)icon->field_30;
+        DAT_006688b4 = GetTickCount();
+        if ((region->field_4 & 1) != 0) {
+            FUN_0046d850(region, 0, 6);
+            return 2;
+        }
+        FUN_0046d850(region, 0x20, 0);
+        return 2;
+    }
+    if ((buttons & 4) == 0) {
+        return 1;
+    }
+    if (0xf9 < GetTickCount() - DAT_006688b4) {
+        region = (struct ScrollRegion *)icon->field_30;
+        DAT_006688b4 = GetTickCount();
+        if ((region->field_4 & 1) != 0) {
+            FUN_0046d850(region, 0, 6);
+            return 2;
+        }
+        FUN_0046d850(region, 0x20, 0);
+    }
+    return 2;
+}
 
 // FUNCTION: LEGOLAND 0x0046da20
-void FUN_0046da20(struct IconNode *icon, int a2, int a3, int a4) { STUB(); }
+unsigned char FUN_0046da20(struct IconNode *icon, unsigned char buttons, int a3, int a4) {
+    struct ScrollRegion *region;
+    if ((buttons & 1) != 0) {
+        region = (struct ScrollRegion *)icon->field_30;
+        DAT_006688b4 = GetTickCount();
+        if ((region->field_4 & 1) != 0) {
+            FUN_0046d850(region, 0, -6);
+            return 2;
+        }
+        FUN_0046d850(region, -0x20, 0);
+        return 2;
+    }
+    if ((buttons & 4) == 0) {
+        return 1;
+    }
+    if (0xf9 < GetTickCount() - DAT_006688b4) {
+        region = (struct ScrollRegion *)icon->field_30;
+        DAT_006688b4 = GetTickCount();
+        if ((region->field_4 & 1) != 0) {
+            FUN_0046d850(region, 0, -6);
+            return 2;
+        }
+        FUN_0046d850(region, -0x20, 0);
+    }
+    return 2;
+}
 
 // FUNCTION: LEGOLAND 0x0046dac0
 void FUN_0046dac0(void) { STUB(); }
@@ -386,10 +502,58 @@ void FUN_0046db40(void) {
 LEGO_EXPORT void AddGBarIcons(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046dcd0
-LEGO_EXPORT void MoveIcons(void) { STUB(); }
+LEGO_EXPORT void MoveIcons(unsigned short mask, unsigned short id, short dx, short dy) {
+    struct IconNode *node;
+    for (node = DAT_006687c8; node != NULL; node = node->next) {
+        if ((node->field_34 & 1) == 0 && (node->field_14 & mask) == id) {
+            node->field_c = node->field_c + dx;
+            node->field_e = node->field_e + dy;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046dd10
-void FUN_0046dd10(void) { STUB(); }
+int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned short param_4, int param_5) {
+    struct IconNode *best = NULL;
+    struct IconNode *node = DAT_006687c8;
+    int extreme;
+    int v;
+
+    if (param_5 < 1) {
+        if (param_5 >= 0) {
+            return 0;
+        }
+        extreme = 100000;
+        if (node == NULL) {
+            return 0;
+        }
+        do {
+            if ((node->field_34 & 1) == 0 && (node->field_14 & param_1) == param_4 &&
+                (v = (int)node->field_e, (int)param_2 < (v - param_3) + param_5) && v < extreme) {
+                extreme = v;
+                best = node;
+            }
+            node = node->next;
+        } while (node != NULL);
+    } else {
+        extreme = -100000;
+        if (node == NULL) {
+            return 0;
+        }
+        do {
+            if ((node->field_34 & 1) == 0 && (node->field_14 & param_1) == param_4 &&
+                (v = (int)node->field_e, (v - param_3) + param_5 <= (int)param_2 && extreme < v)) {
+                extreme = v;
+                best = node;
+            }
+            node = node->next;
+        } while (node != NULL);
+    }
+    if (best != NULL && best->field_e != param_2) {
+        return ((int)param_2 - (int)best->field_e) + (int)param_3;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046de50
 void FUN_0046de50(struct Rect16 *src, struct Rect32 *dst) {

@@ -1396,6 +1396,8 @@ extern void *DAT_006688a8;
 extern void *DAT_006688ac;
 // 0x006688b0
 extern void *DAT_006688b0;
+// 0x006688b4
+extern unsigned int DAT_006688b4;
 // 0x006688c8
 extern unsigned int DAT_006688c8;
 // 0x006688d0
@@ -1484,6 +1486,10 @@ extern unsigned int DAT_00668e34;
 extern unsigned int DAT_00668e38;
 // 0x00668e40
 extern struct InterfaceListNode *DAT_00668e40;
+// 0x00668e44
+extern int DAT_00668e44[8];
+// 0x00668e64
+extern unsigned char DAT_00668e64;
 // 0x00668e68
 extern struct Sprite *DAT_00668e68;
 // 0x00668e6c
