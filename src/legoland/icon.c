@@ -979,7 +979,43 @@ LEGO_EXPORT void RenderIcons2(short param_1, short param_2, short param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x0046f100
-void FUN_0046f100(void) { STUB(); }
+void FUN_0046f100(short param_1) {
+    struct PrintCtx ctx;
+    struct IconNode *node;
+    int elapsed;
+
+    ctx.node = NULL;
+    ctx.flags = 2;
+    ctx.field_8 = 0;
+    elapsed = GetTicks() - DAT_006688cc;
+    if (elapsed > 0x3de) {
+        elapsed = 0x3de;
+    }
+    FUN_0046ec50(elapsed * 5 / 0x21);
+    DAT_006688cc = GetTicks();
+    node = DAT_006687c8;
+    StoreClipping();
+    FUN_0046df60(0);
+    for (; node != NULL; node = node->next) {
+        if ((node->field_34 & 0x400) == 0 && (short)node->field_14 != param_1) {
+            if (node->field_34 & 0x8) {
+                ((void (*)(struct IconNode *))node->field_28)(node);
+            } else if (node->sprite) {
+                ctx.node = node;
+                PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
+            }
+        }
+        if (node == (struct IconNode *)FocussedIconPtr && node->sprite) {
+            struct IconAnim *anim = ((struct IconSprite *)node->sprite)->anim;
+            if (anim->kind == 3 || anim->kind == 2) {
+                LLSPlayOnce(anim->lls, (unsigned int)anim);
+            }
+        }
+    }
+    FUN_0046df60(0);
+    FUN_004760a0();
+    RestoreClipping();
+}
 
 // FUNCTION: LEGOLAND 0x0046f200
 LEGO_EXPORT void RenderHelpIcons(void) { STUB(); }
