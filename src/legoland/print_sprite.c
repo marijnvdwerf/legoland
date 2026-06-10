@@ -368,7 +368,7 @@ LEGO_EXPORT void DrawAndClearPrintList(void)
 // FUNCTION: LEGOLAND 0x00485bd0
 void FUN_00485bd0(struct SortNode *node)
 {
-    struct SortNode *cur;
+    int key;
 
     if (DAT_007fd600 == NULL) {
         // STRING: LEGOLAND 0x004bdd40
@@ -383,20 +383,19 @@ void FUN_00485bd0(struct SortNode *node)
         node->right = NULL;
         DAT_0066b5a4 = node;
     } else {
-        if (node->key < DAT_007fd600->key) {
-            do {
-                cur = DAT_007fd600->left;
-                if (cur == NULL) break;
-                DAT_007fd600 = cur;
-            } while (node->key < cur->key);
-        } else if (DAT_007fd600->key < node->key) {
-            do {
-                cur = DAT_007fd600->right;
-                if (cur == NULL) break;
-                DAT_007fd600 = cur;
-            } while (cur->key < node->key);
+        key = node->key;
+        if (key < DAT_007fd600->key) {
+            while (DAT_007fd600->left != NULL) {
+                DAT_007fd600 = DAT_007fd600->left;
+                if (DAT_007fd600->key <= key) break;
+            }
+        } else if (DAT_007fd600->key < key) {
+            while (DAT_007fd600->right != NULL) {
+                DAT_007fd600 = DAT_007fd600->right;
+                if (key <= DAT_007fd600->key) break;
+            }
         }
-        if (node->key < DAT_007fd600->key) {
+        if (key < DAT_007fd600->key) {
             node->left = DAT_007fd600->left;
             if (DAT_007fd600->left == NULL) {
                 DAT_0066b5a4 = node;
