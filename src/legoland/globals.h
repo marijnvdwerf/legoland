@@ -1,6 +1,7 @@
 #pragma once
 
 #include <windows.h>
+#include <dinput.h>
 
 #include "legoland.h"
 #include "gamemap.h"
@@ -64,7 +65,8 @@ struct LegoConfig {
     /* 0x1e */ unsigned short field_1e;
     /* 0x20 */ unsigned short field_20;
     /* 0x22 */ unsigned short field_22;
-    /* 0x24 */ unsigned char pad_24[4];
+    /* 0x24 */ unsigned short field_24;
+    /* 0x26 */ unsigned char pad_26[2];
     /* 0x28 */ unsigned int field_28;
     /* 0x2c */ unsigned char pad_2c[4];
     /* 0x30 */ unsigned int field_30;
@@ -367,6 +369,12 @@ extern unsigned int DAT_004ba884;
 extern unsigned int DAT_004ba9ac[1];
 // 0x004bad54
 extern int mouse_granularity;
+struct KeyMapping {
+    /* 0x00 */ unsigned char flags;
+    /* 0x01 */ signed char code;
+};
+// 0x004bad58
+extern struct KeyMapping DAT_004bad58[0x3b];
 // 0x004bafa8
 extern unsigned int DAT_004bafa8[20];
 // 0x004baff8
@@ -1486,13 +1494,19 @@ extern unsigned int DAT_00668960;
 // 0x00668d68
 extern unsigned int DAT_00668d68;
 // 0x00668d78
-extern int DAT_00668d78[4];
+extern DIMOUSESTATE DAT_00668d78;
 // 0x00668d88
 extern void *dinput;
 // 0x00668d8c
 extern void *dinput_keyboard;
 // 0x00668d90
 extern void *dintput_mouse;
+// 0x00668d94
+extern char DAT_00668d94[0x14];
+// 0x00668da8
+extern unsigned char DAT_00668da8[0x3b];
+// 0x00668de4
+extern unsigned char DAT_00668de4[0x3b];
 // 0x00668e20
 extern unsigned int DAT_00668e20[4];
 // 0x00668e34

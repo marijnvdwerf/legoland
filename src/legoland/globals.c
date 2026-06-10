@@ -308,6 +308,9 @@ unsigned int DAT_004ba9ac[1];
 // GLOBAL: LEGOLAND 0x004bad54
 int mouse_granularity;
 
+// GLOBAL: LEGOLAND 0x004bad58
+struct KeyMapping DAT_004bad58[0x3b];
+
 // GLOBAL: LEGOLAND 0x004bafa8
 unsigned int DAT_004bafa8[20];
 
@@ -2005,7 +2008,7 @@ unsigned int DAT_00668960;
 unsigned int DAT_00668d68;
 
 // GLOBAL: LEGOLAND 0x00668d78
-int DAT_00668d78[4];
+DIMOUSESTATE DAT_00668d78;
 
 // GLOBAL: LEGOLAND 0x00668d88
 void *dinput;
@@ -2015,6 +2018,15 @@ void *dinput_keyboard;
 
 // GLOBAL: LEGOLAND 0x00668d90
 void *dintput_mouse;
+
+// GLOBAL: LEGOLAND 0x00668d94
+char DAT_00668d94[0x14];
+
+// GLOBAL: LEGOLAND 0x00668da8
+unsigned char DAT_00668da8[0x3b];
+
+// GLOBAL: LEGOLAND 0x00668de4
+unsigned char DAT_00668de4[0x3b];
 
 // GLOBAL: LEGOLAND 0x00668e20
 unsigned int DAT_00668e20[4];

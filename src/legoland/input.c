@@ -5,6 +5,9 @@
 #include "icon.h"
 #include "llidb.h"
 #include "globals.h"
+#include "controller.h"
+#include "input.h"
+#include "crt.h"
 
 struct DInputDeviceVtbl {
     void *pad_0[2];
@@ -61,7 +64,7 @@ LEGO_EXPORT void ScanMouse(void) {
 
     if (dintput_mouse != NULL) {
         while (1) {
-            hr = IDirectInputDevice_GetDeviceState((IDirectInputDeviceA *)dintput_mouse, 0x10, DAT_00668d78);
+            hr = IDirectInputDevice_GetDeviceState((IDirectInputDeviceA *)dintput_mouse, 0x10, &DAT_00668d78);
             if (hr == DI_OK) {
                 break;
             }
@@ -70,9 +73,9 @@ LEGO_EXPORT void ScanMouse(void) {
             }
         }
     }
-    if (DAT_00668d78[2] <= -mouse_granularity) {
+    if (DAT_00668d78.lZ <= -mouse_granularity) {
         FUN_0046db40();
-    } else if (DAT_00668d78[2] >= mouse_granularity) {
+    } else if (DAT_00668d78.lZ >= mouse_granularity) {
         FUN_0046dac0();
     }
 }
@@ -87,10 +90,67 @@ LEGO_EXPORT void KillInputSystem(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00473b00
-LEGO_EXPORT void UpdateControllerFromMouseData(void *buffer) { STUB(); }
+LEGO_EXPORT void UpdateControllerFromMouseData(struct CtrlBuffer *buffer) {
+    int x;
+    int y;
+    int dx;
+    int dy;
+    int lX;
+    int lY;
+    unsigned int flags;
+
+    if (buffer == NULL) {
+        return;
+    }
+    buffer->field_0 = buffer->field_8;
+    buffer->field_4 = buffer->field_c;
+    lX = DAT_00668d78.lX;
+    lY = DAT_00668d78.lY;
+    dx = lX;
+    dy = lY;
+    if (buffer->field_24 != 0) {
+        if (abs(lX) > buffer->field_1c || abs(lY) > buffer->field_1c) {
+            dx = lX * 2;
+            dy = lY * 2;
+        }
+        if (buffer->field_24 == 2 && (abs(dx) > buffer->field_20 || abs(dy) > buffer->field_20)) {
+            dx = dx << 1;
+            dy = dy << 1;
+        }
+    }
+    x = buffer->field_8;
+    y = buffer->field_c;
+    buffer->field_8 = x + dx;
+    buffer->field_c = y + dy;
+    if ((int)(unsigned int)(unsigned short)lpConfig->field_0 <= x + dx) {
+        buffer->field_8 = lpConfig->field_0 - 1;
+    }
+    if (buffer->field_8 < 0) {
+        buffer->field_8 = 0;
+    }
+    if ((int)(unsigned int)(unsigned short)lpConfig->field_2 <= y + dy) {
+        buffer->field_c = lpConfig->field_2 - 1;
+    }
+    if (buffer->field_c < 0) {
+        buffer->field_c = 0;
+    }
+    buffer->field_10 = buffer->field_8 - buffer->field_0;
+    flags = buffer->field_18 & 0xfffffff8;
+    buffer->field_14 = buffer->field_c - buffer->field_4;
+    buffer->field_18 = flags;
+    if ((DAT_00668d78.rgbButtons[0] & 0x80) != 0) {
+        buffer->field_18 = flags | 1;
+    }
+    if ((DAT_00668d78.rgbButtons[2] & 0x80) != 0) {
+        buffer->field_18 = buffer->field_18 | 4;
+    }
+    if ((DAT_00668d78.rgbButtons[1] & 0x80) != 0) {
+        buffer->field_18 = buffer->field_18 | 2;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00473c10
-LEGO_EXPORT void UpdateControllerFromKeyboardData(void *buffer) { STUB(); }
+LEGO_EXPORT void UpdateControllerFromKeyboardData(struct CtrlBuffer *buffer) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00474070
 unsigned int FUN_00474070(void) {
@@ -103,7 +163,37 @@ unsigned int FUN_00474080(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004740b0
-LEGO_EXPORT char GetInputChar(void) { STUB(); }
+LEGO_EXPORT char GetInputChar(void) {
+    int i;
+    int result;
+    signed char *p;
+    unsigned int prev;
+    unsigned char state;
+    int alt;
+
+    result = 0;
+    i = 0;
+    p = &DAT_004bad58[0].code;
+    do {
+        prev = DAT_00668da8[i];
+        state = DAT_007fdda0[(unsigned char)p[-1]];
+        prev = (prev >> 7) & 1;
+        DAT_00668da8[i] = state;
+        if ((state & 0x80) != 0 && prev == 0) {
+            alt = GetKeyState(0x14) & 1;
+            if (FUN_00474070() != 0 || FUN_00474080() != 0) {
+                alt = (alt == 0);
+            }
+            result = *p;
+            if (alt == 0) {
+                result = tolower(result);
+            }
+        }
+        i = i + 1;
+        p = p + 2;
+    } while ((int)p < 0x4badcf);
+    return (char)result;
+}
 
 // FUNCTION: LEGOLAND 0x00474130
 void FUN_00474130(void) { STUB(); }

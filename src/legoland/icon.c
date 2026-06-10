@@ -13,6 +13,7 @@
 #include "print_sprite.h"
 #include "string.h"
 #include "map_object.h"
+#include "controller.h"
 
 struct Sprite;
 
@@ -80,11 +81,6 @@ struct Indicator {
     void (*field_1c)(struct Indicator *);
     unsigned char pad_20[0x22 - 0x20];
     unsigned char field_22;
-};
-
-struct CtrlBuffer {
-    unsigned char pad_0[8];
-    int field_8;
 };
 
 struct MenuGroup {

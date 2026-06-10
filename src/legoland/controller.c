@@ -2,22 +2,12 @@
 #include "crt.h"
 
 #include "globals.h"
+#include "controller.h"
 #include "timer.h"
 #include "tilemap.h"
 #include "map_object.h"
 
 #include <windows.h>
-
-
-struct CtrlBuffer {
-    /* 0x00 */ unsigned char pad_0[8];
-    /* 0x08 */ int field_8;
-    /* 0x0c */ int field_c;
-    /* 0x10 */ int field_10;
-    /* 0x14 */ int field_14;
-    /* 0x18 */ unsigned int field_18;
-    /* 0x1c */ unsigned char pad_1c[0x28 - 0x1c];
-};
 
 
 // FUNCTION: LEGOLAND 0x00451e70
@@ -60,7 +50,35 @@ void FUN_00451f40(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00451f70
-int FUN_00451f70(void) { STUB(); }
+int FUN_00451f70(void) {
+    int dx;
+    unsigned int dy;
+    int result;
+
+    result = 0;
+    if ((GamePad & 0x20) == 0) {
+        return 0;
+    }
+    if ((DAT_00813ab4 & 4) != 0) {
+        dx = (unsigned int)lpConfig->field_24 * -2;
+        ProcessScrolling(dx, 0);
+    } else if ((DAT_00813aa4 & 4) != 0) {
+        dx = (unsigned int)lpConfig->field_24 << 1;
+        ProcessScrolling(dx, 0);
+    }
+    if ((DAT_00813a9c & 4) != 0) {
+        dy = -(unsigned int)lpConfig->field_24;
+        ProcessScrolling(0, dy);
+    } else if ((DAT_00813aac & 4) != 0) {
+        dy = (unsigned int)lpConfig->field_24;
+        ProcessScrolling(0, dy);
+    }
+    if ((DAT_00813ab4 & 4) != 0 || (DAT_00813aa4 & 4) != 0 ||
+        (DAT_00813a9c & 4) != 0 || (DAT_00813aac & 4) != 0) {
+        result = 1;
+    }
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x00452030
 void FUN_00452030(void) { STUB(); }

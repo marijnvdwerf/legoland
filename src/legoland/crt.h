@@ -66,4 +66,8 @@ extern int _stricmp(const char *s1, const char *s2);
 extern char *strstr(const char *haystack, const char *needle);
 extern char *_strupr(char *s);
 extern int toupper(int c);
+extern int tolower(int c);
+extern int abs(int n);
+extern int _memicmp(const void *s1, const void *s2, unsigned int n);
+extern void _exit(int status);
 extern void _splitpath(const char *path, char *drive, char *dir, char *fname, char *ext);
