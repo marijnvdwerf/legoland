@@ -122,6 +122,8 @@ struct TimedIndicator {
 
 #include "image_sprite.h"
 
+struct SpriteLLS;
+LEGO_EXPORT unsigned int GetLLSForSprite(struct SpriteLLS *sprite);
 LEGO_EXPORT void MoveIcons(unsigned short mask, unsigned short id, short dx, short dy);
 int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned short param_4, int param_5);
 void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3);
@@ -668,16 +670,72 @@ LEGO_EXPORT void RenderGBarSpriteIcon(void) { STUB(); }
 LEGO_EXPORT void RenderFlashingSpriteIcon(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e920
-int FUN_0046e920(int param_1) { STUB(); }
+int FUN_0046e920(struct IconNode *node) {
+    struct PrintCtx ctx;
+    struct LLS *lls;
+    int frame;
+
+    ctx.flags = 2;
+    ctx.node = node;
+    ctx.field_8 = 0;
+    if (node->sprite != NULL) {
+        if (GetBlink() != 0) {
+            PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
+        } else {
+            struct Sprite *alt = node->alt_sprite;
+            if (alt != NULL) {
+                lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)node->sprite);
+                if (lls != NULL) {
+                    frame = *(short *)lls;
+                } else {
+                    frame = 0;
+                }
+                lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)alt);
+                if (lls != NULL) {
+                    LLSSetFrame(lls, frame);
+                }
+                PrintSprite(alt, node->field_c, node->field_e, 0, (int *)&ctx);
+                return 0;
+            }
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046e9d0
 LEGO_EXPORT void RenderGBarSprite(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046ea10
-void FUN_0046ea10(void) { STUB(); }
+int FUN_0046ea10(struct IconNode *node) {
+    struct PrintCtx ctx;
+    RECT rect;
+    RECT out;
+
+    ctx.flags = 2;
+    ctx.node = node;
+    rect.left = (LONG)node->field_c;
+    rect.top = (LONG)node->field_e;
+    rect.right = node->field_10 + rect.left;
+    rect.bottom = node->field_12 + rect.top;
+    ctx.field_8 = 0;
+    if (IntersectRect(&out, &rect, (RECT *)&((struct ScrollRegion *)node->field_30)->field_1c) != 0 && node->sprite != NULL) {
+        PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046eaa0
-void FUN_0046eaa0(void) { STUB(); }
+int FUN_0046eaa0(struct IconNode *node) {
+    struct PrintCtx ctx;
+
+    ctx.flags = 2;
+    ctx.node = node;
+    ctx.field_8 = 0;
+    if (GetBlink() != 0) {
+        PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0046eaf0
 LEGO_EXPORT void SetupInterfacePanelIcons(void) { STUB(); }

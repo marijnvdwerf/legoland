@@ -14,8 +14,11 @@ struct IconNode {
     /* 0x12 */ short field_12;
     /* 0x14 */ unsigned short field_14;
     /* 0x16 */ unsigned char pad_16[0x18 - 0x16];
-    /* 0x18 */ unsigned char field_18;
-    /* 0x19 */ unsigned char pad_19[0x22 - 0x19];
+    /* 0x18 */ union {
+        unsigned char field_18;
+        struct Sprite *alt_sprite;
+    };
+    /* 0x1c */ unsigned char pad_1c[0x22 - 0x1c];
     /* 0x22 */ short field_22;
     /* 0x24 */ unsigned char pad_24[0x28 - 0x24];
     /* 0x28 */ void *field_28;
@@ -52,7 +55,7 @@ LEGO_EXPORT unsigned char CheckFocussedIcon(void);
 LEGO_EXPORT void UpdateFocussedIconPtr(void);
 LEGO_EXPORT void RemoveIconGroup(unsigned short group);
 void FUN_0046d590(unsigned short val);
-int FUN_0046e920(int param_1);
+int FUN_0046e920(struct IconNode *node);
 void FUN_0046d680(struct IconNode *node, struct Sprite *sprite);
 LEGO_EXPORT struct SpriteIcon *LoadSpriteIcon(const char *filename, unsigned int param_2, int param_3, int param_4, int param_5);
 void FUN_0046dac0(void);
