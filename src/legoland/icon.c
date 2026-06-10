@@ -85,6 +85,28 @@ struct CtrlBuffer {
     int field_8;
 };
 
+struct MenuGroup {
+    /* 0x00 */ short field_0;
+    /* 0x02 */ unsigned char pad_2[0x4 - 0x2];
+    /* 0x04 */ unsigned int field_4;
+    /* 0x08 */ struct IconNode *field_8;
+    /* 0x0c */ int field_c;
+    /* 0x10 */ int field_10;
+    /* 0x14 */ int field_14;
+    /* 0x18 */ int field_18;
+    /* 0x1c */ int field_1c;
+    /* 0x20 */ int field_20;
+    /* 0x24 */ int field_24;
+    /* 0x28 */ int field_28;
+};
+
+struct ListElement {
+    /* 0x00 */ unsigned char pad_0[8];
+    /* 0x08 */ unsigned char field_8;
+    /* 0x09 */ unsigned char pad_9[0xc - 0x9];
+    /* 0x0c */ int *field_c;
+};
+
 struct InfoSource {
     /* 0x00 */ unsigned char pad_0[4];
     /* 0x04 */ void *field_4;
@@ -158,6 +180,12 @@ LEGO_EXPORT int RenderBoxIcon(struct IconNode *node);
 LEGO_EXPORT int RenderGBarSprite(struct IconNode *node);
 LEGO_EXPORT int RenderScroll_Icons(struct IconNode *node);
 LEGO_EXPORT int RenderGBarSpriteIcon(struct IconNode *node);
+LEGO_EXPORT int LLIDB_GetCount(void);
+LEGO_EXPORT unsigned int LLIDB_GetElement(unsigned int index, int *out);
+LEGO_EXPORT struct IconNode *AddGBarIcons(unsigned int param_1, unsigned int param_2, int param_3, int param_4, int param_5, int param_6);
+LEGO_EXPORT struct IconNode *AddGBarClassIcon(unsigned int param_1, struct InfoSource *src, int a3, int a4, int a5, short a6);
+void FUN_0046fb40(unsigned int group);
+unsigned char FUN_00470000(struct IconNode *node, unsigned char buttons);
 
 
 // FUNCTION: LEGOLAND 0x0046d3a0
@@ -1634,7 +1662,74 @@ void FUN_0046f920(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046f9a0
-void FUN_0046f9a0(void) { STUB(); }
+int FUN_0046f9a0(int param_1, int param_2, int param_3, int param_4, unsigned int param_5, int param_6) {
+    int saved = param_1;
+    int i = 0;
+    int found = 0;
+    int total;
+    struct MenuGroup *group;
+    struct IconNode *icon;
+    int row;
+    struct ListElement *elem;
+
+    group = (struct MenuGroup *)malloc(sizeof(struct MenuGroup));
+    if (group == NULL) {
+        return 0;
+    }
+    icon = AddGBarIcons((unsigned int)group, param_3, param_4, param_5, param_6, param_1);
+    group->field_8 = icon;
+    row = icon->field_c;
+    group->field_1c = row;
+    group->field_c = row;
+    param_6 = icon->field_e;
+    group->field_20 = param_6;
+    group->field_10 = param_6;
+    group->field_24 = icon->field_10 + icon->field_c;
+    group->field_28 = icon->field_12 + icon->field_e;
+    group->field_4 = param_5;
+    group->field_0 = (short)param_1;
+    SetNewGroup_Callbacks(0, 0, (void *)FUN_00470000);
+    total = LLIDB_GetCount();
+    param_1 = row;
+    if (total > 0) {
+        do {
+            LLIDB_GetElement(i, (int *)&elem);
+            if ((elem->field_8 & 0x10) != 0 && elem->field_c[0x16] == param_2) {
+                found = found + 1;
+                AddGBarClassIcon((unsigned int)group, (struct InfoSource *)elem->field_c, param_1, param_6, saved, (short)i);
+                if ((param_5 & 1) == 0) {
+                    param_1 = param_1 + 0x79;
+                } else {
+                    param_6 = param_6 + 0x38;
+                }
+            }
+            i = i + 1;
+        } while (i < total);
+    }
+    AddFullScreenIcon((void *)(saved + 6));
+    icon = group->field_8;
+    group->field_14 = param_1;
+    group->field_18 = param_6;
+    if ((param_5 & 1) == 0) {
+        if (param_1 < icon->field_c + icon->field_10) {
+            icon->field_10 = (short)(group->field_14 - group->field_c);
+            icon = FindIcon((unsigned short)(saved + 4));
+            if (icon != NULL) {
+                icon->field_c = (short)group->field_14;
+            }
+        }
+    } else if (param_6 < icon->field_e + icon->field_12) {
+        icon->field_12 = (short)param_6 - (short)group->field_10;
+        icon = FindIcon((unsigned short)(saved + 4));
+        if (icon != NULL) {
+            icon->field_e = (short)group->field_18;
+        }
+    }
+    if (found == 0) {
+        FUN_0046fb40(saved);
+    }
+    return found;
+}
 
 // FUNCTION: LEGOLAND 0x0046fb40
 void FUN_0046fb40(unsigned int group) {
