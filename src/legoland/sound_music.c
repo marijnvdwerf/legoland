@@ -6,6 +6,7 @@
 #include "sound_music.h"
 #include "timer.h"
 #include "globals.h"
+#include "math.h"
 
 struct AVISoundBuffer;
 struct AVISoundBufferVtbl;
@@ -22,6 +23,7 @@ struct SampleConfig;
 extern void *WNDENV_Gethwnd(void);
 extern int FUN_00492130(void *hwnd);
 extern int FUN_00495a10(void *hwnd);
+extern LEGO_EXPORT void GetTileCentre(struct Point *ref, int *out);
 
 struct MusicPerformanceVtbl {
     unsigned char pad_0[0x10];
@@ -203,7 +205,15 @@ LEGO_EXPORT int KillSoundSystem(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00496540
-void FUN_00496540(void) { STUB(); }
+int FUN_00496540(int param_1) {
+    int result;
+
+    result = DAT_007988a0 - param_1 / 0x3c;
+    if (result < -3000 || result > 0) {
+        result = -10000;
+    }
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x00496570
 int FUN_00496570(int value) {
@@ -218,7 +228,38 @@ int FUN_00496570(int value) {
 }
 
 // FUNCTION: LEGOLAND 0x004965a0
-void FUN_004965a0(void) { STUB(); }
+int FUN_004965a0(struct Sample *sample, int x, int y) {
+    unsigned int dim;
+    int vol;
+    int pan;
+    int result;
+
+    x = x - (lpConfig->field_10 >> 1);
+    y = y - (lpConfig->field_12 >> 1);
+    vol = FUN_00496570(x);
+    dim = lpConfig->field_10;
+    if (x < -(int)dim >> 1) {
+        x = x + (dim >> 1);
+    } else if (x > (int)(dim >> 1)) {
+        x = x - (dim >> 1);
+    } else {
+        x = 0;
+    }
+    dim = lpConfig->field_12;
+    if (y < -(int)dim >> 1) {
+        y = y + (dim >> 1);
+    } else if (y > (int)(dim >> 1)) {
+        y = y - (dim >> 1);
+    } else {
+        y = 0;
+    }
+    pan = FUN_00496540(y * y + x * x);
+    result = sample->buffer->vtable->method_0x3c(sample->buffer, pan);
+    if (result != 0) {
+        return 0;
+    }
+    return sample->buffer->vtable->method_0x40(sample->buffer, vol) == 0;
+}
 
 // FUNCTION: LEGOLAND 0x00496660
 int FUN_00496660(struct Sample *sample) {
@@ -236,7 +277,36 @@ int FUN_00496660(struct Sample *sample) {
 }
 
 // FUNCTION: LEGOLAND 0x004966a0
-void FUN_004966a0(struct Sample *sample) { STUB(); }
+int FUN_004966a0(struct Sample *sample) {
+    int coord[2];
+    int *obj;
+
+    if (DAT_007988c0 == 0) {
+        return 0;
+    }
+    if (sample == 0) {
+        return 0;
+    }
+    if (sample->active == 0) {
+        return 0;
+    }
+    switch (sample->field_c) {
+    case 0:
+        return FUN_00496660(sample);
+    case 1:
+        obj = *(int **)(*(int **)&sample->field_10 + 1);
+        coord[0] = obj[7];
+        coord[1] = obj[8];
+        break;
+    case 2:
+        GetTileCentre((struct Point *)&sample->field_14, coord);
+        break;
+    case 3:
+        coord[0] = sample->field_14 - (ScrollX >> 8);
+        coord[1] = sample->field_18 - (ScrollY >> 8);
+    }
+    return FUN_004965a0(sample, coord[0], coord[1]);
+}
 
 // FUNCTION: LEGOLAND 0x00496760
 void FUN_00496760(void) { STUB(); }
