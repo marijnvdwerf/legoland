@@ -1257,6 +1257,8 @@ extern int DAT_00667d6c;
 extern LEGO_EXPORT unsigned int DDRAWENV[246];
 // 0x00668070
 extern void *DAT_00668070;
+// 0x00668078
+extern void *DAT_00668078;
 // 0x0066807c
 extern void *renderEngine;
 // 0x00668080
@@ -1299,8 +1301,16 @@ extern int DAT_00668164[32];
 extern int DAT_006681e4;
 // 0x006681e8
 extern unsigned int DAT_006681e8;
+// 0x006681f0
+extern unsigned int DAT_006681f0;
+// 0x006681f4
+extern unsigned int DAT_006681f4;
+// 0x006681f8
+extern int DAT_006681f8;
 // 0x006681fc
 extern LEGO_EXPORT unsigned int LastFrameMS;
+// 0x00668200
+extern unsigned int DAT_00668200;
 // 0x00668204
 extern unsigned int DAT_00668204;
 // 0x00668208

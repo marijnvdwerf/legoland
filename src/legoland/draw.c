@@ -8,12 +8,15 @@
 
 #include "draw.h"
 #include "gfx.h"
+#include "print_sprite.h"
 #include "text.h"
 #include "wndenv.h"
 
 #include "image_sprite.h"
 
 LEGO_EXPORT unsigned int GetTransparentColour(void);
+LEGO_EXPORT void LLSAuto(void);
+LEGO_EXPORT void *WNDENV_Gethwnd(void);
 
 // FUNCTION: LEGOLAND 0x004636f0
 LEGO_EXPORT int InstallDirectDraw(void) { return 0; }
@@ -290,7 +293,54 @@ void FUN_00465ee0(void) { STUB(); }
 void FUN_00466080(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004661d0
-int FUN_004661d0(void) { STUB(); }
+int FUN_004661d0(void) {
+    RECT dst;
+    RECT client;
+    DWORD tick;
+    LPDIRECTDRAWSURFACE surface;
+    int result;
+    int frames;
+
+    dst.left = 0;
+    dst.top = 0;
+    dst.right = 0x280;
+    dst.bottom = 0x1e0;
+    LLSAuto();
+    if (lpConfig->field_1e != 0 && DAT_00668148 != 0) {
+        PushRenderingStatusAndLockVideoSurface();
+        PrintSprite(DAT_00668148, DAT_00813a44, DAT_00813a48, 0, 0);
+        PopRenderingStatus();
+    }
+    tick = GetTickCount();
+    while (tick - DAT_00668200 < 0x1c) {
+        tick = GetTickCount();
+    }
+    DAT_00668200 = GetTickCount();
+    GetClientRect((HWND)WNDENV_Gethwnd(), &client);
+    ClientToScreen((HWND)WNDENV_Gethwnd(), (LPPOINT)&client);
+    OffsetRect(&dst, client.left, client.top);
+    surface = (LPDIRECTDRAWSURFACE)DAT_00668070;
+    result = surface->lpVtbl->Blt(surface, &dst, (LPDIRECTDRAWSURFACE)DAT_00668078, NULL, 0x1000000, NULL);
+    if (result == 0x887601c2) {
+        ((LPDIRECTDRAWSURFACE)DAT_00668070)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)DAT_00668070);
+        result = ((LPDIRECTDRAWSURFACE)DAT_00668070)->lpVtbl->Blt((LPDIRECTDRAWSURFACE)DAT_00668070, &dst, (LPDIRECTDRAWSURFACE)DAT_00668078, NULL, 0x1000000, NULL);
+    }
+    if (result != 0) {
+        return 0;
+    }
+    tick = GetTickCount();
+    FrameNumber = FrameNumber + 1;
+    frames = DAT_006681f8 + 1;
+    DAT_006681f8 = frames;
+    if (tick - DAT_006681f0 >= 0x3e8) {
+        FramesPerSecond = frames;
+        DAT_006681f8 = 0;
+        DAT_006681f0 = tick;
+    }
+    LastFrameMS = tick - DAT_006681f4;
+    DAT_006681f4 = tick;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00466360
 void FUN_00466360(int a, int b) { STUB(); }
