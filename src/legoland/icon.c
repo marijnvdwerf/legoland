@@ -1945,10 +1945,81 @@ LEGO_EXPORT void DeleteIndicator(struct Indicator *ind) {
 }
 
 // FUNCTION: LEGOLAND 0x0046feb0
-// NOTE: left STUB — intricate insertion-sort with goto-based reentry
-// (joined_r0x0046fed9); a faithful translation reached only ~36% (now/key
-// register allocation diverges and the nested splice flow resists matching).
-LEGO_EXPORT void ControlIndicators(void) { STUB(); }
+LEGO_EXPORT void ControlIndicators(void) {
+    struct Indicator *node = DAT_006688d8;
+    int now = GetGameTimer();
+    int x = ((struct Config *)lpConfig)->field_0 - 0x50;
+
+    DAT_006688d8 = NULL;
+    while (node != NULL) {
+        struct Indicator *head;
+        struct Indicator *cur;
+        struct Indicator *prev;
+        unsigned int key = node->field_10 & 0xffff;
+        node->field_10 = key;
+        if (now - (int)node->field_8 < 0x1388) {
+            node->field_10 = key | 0x10000;
+        } else {
+            node->field_14->field_34 = node->field_14->field_34 & 0xfffffff7;
+        }
+        if ((node->field_4 & 1) != 0) {
+            node->field_10 = node->field_10 | 0x20000;
+        } else if (now - (int)node->field_8 >= (int)node->field_c) {
+            cur = node->next;
+            node->next = DAT_006688d8;
+            DAT_006688d8 = node;
+            RemoveIndicator(node);
+            if ((node->field_4 & 2) != 0) {
+                DeleteIndicator(node);
+            }
+            node = cur;
+            continue;
+        }
+        head = DAT_006688d8;
+        cur = node->next;
+        if (head == NULL) {
+            DAT_006688d8 = node;
+            node->next = NULL;
+            node = cur;
+            continue;
+        }
+        prev = NULL;
+        while ((int)head->field_10 >= (int)node->field_10) {
+            prev = head;
+            head = head->next;
+            if (head == NULL) {
+                prev->next = node;
+                node->next = NULL;
+                goto next_node;
+            }
+        }
+        if (prev != NULL) {
+            prev->next = node;
+        } else {
+            DAT_006688d8 = node;
+        }
+        node->next = head;
+    next_node:
+        node = cur;
+    }
+
+    node = DAT_006688d8;
+    if (node != NULL) {
+        do {
+            node->field_14->field_c = (short)x;
+            x = x - 0x34;
+            node->field_14->field_e = 8;
+            if (x <= (int)(((struct Config *)lpConfig)->field_0 >> 2)) {
+                while (node != NULL) {
+                    node->field_14->field_c = (short)0xf000;
+                    node = node->next;
+                }
+                return;
+            }
+            node = node->next;
+        } while (node != NULL);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00470000
 unsigned char FUN_00470000(struct IconNode *node, unsigned char buttons) {
