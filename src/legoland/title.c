@@ -692,17 +692,15 @@ void FUN_00490c70(void) {
 
 // FUNCTION: LEGOLAND 0x00490ea0
 void FUN_00490ea0(void) {
-    struct Sprite *sprite;
-
     if ((int)DAT_00813a44 < DAT_007cb2e4->field_c ||
         (int)DAT_00813a44 > DAT_007cb2e4->field_10 + DAT_007cb2e4->field_c ||
         (int)DAT_00813a48 < DAT_007cb2e4->field_e ||
         (int)DAT_00813a48 > DAT_007cb2e4->field_12 + DAT_007cb2e4->field_e) {
-        sprite = DAT_0081c034;
         if (GetBlink() != 0) {
-            sprite = DAT_0081c02c;
+            FUN_0046d680(DAT_007cb2e4, DAT_0081c02c);
+        } else {
+            FUN_0046d680(DAT_007cb2e4, DAT_0081c034);
         }
-        FUN_0046d680(DAT_007cb2e4, sprite);
     }
     if ((int)DAT_00813a44 < DAT_007cb2e0->field_c ||
         (int)DAT_00813a44 > DAT_007cb2e0->field_10 + DAT_007cb2e0->field_c ||
