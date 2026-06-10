@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <dsound.h>
 #include "legoland.h"
 #include "crt.h"
 
@@ -67,6 +68,15 @@ struct MusicComposerVtbl {
 
 struct MusicComposer {
     struct MusicComposerVtbl *vtable;
+};
+
+struct AVIBufferDesc {
+    /* 0x00 */ unsigned int dwSize;
+    /* 0x04 */ unsigned int dwFlags;
+    /* 0x08 */ unsigned int dwBufferBytes;
+    /* 0x0c */ unsigned int dwReserved;
+    /* 0x10 */ LPWAVEFORMATEX lpwfxFormat;
+    /* 0x14 */ GUID guid3DAlgorithm;
 };
 
 struct ObjectDesc {
@@ -395,16 +405,59 @@ LEGO_EXPORT unsigned int BlendMusic(unsigned int numMeasures, unsigned int unuse
 }
 
 // FUNCTION: LEGOLAND 0x00496360
-LEGO_EXPORT void KLIBAUDIO_CreateAVISoundBuffer(void) { STUB(); }
+LEGO_EXPORT LPDIRECTSOUNDBUFFER KLIBAUDIO_CreateAVISoundBuffer(LPWAVEFORMATEX format, unsigned int bytes) {
+    LPDIRECTSOUNDBUFFER buffer;
+    struct AVIBufferDesc desc;
+    int result;
+
+    if (DAT_007988c0 != 0) {
+        buffer = 0;
+        desc.dwReserved = 0;
+        desc.dwBufferBytes = bytes;
+        desc.dwSize = 0x24;
+        desc.dwFlags = 0xe0;
+        desc.lpwfxFormat = format;
+        result = ((LPDIRECTSOUND)DAT_007cad40)->lpVtbl->CreateSoundBuffer((LPDIRECTSOUND)DAT_007cad40, (LPCDSBUFFERDESC)&desc, &buffer, 0);
+        if (result != 0) {
+            return 0;
+        }
+        return buffer;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x004963d0
-LEGO_EXPORT void KLIBAUDIO_PlayAVISoundBuffer(void) { STUB(); }
+LEGO_EXPORT void KLIBAUDIO_PlayAVISoundBuffer(LPDIRECTSOUNDBUFFER buffer, unsigned int position) {
+    if (buffer->lpVtbl->SetCurrentPosition(buffer, position) == 0) {
+        buffer->lpVtbl->Play(buffer, 0, 0, 1);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004963f0
-LEGO_EXPORT void KLIBAUDIO_LockAVISoundBuffer(void) { STUB(); }
+LEGO_EXPORT void *KLIBAUDIO_LockAVISoundBuffer(LPDIRECTSOUNDBUFFER buffer, unsigned int offset, unsigned int size) {
+    unsigned int status;
+    unsigned int playPos;
+    unsigned int writePos;
+    int result;
+
+    if (buffer == 0) {
+        return 0;
+    }
+    if (buffer->lpVtbl->GetStatus(buffer, (LPDWORD)&status) == 0 && (status & 1) != 0) {
+        while (buffer->lpVtbl->GetCurrentPosition(buffer, (LPDWORD)&playPos, (LPDWORD)&writePos) == 0 &&
+               playPos >= offset && playPos < offset + size) {
+        }
+    }
+    result = buffer->lpVtbl->Lock(buffer, offset, size, &DAT_007988a4, (LPDWORD)&DAT_00798898, &DAT_007988a8, (LPDWORD)&DAT_0079889c, 0);
+    return result != 0 ? 0 : DAT_007988a4;
+}
 
 // FUNCTION: LEGOLAND 0x00496490
-LEGO_EXPORT void KLIBAUDIO_UnLockAVISoundBuffer(void) { STUB(); }
+LEGO_EXPORT void KLIBAUDIO_UnLockAVISoundBuffer(LPDIRECTSOUNDBUFFER buffer) {
+    if (buffer != 0) {
+        buffer->lpVtbl->Unlock(buffer, DAT_007988a4, DAT_00798898, DAT_007988a8, DAT_0079889c);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004964c0
 LEGO_EXPORT int KLIBAUDIO_DestroyAVISoundBuffer(struct AVISoundBuffer *buffer) {
