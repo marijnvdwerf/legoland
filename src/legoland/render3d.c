@@ -8,9 +8,17 @@
 #include "math.h"
 #include "tilemap.h"
 #include "obj_instance.h"
+#include "print_sprite.h"
 #include <math.h>
 
 #include "image_sprite.h"
+
+struct AdjustStruct {
+    int field0;
+    int field4;
+};
+
+LEGO_EXPORT void AdjustOffsetForViewMode(struct AdjustStruct *param_1);
 
 struct Viewport {
     unsigned int field_0;
@@ -267,8 +275,62 @@ LEGO_EXPORT void UnLoadRin(struct RinData *rin) {
     free(rin);
 }
 
+struct RinRender {
+    int x;
+    int y;
+    int *remap_table;
+    int *data_table;
+    int loop_count;
+    int modulo;
+    int **index_array;
+    int **frame_array;
+};
+
 // FUNCTION: LEGOLAND 0x00441d60
-LEGO_EXPORT void RenderUsingRin(void) { STUB(); }
+LEGO_EXPORT void RenderUsingRin(struct RinRender *param_1, int param_2, struct ViewportEntry *param_3, unsigned char *param_4) {
+    union { __int64 i; struct { int lo; int hi; } p; } coords;
+    int idx;
+    int *entry;
+    int i;
+    struct AdjustStruct offset;
+
+    coords.i = GetScreenCoordsForObject(param_4, param_3);
+    idx = param_2;
+    if (param_1->modulo <= param_2) {
+        idx = param_2 % param_1->modulo;
+    }
+    i = param_1->loop_count - 1;
+    if (i >= 0) {
+        entry = (int *)((char *)param_1->frame_array[idx] + i * 4);
+        i = i + 1;
+        do {
+            int sprite_id = *entry;
+            int lookup = sprite_id;
+            struct BlokeRideNode *node;
+            int *frame;
+            if (param_1->data_table != NULL) {
+                lookup = param_1->data_table[param_1->remap_table[sprite_id]];
+            }
+            node = (struct BlokeRideNode *)FUN_004418c0(lookup, param_3, (short *)param_4);
+            if (node != NULL && (node->inner->flags & 0x80) != 0) {
+                IP_RenderBlokeIn3DNow((struct Bloke *)node->inner);
+            }
+            frame = (int *)param_1->index_array[sprite_id];
+            if (frame != NULL) {
+                LLSSetFrame((struct LLS *)GetLLSForSprite((struct SpriteLLS *)frame), param_2);
+            }
+            offset.field0 = param_1->x;
+            offset.field4 = param_1->y;
+            AdjustOffsetForViewMode(&offset);
+            frame = (int *)param_1->index_array[sprite_id];
+            if (frame != NULL) {
+                PrintSprite((struct Sprite *)frame, coords.p.lo + offset.field0, coords.p.hi + offset.field4, 0, 0);
+            }
+            entry = entry - 1;
+            i = i - 1;
+        } while (i != 0);
+    }
+}
 
 struct SpriteLLS {
     unsigned char pad_0[8];
@@ -566,11 +628,6 @@ LEGO_EXPORT __int64 GetScreenCoordsForObject(unsigned char *param_1, void *param
     r.p.lo = iVar2 + bounds[0];
     return r.i;
 }
-
-struct AdjustStruct {
-    int field0;
-    int field4;
-};
 
 // FUNCTION: LEGOLAND 0x00442d30
 LEGO_EXPORT void AdjustOffsetForViewMode(struct AdjustStruct *param_1) {
