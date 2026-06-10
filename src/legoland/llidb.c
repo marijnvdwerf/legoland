@@ -39,7 +39,7 @@ struct ILFTable {
 struct SpriteManager {
     unsigned int var_0;
     int count;
-    unsigned int *sprites;
+    struct Sprite **sprites;
     int *data_c;
     int *data_10;
     unsigned int data_14;
@@ -422,8 +422,8 @@ LEGO_EXPORT void *LLIDB_LoadODFData(struct LLIDBHead *head) {
     int lang_count;
     struct ResFile *file;
     struct ODFObject *obj;
-    unsigned int *sprite_anim;
-    int sprite;
+    struct Image *sprite_image;
+    struct Sprite *sprite;
     int i;
     int j;
 
@@ -515,12 +515,12 @@ LEGO_EXPORT void *LLIDB_LoadODFData(struct LLIDBHead *head) {
     name[size] = '\0';
     if ((obj->flags & LLIDB_FLAG_NODATA) == 0) {
         if (name[0] != '\0') {
-            sprite = (int)LoadSprite(name, 1);
+            sprite = LoadSprite(name, 1);
             obj->sprite_0 = (struct ODFSprite *)sprite;
-            if (sprite != 0 && (sprite_anim = *(unsigned int **)(sprite + 8)) != NULL) {
-                if ((*(unsigned int *)(sprite + 0x10) & 0x8000) == 0 &&
-                    (sprite_anim[5] == 2 || sprite_anim[5] == 3)) {
-                    LLSPlay((struct LLS *)*sprite_anim, (unsigned int)sprite_anim);
+            if (sprite != 0 && (sprite_image = sprite->image) != NULL) {
+                if ((sprite->flags & 0x8000) == 0 &&
+                    (sprite_image->field_14 == 2 || sprite_image->field_14 == 3)) {
+                    LLSPlay((struct LLS *)sprite_image->data, (unsigned int)sprite_image);
                 }
                 obj->flags |= 4;
             }
@@ -555,16 +555,16 @@ icon:
     if (name[0] != '\0') {
         sprite = LoadSprite(name, 1);
         obj->sprite_2 = (struct ODFSprite *)sprite;
-        if (sprite != 0 && (*(unsigned int *)(sprite + 0x10) & 0x8000) != 0 &&
-            *(int *)(*(int *)(sprite + 8) + 4) > 0) {
+        if (sprite != 0 && (sprite->flags & 0x8000) != 0 &&
+            (int)sprite->image->aux > 0) {
             j = 0;
             do {
-                sprite = GetSpriteForLayer((struct LayerContainer *)obj->sprite_2, j);
-                if (sprite != 0 && (sprite = GetLLSForSprite((struct SpriteLLS *)sprite)) != 0) {
-                    LLSStop(sprite);
+                sprite = (struct Sprite *)GetSpriteForLayer((struct LayerContainer *)obj->sprite_2, j);
+                if (sprite != 0 && (sprite = (struct Sprite *)GetLLSForSprite((struct SpriteLLS *)sprite)) != 0) {
+                    LLSStop((unsigned int)sprite);
                 }
                 j++;
-            } while (j < *(int *)(*(int *)((char *)obj->sprite_2 + 8) + 4));
+            } while (j < (int)((struct Sprite *)obj->sprite_2)->image->aux);
         }
     } else {
         // STRING: LEGOLAND 0x004bc328
@@ -737,7 +737,7 @@ LEGO_EXPORT void *LLIDB_LoadTSFData(struct LLIDBHead *head) {
     unsigned int tile_base;
     struct ResFile *file;
     struct SpriteManager *si;
-    int *anim;
+    struct Image *anim;
     int i;
 
     sprintf(filename, "TileData\\%s", head->name);
@@ -766,7 +766,7 @@ LEGO_EXPORT void *LLIDB_LoadTSFData(struct LLIDBHead *head) {
         } while (i < (int)count);
     }
 
-    si->sprites = AllocTileSpace(si, count, &tile_base);
+    si->sprites = (struct Sprite **)AllocTileSpace(si, count, &tile_base);
     si->var_0 = tile_base & 0xffff;
 
     i = 0;
@@ -776,9 +776,9 @@ LEGO_EXPORT void *LLIDB_LoadTSFData(struct LLIDBHead *head) {
             RES_ReadFile(file, filename, len);
             filename[len] = '\0';
             si->sprites[i] = LoadSprite(filename, 1);
-            anim = *(int **)(si->sprites[i] + 8);
-            if ((anim[5] == 2 || anim[5] == 3) && *(short *)(*anim + 0x10) > 1) {
-                LLSPlay((struct LLS *)*anim, (unsigned int)anim);
+            anim = si->sprites[i]->image;
+            if ((anim->field_14 == 2 || anim->field_14 == 3) && ((struct LLS *)anim->data)->frame_count > 1) {
+                LLSPlay((struct LLS *)anim->data, (unsigned int)anim);
             }
             i++;
         } while (i < (int)count);
@@ -1012,7 +1012,7 @@ LEGO_EXPORT void *LLIDB_LoadCSPData(struct LLIDBHead *head) {
             }
             i = 0;
             if (count > 0) {
-                unsigned int *sprite = table->sprites;
+                struct Sprite **sprite = table->sprites;
                 do {
                     if (*sprite == 0) {
                         break;

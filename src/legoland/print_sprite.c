@@ -39,11 +39,11 @@ LEGO_EXPORT unsigned int PrintSprite(struct Sprite *sprite, unsigned int x, unsi
 
     result = 1;
     DAT_007feb14 = 0;
-    if ((sprite->field_10 & 0x8000) != 0) {
+    if ((sprite->flags & 0x8000) != 0) {
         i = 0;
         if (((struct SpriteGroup *)sprite->image)->count > 0) {
             do {
-                if ((((struct SpriteGroup *)sprite->image)->subs[i]->field_10 & 0x4000) == 0) {
+                if ((((struct SpriteGroup *)sprite->image)->subs[i]->flags & 0x4000) == 0) {
                     xoff = ((struct SpriteGroup *)sprite->image)->xoffs[i];
                     yoff = ((struct SpriteGroup *)sprite->image)->yoffs[i];
                     if (xoff < 0) {
@@ -57,14 +57,14 @@ LEGO_EXPORT unsigned int PrintSprite(struct Sprite *sprite, unsigned int x, unsi
                         yoff = yoff >> 1;
                     }
                     if (param_4 == 0) {
-                        if (*(int *)GetVRAMAddress((unsigned int)((struct SpriteGroup *)sprite->image)->subs[i]) == 0) {
+                        if (*GetVRAMAddress(((struct SpriteGroup *)sprite->image)->subs[i]) == 0) {
                             if (FUN_00499500(((struct SpriteGroup *)sprite->image)->subs[i]) == 0) {
                                 goto cont;
                             }
                         }
                         RenderSprite(((struct SpriteGroup *)sprite->image)->subs[i], xoff + x, yoff + y);
                     } else {
-                        if (*(int *)GetVRAMAddress((unsigned int)((struct SpriteGroup *)sprite->image)->subs[i]) != 0 || FUN_00499500(((struct SpriteGroup *)sprite->image)->subs[i]) != 0) {
+                        if (*GetVRAMAddress(((struct SpriteGroup *)sprite->image)->subs[i]) != 0 || FUN_00499500(((struct SpriteGroup *)sprite->image)->subs[i]) != 0) {
                             RenderSpriteX(((struct SpriteGroup *)sprite->image)->subs[i], xoff + x, yoff + y, param_4);
                         }
                     }
@@ -76,7 +76,7 @@ LEGO_EXPORT unsigned int PrintSprite(struct Sprite *sprite, unsigned int x, unsi
         goto writeback;
     }
     if (param_4 == 0) {
-        if (*(int *)GetVRAMAddress((unsigned int)sprite) != 0) {
+        if (*GetVRAMAddress(sprite) != 0) {
             result = RenderSprite(sprite, x, y);
             goto writeback;
         }
@@ -85,7 +85,7 @@ LEGO_EXPORT unsigned int PrintSprite(struct Sprite *sprite, unsigned int x, unsi
             goto writeback;
         }
     } else {
-        if (*(int *)GetVRAMAddress((unsigned int)sprite) != 0) {
+        if (*GetVRAMAddress(sprite) != 0) {
             result = RenderSpriteX(sprite, x, y, param_4);
             goto writeback;
         }

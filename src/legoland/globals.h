@@ -12,6 +12,7 @@
 // layout comes from gamemap.h, used by the EditCursor / QueryCursor instances.)
 // ---------------------------------------------------------------------------
 struct Sprite;
+struct Image;
 struct CursorSource;
 struct Building;
 struct JailCell;
@@ -1723,14 +1724,6 @@ extern unsigned int DAT_0079a6a4;
 extern unsigned int DAT_0079a6a8;
 // 0x0079a6ac
 extern unsigned int DAT_0079a6ac;
-// 0x0079a7c0
-extern void *DAT_0079a7c0;
-// 0x0079a7c4
-extern void *DAT_0079a7c4;
-// 0x0079a7c8
-extern unsigned int DAT_0079a7c8;
-// 0x0079a7cc
-extern unsigned int DAT_0079a7cc;
 // 0x0079a7d0
 extern unsigned int DAT_0079a7d0;
 // 0x0079a7d8

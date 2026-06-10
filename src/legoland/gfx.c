@@ -110,7 +110,7 @@ LEGO_EXPORT int __BMPLoader(struct Image *image) {
         lls->field_2 = 4;
         lls->field_12 = 4;
         RES_CloseFile(file);
-        image->field_4 = NULL;
+        image->aux = NULL;
         image->width = lls->width;
         image->height = lls->height;
         if (lls->format == 8) {
@@ -161,7 +161,7 @@ LEGO_EXPORT int __BMPLoader(struct Image *image) {
         RES_CloseFile(file);
         return 0;
     }
-    image->field_4 = NULL;
+    image->aux = NULL;
     image->width = *(unsigned short *)(info + 4);
     image->height = *(unsigned short *)(info + 8);
     image->field_14 = type;
@@ -192,16 +192,16 @@ LEGO_EXPORT int __BMPLoader(struct Image *image) {
             }
         }
         lut = (unsigned char *)malloc(0x208);
-        image->field_4 = lut;
+        image->aux = lut;
         entry = (unsigned char *)palette + 1;
         if (DAT_00668088 == 2) {
             for (i = 4; i < 0x204; i += 2) {
-                *(unsigned short *)((unsigned char *)image->field_4 + i - 2) = (unsigned short)(((((entry[1] & 0xf8) << 5) | (entry[0] & 0xfc)) << 3) | (entry[-1] >> 3));
+                *(unsigned short *)((unsigned char *)image->aux + i - 2) = (unsigned short)(((((entry[1] & 0xf8) << 5) | (entry[0] & 0xfc)) << 3) | (entry[-1] >> 3));
                 entry += 4;
             }
         } else {
             for (i = 4; i < 0x204; i += 2) {
-                *(unsigned short *)((unsigned char *)image->field_4 + i - 2) = (unsigned short)(((((entry[1] & 0xf8) << 5) | (entry[0] & 0xf8)) << 2) | (entry[-1] >> 3));
+                *(unsigned short *)((unsigned char *)image->aux + i - 2) = (unsigned short)(((((entry[1] & 0xf8) << 5) | (entry[0] & 0xf8)) << 2) | (entry[-1] >> 3));
                 entry += 4;
             }
         }

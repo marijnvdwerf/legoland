@@ -28,12 +28,12 @@ LEGO_EXPORT void InitMapScreen(void) {
     if (DAT_00667c30 != 0) {
         return;
     }
-    DAT_00667c2c = CreateFunctionBasedSprite((unsigned int)RenderFullMap, 0x280, 0x154);
+    DAT_00667c2c = CreateFunctionBasedSprite((int (*)(struct Sprite *))RenderFullMap, 0x280, 0x154);
     if (DAT_00667c2c != NULL) {
         // STRING: LEGOLAND 0x004b90b4
         DAT_00667c34 = LoadSprite("mapSpanner.lls", 0);
-        DAT_00667c2c->field_18 = 0;
-        DAT_00667c2c->field_1a = 0;
+        DAT_00667c2c->src_x = 0;
+        DAT_00667c2c->src_y = 0;
     }
     FUN_004562c0();
     DAT_006687c0 = (unsigned int)FUN_00475080;

@@ -57,18 +57,18 @@ struct Bloke {
 unsigned int FUN_004434d0(unsigned int param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004436d0
-unsigned int FUN_004436d0(unsigned int param_1, unsigned int param_2) {
-    unsigned int image;
+unsigned int FUN_004436d0(const char *param_1, unsigned char param_2) {
+    struct Image *image;
 
     image = CreateSourceImage(param_1, param_2);
-    if (image == 0) {
+    if (image == NULL) {
         return 0;
     }
-    if (FUN_004434d0(image) == 0) {
-        KillImage((struct Image *)image); /* TODO-fold: local `image` is a uint handle here; KillImage's canonical param is struct Image* */
+    if (FUN_004434d0((unsigned int)image) == 0) {
+        KillImage(image);
         return 0;
     }
-    return image;
+    return (unsigned int)image;
 }
 
 // FUNCTION: LEGOLAND 0x00443710
