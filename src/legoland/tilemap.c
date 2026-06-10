@@ -492,7 +492,114 @@ LEGO_EXPORT unsigned char Get_Path_Directions(int *param_1, char *param_2, char 
 }
 
 // FUNCTION: LEGOLAND 0x0045c440
-void FUN_0045c440(void) { STUB(); }
+unsigned char FUN_0045c440(int *param_1, char *param_2, char *param_3) {
+    int x;
+    int y;
+    int ym1;
+    int yp1;
+    int xp1;
+    char local_15;
+    char local_16;
+    unsigned char local_17;
+    struct MapTile tile;
+
+    y = param_1[1];
+    x = *param_1;
+    ym1 = y + -1;
+    local_15 = '\0';
+    local_16 = '\0';
+    local_17 = 0;
+    if (x < 0 || x >= (int)lpConfig->width || ym1 < 0 || ym1 >= (int)lpConfig->height) {
+        tile.flags_c = 0x40;
+        tile.flags_10 = 0;
+    } else {
+        tile = *(struct MapTile *)((char *)GameMap[ym1] + x * 0x14);
+    }
+    if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
+        local_16 = '\x01';
+        local_17 = 1;
+    }
+    yp1 = y + 1;
+    if (x < 0 || x >= (int)lpConfig->width || yp1 < 0 || yp1 >= (int)lpConfig->height) {
+        tile.flags_c = 0x40;
+        tile.flags_10 = 0;
+    } else {
+        tile = *(struct MapTile *)((char *)GameMap[yp1] + x * 0x14);
+    }
+    if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
+        local_16 = local_16 + '\x01';
+        local_17 = local_17 | 0x10;
+    }
+    xp1 = x + 1;
+    if (xp1 < 0 || xp1 >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
+        tile.flags_c = 0x40;
+        tile.flags_10 = 0;
+    } else {
+        tile = *(struct MapTile *)((char *)GameMap[y] + xp1 * 0x14);
+    }
+    if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
+        local_16 = local_16 + '\x01';
+        local_17 = local_17 | 4;
+    }
+    x = x + -1;
+    if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
+        tile.flags_c = 0x40;
+        tile.flags_10 = 0;
+    } else {
+        tile = *(struct MapTile *)((char *)GameMap[y] + x * 0x14);
+    }
+    if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
+        local_16 = local_16 + '\x01';
+        local_17 = local_17 | 0x40;
+    }
+    if (xp1 < 0 || xp1 >= (int)lpConfig->width || ym1 < 0 || ym1 >= (int)lpConfig->height) {
+        tile.flags_c = 0x40;
+        tile.flags_10 = 0;
+    } else {
+        tile = *(struct MapTile *)((char *)GameMap[ym1] + xp1 * 0x14);
+    }
+    if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
+        local_17 = local_17 | 2;
+        local_15 = '\x01';
+    }
+    if (xp1 < 0 || xp1 >= (int)lpConfig->width || yp1 < 0 || yp1 >= (int)lpConfig->height) {
+        tile.flags_c = 0x40;
+        tile.flags_10 = 0;
+    } else {
+        tile = *(struct MapTile *)((char *)GameMap[yp1] + xp1 * 0x14);
+    }
+    if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
+        local_15 = local_15 + '\x01';
+        local_17 = local_17 | 8;
+    }
+    if (x < 0 || x >= (int)lpConfig->width || yp1 < 0 || yp1 >= (int)lpConfig->height) {
+        tile.flags_c = 0x40;
+        tile.flags_10 = 0;
+    } else {
+        tile = *(struct MapTile *)((char *)GameMap[yp1] + x * 0x14);
+    }
+    if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
+        local_15 = local_15 + '\x01';
+        local_17 = local_17 | 0x20;
+    }
+    if (x < 0 || x >= (int)lpConfig->width || ym1 < 0 || ym1 >= (int)lpConfig->height) {
+        tile.flags_c = 0x40;
+        tile.flags_10 = 0;
+    } else {
+        tile = *(struct MapTile *)((char *)GameMap[ym1] + x * 0x14);
+    }
+    if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
+        local_15 = local_15 + '\x01';
+        local_17 = local_17 | 0x80;
+    }
+    if (param_2 != NULL) {
+        *param_2 = local_16;
+    }
+    if (param_3 != NULL) {
+        *param_3 = local_15;
+    }
+    return local_17;
+}
 
 // FUNCTION: LEGOLAND 0x0045c830
 LEGO_EXPORT unsigned char ExcludeIsolatedDiags(unsigned char param) {
@@ -514,7 +621,37 @@ LEGO_EXPORT unsigned char ExcludeIsolatedDiags(unsigned char param) {
 }
 
 // FUNCTION: LEGOLAND 0x0045c870
-LEGO_EXPORT void AdjustTileRFFlags(void) { STUB(); }
+LEGO_EXPORT void AdjustTileRFFlags(int *param_1) {
+    struct MapTile *tile;
+    unsigned int flags;
+    char local_1;
+
+    tile = (struct MapTile *)((char *)GameMap[param_1[1]] + *param_1 * 0x14);
+    tile->flags_10 = tile->flags_10 & 0xc3;
+    flags = FUN_0045c440(param_1, (char *)&param_1, &local_1);
+    if ((char)param_1 == '\0') {
+        tile->flags_10 = tile->flags_10 | 0x10;
+        return;
+    }
+    if ((char)param_1 == '\x01') {
+        tile->flags_10 = tile->flags_10 | 0x10;
+        return;
+    }
+    if ((char)param_1 == '\x02') {
+        if ((flags & 0x11) == 1 || (flags & 0x11) == 0x10) {
+            tile->flags_10 = tile->flags_10 | 8;
+            return;
+        }
+    } else {
+        if ((char)param_1 == '\x03') {
+            tile->flags_10 = tile->flags_10 | 4;
+            return;
+        }
+        if ((char)param_1 == '\x04') {
+            tile->flags_10 = tile->flags_10 | 0x20;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045c900
 void FUN_0045c900(void) { STUB(); }
