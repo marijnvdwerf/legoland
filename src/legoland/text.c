@@ -1,10 +1,15 @@
 #include "legoland.h"
+#include "crt.h"
 #include <windows.h>
+#include <ddraw.h>
 #include "globals.h"
 
+#include "draw.h"
 #include "print_sprite.h"
 #include "text.h"
 #include "llidb.h"
+
+#pragma intrinsic(strlen)
 
 struct TextSprite {
     unsigned char pad_0[0x1c];
@@ -118,13 +123,74 @@ LEGO_EXPORT HGDIOBJ SelectFont(HDC hdc, int font_id) {
 }
 
 // FUNCTION: LEGOLAND 0x00454ba0
-LEGO_EXPORT void Print(void) { STUB(); }
+LEGO_EXPORT void Print(int x, int y, const char *text, int font) {
+    HRGN region;
+    HDC hdc;
+    HGDIOBJ old_region;
+    HGDIOBJ old_font;
+
+    region = CreateRectRgn(SPRITE_ClipRect.left, SPRITE_ClipRect.top, SPRITE_ClipRect.right, SPRITE_ClipRect.bottom);
+    PushRenderingStatusAndUnlockVideoSurface();
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->GetDC((LPDIRECTDRAWSURFACE)renderEngine, &hdc);
+    SetBkMode(hdc, 2);
+    old_region = SelectObject(hdc, region);
+    old_font = SelectFont(hdc, font);
+    TextOutA(hdc, x, y, text, strlen(text));
+    SelectObject(hdc, old_font);
+    SelectObject(hdc, old_region);
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->ReleaseDC((LPDIRECTDRAWSURFACE)renderEngine, hdc);
+    PopRenderingStatus();
+    DeleteObject(region);
+}
 
 // FUNCTION: LEGOLAND 0x00454c70
-LEGO_EXPORT void PrintLimitedText(void) { STUB(); }
+LEGO_EXPORT void PrintLimitedText(int x, int y, int width, const char *text, int font, COLORREF color, UINT format) {
+    RECT rc;
+    HRGN region;
+    HDC hdc;
+    HGDIOBJ old_region;
+    HGDIOBJ old_font;
+
+    rc.left = x;
+    rc.right = x + width;
+    rc.top = y;
+    rc.bottom = y + 0x190;
+    region = CreateRectRgn(SPRITE_ClipRect.left, SPRITE_ClipRect.top, SPRITE_ClipRect.right, SPRITE_ClipRect.bottom);
+    PushRenderingStatusAndUnlockVideoSurface();
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->GetDC((LPDIRECTDRAWSURFACE)renderEngine, &hdc);
+    SetBkMode(hdc, 1);
+    SetTextColor(hdc, color);
+    old_region = SelectObject(hdc, region);
+    old_font = SelectFont(hdc, font);
+    DrawTextA(hdc, text, strlen(text), &rc, format);
+    SelectObject(hdc, old_font);
+    SelectObject(hdc, old_region);
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->ReleaseDC((LPDIRECTDRAWSURFACE)renderEngine, hdc);
+    PopRenderingStatus();
+    DeleteObject(region);
+}
 
 // FUNCTION: LEGOLAND 0x00454d80
-void FUN_00454d80(void) { STUB(); }
+void FUN_00454d80(char *text, int font, RECT rc, COLORREF color) {
+    HRGN region;
+    HDC hdc;
+    HGDIOBJ old_region;
+    HGDIOBJ old_font;
+
+    region = CreateRectRgn(SPRITE_ClipRect.left, SPRITE_ClipRect.top, SPRITE_ClipRect.right, SPRITE_ClipRect.bottom);
+    PushRenderingStatusAndUnlockVideoSurface();
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->GetDC((LPDIRECTDRAWSURFACE)renderEngine, &hdc);
+    SetBkMode(hdc, 1);
+    SetTextColor(hdc, color);
+    old_region = SelectObject(hdc, region);
+    old_font = SelectFont(hdc, font);
+    DrawTextA(hdc, text, strlen(text), &rc, 0x20);
+    SelectObject(hdc, old_font);
+    SelectObject(hdc, old_region);
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->ReleaseDC((LPDIRECTDRAWSURFACE)renderEngine, hdc);
+    PopRenderingStatus();
+    DeleteObject(region);
+}
 
 // FUNCTION: LEGOLAND 0x00454e60
 LEGO_EXPORT void PrintCent(void) { STUB(); }
