@@ -99,6 +99,13 @@ struct ClipRect {
     int bottom;
 };
 
+struct MapRect {
+    /* 0x00 */ int x0;
+    /* 0x04 */ int y0;
+    /* 0x08 */ int x1;
+    /* 0x0c */ int y1;
+};
+
 struct TextCell {
     /* 0x00 */ int width;
     /* 0x04 */ int height;
@@ -1308,8 +1315,14 @@ extern int DAT_00667cfc;
 extern int DAT_00667d08;
 // 0x00667d10
 extern unsigned int DAT_00667d10;
+// 0x00667d3c
+extern int DAT_00667d3c;
+// 0x00667d40
+extern unsigned int DAT_00667d40;
 // 0x00667d44
 extern int DAT_00667d44;
+// 0x00667d48
+extern unsigned int DAT_00667d48;
 // 0x00667d54
 extern unsigned int DAT_00667d54;
 // 0x00667d58
@@ -2244,6 +2257,8 @@ extern LEGO_EXPORT struct MapElement **GameMap;
 extern struct DeferredSprite DAT_00801420[100];
 // 0x00801a6c
 extern void *DAT_00801a6c;
+// 0x00801a80
+extern struct MapRect DAT_00801a80[10];
 // 0x00801b20
 extern unsigned int DAT_00801b20;
 // 0x00801b24
@@ -2787,6 +2802,8 @@ extern unsigned int DAT_00832978;
 extern unsigned int DAT_0083297c;
 // 0x00832980
 extern unsigned int DAT_00832980;
+// 0x00832984
+extern unsigned int DAT_00832984;
 // 0x0083298c
 extern unsigned int DAT_0083298c;
 // 0x00832990

@@ -428,13 +428,121 @@ LEGO_EXPORT void AddPathTile(struct Point *p, unsigned short param1) {
 void FUN_0045d3d0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045d560
-void FUN_0045d560(void) { STUB(); }
+int FUN_0045d560(struct MapRect *out, struct MapRect *a, struct MapRect *b) {
+    if (a->x0 > b->x0) {
+        out->x0 = b->x0;
+    } else {
+        out->x0 = a->x0;
+    }
+    if (a->x1 < b->x1) {
+        out->x1 = a->x1;
+    } else {
+        out->x1 = b->x1;
+    }
+    if (a->y0 > b->y0) {
+        out->y0 = b->y0;
+    } else {
+        out->y0 = a->y0;
+    }
+    if (a->y1 < b->y1) {
+        out->y1 = a->y1;
+    } else {
+        out->y1 = b->y1;
+    }
+    if (out->x0 <= out->x1 && out->y0 <= out->y1) {
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0045d5d0
-void FUN_0045d5d0(void) { STUB(); }
+void FUN_0045d5d0(struct MapRect *param) {
+    struct MapRect result;
+    struct MapRect *cur;
+    int i;
+    int count;
+    int x0, y0, x1;
+    int y1;
+    int idx;
+
+    i = 0;
+    if (0 < DAT_00667d3c) {
+        cur = DAT_00801a80;
+        do {
+            count = DAT_00667d3c;
+            if (FUN_0045d560(&result, param, cur) != 0) {
+                x0 = cur->x0;
+                y0 = cur->y0;
+                x1 = cur->x1;
+                y1 = cur->y1;
+                idx = DAT_00667d3c + -1;
+                DAT_00667d3c = idx;
+                if (i < idx) {
+                    cur->x0 = DAT_00801a80[idx].x0;
+                    cur->y0 = DAT_00801a80[idx].y0;
+                    cur->x1 = DAT_00801a80[idx].x1;
+                    cur->y1 = DAT_00801a80[idx].y1;
+                }
+                i = i + -1;
+                cur = cur + -1;
+                if (y0 < result.y0) {
+                    DAT_00667d3c = count;
+                    DAT_00801a80[idx].x0 = x0;
+                    DAT_00801a80[idx].y0 = y0;
+                    DAT_00801a80[idx].x1 = x1;
+                    DAT_00801a80[idx].y1 = result.y0 + -1;
+                    idx = count;
+                }
+                count = idx;
+                if (x0 < result.x0) {
+                    count = idx + 1;
+                    DAT_00667d3c = count;
+                    DAT_00801a80[idx].x0 = x0;
+                    DAT_00801a80[idx].y0 = result.y0;
+                    DAT_00801a80[idx].x1 = result.x0 + -1;
+                    DAT_00801a80[idx].y1 = result.y1;
+                }
+                y0 = count;
+                if (result.x1 < x1) {
+                    y0 = count + 1;
+                    DAT_00667d3c = y0;
+                    DAT_00801a80[count].x0 = result.x1 + 1;
+                    DAT_00801a80[count].y0 = result.y0;
+                    DAT_00801a80[count].x1 = x1;
+                    DAT_00801a80[count].y1 = result.y1;
+                }
+                count = y0;
+                if (result.y1 < y1) {
+                    count = y0 + 1;
+                    DAT_00667d3c = count;
+                    DAT_00801a80[y0].x0 = x0;
+                    DAT_00801a80[y0].y0 = result.y1 + 1;
+                    DAT_00801a80[y0].x1 = x1;
+                    DAT_00801a80[y0].y1 = y1;
+                }
+            }
+            cur = cur + 1;
+            i = i + 1;
+        } while (i < count);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045d730
-void FUN_0045d730(void) { STUB(); }
+int FUN_0045d730(struct MapRect *param) {
+    int idx;
+    struct MapRect *cur;
+
+    FUN_0045d5d0(param);
+    idx = DAT_00667d3c;
+    cur = &DAT_00801a80[idx];
+    cur->x0 = param->x0;
+    cur->y0 = param->y0;
+    cur->x1 = param->x1;
+    idx = idx + 1;
+    DAT_00667d3c = idx;
+    cur->y1 = param->y1;
+    return idx;
+}
 
 // FUNCTION: LEGOLAND 0x0045d770
 void FUN_0045d770(void) { STUB(); }
