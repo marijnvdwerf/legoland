@@ -23,6 +23,7 @@ LEGO_EXPORT void MatrixMultiply(float *A, float *B, float *C);
 LEGO_EXPORT void BuildYRotationMatrix(float angle, float *out);
 LEGO_EXPORT void CopyMatrix(struct Matrix3x3 *src, struct Matrix3x3 *dest);
 unsigned int FUN_00442c70(void);
+unsigned int FUN_00442f50(void);
 LEGO_EXPORT void GetScreenCoordsForObject(unsigned short *value, void *obj);
 LEGO_EXPORT void AdjustBlokePosition(struct BlokePos *pBloke);
 LEGO_EXPORT void Ride_SetFlagToNotLetAnyoneOn(struct RideObject *ride);

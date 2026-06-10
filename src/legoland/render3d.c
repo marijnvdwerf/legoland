@@ -426,11 +426,60 @@ LEGO_EXPORT void RenderItems_New(void) {
     DAT_00655a4c = 0;
 }
 
+struct RenderItemNode {
+    int key;
+    unsigned char pad_4[4];
+    struct RenderItemNode *next;
+    struct RenderItemNode *prev;
+};
+
 // FUNCTION: LEGOLAND 0x00442eb0
-LEGO_EXPORT void RenderItem_Link(void) { STUB(); }
+LEGO_EXPORT void RenderItem_Link(struct RenderItemNode **head, struct RenderItemNode *node, int key) {
+    struct RenderItemNode *cur;
+
+    node->next = NULL;
+    node->prev = NULL;
+    cur = *head;
+    if (cur == NULL) {
+        *head = node;
+        return;
+    }
+    while (key > cur->key) {
+        if (cur->next == NULL) {
+            cur->next = node;
+            node->prev = cur;
+            return;
+        }
+        cur = cur->next;
+    }
+    node->next = cur;
+    node->prev = cur->prev;
+    if (cur->prev != NULL) {
+        cur->prev->next = node;
+    }
+    cur->prev = node;
+    if (cur == *head) {
+        *head = node;
+    }
+}
+
+struct RenderItem {
+    unsigned int field_0;
+    unsigned int field_4;
+};
+
+struct BlokeRenderSrc {
+    unsigned char pad_0[8];
+    unsigned int field_8;
+};
 
 // FUNCTION: LEGOLAND 0x00442f20
-LEGO_EXPORT void AddBlokeToRenderList(void) { STUB(); }
+LEGO_EXPORT void AddBlokeToRenderList(struct RenderItemNode **head, struct BlokeRenderSrc *src, int key) {
+    struct RenderItem *item = (struct RenderItem *)FUN_00442f50();
+    item->field_4 = src->field_8;
+    item->field_0 = key;
+    RenderItem_Link(head, (struct RenderItemNode *)item, key);
+}
 
 // FUNCTION: LEGOLAND 0x00442f50
 unsigned int FUN_00442f50(void) {
@@ -474,7 +523,34 @@ LEGO_EXPORT void RenderItems2_New(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00443080
-LEGO_EXPORT void RenderItem2_Link(unsigned int param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
+LEGO_EXPORT void RenderItem2_Link(struct RenderItemNode **head, struct RenderItemNode *node, int key) {
+    struct RenderItemNode *cur;
+
+    node->next = NULL;
+    node->prev = NULL;
+    cur = *head;
+    if (cur == NULL) {
+        *head = node;
+        return;
+    }
+    while (key > cur->key) {
+        if (cur->next == NULL) {
+            cur->next = node;
+            node->prev = cur;
+            return;
+        }
+        cur = cur->next;
+    }
+    node->next = cur;
+    node->prev = cur->prev;
+    if (cur->prev != NULL) {
+        cur->prev->next = node;
+    }
+    cur->prev = node;
+    if (cur == *head) {
+        *head = node;
+    }
+}
 
 struct RenderItem2 {
     unsigned int field_0;
@@ -482,11 +558,11 @@ struct RenderItem2 {
 };
 
 // FUNCTION: LEGOLAND 0x004430f0
-LEGO_EXPORT void RenderItem2_AddItem(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+LEGO_EXPORT void RenderItem2_AddItem(struct RenderItemNode **head, unsigned int param_2, int key) {
     struct RenderItem2 *item = (struct RenderItem2 *)FUN_00443120();
     item->field_4 = param_2;
-    item->field_0 = param_3;
-    RenderItem2_Link(param_1, (unsigned int)item, param_3);
+    item->field_0 = key;
+    RenderItem2_Link(head, (struct RenderItemNode *)item, key);
 }
 
 // FUNCTION: LEGOLAND 0x00443120
