@@ -209,10 +209,97 @@ LEGO_EXPORT void RenderView(void) { STUB(); }
 LEGO_EXPORT void PointToIsoPlane(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045be00
-LEGO_EXPORT void ScreenToMapRef2(void) { STUB(); }
+LEGO_EXPORT unsigned int ScreenToMapRef2(int *param_1, int *out) {
+    struct TileSprite *sprite;
+    short size;
+    int twice;
+    int ix;
+    int iy;
+
+    sprite = (struct TileSprite *)TileSpriteArray[DAT_00667ca4];
+    if (sprite == NULL) {
+        return 0xffffffff;
+    }
+    size = sprite->size;
+    twice = (short)(size * 2);
+    ix = (((twice + 1 >> 1) - lpConfig->field_20) + (ScrollX >> 8) + *param_1) * (0x100 / twice);
+    iy = (((ScrollY >> 8) - lpConfig->field_22) + param_1[1]) * (0x100 / (int)size);
+    *out = iy + ix;
+    out[1] = iy - ix;
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0045be90
-LEGO_EXPORT void ScreenToMapRef(unsigned int x, void *out, unsigned int y) { STUB(); }
+LEGO_EXPORT unsigned int ScreenToMapRef(int *param_1, int *out, unsigned int param_3) {
+    struct TileSprite *sprite;
+    short size;
+    int w;
+    int twice;
+    int half;
+    int sx;
+    int sy;
+    int qx;
+    int rx;
+    int qy;
+    int ry;
+    char sel;
+
+    sprite = (struct TileSprite *)TileSpriteArray[DAT_00667ca4];
+    if (sprite == NULL) {
+        return 0xffffffff;
+    }
+    size = sprite->size;
+    w = (int)size;
+    twice = (short)(size * 2);
+    half = twice + 1 >> 1;
+    sx = ((ScrollX >> 8) - lpConfig->field_20) + *param_1 + half;
+    sy = ((ScrollY >> 8) - lpConfig->field_22) + param_1[1];
+    qx = sx / twice;
+    rx = sx % twice;
+    qy = sy / w;
+    ry = sy % w;
+    *out = qx + qy;
+    out[1] = qy - qx;
+    if (rx < 0) {
+        rx = rx + -2 + twice;
+        out[1] = (qy - qx) + 1;
+        *out = (qx + qy) + -1;
+    }
+    if (ry < 0) {
+        out[1] = out[1] + -1;
+        *out = *out + -1;
+        ry = ry + -1 + w;
+    }
+    sel = (char)(half <= rx) + '\x01';
+    if (w + 1 >> 1 < ry) {
+        sel = (char)(half <= rx) + '\x03';
+    }
+    switch (sel) {
+    case '\x01':
+        if (rx < half + ry * -2) {
+            *out = *out + -1;
+            return 1;
+        }
+        break;
+    case '\x02':
+        if (half + ry * 2 <= rx) {
+            out[1] = out[1] + -1;
+            return 1;
+        }
+        break;
+    case '\x03':
+        if (rx < half + (ry - w) * 2) {
+            out[1] = out[1] + 1;
+            return 1;
+        }
+        break;
+    case '\x04':
+        if (half + (w - ry) * 2 <= rx) {
+            *out = *out + 1;
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0045c010
 LEGO_EXPORT unsigned char Dir_To_Bit(unsigned char param) {
