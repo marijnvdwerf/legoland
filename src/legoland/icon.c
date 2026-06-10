@@ -1622,6 +1622,9 @@ LEGO_EXPORT void DeleteIndicator(struct Indicator *ind) {
 }
 
 // FUNCTION: LEGOLAND 0x0046feb0
+// NOTE: left STUB — intricate insertion-sort with goto-based reentry
+// (joined_r0x0046fed9); a faithful translation reached only ~36% (now/key
+// register allocation diverges and the nested splice flow resists matching).
 LEGO_EXPORT void ControlIndicators(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00470000
