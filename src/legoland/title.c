@@ -629,10 +629,97 @@ unsigned char FUN_00490be0(struct IconNode *param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00490c70
-void FUN_00490c70(void) { STUB(); }
+void FUN_00490c70(void) {
+    struct SpriteIcon *accept;
+    struct IconNode *icon;
+
+    FUN_00499380();
+    FUN_00492830();
+    // STRING: LEGOLAND 0x004bf6cc
+    SPRITE_TitleScreenBk = LoadSprite("Interval_Screen.lls", 0);
+    // STRING: LEGOLAND 0x004b8198
+    DAT_0081c02c = LoadSprite("NextPage.lls", 4);
+    // STRING: LEGOLAND 0x004b8188
+    DAT_0081c034 = LoadSprite("NextPageLit.lls", 4);
+    // STRING: LEGOLAND 0x004b8174
+    DAT_0081c080 = LoadSprite("PreviousPage.lls", 4);
+    // STRING: LEGOLAND 0x004b8160
+    DAT_0081c084 = LoadSprite("PreviousPageLit.lls", 4);
+    // STRING: LEGOLAND 0x004bf6bc
+    DAT_007caf80 = LoadSprite("Rep_Hint1.lls", 4);
+    // STRING: LEGOLAND 0x004bf6ac
+    DAT_007cb1c4 = LoadSprite("Rep_Hint2.lls", 4);
+
+    // STRING: LEGOLAND 0x004bf694
+    accept = LoadSpriteIcon("Accept_On_Report.lls", 4, 0x20a, 0x16c, 7);
+    if (DAT_00798878 != 0) {
+        accept->field_3c = 0x244;
+        accept->field_38 = GetString(0x244);
+    } else {
+        accept->field_3c = 0x245;
+        accept->field_38 = GetString(0x245);
+    }
+    accept->field_34 |= 0x6002;
+    accept->event_handler = FUN_00490970;
+    DAT_006687c0 = FUN_00490970;
+
+    icon = InsertIcon(0x1b9, 0x50, 7, DAT_007caf80);
+    icon->field_3c = 0x2d0;
+    icon->field_38 = GetString(0x2d0);
+    icon->field_2c = FUN_00490be0;
+    icon->field_34 |= 0x6002;
+    DAT_007cb1c0 = icon;
+    if (DAT_00798880 == 0) {
+        icon->field_34 |= 0x400;
+    }
+
+    DAT_00798888 = 0;
+    DAT_00798884 = 0xffffffff;
+    DAT_007cb2e4 = InsertIcon(0x1b9, 0x1ae, 7, DAT_0081c02c);
+    DAT_007cb2e4->field_3c = 0x88e;
+    DAT_007cb2e4->field_38 = GetString(0x88e);
+    DAT_007cb2e4->field_34 |= 0x2000;
+    DAT_007cb2e4->field_34 |= 0x4002;
+    DAT_007cb2e4->field_2c = FUN_00490b20;
+    DAT_006687bc = FUN_00490b20;
+
+    DAT_007cb2e0 = InsertIcon(6, 0x1ae, 7, DAT_0081c080);
+    DAT_007cb2e0->field_3c = 0x88f;
+    DAT_007cb2e0->field_38 = GetString(0x88f);
+    DAT_007cb2e0->field_34 |= 0x2000;
+    DAT_007cb2e0->field_34 |= 0x4002;
+    DAT_007cb2e0->field_2c = FUN_00490b90;
+    DAT_004bf670 = 1;
+    FUN_00490aa0();
+}
 
 // FUNCTION: LEGOLAND 0x00490ea0
-void FUN_00490ea0(void) { STUB(); }
+void FUN_00490ea0(void) {
+    struct Sprite *sprite;
+
+    if ((int)DAT_00813a44 < DAT_007cb2e4->field_c ||
+        (int)DAT_00813a44 > DAT_007cb2e4->field_10 + DAT_007cb2e4->field_c ||
+        (int)DAT_00813a48 < DAT_007cb2e4->field_e ||
+        (int)DAT_00813a48 > DAT_007cb2e4->field_12 + DAT_007cb2e4->field_e) {
+        sprite = DAT_0081c034;
+        if (GetBlink() != 0) {
+            sprite = DAT_0081c02c;
+        }
+        FUN_0046d680(DAT_007cb2e4, sprite);
+    }
+    if ((int)DAT_00813a44 < DAT_007cb2e0->field_c ||
+        (int)DAT_00813a44 > DAT_007cb2e0->field_10 + DAT_007cb2e0->field_c ||
+        (int)DAT_00813a48 < DAT_007cb2e0->field_e ||
+        (int)DAT_00813a48 > DAT_007cb2e0->field_12 + DAT_007cb2e0->field_e) {
+        FUN_0046d680(DAT_007cb2e0, DAT_0081c080);
+    }
+    if ((int)DAT_00813a44 < DAT_007cb1c0->field_c ||
+        (int)DAT_00813a44 > DAT_007cb1c0->field_10 + DAT_007cb1c0->field_c ||
+        (int)DAT_00813a48 < DAT_007cb1c0->field_e ||
+        (int)DAT_00813a48 > DAT_007cb1c0->field_12 + DAT_007cb1c0->field_e) {
+        FUN_0046d680(DAT_007cb1c0, DAT_007caf80);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00490fa0
 void FUN_00490fa0(char *text, int font, RECT rc, int color_flag) { STUB(); }
