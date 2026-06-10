@@ -384,7 +384,7 @@ unsigned int FUN_00490680(char *param_1, void **param_2, unsigned int param_3) {
     int size;
     char *buffer;
     int pos;
-    int line_start;
+    char c;
     int count;
 
     file = RES_OpenFile(param_1);
@@ -404,25 +404,19 @@ unsigned int FUN_00490680(char *param_1, void **param_2, unsigned int param_3) {
     RES_ReadFile(file, buffer, size);
     pos = 0;
     count = 0;
-    if (0 < (int)param_3) {
+    while (count < (int)param_3 && pos < size) {
+        *param_2 = buffer + pos;
         do {
-            if (size <= pos) break;
-            *param_2 = buffer + pos;
-            do {
-                line_start = pos;
-                pos = line_start + 1;
-                if (buffer[line_start] == '\r') {
-                    if (pos < size) goto found;
-                    break;
-                }
-            } while (pos < size);
-            pos = line_start + 2;
-found:
-            buffer[pos + -1] = 0;
+            c = buffer[pos];
             pos = pos + 1;
-            count = count + 1;
-            param_2 = param_2 + 1;
-        } while (count < (int)param_3);
+        } while (c != '\r' && pos < size);
+        if (size <= pos) {
+            pos = pos + 1;
+        }
+        buffer[pos + -1] = 0;
+        pos = pos + 1;
+        count = count + 1;
+        param_2 = param_2 + 1;
     }
     RES_CloseFile(file);
     return (unsigned int)count;
