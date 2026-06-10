@@ -22,6 +22,7 @@ struct PopUp {
 #include "help.h"
 #include "print_sprite.h"
 #include "profile_io.h"
+#include "resource.h"
 
 extern int FUN_00451e20(void);
 
@@ -363,16 +364,82 @@ void FUN_00490600(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00490610
-void FUN_00490610(const char *param_1) { STUB(); }
+void FUN_00490610(const char *param_1) {
+    if (strlen(param_1) > 0xff) {
+        strncpy(DAT_00798778, param_1, 0x100);
+        DAT_00798778[0xff] = 0;
+    } else {
+        strcpy(DAT_00798778, param_1);
+        (&DAT_00798777)[strlen(param_1) + 1] = 0;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00490680
-unsigned int FUN_00490680(char *param_1, void **param_2, unsigned int param_3) { STUB(); }
+unsigned int FUN_00490680(char *param_1, void **param_2, unsigned int param_3) {
+    struct ResFile *file;
+    int size;
+    char *buffer;
+    int pos;
+    int line_start;
+    int count;
+
+    file = RES_OpenFile(param_1);
+    if (file == NULL) {
+        return 0;
+    }
+    size = RES_GetFileSize(file);
+    if (size == 0) {
+        RES_CloseFile(file);
+        return 0;
+    }
+    buffer = malloc(size + 2);
+    if (buffer == NULL) {
+        RES_CloseFile(file);
+        return 0;
+    }
+    RES_ReadFile(file, buffer, size);
+    pos = 0;
+    count = 0;
+    if (0 < (int)param_3) {
+        do {
+            if (size <= pos) break;
+            *param_2 = buffer + pos;
+            do {
+                line_start = pos;
+                pos = line_start + 1;
+                if (buffer[line_start] == '\r') {
+                    if (pos < size) goto found;
+                    break;
+                }
+            } while (pos < size);
+            pos = line_start + 2;
+found:
+            buffer[pos + -1] = 0;
+            pos = pos + 1;
+            count = count + 1;
+            param_2 = param_2 + 1;
+        } while (count < (int)param_3);
+    }
+    RES_CloseFile(file);
+    return (unsigned int)count;
+}
 
 // FUNCTION: LEGOLAND 0x00490740
-void FUN_00490740(const char *param_1) { STUB(); }
+void FUN_00490740(const char *param_1) {
+    char fname[64];
+
+    _splitpath(param_1, 0, 0, fname, 0);
+    // STRING: LEGOLAND 0x004bf674
+    sprintf(DAT_007cae80, "%s_", fname);
+}
 
 // FUNCTION: LEGOLAND 0x00490770
-void FUN_00490770(const char *param_1) { STUB(); }
+void FUN_00490770(const char *param_1) {
+    char fname[64];
+
+    _splitpath(param_1, 0, 0, fname, 0);
+    sprintf(DAT_007cb1e0, "%s_", fname);
+}
 
 // FUNCTION: LEGOLAND 0x004907a0
 unsigned int FUN_004907a0(const char *param_1) {

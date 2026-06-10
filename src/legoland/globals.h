@@ -1781,6 +1781,8 @@ extern int DAT_00798768;
 extern unsigned int DAT_0079876c;
 // 0x00798770
 extern unsigned int DAT_00798770;
+// 0x00798777
+extern char DAT_00798777;
 // 0x00798778
 extern char DAT_00798778[0x100];
 // 0x00798878
