@@ -596,10 +596,36 @@ int FUN_004966a0(struct Sample *sample) {
 }
 
 // FUNCTION: LEGOLAND 0x00496760
-void FUN_00496760(void) { STUB(); }
+void FUN_00496760(void) {
+    struct Sample *sample;
+    unsigned int status;
+
+    if (DAT_007988c0 == 0) {
+        return;
+    }
+    for (sample = (struct Sample *)DAT_007988cc; sample != 0; sample = sample->next) {
+        if (sample->active != 0 && sample->field_c != 0 &&
+            sample->buffer->vtable->method_0x24(sample->buffer, &status) == 0 && (status & 1) != 0) {
+            FUN_004966a0(sample);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004967b0
-void FUN_004967b0(void) { STUB(); }
+void FUN_004967b0(void) {
+    struct Sample *sample;
+    unsigned int status;
+
+    if (DAT_007988c0 == 0) {
+        return;
+    }
+    for (sample = (struct Sample *)DAT_007988cc; sample != 0; sample = sample->next) {
+        if (sample->active != 0 &&
+            sample->buffer->vtable->method_0x24(sample->buffer, &status) == 0) {
+            FUN_004966a0(sample);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004967f0
 void FUN_004967f0(void) { STUB(); }
