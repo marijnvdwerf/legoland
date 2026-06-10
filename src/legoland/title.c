@@ -99,7 +99,20 @@ unsigned char FUN_0048fe20(unsigned int param_1, unsigned char param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048feb0
-unsigned char FUN_0048feb0(unsigned int param_1, unsigned int param_2) { STUB(); }
+unsigned char FUN_0048feb0(unsigned int param_1, unsigned int param_2) {
+    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
+        FUN_00498920();
+        DAT_006687b0 = 4;
+        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
+        DAT_0080ffe5 = 1;
+        RemoveIconGroup(7);
+        KillTitleScreenSprites();
+        DAT_008119b4 = 2;
+        DAT_0080ff88 = 6;
+        DAT_00832ba0 = 0;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0048ff20
 unsigned char FUN_0048ff20(unsigned int param_1, unsigned int param_2) {
@@ -132,7 +145,17 @@ void FUN_0048ffb0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048ffe0
-unsigned char FUN_0048ffe0(unsigned int param_1, unsigned int param_2) { STUB(); }
+unsigned char FUN_0048ffe0(unsigned int param_1, unsigned int param_2) {
+    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
+        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
+        FUN_0048f9f0(DAT_007cb30c, DAT_007cb300, DAT_007cb2f0);
+        DAT_008119b4 = 2;
+        DAT_0080ff84 = 0xffffffff;
+        DAT_0080ff88 = 9;
+        DAT_00668e38 = 1;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00490050
 unsigned char FUN_00490050(unsigned int param_1, unsigned char param_2) {

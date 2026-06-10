@@ -2184,6 +2184,8 @@ extern unsigned int DAT_0080ff80;
 extern unsigned int DAT_0080ff84;
 // 0x0080ff88
 extern unsigned int DAT_0080ff88;
+// 0x0080ffe5
+extern unsigned char DAT_0080ffe5;
 // 0x0080ffa0
 extern struct ScreenState DAT_0080ffa0;
 // 0x008100c0

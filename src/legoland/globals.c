@@ -3056,6 +3056,9 @@ unsigned int DAT_0080ff84;
 // GLOBAL: LEGOLAND 0x0080ff88
 unsigned int DAT_0080ff88;
 
+// GLOBAL: LEGOLAND 0x0080ffe5
+unsigned char DAT_0080ffe5;
+
 // GLOBAL: LEGOLAND 0x0080ffa0
 struct ScreenState DAT_0080ffa0;
 

@@ -184,7 +184,7 @@ void FUN_0048f760(void) { STUB(); }
 void FUN_0048f8d0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048f9f0
-void FUN_0048f9f0(void) { STUB(); }
+void FUN_0048f9f0(const char *param_1, const char *param_2, const char *param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048fa40
 void FUN_0048fa40(const char *param_1, const char *param_2, const char *param_3) { STUB(); }
