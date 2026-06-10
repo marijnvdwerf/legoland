@@ -437,8 +437,97 @@ LEGO_EXPORT unsigned short *LoadPalette(unsigned int path) {
 
 #pragma function(memset)
 
+struct CellContainer {
+    unsigned char pad_0[4];
+    int field_4;
+    unsigned char pad_8[0x30 - 8];
+    short *entries;
+};
+
+struct CellEntry {
+    short field_0;
+    unsigned char field_2;
+    unsigned char field_3;
+    unsigned char field_4;
+    unsigned char field_5;
+};
+
 // FUNCTION: LEGOLAND 0x00442040
-void FUN_00442040(void) { STUB(); }
+void FUN_00442040(struct CellContainer *param_1, int param_2, int param_3, float *param_4, int param_5) {
+    struct CellEntry *entry1 = (struct CellEntry *)((char *)param_1->entries + param_2 * 6);
+    struct CellEntry *entry2 = (struct CellEntry *)((char *)param_1->entries + param_3 * 6);
+    unsigned char bVar3 = entry1->field_4;
+    int iVar22 = entry2->field_0 + param_1->field_4;
+    int lo_x = entry1->field_2;
+    int hi_x = bVar3 + entry1->field_2 + 1;
+    int lo_y = entry1->field_3;
+    int hi_y = entry1->field_5 + entry1->field_3 + 1;
+    int idx1 = entry1->field_0 + param_1->field_4;
+    float *p;
+    int local_18;
+
+    if (param_5 > 0) {
+        local_18 = param_5;
+        p = param_4 + 3;
+        do {
+            if ((*(unsigned int *)(p - 3) & 0x2000) == 0 && *(int *)(p - 1) == idx1) {
+                float v0 = p[0];
+                float v1 = p[1];
+                float v2 = p[2];
+                float v3 = p[3];
+                float v4 = p[4];
+                float v5 = p[5];
+                float s0, s1;
+                if (v0 < FLOAT_004ab390) v0 = 0.0f;
+                if (DAT_004ab3a8 < v0) v0 = 1.0f;
+                if (v1 < FLOAT_004ab390) v1 = 0.0f;
+                if (DAT_004ab3a8 < v1) v1 = 1.0f;
+                if (v2 < FLOAT_004ab390) v2 = 0.0f;
+                if (DAT_004ab3a8 < v2) v2 = 1.0f;
+                if (v3 < FLOAT_004ab390) v3 = 0.0f;
+                if (DAT_004ab3a8 < v3) v3 = 1.0f;
+                if (v4 < FLOAT_004ab390) v4 = 0.0f;
+                if (DAT_004ab3a8 < v4) v4 = 1.0f;
+                if (v5 < FLOAT_004ab390) v5 = FLOAT_004ab390;
+                if (DAT_004ab3a8 < v5) v5 = DAT_004ab38c;
+                s0 = (float)DAT_0081c0c0[idx1 * 2];
+                v0 = s0 * v0;
+                v2 = s0 * v2;
+                v4 = s0 * v4;
+                s1 = (float)DAT_0081c0c0[idx1 * 2 + 1];
+                v1 = s1 * v1;
+                v3 = s1 * v3;
+                v5 = s1 * v5;
+                if ((float)lo_x <= v0 && v0 <= (float)hi_x &&
+                    (float)lo_x <= v2 && v2 <= (float)hi_x &&
+                    (float)lo_x <= v4 && v4 <= (float)hi_x &&
+                    (float)lo_y <= v1 && v1 <= (float)hi_y &&
+                    (float)lo_y <= v3 && v3 <= (float)hi_y &&
+                    (float)lo_y <= v5 && v5 <= (float)hi_y) {
+                    float e1_2 = (float)entry1->field_2;
+                    float e1_4 = (float)entry1->field_4;
+                    float e2_4 = (float)entry2->field_4;
+                    float e2_2 = (float)entry2->field_2;
+                    float t0 = (float)DAT_0081c0c0[iVar22 * 2];
+                    float e1_3 = (float)entry1->field_3;
+                    float e1_5 = (float)entry1->field_5;
+                    float e2_5 = (float)entry2->field_5;
+                    float e2_3 = (float)entry2->field_3;
+                    float t1 = (float)DAT_0081c0c0[iVar22 * 2 + 1];
+                    *(int *)(p - 1) = entry2->field_0 + param_1->field_4;
+                    p[1] = (((v1 - e1_3) / e1_5) * e2_5 + e2_3) / t1;
+                    p[2] = (((v2 - e1_2) / e1_4) * e2_4 + e2_2) / t0;
+                    p[3] = (((v3 - e1_3) / e1_5) * e2_5 + e2_3) / t1;
+                    p[4] = (((v4 - e1_2) / e1_4) * e2_4 + e2_2) / t0;
+                    p[0] = (((v0 - e1_2) / e1_4) * e2_4 + e2_2) / t0;
+                    p[5] = (((v5 - e1_3) / e1_5) * e2_5 + e2_3) / t1;
+                }
+            }
+            p = p + 9;
+            local_18 = local_18 - 1;
+        } while (local_18 != 0);
+    }
+}
 
 extern unsigned int FUN_00486280(int param_1, void *param_2);
 

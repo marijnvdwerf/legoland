@@ -2,8 +2,14 @@
 #include <dinput.h>   /* this TU defines the DInput data symbols (c_dfDI*, GUID_Sys*, DAT_00668d78) */
 #include "icon.h"
 
+// GLOBAL: LEGOLAND 0x004ab38c
+float DAT_004ab38c;
+
 // GLOBAL: LEGOLAND 0x004ab390
 float FLOAT_004ab390;
+
+// GLOBAL: LEGOLAND 0x004ab3a8
+double DAT_004ab3a8;
 
 // GLOBAL: LEGOLAND 0x004ab3d0
 float DAT_004ab3d0;
@@ -3473,6 +3479,9 @@ void *DAT_0081c0a0;
 
 // GLOBAL: LEGOLAND 0x0081c0a4
 void *DAT_0081c0a4;
+
+// GLOBAL: LEGOLAND 0x0081c0c0
+int DAT_0081c0c0[0x200];
 
 // GLOBAL: LEGOLAND 0x0081c8c0
 void *DAT_0081c8c0;

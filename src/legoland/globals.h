@@ -185,8 +185,12 @@ struct ScreenState {
 // initializers) live in globals.c. This phase only collects the declarations;
 // per-TU inline externs are migrated to use this header in a later phase.
 // ---------------------------------------------------------------------------
+// 0x004ab38c
+extern float DAT_004ab38c;
 // 0x004ab390
 extern float FLOAT_004ab390;
+// 0x004ab3a8
+extern double DAT_004ab3a8;
 // 0x004ab3d0
 extern float DAT_004ab3d0;
 // 0x004ab430
@@ -2473,6 +2477,8 @@ extern unsigned int DAT_0081c09c;
 extern void *DAT_0081c0a0;
 // 0x0081c0a4
 extern void *DAT_0081c0a4;
+// 0x0081c0c0
+extern int DAT_0081c0c0[0x200];
 // 0x0081c8c0
 extern void *DAT_0081c8c0;
 // 0x0081c8c4
