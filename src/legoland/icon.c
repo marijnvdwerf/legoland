@@ -11,6 +11,8 @@
 #include "llidb.h"
 #include "interface.h"
 #include "print_sprite.h"
+#include "string.h"
+#include "map_object.h"
 
 struct Sprite;
 
