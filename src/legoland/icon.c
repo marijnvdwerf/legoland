@@ -85,6 +85,22 @@ struct CtrlBuffer {
     int field_8;
 };
 
+struct InfoSource {
+    /* 0x00 */ unsigned char pad_0[4];
+    /* 0x04 */ void *field_4;
+    /* 0x08 */ void *field_8;
+    /* 0x0c */ unsigned char pad_c[0x10 - 0xc];
+    /* 0x10 */ unsigned int field_10;
+    /* 0x14 */ struct Sprite *field_14;
+    /* 0x18 */ unsigned char pad_18[0x68 - 0x18];
+    /* 0x68 */ struct Sprite *field_68;
+    /* 0x6c */ unsigned char pad_6c[0x78 - 0x6c];
+    /* 0x78 */ void *field_78;
+    /* 0x7c */ void *field_7c;
+    /* 0x80 */ unsigned char pad_80[0xc4 - 0x80];
+    /* 0xc4 */ unsigned int *field_c4;
+};
+
 struct ScrollRegion {
     /* 0x00 */ short field_0;
     /* 0x02 */ unsigned char pad_2[0x4 - 0x2];
@@ -1421,7 +1437,40 @@ LEGO_EXPORT unsigned char CheckFocussedIcon(void) {
 LEGO_EXPORT void AddGBarClassIcon(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046f7a0
-LEGO_EXPORT void AddFreePlayIcon(void) { STUB(); }
+LEGO_EXPORT struct IconNode *AddFreePlayIcon(unsigned int param_1, struct InfoSource *src, int a3, int a4, int a5, short a6, void *a7) {
+    struct IconNode *icon = InsertIcon(a3, a4, a5, DAT_00668828);
+    if (icon != NULL) {
+        struct Sprite *sprite = src->field_14;
+        unsigned int flags;
+        if (sprite == NULL) {
+            sprite = NULL;
+        }
+        FUN_0046d680(icon, sprite);
+        flags = icon->field_34;
+        icon->field_28 = (void *)RenderGBarSpriteIcon;
+        icon->field_38 = src->field_10;
+        icon->field_3c = 0xffffffff;
+        icon->field_34 = flags | 0x3008;
+        icon->field_16 = a6;
+        icon->field_8 = src->field_8;
+        icon->field_18 = 0;
+        icon->field_1c = src->field_4;
+        icon->field_20p = a7;
+        if (DAT_006688a8 != 0) {
+            icon->field_24 = DAT_006688a8;
+            icon->field_34 = flags | 0x300c;
+        }
+        if (DAT_006688ac != 0) {
+            icon->field_28 = DAT_006688ac;
+            icon->field_34 = icon->field_34 | 8;
+        }
+        if (DAT_006688b0 != 0) {
+            icon->field_2c = DAT_006688b0;
+            icon->field_34 = icon->field_34 | 2;
+        }
+    }
+    return icon;
+}
 
 // FUNCTION: LEGOLAND 0x0046f890
 void FUN_0046f890(void) {

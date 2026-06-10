@@ -13,7 +13,7 @@ struct IconNode {
     /* 0x10 */ short field_10;
     /* 0x12 */ short field_12;
     /* 0x14 */ unsigned short field_14;
-    /* 0x16 */ unsigned char pad_16[0x18 - 0x16];
+    /* 0x16 */ unsigned short field_16;
     /* 0x18 */ union {
         unsigned char field_18;
         short field_18s;
@@ -32,7 +32,7 @@ struct IconNode {
         };
         void *field_20p;
     };
-    /* 0x24 */ unsigned char pad_24[0x28 - 0x24];
+    /* 0x24 */ void *field_24;
     /* 0x28 */ void *field_28;
     /* 0x2c */ void *field_2c;
     /* 0x30 */ void *field_30;
