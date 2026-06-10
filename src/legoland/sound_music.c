@@ -80,6 +80,13 @@ struct AVIBufferDesc {
     /* 0x14 */ GUID guid3DAlgorithm;
 };
 
+struct SampleSource {
+    /* 0x00 */ unsigned int type;
+    /* 0x04 */ unsigned int field_4;
+    /* 0x08 */ unsigned int field_8;
+    /* 0x0c */ unsigned int field_c;
+};
+
 struct ObjectDesc {
     /* 0x000 */ unsigned int dwSize;
     /* 0x004 */ unsigned int dwValidData;
@@ -757,16 +764,122 @@ LEGO_EXPORT unsigned int SourcePlayableSampleToBloke(struct Sample *sample, unsi
 }
 
 // FUNCTION: LEGOLAND 0x00496a70
-LEGO_EXPORT void SourcePlayableSampleToMapRef(void) { STUB(); }
+LEGO_EXPORT unsigned int SourcePlayableSampleToMapRef(struct Sample *sample, unsigned int x, unsigned int y) {
+    if (DAT_007988c0 == 0) {
+        return 0;
+    }
+    if (sample == 0) {
+        return 0;
+    }
+    if (sample->active == 0) {
+        return 0;
+    }
+    sample->field_14 = x;
+    sample->field_c = 2;
+    sample->field_18 = y;
+    FUN_004966a0(sample);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00496ac0
-LEGO_EXPORT void SourcePlayableSampleToLevelXY(void) { STUB(); }
+LEGO_EXPORT unsigned int SourcePlayableSampleToLevelXY(struct Sample *sample, unsigned int x, unsigned int y) {
+    if (DAT_007988c0 == 0) {
+        return 0;
+    }
+    if (sample == 0) {
+        return 0;
+    }
+    if (sample->active == 0) {
+        return 0;
+    }
+    sample->field_14 = x;
+    sample->field_c = 3;
+    sample->field_18 = y;
+    FUN_004966a0(sample);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00496b10
-LEGO_EXPORT void CountSamplesFromSource(void) { STUB(); }
+LEGO_EXPORT int CountSamplesFromSource(struct SampleSource *source) {
+    int count;
+    struct Sample *sample;
+
+    count = 0;
+    if (DAT_007988cc != 0) {
+        sample = (struct Sample *)DAT_007988cc;
+        do {
+            if (sample->field_c == source->type) {
+                switch (source->type) {
+                case 0:
+                    count = count + 1;
+                    break;
+                case 1:
+                    if (sample->field_10 == source->field_4) {
+                        count = count + 1;
+                    }
+                    break;
+                case 2:
+                case 3:
+                    if (sample->field_14 == source->field_8 && sample->field_18 == source->field_c) {
+                        count = count + 1;
+                    }
+                }
+            }
+            sample = sample->next;
+        } while (sample != 0);
+    }
+    return count;
+}
 
 // FUNCTION: LEGOLAND 0x00496b80
-LEGO_EXPORT void KillAllSamplesFromSource(void) { STUB(); }
+LEGO_EXPORT void KillAllSamplesFromSource(struct SampleSource *source) {
+    struct Sample *prev;
+    struct Sample *sample;
+    int matched;
+    struct Sample *next;
+
+    prev = 0;
+    sample = (struct Sample *)DAT_007988cc;
+    if (sample == 0) {
+        return;
+    }
+    matched = (int)source;
+    do {
+        next = sample->next;
+        if (sample->field_c == source->type) {
+            switch (source->type) {
+            case 0:
+                matched = 1;
+                goto unlink;
+            case 1:
+                matched = sample->field_10 == source->field_4;
+            default:
+                if (matched != 0) {
+unlink:
+                    if (prev != 0) {
+                        prev->next = next;
+                        FUN_00492b20(sample);
+                    } else {
+                        DAT_007988cc = next;
+                        FUN_00492b20(sample);
+                    }
+                    goto advance;
+                }
+                break;
+            case 2:
+            case 3:
+                if (sample->field_14 == source->field_8 && sample->field_18 == source->field_c) {
+                    matched = 1;
+                    goto unlink;
+                }
+                matched = 0;
+            }
+        }
+        prev = sample;
+advance:
+        sample = next;
+    } while (sample != 0);
+}
 
 // FUNCTION: LEGOLAND 0x00496c20
 LEGO_EXPORT void UnSourceAndFadeSample(void) { STUB(); }
