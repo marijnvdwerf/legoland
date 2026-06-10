@@ -33,7 +33,7 @@ int FUN_00474970(void);
 LEGO_EXPORT int InitGameInterface(int a);
 void FUN_00474ed0(void);
 unsigned char FUN_00474f80(unsigned int a, unsigned int flags);
-void FUN_00475080(void);
+unsigned char FUN_00475080(unsigned int a, unsigned char flags);
 unsigned char FUN_00475120(unsigned int a, unsigned int flags, unsigned int c, unsigned int d);
 LEGO_EXPORT void DelObjectList(void);
 LEGO_EXPORT unsigned int ObjectLinkedList(unsigned int *entry);

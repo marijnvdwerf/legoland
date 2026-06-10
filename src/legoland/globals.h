@@ -375,6 +375,7 @@ extern const unsigned char DAT_004b9228[1];
 extern void *DAT_004b929c;
 // 0x004b92c0
 extern void *PTR_004b92c0;
+extern void *PTR_004b9314;
 // 0x004b92d8
 extern void *DAT_004b92d8;
 // 0x004b95f0
@@ -1239,6 +1240,8 @@ extern struct Sprite *DAT_00667c34;
 extern LEGO_EXPORT unsigned short QueryObj;
 // 0x00667c58
 extern LEGO_EXPORT void *QueryClass;
+// 0x00667c60
+extern unsigned int DAT_00667c60;
 // 0x00667c64
 extern const char *DAT_00667c40;
 // 0x00667c48
