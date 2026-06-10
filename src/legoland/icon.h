@@ -24,9 +24,14 @@ struct IconNode {
             /* 0x1a */ unsigned char border;
         } box;
     };
-    /* 0x1c */ unsigned char pad_1c[0x20 - 0x1c];
-    /* 0x20 */ short field_20;
-    /* 0x22 */ short field_22;
+    /* 0x1c */ void *field_1c;
+    /* 0x20 */ union {
+        struct {
+            /* 0x20 */ short field_20;
+            /* 0x22 */ short field_22;
+        };
+        void *field_20p;
+    };
     /* 0x24 */ unsigned char pad_24[0x28 - 0x24];
     /* 0x28 */ void *field_28;
     /* 0x2c */ void *field_2c;

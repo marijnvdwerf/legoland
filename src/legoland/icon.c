@@ -130,6 +130,7 @@ LEGO_EXPORT void SetEditObject(void *obj);
 void FUN_00471ca0(void *param);
 LEGO_EXPORT void *PlayInstanceOfSample(void *def, unsigned int looping, unsigned int a3, unsigned int a4);
 LEGO_EXPORT int GetBrickCount(void);
+int FUN_0048aef0(void *param_1, void *param_2);
 LEGO_EXPORT void MoveIcons(unsigned short mask, unsigned short id, short dx, short dy);
 int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned short param_4, int param_5);
 void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3);
@@ -687,7 +688,36 @@ int FUN_0046e040(struct IconNode *node) {
 LEGO_EXPORT void RenderBuildObjectIcon(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e300
-LEGO_EXPORT void RenderFreePlayIcons(void) { STUB(); }
+LEGO_EXPORT int RenderFreePlayIcons(struct IconNode *node) {
+    struct PrintCtx ctx;
+    short y;
+    struct Sprite *sprite;
+
+    ctx.flags = 2;
+    ctx.node = node;
+    y = node->field_e;
+    ctx.field_8 = 0;
+    if (y >= 0 && y <= 0x12c) {
+        sprite = node->sprite;
+        if ((char)node->field_18 != 1) {
+            if (sprite != NULL) {
+                FUN_0048a840((unsigned int)node->field_1c, 0);
+                if (FUN_0048aef0(node->field_1c, node->field_20p) != 0) {
+                    PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
+                    return 0;
+                }
+                PrintSprite(node->sprite, node->field_c, node->field_e, 0xff000000, (int *)&ctx);
+                return 0;
+            }
+        } else {
+            if (sprite != NULL) {
+                PrintSprite(sprite, node->field_c, y, 0, (int *)&ctx);
+            }
+            PrintSprite(DAT_007cb398, node->field_c + 0x46, node->field_e, 0, (int *)&ctx);
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046e400
 LEGO_EXPORT int RenderScroll_Icons(struct IconNode *node) {
