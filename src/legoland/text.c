@@ -14,6 +14,10 @@
 
 #pragma intrinsic(strlen, strcmp, strcpy)
 
+struct TextCell *FUN_00455bb0(char *name, int width, int height, int font, unsigned int format, unsigned int bg_color, unsigned int text_color);
+struct TextCell *FUN_00455d40(char *name, int font, unsigned int format, unsigned int bg_color, unsigned int text_color);
+void FUN_00455ec0(struct TextCell *cell, unsigned int x, unsigned int y);
+
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x00454910
@@ -334,7 +338,79 @@ void FUN_00455220(int x, int y, const char *text, int font, int width) {
 LEGO_EXPORT void BubbleHelp(unsigned int *table, unsigned int a2, unsigned int a3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004557c0
-LEGO_EXPORT void HTBubbleHelp(void) { STUB(); }
+LEGO_EXPORT void HTBubbleHelp(int *rect, char *text, int font) {
+    RECT box;
+    struct TextCell *cell;
+    HDC hdc;
+    HGDIOBJ old_font;
+    unsigned int block_color;
+    int text_h;
+    int cx;
+    int x4;
+    int y4;
+    int w;
+    int h;
+    int x8;
+
+    box.left = 0;
+    box.top = 0;
+    box.right = 0;
+    box.bottom = 0;
+    block_color = GetNearestColour(0xda, 0xc6, 0x96);
+    if (text != NULL) {
+        box.right = 200;
+        cell = FUN_00455d40(text, font, 0x10, 0x96c6da, 0);
+        if (cell == NULL) {
+            hdc = CreateCompatibleDC(NULL);
+            SetBkMode(hdc, 1);
+            old_font = SelectFont(hdc, font);
+            text_h = DrawTextA(hdc, text, strlen(text), &box, 0x410);
+            box.top = rect[1];
+            box.bottom = text_h + box.top;
+            SelectObject(hdc, old_font);
+            DeleteDC(hdc);
+            cell = FUN_00455bb0(text, box.right - box.left, text_h, font, 0x10, 0x96c6da, 0);
+        } else {
+            box.left = 0;
+            box.top = 0;
+            box.right = cell->width;
+            box.bottom = cell->height;
+            text_h = cell->height;
+        }
+        cx = (rect[2] + rect[0]) >> 1;
+        if (cx < 0) {
+            cx = 0;
+        } else if (cx > (int)(unsigned int)lpConfig->field_0) {
+            cx = (unsigned int)lpConfig->field_0;
+        }
+        box.right = box.right - box.left;
+        box.left = cx - (box.right >> 1);
+        if (box.left < 0) {
+            box.left = 0;
+        } else if ((((box.right + 1) >> 1) + cx) >= (int)(unsigned int)lpConfig->field_0) {
+            box.left = (unsigned int)lpConfig->field_0 - box.right;
+        }
+        box.right = box.right + box.left;
+        if (rect[1] < (box.bottom - box.top) + 8) {
+            box.top = rect[3] + 6;
+            box.bottom = text_h + box.top;
+        } else {
+            box.bottom = rect[1] + -6;
+            box.top = box.bottom - text_h;
+        }
+        y4 = box.bottom + 4;
+        x4 = box.top + -4;
+        h = y4 - x4;
+        w = box.right + 4;
+        x8 = box.left + -4;
+        RenderBlock(box.left + -3, box.top + -3, w - x8, h + -1, block_color);
+        RenderBlock(x8, x4, w - x8, 1, 0);
+        RenderBlock(x8, y4, w - x8, 1, 0);
+        RenderBlock(x8, x4, 1, h, 0);
+        RenderBlock(w, x4, 1, h, 0);
+        FUN_00455ec0(cell, box.left, box.top);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00455a10
 struct TextCell *FUN_00455a10(struct Sprite *sprite, int *out_index) {
