@@ -304,10 +304,17 @@ LEGO_EXPORT void RenderTiledSprite(int param_1, int x, int y, int w, int h) {
 }
 
 // FUNCTION: LEGOLAND 0x00488c80
-void FUN_00488c80(void) { STUB(); }
+unsigned int FUN_00488c80(unsigned int param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4, unsigned int param_5, int *param_6) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00489080
-LEGO_EXPORT void RenderScaledSprite(void) { STUB(); }
+LEGO_EXPORT unsigned int RenderScaledSprite(unsigned int param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4, unsigned int param_5) {
+    int local[2];
+
+    local[0] = 0;
+    local[1] = 0;
+    FUN_00488c80(param_1, param_2, param_3, param_4, param_5, local);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004890c0
 LEGO_EXPORT unsigned int RenderBlock(int x, int y, int w, int h, unsigned int color) {
