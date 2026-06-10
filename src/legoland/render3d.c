@@ -399,7 +399,26 @@ float FUN_00442de0(struct Vec3 *param_1, struct Vec3 *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00442e00
-LEGO_EXPORT void TMNegParity(void) { STUB(); }
+LEGO_EXPORT int TMNegParity(float *param_1) {
+    struct Vec3 a;
+    struct Vec3 b;
+    struct Vec3 cross;
+
+    a.x = param_1[0];
+    a.y = param_1[1];
+    a.z = param_1[2];
+    b.x = param_1[3];
+    b.y = param_1[4];
+    b.z = param_1[5];
+    FUN_00442da0(&a, &b, &cross);
+    a.x = param_1[6];
+    a.y = param_1[7];
+    a.z = param_1[8];
+    if (FUN_00442de0(&cross, &a) < DAT_004ab4c8) {
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00442e90
 LEGO_EXPORT void RenderItems_New(void) {
