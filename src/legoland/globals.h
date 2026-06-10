@@ -338,6 +338,8 @@ extern const unsigned char DAT_004b9228[1];
 extern void *DAT_004b929c;
 // 0x004b92c0
 extern void *PTR_004b92c0;
+// 0x004b92d8
+extern void *DAT_004b92d8;
 // 0x004b95f0
 extern struct DeferredSprite *PTR_DAT_004b95f0;
 // 0x004b9550

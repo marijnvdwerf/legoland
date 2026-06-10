@@ -7,7 +7,7 @@ struct Sprite;
 struct IconNode {
     /* 0x00 */ struct IconNode *next;
     /* 0x04 */ struct Sprite *sprite;
-    /* 0x08 */ unsigned char pad_8[0xc - 0x8];
+    /* 0x08 */ void *field_8;
     /* 0x0c */ short field_c;
     /* 0x0e */ short field_e;
     /* 0x10 */ short field_10;

@@ -125,6 +125,11 @@ struct SpriteLLS;
 LEGO_EXPORT unsigned int GetLLSForSprite(struct SpriteLLS *sprite);
 LEGO_EXPORT void PrintCent(int x, int y, int param_3, void *text, int param_5);
 int FUN_00458930(double value);
+LEGO_EXPORT int GetObjCost(void *info);
+LEGO_EXPORT void SetEditObject(void *obj);
+void FUN_00471ca0(void *param);
+LEGO_EXPORT void *PlayInstanceOfSample(void *def, unsigned int looping, unsigned int a3, unsigned int a4);
+LEGO_EXPORT int GetBrickCount(void);
 LEGO_EXPORT void MoveIcons(unsigned short mask, unsigned short id, short dx, short dy);
 int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned short param_4, int param_5);
 void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3);
@@ -1404,7 +1409,31 @@ LEGO_EXPORT void DeleteIndicator(struct Indicator *ind) {
 LEGO_EXPORT void ControlIndicators(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00470000
-void FUN_00470000(void) { STUB(); }
+unsigned char FUN_00470000(struct IconNode *node, unsigned char buttons) {
+    int cost;
+    unsigned int *sub;
+    unsigned int flags;
+
+    if ((buttons & 2) != 0) {
+        cost = GetObjCost(node->field_8);
+        if (cost <= GetBrickCount()) {
+            if ((node->field_34 & 0x1000) != 0) {
+                SetEditObject(node->field_8);
+            }
+            sub = *(unsigned int **)((char *)node->field_8 + 0xc4);
+            flags = sub[2];
+            if ((flags & 0x20000) != 0) {
+                sub[2] = flags & 0xfffdffff;
+                FUN_00471ca0(node->field_8);
+            }
+            PlayInstanceOfSample(DAT_004b929c, 0, 1, 0);
+            return 2;
+        }
+        PlayInstanceOfSample(DAT_004b92d8, 0, 1, 0);
+        return 2;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004700a0
 LEGO_EXPORT void UpdateFocussedIconPtr(void) {
