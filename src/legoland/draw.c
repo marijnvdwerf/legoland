@@ -96,7 +96,32 @@ LEGO_EXPORT unsigned int SetPointer(unsigned int param_1) {
 LEGO_EXPORT int InitScreen(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00463ef0
-void FUN_00463ef0(void) { STUB(); }
+int FUN_00463ef0(void) {
+    DDSURFACEDESC desc;
+    LPDIRECTDRAW2 ddraw2;
+
+    if (DAT_00667d6c == 0) {
+        ddraw2 = (LPDIRECTDRAW2)DDRAWENV[1];
+        if (ddraw2->lpVtbl->SetDisplayMode(ddraw2, lpConfig->field_0, lpConfig->field_2, 0x10, 0, 0) != 0) {
+            ddraw2 = (LPDIRECTDRAW2)DDRAWENV[1];
+            if (ddraw2->lpVtbl->SetDisplayMode(ddraw2, lpConfig->field_0, lpConfig->field_2, 8, 0, 0) != 0) {
+                return 0;
+            }
+        }
+    }
+    desc.dwSize = 0x6c;
+    ddraw2 = (LPDIRECTDRAW2)DDRAWENV[1];
+    ddraw2->lpVtbl->GetDisplayMode(ddraw2, &desc);
+    if (desc.ddpfPixelFormat.dwRGBBitCount != 8) {
+        if (desc.ddpfPixelFormat.dwRGBBitCount != 0x10) {
+            return 0;
+        }
+        DAT_00668088 = (desc.ddpfPixelFormat.dwGBitMask == 0x7e0) + 1;
+        return 1;
+    }
+    DAT_00668088 = 0;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00463fc0
 LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void) {
