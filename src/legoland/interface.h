@@ -11,6 +11,12 @@ struct InterfaceListNode {
     /* 0x08 */ int flag;
 };
 
+struct InterfaceResearchNode {
+    /* 0x00 */ struct InterfaceResearchNode *next;
+    /* 0x04 */ void *data;
+    /* 0x08 */ int field_8;
+};
+
 struct InterfacePanel {
     /* 0x00 */ short group;
     /* 0x02 */ unsigned char pad_2[0x04 - 0x02];

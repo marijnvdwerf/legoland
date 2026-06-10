@@ -37,10 +37,6 @@ struct BuildObject {
     /* 0xc4 */ void *field_c4;
 };
 
-struct ResearchNode {
-    struct ResearchNode *next;
-};
-
 struct EventNode {
     struct EventNode *next;
     unsigned char pad_4[0x1c - 0x4];
@@ -986,14 +982,38 @@ void FUN_00476250(void) { STUB(); }
 void FUN_004762f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004763d0
-LEGO_EXPORT void CleanUpReseachList(void) { STUB(); }
+LEGO_EXPORT void CleanUpReseachList(void) {
+    struct InterfaceResearchNode *node;
+    struct InterfaceResearchNode *current;
+    struct InterfaceResearchNode *prev;
+
+    node = DAT_00668ed8;
+    if (DAT_00668ed8->field_8 == 0) {
+        DAT_00668ed8 = DAT_00668ed8->next;
+        free(node);
+        return;
+    }
+    node = DAT_00668ed8->next;
+    prev = DAT_00668ed8;
+    if (DAT_00668ed8->next != NULL) {
+        while (current = node, current->field_8 != 0) {
+            prev = current;
+            node = current->next;
+            if (node == NULL) {
+                return;
+            }
+        }
+        prev->next = current->next;
+        free(current);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00476420
 LEGO_EXPORT void DeleteReseachList(void) {
-    struct ResearchNode *current;
-    struct ResearchNode *next;
+    struct InterfaceResearchNode *current;
+    struct InterfaceResearchNode *next;
 
-    current = (struct ResearchNode *)DAT_00668ed8;
+    current = DAT_00668ed8;
     while (current != NULL) {
         next = current->next;
         free(current);
