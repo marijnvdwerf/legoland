@@ -123,6 +123,7 @@ struct TimedIndicator {
 
 struct SpriteLLS;
 LEGO_EXPORT unsigned int GetLLSForSprite(struct SpriteLLS *sprite);
+LEGO_EXPORT void PrintCent(int x, int y, int param_3, void *text, int param_5);
 LEGO_EXPORT void MoveIcons(unsigned short mask, unsigned short id, short dx, short dy);
 int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned short param_4, int param_5);
 void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3);
@@ -636,13 +637,45 @@ int FUN_0046df60(int param) {
 }
 
 // FUNCTION: LEGOLAND 0x0046df70
-LEGO_EXPORT void RenderBoxIcon(void) { STUB(); }
+LEGO_EXPORT int RenderBoxIcon(struct IconNode *node) {
+    unsigned short border = node->box.border;
+    RenderThickBox(node->field_c - border, node->field_e - border,
+                   node->field_10 + border * 2, node->field_12 + border * 2,
+                   border, node->box.box_color);
+    if ((node->field_34 & 0x20) != 0) {
+        FUN_0046df30((struct Rect16 *)node);
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046dfd0
-void FUN_0046dfd0(void) { STUB(); }
+int FUN_0046dfd0(struct IconNode *node) {
+    struct PrintCtx ctx;
+
+    ctx.flags = 2;
+    ctx.node = node;
+    ctx.field_8 = 0;
+    if (node->sprite != NULL) {
+        PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
+    }
+    PrintCent(node->field_20 + node->field_c, node->field_22 + node->field_e, 0x40, node->field_18p, 1);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046e040
-void FUN_0046e040(void) { STUB(); }
+int FUN_0046e040(struct IconNode *node) {
+    struct PrintCtx ctx;
+
+    ctx.flags = 2;
+    ctx.node = node;
+    ctx.field_8 = 0;
+    if (node == (struct IconNode *)FocussedIconPtr) {
+        PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
+        return 0;
+    }
+    PrintSprite(node->alt_sprite, node->field_c, node->field_e, 0, (int *)&ctx);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046e0a0
 LEGO_EXPORT void RenderBuildObjectIcon(void) { STUB(); }

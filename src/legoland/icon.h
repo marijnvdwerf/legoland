@@ -16,9 +16,16 @@ struct IconNode {
     /* 0x16 */ unsigned char pad_16[0x18 - 0x16];
     /* 0x18 */ union {
         unsigned char field_18;
+        short field_18s;
+        void *field_18p;
         struct Sprite *alt_sprite;
+        struct {
+            /* 0x18 */ unsigned short box_color;
+            /* 0x1a */ unsigned char border;
+        } box;
     };
-    /* 0x1c */ unsigned char pad_1c[0x22 - 0x1c];
+    /* 0x1c */ unsigned char pad_1c[0x20 - 0x1c];
+    /* 0x20 */ short field_20;
     /* 0x22 */ short field_22;
     /* 0x24 */ unsigned char pad_24[0x28 - 0x24];
     /* 0x28 */ void *field_28;
