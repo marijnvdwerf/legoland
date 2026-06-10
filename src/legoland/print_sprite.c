@@ -105,16 +105,94 @@ writeback:
 }
 
 // FUNCTION: LEGOLAND 0x004855d0
-void FUN_004855d0(void) { STUB(); }
+void FUN_004855d0(struct Sprite *sprite, int *out)
+{
+    int xoff;
+    int yoff;
+    int i;
+    int right;
+    int bottom;
+    struct SpriteGroup *group;
+    struct Sprite *sub;
+
+    if ((sprite->flags & 0x8000) == 0) {
+        out[0] = 0;
+        out[1] = 0;
+        if (sprite != NULL) {
+            out[2] = (short)sprite->width + -1;
+            out[3] = (short)sprite->height + -1;
+            return;
+        }
+        out[2] = 0;
+        out[3] = 0;
+        return;
+    }
+    i = 0;
+    out[0] = 0x7fffffff;
+    out[1] = 0x7fffffff;
+    out[2] = -0x80000000;
+    out[3] = -0x80000000;
+    group = (struct SpriteGroup *)sprite->image;
+    if (0 < group->count) {
+        do {
+            xoff = group->xoffs[i];
+            yoff = group->yoffs[i];
+            if (xoff < 0) {
+                xoff = -(-xoff >> 1);
+            } else {
+                xoff = xoff >> 1;
+            }
+            if (yoff < 0) {
+                yoff = -(-yoff >> 1);
+            } else {
+                yoff = yoff >> 1;
+            }
+            sub = group->subs[i];
+            right = (short)sub->width + xoff;
+            bottom = (short)sub->height + yoff;
+            if (xoff < out[0]) {
+                out[0] = xoff;
+            }
+            if (yoff < out[1]) {
+                out[1] = yoff;
+            }
+            if (right > out[2]) {
+                out[2] = right;
+            }
+            if (bottom > out[3]) {
+                out[3] = bottom;
+            }
+            group = (struct SpriteGroup *)sprite->image;
+            i = i + 1;
+        } while (i < group->count);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004856a0
 LEGO_EXPORT void PrintSpriteEx(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004858e0
-LEGO_EXPORT void PrintTiledSprite(void) { STUB(); }
+LEGO_EXPORT unsigned int PrintTiledSprite(struct Sprite *sprite, int param_2, int param_3, int param_4, int param_5, int param_6, int param_7)
+{
+    if ((sprite->flags & 0x8000) == 0) {
+        if (*GetVRAMAddress(sprite) != 0 || FUN_00499500(sprite) != 0) {
+            return RenderTiledSprite(sprite, param_2, param_3, param_4, param_5, param_6, param_7);
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00485940
-LEGO_EXPORT void PrintScaledSprite(void) { STUB(); }
+LEGO_EXPORT unsigned int PrintScaledSprite(struct Sprite *sprite, int param_2, int param_3, int param_4, int param_5)
+{
+    if (*GetVRAMAddress(sprite) == 0) {
+        if (FUN_00499500(sprite) != 0) {
+            return RenderScaledSprite(sprite, param_2, param_3, param_4, param_5);
+        }
+        return 0;
+    }
+    return RenderScaledSprite(sprite, param_2, param_3, param_4, param_5);
+}
 
 // FUNCTION: LEGOLAND 0x004859b0
 LEGO_EXPORT void ClearPrintList(void)

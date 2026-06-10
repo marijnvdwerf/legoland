@@ -368,19 +368,7 @@ LEGO_EXPORT unsigned int RenderSpriteX(struct Sprite *sprite, int x, int y, unsi
 }
 
 // FUNCTION: LEGOLAND 0x00488c50
-LEGO_EXPORT void RenderTiledSprite(int param_1, int x, int y, int w, int h) {
-    int left;
-    int top;
-    int right;
-    int bottom;
-
-    left = x;
-    right = x + w;
-    top = y;
-    bottom = y + h;
-
-    exit(1);
-}
+LEGO_EXPORT unsigned int RenderTiledSprite(struct Sprite *sprite, int param_2, int param_3, int param_4, int param_5, int param_6, int param_7) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00488c80
 unsigned int FUN_00488c80(struct Sprite *sprite, int param_2, int param_3, int param_4, int param_5, int *param_6) { STUB(); }
