@@ -259,8 +259,25 @@ LEGO_EXPORT unsigned int GetSpriteForLayer(struct LayerContainer *arg1, unsigned
     return sprite_array[arg2];
 }
 
+struct LayerOffsets {
+    unsigned char pad_0[0xc];
+    int *x_offsets;
+    int *y_offsets;
+};
+
+struct LayerOffsetHolder {
+    unsigned char pad_0[8];
+    struct LayerOffsets *field_8;
+};
+
 // FUNCTION: LEGOLAND 0x00441ee0
-LEGO_EXPORT void GetRenderOffsetForLayer(void) { STUB(); }
+LEGO_EXPORT __int64 GetRenderOffsetForLayer(struct LayerOffsetHolder *param_1, int param_2) {
+    struct LayerOffsets *o = param_1->field_8;
+    union { __int64 i; struct { int lo; int hi; } p; } r;
+    r.p.lo = o->x_offsets[param_2];
+    r.p.hi = o->y_offsets[param_2];
+    return r.i;
+}
 
 // FUNCTION: LEGOLAND 0x00441f00
 LEGO_EXPORT void StopLayerPlaying(unsigned int layerID, unsigned int someValue) {
