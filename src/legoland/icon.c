@@ -377,19 +377,19 @@ void FUN_0046d680(struct IconNode *node, struct Sprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d6c0
-LEGO_EXPORT struct IconNode *InsertIcon(int a1, int a2, int a3, struct Sprite *sprite) {
+LEGO_EXPORT struct IconNode *InsertIcon(short a1, short a2, int a3, struct Sprite *sprite) {
     struct IconNode *icon = (struct IconNode *)malloc(sizeof(struct IconNode));
     if (icon != NULL) {
         *icon = DAT_00668858;
-        icon->field_c = (short)a1;
-        icon->field_e = (short)a2;
+        icon->field_c = a1;
+        icon->field_e = a2;
         icon->field_14 = (unsigned short)a3;
         ReferenceSprite(sprite);
         icon->sprite = sprite;
         if (sprite != NULL) {
             icon->field_12 = sprite->height;
-            icon->field_34 = icon->field_34 | 0x10;
             icon->field_10 = sprite->width;
+            icon->field_34 = icon->field_34 | 0x10;
         }
     }
     FUN_0046d440(icon);
@@ -416,7 +416,7 @@ LEGO_EXPORT struct IconNode *AddFullScreenIcon(void *icon) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d7b0
-LEGO_EXPORT struct SpriteIcon *LoadSpriteIcon(const char *filename, unsigned int param_2, int param_3, int param_4, int param_5) {
+LEGO_EXPORT struct SpriteIcon *LoadSpriteIcon(const char *filename, unsigned int param_2, short param_3, short param_4, int param_5) {
     struct SpriteIcon *result = NULL;
     struct Sprite *sprite = LoadSprite(filename, param_2);
     if (sprite != NULL) {
