@@ -69,8 +69,7 @@ struct Bbox {
 
 struct Indicator {
     struct Indicator *next;
-    unsigned char field_4;
-    unsigned char pad_5[0x8 - 0x5];
+    unsigned int field_4;
     unsigned int field_8;
     unsigned int field_c;
     unsigned int field_10;
@@ -1122,7 +1121,36 @@ LEGO_EXPORT struct TimedIndicator *AllocateTimedIndicator(struct Sprite *sprite,
 }
 
 // FUNCTION: LEGOLAND 0x0046fc80
-LEGO_EXPORT void AllocatePermanentIndicator(void) { STUB(); }
+LEGO_EXPORT struct TimedIndicator *AllocatePermanentIndicator(struct Sprite *sprite, unsigned int param_2) {
+    struct TimedIndicator *ind;
+    struct IconNode *icon;
+
+    ind = malloc(40);
+    ind->next = DAT_006688d4;
+    ind->field_4 = 1;
+    ind->field_8 = GetGameTimer();
+    ind->field_10 = param_2;
+
+    ReferenceSprite(sprite);
+    icon = InsertIcon(0, 0, 0xe000, sprite);
+    ind->field_14 = icon;
+    icon->field_28 = (void *)FUN_0046eaa0;
+
+    icon = ind->field_14;
+    icon->field_2c = (void *)FUN_0046fbc0;
+
+    icon = ind->field_14;
+    icon->field_34 = icon->field_34 | 0x40a;
+
+    icon = ind->field_14;
+    icon->field_30 = ind;
+
+    ind->field_18 = 0;
+    ind->field_1c = 0;
+
+    DAT_006688d4 = (struct Indicator *)ind;
+    return ind;
+}
 
 // FUNCTION: LEGOLAND 0x0046fd00
 LEGO_EXPORT void SetCheckFunc(struct IndicatorFuncs *ind, unsigned int func) {
@@ -1137,10 +1165,57 @@ LEGO_EXPORT void SetClickFunc(struct IndicatorFuncs *ind, unsigned int func) {
 }
 
 // FUNCTION: LEGOLAND 0x0046fd40
-LEGO_EXPORT void AddIndicator(void) { STUB(); }
+LEGO_EXPORT void AddIndicator(struct Indicator *ind) {
+    struct Indicator *cur = DAT_006688d4;
+    struct Indicator *next;
+    if (cur == ind) {
+        DAT_006688d4 = cur->next;
+    } else {
+        if (cur == NULL) {
+            return;
+        }
+        while ((next = cur->next) != ind) {
+            cur = next;
+            if (next == NULL) {
+                return;
+            }
+        }
+        cur->next = ind->next;
+    }
+    if (cur != NULL) {
+        ind->next = DAT_006688d8;
+        DAT_006688d8 = ind;
+        ind->field_4 = ind->field_4 | 8;
+        ind->field_14->field_c = 0xf000;
+        ind->field_14->field_34 = ind->field_14->field_34 & 0xfffffbff;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046fda0
-LEGO_EXPORT void RemoveIndicator(void) { STUB(); }
+LEGO_EXPORT void RemoveIndicator(struct Indicator *ind) {
+    struct Indicator *cur = DAT_006688d8;
+    struct Indicator *next;
+    if (cur == ind) {
+        DAT_006688d8 = cur->next;
+    } else {
+        if (cur == NULL) {
+            return;
+        }
+        while ((next = cur->next) != ind) {
+            cur = next;
+            if (next == NULL) {
+                return;
+            }
+        }
+        cur->next = ind->next;
+    }
+    if (cur != NULL) {
+        ind->next = DAT_006688d4;
+        DAT_006688d4 = ind;
+        ind->field_4 = ind->field_4 & 0xfffffff7;
+        ind->field_14->field_34 = ind->field_14->field_34 | 0x400;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046fe00
 LEGO_EXPORT void DeleteIndicator(struct Indicator *ind) {
