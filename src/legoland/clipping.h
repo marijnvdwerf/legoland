@@ -10,6 +10,7 @@ struct ClipQueryResult {
 };
 
 LEGO_EXPORT void SetClipping(int *rect);
+LEGO_EXPORT void GetClipping(struct ClipRect *dest);
 LEGO_EXPORT void StoreClipping(void);
 LEGO_EXPORT void RestoreClipping(void);
 void FUN_0048a750(void);

@@ -9,6 +9,7 @@
 #include "draw.h"
 #include "clipping.h"
 #include "debug_alloc.h"
+#include "man3d.h"
 
 struct HitInfo {
     /* 0x00 */ int field_0;
@@ -304,7 +305,65 @@ LEGO_EXPORT void ClearPrintList(void)
 }
 
 // FUNCTION: LEGOLAND 0x004859d0
-LEGO_EXPORT void DrawAndClearPrintList(void) { STUB(); }
+LEGO_EXPORT void DrawAndClearPrintList(void)
+{
+    struct SortNode *node;
+    struct SortNode *node_save;
+    unsigned int saved_pal;
+    unsigned int saved_frame;
+    void *obj;
+    RECT saved_clip;
+
+    node = DAT_0066b5a4;
+    saved_pal = GetOverridePalette();
+    saved_frame = GetOverrideFrame();
+    DAT_0066b5ac = 0;
+    for (; node != NULL; node = node->right) {
+        if ((node->flags & 1) != 0) {
+            if (node->field_28 < 0 || node->field_30 > (int)(unsigned int)lpConfig->field_0 || node->field_2c < 0 || node->field_34 > (int)(unsigned int)lpConfig->field_2) {
+                // STRING: LEGOLAND 0x004bdd0c
+                printf("error");
+            }
+            GetClipping((struct ClipRect *)&saved_clip);
+            SetClipping(&node->field_28);
+            if (node->sprite != NULL) {
+                SetOverridePalette(node->field_3c);
+                SetOverrideFrame(node->field_40);
+                PrintSprite(node->sprite, node->x, node->y, node->field_38, (int *)&node->hit);
+                ClearSpriteOverrides();
+                if (node->hit.field_0 == 0x103 && node->hit.field_4 != 0 && (((struct Sprite *)node->sprite)->flags & 0x2000) != 0) {
+                    obj = (void *)node->hit.field_4;
+                    (*(void (**)(void *, int, int, int *, int *, int))((char *)*(void **)((char *)obj + 0xc) + 0xb0))(obj, node->x, node->y, &node->hit.field_8, &node->field_28, node->field_38);
+                }
+            }
+            if ((node->flags & 4) != 0) {
+                (*(void (**)(int))&node_save->field_34)(node_save->field_38);
+            }
+            SetClipping((int *)&saved_clip);
+        } else if ((node->flags & 0x2000) != 0) {
+            Render3DPerson((struct Person *)node->sprite);
+        } else {
+            node_save = node;
+            if (node->sprite != NULL) {
+                SetOverridePalette(node->field_2c);
+                SetOverrideFrame(node->field_30);
+                PrintSprite(node->sprite, node->x, node->y, node->field_28, (int *)&node->hit);
+                ClearSpriteOverrides();
+                if (node->hit.field_0 == 0x103 && node->hit.field_4 != 0 && (((struct Sprite *)node->sprite)->flags & 0x2000) != 0) {
+                    obj = (void *)node->hit.field_4;
+                    (*(void (**)(void *, int, int, int *, int, int))((char *)*(void **)((char *)obj + 0xc) + 0xb0))(obj, node->x, node->y, &node->hit.field_8, 0, node->field_28);
+                }
+                if ((node->flags & 4) != 0) {
+                    (*(void (**)(int))&node->field_34)(node->field_38);
+                }
+            }
+        }
+    }
+    DAT_0066b5a8 = 0;
+    DAT_0066b5a4 = NULL;
+    SetOverridePalette(saved_pal);
+    SetOverrideFrame(saved_frame);
+}
 
 // FUNCTION: LEGOLAND 0x00485bd0
 void FUN_00485bd0(struct SortNode *node)
@@ -507,4 +566,44 @@ void FUN_00485fc0(unsigned int param_1)
 }
 
 // FUNCTION: LEGOLAND 0x00485fe0
-void FUN_00485fe0(void) { STUB(); }
+void FUN_00485fe0(struct Sprite *sprite, int x, int y)
+{
+    RECT rect1;
+    RECT rect2;
+    int offsets[2];
+    unsigned int *p;
+    int count;
+
+    p = (unsigned int *)DAT_00701e5c;
+    for (count = DAT_0066be40 * DAT_0066be44; count != 0; count = count + -1) {
+        *p = 0;
+        p = p + 1;
+    }
+    if (sprite == NULL) {
+        return;
+    }
+    rect1.bottom = (short)sprite->height;
+    rect1.left = 0;
+    rect1.top = 0;
+    rect2.right = DAT_0066be40 + x;
+    rect1.right = (short)sprite->width;
+    rect2.bottom = DAT_0066be44 + y;
+    rect2.left = x;
+    rect2.top = y;
+    if (IntersectRect(&rect1, &rect1, &rect2) == 0) {
+        return;
+    }
+    if (x < 0) {
+        offsets[0] = -x;
+        rect1.left = 0;
+    } else {
+        offsets[0] = 0;
+    }
+    if (y < 0) {
+        offsets[1] = -y;
+        rect1.top = 0;
+    } else {
+        offsets[1] = 0;
+    }
+    ZBufferHelper((unsigned int *)sprite->image->data, (int *)&rect1, offsets, DAT_00701e5c);
+}

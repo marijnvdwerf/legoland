@@ -25,6 +25,7 @@ LEGO_EXPORT void SetOverrideFrame(unsigned int param_1);
 LEGO_EXPORT unsigned int GetOverridePalette(void);
 LEGO_EXPORT unsigned int GetOverrideFrame(void);
 LEGO_EXPORT void ClearSpriteOverrides(void);
+LEGO_EXPORT void ZBufferHelper(unsigned int *param_1, int *param_2, int *param_3, void *param_4);
 LEGO_EXPORT void ClearOverrideFrame(void);
 LEGO_EXPORT void ClearOverridePalette(void);
 void FUN_00466360(int a, int b);
