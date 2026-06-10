@@ -43,6 +43,18 @@ struct LLDBElem {
     /* 0x0c */ struct BuildObject *obj;
 };
 
+struct MovieHandle {
+    /* 0x00 */ unsigned int field_0;
+    /* 0x04 */ unsigned int field_4;
+    /* 0x08 */ int field_8;
+    /* 0x0c */ int field_c;
+    /* 0x10 */ void *file;
+    /* 0x14 */ void *frame;
+    /* 0x18 */ void *audio_stream;
+    /* 0x1c */ void *video_stream;
+    /* 0x20 */ unsigned char pad_20[0x28 - 0x20];
+};
+
 struct BuildObject {
     unsigned char pad_0[0x1c];
     /* 0x1c */ unsigned int field_1c;
@@ -77,6 +89,9 @@ char FUN_00475c90(int param_1, unsigned char param_2);
 extern void FUN_004562e0(void);
 void FUN_00474750(void);
 LEGO_EXPORT unsigned int TestMenu(unsigned int *entry);
+extern void AVIStreamGetFrameClose(void *frame);
+extern void AVIStreamRelease(void *stream);
+extern void AVIFileExit(void);
 
 
 // FUNCTION: LEGOLAND 0x004741f0
@@ -1121,7 +1136,22 @@ LEGO_EXPORT void DeleteReseachList(void) {
 void FUN_00476460(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00476630
-void FUN_00476630(void) { STUB(); }
+void FUN_00476630(struct MovieHandle *h) {
+    if (h->frame != NULL) {
+        AVIStreamGetFrameClose(h->frame);
+    }
+    if (h->video_stream != NULL) {
+        AVIStreamRelease(h->video_stream);
+    }
+    if (h->audio_stream != NULL) {
+        AVIStreamRelease(h->audio_stream);
+    }
+    free(h);
+    DAT_00668f98 = DAT_00668f98 - 1;
+    if (DAT_00668f98 == 0) {
+        AVIFileExit();
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00476680
 void FUN_00476680(void) { STUB(); }
