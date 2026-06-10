@@ -684,7 +684,27 @@ LEGO_EXPORT void RenderBuildObjectIcon(void) { STUB(); }
 LEGO_EXPORT void RenderFreePlayIcons(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e400
-LEGO_EXPORT void RenderScroll_Icons(void) { STUB(); }
+LEGO_EXPORT int RenderScroll_Icons(struct IconNode *node) {
+    struct PrintCtx ctx;
+    ctx.flags = 2;
+    ctx.node = node;
+    ctx.field_8 = 0;
+    if (node->sprite != NULL) {
+        PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
+    }
+    if (GetBlink() != 0) {
+        if ((DAT_006688b8 & 2) != 0 && (char)node->field_18 == 2) {
+            PrintSprite(DAT_00668e84, node->field_c, node->field_e, 0, (int *)&ctx);
+            DAT_006688b8 = DAT_006688b8 & 0xfffffffd;
+            return 0;
+        }
+        if ((DAT_006688b8 & 1) != 0 && (char)node->field_18 == 1) {
+            PrintSprite(DAT_00668e88, node->field_c, node->field_e, 0, (int *)&ctx);
+            DAT_006688b8 = DAT_006688b8 & 0xfffffffe;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046e4d0
 LEGO_EXPORT void RenderEnergyBar(void) { STUB(); }
@@ -696,10 +716,32 @@ LEGO_EXPORT void RenderMoneyBar(void) { STUB(); }
 LEGO_EXPORT void RenderFreePlayBar(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e850
-LEGO_EXPORT void RenderGBarSpriteIcon(void) { STUB(); }
+LEGO_EXPORT int RenderGBarSpriteIcon(struct IconNode *node) {
+    struct PrintCtx ctx;
+    ctx.flags = 2;
+    ctx.node = node;
+    ctx.field_8 = 0;
+    if (node->sprite != NULL) {
+        PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046e8a0
-LEGO_EXPORT void RenderFlashingSpriteIcon(void) { STUB(); }
+LEGO_EXPORT int RenderFlashingSpriteIcon(struct IconNode *node) {
+    struct PrintCtx ctx;
+    ctx.flags = 2;
+    ctx.node = node;
+    ctx.field_8 = 0;
+    if (node->sprite != NULL) {
+        if (GetBlink() != 0) {
+            PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
+            return 0;
+        }
+        PrintSprite(node->sprite, node->field_c, node->field_e, 0xff000000, (int *)&ctx);
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046e920
 int FUN_0046e920(struct IconNode *node) {
@@ -735,7 +777,16 @@ int FUN_0046e920(struct IconNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0046e9d0
-LEGO_EXPORT void RenderGBarSprite(void) { STUB(); }
+LEGO_EXPORT int RenderGBarSprite(struct IconNode *node) {
+    struct PrintCtx ctx;
+    ctx.flags = 1;
+    ctx.node = NULL;
+    ctx.field_8 = 0;
+    if (node->sprite != NULL) {
+        PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046ea10
 int FUN_0046ea10(struct IconNode *node) {
