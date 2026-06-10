@@ -2199,6 +2199,8 @@ extern unsigned int DAT_0080ff60;
 extern unsigned int DAT_0080ff64;
 // 0x0080ff68
 extern unsigned int DAT_0080ff68;
+// 0x0080ff6c
+extern void *DAT_0080ff6c;
 extern unsigned int DAT_0080ff70;
 // 0x0080ff74
 extern LEGO_EXPORT unsigned int NEWFLC_AutoPlay;
@@ -2308,6 +2310,14 @@ extern unsigned int DAT_00813a78;
 extern unsigned int DAT_00813a7c;
 // 0x00813a80
 extern unsigned int DAT_00813a80;
+// 0x00813a84
+extern unsigned int DAT_00813a84;
+// 0x00813a88
+extern unsigned int DAT_00813a88;
+// 0x00813a8c
+extern unsigned int DAT_00813a8c;
+// 0x00813a90
+extern unsigned int DAT_00813a90;
 // 0x00813a94
 extern unsigned int DAT_00813a94;
 // 0x00813a98

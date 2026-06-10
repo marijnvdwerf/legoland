@@ -81,7 +81,122 @@ int FUN_00451f70(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00452030
-void FUN_00452030(void) { STUB(); }
+void FUN_00452030(void) {
+    int bValidate;
+    struct ObjClass *cls;
+    int v74;
+    int v78;
+    int v7c;
+    int v80;
+    int local_14;
+    int local_10;
+    int local_c;
+    int local_8;
+    int iVar5;
+
+    bValidate = 0;
+    if ((GamePad & 0x800) != 0) {
+        if (abs((int)(DAT_00813a78 - DAT_00813a80)) < abs((int)(DAT_00813a74 - DAT_00813a7c))) {
+            DAT_00813a80 = DAT_00813a78;
+        } else {
+            DAT_00813a7c = DAT_00813a74;
+        }
+    }
+    v74 = DAT_00813a74;
+    v7c = DAT_00813a7c;
+    v78 = DAT_00813a78;
+    v80 = DAT_00813a80;
+    if (EditMode == 2) {
+        local_14 = v7c;
+        if (v74 < v7c) {
+            local_14 = v74;
+        }
+        local_10 = v80;
+        if (v78 < v80) {
+            local_10 = v78;
+        }
+        DAT_00813a8c = v74;
+        if (v74 <= v7c) {
+            DAT_00813a8c = v7c;
+        }
+        DAT_00813a90 = v80;
+        if (v80 < v78) {
+            DAT_00813a90 = v78;
+        }
+        DAT_00813a84 = local_14;
+        DAT_00813a88 = local_10;
+        if (DAT_0080ff6c == NULL) {
+            DAT_00813a6c = 1;
+            DAT_00813a70 = 1;
+        } else {
+            cls = (struct ObjClass *)DAT_0080ff6c;
+            DAT_00813a6c = (cls->field_44 - cls->field_3c) + 1;
+            DAT_00813a70 = (cls->field_48 - cls->field_40) + 1;
+        }
+    } else {
+        local_14 = v74;
+        if (v7c <= v74) {
+            local_14 = v7c;
+        }
+        local_10 = v78;
+        if (v80 <= v78) {
+            local_10 = v80;
+        }
+        iVar5 = v7c;
+        if (v7c < v74) {
+            iVar5 = v74;
+        }
+        local_8 = v78;
+        if (v78 <= v80) {
+            local_8 = v80;
+        }
+        cls = (struct ObjClass *)DAT_008119b8;
+        local_c = cls->field_44 - cls->field_3c;
+        DAT_00813a6c = local_c + 1;
+        DAT_00813a70 = (cls->field_48 - cls->field_40) + 1;
+        if (v74 == v7c && v78 == v80) {
+            bValidate = 1;
+            local_c = ((DAT_00813a6c - local_14) + iVar5) / DAT_00813a6c * DAT_00813a6c + -1 + local_14;
+            iVar5 = ((DAT_00813a70 - local_10) + local_8) / DAT_00813a70 * DAT_00813a70 + -1 + local_10;
+        } else {
+            if ((int)DAT_00813a6c < 2 || local_14 != v7c || iVar5 != v74) {
+                local_c = ((DAT_00813a6c - local_14) + iVar5) / DAT_00813a6c * DAT_00813a6c + -1 + local_14;
+            } else {
+                local_14 = iVar5 - ((DAT_00813a6c - local_14) + iVar5) / DAT_00813a6c * DAT_00813a6c;
+                local_c = local_c + v74;
+            }
+            if ((int)DAT_00813a70 < 2 || local_10 != v80 || local_8 != v78) {
+                iVar5 = ((DAT_00813a70 - local_10) + local_8) / DAT_00813a70 * DAT_00813a70 + -1 + local_10;
+            } else {
+                iVar5 = v78 + -1 + DAT_00813a70;
+                local_10 = local_8 - ((DAT_00813a70 - local_10) + local_8) / DAT_00813a70 * DAT_00813a70;
+            }
+            if (abs(local_14 - local_c) <= (int)DAT_00813a6c && abs(local_10 - iVar5) <= (int)DAT_00813a70) {
+                bValidate = 1;
+            }
+        }
+        if (EditMode == 1 && DAT_008119b8 != NULL) {
+            cls = (struct ObjClass *)DAT_008119b8;
+            DAT_00813a84 = cls->field_3c + local_14;
+            DAT_00813a88 = cls->field_40 + local_10;
+            DAT_00813a8c = cls->field_3c + local_c;
+            DAT_00813a90 = cls->field_40 + iVar5;
+        }
+    }
+    EditCursor.field_1414[2] = DAT_00813a8c - local_14;
+    EditCursor.field_1414[3] = DAT_00813a90 - local_10;
+    EditCursor.field_1414[0] = DAT_00813a84 - local_14;
+    EditCursor.field_1414[1] = DAT_00813a88 - local_10;
+    EditCursor.field_1414[4] = 0;
+    EditCursor.field_1830 = 0;
+    EditCursor.field_1404 = local_14;
+    EditCursor.field_1408 = local_10;
+    if (bValidate == 0) {
+        FUN_0045f460(&EditCursor);
+        return;
+    }
+    ValidateCursor(&EditCursor, (unsigned int)DAT_008119b8);
+}
 
 // FUNCTION: LEGOLAND 0x00452390
 void FUN_00452390(void) {
