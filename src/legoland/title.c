@@ -316,13 +316,11 @@ unsigned int FUN_00490350(void) {
 // FUNCTION: LEGOLAND 0x00490410
 void FUN_00490410(void) {
     RECT rc;
-    int local_c;
-    int local_8;
-    int local_4;
+    int hit[3];
 
-    local_8 = 0;
-    local_4 = 0;
-    local_c = 1;
+    hit[0] = 0;
+    hit[2] = 0;
+    hit[0] = 1;
     if (DAT_00798770 != 0) {
         rc.left = 0;
         rc.top = 0x102;
@@ -330,10 +328,10 @@ void FUN_00490410(void) {
         rc.bottom = 0x130;
         NewPrintCent((char *)&DAT_0080ffa0, 0, rc, 0);
         if (DAT_0079876c != 0) {
-            PrintSprite(DAT_00798764, 0xc6, 0x28, 0, &local_c);
+            PrintSprite(DAT_00798764, 0xc6, 0x28, 0, hit);
             rc.left = 0xc6;
             rc.top = 0x2d;
-            rc.right = DAT_00798764->width + 0xc6;
+            rc.right = (short)DAT_00798764->width + 0xc6;
             rc.bottom = 0x43;
             NewPrintCent(GetString(0x23a), 1, rc, 1);
             DAT_0079876c = DAT_0079876c + -1;
@@ -343,18 +341,18 @@ void FUN_00490410(void) {
                 DAT_00798768 = (-(unsigned int)(FUN_00451e20() != 0) & 0x118) - 0x8c;
             }
         } else if (0 < DAT_00798768) {
-            PrintSprite(DAT_00798764, 0xc6, 0x28, 0, &local_c);
+            PrintSprite(DAT_00798764, 0xc6, 0x28, 0, hit);
             rc.left = 0xc6;
             rc.top = 0x2d;
-            rc.right = DAT_00798764->width + 0xc6;
+            rc.right = (short)DAT_00798764->width + 0xc6;
             rc.bottom = 0x43;
             NewPrintCent(GetString(0x23b), 1, rc, 1);
             DAT_00798768 = DAT_00798768 + -1;
         } else if (DAT_00798768 < 0) {
-            PrintSprite(DAT_00798764, 0xc6, 0x28, 0, &local_c);
+            PrintSprite(DAT_00798764, 0xc6, 0x28, 0, hit);
             rc.left = 0xc6;
             rc.top = 0x2d;
-            rc.right = DAT_00798764->width + 0xc6;
+            rc.right = (short)DAT_00798764->width + 0xc6;
             rc.bottom = 0x43;
             NewPrintCent(GetString(0x23c), 1, rc, 1);
             DAT_00798768 = DAT_00798768 + 1;
