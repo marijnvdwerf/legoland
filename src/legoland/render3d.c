@@ -332,7 +332,18 @@ terminate:
 }
 
 // FUNCTION: LEGOLAND 0x00442860
-void FUN_00442860(void) { STUB(); }
+int FUN_00442860(char *param_1, char *param_2) {
+    int index = 0;
+
+    while (_stricmp(param_1, param_2) != 0) {
+        param_1 = param_1 + strlen(param_1) + 1;
+        index = index + 1;
+        if (strlen(param_1) == 0) {
+            return -1;
+        }
+    }
+    return index;
+}
 
 // FUNCTION: LEGOLAND 0x004428c0
 unsigned char *FUN_004428c0(unsigned char *str, int count) {

@@ -26,6 +26,7 @@ unsigned int FUN_00442c70(void);
 unsigned int FUN_00442f50(void);
 struct ResFile;
 char *FUN_004427e0(struct ResFile *param_1, char *param_2, int param_3);
+int FUN_00442860(char *param_1, char *param_2);
 LEGO_EXPORT __int64 GetScreenCoordsForObject(unsigned char *param_1, void *param_2);
 LEGO_EXPORT void AdjustBlokePosition(struct BlokePos *pBloke);
 LEGO_EXPORT void Ride_SetFlagToNotLetAnyoneOn(unsigned char *param_1);
