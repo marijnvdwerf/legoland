@@ -4,7 +4,6 @@
 #include "globals.h"
 #include "sound_sfx.h"
 
-struct SampleDef;
 struct DirectSoundObj;
 struct DirectMusicObj;
 
@@ -17,13 +16,6 @@ struct SampleDefVtbl {
     void *func_0;
     void *func_4;
     void(__stdcall *func_8)(struct SampleBuffer *self);
-};
-
-struct SampleDef {
-    unsigned char pad_0[0x2c];
-    struct SampleBuffer *buffer;
-    void *block_30;
-    void *block_34;
 };
 
 struct DirectSoundVtbl {

@@ -8,6 +8,7 @@
 #include "timer.h"
 #include "globals.h"
 #include "math.h"
+#include "debug_alloc.h"
 
 struct AVISoundBuffer;
 struct AVISoundBufferVtbl;
@@ -94,6 +95,7 @@ extern void *WNDENV_Gethwnd(void);
 extern int FUN_00492130(void *hwnd);
 extern int FUN_00495a10(void *hwnd);
 extern LEGO_EXPORT void GetTileCentre(struct Point *ref, int *out);
+extern void FUN_00492b20(struct Sample *sample);
 
 struct MusicPerformanceVtbl {
     unsigned char pad_0[8];
@@ -628,7 +630,35 @@ void FUN_004967b0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004967f0
-void FUN_004967f0(void) { STUB(); }
+void FUN_004967f0(void) {
+    struct Sample *sample;
+    int vol;
+
+    if (DAT_007988c0 == 0) {
+        return;
+    }
+    for (sample = (struct Sample *)DAT_007988cc; sample != 0; sample = sample->next) {
+        if (sample->active != 0 && (sample->flags & 2) == 0 && sample->fade != 0 &&
+            sample->buffer->vtable->method_0x18(sample->buffer, &vol) == 0) {
+            vol = vol + sample->fade;
+            // STRING: LEGOLAND 0x004bfddc
+            DBPrintf("Fading Sample (%s) (%x) to Vol %d\n", ((struct SampleDef *)sample->active)->field_10, sample, vol);
+            if (vol >= 0) {
+                vol = 0;
+                sample->fade = 0;
+            } else if (vol <= -3000) {
+                vol = -10000;
+                sample->fade = 0;
+                if ((sample->flags & 8) != 0) {
+                    sample->buffer->vtable->method_0x48(sample->buffer);
+                    // STRING: LEGOLAND 0x004bfdb4
+                    DBPrintf("\tStopping Sample for the kill %s (%x)\n", ((struct SampleDef *)sample->active)->field_10, sample);
+                }
+            }
+            sample->buffer->vtable->method_0x3c(sample->buffer, vol);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004968d0
 void FUN_004968d0(void) {
@@ -653,7 +683,37 @@ void FUN_004968d0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00496920
-void FUN_00496920(void) { STUB(); }
+void FUN_00496920(void) {
+    struct Sample *sample;
+    struct Sample *prev;
+    struct Sample *next;
+    unsigned int status;
+
+    prev = 0;
+    sample = (struct Sample *)DAT_007988cc;
+    while (sample != 0) {
+        next = sample->next;
+        if ((sample->flags & 8) != 0 && (sample->flags & 2) == 0 &&
+            sample->buffer->vtable->method_0x24(sample->buffer, &status) == 0 && status == 0) {
+            // STRING: LEGOLAND 0x004bfe14
+            DBPrintf("Autokilling Sample %s (%x)\n", ((struct SampleDef *)sample->active)->field_10, sample);
+            if (sample->active == *(unsigned int *)&JOUST_SFX[8]) {
+                // STRING: LEGOLAND 0x004bfe00
+                DBPrintf("Killing Joust FX\n");
+            }
+            if (prev != 0) {
+                prev->next = sample->next;
+                FUN_00492b20(sample);
+            } else {
+                DAT_007988cc = sample->next;
+                FUN_00492b20(sample);
+            }
+        } else {
+            prev = sample;
+        }
+        sample = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004969d0
 void FUN_004969d0(void) {

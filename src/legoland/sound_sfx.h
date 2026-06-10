@@ -2,8 +2,16 @@
 
 #include "legoland.h"
 
-struct SampleDef;
 struct SampleBuffer;
+
+struct SampleDef {
+    /* 0x00 */ unsigned char pad_0[0x10];
+    /* 0x10 */ void *field_10;
+    /* 0x14 */ unsigned char pad_14[0x2c - 0x14];
+    /* 0x2c */ struct SampleBuffer *buffer;
+    /* 0x30 */ void *block_30;
+    /* 0x34 */ void *block_34;
+};
 
 /* Sound-buffer object behind a playable sample. sound_sfx.c drives playback
  * through method_0x20..0x48; sound_music.c reuses the same vtable slot at 0x3c
