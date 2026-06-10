@@ -10,7 +10,7 @@
 #include "text.h"
 #include "llidb.h"
 
-#pragma intrinsic(strlen, strcmp)
+#pragma intrinsic(strlen, strcmp, strcpy)
 
 #include "image_sprite.h"
 
@@ -356,10 +356,31 @@ struct TextCell *FUN_00455a10(struct Sprite *sprite, int *out_index) {
 }
 
 // FUNCTION: LEGOLAND 0x00455a50
-void FUN_00455a50(void) { STUB(); }
+int FUN_00455a50(struct Sprite *sprite) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00455bb0
-void FUN_00455bb0(void) { STUB(); }
+struct TextCell *FUN_00455bb0(char *name, int width, int height, int font, unsigned int format, unsigned int bg_color, unsigned int text_color) {
+    struct TextCell *cell;
+
+    // STRING: LEGOLAND 0x004b9080
+    DBPrintf("Creating Cell (%d) %s\n", DAT_006675b8, name);
+    if (DAT_006675b8 >= 0x32) {
+        FUN_00455f70(1);
+    }
+    cell = &DAT_006675c0[DAT_006675b8];
+    DAT_006675b8 = DAT_006675b8 + 1;
+    cell->format = format;
+    cell->width = width;
+    cell->height = height;
+    cell->name = malloc(strlen(name) + 1);
+    strcpy(cell->name, name);
+    cell->text_color = text_color;
+    cell->bg_color = bg_color;
+    cell->font = font;
+    cell->sprite = CreateFunctionBasedSprite(FUN_00455a50, (unsigned short)width, (unsigned short)height);
+    cell->sprite->flags = cell->sprite->flags | 0x40;
+    return cell;
+}
 
 // FUNCTION: LEGOLAND 0x00455c80
 void FUN_00455c80(void) { STUB(); }
