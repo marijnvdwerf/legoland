@@ -216,6 +216,9 @@ void *DAT_004b7620;
 // GLOBAL: LEGOLAND 0x004b79d0
 unsigned char DAT_004b79d0[0x18];
 
+// GLOBAL: LEGOLAND 0x004b7ac0
+unsigned char DAT_004b7ac0[0x18];
+
 // GLOBAL: LEGOLAND 0x004b7d74
 unsigned int DAT_004b7d74;
 

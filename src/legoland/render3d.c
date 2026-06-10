@@ -486,6 +486,9 @@ struct BlokeSex0 {
 struct BlokeSex1 {
     unsigned char pad_0[0x84];
     unsigned int field_84;
+    unsigned char pad_88[0x8c - 0x88];
+    unsigned int field_8c;
+    unsigned int field_90;
 };
 
 // FUNCTION: LEGOLAND 0x00443140
@@ -501,10 +504,16 @@ LEGO_EXPORT void GetFaceTextureNameOfBloke(void) { STUB(); }
 LEGO_EXPORT void GetChestTextureNameOfBloke(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004431f0
-LEGO_EXPORT void GetLegColourOfBloke(void) { STUB(); }
+LEGO_EXPORT unsigned int GetLegColourOfBloke(struct BlokeSex0 *param_1) {
+    unsigned int idx = param_1->field_4->field_8c;
+    return (DAT_004b7ac0[idx * 3] << 16) | (DAT_004b7ac0[idx * 3 + 1] << 8) | DAT_004b7ac0[idx * 3 + 2];
+}
 
 // FUNCTION: LEGOLAND 0x00443220
-LEGO_EXPORT void GetArmColourOfBloke(void) { STUB(); }
+LEGO_EXPORT unsigned int GetArmColourOfBloke(struct BlokeSex0 *param_1) {
+    unsigned int idx = param_1->field_4->field_90;
+    return (DAT_004b7ac0[idx * 3] << 16) | (DAT_004b7ac0[idx * 3 + 1] << 8) | DAT_004b7ac0[idx * 3 + 2];
+}
 
 // FUNCTION: LEGOLAND 0x00443250
 float FUN_00443250(float param_1) {
@@ -532,7 +541,19 @@ LEGO_EXPORT void MatrixMultiply(float *A, float *B, float *C) {
 }
 
 // FUNCTION: LEGOLAND 0x00443360
-LEGO_EXPORT void BuildYRotationMatrix(float angle, float *out) { STUB(); }
+LEGO_EXPORT void BuildYRotationMatrix(float angle, float *out) {
+    float s = FUN_00443250(angle);
+    float c = FUN_00443260(angle);
+    out[0] = c;
+    out[6] = -s;
+    out[1] = 0.0f;
+    out[2] = s;
+    out[8] = c;
+    out[3] = 0.0f;
+    out[4] = 1.0f;
+    out[5] = 0.0f;
+    out[7] = 0.0f;
+}
 
 // FUNCTION: LEGOLAND 0x004433b0
 LEGO_EXPORT void TransformVectorsL(void) { STUB(); }
