@@ -470,7 +470,30 @@ unsigned char FUN_0046da20(struct IconNode *icon, unsigned char buttons, int a3,
 }
 
 // FUNCTION: LEGOLAND 0x0046dac0
-void FUN_0046dac0(void) { STUB(); }
+void FUN_0046dac0(void) {
+    unsigned int v;
+    struct IconNode *icon;
+    if (DAT_008119b4 == 2 && DAT_0080ff88 == 3) {
+        int field = ((struct CtrlBuffer *)CONTROLLERBUFFER)->field_8;
+        if (field < 0xb2) {
+            v = 0xc8;
+        } else if (field < 0x143) {
+            v = 0x1f4;
+        } else {
+            unsigned int ecx = (field >= 0x1d4) ? 1 : 0;
+            ecx = ecx - 1;
+            ecx = ecx & 0x64;
+            v = ecx + 0x12c;
+        }
+    } else {
+        v = 0xd2;
+    }
+    v = v + 3;
+    icon = FindIcon((unsigned short)v);
+    if (icon) {
+        FUN_0046d980(icon, 1, 0, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046db40
 void FUN_0046db40(void) {
