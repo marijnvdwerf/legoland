@@ -936,7 +936,45 @@ void FUN_0046ec50(char param) {
 }
 
 // FUNCTION: LEGOLAND 0x0046ee00
-void FUN_0046ee00(void) { STUB(); }
+void FUN_0046ee00(void) {
+    struct IconNode *node = DAT_006687c8;
+    int mode;
+
+    if (DAT_008119b4 == 1) {
+        mode = 4;
+    } else {
+        switch (EditMode) {
+        case 1:
+            if (DAT_008119b8 != 0) {
+                // STRING: LEGOLAND 0x004ba888
+                if (strcmp("Path", *(char **)((char *)DAT_008119b8 + 0x78)) == 0) {
+                    mode = 1;
+                    break;
+                }
+            }
+        default:
+            mode = 5;
+            break;
+        case 0:
+            mode = 2;
+            break;
+        case 2:
+            mode = 3;
+            break;
+        case 4:
+            mode = 4;
+            break;
+        }
+    }
+    for (; node != NULL; node = node->next) {
+        if (node->field_14 == 0x93 && node->field_1c != NULL) {
+            struct Sprite *sprite = node->field_20p;
+            if (sprite != NULL) {
+                FUN_0046d680(node, (node->field_18 == mode) ? node->field_1c : node->field_20p);
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046eee0
 LEGO_EXPORT void RenderIcons(void) {
