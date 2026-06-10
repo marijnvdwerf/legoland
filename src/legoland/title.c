@@ -770,14 +770,13 @@ void FUN_004910f0(void) {
     n = 0;
     line = (char **)&DAT_007cafa0 + DAT_004bf670;
     idx = DAT_004bf670;
-    do {
-        if ((int)DAT_0079887c < idx) break;
+    while (n < 0xe && idx <= (int)DAT_0079887c) {
         FUN_00491080(*line, 10, y, 0x16, 0);
         n = n + 1;
         idx = idx + 1;
         line = line + 1;
         y = y + 0x18;
-    } while (n < 0xe);
+    }
     FUN_00490ea0();
     if (DAT_00798888 != 0) {
         rc[0] = 0x1db;
