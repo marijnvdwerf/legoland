@@ -1,10 +1,15 @@
 #pragma once
 
 #include <windows.h>
-#include <dinput.h>
 
 #include "legoland.h"
 #include "gamemap.h"
+
+/* DirectInput stays private to the input subsystem (input.c) + its definitions
+ * (globals.c) — both include <dinput.h> directly. globals.h only needs an opaque
+ * handle to the one DInput-typed global below, so it does NOT drag <dinput.h>
+ * across every TU that includes globals.h. */
+struct _DIMOUSESTATE;
 
 // ---------------------------------------------------------------------------
 // Forward declarations for typed/instance globals declared below. Full struct
@@ -1495,8 +1500,8 @@ extern struct Sprite *DAT_00668958;
 extern unsigned int DAT_00668960;
 // 0x00668d68
 extern unsigned int DAT_00668d68;
-// 0x00668d78
-extern DIMOUSESTATE DAT_00668d78;
+// 0x00668d78  (DIMOUSESTATE; full type in <dinput.h>, dereferenced only by input.c)
+extern struct _DIMOUSESTATE DAT_00668d78;
 // 0x00668d88
 extern void *dinput;
 // 0x00668d8c

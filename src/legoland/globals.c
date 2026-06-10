@@ -1,4 +1,5 @@
 #include "globals.h"
+#include <dinput.h>   /* this TU defines the DInput data symbols (c_dfDI*, GUID_Sys*, DAT_00668d78) */
 #include "icon.h"
 
 // GLOBAL: LEGOLAND 0x004ab390
