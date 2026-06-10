@@ -1116,7 +1116,7 @@ void FUN_00476d20(void) { STUB(); }
 void FUN_004771f0(const char *filename, unsigned int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00477400
-void FUN_00477400(void) { STUB(); }
+int FUN_00477400(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00477410
 void FUN_00477410(void) { STUB(); }
@@ -1125,10 +1125,10 @@ void FUN_00477410(void) { STUB(); }
 void FUN_00477440(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004775b0
-struct CastleObj *FUN_004775b0(unsigned int size, unsigned int a, unsigned int b, unsigned int c) { STUB(); }
+void *FUN_004775b0(unsigned int size) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004775d0
-void FUN_004775d0(unsigned int param) { STUB(); }
+void FUN_004775d0(void *param) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004775f0
 void FUN_004775f0(void) { STUB(); }
@@ -1226,4 +1226,22 @@ void FUN_00477760(struct QueryNode *ctx) {
 }
 
 // FUNCTION: LEGOLAND 0x00477790
-void FUN_00477790(void) { STUB(); }
+void FUN_00477790(struct EventNode *param_1) {
+    struct EventNode *prev;
+    struct EventNode *node;
+
+    prev = NULL;
+    node = DAT_00668fc0;
+    while (node != NULL) {
+        if (node == param_1) {
+            break;
+        }
+        prev = node;
+        node = node->next;
+    }
+    if (prev != NULL) {
+        prev->next = node->next;
+        return;
+    }
+    DAT_00668fc0 = node->next;
+}
