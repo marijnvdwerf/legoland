@@ -687,7 +687,72 @@ int FUN_0046e040(struct IconNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0046e0a0
-LEGO_EXPORT void RenderBuildObjectIcon(void) { STUB(); }
+LEGO_EXPORT int RenderBuildObjectIcon(struct IconNode *node) {
+    struct PrintCtx ctx;
+    int cost;
+    char buf[12];
+    unsigned int *objsub;
+
+    ctx.flags = 2;
+    ctx.node = node;
+    ctx.field_8 = 0;
+    if (EditMode == 1 && DAT_008119b8 != 0) {
+        objsub = *(unsigned int **)((char *)node->field_8 + 0xc4);
+        if (*(unsigned int **)((char *)DAT_008119b8 + 0xc4) == objsub) {
+            objsub[2] = objsub[2] & 0xfffdffff;
+        }
+    }
+    if (node->field_e > 0 && node->field_e < 0x174) {
+        cost = GetObjCost(node->field_8);
+        if (node->sprite != NULL) {
+            unsigned int colour;
+            if (GetBrickCount() < cost) {
+                colour = DAT_004ba884;
+            } else {
+                colour = 0;
+            }
+            PrintSprite(node->sprite, node->field_c, node->field_e, colour, (int *)&ctx);
+        }
+        if (node->field_8 != NULL) {
+            // STRING: LEGOLAND 0x004b8a80
+            sprintf(buf, "%d", cost);
+            FUN_00455e50(buf, node->field_c + 0x3c, node->field_e + 0x14, 0x41, 0x14, 1, 1, 0, 0xffffff);
+        }
+        if ((char)node->field_20 == 1) {
+            PrintSprite(DAT_00668e8c, node->field_c, node->field_e, 0, 0);
+        } else if ((char)node->field_20 == 2) {
+            PrintSprite(DAT_00668e90, node->field_c, node->field_e, 0, 0);
+        }
+        if (EditMode == 1 && DAT_008119b8 != 0) {
+            // STRING: LEGOLAND 0x004ba888
+            if (strcmp("Path", *(char **)((char *)DAT_008119b8 + 0x78)) != 0 &&
+                *(unsigned int **)((char *)DAT_008119b8 + 0xc4) == *(unsigned int **)((char *)node->field_8 + 0xc4)) {
+                struct Sprite *s = DAT_00668e74;
+                if (GetBlink() != 0) {
+                    s = DAT_00668e78;
+                }
+                PrintSprite(s, node->field_c, node->field_e, 0, 0);
+            }
+        }
+        if ((*(unsigned int **)((char *)node->field_8 + 0xc4))[2] & 0x20000) {
+            struct Sprite *s = DAT_00668e7c;
+            if (GetBlink() == 0) {
+                s = DAT_00668e80;
+            }
+            PrintSprite(s, node->field_c, node->field_e, 0, 0);
+        }
+    }
+    if ((*(unsigned int **)((char *)node->field_8 + 0xc4))[2] & 0x20000) {
+        if (node->field_e < 0x3e) {
+            DAT_006688b8 = DAT_006688b8 | 1;
+            return 0;
+        }
+        if (0x156 < node->field_12 + node->field_e) {
+            DAT_006688b8 = DAT_006688b8 | 2;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046e300
 LEGO_EXPORT int RenderFreePlayIcons(struct IconNode *node) {
