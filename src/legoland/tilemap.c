@@ -887,7 +887,32 @@ void FUN_0045cd30(int *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0045cd70
-void FUN_0045cd70(void) { STUB(); }
+void FUN_0045cd70(int *param_1) {
+    int iVar1;
+    int local_18;
+    int local_14;
+    struct MapRect local_10;
+
+    local_18 = *param_1 + -2;
+    if (local_18 <= *param_1 + 2) {
+        do {
+            iVar1 = param_1[1];
+            local_14 = iVar1 + -2;
+            if (local_14 <= iVar1 + 2) {
+                do {
+                    if ((local_18 != *param_1 || local_14 != iVar1) &&
+                        FUN_0045ce30(&local_18) != 0 &&
+                        FUN_0045ca90(&local_18, (int *)&local_10) == 0) {
+                        FUN_0045cb90((struct Point *)&local_18);
+                    }
+                    iVar1 = param_1[1];
+                    local_14 = local_14 + 1;
+                } while (local_14 <= iVar1 + 2);
+            }
+            local_18 = local_18 + 1;
+        } while (local_18 <= *param_1 + 2);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045ce10
 int FUN_0045ce10(struct MapTile *tile) {
@@ -901,10 +926,78 @@ int FUN_0045ce10(struct MapTile *tile) {
 }
 
 // FUNCTION: LEGOLAND 0x0045ce30
-void FUN_0045ce30(void) { STUB(); }
+int FUN_0045ce30(int *param_1) {
+    int x;
+    int y;
+    struct MapTile *tile;
+
+    x = *param_1;
+    if (x >= 0 && x < (int)lpConfig->width && (y = param_1[1], y >= 0) &&
+        y < (int)lpConfig->height &&
+        (tile = (struct MapTile *)((char *)GameMap[y] + x * 0x14), tile != NULL)) {
+        if (FUN_0045ce10(tile) != 0) {
+            tile = (struct MapTile *)((char *)GameMap[param_1[1]] + *param_1 * 0x14);
+            return tile->tile != *(unsigned int *)PathSprite;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0045ceb0
-unsigned char FUN_0045ceb0(int *coords) { STUB(); }
+unsigned char FUN_0045ceb0(int *coords) {
+    int x;
+    int y;
+    unsigned char local_15;
+    struct MapTile tile;
+
+    x = *coords;
+    y = coords[1] + -1;
+    if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
+        tile.tile = 0;
+        tile.flags_c = 0x40;
+        tile.flags_10 = 0;
+    } else {
+        tile = *(struct MapTile *)((char *)GameMap[y] + x * 0x14);
+    }
+    local_15 = FUN_0045ce10(&tile) != 0;
+    y = coords[1];
+    x = *coords + 1;
+    if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
+        tile.tile = 0;
+        tile.flags_c = 0x40;
+        tile.flags_10 = 0;
+    } else {
+        tile = *(struct MapTile *)((char *)GameMap[y] + x * 0x14);
+    }
+    if (FUN_0045ce10(&tile) != 0) {
+        local_15 = local_15 | 2;
+    }
+    x = *coords;
+    y = coords[1] + 1;
+    if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
+        tile.tile = 0;
+        tile.flags_c = 0x40;
+        tile.flags_10 = 0;
+    } else {
+        tile = *(struct MapTile *)((char *)GameMap[y] + x * 0x14);
+    }
+    if (FUN_0045ce10(&tile) != 0) {
+        local_15 = local_15 | 4;
+    }
+    y = coords[1];
+    x = *coords + -1;
+    if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
+        tile.tile = 0;
+        tile.flags_c = 0x40;
+        tile.flags_10 = 0;
+    } else {
+        tile = *(struct MapTile *)((char *)GameMap[y] + x * 0x14);
+    }
+    if (FUN_0045ce10(&tile) != 0) {
+        local_15 = local_15 | 8;
+    }
+    return local_15;
+}
 
 // FUNCTION: LEGOLAND 0x0045d080
 unsigned char FUN_0045d080(unsigned char flags, int *coords) {
