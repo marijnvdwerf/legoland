@@ -90,10 +90,12 @@ struct RenderListNode *FUN_004418c0(int param_1, struct ViewportEntry *param_2, 
 void FUN_00441910(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00441980
-void FUN_00441980(void) { STUB(); }
+void FUN_00441980(int *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) { STUB(); }
 
-// FUNCTION: LEGOLAND 0x00441a60
-LEGO_EXPORT void Put3DBlokesOnRide(void) { STUB(); }
+struct BlokeRideInner {
+    unsigned char pad_0[0x62];
+    unsigned char flags;
+};
 
 struct BlokeRideNode {
     unsigned char pad_0[8];
@@ -102,10 +104,23 @@ struct BlokeRideNode {
     unsigned int field_10;
 };
 
-struct BlokeRideInner {
-    unsigned char pad_0[0x62];
-    unsigned char flags;
-};
+// FUNCTION: LEGOLAND 0x00441a60
+LEGO_EXPORT void Put3DBlokesOnRide(struct ViewportEntry *param_1, unsigned char *param_2, int param_3, int *param_4) {
+    union { __int64 i; struct { int lo; int hi; } p; } coords;
+    int i;
+
+    coords.i = GetScreenCoordsForObject(param_2, param_1);
+    i = 0;
+    if (param_4[1] > 0) {
+        do {
+            struct BlokeRideNode *node = (struct BlokeRideNode *)FUN_004418c0(i, param_1, (short *)param_2);
+            if (node != NULL && (node->inner->flags & 0x80) != 0) {
+                FUN_00441980(param_4, i, param_3, node->field_10, coords.p.lo, coords.p.hi);
+            }
+            i = i + 1;
+        } while (i < param_4[1]);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00441ad0
 LEGO_EXPORT void Put3DBlokesOnRide2(struct RideObject *ride, struct RideObject *obj) {
