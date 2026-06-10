@@ -436,8 +436,8 @@ int FUN_004661d0(void) {
         return 0;
     }
     tick = GetTickCount();
-    FrameNumber = FrameNumber + 1;
     frames = DAT_006681f8 + 1;
+    FrameNumber = FrameNumber + 1;
     DAT_006681f8 = frames;
     if (tick - DAT_006681f0 >= 0x3e8) {
         FramesPerSecond = frames;
