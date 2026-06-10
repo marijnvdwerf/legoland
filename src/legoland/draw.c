@@ -309,7 +309,37 @@ void FUN_00465240(void) { STUB(); }
 void FUN_00465850(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004659a0
-void FUN_004659a0(void) { STUB(); }
+void FUN_004659a0(int param_1, int param_2, int param_3) {
+    int height;
+    int width;
+    int src;
+    unsigned short *dst;
+    int i;
+    int j;
+
+    height = *(int *)(param_1 + 8);
+    width = *(int *)(param_1 + 4);
+    dst = (unsigned short *)((char *)DAT_0066809c.pixels + DAT_0066809c.pitch * param_3 + param_2 * 2);
+    src = param_1 + 0x28 + (height - 1) * width * 2;
+    for (i = height; i != 0; i--) {
+        if (width > 0) {
+            int offset = src - (int)dst;
+            unsigned short *p = dst;
+            j = width;
+            do {
+                unsigned short v = *(unsigned short *)(offset + (int)p);
+                if (DAT_00668088 == 2) {
+                    v = (v & 0x1f) | (v & 0xffe0) << 1;
+                }
+                *p = v;
+                p++;
+                j--;
+            } while (j != 0);
+        }
+        dst = (unsigned short *)((char *)dst + DAT_0066809c.pitch);
+        src += width * -2;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00465a40
 LEGO_EXPORT void SoftPrint_XBltFast(void) { STUB(); }
