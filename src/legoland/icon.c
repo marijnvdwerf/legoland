@@ -77,6 +77,8 @@ struct Indicator {
     struct IconNode *field_14;
     unsigned int field_18;
     void (*field_1c)(struct Indicator *);
+    unsigned char pad_20[0x22 - 0x20];
+    unsigned char field_22;
 };
 
 struct CtrlBuffer {
@@ -398,7 +400,38 @@ void FUN_0046de50(struct Rect16 *src, struct Rect32 *dst) {
 }
 
 // FUNCTION: LEGOLAND 0x0046de90
-void FUN_0046de90(void) { STUB(); }
+void FUN_0046de90(struct IconNode *icon, struct Bbox *bbox) {
+    FUN_0046de50((struct Rect16 *)icon, (struct Rect32 *)bbox);
+    if (icon->field_34 & 0x20) {
+        bbox->min_x = bbox->min_x - 3;
+        bbox->max_x = bbox->max_x + 3;
+        bbox->min_y = bbox->min_y - 3;
+        bbox->max_y = bbox->max_y + 3;
+    }
+    if (icon->field_34 & 0x40) {
+        struct Indicator *ind;
+        bbox->min_y = bbox->min_y - 0x16;
+        ind = (struct Indicator *)icon->field_30;
+        if (ind != NULL) {
+            if (ind->field_22 & 8) {
+                bbox->max_y = bbox->max_y + DAT_00668840;
+            }
+            if (ind->field_22 & 2) {
+                bbox->max_x = bbox->max_x + DAT_0066884c;
+            }
+        }
+    }
+    if (icon->field_34 & 0x200) {
+        int v = icon->field_22 + icon->field_e;
+        int top = v + 0x28;
+        if (bbox->min_y > v) {
+            bbox->min_y = v;
+        }
+        if (bbox->max_y < top) {
+            bbox->max_y = top;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046df30
 int FUN_0046df30(struct Rect16 *src) {
@@ -550,7 +583,17 @@ void FUN_0046f100(void) { STUB(); }
 LEGO_EXPORT void RenderHelpIcons(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046f2e0
-unsigned char FUN_0046f2e0(struct IconNode *node, unsigned int buttons, short dx, short dy) { STUB(); }
+unsigned char FUN_0046f2e0(struct IconNode *node, unsigned int buttons, short dx, short dy) {
+    unsigned char result;
+    if ((buttons & 1) != 0) {
+        return 2;
+    }
+    result = 2;
+    if ((buttons & 4) == 0) {
+        result = 1;
+    }
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x0046f300
 int FUN_0046f300(struct Point *point, struct Bbox *bbox) {
@@ -559,7 +602,11 @@ int FUN_0046f300(struct Point *point, struct Bbox *bbox) {
 }
 
 // FUNCTION: LEGOLAND 0x0046f330
-void FUN_0046f330(void) { STUB(); }
+int FUN_0046f330(struct Point *point, struct IconNode *icon) {
+    struct Bbox bbox;
+    FUN_0046de90(icon, &bbox);
+    return FUN_0046f300(point, &bbox);
+}
 
 // FUNCTION: LEGOLAND 0x0046f360
 LEGO_EXPORT void GetIconAtPos(void) { STUB(); }
