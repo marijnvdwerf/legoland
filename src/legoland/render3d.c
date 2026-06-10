@@ -309,8 +309,55 @@ LEGO_EXPORT unsigned short *LoadPalette(unsigned int path) {
 // FUNCTION: LEGOLAND 0x00442040
 void FUN_00442040(void) { STUB(); }
 
+extern unsigned int FUN_00486280(int param_1, void *param_2);
+
+struct ColourRef {
+    unsigned char b0;
+    unsigned char b1;
+    unsigned char b2;
+};
+
+struct TexEntry {
+    unsigned int flags;
+    unsigned char b0;
+    unsigned char b1;
+    unsigned char b2;
+    unsigned char pad_7[1];
+    unsigned int field_8;
+    unsigned char pad_c[0x24 - 0xc];
+};
+
 // FUNCTION: LEGOLAND 0x004424e0
-void FUN_004424e0(void) { STUB(); }
+void FUN_004424e0(struct ColourRef *param_1, struct ColourRef *param_2, unsigned int param_3, struct ColourRef *param_4, int param_5, int param_6) {
+    int i = 0;
+    int count;
+    struct TexEntry *entry;
+
+    if (param_6 > 0) {
+        entry = (struct TexEntry *)param_5;
+        count = param_6;
+        do {
+            if ((entry->flags & 0x2000) != 0 && entry->b2 == param_1->b2 &&
+                entry->b1 == param_1->b1 && entry->b0 == param_1->b0) {
+                if (i >= count >> 1) {
+                    entry->b2 = param_2->b2;
+                    entry->b1 = param_2->b1;
+                    entry->b0 = param_2->b0;
+                    param_5 = *(int *)param_2;
+                } else {
+                    entry->b2 = param_4->b2;
+                    entry->b1 = param_4->b1;
+                    entry->b0 = param_4->b0;
+                    param_5 = *(int *)param_4;
+                }
+                entry->field_8 = FUN_00486280(0x40, &param_5);
+                count = param_6;
+            }
+            entry = (struct TexEntry *)((char *)entry + 0x24);
+            i = i + 1;
+        } while (i < count);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00442580
 void FUN_00442580(void) { STUB(); }
