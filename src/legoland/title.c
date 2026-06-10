@@ -1,6 +1,8 @@
 #include "legoland.h"
 #include "crt.h"
+#include <ddraw.h>
 #include "globals.h"
+#include "text.h"
 #include "tooltip.h"
 #include "string.h"
 #include "options.h"
@@ -722,13 +724,77 @@ void FUN_00490ea0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00490fa0
-void FUN_00490fa0(char *text, int font, RECT rc, int color_flag) { STUB(); }
+void FUN_00490fa0(char *text, int font, RECT rc, int color_flag) {
+    HRGN region = CreateRectRgn(SPRITE_ClipRect.left, SPRITE_ClipRect.top, SPRITE_ClipRect.right, SPRITE_ClipRect.bottom);
+    HDC hdc;
+    HGDIOBJ old_region;
+
+    PushRenderingStatusAndUnlockVideoSurface();
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->GetDC((LPDIRECTDRAWSURFACE)renderEngine, &hdc);
+    SetBkMode(hdc, 1);
+    if ((char)color_flag == 1) {
+        SetTextColor(hdc, 0xffffff);
+    }
+    old_region = SelectObject(hdc, region);
+    color_flag = (int)SelectFont(hdc, font);
+    DrawTextA(hdc, text, strlen(text), &rc, 0x24);
+    SelectObject(hdc, (HGDIOBJ)color_flag);
+    SelectObject(hdc, old_region);
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->ReleaseDC((LPDIRECTDRAWSURFACE)renderEngine, hdc);
+    PopRenderingStatus();
+    DeleteObject(region);
+}
 
 // FUNCTION: LEGOLAND 0x00491080
-void FUN_00491080(void) { STUB(); }
+void FUN_00491080(char *param_1, int param_2, int param_3, int param_4, int param_5) {
+    RECT rc;
+
+    if (param_1 != NULL) {
+        rc.left = param_2;
+        rc.top = param_3;
+        rc.right = param_2 + 0x1cc;
+        rc.bottom = param_4 + param_3;
+        if (param_5 != 0) {
+            NewPrintCent(param_1, 3, rc, 0);
+        } else {
+            FUN_00490fa0(param_1, 2, rc, 0);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004910f0
-void FUN_004910f0(void) { STUB(); }
+void FUN_004910f0(void) {
+    unsigned int rc[4];
+    char **line;
+    int y;
+    int n;
+    int idx;
+
+    FUN_00491080(DAT_007cafa0, 10, 0x45, 0x27, 1);
+    y = 0x6b;
+    n = 0;
+    line = (char **)&DAT_007cafa0 + DAT_004bf670;
+    idx = DAT_004bf670;
+    do {
+        if ((int)DAT_0079887c < idx) break;
+        FUN_00491080(*line, 10, y, 0x16, 0);
+        n = n + 1;
+        idx = idx + 1;
+        line = line + 1;
+        y = y + 0x18;
+    } while (n < 0xe);
+    FUN_00490ea0();
+    if (DAT_00798888 != 0) {
+        rc[0] = 0x1db;
+        rc[1] = 5;
+        rc[2] = 0x280;
+        rc[3] = 0x78;
+        if ((int)GetTicks() > (int)DAT_00798888) {
+            DAT_00798888 = 0;
+        }
+        BubbleHelp(rc, (unsigned int)((char **)&DAT_007cb140)[DAT_00798884], 2);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004911c0
 void FUN_004911c0(const char *a, const char *b) { STUB(); }
