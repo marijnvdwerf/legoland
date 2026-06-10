@@ -7,6 +7,7 @@
 #include "draw.h"
 #include "debug_alloc.h"
 #include "gfx.h"
+#include "render.h"
 #include "print_sprite.h"
 #include "text.h"
 #include "llidb.h"
@@ -530,4 +531,93 @@ void FUN_00455f70(int evict_all) {
 }
 
 // FUNCTION: LEGOLAND 0x00455fc0
-void FUN_00455fc0(void) { STUB(); }
+void FUN_00455fc0(int *rect, const char *text, int font, int mood) {
+    RECT box;
+    HDC hdc;
+    HDC ddhdc;
+    HGDIOBJ old_font;
+    struct TextCell *cell;
+    unsigned int block_color;
+    int mood_pad;
+    int text_h;
+    int cx;
+    int half_mood;
+    int x4;
+    int y4;
+    int w;
+    int h;
+
+    box.right = 0;
+    box.bottom = 0;
+    box.top = 0;
+    box.left = 0;
+    block_color = GetNearestColour(0xda, 0xc6, 0x96);
+    mood_pad = 0;
+    if (mood != 0) {
+        mood_pad = 0x28;
+    }
+    if (text != NULL) {
+        box.right = 200;
+        cell = FUN_00455d40(text, font, 0x10, 0x96c6da, 0);
+        if (cell == NULL) {
+            hdc = CreateCompatibleDC(NULL);
+            SetBkMode(hdc, 1);
+            old_font = SelectFont(hdc, font);
+            text_h = DrawTextA(hdc, text, strlen(text), &box, 0x410);
+            box.top = rect[1];
+            box.bottom = text_h + box.top;
+            SelectObject(hdc, old_font);
+            DeleteDC(hdc);
+            FUN_00455bb0((char *)text, box.right - box.left, text_h, font, 0x10, 0x96c6da, 0);
+        } else {
+            box.left = 0;
+            box.top = 0;
+            box.right = cell->width;
+            box.bottom = cell->height;
+            text_h = cell->height;
+        }
+        cx = (rect[2] + rect[0]) >> 1;
+        if (cx < 0) {
+            cx = 0;
+        } else if ((int)(unsigned int)lpConfig->field_0 < cx) {
+            cx = (unsigned int)lpConfig->field_0;
+        }
+        box.right = box.right - box.left;
+        box.left = cx - (box.right >> 1);
+        if (box.left < 0) {
+            box.left = 0;
+        } else if ((int)(unsigned int)lpConfig->field_0 <= (((box.right + 1) >> 1) + cx + mood_pad)) {
+            box.left = ((unsigned int)lpConfig->field_0 - box.right) - mood_pad;
+        }
+        half_mood = mood_pad / 2;
+        box.right = half_mood + box.right + box.left;
+        if (rect[1] < (box.bottom - box.top) + 8) {
+            box.top = rect[3] + 6;
+            box.bottom = text_h + box.top;
+        } else {
+            box.bottom = rect[1] + -6;
+            box.top = box.bottom - text_h;
+        }
+        y4 = box.bottom + 4;
+        x4 = box.top + -4;
+        h = y4 - x4;
+        w = box.right + 4;
+        text_h = box.left + -4;
+        RenderBlock(box.left + -3, box.top + -3, w - text_h, h + -1, block_color);
+        RenderBlock(text_h, x4, w - text_h, 1, 0);
+        RenderBlock(text_h, y4, w - text_h, 1, 0);
+        RenderBlock(text_h, x4, 1, h, 0);
+        RenderBlock(w, x4, 1, h, 0);
+        if (mood != 0) {
+            PrintSprite((&DAT_008139e0)[mood], w - half_mood, (x4 + y4) / 2 + -0x14, 0, 0);
+        }
+        PushRenderingStatusAndUnlockVideoSurface();
+        ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->GetDC((LPDIRECTDRAWSURFACE)renderEngine, &ddhdc);
+        SetBkMode(ddhdc, 1);
+        old_font = SelectFont(ddhdc, font);
+        DrawTextA(ddhdc, text, strlen(text), &box, 0x10);
+        SelectObject(ddhdc, old_font);
+        ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->ReleaseDC((LPDIRECTDRAWSURFACE)renderEngine, ddhdc);
+        PopRenderingStatus();
+    }
+}

@@ -2293,7 +2293,7 @@ extern void *DAT_008119b8;
 // 0x008119bc
 extern unsigned int DAT_008119bc;
 // 0x008139e0
-extern void *DAT_008139e0;
+extern struct Sprite *DAT_008139e0;
 // 0x008139e4
 extern struct Sprite *DAT_008139e4;
 // 0x008139e8
