@@ -95,12 +95,14 @@ void FUN_00463ef0(void) { STUB(); }
 LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void) {
     RECT local;
     LPDIRECTDRAWSURFACE surface;
+    int value;
 
-    local.left = DAT_00668144;
+    value = DAT_00668144;
     DAT_00668164[DAT_006681e4] = DAT_00668144;
     DAT_006681e4 = DAT_006681e4 + 1;
-    if (local.left == 0) {
-        local.top = local.left;
+    if (value == 0) {
+        local.left = value;
+        local.top = value;
         local.right = lpConfig->field_0 - 1;
         local.bottom = lpConfig->field_2 - 1;
         DAT_0066809c.field_0 = 0x6c;
