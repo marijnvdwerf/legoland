@@ -24,8 +24,25 @@ LEGO_EXPORT void Render_SetViewport(struct Viewport *viewport) {
     DAT_0081c8dc = viewport->field_c;
 }
 
+struct RenderListNode {
+    struct RenderListNode *next;
+    unsigned char pad_4[8];
+    short id;
+};
+
 // FUNCTION: LEGOLAND 0x00441830
-unsigned int FUN_00441830(void *param_1, unsigned int param_2) { STUB(); }
+struct RenderListNode *FUN_00441830(void *param_1, short *param_2) {
+    struct RenderListNode *node = (struct RenderListNode *)DAT_0081c8cc;
+    while (node != NULL) {
+        if (*param_2 == node->id) {
+            DAT_0081c8cc = node;
+            return node;
+        }
+        node = node->next;
+    }
+    DAT_0081c8cc = NULL;
+    return NULL;
+}
 
 struct ViewportEntry {
     unsigned char pad_0[0xcc];
@@ -33,19 +50,19 @@ struct ViewportEntry {
 };
 
 // FUNCTION: LEGOLAND 0x00441870
-void FUN_00441870(struct ViewportEntry *param_1, unsigned int param_2) {
+void FUN_00441870(struct ViewportEntry *param_1, short *param_2) {
     DAT_0081c8cc = param_1->field_cc;
     FUN_00441830(param_1, param_2);
 }
 
 // FUNCTION: LEGOLAND 0x00441890
-unsigned int FUN_00441890(void *param_1, unsigned int param_2) {
-    void **node = (void **)DAT_0081c8cc;
+struct RenderListNode *FUN_00441890(void *param_1, short *param_2) {
+    struct RenderListNode *node = (struct RenderListNode *)DAT_0081c8cc;
     if (node != NULL) {
-        DAT_0081c8cc = *node;
+        DAT_0081c8cc = node->next;
         return FUN_00441830(param_1, param_2);
     }
-    return 0;
+    return NULL;
 }
 
 // FUNCTION: LEGOLAND 0x004418c0
