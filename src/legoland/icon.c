@@ -1434,7 +1434,54 @@ LEGO_EXPORT unsigned char CheckFocussedIcon(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046f690
-LEGO_EXPORT void AddGBarClassIcon(void) { STUB(); }
+LEGO_EXPORT struct IconNode *AddGBarClassIcon(unsigned int param_1, struct InfoSource *src, int a3, int a4, int a5, short a6) {
+    struct IconNode *icon = InsertIcon(a3, a4, a5, DAT_00668828);
+    if (icon != NULL) {
+        struct Sprite *sprite = src->field_68;
+        void *value;
+        unsigned int flags;
+        if (sprite != NULL) {
+            unsigned short width = sprite->width;
+            unsigned short height = sprite->height;
+            FUN_0046d680(icon, sprite);
+            icon->field_12 = height;
+            icon->field_10 = width;
+        } else {
+            FUN_0046d680(icon, NULL);
+        }
+        icon->field_18p = src->field_78;
+        if ((src->field_c4[2] & 0x10000) != 0) {
+            value = src->field_78;
+        } else {
+            value = src->field_7c;
+        }
+        icon->field_38 = (unsigned int)value;
+        icon->field_1c = value;
+        icon->field_3c = 0xffffffff;
+        if ((src->field_c4[2] & 0x20000) != 0) {
+            *(unsigned char *)&icon->field_1c = 0x14;
+        }
+        flags = icon->field_34 & 0xfffffdff;
+        icon->field_30 = (void *)param_1;
+        icon->field_28 = (void *)RenderGBarSpriteIcon;
+        icon->field_34 = flags | 0x3008;
+        icon->field_8 = src;
+        icon->field_16 = a6;
+        if (DAT_006688a8 != 0) {
+            icon->field_24 = DAT_006688a8;
+            icon->field_34 = icon->field_34 | 4;
+        }
+        if (DAT_006688ac != 0) {
+            icon->field_28 = DAT_006688ac;
+            icon->field_34 = icon->field_34 | 8;
+        }
+        if (DAT_006688b0 != 0) {
+            icon->field_2c = DAT_006688b0;
+            icon->field_34 = icon->field_34 | 2;
+        }
+    }
+    return icon;
+}
 
 // FUNCTION: LEGOLAND 0x0046f7a0
 LEGO_EXPORT struct IconNode *AddFreePlayIcon(unsigned int param_1, struct InfoSource *src, int a3, int a4, int a5, short a6, void *a7) {
@@ -1458,7 +1505,7 @@ LEGO_EXPORT struct IconNode *AddFreePlayIcon(unsigned int param_1, struct InfoSo
         icon->field_20p = a7;
         if (DAT_006688a8 != 0) {
             icon->field_24 = DAT_006688a8;
-            icon->field_34 = flags | 0x300c;
+            icon->field_34 = icon->field_34 | 4;
         }
         if (DAT_006688ac != 0) {
             icon->field_28 = DAT_006688ac;
