@@ -2123,6 +2123,12 @@ unsigned int DAT_0066be48;
 // GLOBAL: LEGOLAND 0x0066be4c
 unsigned int DAT_0066be4c;
 
+// GLOBAL: LEGOLAND 0x0066be50
+struct Image *DAT_0066be50;
+
+// GLOBAL: LEGOLAND 0x0066be54
+unsigned short DAT_0066be54[0x4b002];
+
 // GLOBAL: LEGOLAND 0x00701e58
 unsigned int DAT_00701e58;
 
@@ -2131,6 +2137,12 @@ unsigned char *DAT_00701e5c;
 
 // GLOBAL: LEGOLAND 0x00701e60
 unsigned int DAT_00701e60;
+
+// GLOBAL: LEGOLAND 0x00701e64
+struct Sprite *DAT_00701e64;
+
+// GLOBAL: LEGOLAND 0x00701e68
+unsigned short DAT_00701e68[0x4b000];
 
 // GLOBAL: LEGOLAND 0x00797e68
 unsigned int DAT_00797e68;

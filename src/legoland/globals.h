@@ -1550,12 +1550,20 @@ extern unsigned int DAT_0066be44;
 extern unsigned int DAT_0066be48;
 // 0x0066be4c
 extern unsigned int DAT_0066be4c;
+// 0x0066be50
+extern struct Image *DAT_0066be50;
+// 0x0066be54
+extern unsigned short DAT_0066be54[0x4b002];
 // 0x00701e58
 extern unsigned int DAT_00701e58;
 // 0x00701e5c
 extern unsigned char *DAT_00701e5c;
 // 0x00701e60
 extern unsigned int DAT_00701e60;
+// 0x00701e64
+extern struct Sprite *DAT_00701e64;
+// 0x00701e68
+extern unsigned short DAT_00701e68[0x4b000];
 // 0x00797e68
 extern unsigned int DAT_00797e68;
 // 0x00797e6c

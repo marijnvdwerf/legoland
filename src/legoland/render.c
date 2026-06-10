@@ -167,7 +167,18 @@ void FUN_00488700(unsigned int base, struct RenderViewport *vp) {
 void FUN_00488730(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004887a0
-void FUN_004887a0(void) { STUB(); }
+void FUN_004887a0(void) {
+    DAT_00798590 = (void *)1;
+    DAT_0066be50 = CreateSourceImage(DAT_004d8bb0, 0);
+    DAT_0066be50->data = DAT_00701e68;
+    DAT_0066be50->width = 0x280;
+    DAT_0066be50->height = 0x1e0;
+    DAT_0066be50->refcount = 1;
+    DAT_0066be50->aux = NULL;
+    DAT_0066be50->field_14 = 1;
+    DAT_00701e64 = CreateSprite(DAT_0066be50);
+    DAT_00701e64->flags = DAT_00701e64->flags | 0x208;
+}
 
 // FUNCTION: LEGOLAND 0x00488820
 unsigned int FUN_00488820(unsigned int x, unsigned int y) {
