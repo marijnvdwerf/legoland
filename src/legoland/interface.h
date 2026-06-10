@@ -49,8 +49,14 @@ void FUN_004760a0(void);
 void FUN_00476070(int mask, unsigned int value);
 void FUN_00476140(int index, int value);
 void FUN_004771f0(const char *filename, unsigned int param_2, unsigned int param_3);
-void *FUN_004775b0(unsigned int size);
-void FUN_004775d0(void *param);
+/* Both are STUBs with unverified signatures, called only from castle.c — the call
+ * sites pass 4 args to FUN_004775b0 (and that 4-push form is what matches the
+ * original at 100%), and FUN_004775d0 is passed mixed pointer/int values. Declare
+ * with unspecified params (K&R) so callers don't get a forced-prototype mismatch
+ * (C4020 / int-conversion) and codegen is preserved. Set real signatures when
+ * these get decompiled. */
+void *FUN_004775b0();
+void FUN_004775d0();
 LEGO_EXPORT void DisableSidePanelIcons(void);
 LEGO_EXPORT void EnableSidePanelIcons(void);
 LEGO_EXPORT void ListChildrenBar(void *node, int group, short x, short y);
