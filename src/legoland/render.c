@@ -11,10 +11,22 @@
 #include "image_sprite.h"
 #include "draw.h"
 
-extern void FUN_00464ee0(RECT *rect);
+struct ZBlitDesc {
+    /* 0x00 */ int left;
+    /* 0x04 */ int top;
+    /* 0x08 */ int right;
+    /* 0x0c */ int bottom;
+    /* 0x10 */ int w;
+    /* 0x14 */ int h;
+};
+
+extern void FUN_00464ee0(void *rect);
 extern void SoftPrint_XBltFast(struct Sprite *sprite, RECT *a, RECT *b, unsigned int param_4);
 extern void SoftPrint_Clear(void);
 extern unsigned int GetTransparentColour(void);
+extern int GetSprite(unsigned int *lock, struct Sprite *sprite);
+extern void ReleaseSprite(struct Sprite *sprite);
+extern void FUN_00485fe0(struct Sprite *sprite, int x, int y);
 
 struct CursorCacheNode {
     struct CursorCacheNode *next;
@@ -208,7 +220,74 @@ unsigned int FUN_00488820(unsigned int x, unsigned int y) {
 }
 
 // FUNCTION: LEGOLAND 0x00488840
-LEGO_EXPORT void GenerateNewImageFromZBuffer(void) { STUB(); }
+LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, struct Sprite *param_2, int param_3, int param_4, int param_5) {
+    int w = (short)sprite->width;
+    int h = (short)sprite->height;
+    struct ZBlitDesc local;
+    unsigned short transp;
+    int row;
+    int yy;
+
+    if (DAT_00798590 == 0) {
+        FUN_004887a0();
+    }
+    DAT_0066b620 = DAT_00668108;
+    DAT_0066b628 = DAT_00668110;
+    DAT_0066b5b0 = DAT_0066809c;
+    DAT_0066b62c = DAT_00668114;
+    DAT_0066809c.pitch = w * 2;
+    DAT_0066b624 = DAT_0066810c;
+    DAT_0066809c.pixels = DAT_0066be54;
+    DAT_00668108 = 0;
+    DAT_0066810c = 0;
+    local.left = 0;
+    local.top = 0;
+    local.right = 0;
+    local.bottom = 0;
+    DAT_0066809c.height = h;
+    DAT_0066809c.width = w;
+    DAT_00668110 = w;
+    DAT_00668114 = h;
+    local.w = w;
+    local.h = h;
+    DAT_007fea44 = GetTransparentColour();
+    SoftPrint_Clear();
+    FUN_00464ee0(&local);
+    FUN_00485fe0(param_2, param_4, param_5);
+    transp = (unsigned short)GetTransparentColour();
+    yy = 0;
+    if (0 < h) {
+        row = 0;
+        do {
+            int xx = 0;
+            int col = row;
+            if (0 < w) {
+                do {
+                    unsigned int z = FUN_00488820(xx, yy);
+                    unsigned short px = transp;
+                    if ((int)(z & 0xff) <= param_3) {
+                        px = *(unsigned short *)((char *)DAT_0066be54 + col);
+                    }
+                    *(unsigned short *)((char *)DAT_00701e68 + col) = px;
+                    xx = xx + 1;
+                    col = col + 2;
+                } while (xx < w);
+            }
+            yy = yy + 1;
+            row = row + w * 2;
+        } while (yy < h);
+    }
+    DAT_0066be50->width = (short)w;
+    DAT_0066be50->height = (short)h;
+    DAT_00701e64->width = (short)w;
+    DAT_00701e64->height = (short)h;
+    DAT_00668110 = DAT_0066b628;
+    DAT_0066810c = DAT_0066b624;
+    DAT_0066809c = DAT_0066b5b0;
+    DAT_00668108 = DAT_0066b620;
+    DAT_00668114 = DAT_0066b62c;
+    return DAT_00701e64;
+}
 
 // FUNCTION: LEGOLAND 0x00488a10
 LEGO_EXPORT unsigned int RenderSprite(struct Sprite *sprite, int x, int y) {

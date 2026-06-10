@@ -133,6 +133,17 @@ struct Settings {
     unsigned char gap_10c[4];
 };
 
+struct SoftPrintState {
+    /* 0x00 */ unsigned int field_0;
+    /* 0x04 */ unsigned int field_4;
+    /* 0x08 */ int height;
+    /* 0x0c */ int width;
+    /* 0x10 */ int pitch;
+    /* 0x14 */ unsigned char pad_14[0x24 - 0x14];
+    /* 0x24 */ void *pixels;
+    /* 0x28 */ unsigned char pad_28[0x6c - 0x28];
+};
+
 struct ScreenState {
     unsigned char gap_0[0x20];
     unsigned int field_20;
@@ -1258,6 +1269,16 @@ extern void *PTR_00668090;
 extern void *PTR_00668094;
 // 0x00668098
 extern void *PTR_00668098;
+// 0x0066809c
+extern struct SoftPrintState DAT_0066809c;
+// 0x00668108
+extern int DAT_00668108;
+// 0x0066810c
+extern int DAT_0066810c;
+// 0x00668110
+extern int DAT_00668110;
+// 0x00668114
+extern int DAT_00668114;
 // 0x00668118
 extern int renderEngineTargetIdx;
 // 0x0066811c
@@ -1538,8 +1559,18 @@ extern void *DAT_0066b57c;
 extern void *DAT_0066b5a4;
 // 0x0066b5a8
 extern unsigned int DAT_0066b5a8;
+// 0x0066b5b0
+extern struct SoftPrintState DAT_0066b5b0;
 // 0x0066b61c
 extern unsigned int DAT_0066b61c;
+// 0x0066b620
+extern int DAT_0066b620;
+// 0x0066b624
+extern int DAT_0066b624;
+// 0x0066b628
+extern int DAT_0066b628;
+// 0x0066b62c
+extern int DAT_0066b62c;
 // 0x0066b630
 extern void *DAT_0066b630;
 // 0x0066be40
@@ -2050,6 +2081,8 @@ extern unsigned int DAT_007fe994;
 extern unsigned int DAT_007fe9a8;
 // 0x007fe9c0
 extern struct Sprite *DAT_007fe9c0[9];
+// 0x007fea44
+extern unsigned int DAT_007fea44;
 // 0x007fea48
 extern LEGO_EXPORT unsigned int FramesPerSecond;
 // 0x007feb14
