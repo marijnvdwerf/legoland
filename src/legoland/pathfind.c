@@ -62,7 +62,7 @@ LEGO_EXPORT void AddPathSquare(struct InstancePos *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x00481c90
-LEGO_EXPORT void RemovePathSquare(void) { STUB(); }
+LEGO_EXPORT void RemovePathSquare(struct InstancePos *pos) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00481e60
 void FUN_00481e60(struct PathQuery *query, struct PathBox *box) {

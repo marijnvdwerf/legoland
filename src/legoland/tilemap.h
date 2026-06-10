@@ -14,4 +14,4 @@ int FUN_0045ce10(struct MapTile *tile);
 int FUN_0045ce30(int *param_1);
 unsigned char FUN_0045ceb0(int *coords);
 unsigned char FUN_0045d080(unsigned char flags, int *coords);
-LEGO_EXPORT void RemovePathTile(unsigned int param_1, unsigned short param_2);
+LEGO_EXPORT void RemovePathTile(int *param_1, unsigned short param_2);

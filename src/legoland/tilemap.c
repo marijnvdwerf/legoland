@@ -1040,7 +1040,31 @@ unsigned char FUN_0045d080(unsigned char flags, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045d1a0
-LEGO_EXPORT void AdjustPathTile(struct Point *p, unsigned int a) { STUB(); }
+LEGO_EXPORT unsigned short *AdjustPathTile(struct Point *p, unsigned int a) {
+    unsigned short *flags;
+    int x;
+    int y;
+    struct MapTile tile;
+
+    BGFullUpdate = 1;
+    x = p->x;
+    if (x < 0 || x >= (int)lpConfig->width || (y = p->y, y < 0) || y >= (int)lpConfig->height) {
+        tile.tile = 0;
+        tile.flags_c = 0x40;
+        tile.flags_10 = 0;
+    } else {
+        tile = *(struct MapTile *)((char *)GameMap[y] + x * 0x14);
+    }
+    if ((tile.flags_10 & 1) != 0 || ((tile.flags_c & 0x10) != 0 && (tile.flags_10 & 2) == 0)) {
+        AdjustTileRFFlags((int *)p);
+    }
+    flags = NULL;
+    if (FUN_0045ce10(&tile) != 0) {
+        flags = (unsigned short *)((char *)GameMap[p->y] + 0xc + p->x * 0x14);
+        *flags = *flags & 0xfffc;
+    }
+    return flags;
+}
 
 // FUNCTION: LEGOLAND 0x0045d260
 void FUN_0045d260(struct Point *param) {
@@ -1083,7 +1107,17 @@ void FUN_0045d260(struct Point *param) {
 }
 
 // FUNCTION: LEGOLAND 0x0045d350
-LEGO_EXPORT void AddPathTileGFX(struct Point *p, unsigned short param1) { STUB(); }
+LEGO_EXPORT void AddPathTileGFX(struct Point *p, unsigned short param1) {
+    unsigned char *pb;
+
+    pb = (unsigned char *)((char *)GameMap[p->y] + 0xc + p->x * 0x14);
+    *pb = *pb | 0x10;
+    *(unsigned short *)((char *)GameMap[p->y] + 8 + p->x * 0x14) = param1;
+    FUN_0045d260(p);
+    if (DAT_00832984 != 0) {
+        FUN_0045cd30((int *)p);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045d3b0
 LEGO_EXPORT void AddPathTile(struct Point *p, unsigned short param1) {
@@ -1226,4 +1260,40 @@ LEGO_EXPORT unsigned short RestoreBaseMap(int tile_x, int row_y) {
 }
 
 // FUNCTION: LEGOLAND 0x0045daa0
-LEGO_EXPORT void RemovePathTile(unsigned int param_1, unsigned short param_2) { STUB(); }
+LEGO_EXPORT void RemovePathTile(int *param_1, unsigned short param_2) {
+    unsigned short *flags;
+    struct Point local_8;
+
+    RestoreBaseMap(*param_1, param_1[1]);
+    flags = (unsigned short *)((char *)GameMap[param_1[1]] + 0xc + *param_1 * 0x14);
+    *flags = *flags & 0xffe4;
+    *(unsigned char *)((char *)GameMap[param_1[1]] + 0x10 + *param_1 * 0x14) = 0;
+    local_8.x = *param_1;
+    local_8.y = param_1[1] + -1;
+    AdjustPathTile(&local_8, param_2);
+    local_8.y = param_1[1];
+    local_8.x = *param_1 + 1;
+    AdjustPathTile(&local_8, param_2);
+    local_8.x = *param_1;
+    local_8.y = param_1[1] + 1;
+    AdjustPathTile(&local_8, param_2);
+    local_8.y = param_1[1];
+    local_8.x = *param_1 + -1;
+    AdjustPathTile(&local_8, param_2);
+    local_8.x = *param_1 + -1;
+    local_8.y = param_1[1] + 1;
+    AdjustPathTile(&local_8, param_2);
+    local_8.x = *param_1 + 1;
+    local_8.y = param_1[1] + -1;
+    AdjustPathTile(&local_8, param_2);
+    local_8.x = *param_1 + 1;
+    local_8.y = param_1[1] + 1;
+    AdjustPathTile(&local_8, param_2);
+    local_8.x = *param_1 + -1;
+    local_8.y = param_1[1] + -1;
+    AdjustPathTile(&local_8, param_2);
+    RemovePathSquare((struct InstancePos *)param_1);
+    if (DAT_00832984 != 0) {
+        FUN_0045cd70(param_1);
+    }
+}
