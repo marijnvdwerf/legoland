@@ -306,6 +306,9 @@ void *PTR_004b92c0;
 // GLOBAL: LEGOLAND 0x004b9314
 void *PTR_004b9314;
 
+// GLOBAL: LEGOLAND 0x004b9338
+void *PTR_004b9338;
+
 // GLOBAL: LEGOLAND 0x004b92d8
 void *DAT_004b92d8;
 
@@ -356,6 +359,9 @@ unsigned int DAT_004bafa8[20];
 
 // GLOBAL: LEGOLAND 0x004baff8
 unsigned int DAT_004baff8;
+
+// GLOBAL: LEGOLAND 0x004bb04c
+int DAT_004bb04c[18];
 
 // GLOBAL: LEGOLAND 0x004bb094
 unsigned int DAT_004bb094;
@@ -2154,6 +2160,9 @@ unsigned int DAT_00668eb8;
 
 // GLOBAL: LEGOLAND 0x00668ebc
 unsigned int DAT_00668ebc;
+
+// GLOBAL: LEGOLAND 0x00668ec0
+unsigned int DAT_00668ec0;
 
 // GLOBAL: LEGOLAND 0x00668ed8
 struct InterfaceResearchNode *DAT_00668ed8;

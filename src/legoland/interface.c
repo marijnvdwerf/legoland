@@ -13,6 +13,8 @@
 #include "interface.h"
 #include "sound_music.h"
 #include "llidb.h"
+#include "print_sprite.h"
+#include "timer.h"
 
 struct ProfileObj {
     unsigned char pad_0[0x34];
@@ -921,7 +923,34 @@ void FUN_00476070(int mask, unsigned int value) {
 }
 
 // FUNCTION: LEGOLAND 0x004760a0
-void FUN_004760a0(void) { STUB(); }
+void FUN_004760a0(void) {
+    int *coords;
+    int played;
+    int i;
+
+    played = 0;
+    FUN_00476020();
+    if (DAT_008119b4 == 3) {
+        coords = DAT_004bb04c;
+        i = 0;
+        do {
+            if (DAT_007fdd00[i] != 0) {
+                if (GetBlink() != 0) {
+                    PrintSprite((&DAT_007fdcc0)[i], coords[0], coords[1], 0, 0);
+                    played = 1;
+                } else {
+                    PrintSprite((&DAT_007fdd40)[i], coords[0], coords[1], 0, 0);
+                }
+            }
+            coords = coords + 2;
+            i = i + 1;
+        } while ((int)coords < (int)&DAT_004bb094);
+        if (played != 0 && DAT_00668ec0 == 0) {
+            PlayInstanceOfSample(PTR_004b9338, 0, 1, 0);
+        }
+    }
+    DAT_00668ec0 = played;
+}
 
 // FUNCTION: LEGOLAND 0x00476140
 void FUN_00476140(int index, int value) {

@@ -376,6 +376,7 @@ extern void *DAT_004b929c;
 // 0x004b92c0
 extern void *PTR_004b92c0;
 extern void *PTR_004b9314;
+extern void *PTR_004b9338;
 // 0x004b92d8
 extern void *DAT_004b92d8;
 // 0x004b95f0
@@ -415,6 +416,7 @@ extern unsigned int DAT_004bafa8[20];
 // 0x004baff8
 extern unsigned int DAT_004baff8;
 // 0x004bb094
+extern int DAT_004bb04c[18];
 extern unsigned int DAT_004bb094;
 // 0x004bb098
 extern unsigned int DAT_004bb098;
@@ -1600,6 +1602,7 @@ extern unsigned int DAT_00668eb4;
 extern unsigned int DAT_00668eb8;
 // 0x00668ebc
 extern unsigned int DAT_00668ebc;
+extern unsigned int DAT_00668ec0;
 // 0x00668ed8
 extern struct InterfaceResearchNode *DAT_00668ed8;
 // 0x00668fc0
