@@ -2,6 +2,14 @@
 
 #include "legoland.h"
 
+struct ObjClass {
+    /* 0x00 */ unsigned char pad_0[0x3c];
+    /* 0x3c */ int field_3c;
+    /* 0x40 */ int field_40;
+    /* 0x44 */ int field_44;
+    /* 0x48 */ int field_48;
+};
+
 struct CtrlBuffer {
     /* 0x00 */ int field_0;
     /* 0x04 */ int field_4;

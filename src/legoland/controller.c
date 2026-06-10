@@ -84,7 +84,33 @@ int FUN_00451f70(void) {
 void FUN_00452030(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00452390
-void FUN_00452390(void) { STUB(); }
+void FUN_00452390(void) {
+    struct ObjClass *cls;
+
+    if (EditMode == 2 && QueryClass != NULL) {
+        cls = (struct ObjClass *)QueryClass;
+        DAT_00813a34 = QueryObj;
+        DAT_00813af0 = cls->field_3c;
+        DAT_00813af8 = cls->field_44;
+        DAT_00813af4 = cls->field_40;
+        DAT_00813afc = cls->field_48;
+        DAT_00813a38 = (DAT_00813af8 - DAT_00813af0) + 1;
+        DAT_00813a3c = (DAT_00813afc - DAT_00813af4) + 1;
+        DAT_00813a74 = (unsigned char)QueryObj + DAT_00813af0;
+        DAT_00813a78 = (unsigned char)(QueryObj >> 8) + DAT_00813af4;
+        DAT_00813a7c = DAT_00813a64;
+        DAT_00813a80 = DAT_00813a68;
+    } else {
+        DAT_00813a74 = DAT_00813a64;
+        DAT_00813a78 = DAT_00813a68;
+        DAT_00813a7c = DAT_00813a64;
+        DAT_00813a80 = DAT_00813a68;
+    }
+    if ((DAT_00813ac4 & 1) != 0) {
+        GamePad = GamePad | 0x1000;
+        DAT_00813ac4 = DAT_00813ac4 & 0xfffffffe;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00452460
 LEGO_EXPORT void ReadGameButtons(void) {

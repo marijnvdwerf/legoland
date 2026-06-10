@@ -1198,7 +1198,7 @@ extern unsigned int DAT_00667c30;
 // 0x00667c34
 extern struct Sprite *DAT_00667c34;
 // 0x00667c54
-extern LEGO_EXPORT unsigned int QueryObj;
+extern LEGO_EXPORT unsigned short QueryObj;
 // 0x00667c58
 extern LEGO_EXPORT void *QueryClass;
 // 0x00667c64
@@ -2268,6 +2268,12 @@ extern unsigned int DAT_00813a10;
 extern int DAT_00813a18;
 // 0x00813a2c
 extern int DAT_00813a2c;
+// 0x00813a34
+extern unsigned short DAT_00813a34;
+// 0x00813a38
+extern unsigned int DAT_00813a38;
+// 0x00813a3c
+extern unsigned int DAT_00813a3c;
 // 0x00813a40
 extern LEGO_EXPORT unsigned int GamePad;
 // 0x00813a44
@@ -2292,6 +2298,10 @@ extern unsigned int DAT_00813a68;
 extern unsigned int DAT_00813a6c;
 // 0x00813a70
 extern unsigned int DAT_00813a70;
+// 0x00813a74
+extern unsigned int DAT_00813a74;
+// 0x00813a78
+extern unsigned int DAT_00813a78;
 // 0x00813a7c
 extern unsigned int DAT_00813a7c;
 // 0x00813a80
@@ -2336,6 +2346,14 @@ extern unsigned int DAT_00813ad8;
 extern unsigned int DAT_00813adc;
 // 0x00813ae0
 extern unsigned int DAT_00813ae0;
+// 0x00813af0
+extern int DAT_00813af0;
+// 0x00813af4
+extern int DAT_00813af4;
+// 0x00813af8
+extern int DAT_00813af8;
+// 0x00813afc
+extern int DAT_00813afc;
 // 0x00813b00
 extern LEGO_EXPORT void *CONTROLLERBUFFER;
 // 0x00813b04
