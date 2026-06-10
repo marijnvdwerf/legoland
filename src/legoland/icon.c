@@ -124,6 +124,7 @@ struct TimedIndicator {
 struct SpriteLLS;
 LEGO_EXPORT unsigned int GetLLSForSprite(struct SpriteLLS *sprite);
 LEGO_EXPORT void PrintCent(int x, int y, int param_3, void *text, int param_5);
+int FUN_00458930(double value);
 LEGO_EXPORT void MoveIcons(unsigned short mask, unsigned short id, short dx, short dy);
 int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned short param_4, int param_5);
 void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3);
@@ -713,7 +714,27 @@ LEGO_EXPORT void RenderEnergyBar(void) { STUB(); }
 LEGO_EXPORT void RenderMoneyBar(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046e7b0
-LEGO_EXPORT void RenderFreePlayBar(void) { STUB(); }
+LEGO_EXPORT int RenderFreePlayBar(struct IconNode *node) {
+    struct PrintCtx ctx;
+    short x;
+    int clip[4];
+
+    ctx.flags = 2;
+    ctx.node = node;
+    ctx.field_8 = 0;
+    StoreClipping();
+    x = node->field_c;
+    clip[0] = x;
+    clip[2] = FUN_00458930(node->field_10 * 0.00005f * (int)DAT_007cb3a0) + x;
+    clip[1] = node->field_e;
+    clip[3] = node->field_12 + clip[1];
+    SetClipping(&clip[0]);
+    if (node->sprite != NULL) {
+        PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
+    }
+    RestoreClipping();
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046e850
 LEGO_EXPORT int RenderGBarSpriteIcon(struct IconNode *node) {
