@@ -383,10 +383,43 @@ struct TextCell *FUN_00455bb0(char *name, int width, int height, int font, unsig
 }
 
 // FUNCTION: LEGOLAND 0x00455c80
-void FUN_00455c80(void) { STUB(); }
+struct TextCell *FUN_00455c80(char *name, int width, int height, int font, unsigned int format, unsigned int bg_color, unsigned int text_color) {
+    int i = 0;
+    struct TextCell *cell;
+
+    if (0 < DAT_006675b8) {
+        cell = DAT_006675c0;
+        do {
+            if (cell->width == width && cell->height == height && cell->format == format &&
+                cell->bg_color == bg_color && cell->text_color == text_color && cell->font == font &&
+                strcmp(cell->name, name) == 0) {
+                return &DAT_006675c0[i];
+            }
+            i++;
+            cell++;
+        } while (i < DAT_006675b8);
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00455d40
-void FUN_00455d40(void) { STUB(); }
+struct TextCell *FUN_00455d40(char *name, int font, unsigned int format, unsigned int bg_color, unsigned int text_color) {
+    int i = 0;
+    struct TextCell *cell;
+
+    if (0 < DAT_006675b8) {
+        cell = DAT_006675c0;
+        do {
+            if (cell->format == format && cell->bg_color == bg_color && cell->text_color == text_color &&
+                cell->font == font && strcmp(cell->name, name) == 0) {
+                return &DAT_006675c0[i];
+            }
+            i++;
+            cell++;
+        } while (i < DAT_006675b8);
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00455de0
 struct TextCell *FUN_00455de0(char *name) {
@@ -407,7 +440,15 @@ struct TextCell *FUN_00455de0(char *name) {
 }
 
 // FUNCTION: LEGOLAND 0x00455e50
-void FUN_00455e50(void) { STUB(); }
+void FUN_00455e50(char *name, unsigned int x, unsigned int y, int width, int height, int font, unsigned int format, unsigned int bg_color, unsigned int text_color) {
+    struct TextCell *cell;
+
+    cell = FUN_00455c80(name, width, height, font, format, bg_color, text_color);
+    if (cell == NULL) {
+        cell = FUN_00455bb0(name, width, height, font, format, bg_color, text_color);
+    }
+    PrintSprite(cell->sprite, x, y, 0, 0);
+}
 
 // FUNCTION: LEGOLAND 0x00455ec0
 void FUN_00455ec0(struct TextCell *cell, unsigned int x, unsigned int y) {
@@ -415,10 +456,42 @@ void FUN_00455ec0(struct TextCell *cell, unsigned int x, unsigned int y) {
 }
 
 // FUNCTION: LEGOLAND 0x00455ee0
-void FUN_00455ee0(void) { STUB(); }
+void FUN_00455ee0(int index) {
+    // STRING: LEGOLAND 0x004b9098
+    DBPrintf("Deleting Cell (%d) %s\n", index, DAT_006675c0[index].name);
+    DAT_006675b8 = DAT_006675b8 - 1;
+    free(DAT_006675c0[index].name);
+    if (DAT_006675c0[index].sprite != NULL) {
+        KillSprite(DAT_006675c0[index].sprite);
+        DAT_006675c0[index].sprite = NULL;
+    }
+    if (index < DAT_006675b8) {
+        struct TextCell *dst = &DAT_006675c0[index];
+        do {
+            index++;
+            *dst = dst[1];
+            dst++;
+        } while (index < DAT_006675b8);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00455f70
-void FUN_00455f70(int param_1) { STUB(); }
+void FUN_00455f70(int evict_all) {
+    int i = 0;
+    struct TextCell *cell;
+
+    if (0 < DAT_006675b8) {
+        cell = DAT_006675c0;
+        do {
+            if (evict_all == 0 && DAT_008119a4 - cell->sprite->field_c <= 10) {
+                i++;
+                cell++;
+            } else {
+                FUN_00455ee0(i);
+            }
+        } while (i < DAT_006675b8);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00455fc0
 void FUN_00455fc0(void) { STUB(); }
