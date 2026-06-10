@@ -8,8 +8,10 @@
 
 #include "draw.h"
 #include "gfx.h"
+#include "llidb.h"
 #include "print_sprite.h"
 #include "text.h"
+#include "timer.h"
 #include "wndenv.h"
 
 #include "image_sprite.h"
@@ -17,6 +19,7 @@
 LEGO_EXPORT unsigned int GetTransparentColour(void);
 LEGO_EXPORT void LLSAuto(void);
 LEGO_EXPORT void *WNDENV_Gethwnd(void);
+void FUN_0047d610(struct LLS *param_1);
 
 // FUNCTION: LEGOLAND 0x004636f0
 LEGO_EXPORT int InstallDirectDraw(void) { return 0; }
@@ -355,7 +358,33 @@ void FUN_004663c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004663f0
-void FUN_004663f0(void) { STUB(); }
+void FUN_004663f0(void) {
+    RECT cursor;
+    LPDIRECTDRAWSURFACE surface;
+    struct Image *image;
+
+    if (DAT_00668204 != 0) {
+        if ((int)(GetTicks() - DAT_00667d60) > 0xc8) {
+            cursor.left = DAT_007fea30.left;
+            cursor.top = DAT_007fea30.top;
+            cursor.right = DAT_007fea30.right;
+            cursor.bottom = DAT_007fea30.bottom;
+            DAT_00667d60 = GetTicks();
+            image = DAT_00668208->image;
+            FUN_0047d610((struct LLS *)image->data);
+            PushRenderingStatusAndLockVideoSurface();
+            PrintSprite(DAT_00668208, DAT_007fea30.left, DAT_007fea30.top, 0, 0);
+            PopRenderingStatus();
+            ClientToScreen((HWND)WNDENV_Gethwnd(), (LPPOINT)&cursor);
+            ClientToScreen((HWND)WNDENV_Gethwnd(), (LPPOINT)&cursor.right);
+            surface = (LPDIRECTDRAWSURFACE)DAT_00668070;
+            if (surface->lpVtbl->Blt(surface, &cursor, (LPDIRECTDRAWSURFACE)DAT_00668078, &DAT_007fea30, 0x1000000, NULL) == 0x887601c2) {
+                ((LPDIRECTDRAWSURFACE)DAT_00668070)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)DAT_00668070);
+                ((LPDIRECTDRAWSURFACE)DAT_00668070)->lpVtbl->Blt((LPDIRECTDRAWSURFACE)DAT_00668070, &cursor, (LPDIRECTDRAWSURFACE)DAT_00668078, NULL, 0x1000000, NULL);
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00466500
 LEGO_EXPORT int RenderingComplete(void) {
