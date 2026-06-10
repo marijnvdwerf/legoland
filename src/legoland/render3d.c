@@ -316,7 +316,29 @@ unsigned char *FUN_004428c0(unsigned char *str, int count) {
 }
 
 // FUNCTION: LEGOLAND 0x004428f0
-void FUN_004428f0(void) { STUB(); }
+unsigned char *FUN_004428f0(char *param_1, int param_2, int param_3) {
+    char *pcVar4;
+    char *pcVar5;
+
+    if (param_1 == NULL) {
+        pcVar4 = (char *)param_3;
+    } else {
+        char *after = param_1 + strlen(param_1) + 1;
+        param_1 = after + 4;
+        pcVar4 = param_1;
+        if (*(int *)after != 0) {
+            pcVar5 = param_1;
+            do {
+                pcVar5 = pcVar5 + strlen(pcVar5) + 1;
+            } while (strlen(pcVar5) != 0);
+            param_1 = pcVar5 + 1 + strlen(pcVar5 + 1) + 1 + 4;
+        }
+    }
+    if (param_2 == 1) {
+        return FUN_004428c0((unsigned char *)param_1, param_3);
+    }
+    return FUN_004428c0((unsigned char *)pcVar4, param_3);
+}
 
 // FUNCTION: LEGOLAND 0x00442980
 void FUN_00442980(void) { STUB(); }
@@ -579,7 +601,8 @@ struct BlokeSex0 {
 };
 
 struct BlokeSex1 {
-    unsigned char pad_0[0x84];
+    unsigned char pad_0[0x80];
+    unsigned int field_80;
     unsigned int field_84;
     unsigned char pad_88[0x8c - 0x88];
     unsigned int field_8c;
@@ -593,10 +616,46 @@ LEGO_EXPORT unsigned int GetSexOfBloke(struct BlokeSex0 *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00443150
-LEGO_EXPORT void GetFaceTextureNameOfBloke(void) { STUB(); }
+LEGO_EXPORT char *GetFaceTextureNameOfBloke(struct BlokeSex0 *param_1) {
+    struct BlokeSex1 *inner = param_1->field_4;
+    void *ptr;
+    char *name;
+    switch (inner->field_84) {
+    case 0:
+        ptr = DAT_00630100;
+        break;
+    case 1:
+        ptr = DAT_0062feac;
+        break;
+    default:
+        ptr = param_1;
+    }
+    name = (char *)FUN_004428f0((char *)ptr, 0, inner->field_80);
+    // STRING: LEGOLAND 0x004b7d24
+    _stricmp(name, "chest girly1");
+    // STRING: LEGOLAND 0x004b7d14
+    return "chest girly2";
+}
 
 // FUNCTION: LEGOLAND 0x004431a0
-LEGO_EXPORT void GetChestTextureNameOfBloke(void) { STUB(); }
+LEGO_EXPORT char *GetChestTextureNameOfBloke(struct BlokeSex0 *param_1) {
+    struct BlokeSex1 *inner = param_1->field_4;
+    void *ptr;
+    char *name;
+    switch (inner->field_84) {
+    case 0:
+        ptr = DAT_00630100;
+        break;
+    case 1:
+        ptr = DAT_0062feac;
+        break;
+    default:
+        ptr = param_1;
+    }
+    name = (char *)FUN_004428f0((char *)ptr, 1, inner->field_80);
+    _stricmp(name, "chest girly1");
+    return "chest girly2";
+}
 
 // FUNCTION: LEGOLAND 0x004431f0
 LEGO_EXPORT unsigned int GetLegColourOfBloke(struct BlokeSex0 *param_1) {
