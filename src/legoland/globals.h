@@ -1541,7 +1541,7 @@ extern unsigned int DAT_0066b5a8;
 // 0x0066b61c
 extern unsigned int DAT_0066b61c;
 // 0x0066b630
-extern unsigned int DAT_0066b630;
+extern void *DAT_0066b630;
 // 0x0066be40
 extern unsigned int DAT_0066be40;
 // 0x0066be44

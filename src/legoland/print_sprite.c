@@ -173,7 +173,7 @@ void FUN_00485f00(struct Sprite *param_1, unsigned int param_2, unsigned int par
 // FUNCTION: LEGOLAND 0x00485f20
 void FUN_00485f20(void *ptr)
 {
-    DAT_0066b630 = (unsigned int)ptr;
+    DAT_0066b630 = ptr;
 }
 
 // FUNCTION: LEGOLAND 0x00485f30

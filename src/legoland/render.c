@@ -47,6 +47,20 @@ struct RenderViewport {
     unsigned int y;
 };
 
+struct TextureFrame {
+    /* 0x00 */ void *field_0;
+    /* 0x04 */ unsigned short *data;
+};
+
+struct TextureDesc {
+    /* 0x00 */ unsigned int width;
+    /* 0x04 */ unsigned int height;
+    /* 0x08 */ unsigned char shift;
+    /* 0x09 */ unsigned char pad_9[3];
+    /* 0x0c */ unsigned char *index_map;
+    /* 0x10 */ struct TextureFrame **frame_table;
+};
+
 
 // FUNCTION: LEGOLAND 0x004860f0
 void FUN_004860f0(void) { STUB(); }
@@ -164,7 +178,14 @@ void FUN_00488700(unsigned int base, struct RenderViewport *vp) {
 }
 
 // FUNCTION: LEGOLAND 0x00488730
-void FUN_00488730(void) { STUB(); }
+unsigned short FUN_00488730(unsigned int p1, unsigned int p2, unsigned int p3) {
+    struct TextureDesc *desc = (struct TextureDesc *)DAT_0066b630;
+    unsigned int u = (unsigned int)((unsigned __int64)(desc->width - 1) * (p1 & 0xffff) >> 0x10);
+    unsigned int v = (unsigned int)((unsigned __int64)(desc->height - 1) * (p2 & 0xffff) >> 0x10);
+    unsigned int idx = (v << desc->shift) + u;
+    struct TextureFrame *frame = desc->frame_table[desc->index_map[idx]];
+    return frame->data[(p3 - ((p3 >> 0x10 & 1) != 0)) >> 10];
+}
 
 // FUNCTION: LEGOLAND 0x004887a0
 void FUN_004887a0(void) {
