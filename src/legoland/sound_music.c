@@ -44,6 +44,31 @@ struct MusicContainer {
     struct MusicContainerVtbl *vtable;
 };
 
+struct MusicSegment;
+struct MusicSegmentVtbl {
+    unsigned char pad_0[8];
+    int(__stdcall *Release)(struct MusicSegment *self);
+    unsigned char pad_c[0x18 - 0xc];
+    int(__stdcall *SetRepeats)(struct MusicSegment *self, unsigned int repeats);
+};
+
+struct MusicSegment {
+    struct MusicSegmentVtbl *vtable;
+};
+
+struct MusicComposer;
+struct MusicComposerVtbl {
+    unsigned char pad_0[0xc];
+    int(__stdcall *ComposeSegmentFromTemplate)(struct MusicComposer *self, void *style, unsigned int templateMode, unsigned int activity, void *chordMap, struct MusicSegment **out);
+    int(__stdcall *ComposeSegmentFromShape)(struct MusicComposer *self, unsigned int numMeasures, unsigned int shape, unsigned int activity, int intro, int end, void *style, void *chordMap, struct MusicSegment **out);
+    unsigned char pad_14[0x18 - 0x14];
+    int(__stdcall *ComposeTransition)(struct MusicComposer *self, struct MusicPerformance *perf, unsigned int numMeasures, unsigned int activity, unsigned int command, void *chordMap, struct MusicSegment **out, int param8, int param9);
+};
+
+struct MusicComposer {
+    struct MusicComposerVtbl *vtable;
+};
+
 struct ObjectDesc {
     /* 0x000 */ unsigned int dwSize;
     /* 0x004 */ unsigned int dwValidData;
@@ -61,7 +86,9 @@ extern int FUN_00495a10(void *hwnd);
 extern LEGO_EXPORT void GetTileCentre(struct Point *ref, int *out);
 
 struct MusicPerformanceVtbl {
-    unsigned char pad_0[0x10];
+    unsigned char pad_0[8];
+    int(__stdcall *Release)(struct MusicPerformance *self);
+    unsigned char pad_c[0x10 - 0xc];
     void(__stdcall *PlayMotif)(struct MusicPerformance *self, unsigned int motif, unsigned int flags, int a3, int a4, int a5);
     unsigned char pad_14[0x88 - 0x14];
     void(__stdcall *SetGlobalParam)(struct MusicPerformance *self, const GUID *type, void *data, unsigned int size);
@@ -289,10 +316,38 @@ LEGO_EXPORT int CreateMusicBandSegment(struct BandObj *band, void *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00496150
-LEGO_EXPORT void PlaySegmentFromTemplate(void) { STUB(); }
+LEGO_EXPORT unsigned int PlaySegmentFromTemplate(void *style, unsigned int templateMode, void *chordMap) {
+    struct MusicSegment *segment;
+
+    if (DAT_004bf774 == 0) {
+        return 0;
+    }
+    if (DMusicInitialised == 0) {
+        return 0;
+    }
+    ((struct MusicComposer *)DAT_007cad44)->vtable->ComposeSegmentFromTemplate((struct MusicComposer *)DAT_007cad44, style, templateMode, 0, chordMap, &segment);
+    segment->vtable->SetRepeats(segment, 999);
+    ((struct MusicPerformance *)DAT_007cacdc)->vtable->PlayMotif((struct MusicPerformance *)DAT_007cacdc, (unsigned int)segment, 0x2000, 0, 0, 0);
+    segment->vtable->Release(segment);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004961d0
-LEGO_EXPORT void PlaySegment(void) { STUB(); }
+LEGO_EXPORT unsigned int PlaySegment(unsigned int numMeasures, void *chordMap) {
+    struct MusicSegment *segment;
+
+    if (DAT_004bf774 == 0) {
+        return 0;
+    }
+    if (DMusicInitialised == 0) {
+        return 0;
+    }
+    ((struct MusicComposer *)DAT_007cad44)->vtable->ComposeSegmentFromShape((struct MusicComposer *)DAT_007cad44, numMeasures, 0xa, 2, 3, 0, 0, chordMap, &segment);
+    segment->vtable->SetRepeats(segment, 999);
+    ((struct MusicPerformance *)DAT_007cacdc)->vtable->PlayMotif((struct MusicPerformance *)DAT_007cacdc, (unsigned int)segment, 0x2000, 0, 0, 0);
+    segment->vtable->Release(segment);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00496250
 LEGO_EXPORT unsigned int SetBand(unsigned int band) {
@@ -319,7 +374,25 @@ LEGO_EXPORT unsigned int PlayMotif(unsigned int motif) {
 }
 
 // FUNCTION: LEGOLAND 0x004962d0
-LEGO_EXPORT void BlendMusic(void) { STUB(); }
+LEGO_EXPORT unsigned int BlendMusic(unsigned int numMeasures, unsigned int unused, void *chordMap) {
+    struct MusicSegment *segment;
+    struct MusicSegment *transition;
+    unsigned int shape;
+
+    if (DAT_004bf774 == 0) {
+        return 0;
+    }
+    if (DMusicInitialised == 0) {
+        return 0;
+    }
+    shape = 0xa;
+    ((struct MusicComposer *)DAT_007cad44)->vtable->ComposeSegmentFromShape((struct MusicComposer *)DAT_007cad44, numMeasures, shape, 2, 3, 0, 0, chordMap, &segment);
+    segment->vtable->SetRepeats(segment, 999);
+    ((struct MusicComposer *)DAT_007cad44)->vtable->ComposeTransition((struct MusicComposer *)DAT_007cad44, (struct MusicPerformance *)DAT_007cacdc, shape, 0, 0x2022, chordMap, &transition, 0, 0);
+    segment->vtable->Release(segment);
+    transition->vtable->Release(transition);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00496360
 LEGO_EXPORT void KLIBAUDIO_CreateAVISoundBuffer(void) { STUB(); }
