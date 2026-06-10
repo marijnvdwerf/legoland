@@ -99,6 +99,17 @@ struct ClipRect {
     int bottom;
 };
 
+struct TextCell {
+    /* 0x00 */ int width;
+    /* 0x04 */ int height;
+    /* 0x08 */ unsigned int format;
+    /* 0x0c */ char *name;
+    /* 0x10 */ unsigned int bg_color;
+    /* 0x14 */ unsigned int text_color;
+    /* 0x18 */ int font;
+    /* 0x1c */ struct Sprite *sprite;
+};
+
 struct TileSpriteEntry {
     struct FXSpriteList *src;
     unsigned short sprite;
@@ -1210,6 +1221,10 @@ extern unsigned int DAT_00667120;
 extern char DAT_00667128[512];
 // 0x006675b4
 extern unsigned int DAT_006675b4;
+// 0x006675b8
+extern int DAT_006675b8;
+// 0x006675c0
+extern struct TextCell DAT_006675c0[50];
 // 0x00667c10
 extern unsigned int DAT_00667c10;
 // 0x00667c28

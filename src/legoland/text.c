@@ -10,12 +10,7 @@
 #include "text.h"
 #include "llidb.h"
 
-#pragma intrinsic(strlen)
-
-struct TextSprite {
-    unsigned char pad_0[0x1c];
-    struct Sprite *field_1c;
-};
+#pragma intrinsic(strlen, strcmp)
 
 #include "image_sprite.h"
 
@@ -340,7 +335,25 @@ LEGO_EXPORT void BubbleHelp(unsigned int *table, unsigned int a2, unsigned int a
 LEGO_EXPORT void HTBubbleHelp(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00455a10
-void FUN_00455a10(void) { STUB(); }
+struct TextCell *FUN_00455a10(struct Sprite *sprite, int *out_index) {
+    int i = 0;
+    struct TextCell *cell;
+
+    if (0 < DAT_006675b8) {
+        cell = DAT_006675c0;
+        do {
+            if (cell->sprite == sprite) {
+                if (out_index != NULL) {
+                    *out_index = i;
+                }
+                return &DAT_006675c0[i];
+            }
+            i++;
+            cell++;
+        } while (i < DAT_006675b8);
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00455a50
 void FUN_00455a50(void) { STUB(); }
@@ -355,14 +368,29 @@ void FUN_00455c80(void) { STUB(); }
 void FUN_00455d40(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00455de0
-void FUN_00455de0(void) { STUB(); }
+struct TextCell *FUN_00455de0(char *name) {
+    int i = 0;
+    struct TextCell *cell;
+
+    if (0 < DAT_006675b8) {
+        cell = DAT_006675c0;
+        do {
+            if (strcmp(cell->name, name) == 0) {
+                return &DAT_006675c0[i];
+            }
+            i++;
+            cell++;
+        } while (i < DAT_006675b8);
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00455e50
 void FUN_00455e50(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00455ec0
-void FUN_00455ec0(struct TextSprite *param_0, unsigned int param_1, unsigned int param_2) {
-    PrintSprite(param_0->field_1c, param_1, param_2, 0, 0);
+void FUN_00455ec0(struct TextCell *cell, unsigned int x, unsigned int y) {
+    PrintSprite(cell->sprite, x, y, 0, 0);
 }
 
 // FUNCTION: LEGOLAND 0x00455ee0
