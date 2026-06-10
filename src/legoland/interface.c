@@ -532,13 +532,120 @@ unsigned char FUN_004751a0(struct IconNode *param_1, unsigned char flags) {
 }
 
 // FUNCTION: LEGOLAND 0x004752a0
-void FUN_004752a0(void) { STUB(); }
+unsigned char FUN_004752a0(struct IconNode *param_1, unsigned char flags) {
+    unsigned int saved_e34;
+    int result;
+
+    saved_e34 = DAT_00668e34;
+    if (DAT_008119b4 != 1 && (flags & 2) != 0) {
+        GamePad = GamePad & 0xffffebff;
+        EditMode = 0;
+        PlayInstanceOfSample(PTR_004b9314, 0, 1, 0);
+        if (DAT_004baff8 != 3) {
+            DAT_004baff8 = 3;
+            DAT_00668e34 = 0;
+            result = TestMenu(&DAT_004bafa8[15]);
+            if (result == 1) {
+                FUN_00474750();
+                DAT_00668eb0 = (unsigned int)param_1;
+                FUN_0046d680(param_1, DAT_007fdccc);
+                DAT_004bb0a0 = 0;
+                return 1;
+            }
+            DAT_00668e34 = saved_e34;
+            TestMenu(&DAT_004bafa8[DAT_004baff8 * 5]);
+            return 1;
+        }
+        FUN_00474750();
+        DAT_004bb0a0 = 1;
+        DAT_004baff8 = 5;
+        DAT_007fdd80 = 1;
+        DAT_007fdd84 = 1;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004753a0
-void FUN_004753a0(void) { STUB(); }
+unsigned char FUN_004753a0(struct IconNode *param_1, unsigned char flags) {
+    unsigned int saved_e34;
+    int saved_ff8;
+    int result;
+
+    saved_e34 = DAT_00668e34;
+    saved_ff8 = DAT_004baff8;
+    DAT_004baff8 = saved_ff8;
+    if (DAT_008119b4 != 1 && (flags & 2) != 0) {
+        GamePad = GamePad & 0xffffebff;
+        EditMode = 0;
+        PlayInstanceOfSample(PTR_004b9314, 0, 1, 0);
+        if (DAT_004baff8 != 2) {
+            DAT_004baff8 = 2;
+            DAT_00668e34 = 0;
+            result = TestMenu(&DAT_004bafa8[10]);
+            if (result == 1) {
+                FUN_00474750();
+                DAT_00668eb0 = (unsigned int)param_1;
+                FUN_0046d680(param_1, DAT_007fdcc8);
+                DAT_004bb098 = 0;
+                return 1;
+            }
+            DAT_004baff8 = saved_ff8;
+            if (saved_ff8 != 5) {
+                DAT_00668e34 = saved_e34;
+                TestMenu(&DAT_004bafa8[saved_ff8 * 5]);
+                return 1;
+            }
+        } else {
+            FUN_00474750();
+            DAT_004bb098 = 1;
+            DAT_004baff8 = 5;
+            DAT_007fdd80 = 1;
+            DAT_007fdd84 = 1;
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004754b0
-void FUN_004754b0(void) { STUB(); }
+unsigned char FUN_004754b0(struct IconNode *param_1, unsigned char flags) {
+    unsigned int saved_e34;
+    int saved_ff8;
+    int result;
+
+    saved_e34 = DAT_00668e34;
+    saved_ff8 = DAT_004baff8;
+    DAT_004baff8 = saved_ff8;
+    if (DAT_008119b4 != 1 && (flags & 2) != 0) {
+        GamePad = GamePad & 0xffffebff;
+        EditMode = 0;
+        PlayInstanceOfSample(PTR_004b9314, 0, 1, 0);
+        if (DAT_004baff8 != 1) {
+            DAT_004baff8 = 1;
+            DAT_00668e34 = 0;
+            result = TestMenu(&DAT_004bafa8[5]);
+            if (result == 1) {
+                FUN_00474750();
+                DAT_00668eb0 = (unsigned int)param_1;
+                FUN_0046d680(param_1, DAT_007fdcc4);
+                DAT_004bb09c = 0;
+                return 1;
+            }
+            DAT_004baff8 = saved_ff8;
+            if (saved_ff8 != 5) {
+                DAT_00668e34 = saved_e34;
+                TestMenu(&DAT_004bafa8[saved_ff8 * 5]);
+                return 1;
+            }
+        } else {
+            FUN_00474750();
+            DAT_004bb09c = 1;
+            DAT_004baff8 = 5;
+            DAT_007fdd80 = 1;
+            DAT_007fdd84 = 1;
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004755c0
 void FUN_004755c0(void *data) {
