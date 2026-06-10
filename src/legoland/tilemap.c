@@ -5,7 +5,10 @@
 #include "pathfind.h"
 #include "tilemap.h"
 #include "llidb.h"
+#include "gamemap.h"
 #include "globals.h"
+
+extern void FUN_004779d0(struct Point *p);
 
 struct MapTile {
     /* 0x00 */ unsigned char pad_0[8];
@@ -1312,8 +1315,106 @@ int FUN_0045d730(struct MapRect *param) {
     return idx;
 }
 
+struct PathItem {
+    /* 0x00 */ int x0;
+    /* 0x04 */ int y0;
+    /* 0x08 */ int x1;
+    /* 0x0c */ int y1;
+    /* 0x10 */ struct PathItem *next;
+};
+
 // FUNCTION: LEGOLAND 0x0045d770
-void FUN_0045d770(void) { STUB(); }
+void FUN_0045d770(struct Cursor *param_1) {
+    unsigned char *pb;
+    struct Cursor *cur;
+    struct Cursor *chain;
+    struct PathItem *item;
+    int i;
+    int x;
+    int y;
+    struct MapRect rect;
+    struct Point local_18;
+
+    cur = param_1;
+    if (param_1 != NULL) {
+        while ((cur->field_1828 & 0x1000) == 0) {
+            cur = (struct Cursor *)cur->field_1830;
+            if (cur == NULL) {
+                return;
+            }
+        }
+        if (cur != NULL) {
+            DAT_00667d3c = 0;
+            rect.x0 = cur->field_1414[0] + cur->field_1404;
+            rect.y0 = cur->field_1414[1] + cur->field_1408;
+            rect.x1 = cur->field_1414[2] + cur->field_1404;
+            rect.y1 = cur->field_1414[3] + cur->field_1408;
+            FUN_0045d730(&rect);
+            do {
+                chain = param_1;
+                if ((param_1->field_1828 & 0x1000) != 0) {
+                    break;
+                }
+                rect.x0 = param_1->field_1404 + param_1->field_1414[0];
+                rect.y0 = param_1->field_1414[1] + param_1->field_1408;
+                rect.x1 = param_1->field_1414[2] + param_1->field_1404;
+                rect.y1 = param_1->field_1414[3] + param_1->field_1408;
+                FUN_0045d5d0(&rect);
+                for (item = (struct PathItem *)&param_1->field_1414; item != NULL; item = item->next) {
+                    rect.x0 = param_1->field_1404 + item->x0;
+                    rect.y0 = item->y0 + param_1->field_1408;
+                    rect.x1 = item->x1 + param_1->field_1404;
+                    rect.y1 = item->y1 + param_1->field_1408;
+                    FUN_0045d5d0(&rect);
+                }
+                param_1 = (struct Cursor *)param_1->field_1830;
+            } while (param_1 != NULL);
+            if (0 < DAT_00667d3c) {
+                i = 0;
+                do {
+                    y = DAT_00801a80[i].y0;
+                    if (y <= DAT_00801a80[i].y1) {
+                        do {
+                            x = DAT_00801a80[i].x0;
+                            if (x <= DAT_00801a80[i].x1) {
+                                do {
+                                    local_18.x = x;
+                                    local_18.y = y;
+                                    FUN_004779d0(&local_18);
+                                    pb = (unsigned char *)((char *)GameMap[y] + 0x10 + x * 0x14);
+                                    *pb = *pb & 0xfc;
+                                    AddPathTileGFX(&local_18, *(unsigned short *)PathSprite);
+                                    DAT_00668610 = DAT_00668610 | 0x10;
+                                    AddPathSquare((struct InstancePos *)&local_18);
+                                    x = x + 1;
+                                } while (x <= DAT_00801a80[i].x1);
+                            }
+                            y = y + 1;
+                        } while (y <= DAT_00801a80[i].y1);
+                    }
+                    i = i + 1;
+                } while (i < DAT_00667d3c);
+            }
+            DAT_0066b46c = 1;
+            y = chain->field_1414[1] + 1 + chain->field_1408;
+            if (y <= chain->field_1408 + -1 + chain->field_1414[3]) {
+                do {
+                    x = chain->field_1414[0] + 1 + chain->field_1404;
+                    if (x <= chain->field_1414[2] + -1 + chain->field_1404) {
+                        do {
+                            local_18.x = x;
+                            local_18.y = y;
+                            AddPathTileGFX(&local_18, *(unsigned short *)PathSprite);
+                            x = x + 1;
+                        } while (x <= chain->field_1414[2] + -1 + chain->field_1404);
+                    }
+                    y = y + 1;
+                } while (y <= chain->field_1408 + -1 + chain->field_1414[3]);
+            }
+            DAT_0066b46c = 1;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045da60
 LEGO_EXPORT unsigned short RestoreBaseMap(int tile_x, int row_y) {
