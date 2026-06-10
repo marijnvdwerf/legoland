@@ -346,7 +346,25 @@ int FUN_004661d0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00466360
-void FUN_00466360(int a, int b) { STUB(); }
+void FUN_00466360(int a, int b) {
+    short w;
+    short h;
+
+    if (DAT_00668208 == NULL) {
+        // STRING: LEGOLAND 0x004b9d30
+        DAT_00668208 = LoadSprite("Watch.lls", 4);
+        if (DAT_00668208 == NULL) {
+            return;
+        }
+    }
+    DAT_00668204 = 1;
+    w = DAT_00668208->width;
+    h = DAT_00668208->height;
+    DAT_007fea30.left = a;
+    DAT_007fea30.right = w + a;
+    DAT_007fea30.top = b;
+    DAT_007fea30.bottom = h + b;
+}
 
 // FUNCTION: LEGOLAND 0x004663c0
 void FUN_004663c0(void) {
