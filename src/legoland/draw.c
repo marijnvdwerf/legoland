@@ -7,6 +7,7 @@
 #include "globals.h"
 
 #include "draw.h"
+#include "gfx.h"
 #include "text.h"
 #include "wndenv.h"
 
@@ -379,7 +380,50 @@ LEGO_EXPORT void PopTarget(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00466640
-LEGO_EXPORT int RecreateSprite(struct Sprite *sprite) { STUB(); }
+LEGO_EXPORT int RecreateSprite(struct Sprite *sprite) {
+    DDSURFACEDESC desc;
+    DDCOLORKEY colorkey;
+    LPDIRECTDRAW2 ddraw2;
+    LPDIRECTDRAWSURFACE surface;
+
+    desc.dwSize = 0x6c;
+    desc.dwWidth = (short)sprite->width;
+    desc.dwFlags = 7;
+    desc.ddsCaps.dwCaps = 0x40;
+    desc.dwHeight = (short)sprite->height;
+    if ((sprite->flags & 0x10) == 0) {
+        ddraw2 = (LPDIRECTDRAW2)DDRAWENV[1];
+        if (ddraw2->lpVtbl->CreateSurface(ddraw2, &desc, (LPDIRECTDRAWSURFACE *)&sprite->surface, NULL) == 0) {
+            goto created;
+        }
+    }
+    desc.dwWidth = (short)sprite->width;
+    desc.dwHeight = (short)sprite->height;
+    desc.dwSize = 0x6c;
+    desc.dwFlags = 7;
+    desc.ddsCaps.dwCaps = 0x840;
+    ddraw2 = (LPDIRECTDRAW2)DDRAWENV[1];
+    if (ddraw2->lpVtbl->CreateSurface(ddraw2, &desc, (LPDIRECTDRAWSURFACE *)&sprite->surface, NULL) != 0) {
+        ddraw2 = (LPDIRECTDRAW2)DDRAWENV[1];
+        if (ddraw2->lpVtbl->Compact(ddraw2) == 0) {
+            ((LPDIRECTDRAW2)DDRAWENV[1])->lpVtbl->CreateSurface((LPDIRECTDRAW2)DDRAWENV[1], &desc, (LPDIRECTDRAWSURFACE *)&sprite->surface, NULL);
+        }
+        return 0;
+    }
+created:
+    if ((sprite->flags & 0x80) != 0) {
+        colorkey.dwColorSpaceLowValue = GetNearestColour(0xff, 0, 0xff);
+        surface = (LPDIRECTDRAWSURFACE)sprite->surface;
+        colorkey.dwColorSpaceHighValue = colorkey.dwColorSpaceLowValue;
+        surface->lpVtbl->SetColorKey(surface, 8, &colorkey);
+        return 1;
+    }
+    colorkey.dwColorSpaceLowValue = GetTransparentColour();
+    surface = (LPDIRECTDRAWSURFACE)sprite->surface;
+    colorkey.dwColorSpaceHighValue = colorkey.dwColorSpaceLowValue;
+    surface->lpVtbl->SetColorKey(surface, 8, &colorkey);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00466770
 void FUN_00466770(void) { STUB(); }
