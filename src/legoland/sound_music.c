@@ -882,10 +882,59 @@ advance:
 }
 
 // FUNCTION: LEGOLAND 0x00496c20
-LEGO_EXPORT void UnSourceAndFadeSample(void) { STUB(); }
+LEGO_EXPORT void UnSourceAndFadeSample(struct Sample *sample, unsigned int fade) {
+    int vol;
+
+    sample->flags |= 8;
+    sample->fade = fade;
+    sample->field_c = 0;
+    sample->buffer->vtable->method_0x18(sample->buffer, &vol);
+    // STRING: LEGOLAND 0x004bfe58
+    DBPrintf("Fading out Sample %s (%x) [Current Vol = %d]\n", ((struct SampleDef *)sample->active)->field_10, sample, vol);
+    if ((sample->flags & 2) != 0) {
+        sample->flags &= 0xfffd;
+        // STRING: LEGOLAND 0x004bfe30
+        DBPrintf("Sample should Kill immediately (%x)\n", sample);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00496c80
-LEGO_EXPORT void UnSourceAndFadeAllSamplesFromSource(void *source, int fade) { STUB(); }
+LEGO_EXPORT void UnSourceAndFadeAllSamplesFromSource(void *source, int fade) {
+    struct SampleSource *src;
+    struct Sample *sample;
+    unsigned int matched;
+
+    src = (struct SampleSource *)source;
+    sample = (struct Sample *)DAT_007988cc;
+    if (sample == 0) {
+        return;
+    }
+    matched = fade;
+    do {
+        if (sample->field_c == src->type) {
+            switch (src->type) {
+            case 1:
+                matched = sample->field_10 == src->field_4;
+            default:
+                if (matched != 0) {
+                    goto fade_it;
+                }
+                break;
+            case 2:
+            case 3:
+                if (sample->field_14 != src->field_8 || sample->field_18 != src->field_c) {
+                    matched = 0;
+                    break;
+                }
+            case 0:
+                matched = 1;
+fade_it:
+                UnSourceAndFadeSample(sample, fade);
+            }
+        }
+        sample = sample->next;
+    } while (sample != 0);
+}
 
 // FUNCTION: LEGOLAND 0x00496d10
 void FUN_00496d10(struct Sample *sample) {
@@ -917,7 +966,14 @@ LEGO_EXPORT struct Sample *PlayInstanceOfSample(void *def, unsigned int looping,
 }
 
 // FUNCTION: LEGOLAND 0x00496db0
-LEGO_EXPORT void AddSFX_Callback(void) { STUB(); }
+LEGO_EXPORT void AddSFX_Callback(struct CallbackEntry *entry, unsigned int delay, unsigned int (*callback)(struct CallbackEntry *self)) {
+    unsigned int now;
+
+    now = GetTicks();
+    entry->timeout = now + delay;
+    entry->flags |= 0x10;
+    entry->callback = callback;
+}
 
 // FUNCTION: LEGOLAND 0x00496dd0
 LEGO_EXPORT void Load_FXList(const unsigned char *list, unsigned int count) { STUB(); }
