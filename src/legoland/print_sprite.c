@@ -42,6 +42,15 @@ struct SpriteGroup {
     /* 0x10 */ int *yoffs;
 };
 
+struct SpriteExArg {
+    /* 0x00 */ struct Sprite *sprite;
+    /* 0x04 */ int xoff;
+    /* 0x08 */ int yoff;
+    /* 0x0c */ int field_c;
+    /* 0x10 */ unsigned int mode;
+    /* 0x14 */ unsigned int mask;
+};
+
 // FUNCTION: LEGOLAND 0x004853a0
 LEGO_EXPORT unsigned int PrintSprite(struct Sprite *sprite, unsigned int x, unsigned int y, unsigned int param_4, int *param_5)
 {
@@ -182,7 +191,81 @@ void FUN_004855d0(struct Sprite *sprite, int *out)
 }
 
 // FUNCTION: LEGOLAND 0x004856a0
-LEGO_EXPORT void PrintSpriteEx(void) { STUB(); }
+LEGO_EXPORT unsigned int PrintSpriteEx(struct SpriteExArg *arg, int x, int y)
+{
+    struct Sprite *sprite;
+    struct SpriteGroup *group;
+    unsigned int mask;
+    unsigned int result;
+    int i;
+    int xoff;
+    int yoff;
+
+    result = 1;
+    sprite = arg->sprite;
+    x = x + arg->xoff / 2;
+    y = y + arg->yoff / 2;
+    if ((sprite->flags & 0x8000) == 0) {
+        if (arg->mode != 0) {
+            if (*GetVRAMAddress(sprite) == 0) {
+                if (FUN_00499500(sprite) == 0) {
+                    return 0;
+                }
+                return RenderSpriteX(sprite, x, y, arg->mode);
+            }
+            return RenderSpriteX(sprite, x, y, arg->mode);
+        }
+        if (*GetVRAMAddress(sprite) == 0 && FUN_00499500(sprite) == 0) {
+            return 0;
+        }
+        return RenderSprite(sprite, x, y);
+    }
+    mask = arg->mask;
+    group = (struct SpriteGroup *)sprite->image;
+    i = 0;
+    if (group->count <= 0) {
+        return result;
+    }
+    do {
+        if ((mask & 1) != 0) {
+            xoff = group->xoffs[i];
+            yoff = group->yoffs[i];
+            if (xoff < 0) {
+                xoff = -(-xoff >> 1);
+            } else {
+                xoff = xoff >> 1;
+            }
+            if (yoff < 0) {
+                yoff = -(-yoff >> 1);
+            } else {
+                yoff = yoff >> 1;
+            }
+            if (arg->mode != 0) {
+                if (*GetVRAMAddress(group->subs[i]) == 0) {
+                    if (FUN_00499500(((struct SpriteGroup *)sprite->image)->subs[i]) != 0) {
+                        RenderSpriteX(((struct SpriteGroup *)sprite->image)->subs[i], xoff + x, yoff + y, arg->mode);
+                    }
+                } else {
+                    RenderSpriteX(((struct SpriteGroup *)sprite->image)->subs[i], xoff + x, yoff + y, arg->mode);
+                }
+            } else {
+                if (*GetVRAMAddress(group->subs[i]) == 0) {
+                    if (FUN_00499500(((struct SpriteGroup *)sprite->image)->subs[i]) == 0) {
+                        goto cont;
+                    }
+                    RenderSprite(((struct SpriteGroup *)sprite->image)->subs[i], xoff + x, yoff + y);
+                } else {
+                    RenderSprite(((struct SpriteGroup *)sprite->image)->subs[i], xoff + x, yoff + y);
+                }
+            }
+        }
+    cont:
+        group = (struct SpriteGroup *)sprite->image;
+        i = i + 1;
+        mask = (int)mask >> 1;
+    } while (i < group->count);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004858e0
 LEGO_EXPORT unsigned int PrintTiledSprite(struct Sprite *sprite, int param_2, int param_3, int param_4, int param_5, int param_6, int param_7)

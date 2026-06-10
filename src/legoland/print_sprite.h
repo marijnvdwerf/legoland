@@ -1,14 +1,17 @@
 #pragma once
 
+#include <windows.h>
+
 #include "legoland.h"
 
 struct Person;
 struct Sprite;
 struct HitInfo;
+struct SpriteExArg;
 
 LEGO_EXPORT void ResetHitInfo(void);
 LEGO_EXPORT unsigned int PrintSprite(struct Sprite *sprite, unsigned int x, unsigned int y, unsigned int param_4, int *param_5);
-LEGO_EXPORT unsigned int PrintSpriteEx(struct Sprite **group, int x, int y);
+LEGO_EXPORT unsigned int PrintSpriteEx(struct SpriteExArg *arg, int x, int y);
 LEGO_EXPORT unsigned int PrintTiledSprite(struct Sprite *sprite, int param_2, int param_3, int param_4, int param_5, int param_6, int param_7);
 LEGO_EXPORT unsigned int PrintScaledSprite(struct Sprite *sprite, int param_2, int param_3, int param_4, int param_5);
 LEGO_EXPORT void ClearPrintList(void);
