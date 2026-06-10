@@ -71,7 +71,40 @@ LEGO_EXPORT void **GetVRAMAddress(struct Sprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x00496f30
-unsigned int *FUN_00496f30(void) { STUB(); }
+struct Image **FUN_00496f30(void) {
+    struct Image **new_array;
+    int i;
+
+    if (detail_images_count == detail_images_capacity) {
+        if (detail_images == NULL) {
+            new_array = (struct Image **)calloc(0x80, 4);
+        } else {
+            new_array = (struct Image **)realloc(detail_images, detail_images_capacity * 4 + 0x200);
+            if (new_array == NULL) {
+                return NULL;
+            }
+            memset(new_array + detail_images_capacity, 0, 0x80 * sizeof(struct Image *));
+        }
+        if (new_array != NULL) {
+            detail_images = new_array;
+            detail_images_capacity += 0x80;
+            return new_array + detail_images_capacity - 0x80;
+        }
+    } else {
+        new_array = detail_images;
+        i = 0;
+        if (0 < (int)detail_images_capacity) {
+            while (i < (int)detail_images_capacity) {
+                if (*new_array == NULL) {
+                    return new_array;
+                }
+                i++;
+                new_array++;
+            }
+        }
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00496fc0
 int FUN_00496fc0(struct Image *image) {
@@ -209,7 +242,64 @@ LEGO_EXPORT void MarkSpriteResized(struct Sprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x00497160
-LEGO_EXPORT void RemakeAllDetailDependentSprites(void) { STUB(); }
+LEGO_EXPORT void RemakeAllDetailDependentSprites(void) {
+    unsigned short uVar1;
+    int iVar3;
+    struct Sprite *sprite;
+    struct Sprite *node;
+
+    sprite = sprite_list;
+    node = sprite_list;
+    if (sprite_list != NULL) {
+        do {
+            if ((node->flags & 0x400) == 0) {
+                struct LayerHost *host = node->surface;
+                if (host != NULL) {
+                    host->vtable->func_8(host);
+                    sprite = sprite_list;
+                }
+            }
+            node = node->next;
+        } while (node != NULL);
+        for (; sprite != NULL; sprite = sprite->next) {
+            if ((sprite->flags & 0x400) == 0) {
+                *(short *)&sprite->src_x >>= 1;
+                uVar1 = sprite->src_x;
+                *(short *)&sprite->width >>= 1;
+                *(short *)&sprite->height >>= 1;
+                *(short *)&sprite->src_y >>= 1;
+                if ((short)uVar1 < 0) {
+                    sprite->src_x = 0;
+                    sprite->width = sprite->width + uVar1;
+                }
+                iVar3 = (int)sprite->image->width;
+                if ((int)(short)sprite->src_x + (int)(short)sprite->width > iVar3) {
+                    if ((int)(short)sprite->src_x > iVar3 - 1) {
+                        sprite->src_x = sprite->image->width - 1;
+                    }
+                    sprite->width = sprite->image->width - sprite->src_x;
+                }
+                if ((short)sprite->src_y < 0) {
+                    uVar1 = sprite->src_y;
+                    sprite->src_y = 0;
+                    sprite->height = sprite->height + uVar1;
+                }
+                iVar3 = (int)sprite->image->height;
+                if ((int)(short)sprite->src_y + (int)(short)sprite->height > iVar3) {
+                    if ((int)(short)sprite->src_y > iVar3 - 1) {
+                        sprite->src_y = sprite->image->height - 1;
+                    }
+                    sprite->height = sprite->image->height - sprite->src_y;
+                }
+                if (sprite->surface != 0) {
+                    sprite->surface = 0;
+                    FUN_00499500(sprite);
+                }
+            }
+            MarkSpriteResized(sprite);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00497280
 LEGO_EXPORT struct Image *CreateSourceImage(const char *str, unsigned char type) {
@@ -259,7 +349,70 @@ LEGO_EXPORT int ReloadImageBitmap(struct Image *image) {
 }
 
 // FUNCTION: LEGOLAND 0x00497380
-LEGO_EXPORT void ReloadImageBitmapAndBuildSprites(struct Image *image) { STUB(); }
+LEGO_EXPORT void ReloadImageBitmapAndBuildSprites(struct Image *image) {
+    unsigned short uVar1;
+    struct Sprite *sprite;
+    int bVar4;
+    int iVar5;
+    unsigned int local_buf[6];
+
+    bVar4 = 0;
+    if ((image->field_14 == 2 || image->field_14 == 3) &&
+        LLSStop((unsigned int)image->data) != 0) {
+        bVar4 = 1;
+        memcpy(local_buf, image->data, 24);
+    }
+    if (image->aux != NULL) {
+        free(image->aux);
+    }
+    FreeBitmapResources(image);
+    iVar5 = __BMPLoader(image);
+    if (iVar5 == 0) {
+        return;
+    }
+    if (bVar4) {
+        *(unsigned short *)image->data = (unsigned short)local_buf[0];
+        ((unsigned short *)image->data)[9] = *(unsigned short *)((char *)local_buf + 18);
+        ((unsigned int *)image->data)[5] = ((unsigned int *)image->data)[5] | (local_buf[5] & 4);
+        LLSPlay((struct LLS *)image->data, (unsigned int)image);
+    }
+    sprite = sprite_list;
+    while (sprite->image != image) {
+        sprite = sprite->next;
+    }
+    if ((sprite->flags & 0x400) == 0 && sprite->image == image) {
+        *(short *)&sprite->src_x >>= 1;
+        uVar1 = sprite->src_x;
+        *(short *)&sprite->width >>= 1;
+        *(short *)&sprite->height >>= 1;
+        *(short *)&sprite->src_y >>= 1;
+        if ((short)uVar1 < 0) {
+            sprite->src_x = 0;
+            sprite->width = sprite->width + uVar1;
+        }
+        iVar5 = (int)sprite->image->width;
+        if ((int)(short)sprite->src_x + (int)(short)sprite->width > iVar5) {
+            if ((int)(short)sprite->src_x > iVar5 - 1) {
+                sprite->src_x = sprite->image->width - 1;
+            }
+            sprite->width = sprite->image->width - sprite->src_x;
+        }
+        if ((short)sprite->src_y < 0) {
+            uVar1 = sprite->src_y;
+            sprite->src_y = 0;
+            sprite->height = sprite->height + uVar1;
+        }
+        iVar5 = (int)sprite->image->height;
+        if ((int)(short)sprite->src_y + (int)(short)sprite->height > iVar5) {
+            if ((int)(short)sprite->src_y > iVar5 - 1) {
+                sprite->src_y = sprite->image->height - 1;
+            }
+            sprite->height = sprite->image->height - sprite->src_y;
+        }
+        FUN_00499500(sprite);
+        MarkSpriteResized(sprite);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00497500
 LEGO_EXPORT unsigned short ReferenceImage(struct Image *image) {
@@ -626,7 +779,58 @@ LEGO_EXPORT int KillSprite(struct Sprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x00497c30
-LEGO_EXPORT void GetSprite(void) { STUB(); }
+LEGO_EXPORT int GetSprite(unsigned int *param_1, struct Sprite *param_2) {
+    int iVar1;
+    unsigned int locals[4];
+    unsigned char surfDesc[0x6c];
+
+    locals[0] = 0;
+    locals[1] = 0;
+    locals[2] = 0;
+    locals[3] = 0;
+    *(unsigned int *)surfDesc = 0x6c;
+    if (param_2 != NULL) {
+        locals[2] = (unsigned int)(short)param_2->width;
+        param_1[1] = locals[2];
+        locals[3] = (unsigned int)(short)param_2->height;
+        param_1[2] = locals[3];
+        param_1[4] = (unsigned int)param_2->surface;
+        iVar1 = (*(int (__stdcall **)(void *, unsigned int *, unsigned char *, int, int))(*(unsigned int *)param_2->surface + 0x64))(
+            param_2->surface, locals, surfDesc, 1, 0);
+        if (iVar1 == (int)0x887601c2) {
+            (*(void (__stdcall **)(void *))(*(unsigned int *)param_2->surface + 0x6c))(param_2->surface);
+            iVar1 = (*(int (__stdcall **)(void *, unsigned int *, unsigned char *, int, int))(*(unsigned int *)param_2->surface + 0x64))(
+                param_2->surface, locals, surfDesc, 1, 0);
+        }
+        if (iVar1 != 0) {
+            return 0;
+        }
+    } else {
+        locals[2] = (unsigned int)*(unsigned short *)lpConfig;
+        param_1[1] = locals[2];
+        locals[3] = (unsigned int)*((unsigned short *)lpConfig + 1);
+        param_1[2] = locals[3];
+        param_1[4] = (unsigned int)DDRAWENV[194];
+        iVar1 = (*(int (__stdcall **)(void *, unsigned int *, unsigned char *, int, int))(*(unsigned int *)DDRAWENV[194] + 0x64))(
+            (void *)DDRAWENV[194], locals, surfDesc, 1, 0);
+        if (iVar1 == (int)0x887601c2) {
+            (*(void (__stdcall **)(void *))(*(unsigned int *)DDRAWENV[194] + 0x6c))((void *)DDRAWENV[194]);
+            iVar1 = (*(int (__stdcall **)(void *, unsigned int *, unsigned char *, int, int))(*(unsigned int *)DDRAWENV[194] + 0x64))(
+                (void *)DDRAWENV[194], locals, surfDesc, 1, 0);
+        }
+        if (iVar1 != 0) {
+            return 0;
+        }
+    }
+    *param_1 = *(unsigned int *)(surfDesc + 0x10);
+    param_1[3] = *(unsigned int *)(surfDesc + 0x24);
+    if (DAT_00668088 == 0) {
+        param_1[5] = 1;
+    } else {
+        param_1[5] = 2;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00497d90
 LEGO_EXPORT void SetSubSpriteSource(struct Sprite *sprite, unsigned short a, unsigned short b, unsigned short c, unsigned short d) {
