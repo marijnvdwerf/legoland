@@ -347,7 +347,24 @@ LEGO_EXPORT int RenderingComplete(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00466560
-LEGO_EXPORT void PushSetTarget(struct Sprite *sprite) { STUB(); }
+LEGO_EXPORT void PushSetTarget(struct Sprite *sprite) {
+    LPDIRECTDRAWSURFACE surface;
+
+    DAT_00668164[DAT_006681e4] = DAT_00668144;
+    DAT_006681e4 = DAT_006681e4 + 1;
+    if (DAT_00668144 != 0) {
+        surface = (LPDIRECTDRAWSURFACE)renderEngine;
+        if (surface->lpVtbl->Unlock(surface, DAT_0066809c.pixels) == 0x887601c2) {
+            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)renderEngine);
+            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Unlock((LPDIRECTDRAWSURFACE)renderEngine, DAT_0066809c.pixels);
+        }
+    }
+    DAT_00668144 = 0;
+    renderEngineTargets[renderEngineTargetIdx] = renderEngine;
+    renderEngineTargetIdx = renderEngineTargetIdx + 1;
+    renderEngine = sprite->surface;
+    FUN_004640f0();
+}
 
 // FUNCTION: LEGOLAND 0x00466600
 LEGO_EXPORT void PopTarget(void) {
