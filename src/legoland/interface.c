@@ -511,7 +511,23 @@ LEGO_EXPORT void UpdateMenu(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004758e0
-LEGO_EXPORT void RedrawObjectList(void) { STUB(); }
+LEGO_EXPORT void RedrawObjectList(struct InterfacePanel *panel, int param_2, int delta) {
+    int top;
+
+    if (delta == 0) {
+        MoveIcons(0xffff, panel->group, 0, 0);
+        return;
+    }
+    top = panel->field_10;
+    if (top + delta > panel->field_20) {
+        delta = panel->field_20 - top;
+    } else if (panel->field_18 + delta < panel->field_28) {
+        delta = panel->field_28 - panel->field_18;
+    }
+    panel->field_10 = top + delta;
+    panel->field_18 = panel->field_18 + delta;
+    MoveIcons(0xffff, panel->group, (short)param_2, (short)delta);
+}
 
 // FUNCTION: LEGOLAND 0x00475960
 LEGO_EXPORT void MakeUpObjectList(int param_1, int param_2, int param_3, int param_4) { STUB(); }

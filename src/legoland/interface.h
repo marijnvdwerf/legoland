@@ -3,6 +3,22 @@
 #include "legoland.h"
 
 struct CastleObj;
+struct IconNode;
+
+struct InterfacePanel {
+    /* 0x00 */ short group;
+    /* 0x02 */ unsigned char pad_2[0x04 - 0x02];
+    /* 0x04 */ int field_4;
+    /* 0x08 */ struct IconNode *icon;
+    /* 0x0c */ int field_c;
+    /* 0x10 */ int field_10;
+    /* 0x14 */ int field_14;
+    /* 0x18 */ int field_18;
+    /* 0x1c */ int field_1c;
+    /* 0x20 */ int field_20;
+    /* 0x24 */ int field_24;
+    /* 0x28 */ int field_28;
+};
 
 void FUN_00474880(void);
 void FUN_004748a0(void *a);
@@ -27,3 +43,4 @@ LEGO_EXPORT void DisableSidePanelIcons(void);
 LEGO_EXPORT void EnableSidePanelIcons(void);
 LEGO_EXPORT void ListChildrenBar(void *node, int group, short x, short y);
 LEGO_EXPORT void CloseChildrenBar(void *node, int group, short x, short y);
+LEGO_EXPORT void RedrawObjectList(struct InterfacePanel *panel, int param_2, int delta);

@@ -3,6 +3,7 @@
 #include "legoland.h"
 
 struct Sprite;
+struct InfoSource;
 
 struct IconNode {
     /* 0x00 */ struct IconNode *next;
@@ -76,3 +77,10 @@ void FUN_0046db40(void);
 int FUN_0046df60(int param);
 LEGO_EXPORT void RenderHelpIcons(void);
 void FUN_0046fb40(unsigned int group);
+LEGO_EXPORT void MoveIcons(unsigned short mask, unsigned short id, short dx, short dy);
+LEGO_EXPORT struct IconNode *FindIcon(unsigned short id);
+LEGO_EXPORT void SetNewGroup_Callbacks(void *param_1, void *param_2, void *param_3);
+LEGO_EXPORT struct IconNode *AddFullScreenIcon(void *icon);
+LEGO_EXPORT struct IconNode *SetupInterfacePanelIcons(unsigned int param_1, int param_2, int param_3, int param_4, int param_5, int param_6);
+LEGO_EXPORT struct IconNode *AddGBarClassIcon(unsigned int param_1, struct InfoSource *src, int a3, int a4, int a5, short a6);
+LEGO_EXPORT int RenderBuildObjectIcon(struct IconNode *node);
