@@ -112,7 +112,63 @@ LEGO_EXPORT void Load_Interface_ControlIcons(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004743b0
-LEGO_EXPORT void UnLoad_Interface_ControlIcons(void) { STUB(); }
+LEGO_EXPORT void UnLoad_Interface_ControlIcons(void) {
+    if (DAT_00668ea4 != 0) {
+        DAT_007fdd70[0] = NULL;
+        DAT_007fdd70[1] = NULL;
+        DAT_00668ea4 = 0;
+        DAT_007fdd70[2] = NULL;
+        DAT_007fdd70[3] = NULL;
+        KillSprite(DAT_00668e68);
+        DAT_00668e68 = NULL;
+        KillSprite(DAT_00668e6c);
+        DAT_00668e6c = NULL;
+        KillSprite(DAT_00668e70);
+        DAT_00668e70 = NULL;
+        KillSprite(DAT_007fdcd0);
+        DAT_007fdcd0 = NULL;
+        KillSprite(DAT_007fdd50);
+        DAT_007fdd50 = NULL;
+        KillSprite(DAT_007fdcd4);
+        DAT_007fdcd4 = NULL;
+        KillSprite(DAT_007fdd54);
+        DAT_007fdd54 = NULL;
+        KillSprite(DAT_007fdcd8);
+        DAT_007fdcd8 = NULL;
+        KillSprite(DAT_007fdd58);
+        DAT_007fdd58 = NULL;
+        KillSprite(DAT_007fdcdc);
+        DAT_007fdcdc = NULL;
+        KillSprite(DAT_007fdd5c);
+        DAT_007fdd5c = NULL;
+        KillSprite(DAT_007fdce0);
+        DAT_007fdce0 = NULL;
+        KillSprite(DAT_007fdd60);
+        DAT_007fdd60 = NULL;
+        KillSprite(DAT_00668e7c);
+        DAT_00668e7c = NULL;
+        KillSprite(DAT_00668e80);
+        DAT_00668e80 = NULL;
+        KillSprite(DAT_00668e74);
+        DAT_00668e74 = NULL;
+        KillSprite(DAT_00668e78);
+        DAT_00668e78 = NULL;
+        KillSprite(DAT_00668e84);
+        DAT_00668e84 = NULL;
+        KillSprite(DAT_00668e88);
+        DAT_00668e88 = NULL;
+        KillSprite(DAT_00668e8c);
+        DAT_00668e8c = NULL;
+        KillSprite(DAT_00668e90);
+        DAT_00668e90 = NULL;
+        KillSprite(DAT_00668e94);
+        DAT_00668e94 = NULL;
+        KillSprite(DAT_00668e98);
+        DAT_00668e98 = NULL;
+        KillSprite(DAT_00668ea0);
+        DAT_00668ea0 = NULL;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00474590
 void FUN_00474590(void) {
