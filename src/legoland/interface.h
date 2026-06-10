@@ -25,3 +25,5 @@ struct CastleObj *FUN_004775b0(unsigned int size, unsigned int a, unsigned int b
 void FUN_004775d0(unsigned int param);
 LEGO_EXPORT void DisableSidePanelIcons(void);
 LEGO_EXPORT void EnableSidePanelIcons(void);
+LEGO_EXPORT void ListChildrenBar(void *node, int group, short x, short y);
+LEGO_EXPORT void CloseChildrenBar(void *node, int group, short x, short y);

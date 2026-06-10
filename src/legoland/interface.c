@@ -54,6 +54,9 @@ struct QueryNode {
 #include "image_sprite.h"
 #include "stream.h"
 
+char FUN_00475c50(int param_1, unsigned char param_2);
+char FUN_00475c90(int param_1, unsigned char param_2);
+
 
 // FUNCTION: LEGOLAND 0x004741f0
 LEGO_EXPORT void Load_Interface_ControlIcons(void) {
@@ -514,10 +517,30 @@ LEGO_EXPORT void RedrawObjectList(void) { STUB(); }
 LEGO_EXPORT void MakeUpObjectList(int param_1, int param_2, int param_3, int param_4) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00475bb0
-LEGO_EXPORT void ListChildrenBar(void) { STUB(); }
+LEGO_EXPORT void ListChildrenBar(void *node, int group, short x, short y) {
+    struct SpriteIcon *icon;
+
+    // STRING: LEGOLAND 0x004bb4a8
+    icon = LoadSpriteIcon("ListChildrenBar.lls", 4, x, y, group);
+    icon->field_3c = 100;
+    icon->field_38 = (unsigned int)GetString(100);
+    icon->field_34 |= 0x2002;
+    icon->event_handler = (unsigned char (*)(unsigned int, unsigned int))FUN_00475c50;
+    icon->field_18 = (struct Sprite *)node;
+}
 
 // FUNCTION: LEGOLAND 0x00475c00
-LEGO_EXPORT void CloseChildrenBar(void) { STUB(); }
+LEGO_EXPORT void CloseChildrenBar(void *node, int group, short x, short y) {
+    struct SpriteIcon *icon;
+
+    // STRING: LEGOLAND 0x004bb4bc
+    icon = LoadSpriteIcon("CloseChildrenBar.lls", 4, x, y, group);
+    icon->field_3c = 0x65;
+    icon->field_38 = (unsigned int)GetString(0x65);
+    icon->field_34 |= 0x2002;
+    icon->event_handler = (unsigned char (*)(unsigned int, unsigned int))FUN_00475c90;
+    icon->field_18 = (struct Sprite *)node;
+}
 
 // FUNCTION: LEGOLAND 0x00475c50
 char FUN_00475c50(int param_1, unsigned char param_2) {
