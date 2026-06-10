@@ -24,6 +24,7 @@ struct PopUp {
 #include "help.h"
 #include "print_sprite.h"
 #include "profile_io.h"
+#include "profile.h"
 #include "resource.h"
 #include "timer.h"
 
@@ -797,7 +798,25 @@ void FUN_004910f0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004911c0
-void FUN_004911c0(const char *a, const char *b) { STUB(); }
+unsigned int FUN_004911c0(const char *a, const char *b) {
+    if (FUN_004907a0(a) != 0) {
+        if (b != 0) {
+            FUN_00490800(b);
+        }
+        DAT_00668e38 = 1;
+        DAT_008119b4 = 2;
+        DAT_0080ff84 = 0xffffffff;
+        DAT_0080ff88 = 7;
+        if (DAT_00668e9c != 0) {
+            ((struct PopUp *)DAT_00668e9c)->field_34 &= 0xfffffbff;
+        }
+        return 1;
+    }
+    if (DAT_00668e9c != 0) {
+        ((struct PopUp *)DAT_00668e9c)->field_34 |= 0x400;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00491240
 unsigned int FUN_00491240(const char *param_1) {
@@ -818,4 +837,15 @@ unsigned int FUN_00491240(const char *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00491290
-LEGO_EXPORT void InitNewProfilePoPUp(struct Profile *profile) { STUB(); }
+LEGO_EXPORT void InitNewProfilePoPUp(struct Profile *profile) {
+    struct SpriteIcon *icon = (struct SpriteIcon *)profile;
+    struct SpriteIcon *popup;
+
+    // STRING: LEGOLAND 0x004bf6e4
+    popup = LoadSpriteIcon("Reg_NewProfileBK.lls", 4, icon->x, icon->y - 0x1b, 0x15);
+    popup->field_3c = 0x50;
+    popup->field_38 = GetString(0x50);
+    popup->field_34 |= 0x2000;
+    EnterNewProfileCheckBoxIcons(popup);
+    ResetTempProfile();
+}

@@ -28,7 +28,7 @@ LEGO_EXPORT void InitListProfiles(void) { STUB(); }
 void FUN_0048c5e0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048c650
-LEGO_EXPORT void EnterNewProfileCheckBoxIcons(void) { STUB(); }
+LEGO_EXPORT void EnterNewProfileCheckBoxIcons(struct SpriteIcon *param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048c720
 LEGO_EXPORT void InitProfileCheckBoxIcons(void) { STUB(); }
