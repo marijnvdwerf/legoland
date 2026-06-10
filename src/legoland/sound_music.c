@@ -19,6 +19,27 @@ struct SampleDef;
 struct FXItem;
 struct FXList;
 struct SampleConfig;
+struct MusicLoader;
+struct MusicLoaderVtbl;
+struct ObjectDesc;
+
+struct MusicLoaderVtbl {
+    unsigned char pad_0[0xc];
+    int(__stdcall *GetObject)(struct MusicLoader *self, struct ObjectDesc *desc, const GUID *iid, void **out);
+};
+
+struct MusicLoader {
+    struct MusicLoaderVtbl *vtable;
+};
+
+struct ObjectDesc {
+    /* 0x000 */ unsigned int dwSize;
+    /* 0x004 */ unsigned int dwValidData;
+    /* 0x008 */ GUID guidObject;
+    /* 0x018 */ GUID guidClass;
+    /* 0x028 */ unsigned char pad_28[0x138 - 0x28];
+    /* 0x138 */ unsigned short wszFileName[0x10c];
+};
 
 extern void *WNDENV_Gethwnd(void);
 extern int FUN_00492130(void *hwnd);
@@ -93,16 +114,92 @@ LEGO_EXPORT void SetMusicGrooveLevel(unsigned int level) {
 }
 
 // FUNCTION: LEGOLAND 0x00495bc0
-LEGO_EXPORT void LoadMusicStyle(void) { STUB(); }
+LEGO_EXPORT int LoadMusicStyle(const char *filename, void **out) {
+    struct ObjectDesc desc;
+    unsigned short wide[512];
+    int result;
+
+    if (DAT_004bf774 == 0) {
+        return 0;
+    }
+    if (DMusicInitialised == 0) {
+        return 0;
+    }
+    *out = 0;
+    MultiByteToWideChar(0, 0, filename, -1, wide, 0x200);
+    desc.guidClass = DAT_004ab980;
+    desc.dwSize = 0x350;
+    wcscpy(desc.wszFileName, wide);
+    desc.dwValidData = 0x12;
+    result = ((struct MusicLoader *)DAT_007cacd8)->vtable->GetObject((struct MusicLoader *)DAT_007cacd8, &desc, &DAT_004ab610, out);
+    return 0 <= result;
+}
 
 // FUNCTION: LEGOLAND 0x00495c90
-LEGO_EXPORT void LoadMusicBand(void) { STUB(); }
+LEGO_EXPORT int LoadMusicBand(const char *filename, void **out) {
+    struct ObjectDesc desc;
+    unsigned short wide[512];
+    int result;
+
+    if (DAT_004bf774 == 0) {
+        return 0;
+    }
+    if (DMusicInitialised == 0) {
+        return 0;
+    }
+    *out = 0;
+    MultiByteToWideChar(0, 0, filename, -1, wide, 0x200);
+    desc.guidClass = DAT_004ab8e0;
+    desc.dwSize = 0x350;
+    wcscpy(desc.wszFileName, wide);
+    desc.dwValidData = 0x12;
+    result = ((struct MusicLoader *)DAT_007cacd8)->vtable->GetObject((struct MusicLoader *)DAT_007cacd8, &desc, &DAT_004ab5e0, out);
+    return 0 <= result;
+}
 
 // FUNCTION: LEGOLAND 0x00495d60
-LEGO_EXPORT void LoadMusicChordMap(void) { STUB(); }
+LEGO_EXPORT int LoadMusicChordMap(const char *filename, void **out) {
+    struct ObjectDesc desc;
+    unsigned short wide[512];
+    int result;
+
+    if (DAT_004bf774 == 0) {
+        return 0;
+    }
+    if (DMusicInitialised == 0) {
+        return 0;
+    }
+    *out = 0;
+    MultiByteToWideChar(0, 0, filename, -1, wide, 0x200);
+    desc.guidClass = DAT_004ab930;
+    desc.dwSize = 0x350;
+    wcscpy(desc.wszFileName, wide);
+    desc.dwValidData = 0x12;
+    result = ((struct MusicLoader *)DAT_007cacd8)->vtable->GetObject((struct MusicLoader *)DAT_007cacd8, &desc, &DAT_004ab600, out);
+    return 0 <= result;
+}
 
 // FUNCTION: LEGOLAND 0x00495e30
-LEGO_EXPORT void LoadMusicSegment(void) { STUB(); }
+LEGO_EXPORT int LoadMusicSegment(const char *filename, void **out) {
+    struct ObjectDesc desc;
+    unsigned short wide[512];
+    int result;
+
+    if (DAT_004bf774 == 0) {
+        return 0;
+    }
+    if (DMusicInitialised == 0) {
+        return 0;
+    }
+    *out = 0;
+    MultiByteToWideChar(0, 0, filename, -1, wide, 0x200);
+    desc.guidClass = DAT_004ab9f0;
+    desc.dwSize = 0x350;
+    wcscpy(desc.wszFileName, wide);
+    desc.dwValidData = 0x12;
+    result = ((struct MusicLoader *)DAT_007cacd8)->vtable->GetObject((struct MusicLoader *)DAT_007cacd8, &desc, &DAT_004ab670, out);
+    return 0 <= result;
+}
 
 // FUNCTION: LEGOLAND 0x00495f00
 void FUN_00495f00(void) { STUB(); }
