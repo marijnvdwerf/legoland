@@ -3,7 +3,9 @@
 #include "legoland.h"
 
 struct MapTile;
+struct Point;
 
+LEGO_EXPORT void GetTileBounds(struct Point *ref, int *out);
 LEGO_EXPORT void FreeTileSpace(unsigned short index, unsigned short count);
 LEGO_EXPORT unsigned int *AllocTileSpace(void *manager, int count, unsigned int *out);
 LEGO_EXPORT void ScreenToMapRef(unsigned int x, void *out, unsigned int y);

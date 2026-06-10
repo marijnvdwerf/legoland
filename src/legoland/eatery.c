@@ -90,7 +90,7 @@ void FUN_0042e260(struct BlokeArg *arg, unsigned int param2, unsigned int param3
         while (node != NULL) {
             if (*value == node->field_c) {
                 IP_RenderBlokeIn3DNow((struct Bloke *)node->field_8);
-                GetScreenCoordsForObject(value, owner);
+                GetScreenCoordsForObject((unsigned char *)value, owner);
                 break;
             }
             node = node->next;

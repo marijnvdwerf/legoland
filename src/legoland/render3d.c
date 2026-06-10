@@ -5,6 +5,8 @@
 #include "render3d.h"
 #include "resource.h"
 #include "llidb.h"
+#include "math.h"
+#include "tilemap.h"
 #include <math.h>
 
 #include "image_sprite.h"
@@ -360,8 +362,39 @@ unsigned int FUN_00442c70(void) {
     return 0;
 }
 
+struct ScreenObj {
+    unsigned char pad_0[0x14];
+    int field_14;
+    int field_18;
+};
+
 // FUNCTION: LEGOLAND 0x00442cc0
-LEGO_EXPORT void GetScreenCoordsForObject(unsigned short *value, void *obj) { STUB(); }
+LEGO_EXPORT __int64 GetScreenCoordsForObject(unsigned char *param_1, void *param_2) {
+    int bounds[2];
+    struct Point ref;
+    int iVar1;
+    int iVar2;
+    union { __int64 i; struct { int lo; int hi; } p; } r;
+
+    ref.x = param_1[0];
+    ref.y = param_1[1];
+    GetTileBounds(&ref, bounds);
+    iVar2 = ((struct ScreenObj *)param_2)->field_14;
+    iVar1 = ((struct ScreenObj *)param_2)->field_18;
+    if (iVar2 < 0) {
+        iVar2 = -(-iVar2 >> 1);
+    } else {
+        iVar2 = iVar2 >> 1;
+    }
+    if (iVar1 < 0) {
+        r.p.hi = bounds[1] - (-iVar1 >> 1);
+        r.p.lo = iVar2 + bounds[0];
+        return r.i;
+    }
+    r.p.hi = bounds[1] + (iVar1 >> 1);
+    r.p.lo = iVar2 + bounds[0];
+    return r.i;
+}
 
 struct AdjustStruct {
     int field0;

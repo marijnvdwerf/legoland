@@ -24,7 +24,7 @@ LEGO_EXPORT void BuildYRotationMatrix(float angle, float *out);
 LEGO_EXPORT void CopyMatrix(struct Matrix3x3 *src, struct Matrix3x3 *dest);
 unsigned int FUN_00442c70(void);
 unsigned int FUN_00442f50(void);
-LEGO_EXPORT void GetScreenCoordsForObject(unsigned short *value, void *obj);
+LEGO_EXPORT __int64 GetScreenCoordsForObject(unsigned char *param_1, void *param_2);
 LEGO_EXPORT void AdjustBlokePosition(struct BlokePos *pBloke);
 LEGO_EXPORT void Ride_SetFlagToNotLetAnyoneOn(struct RideObject *ride);
 LEGO_EXPORT void Ride_ClearFlagToNotLetAnyoneOn(struct RideObject *ride);
