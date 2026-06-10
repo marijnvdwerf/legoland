@@ -13,7 +13,9 @@ struct IconNode {
     /* 0x10 */ short field_10;
     /* 0x12 */ short field_12;
     /* 0x14 */ unsigned short field_14;
-    /* 0x16 */ unsigned char pad_16[0x22 - 0x16];
+    /* 0x16 */ unsigned char pad_16[0x18 - 0x16];
+    /* 0x18 */ unsigned char field_18;
+    /* 0x19 */ unsigned char pad_19[0x22 - 0x19];
     /* 0x22 */ short field_22;
     /* 0x24 */ unsigned char pad_24[0x28 - 0x24];
     /* 0x28 */ void *field_28;

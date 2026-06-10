@@ -496,7 +496,60 @@ void FUN_0046eaa0(void) { STUB(); }
 LEGO_EXPORT void SetupInterfacePanelIcons(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046ec50
-void FUN_0046ec50(int param) { STUB(); }
+void FUN_0046ec50(char param) {
+    char saved_mode = DAT_007fdd80;
+    struct IconNode *node = DAT_006687c8;
+
+    if (DAT_007fdd80 == 2 || DAT_007fdd80 == 3) {
+        return;
+    }
+    while (node != NULL) {
+        short id = (short)node->field_14;
+        if (id == 0xd2 || id == 0xd5 || id == 0xd6 || id == 0xd7) {
+            if (DAT_007fdd80 == 0) {
+                short old = node->field_c;
+                short sum = (short)param + old;
+                node->field_c = sum;
+                if ((char)node->field_18 == 0xa && sum >= 3) {
+                    node->field_c = 0;
+                    param = (char)node->field_c - (char)(short)old;
+                    DAT_007fdd8c = 3;
+                    saved_mode = 3;
+                    lpConfig->field_20 = 0x79;
+                    ScrollX = ScrollX + 0x7900;
+                    lpConfig->field_10 = 0x207;
+                    BGFullUpdate = 1;
+                    DAT_007fdd88 = 1;
+                }
+            } else if (DAT_007fdd80 == 1) {
+                if (DAT_007fdd88 != 0) {
+                    lpConfig->field_20 = 0;
+                    ScrollX = ScrollX - 0x7900;
+                    lpConfig->field_10 = 0x280;
+                    DAT_007fdd88 = 0;
+                    BGFullUpdate = 1;
+                    return;
+                }
+                if ((char)node->field_18 == 0xa) {
+                    int diff = (int)(short)node->field_c - (int)param;
+                    if (diff < -0x7a) {
+                        DAT_007fdd80 = 2;
+                        saved_mode = 2;
+                        DAT_007fdd8c = 0x86;
+                        FUN_0046fb40(0xd2);
+                        break;
+                    }
+                    diff = diff + 0x7a;
+                    FUN_00461290((lpConfig->field_10 - diff) * 0x100, lpConfig->field_12 << 8, diff * 0x100, 0);
+                }
+                node->field_c = (short)node->field_c - (short)param;
+            }
+        }
+        node = node->next;
+    }
+
+    DAT_007fdd80 = saved_mode;
+}
 
 // FUNCTION: LEGOLAND 0x0046ee00
 void FUN_0046ee00(void) { STUB(); }
