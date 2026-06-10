@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "icon.h"
 
 // GLOBAL: LEGOLAND 0x004ab390
 float FLOAT_004ab390;
@@ -1852,6 +1853,9 @@ struct Sprite *DAT_00668830;
 
 // GLOBAL: LEGOLAND 0x00668834
 struct Sprite *DAT_00668834;
+
+// GLOBAL: LEGOLAND 0x00668858
+struct IconNode DAT_00668858;
 
 // GLOBAL: LEGOLAND 0x006688a8
 void *DAT_006688a8;

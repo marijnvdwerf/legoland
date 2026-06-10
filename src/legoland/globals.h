@@ -1384,6 +1384,8 @@ extern struct Sprite *DAT_0066882c;
 extern struct Sprite *DAT_00668830;
 // 0x00668834
 extern struct Sprite *DAT_00668834;
+// 0x00668858
+extern struct IconNode DAT_00668858;
 // 0x006688a8
 extern void *DAT_006688a8;
 // 0x006688ac

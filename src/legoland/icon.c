@@ -293,7 +293,24 @@ void FUN_0046d680(struct IconNode *node, struct Sprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d6c0
-LEGO_EXPORT struct IconNode *InsertIcon(int a1, int a2, int a3, void *a4) { STUB(); }
+LEGO_EXPORT struct IconNode *InsertIcon(int a1, int a2, int a3, struct Sprite *sprite) {
+    struct IconNode *icon = (struct IconNode *)malloc(sizeof(struct IconNode));
+    if (icon != NULL) {
+        *icon = DAT_00668858;
+        icon->field_c = (short)a1;
+        icon->field_e = (short)a2;
+        icon->field_14 = (unsigned short)a3;
+        ReferenceSprite(sprite);
+        icon->sprite = sprite;
+        if (sprite != NULL) {
+            icon->field_12 = sprite->height;
+            icon->field_34 = icon->field_34 | 0x10;
+            icon->field_10 = sprite->width;
+        }
+    }
+    FUN_0046d440(icon);
+    return icon;
+}
 
 // FUNCTION: LEGOLAND 0x0046d740
 LEGO_EXPORT void SetNewGroup_Callbacks(void *param_1, void *param_2, void *param_3) {
