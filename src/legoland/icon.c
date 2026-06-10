@@ -743,7 +743,75 @@ LEGO_EXPORT int RenderScroll_Icons(struct IconNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0046e4d0
-LEGO_EXPORT void RenderEnergyBar(void) { STUB(); }
+LEGO_EXPORT int RenderEnergyBar(struct IconNode *node) {
+    struct PrintCtx ctx;
+    int fill1;
+    int fill2;
+    int clip[4];
+
+    ctx.node = NULL;
+    ctx.flags = 1;
+    ctx.field_8 = 0;
+    if (DAT_00832bd0 == 0 && DAT_00832bd4 == 0) {
+        fill1 = 0;
+        fill2 = 0;
+    } else {
+        fill2 = DAT_00832bd4 * 2;
+        if (DAT_00832bd0 > DAT_00832bd4 * 2) {
+            fill2 = DAT_00832bd0;
+        }
+        if (fill2 == 0) {
+            fill2 = 1;
+        }
+        fill1 = (node->field_10 * DAT_00832bd0) / fill2;
+        fill2 = (node->field_10 * DAT_00832bd4) / fill2;
+    }
+    if (node->sprite == NULL) {
+        if (DAT_0083298c != 0) {
+            return 0;
+        }
+        PrintSprite(DAT_00668e6c, node->field_c - 0x15, node->field_e - 6, 0, (int *)&ctx);
+        return 0;
+    }
+    if (DAT_0083298c == 0) {
+        PrintSprite(DAT_00668e6c, node->field_c - 0x15, node->field_e - 6, 0, (int *)&ctx);
+        return 0;
+    }
+    StoreClipping();
+    if (DAT_006688c0 < fill1) {
+        DAT_006688c0 = DAT_006688c0 + 6;
+        if (fill1 < DAT_006688c0) {
+            DAT_006688c0 = fill1;
+        }
+    } else {
+        DAT_006688c0 = DAT_006688c0 - 6;
+        if (DAT_006688c0 < fill1) {
+            DAT_006688c0 = fill1;
+        }
+    }
+    if (DAT_006688bc < fill2) {
+        DAT_006688bc = DAT_006688bc + 6;
+        if (DAT_006688bc <= fill2) {
+            goto skip;
+        }
+    } else {
+        DAT_006688bc = DAT_006688bc - 6;
+        if (fill2 <= DAT_006688bc) {
+            goto skip;
+        }
+    }
+    DAT_006688bc = fill2;
+skip:
+    clip[0] = node->field_c;
+    clip[1] = node->field_e;
+    clip[2] = DAT_006688c0 + clip[0];
+    clip[3] = node->field_12 + clip[1];
+    SetClipping(&clip[0]);
+    PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
+    RestoreClipping();
+    PrintSprite(DAT_00668e70, (node->field_c - DAT_00668e70->width / 2) + DAT_006688bc, node->field_12 / 2 + node->field_e, 0, (int *)&ctx);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046e670
 LEGO_EXPORT void RenderMoneyBar(void) { STUB(); }
