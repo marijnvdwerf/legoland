@@ -1023,7 +1023,31 @@ void FUN_0046f100(short param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0046f200
-LEGO_EXPORT void RenderHelpIcons(void) { STUB(); }
+LEGO_EXPORT void RenderHelpIcons(void) {
+    struct PrintCtx ctx;
+    struct IconNode *node = DAT_006687cc;
+
+    ctx.node = NULL;
+    ctx.flags = 2;
+    ctx.field_8 = 0;
+    StoreClipping();
+    FUN_0046df60(0);
+    for (; node != NULL; node = node->next) {
+        if ((node->field_34 & 0x400) == 0 && node->field_c < 0x1e0 && node->field_c > 0) {
+            if ((node->field_34 & 8) != 0) {
+                ((void (*)(struct IconNode *))node->field_28)(node);
+            } else if (node->sprite != NULL) {
+                ctx.node = node;
+                PrintSprite(node->sprite, node->field_c, node->field_e, 0, (int *)&ctx);
+            }
+            if (node == (struct IconNode *)FocussedIconPtr && (node->field_34 & 0x8000) != 0) {
+                unsigned int colour = GetNearestColour(0, 0xff, 0);
+                RenderThickBox(node->field_c, node->field_e, node->field_10, node->field_12, 2, colour);
+            }
+        }
+    }
+    RestoreClipping();
+}
 
 // FUNCTION: LEGOLAND 0x0046f2e0
 unsigned char FUN_0046f2e0(struct IconNode *node, unsigned int buttons, short dx, short dy) {
