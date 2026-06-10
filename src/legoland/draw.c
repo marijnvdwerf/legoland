@@ -551,10 +551,12 @@ LEGO_EXPORT int RenderingComplete(void) {
 // FUNCTION: LEGOLAND 0x00466560
 LEGO_EXPORT void PushSetTarget(struct Sprite *sprite) {
     LPDIRECTDRAWSURFACE surface;
+    int locked;
 
+    locked = DAT_00668144;
     DAT_00668164[DAT_006681e4] = DAT_00668144;
     DAT_006681e4 = DAT_006681e4 + 1;
-    if (DAT_00668144 != 0) {
+    if (locked != 0) {
         surface = (LPDIRECTDRAWSURFACE)renderEngine;
         if (surface->lpVtbl->Unlock(surface, DAT_0066809c.pixels) == 0x887601c2) {
             ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)renderEngine);
