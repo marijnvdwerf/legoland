@@ -19,6 +19,10 @@ struct FXItem;
 struct FXList;
 struct SampleConfig;
 
+extern void *WNDENV_Gethwnd(void);
+extern int FUN_00492130(void *hwnd);
+extern int FUN_00495a10(void *hwnd);
+
 struct MusicPerformanceVtbl {
     unsigned char pad_0[0x10];
     void(__stdcall *PlayMotif)(struct MusicPerformance *self, unsigned int motif, unsigned int flags, int a3, int a4, int a5);
@@ -182,7 +186,13 @@ LEGO_EXPORT void KLIBAUDIO_SetAVIVolume(struct AVISoundBuffer *buffer) {
 }
 
 // FUNCTION: LEGOLAND 0x004964f0
-LEGO_EXPORT void InitSoundSystem(void) { STUB(); }
+LEGO_EXPORT int InitSoundSystem(void) {
+    DAT_007988b0 = WNDENV_Gethwnd();
+    if (FUN_00492130(DAT_007988b0) == 0) {
+        return 0;
+    }
+    return FUN_00495a10(DAT_007988b0) != 0;
+}
 
 // FUNCTION: LEGOLAND 0x00496520
 LEGO_EXPORT int KillSoundSystem(void) {
