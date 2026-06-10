@@ -10,14 +10,18 @@
 #include "clipping.h"
 #include "debug_alloc.h"
 
+struct HitInfo {
+    /* 0x00 */ int field_0;
+    /* 0x04 */ int field_4;
+    /* 0x08 */ int field_8;
+};
+
 struct SortNode {
     /* 0x00 */ struct SortNode *left;
     /* 0x04 */ struct SortNode *right;
     /* 0x08 */ int key;
     /* 0x0c */ unsigned int flags;
-    /* 0x10 */ int field_10;
-    /* 0x14 */ int field_14;
-    /* 0x18 */ int field_18;
+    /* 0x10 */ struct HitInfo hit;
     /* 0x1c */ struct Sprite *sprite;
     /* 0x20 */ int x;
     /* 0x24 */ int y;
@@ -275,10 +279,56 @@ void FUN_00485bd0(struct SortNode *node)
 }
 
 // FUNCTION: LEGOLAND 0x00485cd0
-LEGO_EXPORT void SortSpriteWithCallback(void) { STUB(); }
+LEGO_EXPORT void SortSpriteWithCallback(struct Sprite *sprite, unsigned int x, unsigned int y, int key, unsigned int param_5, unsigned int param_6, unsigned int param_7, struct HitInfo *hit)
+{
+    unsigned int original = DAT_0066b5a8;
+    struct SortNode *node;
+
+    DAT_0066b5a8 += 0x3c;
+    node = (struct SortNode *)&DAT_007cb600[original];
+    node->key = key;
+    node->sprite = sprite;
+    node->x = x;
+    node->y = y;
+    node->flags = 4;
+    node->field_28 = param_5;
+    node->field_34 = param_6;
+    node->field_38 = param_7;
+    node->field_2c = GetOverridePalette();
+    node->field_30 = GetOverrideFrame();
+    if (hit != NULL) {
+        node->hit = *hit;
+        FUN_00485bd0(node);
+        return;
+    }
+    node->hit.field_0 = 0x100;
+    FUN_00485bd0(node);
+}
 
 // FUNCTION: LEGOLAND 0x00485d70
-LEGO_EXPORT void SortSprite(void) { STUB(); }
+LEGO_EXPORT void SortSprite(struct Sprite *sprite, unsigned int x, unsigned int y, int key, unsigned int param_5, struct HitInfo *hit)
+{
+    unsigned int original = DAT_0066b5a8;
+    struct SortNode *node;
+
+    DAT_0066b5a8 += 0x3c;
+    node = (struct SortNode *)&DAT_007cb600[original];
+    node->key = key;
+    node->sprite = sprite;
+    node->flags = 0;
+    node->x = x;
+    node->y = y;
+    node->field_28 = param_5;
+    node->field_2c = GetOverridePalette();
+    node->field_30 = GetOverrideFrame();
+    if (hit != NULL) {
+        node->hit = *hit;
+        FUN_00485bd0(node);
+        return;
+    }
+    node->hit.field_0 = 0x100;
+    FUN_00485bd0(node);
+}
 
 // FUNCTION: LEGOLAND 0x00485e00
 LEGO_EXPORT void SortPerson(struct Person *person, unsigned int param_2, void *param_3)
@@ -295,7 +345,30 @@ LEGO_EXPORT void SortPerson(struct Person *person, unsigned int param_2, void *p
 }
 
 // FUNCTION: LEGOLAND 0x00485e40
-LEGO_EXPORT void SortClippedSprite(void) { STUB(); }
+LEGO_EXPORT void SortClippedSprite(struct Sprite *sprite, unsigned int x, unsigned int y, int key, RECT *clip, unsigned int param_6, struct HitInfo *hit)
+{
+    unsigned int original = DAT_0066b5a8;
+    struct SortNode *node;
+
+    DAT_0066b5a8 += 0x4c;
+    node = (struct SortNode *)&DAT_007cb600[original];
+    node->key = key;
+    node->sprite = sprite;
+    node->x = x;
+    node->flags = 1;
+    node->y = y;
+    *(RECT *)&node->field_28 = *clip;
+    node->field_38 = param_6;
+    node->field_3c = GetOverridePalette();
+    node->field_40 = GetOverrideFrame();
+    if (hit != NULL) {
+        node->hit = *hit;
+        FUN_00485bd0(node);
+        return;
+    }
+    node->hit.field_0 = 0x100;
+    FUN_00485bd0(node);
+}
 
 // FUNCTION: LEGOLAND 0x00485ef0
 LEGO_EXPORT void ResetHitInfo(void)
