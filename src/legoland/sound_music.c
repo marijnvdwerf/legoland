@@ -32,12 +32,26 @@ struct MusicLoader {
     struct MusicLoaderVtbl *vtable;
 };
 
+struct MusicContainer;
+struct MusicContainerVtbl {
+    unsigned char pad_0[0xc];
+    int(__stdcall *GetObject)(struct MusicContainer *self, const unsigned short *name, void **out);
+    unsigned char pad_10[0x28 - 0x10];
+    int(__stdcall *EnumObject)(struct MusicContainer *self, const unsigned short *name, void **out);
+};
+
+struct MusicContainer {
+    struct MusicContainerVtbl *vtable;
+};
+
 struct ObjectDesc {
     /* 0x000 */ unsigned int dwSize;
     /* 0x004 */ unsigned int dwValidData;
     /* 0x008 */ GUID guidObject;
     /* 0x018 */ GUID guidClass;
-    /* 0x028 */ unsigned char pad_28[0x138 - 0x28];
+    /* 0x028 */ unsigned char pad_28[0x38 - 0x28];
+    /* 0x038 */ unsigned short wszName[0x40];
+    /* 0x0b8 */ unsigned char pad_b8[0x138 - 0xb8];
     /* 0x138 */ unsigned short wszFileName[0x10c];
 };
 
@@ -202,13 +216,63 @@ LEGO_EXPORT int LoadMusicSegment(const char *filename, void **out) {
 }
 
 // FUNCTION: LEGOLAND 0x00495f00
-void FUN_00495f00(void) { STUB(); }
+int FUN_00495f00(const char *file, const char *name, void **out) {
+    struct ObjectDesc desc;
+    unsigned short wideFile[512];
+    unsigned short wideName[512];
+    int result;
+
+    if (DAT_004bf774 == 0) {
+        return 0;
+    }
+    if (DMusicInitialised == 0) {
+        return 0;
+    }
+    *out = 0;
+    MultiByteToWideChar(0, 0, file, -1, wideFile, 0x200);
+    MultiByteToWideChar(0, 0, name, -1, wideName, 0x200);
+    desc.guidClass = DAT_004ab9f0;
+    desc.dwSize = 0x350;
+    wcscpy(desc.wszFileName, wideFile);
+    wcscpy(desc.wszName, wideName);
+    desc.dwValidData = 0x16;
+    result = ((struct MusicLoader *)DAT_007cacd8)->vtable->GetObject((struct MusicLoader *)DAT_007cacd8, &desc, &DAT_004ab670, out);
+    return 0 <= result;
+}
 
 // FUNCTION: LEGOLAND 0x00496010
-void FUN_00496010(void) { STUB(); }
+int FUN_00496010(const char *filename, struct MusicContainer *container, void **out) {
+    unsigned short wide[512];
+    int result;
+
+    if (DAT_004bf774 == 0) {
+        return 0;
+    }
+    if (DMusicInitialised == 0) {
+        return 0;
+    }
+    *out = 0;
+    MultiByteToWideChar(0, 0, filename, -1, wide, 0x200);
+    result = container->vtable->EnumObject(container, wide, out);
+    return 0 <= result;
+}
 
 // FUNCTION: LEGOLAND 0x00496090
-LEGO_EXPORT void GetMusicBand(void) { STUB(); }
+LEGO_EXPORT int GetMusicBand(const char *filename, struct MusicContainer *container, void **out) {
+    unsigned short wide[512];
+    int result;
+
+    if (DAT_004bf774 == 0) {
+        return 0;
+    }
+    if (DMusicInitialised == 0) {
+        return 0;
+    }
+    *out = 0;
+    MultiByteToWideChar(0, 0, filename, -1, wide, 0x200);
+    result = container->vtable->GetObject(container, wide, out);
+    return 0 <= result;
+}
 
 // FUNCTION: LEGOLAND 0x00496110
 LEGO_EXPORT int CreateMusicBandSegment(struct BandObj *band, void *arg) {
