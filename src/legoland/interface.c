@@ -28,13 +28,28 @@ struct InterfaceObj {
     unsigned int field_3c;
 };
 
+struct ObjectClassInfo {
+    /* 0x00 */ char *name;
+    /* 0x04 */ unsigned char pad_4[0x8 - 0x4];
+    /* 0x08 */ unsigned int flags;
+};
+
+struct BuildObject;
+
+struct LLDBElem {
+    unsigned char pad_0[0xc];
+    /* 0x0c */ struct BuildObject *obj;
+};
+
 struct BuildObject {
-    unsigned char pad_0[0x58];
+    unsigned char pad_0[0x1c];
+    /* 0x1c */ unsigned int field_1c;
+    unsigned char pad_20[0x58 - 0x20];
     /* 0x58 */ void *field_58;
     /* 0x5c */ void *field_5c;
     /* 0x60 */ void *field_60;
     unsigned char pad_64[0xc4 - 0x64];
-    /* 0xc4 */ void *field_c4;
+    /* 0xc4 */ struct ObjectClassInfo *field_c4;
 };
 
 struct EventNode {
@@ -976,10 +991,61 @@ unsigned char FUN_00476240(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00476250
-void FUN_00476250(void) { STUB(); }
+void FUN_00476250(void) {
+    struct InterfaceResearchNode *node;
+    int count;
+    int len;
+
+    count = 0;
+    for (node = DAT_00668ed8; node != NULL; node = node->next) {
+        count = count + 1;
+    }
+    SaveGameWrite(&count, 4);
+    node = DAT_00668ed8;
+    while (node != NULL) {
+        len = strlen(((struct BuildObject *)node->data)->field_c4->name);
+        SaveGameWrite(&len, 4);
+        SaveGameWrite(((struct BuildObject *)node->data)->field_c4->name, len);
+        SaveGameWrite(&node->field_8, 4);
+        node = node->next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004762f0
-void FUN_004762f0(void) { STUB(); }
+void FUN_004762f0(void) {
+    struct InterfaceResearchNode *node;
+    struct InterfaceResearchNode *prev;
+    struct BuildObject *obj;
+    char buf[512];
+    int count;
+    int len;
+
+    DAT_00668ed8 = NULL;
+    SaveGameRead(&count, 4);
+    prev = NULL;
+    if (count != 0) {
+        do {
+            count = count - 1;
+            if (prev != NULL) {
+                node = (struct InterfaceResearchNode *)malloc(sizeof(struct InterfaceResearchNode));
+                prev->next = node;
+            } else {
+                node = (struct InterfaceResearchNode *)malloc(sizeof(struct InterfaceResearchNode));
+                DAT_00668ed8 = node;
+            }
+            SaveGameRead(&len, 4);
+            SaveGameRead(buf, len);
+            buf[len] = 0;
+            obj = ((struct LLDBElem *)ElemID(buf))->obj;
+            node->data = obj;
+            obj->field_1c = obj->field_1c & 0xfbffffff;
+            ((struct BuildObject *)node->data)->field_1c = ((struct BuildObject *)node->data)->field_1c | 0x8000000;
+            SaveGameRead(&node->field_8, 4);
+            prev = node;
+        } while (count != 0);
+        prev->next = NULL;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004763d0
 LEGO_EXPORT void CleanUpReseachList(void) {
