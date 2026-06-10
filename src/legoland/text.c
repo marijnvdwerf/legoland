@@ -52,7 +52,56 @@ LEGO_EXPORT void LoadBubbleHelpGFX(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00454a10
-void FUN_00454a10(void) { STUB(); }
+void FUN_00454a10(void) {
+    unsigned int element;
+
+    if (DAT_006675b4 != 0) {
+        DAT_006675b4 = 0;
+        if (LLIDB_FindElement("SPEECH BUBBLE", &element, 0) == 0) {
+            LLIDB_UnLoadData(element);
+        }
+        if (DAT_008139e4 != 0) {
+            KillSprite(DAT_008139e4);
+            DAT_008139e4 = 0;
+        }
+        if (DAT_008139e8 != 0) {
+            KillSprite(DAT_008139e8);
+            DAT_008139e8 = 0;
+        }
+        if (DAT_008139ec != 0) {
+            KillSprite(DAT_008139ec);
+            DAT_008139ec = 0;
+        }
+        if (DAT_008139f0 != 0) {
+            KillSprite(DAT_008139f0);
+            DAT_008139f0 = 0;
+        }
+        if (DAT_008139f4 != 0) {
+            KillSprite(DAT_008139f4);
+            DAT_008139f4 = 0;
+        }
+        if (DAT_008139f8 != 0) {
+            KillSprite(DAT_008139f8);
+            DAT_008139f8 = 0;
+        }
+        if (DAT_008139fc != 0) {
+            KillSprite(DAT_008139fc);
+            DAT_008139fc = 0;
+        }
+        if (DAT_00813a00 != 0) {
+            KillSprite(DAT_00813a00);
+            DAT_00813a00 = 0;
+        }
+        if (DAT_00813a04 != 0) {
+            KillSprite(DAT_00813a04);
+            DAT_00813a04 = 0;
+        }
+        if (DAT_00813a08 != 0) {
+            KillSprite(DAT_00813a08);
+            DAT_00813a08 = 0;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00454b40
 LEGO_EXPORT HGDIOBJ SelectFont(HDC hdc, int font_id) {
