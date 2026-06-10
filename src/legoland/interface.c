@@ -475,7 +475,34 @@ void FUN_004753a0(void) { STUB(); }
 void FUN_004754b0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004755c0
-void FUN_004755c0(void) { STUB(); }
+void FUN_004755c0(void *data) {
+    struct InterfaceListNode *node;
+    struct InterfaceListNode *current;
+    struct InterfaceListNode *prev;
+    int current_cost;
+
+    current = DAT_00668e40;
+    prev = NULL;
+    node = (struct InterfaceListNode *)malloc(sizeof(struct InterfaceListNode));
+    node->data = data;
+    node->flag = 1;
+    node->next = NULL;
+    while (current != NULL) {
+        current_cost = GetObjCost(current->data);
+        if (current_cost > GetObjCost(node->data)) {
+            break;
+        }
+        prev = current;
+        current = current->next;
+    }
+    if (prev != NULL) {
+        prev->next = node;
+        node->next = current;
+        return;
+    }
+    DAT_00668e40 = node;
+    node->next = current;
+}
 
 // FUNCTION: LEGOLAND 0x00475630
 LEGO_EXPORT void InsertChildIntoList(void) { STUB(); }
