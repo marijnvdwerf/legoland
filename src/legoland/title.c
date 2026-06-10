@@ -20,6 +20,10 @@ struct PopUp {
 #include "image_sprite.h"
 #include "stream.h"
 #include "help.h"
+#include "print_sprite.h"
+#include "profile_io.h"
+
+extern int FUN_00451e20(void);
 
 
 // FUNCTION: LEGOLAND 0x0048fc40
@@ -305,7 +309,53 @@ unsigned int FUN_00490350(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00490410
-void FUN_00490410(void) { STUB(); }
+void FUN_00490410(void) {
+    RECT rc;
+    int local_c;
+    int local_8;
+    int local_4;
+
+    local_8 = 0;
+    local_4 = 0;
+    local_c = 1;
+    if (DAT_00798770 != 0) {
+        rc.left = 0;
+        rc.top = 0x102;
+        rc.right = 0x280;
+        rc.bottom = 0x130;
+        NewPrintCent((char *)&DAT_0080ffa0, 0, rc, 0);
+        if (DAT_0079876c != 0) {
+            PrintSprite(DAT_00798764, 0xc6, 0x28, 0, &local_c);
+            rc.left = 0xc6;
+            rc.top = 0x2d;
+            rc.right = DAT_00798764->width + 0xc6;
+            rc.bottom = 0x43;
+            NewPrintCent(GetString(0x23a), 1, rc, 1);
+            DAT_0079876c = DAT_0079876c + -1;
+            if (DAT_0079876c == 0) {
+                FUN_00498920();
+                DAT_006687b0 = 4;
+                DAT_00798768 = (-(unsigned int)(FUN_00451e20() != 0) & 0x118) - 0x8c;
+            }
+        } else if (0 < DAT_00798768) {
+            PrintSprite(DAT_00798764, 0xc6, 0x28, 0, &local_c);
+            rc.left = 0xc6;
+            rc.top = 0x2d;
+            rc.right = DAT_00798764->width + 0xc6;
+            rc.bottom = 0x43;
+            NewPrintCent(GetString(0x23b), 1, rc, 1);
+            DAT_00798768 = DAT_00798768 + -1;
+        } else if (DAT_00798768 < 0) {
+            PrintSprite(DAT_00798764, 0xc6, 0x28, 0, &local_c);
+            rc.left = 0xc6;
+            rc.top = 0x2d;
+            rc.right = DAT_00798764->width + 0xc6;
+            rc.bottom = 0x43;
+            NewPrintCent(GetString(0x23c), 1, rc, 1);
+            DAT_00798768 = DAT_00798768 + 1;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00490600
 void FUN_00490600(unsigned int param_1) {
