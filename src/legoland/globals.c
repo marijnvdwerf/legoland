@@ -2463,6 +2463,12 @@ unsigned int DAT_0079887c;
 // GLOBAL: LEGOLAND 0x00798880
 unsigned int DAT_00798880;
 
+// GLOBAL: LEGOLAND 0x00798884
+unsigned int DAT_00798884;
+
+// GLOBAL: LEGOLAND 0x00798888
+unsigned int DAT_00798888;
+
 // GLOBAL: LEGOLAND 0x00798890
 void *DAT_00798890;
 
@@ -2640,6 +2646,9 @@ void *DAT_007cafa0;
 // GLOBAL: LEGOLAND 0x007cb140
 void *DAT_007cb140;
 
+// GLOBAL: LEGOLAND 0x007cb1c0
+struct IconNode *DAT_007cb1c0;
+
 // GLOBAL: LEGOLAND 0x007cb1c4
 struct Sprite *DAT_007cb1c4;
 
@@ -2647,7 +2656,10 @@ struct Sprite *DAT_007cb1c4;
 char DAT_007cb1e0[0x100];
 
 // GLOBAL: LEGOLAND 0x007cb2e0
-unsigned int DAT_007cb2e0;
+struct IconNode *DAT_007cb2e0;
+
+// GLOBAL: LEGOLAND 0x007cb2e4
+struct IconNode *DAT_007cb2e4;
 
 // GLOBAL: LEGOLAND 0x007cb2f0
 char DAT_007cb2f0[0x10];

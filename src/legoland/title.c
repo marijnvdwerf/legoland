@@ -23,6 +23,7 @@ struct PopUp {
 #include "print_sprite.h"
 #include "profile_io.h"
 #include "resource.h"
+#include "timer.h"
 
 extern int FUN_00451e20(void);
 
@@ -520,7 +521,7 @@ void FUN_004908b0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00490970
-unsigned char FUN_00490970(unsigned int param_1, unsigned char param_2) {
+unsigned char FUN_00490970(unsigned int param_1, unsigned char param_2, unsigned int param_3, unsigned int param_4) {
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         DAT_00668e38 = 0;
@@ -570,14 +571,38 @@ void FUN_00490a60(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00490aa0
-void FUN_00490aa0(void) { STUB(); }
+void FUN_00490aa0(void) {
+    if ((int)DAT_004bf670 <= 1) {
+        DAT_004bf670 = 1;
+        DAT_007cb2e0->field_34 = DAT_007cb2e0->field_34 | 0x400;
+    } else {
+        DAT_007cb2e0->field_34 = DAT_007cb2e0->field_34 & 0xfffffbff;
+    }
+    if ((int)(DAT_004bf670 + 0xe) > (int)DAT_0079887c) {
+        DAT_007cb2e4->field_34 |= 0x400;
+    } else {
+        DAT_007cb2e4->field_34 &= 0xfffffbff;
+    }
+    FUN_00490a20((int)DAT_004bf670 / 0xe);
+}
 
 // FUNCTION: LEGOLAND 0x00490b20
-void FUN_00490b20(void) { STUB(); }
+unsigned char FUN_00490b20(unsigned int param_1, unsigned int param_2) {
+    FUN_0046d680(DAT_007cb2e4, DAT_0081c034);
+    if ((param_2 & 2) != 0) {
+        if ((DAT_007cb2e4->field_34 & 0x400) != 0) {
+            return FUN_00490970(0, param_2, 0, 0);
+        }
+        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
+        DAT_004bf670 = DAT_004bf670 + 0xe;
+        FUN_00490aa0();
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00490b90
 unsigned char FUN_00490b90(unsigned int param_1, unsigned int param_2) {
-    FUN_0046d680((struct IconNode *)DAT_007cb2e0, DAT_0081c084);
+    FUN_0046d680(DAT_007cb2e0, DAT_0081c084);
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         DAT_004bf670 -= 14;
@@ -587,7 +612,21 @@ unsigned char FUN_00490b90(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00490be0
-void FUN_00490be0(void) { STUB(); }
+unsigned char FUN_00490be0(struct IconNode *param_1, unsigned int param_2) {
+    FUN_0046d680(param_1, DAT_007cb1c4);
+    if ((param_2 & 2) != 0) {
+        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
+        do {
+            DAT_00798884 = DAT_00798884 + 1;
+            if ((int)DAT_00798884 >= (int)DAT_00798880) {
+                DAT_00798884 = 0;
+            }
+        } while (strlen(((char **)&DAT_007cb140)[DAT_00798884]) == 0);
+        DAT_00798888 = GetTicks() + 8000;
+        FUN_00490a60(DAT_00798884);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00490c70
 void FUN_00490c70(void) { STUB(); }

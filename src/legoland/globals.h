@@ -1791,6 +1791,10 @@ extern unsigned int DAT_00798878;
 extern unsigned int DAT_0079887c;
 // 0x00798880
 extern unsigned int DAT_00798880;
+// 0x00798884
+extern unsigned int DAT_00798884;
+// 0x00798888
+extern unsigned int DAT_00798888;
 // 0x00798890
 extern void *DAT_00798890;
 // 0x00798894
@@ -1909,12 +1913,16 @@ extern struct Sprite *DAT_007caf80;
 extern void *DAT_007cafa0;
 // 0x007cb140
 extern void *DAT_007cb140;
+// 0x007cb1c0
+extern struct IconNode *DAT_007cb1c0;
 // 0x007cb1c4
 extern struct Sprite *DAT_007cb1c4;
 // 0x007cb1e0
 extern char DAT_007cb1e0[0x100];
 // 0x007cb2e0
-extern unsigned int DAT_007cb2e0;
+extern struct IconNode *DAT_007cb2e0;
+// 0x007cb2e4
+extern struct IconNode *DAT_007cb2e4;
 // 0x007cb2f0
 extern char DAT_007cb2f0[0x10];
 // 0x007cb300
