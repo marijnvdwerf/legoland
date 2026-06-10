@@ -1127,8 +1127,73 @@ LEGO_EXPORT void AddPathTile(struct Point *p, unsigned short param1) {
     AddPathSquare((struct InstancePos *)p);
 }
 
+struct PathFootprint {
+    /* 0x00 */ unsigned char pad_0[0x20];
+    /* 0x20 */ short type;
+    /* 0x22 */ unsigned char pad_22[0x3c - 0x22];
+    /* 0x3c */ int x_lo;
+    /* 0x40 */ int y_lo;
+    /* 0x44 */ int x_hi;
+    /* 0x48 */ int y_hi;
+};
+
 // FUNCTION: LEGOLAND 0x0045d3d0
-void FUN_0045d3d0(void) { STUB(); }
+void FUN_0045d3d0(struct PathFootprint *param_1, int *param_2) {
+    struct MapTile *tile;
+    int x;
+    int y;
+    int xoff;
+    struct Point local_8;
+
+    if (param_1->type != 0 && param_1->type != 2) {
+        y = param_2[1] + param_1->y_lo + -1;
+        if (y <= param_2[1] + 1 + param_1->y_hi) {
+            do {
+                x = *param_2 + param_1->x_lo + -1;
+                if (x <= *param_2 + param_1->x_hi + 1) {
+                    xoff = x * 0x14;
+                    do {
+                        *(unsigned short *)((char *)GameMap[y] + 0xc + xoff) =
+                            *(unsigned short *)((char *)GameMap[y] + 0xc + xoff) & 0xffe7;
+                        *(unsigned char *)((char *)GameMap[y] + 0x10 + xoff) = 0;
+                        tile = (struct MapTile *)GameMap[y];
+                        *(unsigned short *)((char *)tile + xoff + 8) =
+                            *(unsigned short *)((char *)tile + xoff + 0xa);
+                        local_8.x = x;
+                        local_8.y = y;
+                        FUN_0045d260(&local_8);
+                        RemovePathSquare((struct InstancePos *)&local_8);
+                        x = x + 1;
+                        xoff = xoff + 0x14;
+                    } while (x <= *param_2 + param_1->x_hi + 1);
+                }
+                y = y + 1;
+            } while (y <= param_2[1] + 1 + param_1->y_hi);
+        }
+        y = param_2[1] + param_1->y_lo;
+        if (y <= param_2[1] + param_1->y_hi) {
+            do {
+                x = *param_2 + param_1->x_lo;
+                if (x <= *param_2 + param_1->x_hi) {
+                    xoff = x * 0x14;
+                    do {
+                        tile = (struct MapTile *)((char *)GameMap[y] + xoff);
+                        tile->flags_c = tile->flags_c & 0xffe7;
+                        tile->flags_10 = 0;
+                        tile->tile = tile->base_id;
+                        local_8.x = x;
+                        local_8.y = y;
+                        FUN_0045d260(&local_8);
+                        RemovePathSquare((struct InstancePos *)&local_8);
+                        x = x + 1;
+                        xoff = xoff + 0x14;
+                    } while (x <= *param_2 + param_1->x_hi);
+                }
+                y = y + 1;
+            } while (y <= param_2[1] + param_1->y_hi);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045d560
 int FUN_0045d560(struct MapRect *out, struct MapRect *a, struct MapRect *b) {
