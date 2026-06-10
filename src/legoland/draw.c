@@ -348,7 +348,56 @@ LEGO_EXPORT void SoftPrint_XBltFast(void) { STUB(); }
 void FUN_00465ee0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00466080
-void FUN_00466080(void) { STUB(); }
+int FUN_00466080(void) {
+    DWORD tick;
+    int result;
+    int frames;
+    LPDIRECTDRAWSURFACE primary;
+    LPDIRECTDRAWSURFACE back;
+
+    LLSAuto();
+    if (lpConfig->field_1e != 0 && DAT_00668148 != 0) {
+        PushRenderingStatusAndLockVideoSurface();
+        PrintSprite(DAT_00668148, DAT_00813a44, DAT_00813a48, 0, 0);
+        PopRenderingStatus();
+    }
+    tick = GetTickCount();
+    while (tick - DAT_00668200 < 0x1c) {
+        tick = GetTickCount();
+    }
+    DAT_00668200 = GetTickCount();
+    primary = (LPDIRECTDRAWSURFACE)DAT_00668070;
+    result = primary->lpVtbl->Flip(primary, NULL, 1);
+    while (result != 0) {
+        if (result == 0x887601c2) {
+            ((LPDIRECTDRAWSURFACE)DAT_00668070)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)DAT_00668070);
+            ((LPDIRECTDRAWSURFACE)DAT_00668078)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)DAT_00668078);
+            return 0;
+        }
+        if (result != 0x887601ae && result != 0x8876021c) {
+            return 0;
+        }
+        primary = (LPDIRECTDRAWSURFACE)DAT_00668070;
+        result = primary->lpVtbl->Flip(primary, NULL, 1);
+    }
+    back = (LPDIRECTDRAWSURFACE)DAT_00668078;
+    result = back->lpVtbl->GetFlipStatus(back, 2);
+    while (result != 0) {
+        back = (LPDIRECTDRAWSURFACE)DAT_00668078;
+        result = back->lpVtbl->GetFlipStatus(back, 2);
+    }
+    tick = GetTickCount();
+    FrameNumber = FrameNumber + 1;
+    DAT_006681f8 = DAT_006681f8 + 1;
+    if (tick - DAT_006681f0 >= 0x3e8) {
+        FramesPerSecond = DAT_006681f8;
+        DAT_006681f8 = 0;
+        DAT_006681f0 = tick;
+    }
+    LastFrameMS = tick - DAT_006681f4;
+    DAT_006681f4 = tick;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004661d0
 int FUN_004661d0(void) {
