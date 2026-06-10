@@ -16,3 +16,4 @@ LEGO_EXPORT void Control3DPeople(void);
 LEGO_EXPORT void Add3DBlokeToList(struct Bloke *bloke, unsigned int param_2);
 LEGO_EXPORT void BlokeWalkAnim(struct Bloke *bloke);
 LEGO_EXPORT void Render3DPerson(struct Person *person);
+void FUN_004401b0(unsigned int param_1, struct Person *person);

@@ -95,8 +95,45 @@ void FUN_00441980(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x00441a60
 LEGO_EXPORT void Put3DBlokesOnRide(void) { STUB(); }
 
+struct BlokeRideNode {
+    unsigned char pad_0[8];
+    struct BlokeRideInner *inner;
+    unsigned char pad_c[4];
+    unsigned int field_10;
+};
+
+struct BlokeRideInner {
+    unsigned char pad_0[0x62];
+    unsigned char flags;
+};
+
 // FUNCTION: LEGOLAND 0x00441ad0
-LEGO_EXPORT void Put3DBlokesOnRide2(struct RideObject *ride, struct RideObject *obj) { STUB(); }
+LEGO_EXPORT void Put3DBlokesOnRide2(struct RideObject *ride, struct RideObject *obj) {
+    struct BlokeRideNode *node = (struct BlokeRideNode *)FUN_00441870((struct ViewportEntry *)ride, (short *)obj);
+    if (node != NULL) {
+        while ((node->inner->flags & 0x80) != 0) {
+            node = (struct BlokeRideNode *)FUN_00441890(ride, (short *)obj);
+            if (node == NULL) {
+                return;
+            }
+        }
+        while (node != NULL) {
+            if (node->field_10 != 0) {
+                FUN_004401b0(node->field_10, (struct Person *)node->inner);
+            }
+            node = (struct BlokeRideNode *)FUN_00441890(ride, (short *)obj);
+            if (node == NULL) {
+                return;
+            }
+            while ((node->inner->flags & 0x80) != 0) {
+                node = (struct BlokeRideNode *)FUN_00441890(ride, (short *)obj);
+                if (node == NULL) {
+                    return;
+                }
+            }
+        }
+    }
+}
 
 struct RenderNode {
     struct RenderNode *next;
