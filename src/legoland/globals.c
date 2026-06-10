@@ -2185,10 +2185,13 @@ LEGO_EXPORT void *FirstBloke;
 void *DAT_0066b57c;
 
 // GLOBAL: LEGOLAND 0x0066b5a4
-void *DAT_0066b5a4;
+struct SortNode *DAT_0066b5a4;
 
 // GLOBAL: LEGOLAND 0x0066b5a8
 unsigned int DAT_0066b5a8;
+
+// GLOBAL: LEGOLAND 0x0066b5ac
+unsigned int DAT_0066b5ac;
 
 // GLOBAL: LEGOLAND 0x0066b5b0
 struct SoftPrintState DAT_0066b5b0;
@@ -2723,6 +2726,9 @@ struct ObjTableEntry DAT_007cb5e0;
 
 // GLOBAL: LEGOLAND 0x007cb600
 unsigned char DAT_007cb600[1];
+
+// GLOBAL: LEGOLAND 0x007fd600
+struct SortNode *DAT_007fd600;
 
 // GLOBAL: LEGOLAND 0x007fd620
 LEGO_EXPORT void *NewObjectPtr;

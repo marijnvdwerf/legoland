@@ -6,20 +6,29 @@
 #include "globals.h"
 #include "image_sprite.h"
 #include "timer.h"
+#include "draw.h"
+#include "clipping.h"
+#include "debug_alloc.h"
 
-struct PrintListNode {
-    unsigned int field_0;
-    struct PrintListNode *next;
+struct SortNode {
+    /* 0x00 */ struct SortNode *left;
+    /* 0x04 */ struct SortNode *right;
+    /* 0x08 */ int key;
+    /* 0x0c */ unsigned int flags;
+    /* 0x10 */ int field_10;
+    /* 0x14 */ int field_14;
+    /* 0x18 */ int field_18;
+    /* 0x1c */ struct Sprite *sprite;
+    /* 0x20 */ int x;
+    /* 0x24 */ int y;
+    /* 0x28 */ int field_28;
+    /* 0x2c */ int field_2c;
+    /* 0x30 */ int field_30;
+    /* 0x34 */ int field_34;
+    /* 0x38 */ int field_38;
+    /* 0x3c */ int field_3c;
+    /* 0x40 */ int field_40;
 };
-
-struct PersonBlock {
-    unsigned char pad_0[8];
-    unsigned int field_8;
-    unsigned int field_c;
-    unsigned char pad_10[12];
-    unsigned int field_1c;
-};
-
 
 struct SpriteGroup {
     /* 0x00 */ unsigned char pad_0[4];
@@ -197,10 +206,10 @@ LEGO_EXPORT unsigned int PrintScaledSprite(struct Sprite *sprite, int param_2, i
 // FUNCTION: LEGOLAND 0x004859b0
 LEGO_EXPORT void ClearPrintList(void)
 {
-    struct PrintListNode *node = (struct PrintListNode *)DAT_0066b5a4;
+    struct SortNode *node = DAT_0066b5a4;
 
     while (node != NULL) {
-        node = node->next;
+        node = node->right;
     }
 
     DAT_0066b5a8 = 0;
@@ -211,7 +220,59 @@ LEGO_EXPORT void ClearPrintList(void)
 LEGO_EXPORT void DrawAndClearPrintList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00485bd0
-void FUN_00485bd0(void *ctx) { STUB(); }
+void FUN_00485bd0(struct SortNode *node)
+{
+    struct SortNode *cur;
+
+    if (DAT_007fd600 == NULL) {
+        // STRING: LEGOLAND 0x004bdd40
+        DBPrintf("Oh drat, Bad stuff in the sprite sorter\n");
+    }
+    if (node == NULL) {
+        // STRING: LEGOLAND 0x004bdd14
+        DBPrintf("Oh no, Not enough RAM for sprite sort list\n");
+    }
+    if (DAT_0066b5a4 == NULL) {
+        node->left = NULL;
+        node->right = NULL;
+        DAT_0066b5a4 = node;
+    } else {
+        if (node->key < DAT_007fd600->key) {
+            do {
+                cur = DAT_007fd600->left;
+                if (cur == NULL) break;
+                DAT_007fd600 = cur;
+            } while (node->key < cur->key);
+        } else if (DAT_007fd600->key < node->key) {
+            do {
+                cur = DAT_007fd600->right;
+                if (cur == NULL) break;
+                DAT_007fd600 = cur;
+            } while (cur->key < node->key);
+        }
+        if (node->key < DAT_007fd600->key) {
+            node->left = DAT_007fd600->left;
+            if (DAT_007fd600->left == NULL) {
+                DAT_0066b5a4 = node;
+            } else {
+                DAT_007fd600->left->right = node;
+            }
+            node->right = DAT_007fd600;
+            DAT_007fd600->left = node;
+        } else {
+            node->right = DAT_007fd600->right;
+            if (DAT_007fd600->right != NULL) {
+                DAT_007fd600->right->left = node;
+            }
+            node->left = DAT_007fd600;
+            DAT_007fd600->right = node;
+        }
+    }
+    DAT_007fd600 = node;
+    if (node == NULL) {
+        DBPrintf("Oh drat, Bad stuff in the sprite sorter\n");
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00485cd0
 LEGO_EXPORT void SortSpriteWithCallback(void) { STUB(); }
@@ -223,13 +284,13 @@ LEGO_EXPORT void SortSprite(void) { STUB(); }
 LEGO_EXPORT void SortPerson(struct Person *person, unsigned int param_2, void *param_3)
 {
     unsigned int original = DAT_0066b5a8;
-    struct PersonBlock *block;
+    struct SortNode *block;
 
     DAT_0066b5a8 += 0x20;
-    block = (struct PersonBlock *)&DAT_007cb600[original];
-    block->field_8 = param_2;
-    block->field_c = 0x2000;
-    block->field_1c = (unsigned int)person;
+    block = (struct SortNode *)&DAT_007cb600[original];
+    block->key = param_2;
+    block->flags = 0x2000;
+    block->sprite = (struct Sprite *)person;
     FUN_00485bd0(block);
 }
 

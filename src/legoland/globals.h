@@ -46,6 +46,7 @@ struct InterfaceEventNode;
 struct InterfaceResearchNode;
 struct InfoIcon;
 struct Element;
+struct SortNode;
 
 // Full definitions needed by typed globals defined in globals.c.
 struct LegoConfig {
@@ -1605,9 +1606,11 @@ extern LEGO_EXPORT void *FirstBloke;
 // 0x0066b57c
 extern void *DAT_0066b57c;
 // 0x0066b5a4
-extern void *DAT_0066b5a4;
+extern struct SortNode *DAT_0066b5a4;
 // 0x0066b5a8
 extern unsigned int DAT_0066b5a8;
+// 0x0066b5ac
+extern unsigned int DAT_0066b5ac;
 // 0x0066b5b0
 extern struct SoftPrintState DAT_0066b5b0;
 // 0x0066b61c
@@ -1964,6 +1967,8 @@ extern struct ObjTableEntry DAT_007cb3e2[128];
 extern struct ObjTableEntry DAT_007cb5e0;
 // 0x007cb600
 extern unsigned char DAT_007cb600[1];
+// 0x007fd600
+extern struct SortNode *DAT_007fd600;
 // 0x007fd620
 extern LEGO_EXPORT void *NewObjectPtr;
 // 0x007fd624
