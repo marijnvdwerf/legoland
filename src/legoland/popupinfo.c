@@ -675,7 +675,56 @@ void FUN_00471d90(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00471f10
-void FUN_00471f10(void) { STUB(); }
+void FUN_00471f10(void) {
+    int iVar1;
+    int iVar2;
+    unsigned int uVar3;
+    unsigned int uVar4;
+    int iVar5;
+    int iVar6;
+    int iVar7;
+    unsigned int local_1c;
+    struct PrintCtx ctx;
+
+    iVar2 = DAT_007fded0;
+    iVar1 = DAT_007fdecc;
+    ctx.node = 0;
+    ctx.flags = 1;
+    ctx.field_8 = 0;
+    uVar4 = DAT_007fdfac & 0xff;
+    PrintSprite(DAT_006688e0, DAT_007fdecc, DAT_007fded0, 0, (int *)&ctx);
+    iVar6 = iVar1 + 0xbc;
+    iVar7 = iVar6;
+    for (uVar3 = uVar4; uVar3 != 0; uVar3 = uVar3 - 1) {
+        PrintSprite(DAT_006688e4, iVar7, iVar2, 0, (int *)&ctx);
+        iVar7 = iVar7 + 0x20;
+    }
+    PrintSprite(DAT_006688e8, iVar7, iVar2, 0, (int *)&ctx);
+    if (uVar4 != 0) {
+        iVar7 = iVar2 + 99;
+        local_1c = uVar4;
+        do {
+            PrintSprite(DAT_006688ec, iVar1, iVar7, 0, (int *)&ctx);
+            uVar3 = uVar4;
+            iVar5 = iVar6;
+            do {
+                PrintSprite(DAT_006688f0, iVar5, iVar7, 0, (int *)&ctx);
+                iVar5 = iVar5 + 0x20;
+                uVar3 = uVar3 - 1;
+            } while (uVar3 != 0);
+            PrintSprite(DAT_006688f4, iVar5, iVar7, 0, (int *)&ctx);
+            iVar7 = iVar7 + 0x14;
+            local_1c = local_1c - 1;
+        } while (local_1c != 0);
+    }
+    iVar7 = iVar2 + 99 + uVar4 * 0x14;
+    PrintSprite(DAT_00668900, iVar1, iVar7, 0, (int *)&ctx);
+    for (; uVar4 != 0; uVar4 = uVar4 - 1) {
+        PrintSprite(DAT_006688fc, iVar6, iVar7, 0, (int *)&ctx);
+        iVar6 = iVar6 + 0x20;
+    }
+    PrintSprite(DAT_006688f8, iVar6, iVar7, 0, (int *)&ctx);
+}
 
 // FUNCTION: LEGOLAND 0x00472090
 void FUN_00472090(void) {
