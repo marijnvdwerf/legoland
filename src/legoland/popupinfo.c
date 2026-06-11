@@ -56,6 +56,8 @@ struct InfoObjInner {
 #include "controller.h"
 
 extern unsigned char FUN_0045f4b0(struct Cursor *cursor);
+extern int FUN_0045d3d0();
+extern void RemObjFromMap();
 
 struct NewObjInfo {
     /* 0x00 */ unsigned char pad_0[0xc4];
@@ -70,7 +72,7 @@ extern void FUN_00455e50(char *text, int x, int y, int w, int h, int a6, int a7,
 
 unsigned char FUN_004733b0(void *arg0, unsigned char flags);
 unsigned char FUN_00473310(void *param1, unsigned char param2);
-void FUN_004731e0(void);
+unsigned char FUN_004731e0(void *param_1, unsigned char flags);
 
 // FUNCTION: LEGOLAND 0x00470bb0
 LEGO_EXPORT void InitPopUpInfo(void) {
@@ -722,7 +724,40 @@ unsigned char FUN_004731a0(void *param_1, unsigned char param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x004731e0
-void FUN_004731e0(void) { STUB(); }
+unsigned char FUN_004731e0(void *param_1, unsigned char flags) {
+    unsigned int local_8[2];
+    struct Cursor local_cursor;
+    void *saved_class;
+    struct ObjClass *cls;
+    unsigned int v;
+
+    FUN_00471d60();
+    FUN_0046d680(param_1, DAT_00668934);
+    if ((flags & 2) != 0) {
+        v = DAT_007fdec8 & 0xffff;
+        saved_class = QueryClass;
+        memcpy(&local_cursor, &QueryCursor, sizeof(struct Cursor));
+        local_8[0] = v & 0xff;
+        local_8[1] = v >> 8;
+        cls = *(struct ObjClass **)((char *)DAT_007fdec4 + 0xc);
+        QueryCursor.field_1408 = v >> 8;
+        *((unsigned char *)&QueryObj + 1) = (unsigned char)(v >> 8);
+        QueryClass = cls;
+        QueryCursor.field_1404 = v & 0xff;
+        *(unsigned char *)&QueryObj = (unsigned char)(v & 0xff);
+        cls->method_94(cls->field_c4, local_8);
+        BuildCursorPtr(&QueryCursor, 0, 0);
+        if (FUN_0045f4b0(&QueryCursor) != 0) {
+            FUN_0045d3d0(QueryClass, local_8);
+            cls = (struct ObjClass *)QueryClass;
+            RemObjFromMap(QueryClass, cls->field_c4, QueryObj, &QueryCursor);
+        }
+        memcpy(&QueryCursor, &local_cursor, sizeof(struct Cursor));
+        QueryClass = saved_class;
+        ResetInfoStruct();
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00473310
 unsigned char FUN_00473310(void *param1, unsigned char param2) {
