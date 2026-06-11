@@ -142,7 +142,7 @@ LEGO_EXPORT void Put3DBlokesOnRide2(struct RideObject *ride, struct RideObject *
         }
         while (node != NULL) {
             if (node->field_10 != 0) {
-                FUN_004401b0(node->field_10, (struct Person *)node->inner);
+                FUN_004401b0(node->field_10, (int)node->inner);
             }
             node = (struct BlokeRideNode *)FUN_00441890(ride, (short *)obj);
             if (node == NULL) {

@@ -6,6 +6,11 @@
 #include "print_sprite.h"
 #include "render.h"
 #include "render3d.h"
+#include "map_object.h"
+
+extern int Get_XScroll(void);
+extern int Get_YScroll(void);
+LEGO_EXPORT void SetPersonPosition(struct Person *person, unsigned int x, unsigned int y);
 
 struct Person {
     struct Person *prev;
@@ -22,13 +27,28 @@ struct Person {
     unsigned int field_30;
     unsigned int field_34;
     unsigned int field_38;
-    unsigned char pad_3c[0x4c - 0x3c];
+    unsigned char pad_3c[0x40 - 0x3c];
+    float field_40;
+    float field_44;
+    float field_48;
     int field_4c;
     unsigned char pad_50[0x54 - 0x50];
     unsigned int sort_id;
-    unsigned char pad_58[0x62 - 0x58];
-    unsigned char flags;
-    unsigned char pad_63[0x7c - 0x63];
+    union {
+        int m[9];
+        struct {
+            unsigned char pad_58[0x62 - 0x58];
+            unsigned char flags;
+            unsigned char field_63;
+            unsigned char pad_64[0x68 - 0x64];
+            int field_68;
+            int field_6c;
+            unsigned short field_70;
+            unsigned char field_72;
+            unsigned char pad_73[1];
+            unsigned char field_74;
+        };
+    };
     unsigned int field_7c;
     unsigned int field_80;
     unsigned int random;
@@ -365,10 +385,46 @@ LEGO_EXPORT void IP_RenderBlokeIn3DNow(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00440020
-LEGO_EXPORT void SetPersonRotation(void) { STUB(); }
+LEGO_EXPORT void SetPersonRotation(struct Person *person, float *src) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004400b0
-LEGO_EXPORT void SetPersonDirection(void) { STUB(); }
+LEGO_EXPORT void SetPersonDirection(struct Person *person, unsigned int direction) {
+    person->field_48 = 0.0f;
+    person->field_40 = 0.0f;
+    switch (direction) {
+    case 0:
+        person->field_44 = -0.7853979468345642f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 1:
+        person->field_44 = 4.712387561798096f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 2:
+        person->field_44 = 3.926989793777466f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 3:
+        person->field_44 = 3.141591787338257f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 4:
+        person->field_44 = 2.356193780899048f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 5:
+        person->field_44 = 1.5707958936691284f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 6:
+        person->field_44 = 0.7853979468345642f;
+        SetPersonRotation(person, &person->field_40);
+        return;
+    case 7:
+        person->field_44 = 0.0f;
+    }
+    SetPersonRotation(person, &person->field_40);
+}
 
 // FUNCTION: LEGOLAND 0x00440190
 LEGO_EXPORT void SetPersonPosition(struct Person *person, unsigned int x, unsigned int y) {
@@ -377,7 +433,35 @@ LEGO_EXPORT void SetPersonPosition(struct Person *person, unsigned int x, unsign
 }
 
 // FUNCTION: LEGOLAND 0x004401b0
-void FUN_004401b0(unsigned int param_1, struct Person *person) { STUB(); }
+void FUN_004401b0(int param_1, int param_2) {
+    struct Person *iVar3;
+    struct Person *iVar4;
+    int iVar1;
+    int iVar2;
+    int local_8;
+    int local_4;
+    short sVar5;
+
+    iVar4 = (struct Person *)param_2;
+    iVar3 = (struct Person *)param_1;
+    SetPersonDirection(iVar3, iVar4->field_72);
+    iVar1 = iVar4->field_6c;
+    iVar2 = iVar4->field_68;
+    GetTileDimensions(&param_2, &param_1);
+    local_8 = (iVar2 - iVar1) * param_2 >> 9;
+    local_4 = (iVar1 + iVar2) * param_1 >> 9;
+    sVar5 = (short)Get_XScroll();
+    local_8 = local_8 - sVar5;
+    sVar5 = (short)Get_YScroll();
+    iVar3->sort_id = local_4 - sVar5;
+    local_8 = local_8 + lpConfig->field_20;
+    local_4 = (local_4 - sVar5) + (lpConfig->field_22 - (iVar4->field_70 >> 1));
+    AdjustBlokePosition((struct BlokePos *)&local_8);
+    SetPersonPosition(iVar3, local_8, local_4);
+    if ((iVar4->field_63 & 1) == 0) {
+        iVar3->field_4c = iVar4->field_74;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00440290
 LEGO_EXPORT void UpdatePerson(struct Person *person) {
@@ -387,7 +471,7 @@ LEGO_EXPORT void UpdatePerson(struct Person *person) {
     if (person->next == 0) {
         return;
     }
-    FUN_004401b0((unsigned int)person->next, person);
+    FUN_004401b0((int)person->next, (int)person);
 }
 
 // FUNCTION: LEGOLAND 0x004402b0
@@ -486,7 +570,7 @@ LEGO_EXPORT void Add3DBlokeToList(struct Bloke *bloke, unsigned int param_2) {
     bloke->person = person;
     if (person != 0) {
         FUN_0043f810(person);
-        FUN_004401b0((unsigned int)person, (struct Person *)bloke);
+        FUN_004401b0((int)person, (int)bloke);
         BlokeWalkAnim(bloke);
     }
 }
