@@ -401,6 +401,10 @@ extern void *PTR_004b9314;
 extern void *PTR_004b9338;
 // 0x004b92d8
 extern void *DAT_004b92d8;
+// 0x004b92e4
+extern void *DAT_004b92e4;
+// 0x004b9308
+extern void *DAT_004b9308;
 // 0x004b95f0
 extern struct DeferredSprite *PTR_DAT_004b95f0;
 // 0x004b9550

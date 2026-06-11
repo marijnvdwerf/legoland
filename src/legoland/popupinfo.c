@@ -55,10 +55,13 @@ struct InfoObjInner {
 #include "map_object.h"
 #include "controller.h"
 #include "draw.h"
+#include "sound_music.h"
 
 extern unsigned char FUN_0045f4b0(struct Cursor *cursor);
 extern int FUN_0045d3d0();
 extern void RemObjFromMap();
+extern void FUN_00470100();
+extern void FUN_00499eb0(void *order);
 
 struct NewObjInfo {
     /* 0x00 */ unsigned char pad_0[0x26];
@@ -544,7 +547,102 @@ LAB_00471919:
 }
 
 // FUNCTION: LEGOLAND 0x00471950
-LEGO_EXPORT void PopUpInfoSetUp(void) { STUB(); }
+LEGO_EXPORT void PopUpInfoSetUp(int param_1, void *param_2, unsigned int param_3, unsigned int param_4, unsigned int param_5) {
+    short sVar1;
+    int iVar2;
+    int x;
+    int y;
+    unsigned int uVar3;
+    unsigned char *iVar4;
+    int iVar5;
+
+    uVar3 = param_3 & 0xffff;
+    x = uVar3 & 0xff;
+    y = uVar3 >> 8;
+    if ((x < 0) || (lpConfig->width <= x) || (y < 0) || (lpConfig->height <= y)) {
+        iVar4 = NULL;
+    } else {
+        iVar4 = (unsigned char *)GameMap[y] + x * 0x14;
+    }
+    ResetInfoStruct();
+    DAT_007fdfa0 = 1;
+    DAT_007fdfa8 = 1;
+    DAT_007fdecc = param_4;
+    DAT_007fded0 = param_5;
+    DAT_007fdf88 = (unsigned short)param_3;
+    DAT_007fdec0 = param_1;
+    DAT_007fdec4 = param_2;
+    DAT_007fdec8 = param_3;
+    if (param_1 < 0x308) {
+        if (param_1 == 0x307) {
+            if (*(short *)((char *)param_2 + 0xc) != 5) {
+                PlayInstanceOfSample(DAT_004b92e4, 0, 1, 0);
+                FUN_00470100(0x307, param_2);
+                ResetInfoStruct();
+                return;
+            }
+        } else if (param_1 == 0x103) {
+            if (param_2 == NULL) {
+                DAT_007fdfa0 = 1;
+                DAT_007fdfa8 = 1;
+                return;
+            }
+            if (((unsigned int)param_2 != DAT_007fdfb8) && ((unsigned int)param_2 != DAT_007fdfbc)) {
+                DAT_007fdf7c = *(unsigned int *)((char *)param_2 + 0xc);
+                DAT_007fdf84 = iVar4;
+                if (*(unsigned int *)(DAT_007fdf7c + 0xc4) == DAT_007fdfb0) {
+                    DAT_007fdfa0 = 0;
+                    DAT_007fdf9c = 10;
+                    param_4 = iVar4[4];
+                    param_5 = iVar4[5];
+                    if (FUN_0049a120() == 0) {
+                        return;
+                    }
+                    GenerateGardener(&param_4, 1);
+                    return;
+                }
+                if (*(unsigned int *)(DAT_007fdf7c + 0xc4) != DAT_007fdfb4) {
+                    DAT_007fdf9c = 0x103;
+                    return;
+                }
+                DAT_007fdfa0 = 0;
+                DAT_007fdf9c = 0x14;
+                param_4 = iVar4[4];
+                param_5 = iVar4[5];
+                if (FUN_0049a160() == 0) {
+                    return;
+                }
+                GenerateMechanic(&param_4, 1);
+                return;
+            }
+        } else if (param_1 == 0x306) {
+            DAT_007fdf9c = param_1;
+            DAT_007fdf8c = (unsigned int)param_2;
+            DAT_007fdf90 = *(unsigned int *)(*(int *)((char *)param_2 + 4) + 0x1c);
+            DAT_007fdf94 = *(unsigned int *)(*(int *)((char *)param_2 + 4) + 0x20);
+            return;
+        }
+    } else if ((param_1 == 0x308) && (sVar1 = *(short *)((char *)param_2 + 0xc), sVar1 != 5)) {
+        if (((sVar1 == 0x13) && (0x6a < *(unsigned char *)((char *)param_2 + 0x60))) ||
+            ((sVar1 == 0x16) && (0x6a < *(unsigned char *)((char *)param_2 + 0x60)))) {
+            iVar4 = *(unsigned char **)((char *)param_2 + 0x50);
+            iVar5 = *(int *)(iVar4 + 8);
+            if ((iVar5 < 0) ||
+                (((int)(unsigned int)lpConfig->width <= iVar5 ||
+                  (iVar2 = *(int *)(iVar4 + 0xc), iVar2 < 0)) ||
+                 ((int)(unsigned int)lpConfig->height <= iVar2))) {
+                iVar5 = 0;
+            } else {
+                iVar5 = (int)GameMap[iVar2] + iVar5 * 0x14;
+            }
+            *(unsigned short *)(iVar5 + 0xc) = *(unsigned short *)(iVar5 + 0xc) & 0xbfff;
+            FUN_00499eb0(iVar4);
+        }
+        PlayInstanceOfSample(DAT_004b9308, 0, 1, 0);
+        FUN_00470100(0x308, param_2);
+    }
+    ResetInfoStruct();
+}
 
 // FUNCTION: LEGOLAND 0x00471bf0
 void FUN_00471bf0(void) {
