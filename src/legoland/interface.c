@@ -83,15 +83,8 @@ struct QueryNode {
 
 #include "image_sprite.h"
 #include "stream.h"
-
-char FUN_00475c50(int param_1, unsigned char param_2);
-char FUN_00475c90(int param_1, unsigned char param_2);
-extern void FUN_004562e0(void);
-void FUN_00474750(void);
-LEGO_EXPORT unsigned int TestMenu(unsigned int *entry);
-extern void AVIStreamGetFrameClose(void *frame);
-extern void AVIStreamRelease(void *stream);
-extern void AVIFileExit(void);
+#include "mapscreen.h"
+#include "imports.h"
 
 
 // FUNCTION: LEGOLAND 0x004741f0

@@ -2,6 +2,8 @@
 
 #include "legoland.h"
 
+#include <windows.h>
+
 struct SampleBuffer;
 
 struct SampleDef {
@@ -70,5 +72,7 @@ LEGO_EXPORT void KillPlayableSample(struct Sample *sample);
 LEGO_EXPORT void DeleteSampleDef(struct SampleDef *def);
 LEGO_EXPORT int KillSoundSampleSystem(void);
 void FUN_00492b20(struct Sample *sample);
+void FUN_00492ce0(int param_1);
+BOOL FUN_00492d80(void);
 int FUN_00495a10(void *hwnd);
 int FUN_00495b00(void);

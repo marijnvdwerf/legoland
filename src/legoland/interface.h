@@ -62,3 +62,7 @@ LEGO_EXPORT void EnableSidePanelIcons(void);
 LEGO_EXPORT void ListChildrenBar(void *node, int group, short x, short y);
 LEGO_EXPORT void CloseChildrenBar(void *node, int group, short x, short y);
 LEGO_EXPORT void RedrawObjectList(struct InterfacePanel *panel, int param_2, int delta);
+void FUN_00474750(void);
+LEGO_EXPORT unsigned int TestMenu(unsigned int *entry);
+char FUN_00475c50(int param_1, unsigned char param_2);
+char FUN_00475c90(int param_1, unsigned char param_2);

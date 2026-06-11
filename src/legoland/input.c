@@ -13,15 +13,8 @@
 #include "screens.h"
 #include "nerps.h"
 #include "map_object.h"
-
-LEGO_EXPORT void *WNDENV_Gethwnd(void);
-int FUN_004738b0(void);
-int FUN_00473970(void);
-void FUN_00492ce0(int param_1);
-BOOL FUN_00492d80(void);
-char FUN_00474130(void);
-unsigned int FUN_00474070(void);
-unsigned int FUN_00474080(void);
+#include "wndenv.h"
+#include "sound_sfx.h"
 
 struct DInputDeviceVtbl {
     void *pad_0[2];
