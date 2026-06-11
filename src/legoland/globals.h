@@ -51,6 +51,7 @@ struct InterfaceQueryNode;
 struct InterfaceEventNode;
 struct InterfaceResearchNode;
 struct InfoIcon;
+struct InfoObjData;
 struct Element;
 struct SortNode;
 
@@ -2186,9 +2187,9 @@ extern int DAT_007fdf78;
 // 0x007fdf7c
 extern unsigned int DAT_007fdf7c;
 // 0x007fdf80
-extern void *DAT_007fdf80;
+extern struct InfoObjData *DAT_007fdf80;
 // 0x007fdf84
-extern unsigned int DAT_007fdf84;
+extern unsigned char *DAT_007fdf84;
 // 0x007fdf88
 extern unsigned short DAT_007fdf88;
 // 0x007fdf8c

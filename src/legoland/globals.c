@@ -3023,10 +3023,10 @@ int DAT_007fdf78;
 unsigned int DAT_007fdf7c;
 
 // GLOBAL: LEGOLAND 0x007fdf80
-void *DAT_007fdf80;
+struct InfoObjData *DAT_007fdf80;
 
 // GLOBAL: LEGOLAND 0x007fdf84
-unsigned int DAT_007fdf84;
+unsigned char *DAT_007fdf84;
 
 // GLOBAL: LEGOLAND 0x007fdf88
 unsigned short DAT_007fdf88;

@@ -21,9 +21,29 @@ struct InfoIcon {
     /* 0x3c */ unsigned int string_id;
 };
 
+struct InfoObjData {
+    /* 0x00 */ unsigned char pad_0[0x4];
+    /* 0x04 */ unsigned int field_4;
+    /* 0x08 */ unsigned int field_8;
+    /* 0x0c */ unsigned int field_c;
+    /* 0x10 */ unsigned char pad_10[0x18 - 0x10];
+    /* 0x18 */ int field_18;
+    /* 0x1c */ struct InfoObjInner *field_1c;
+};
+
+struct InfoObjInner {
+    /* 0x00 */ unsigned char pad_0[0x60];
+    /* 0x60 */ unsigned char field_60;
+};
+
 
 #include "image_sprite.h"
 #include "stream.h"
+#include "worker.h"
+
+extern int FUN_0049a120(void);
+extern int FUN_0049a160(void);
+extern void SetObjRectFlags();
 
 // FUNCTION: LEGOLAND 0x00470bb0
 LEGO_EXPORT void InitPopUpInfo(void) { STUB(); }
@@ -420,7 +440,16 @@ unsigned int FUN_00473160(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004731a0
-void FUN_004731a0(void) { STUB(); }
+unsigned char FUN_004731a0(void *param_1, unsigned char param_2) {
+    FUN_00471610();
+    FUN_0046d680(param_1, DAT_00668914);
+    if ((param_2 & 2) != 0) {
+        FUN_00471470();
+        DAT_007fdfa4 = 1;
+        return 1;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004731e0
 void FUN_004731e0(void) { STUB(); }
@@ -471,13 +500,58 @@ unsigned char FUN_004733b0(void *arg0, unsigned char flags) {
 }
 
 // FUNCTION: LEGOLAND 0x004733f0
-void FUN_004733f0(void) { STUB(); }
+unsigned char FUN_004733f0(void *param_1, unsigned char param_2) {
+    unsigned int local_8[2];
+
+    FUN_00471610();
+    if (DAT_0079a8bc < 0xf) {
+        FUN_0046d680(param_1, DAT_00668944);
+        if ((param_2 & 2) != 0) {
+            local_8[0] = DAT_007fdf84[4];
+            local_8[1] = DAT_007fdf84[5];
+            if (FUN_0049a120() != 0) {
+                GenerateGardener(local_8, 1);
+            }
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00473460
-void FUN_00473460(void) { STUB(); }
+unsigned char FUN_00473460(void *param_1, unsigned char param_2) {
+    unsigned int local_8[2];
+
+    FUN_00471610();
+    if (DAT_0079a8cc < 0xf) {
+        FUN_0046d680(param_1, DAT_0066894c);
+        if ((param_2 & 2) != 0) {
+            local_8[0] = DAT_007fdf84[4];
+            local_8[1] = DAT_007fdf84[5];
+            if (FUN_0049a160() != 0) {
+                GenerateMechanic(local_8, 1);
+            }
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004734d0
-void FUN_004734d0(void) { STUB(); }
+unsigned char FUN_004734d0(void *param_1, unsigned char param_2) {
+    FUN_00471610();
+    FUN_0046d680(param_1, DAT_00668914);
+    if ((param_2 & 2) != 0) {
+        if (DAT_007fdf9c == 0x10b) {
+            SetObjRectFlags(DAT_007fdf80->field_4, &DAT_007fdf80->field_8, 0);
+            RemoveGardenersWorkOrderAt(DAT_007fdf80->field_8, DAT_007fdf80->field_c);
+            ResetInfoStruct();
+            return 1;
+        }
+        SetObjRectFlags(DAT_007fdf80->field_4, &DAT_007fdf80->field_8, 0);
+        RemoveMechanicsWorkOrderAt(DAT_007fdf80->field_8, DAT_007fdf80->field_c);
+        ResetInfoStruct();
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004735b0
 void FUN_004735b0(void) {
