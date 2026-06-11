@@ -1,0 +1,48 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ColumnLimit: 0
+PointerAlignment: Right
+DerivePointerAlignment: false
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterFunction: false
+  AfterControlStatement: Never
+  AfterStruct: false
+  AfterUnion: false
+  AfterEnum: false
+  AfterClass: false
+  BeforeElse: false
+  BeforeCatch: false
+  BeforeWhile: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+AllowShortFunctionsOnASingleLine: All
+AllowShortBlocksOnASingleLine: Always
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortLoopsOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
+KeepEmptyLinesAtTheStartOfBlocks: false
+MaxEmptyLinesToKeep: 1
+SpaceBeforeParens: ControlStatements
+IndentCaseLabels: false
+AlignAfterOpenBracket: DontAlign
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignTrailingComments: false
+AlignOperands: DontAlign
+AlignEscapedNewlines: DontAlign
+ReflowComments: false
+SortIncludes: CaseSensitive
+IncludeBlocks: Preserve
+IncludeCategories:
+  - Regex:           '^<windows\.h>'
+    Priority:        1
+  - Regex:           '^<(ddraw|dinput|dsound|vfw|mmsystem)\.h>'
+    Priority:        2
+  - Regex:           '^<.*>'
+    Priority:        3
+  - Regex:           '^".*"'
+    Priority:        4
