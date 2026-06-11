@@ -11,6 +11,7 @@
 extern int Get_XScroll(void);
 extern int Get_YScroll(void);
 LEGO_EXPORT void SetPersonPosition(struct Person *person, unsigned int x, unsigned int y);
+extern void *FUN_00442580(struct Person *person, void *context, unsigned int arg3, unsigned int arg4, unsigned int arg5);
 
 struct Person {
     struct Person *prev;
@@ -32,7 +33,7 @@ struct Person {
     float field_44;
     float field_48;
     int field_4c;
-    unsigned char pad_50[0x54 - 0x50];
+    void *field_50;
     unsigned int sort_id;
     union {
         int m[9];
@@ -576,7 +577,54 @@ LEGO_EXPORT void Add3DBlokeToList(struct Bloke *bloke, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x004406c0
-LEGO_EXPORT void BlokeSetAnim(struct Bloke *bloke, unsigned int anim) { STUB(); }
+LEGO_EXPORT void BlokeSetAnim(struct Bloke *bloke, int anim) {
+    struct Person *person;
+    int kind;
+    void **base;
+    struct Mesh *mesh;
+    void *context;
+
+    person = bloke->person;
+    if (person->field_88 != (unsigned int)anim) {
+        kind = person->field_8;
+        person->field_88 = anim;
+        switch (kind) {
+        case 1:
+            if (person->random == 0) {
+                base = DAT_0062febc;
+            } else {
+                base = DAT_0062fed4;
+            }
+            break;
+        case 2:
+            base = DAT_0062feb0;
+            break;
+        case 3:
+            base = &DAT_0062fef4;
+            break;
+        default:
+            base = (void **)bloke;
+        }
+        mesh = (struct Mesh *)base[anim];
+        if (kind == 1 && person->field_50 != 0) {
+            free(person->field_50);
+        }
+        switch (person->field_8) {
+        case 1:
+            context = DAT_0081c8c0;
+            break;
+        case 2:
+            context = DAT_0081c8c8;
+            break;
+        case 3:
+            context = DAT_0081c8c4;
+            break;
+        default:
+            context = bloke;
+        }
+        person->field_50 = FUN_00442580(person, context, (unsigned int)mesh->field_8, mesh->elems->shared->count, person->random);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00440780
 LEGO_EXPORT void BlokeSitAnim(struct Bloke *bloke) {
@@ -644,7 +692,23 @@ LEGO_EXPORT void BlokeSetFrame(struct Bloke *bloke, int frame) {
 }
 
 // FUNCTION: LEGOLAND 0x004408a0
-LEGO_EXPORT void PlayBlokeAnim(void) { STUB(); }
+LEGO_EXPORT int PlayBlokeAnim(struct Bloke *bloke) {
+    struct Person *person;
+    struct Anim3D *anim;
+    int frame;
+
+    person = bloke->person;
+    if (person != 0) {
+        anim = GetBlokeAnim3DFromPerson(person);
+        frame = person->field_4c + 1;
+        person->field_4c = frame;
+        if (anim->divisor <= frame) {
+            person->field_4c = 0;
+            return 1;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x004408e0
 LEGO_EXPORT void BlokeAnimNextFrame(struct Bloke *bloke) {
@@ -659,7 +723,19 @@ LEGO_EXPORT void BlokeAnimNextFrame(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00440910
-LEGO_EXPORT void BlokeWalkAnim(struct Bloke *bloke) { STUB(); }
+LEGO_EXPORT void BlokeWalkAnim(struct Bloke *bloke) {
+    unsigned int k;
+    int anim;
+
+    k = bloke->person->field_8 - 2;
+    if (k == 0 || k == 1) {
+        anim = 0;
+    } else {
+        anim = 1;
+    }
+    BlokeSetAnim(bloke, anim);
+    BlokeSetFrame(bloke, 0);
+}
 
 // FUNCTION: LEGOLAND 0x00440960
 LEGO_EXPORT void BlokeWalkWithPan(struct Bloke *bloke) {
