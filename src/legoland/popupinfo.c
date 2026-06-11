@@ -49,6 +49,8 @@ struct InfoObjInner {
 #include "help.h"
 #include "print_sprite.h"
 #include "debug_alloc.h"
+#include "llidb.h"
+#include "string.h"
 
 struct NewObjInfo {
     /* 0x00 */ unsigned char pad_0[0xc4];
@@ -61,8 +63,153 @@ extern void SetObjRectFlags();
 extern void FUN_00470950();
 extern void FUN_00455e50(char *text, int x, int y, int w, int h, int a6, int a7, unsigned int color1, unsigned int color2);
 
+unsigned char FUN_004733b0(void *arg0, unsigned char flags);
+unsigned char FUN_00473310(void *param1, unsigned char param2);
+void FUN_004731e0(void);
+
 // FUNCTION: LEGOLAND 0x00470bb0
-LEGO_EXPORT void InitPopUpInfo(void) { STUB(); }
+LEGO_EXPORT void InitPopUpInfo(void) {
+    unsigned int *puVar3;
+    int iVar2;
+
+    puVar3 = &DAT_007fdec0;
+    for (iVar2 = 0x40; iVar2 != 0; iVar2 = iVar2 + -1) {
+        *puVar3 = 0;
+        puVar3 = puVar3 + 1;
+    }
+    // STRING: LEGOLAND 0x004b89ac
+    if (LLIDB_FindElement("POTTING SHED", &DAT_007fdfb0, 0) != 0) {
+        _exit(1);
+    }
+    // STRING: LEGOLAND 0x004b899c
+    if (LLIDB_FindElement("MECHANICS HUT", &DAT_007fdfb4, 0) != 0) {
+        _exit(1);
+    }
+    // STRING: LEGOLAND 0x004b8a70
+    if (LLIDB_FindElement("PATH CONTROL", &DAT_007fdfb8, 0) != 0) {
+        _exit(1);
+    }
+    // STRING: LEGOLAND 0x004b83d0
+    if (LLIDB_FindElement("ENTRANCE 1", &DAT_007fdfbc, 0) != 0) {
+        _exit(1);
+    }
+    if (DAT_00668958 == NULL) {
+        DAT_00668958 = (struct Sprite *)1;
+        // STRING: LEGOLAND 0x004baca4
+        DAT_006688e0 = LoadSprite("PU_BGMain.lls", 4);
+        // STRING: LEGOLAND 0x004bac90
+        DAT_006688e4 = LoadSprite("PU_BGCentreTop.lls", 4);
+        // STRING: LEGOLAND 0x004bac7c
+        DAT_006688e8 = LoadSprite("PU_BGRightTop.lls", 4);
+        // STRING: LEGOLAND 0x004bac68
+        DAT_006688ec = LoadSprite("PU_BGLeftMid.lls", 4);
+        // STRING: LEGOLAND 0x004bac54
+        DAT_006688f0 = LoadSprite("PU_BGCentreMid.lls", 4);
+        // STRING: LEGOLAND 0x004bac40
+        DAT_006688f4 = LoadSprite("PU_BGRightMid.lls", 4);
+        // STRING: LEGOLAND 0x004bac2c
+        DAT_006688f8 = LoadSprite("PU_BGLeftBtm.lls", 4);
+        // STRING: LEGOLAND 0x004bac18
+        DAT_006688fc = LoadSprite("Pu_BGCentreBtm.lls", 4);
+        // STRING: LEGOLAND 0x004bac04
+        DAT_00668900 = LoadSprite("PU_BGRightBtm.lls", 4);
+        // STRING: LEGOLAND 0x004babf4
+        DAT_00668910 = LoadSprite("NewPopMock.lls", 4);
+        // STRING: LEGOLAND 0x004babe0
+        DAT_007fe004 = LoadSprite("ObjectRepairOK.lls", 4);
+        // STRING: LEGOLAND 0x004babcc
+        DAT_007fdeb0 = LoadSprite("ObjectNoRepair1.lls", 4);
+        // STRING: LEGOLAND 0x004babb4
+        DAT_00668914 = LoadSprite("PU_DeleteObjectON.lls", 4);
+        // STRING: LEGOLAND 0x004baba0
+        DAT_00668918 = LoadSprite("PU_DeleteObject.lls", 4);
+        // STRING: LEGOLAND 0x004bab8c
+        DAT_0066891c = LoadSprite("PU_ClosePopUpON.lls", 4);
+        // STRING: LEGOLAND 0x004bab78
+        DAT_00668920 = LoadSprite("PU_ClosePopUp.lls", 4);
+        // STRING: LEGOLAND 0x004bab60
+        DAT_00668944 = LoadSprite("PU_AddGardenerON.lls", 4);
+        // STRING: LEGOLAND 0x004bab4c
+        DAT_00668948 = LoadSprite("PU_AddGardener.lls", 4);
+        // STRING: LEGOLAND 0x004bab34
+        DAT_0066894c = LoadSprite("PU_AddMechanicsON.lls", 4);
+        // STRING: LEGOLAND 0x004bab20
+        DAT_00668950 = LoadSprite("PU_AddMechanics.lls", 4);
+        // STRING: LEGOLAND 0x004bab10
+        DAT_00668928 = LoadSprite("NextIcon.lls", 4);
+        // STRING: LEGOLAND 0x004bab00
+        DAT_00668924 = LoadSprite("NextIconOn.lls", 4);
+        // STRING: LEGOLAND 0x004baaf0
+        DAT_00668930 = LoadSprite("PrevIcon.lls", 4);
+        // STRING: LEGOLAND 0x004baae0
+        DAT_0066892c = LoadSprite("PrevIconOn.lls", 4);
+        // STRING: LEGOLAND 0x004baad4
+        DAT_007fdfc8 = LoadSprite("i_sad.lls", 0);
+        // STRING: LEGOLAND 0x004baac8
+        DAT_007fdfe4 = LoadSprite("i_norm.lls", 0);
+        // STRING: LEGOLAND 0x004baabc
+        DAT_007fe018 = LoadSprite("i_happy.lls", 0);
+        // STRING: LEGOLAND 0x004baaac
+        DAT_007fdfd0 = LoadSprite("i_hungry.lls", 0);
+        // STRING: LEGOLAND 0x004baa9c
+        DAT_007fe008 = LoadSprite("i_peckish.lls", 0);
+        // STRING: LEGOLAND 0x004baa90
+        DAT_007fdeac = LoadSprite("i_full.lls", 0);
+    }
+    DAT_007fdfe0 = (struct InfoIcon *)InsertIcon(0, 0, 0x2c3, DAT_00668948);
+    DAT_007fdfe0->string_id = 0x6e;
+    DAT_007fdfe0->string = GetString(0x6e);
+    DAT_007fdfe0->flags |= 0x2000;
+    DAT_007fdfe0->flags |= 0x4002;
+    DAT_007fdfe0->flags |= 0x400;
+    DAT_007fdfe0->handler = FUN_004733f0;
+    DAT_007fdea4 = (struct InfoIcon *)InsertIcon(0, 0, 0x2c3, DAT_00668950);
+    DAT_007fdea4->string_id = 0x6f;
+    DAT_007fdea4->string = GetString(0x6f);
+    DAT_007fdea4->flags |= 0x2000;
+    DAT_007fdea4->flags |= 0x4002;
+    DAT_007fdea4->flags |= 0x400;
+    DAT_007fdea4->handler = FUN_00473460;
+    DAT_007fdfdc = (struct InfoIcon *)InsertIcon(0, 0, 0x2c3, DAT_00668918);
+    DAT_007fdfdc->string_id = 0x70;
+    DAT_007fdfdc->string = GetString(0x70);
+    DAT_007fdfdc->flags |= 0x2000;
+    DAT_007fdfdc->flags |= 0x4002;
+    DAT_007fdfdc->flags |= 0x400;
+    DAT_007fdfdc->handler = FUN_004731a0;
+    DAT_007fdfc0 = (struct InfoIcon *)InsertIcon(0, 0, 0x2c3, DAT_00668920);
+    DAT_007fdfc0->string_id = 0x73;
+    DAT_007fdfc0->string = GetString(0x73);
+    DAT_007fdfc0->flags |= 0x2000;
+    DAT_007fdfc0->flags |= 0x4002;
+    DAT_007fdfc0->flags |= 0x400;
+    DAT_007fdfc0->handler = FUN_004730f0;
+    DAT_007fdfc4 = (struct InfoIcon *)InsertIcon(0, 0, 0x2c3, DAT_00668928);
+    DAT_007fdfc4->string_id = 0x88e;
+    DAT_007fdfc4->string = GetString(0x88e);
+    DAT_007fdfc4->flags |= 0x2000;
+    DAT_007fdfc4->flags |= 0x4002;
+    DAT_007fdfc4->flags |= 0x400;
+    DAT_007fdfc4->handler = FUN_00473360;
+    DAT_007fdfe8 = (struct InfoIcon *)InsertIcon(0, 0, 0x2c3, DAT_00668930);
+    DAT_007fdfe8->string_id = 0x88f;
+    DAT_007fdfe8->string = GetString(0x88f);
+    DAT_007fdfe8->flags |= 0x2000;
+    DAT_007fdfe8->flags |= 0x4002;
+    DAT_007fdfe8->flags |= 0x400;
+    DAT_007fdfe8->handler = FUN_004733b0;
+    // STRING: LEGOLAND 0x004baa7c
+    DAT_007fdfd8 = (struct InfoIcon *)LoadSpriteIcon("PU_CornerMask.lls", 4, 0, 0, 0x2c3);
+    DAT_007fdfd8->flags |= 0x400;
+    DAT_007fdfcc = (struct InfoIcon *)InsertIcon(0, 0, 0x2c3, DAT_00668918);
+    DAT_007fdfcc->string_id = 0xa1;
+    DAT_007fdfcc->string = GetString(0xa1);
+    DAT_007fdfcc->flags |= 0x2000;
+    DAT_007fdfcc->flags |= 0x4002;
+    DAT_007fdfcc->flags |= 0x400;
+    DAT_007fdfcc->handler = FUN_004734d0;
+    FUN_00470950(FUN_004731e0, FUN_00473310);
+}
 
 // FUNCTION: LEGOLAND 0x00471170
 int FUN_00471170(void) {
