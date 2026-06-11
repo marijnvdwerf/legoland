@@ -175,7 +175,7 @@ void FUN_004588c0(void)
 }
 
 // FUNCTION: LEGOLAND 0x00458930
-void FUN_00458930(void) { STUB(); }
+int FUN_00458930(double value) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00458940
 void FUN_00458940(void)

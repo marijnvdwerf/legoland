@@ -4,6 +4,7 @@
 
 struct Sprite;
 struct InfoSource;
+struct ScrollRegion;
 
 struct IconNode {
     /* 0x00 */ struct IconNode *next;
@@ -84,3 +85,13 @@ LEGO_EXPORT struct IconNode *AddFullScreenIcon(void *icon);
 LEGO_EXPORT struct IconNode *SetupInterfacePanelIcons(unsigned int param_1, int param_2, int param_3, int param_4, int param_5, int param_6);
 LEGO_EXPORT struct IconNode *AddGBarClassIcon(unsigned int param_1, struct InfoSource *src, int a3, int a4, int a5, short a6);
 LEGO_EXPORT int RenderBuildObjectIcon(struct IconNode *node);
+void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3);
+unsigned char FUN_0046d980(struct IconNode *icon, unsigned char buttons, int a3, int a4);
+unsigned char FUN_0046da20(struct IconNode *icon, unsigned char buttons, int a3, int a4);
+int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned short param_4, int param_5);
+LEGO_EXPORT int RenderBoxIcon(struct IconNode *node);
+LEGO_EXPORT int RenderScroll_Icons(struct IconNode *node);
+LEGO_EXPORT int RenderGBarSprite(struct IconNode *node);
+LEGO_EXPORT int RenderGBarSpriteIcon(struct IconNode *node);
+LEGO_EXPORT struct IconNode *AddGBarIcons(unsigned int param_1, unsigned int param_2, int param_3, int param_4, int param_5, int param_6);
+unsigned char FUN_00470000(struct IconNode *node, unsigned char buttons);

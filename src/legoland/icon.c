@@ -151,34 +151,14 @@ struct TimedIndicator {
 };
 
 #include "image_sprite.h"
-
-struct SpriteLLS;
-LEGO_EXPORT unsigned int GetLLSForSprite(struct SpriteLLS *sprite);
-LEGO_EXPORT void PrintCent(int x, int y, int param_3, void *text, int param_5);
-int FUN_00458930(double value);
-LEGO_EXPORT int GetObjCost(void *info);
-LEGO_EXPORT void SetEditObject(void *obj);
-void FUN_00471ca0(void *param);
-LEGO_EXPORT void *PlayInstanceOfSample(void *def, unsigned int looping, unsigned int a3, unsigned int a4);
-LEGO_EXPORT int GetBrickCount(void);
-int FUN_0048aef0(void *param_1, void *param_2);
-int FUN_00457890(void);
-void FUN_00455e50(char *text, int x, int y, int w, int h, int a6, int a7, unsigned int color1, unsigned int color2);
-LEGO_EXPORT void MoveIcons(unsigned short mask, unsigned short id, short dx, short dy);
-int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned short param_4, int param_5);
-void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3);
-unsigned char FUN_0046d980(struct IconNode *icon, unsigned char buttons, int a3, int a4);
-unsigned char FUN_0046da20(struct IconNode *icon, unsigned char buttons, int a3, int a4);
-LEGO_EXPORT int RenderBoxIcon(struct IconNode *node);
-LEGO_EXPORT int RenderGBarSprite(struct IconNode *node);
-LEGO_EXPORT int RenderScroll_Icons(struct IconNode *node);
-LEGO_EXPORT int RenderGBarSpriteIcon(struct IconNode *node);
-LEGO_EXPORT int LLIDB_GetCount(void);
-LEGO_EXPORT unsigned int LLIDB_GetElement(unsigned int index, int *out);
-LEGO_EXPORT struct IconNode *AddGBarIcons(unsigned int param_1, unsigned int param_2, int param_3, int param_4, int param_5, int param_6);
-LEGO_EXPORT struct IconNode *AddGBarClassIcon(unsigned int param_1, struct InfoSource *src, int a3, int a4, int a5, short a6);
-void FUN_0046fb40(unsigned int group);
-unsigned char FUN_00470000(struct IconNode *node, unsigned char buttons);
+#include "render3d.h"
+#include "objclass.h"
+#include "popupinfo.h"
+#include "sound_music.h"
+#include "bricks.h"
+#include "freeplay.h"
+#include "text.h"
+#include "screens.h"
 
 
 // FUNCTION: LEGOLAND 0x0046d3a0
