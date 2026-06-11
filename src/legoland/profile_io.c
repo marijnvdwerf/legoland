@@ -528,4 +528,4 @@ void FUN_00492110(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00492130
-void FUN_00492130(void) { STUB(); }
+int FUN_00492130(void *hwnd) { STUB(); }

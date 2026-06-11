@@ -61,7 +61,7 @@ struct DirectMusicObj {
 void FUN_004921c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00492380
-LEGO_EXPORT void CreateSampleFromWAV(void) { STUB(); }
+LEGO_EXPORT struct SampleDef *CreateSampleFromWAV(const char *path) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00492690
 LEGO_EXPORT struct Sample *CreatePlayableSample(unsigned int def) { STUB(); }
@@ -389,7 +389,7 @@ void FUN_00492da0(void) {
 void FUN_00492db0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00495a10
-int FUN_00495a10(void) {
+int FUN_00495a10(void *hwnd) {
     if (DAT_004bf774 != 0) {
         DAT_0079a698 = CreateThread(0, 0x4000, (LPTHREAD_START_ROUTINE)FUN_00492db0, 0, 0, (LPDWORD)&DAT_007cad48);
         return 1;

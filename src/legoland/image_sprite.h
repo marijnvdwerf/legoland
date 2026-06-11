@@ -50,6 +50,8 @@ LEGO_EXPORT struct Sprite *LoadSprite(const char *name, int flags);
 LEGO_EXPORT unsigned int MakeSprite(struct Sprite *sprite);
 LEGO_EXPORT short ReferenceSprite(struct Sprite *sprite);
 LEGO_EXPORT int KillSprite(struct Sprite *sprite);
+LEGO_EXPORT int GetSprite(unsigned int *param_1, struct Sprite *param_2);
+LEGO_EXPORT void ReleaseSprite(struct Sprite *sprite);
 
 struct LayerOwner;
 LEGO_EXPORT void HideLayer(struct LayerOwner *owner, unsigned int index);

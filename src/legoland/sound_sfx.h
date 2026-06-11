@@ -54,6 +54,7 @@ struct Sample {
     struct SampleBuffer *buffer;
 };
 
+LEGO_EXPORT struct SampleDef *CreateSampleFromWAV(const char *path);
 LEGO_EXPORT struct Sample *CreatePlayableSample(unsigned int def);
 LEGO_EXPORT int PlaySample(struct Sample *sample, unsigned int looping, unsigned int oneshot);
 LEGO_EXPORT void PauseSingleSample(struct Sample *sample);
@@ -68,4 +69,6 @@ LEGO_EXPORT int SetSampleFade(struct Sample *sample, unsigned int fade);
 LEGO_EXPORT void KillPlayableSample(struct Sample *sample);
 LEGO_EXPORT void DeleteSampleDef(struct SampleDef *def);
 LEGO_EXPORT int KillSoundSampleSystem(void);
+void FUN_00492b20(struct Sample *sample);
+int FUN_00495a10(void *hwnd);
 int FUN_00495b00(void);

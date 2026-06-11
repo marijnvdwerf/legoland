@@ -10,6 +10,7 @@
 #include "globals.h"
 #include "image_sprite.h"
 #include "draw.h"
+#include "gfx.h"
 
 struct ZBlitDesc {
     /* 0x00 */ int left;
@@ -19,14 +20,6 @@ struct ZBlitDesc {
     /* 0x10 */ int w;
     /* 0x14 */ int h;
 };
-
-extern void FUN_00464ee0(void *rect);
-extern void SoftPrint_XBltFast(struct Sprite *sprite, RECT *a, RECT *b, unsigned int param_4);
-extern void SoftPrint_Clear(void);
-extern unsigned int GetTransparentColour(void);
-extern int GetSprite(unsigned int *lock, struct Sprite *sprite);
-extern void ReleaseSprite(struct Sprite *sprite);
-extern void FUN_00485fe0(struct Sprite *sprite, int x, int y);
 
 struct CursorCacheNode {
     struct CursorCacheNode *next;

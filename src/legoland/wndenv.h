@@ -2,6 +2,7 @@
 
 #include "legoland.h"
 
+LEGO_EXPORT void *WNDENV_Gethwnd(void);
 LEGO_EXPORT void *WNDENV_GethInstance(void);
 LEGO_EXPORT int ProcessSystemEvents(void);
 

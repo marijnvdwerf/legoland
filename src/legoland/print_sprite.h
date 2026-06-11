@@ -30,3 +30,4 @@ LEGO_EXPORT void SortClippedSprite(struct Sprite *sprite, unsigned int x, unsign
 void FUN_00485f00(struct Sprite *param_1, unsigned int param_2, unsigned int param_3);
 void FUN_00485f20(void *ptr);
 void FUN_00485fa0(void);
+void FUN_00485fe0(struct Sprite *sprite, int x, int y);

@@ -16,11 +16,6 @@
 
 #include "image_sprite.h"
 
-LEGO_EXPORT unsigned int GetTransparentColour(void);
-LEGO_EXPORT void LLSAuto(void);
-LEGO_EXPORT void *WNDENV_Gethwnd(void);
-void FUN_0047d610(struct LLS *param_1);
-
 // FUNCTION: LEGOLAND 0x004636f0
 LEGO_EXPORT int InstallDirectDraw(void) { return 0; }
 
@@ -297,7 +292,7 @@ void FUN_00464480(void) { STUB(); }
 LEGO_EXPORT void ZBufferHelper(unsigned int *param_1, int *param_2, int *param_3, void *param_4) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00464ee0
-void FUN_00464ee0(void) { STUB(); }
+void FUN_00464ee0(void *rect) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004651d0
 LEGO_EXPORT void SoftPrint_Clear(void) { STUB(); }
@@ -342,7 +337,7 @@ void FUN_004659a0(int param_1, int param_2, int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00465a40
-LEGO_EXPORT void SoftPrint_XBltFast(void) { STUB(); }
+LEGO_EXPORT void SoftPrint_XBltFast(struct Sprite *sprite, RECT *a, RECT *b, unsigned int param_4) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00465ee0
 void FUN_00465ee0(void) { STUB(); }

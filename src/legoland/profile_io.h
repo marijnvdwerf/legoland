@@ -24,3 +24,4 @@ struct ProfileNode {
 };
 
 struct ProfileNode *FUN_004919a0(unsigned char slot);
+int FUN_00492130(void *hwnd);

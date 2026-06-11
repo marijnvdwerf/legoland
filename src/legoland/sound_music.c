@@ -10,6 +10,9 @@
 #include "math.h"
 #include "debug_alloc.h"
 #include "stream.h"
+#include "wndenv.h"
+#include "profile_io.h"
+#include "tilemap.h"
 
 struct AVISoundBuffer;
 struct AVISoundBufferVtbl;
@@ -98,13 +101,6 @@ struct ObjectDesc {
     /* 0x0b8 */ unsigned char pad_b8[0x138 - 0xb8];
     /* 0x138 */ unsigned short wszFileName[0x10c];
 };
-
-extern void *WNDENV_Gethwnd(void);
-extern int FUN_00492130(void *hwnd);
-extern int FUN_00495a10(void *hwnd);
-extern LEGO_EXPORT void GetTileCentre(struct Point *ref, int *out);
-extern void FUN_00492b20(struct Sample *sample);
-extern struct SampleDef *CreateSampleFromWAV(const char *path);
 
 struct MusicPerformanceVtbl {
     unsigned char pad_0[8];

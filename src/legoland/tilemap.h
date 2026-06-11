@@ -6,6 +6,7 @@ struct MapTile;
 struct Point;
 
 LEGO_EXPORT void GetTileBounds(struct Point *ref, int *out);
+LEGO_EXPORT void GetTileCentre(struct Point *ref, int *out);
 LEGO_EXPORT void FreeTileSpace(unsigned short index, unsigned short count);
 LEGO_EXPORT unsigned int *AllocTileSpace(void *manager, int count, unsigned int *out);
 LEGO_EXPORT unsigned int ScreenToMapRef();

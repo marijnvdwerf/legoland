@@ -2,6 +2,8 @@
 
 #include "legoland.h"
 
+#include <windows.h>
+
 struct VideoArg {
     /* 0x00 */ int field_0;
     /* 0x04 */ int field_4;
@@ -37,3 +39,6 @@ LEGO_EXPORT int RecreateSprite(struct Sprite *sprite);
 void FUN_004687f0(const char *param_1);
 LEGO_EXPORT int CheckHostSystemGPU(void);
 int FUN_004661d0(void);
+void FUN_00464ee0(void *rect);
+LEGO_EXPORT void SoftPrint_Clear(void);
+LEGO_EXPORT void SoftPrint_XBltFast(struct Sprite *sprite, RECT *a, RECT *b, unsigned int param_4);
