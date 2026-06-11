@@ -7,6 +7,7 @@ struct RinData;
 struct SpriteLLS;
 struct LayerContainer;
 struct Matrix3x3;
+struct AdjustStruct;
 
 struct BlokePos {
     unsigned int field_0;
@@ -32,3 +33,4 @@ LEGO_EXPORT void AdjustBlokePosition(struct BlokePos *pBloke);
 LEGO_EXPORT void Ride_SetFlagToNotLetAnyoneOn(unsigned char *param_1);
 LEGO_EXPORT void Ride_ClearFlagToNotLetAnyoneOn(unsigned char *param_1);
 unsigned int FUN_00443120(void);
+LEGO_EXPORT void AdjustOffsetForViewMode(struct AdjustStruct *param_1);

@@ -9,8 +9,7 @@
 #include "clipping.h"
 #include "print_sprite.h"
 #include "globals.h"
-
-extern void FUN_004779d0(struct Point *p);
+#include "gamemain.h"
 
 struct MapTile {
     /* 0x00 */ unsigned char pad_0[8];

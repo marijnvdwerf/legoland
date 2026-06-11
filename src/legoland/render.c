@@ -133,7 +133,7 @@ void FUN_00486250(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00486280
-void FUN_00486280(void) { STUB(); }
+unsigned int FUN_00486280(int param_1, void *param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004864e0
 void FUN_004864e0(unsigned int param_1) {

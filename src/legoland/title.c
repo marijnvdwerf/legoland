@@ -27,8 +27,7 @@ struct PopUp {
 #include "profile.h"
 #include "resource.h"
 #include "timer.h"
-
-extern int FUN_00451e20(void);
+#include "certificate.h"
 
 
 // FUNCTION: LEGOLAND 0x0048fc40

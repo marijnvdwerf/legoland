@@ -12,5 +12,6 @@ LEGO_EXPORT unsigned int RenderTiledSprite(struct Sprite *sprite, int param_2, i
 LEGO_EXPORT unsigned int RenderScaledSprite(struct Sprite *param_1, int param_2, int param_3, int param_4, int param_5);
 void FUN_004860f0(void);
 void FUN_00486250(void);
+unsigned int FUN_00486280(int param_1, void *param_2);
 void FUN_00486540(void);
 void FUN_004886a0(void);

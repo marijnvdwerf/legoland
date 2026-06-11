@@ -3,6 +3,7 @@
 #include "globals.h"
 #include "man3d.h"
 #include "render3d.h"
+#include "render.h"
 #include "resource.h"
 #include "llidb.h"
 #include "math.h"
@@ -17,8 +18,6 @@ struct AdjustStruct {
     int field0;
     int field4;
 };
-
-LEGO_EXPORT void AdjustOffsetForViewMode(struct AdjustStruct *param_1);
 
 struct Viewport {
     unsigned int field_0;
@@ -528,8 +527,6 @@ void FUN_00442040(struct CellContainer *param_1, int param_2, int param_3, float
         } while (local_18 != 0);
     }
 }
-
-extern unsigned int FUN_00486280(int param_1, void *param_2);
 
 struct ColourRef {
     unsigned char b0;
