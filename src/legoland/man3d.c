@@ -58,6 +58,33 @@ struct Anim3D {
     int divisor;
 };
 
+struct MeshShared {
+    /* 0x00 */ int count;
+    /* 0x04 */ int field_4;
+    /* 0x08 */ void *field_8;
+};
+
+struct MeshElem {
+    /* 0x00 */ int min_x;
+    /* 0x04 */ int min_y;
+    /* 0x08 */ int min_z;
+    /* 0x0c */ int max_x;
+    /* 0x10 */ int max_y;
+    /* 0x14 */ int max_z;
+    /* 0x18 */ int vert_count;
+    /* 0x1c */ void *verts;
+    /* 0x20 */ struct MeshShared *shared;
+    /* 0x24 */ int norm_count;
+    /* 0x28 */ void *norms;
+    /* 0x2c */ unsigned char pad_2c[0x38 - 0x2c];
+};
+
+struct Mesh {
+    /* 0x00 */ int count;
+    /* 0x04 */ struct MeshElem *elems;
+    /* 0x08 */ void *field_8;
+};
+
 struct Bloke {
     unsigned char pad_0[4];
     struct Person *person;
@@ -253,13 +280,55 @@ void *FUN_0043f990(const char *param_1, const char *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0043fa10
-void FUN_0043fa10(void) { STUB(); }
+void FUN_0043fa10(float *param_1, int param_2) {
+    int n;
+    if (param_2 > 0) {
+        n = param_2;
+        do {
+            if (*param_1 < FLOAT_004ab390) {
+                *param_1 = 0.0f;
+            }
+            if (*param_1 > DAT_004ab38c) {
+                *param_1 = 1.0f;
+            }
+            if (param_1[1] < FLOAT_004ab390) {
+                param_1[1] = 0.0f;
+            }
+            if (param_1[1] > DAT_004ab38c) {
+                param_1[1] = 1.0f;
+            }
+            param_1 = param_1 + 2;
+            n = n - 1;
+        } while (n != 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0043fa80
 void FUN_0043fa80(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043fde0
-void FUN_0043fde0(void *ptr) { STUB(); }
+void FUN_0043fde0(struct Mesh *mesh) {
+    int count;
+    int i;
+
+    if (mesh != 0) {
+        count = mesh->count;
+        if (count > 0) {
+            i = 0;
+            do {
+                free(mesh->elems[i].verts);
+                free(mesh->elems[i].norms);
+                i = i + 1;
+                count = count - 1;
+            } while (count != 0);
+        }
+        free(mesh->elems->shared->field_8);
+        free(mesh->elems->shared);
+        free(mesh->elems);
+        free(mesh->field_8);
+        free(mesh);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0043fe50
 LEGO_EXPORT void Render3DPerson(struct Person *person) { STUB(); }
@@ -336,14 +405,33 @@ LEGO_EXPORT void Control3DPeople(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004402d0
-void FUN_004402d0(void) { STUB(); }
+void *FUN_004402d0(const char *param_1, const char *param_2) {
+    char path[256];
+    struct ResFile *file;
+    unsigned int size;
+    void *buffer;
+    void *uninit;
+
+    sprintf(path, ".\\3ddata\\new\\%s\\%s", param_1, param_2);
+    file = RES_OpenFile(path);
+    if (file != 0) {
+        size = RES_GetFileSize(file);
+        buffer = malloc(size);
+        if (buffer != 0) {
+            RES_ReadFile(file, buffer, size);
+            RES_CloseFile(file);
+        }
+        return buffer;
+    }
+    return uninit;
+}
 
 // FUNCTION: LEGOLAND 0x00440350
 LEGO_EXPORT void InitMan(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004405a0
 LEGO_EXPORT void UnInitMan(void) {
-    unsigned int *p;
+    void **p;
 
     if (DAT_0081c8c0 != 0) {
         free(DAT_0081c8c0);
@@ -363,21 +451,21 @@ LEGO_EXPORT void UnInitMan(void) {
     p = DAT_0062febc;
     do {
         if (*p != 0) {
-            FUN_0043fde0((void *)*p);
+            FUN_0043fde0(*p);
         }
         p++;
     } while ((int)p < (int)DAT_0062fed4);
     p = DAT_0062fed4;
     do {
         if (*p != 0) {
-            FUN_0043fde0((void *)*p);
+            FUN_0043fde0(*p);
         }
         p++;
     } while ((int)p < (int)DAT_0062feec);
     p = DAT_0062feb0;
     do {
         if (*p != 0) {
-            FUN_0043fde0((void *)*p);
+            FUN_0043fde0(*p);
         }
         p++;
     } while ((int)p < (int)DAT_0062feb8);
@@ -412,10 +500,52 @@ LEGO_EXPORT void BlokeSitAnim(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00440790
-LEGO_EXPORT struct Anim3D *GetBlokeAnim3D(struct Bloke *bloke) { STUB(); }
+LEGO_EXPORT struct Anim3D *GetBlokeAnim3D(struct Bloke *bloke) {
+    struct Person *person;
+    struct Anim3D *result;
+
+    result = 0;
+    person = bloke->person;
+    if (person != 0) {
+        switch (person->field_8) {
+        case 1:
+            if (person->random == 0) {
+                return (struct Anim3D *)DAT_0062febc[person->field_88];
+            }
+            return (struct Anim3D *)DAT_0062fed4[person->field_88];
+        case 2:
+            return (struct Anim3D *)DAT_0062feb0[person->field_88];
+        case 3:
+            return (struct Anim3D *)(&DAT_0062fef4)[person->field_88];
+        default:
+            result = (struct Anim3D *)((unsigned int *)bloke)[person->field_88];
+        }
+    }
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x00440800
-LEGO_EXPORT void GetBlokeAnim3DFromPerson(void) { STUB(); }
+LEGO_EXPORT struct Anim3D *GetBlokeAnim3DFromPerson(struct Person *person) {
+    struct Anim3D *result;
+
+    result = 0;
+    if (person != 0) {
+        switch (person->field_8) {
+        case 1:
+            if (person->random == 0) {
+                return (struct Anim3D *)DAT_0062febc[person->field_88];
+            }
+            return (struct Anim3D *)DAT_0062fed4[person->field_88];
+        case 2:
+            return (struct Anim3D *)DAT_0062feb0[person->field_88];
+        case 3:
+            return (struct Anim3D *)(&DAT_0062fef4)[person->field_88];
+        default:
+            result = (struct Anim3D *)((unsigned int *)person)[person->field_88];
+        }
+    }
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x00440870
 LEGO_EXPORT void BlokeSetFrame(struct Bloke *bloke, int frame) {
@@ -458,7 +588,62 @@ LEGO_EXPORT void BlokePanWithPan(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00440980
-void FUN_00440980(void) { STUB(); }
+void FUN_00440980(struct MeshElem *elem, int *out) {
+    int *verts;
+    int max_x;
+    int max_y;
+    int max_z;
+    int vx;
+    int vy;
+    int vz;
+    int min_x;
+    int min_y;
+    int min_z;
+    int n;
+
+    verts = (int *)elem->verts;
+    min_x = verts[0];
+    min_y = verts[1];
+    min_z = verts[2];
+    max_x = min_x;
+    max_y = min_y;
+    max_z = min_z;
+    verts = verts + 3;
+    if (elem->vert_count > 1) {
+        n = elem->vert_count - 1;
+        do {
+            vx = verts[0];
+            vy = verts[1];
+            vz = verts[2];
+            if (vx < min_x) {
+                min_x = vx;
+            }
+            if (vx > max_x) {
+                max_x = vx;
+            }
+            if (vy < min_y) {
+                min_y = vy;
+            }
+            if (vy > max_y) {
+                max_y = vy;
+            }
+            if (vz < min_z) {
+                min_z = vz;
+            }
+            if (vz > max_z) {
+                max_z = vz;
+            }
+            n = n - 1;
+            verts = verts + 3;
+        } while (n != 0);
+    }
+    out[0] = min_x;
+    out[3] = max_x;
+    out[1] = min_y;
+    out[2] = min_z;
+    out[4] = max_y;
+    out[5] = max_z;
+}
 
 // FUNCTION: LEGOLAND 0x00440a30
 void FUN_00440a30(void) { STUB(); }

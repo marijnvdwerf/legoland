@@ -1105,13 +1105,13 @@ extern void *DAT_0062fea8;
 // 0x0062feac
 extern void *DAT_0062feac;
 // 0x0062feb0
-extern unsigned int DAT_0062feb0[2];
+extern void *DAT_0062feb0[2];
 // 0x0062feb8
-extern unsigned int DAT_0062feb8[1];
+extern void *DAT_0062feb8[1];
 // 0x0062febc
-extern unsigned int DAT_0062febc[6];
+extern void *DAT_0062febc[6];
 // 0x0062fed4
-extern unsigned int DAT_0062fed4[6];
+extern void *DAT_0062fed4[6];
 // 0x0062feec
 extern unsigned int DAT_0062feec[1];
 // 0x0062fef0
