@@ -13,7 +13,12 @@
 struct Sprite;
 
 struct InfoIcon {
-    /* 0x00 */ unsigned char pad_0[0x2c];
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ short x;
+    /* 0x0e */ short y;
+    /* 0x10 */ short field_10;
+    /* 0x12 */ short field_12;
+    /* 0x14 */ unsigned char pad_14[0x2c - 0x14];
     /* 0x2c */ void (*handler)(void);
     /* 0x30 */ unsigned char pad_30[0x4];
     /* 0x34 */ unsigned int flags;
@@ -42,11 +47,13 @@ struct InfoObjInner {
 #include "worker.h"
 #include "timer.h"
 #include "help.h"
+#include "print_sprite.h"
 
 extern int FUN_0049a120(void);
 extern int FUN_0049a160(void);
 extern void SetObjRectFlags();
 extern void FUN_00470950();
+extern void FUN_00455e50(char *text, int x, int y, int w, int h, int a6, int a7, unsigned int color1, unsigned int color2);
 
 // FUNCTION: LEGOLAND 0x00470bb0
 LEGO_EXPORT void InitPopUpInfo(void) { STUB(); }
@@ -612,4 +619,43 @@ void FUN_004736e0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004736f0
-void FUN_004736f0(void) { STUB(); }
+void FUN_004736f0(void) {
+    int iVar1;
+    int iVar2;
+    int iVar3;
+    struct PrintCtx ctx;
+
+    iVar1 = DAT_007fe014;
+    iVar3 = DAT_007fe010;
+    if (DAT_00668d68 != 0) {
+        ctx.node = 0;
+        ctx.flags = 1;
+        ctx.field_8 = 0;
+        PrintSprite(DAT_00668904, iVar3, iVar1, 0, (int *)&ctx);
+        iVar3 = iVar3 + 0x7a;
+        iVar2 = 0;
+        if (0 < DAT_00668964) {
+            do {
+                PrintSprite(DAT_00668908, iVar3, iVar1, 0, (int *)&ctx);
+                iVar3 = iVar3 + 0x20;
+                iVar2 = iVar2 + 1;
+            } while (iVar2 < DAT_00668964);
+        }
+        PrintSprite(DAT_0066890c, iVar3, iVar1, 0, (int *)&ctx);
+        DAT_007fdea8->flags = DAT_007fdea8->flags & 0xfffffbff;
+        DAT_007fdea8->x = (short)iVar3 + 3;
+        DAT_007fdea8->y = (short)DAT_007fe014 + 3;
+        DAT_007fe000->flags = DAT_007fe000->flags & 0xfffffbff;
+        DAT_007fe000->x = (short)iVar3 + 0x27;
+        DAT_007fe000->y = (short)DAT_007fe014 + 3;
+        FUN_00455e50(DAT_00668968, DAT_007fe010 + 0xc, DAT_007fe014 + 6,
+                     (DAT_007fe010 + 0x86 + DAT_00668964 * 0x14) - (DAT_007fe010 + 0xc),
+                     (DAT_007fe014 + 0x21) - (DAT_007fe014 + 6), 1, 5, 0xff0000, 0xffffff);
+        if ((DAT_007fe000->x + 0x24 < (int)DAT_00813a44) || ((int)DAT_00813a44 < DAT_007fdea8->x)) {
+            FUN_00471d60();
+        }
+        if ((iVar1 + 0x1b < (int)DAT_00813a48) || ((int)DAT_00813a48 < iVar1)) {
+            FUN_00471d60();
+        }
+    }
+}

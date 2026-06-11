@@ -28,11 +28,6 @@ struct IconSprite {
     /* 0x08 */ struct IconAnim *anim;
 };
 
-struct PrintCtx {
-    /* 0x00 */ unsigned int flags;
-    /* 0x04 */ struct IconNode *node;
-    /* 0x08 */ unsigned int field_8;
-};
 
 struct IconGroupRef {
     unsigned char pad_0[3];

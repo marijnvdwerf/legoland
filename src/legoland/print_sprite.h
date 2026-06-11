@@ -8,6 +8,13 @@ struct Person;
 struct Sprite;
 struct HitInfo;
 struct SpriteExArg;
+struct IconNode;
+
+struct PrintCtx {
+    /* 0x00 */ unsigned int flags;
+    /* 0x04 */ struct IconNode *node;
+    /* 0x08 */ unsigned int field_8;
+};
 
 LEGO_EXPORT void ResetHitInfo(void);
 LEGO_EXPORT unsigned int PrintSprite(struct Sprite *sprite, unsigned int x, unsigned int y, unsigned int param_4, int *param_5);
