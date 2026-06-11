@@ -341,6 +341,8 @@ extern const unsigned char SPACE_TOWER_SFX[15];
 extern void *DAT_004b7620;
 // 0x004b79d0
 extern unsigned char DAT_004b79d0[0x18];
+// 0x004b7abc
+extern unsigned short DAT_004b7abc;
 // 0x004b7ac0
 extern unsigned char DAT_004b7ac0[0x18];
 // 0x004b7d74
@@ -1126,6 +1128,8 @@ extern void *DAT_00630100;
 extern unsigned int DAT_00630108[1];
 // 0x00638218
 extern unsigned int DAT_00638218[1];
+// 0x00638358
+extern unsigned short DAT_00638358;
 // 0x0064cd8c
 extern void *DAT_0064cd8c;
 // 0x00655a38

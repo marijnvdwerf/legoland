@@ -7,6 +7,14 @@
 #include "render.h"
 #include "render3d.h"
 #include "map_object.h"
+#include "draw.h"
+#include <windows.h>
+
+extern void FUN_00485f30(unsigned int param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4);
+extern void FUN_00488700(unsigned int base, void *vp);
+extern void Render_SetViewport(void *viewport);
+extern void *FUN_004700f0(void);
+void FUN_00440a30(struct Person *person);
 
 extern int Get_XScroll(void);
 extern int Get_YScroll(void);
@@ -356,7 +364,55 @@ void FUN_0043fde0(struct Mesh *mesh) {
 }
 
 // FUNCTION: LEGOLAND 0x0043fe50
-LEGO_EXPORT void Render3DPerson(struct Person *person) { STUB(); }
+LEGO_EXPORT void Render3DPerson(struct Person *person) {
+    RECT bounds;
+    RECT clip;
+    struct VideoArg vid;
+    unsigned int ptr;
+
+    bounds.top = person->field_20;
+    person->field_10 = 0x3f800000;
+    person->field_14 = 0x3f800000;
+    person->field_18 = 0x3f800000;
+    bounds.left = person->field_1c;
+    bounds.right = bounds.left + 0xa0;
+    bounds.bottom = bounds.top + 0x78;
+    clip.left = SPRITE_ClipRect.left;
+    clip.top = SPRITE_ClipRect.top;
+    clip.right = SPRITE_ClipRect.right - 1;
+    clip.bottom = SPRITE_ClipRect.bottom - 1;
+    if (IntersectRect(&clip, &bounds, &clip) != 0) {
+        OffsetRect(&clip, -(int)person->field_1c, -(int)person->field_20);
+        if (GetVideoSurface(&vid) != 0) {
+            ptr = (unsigned int)vid.field_c + person->field_20 * vid.field_0 + person->field_1c * 2;
+            FUN_00485f30(ptr, vid.field_0, vid.field_4, vid.field_8);
+            FUN_00488700((unsigned int)vid.field_c, &DAT_00813a44);
+            Render_SetViewport(&clip);
+            __asm { fstcw word ptr [DAT_00638358] }
+            __asm { fldcw word ptr [DAT_004b7abc] }
+            FUN_00440a30(person);
+            __asm { fldcw word ptr [DAT_00638358] }
+            if (DAT_007feb14 != 0) {
+                if (DAT_00668954 != 0 && person->field_c == (unsigned int)FUN_004700f0()) {
+                    return;
+                }
+                switch (person->field_8) {
+                case 2:
+                    DAT_004bdd00 = 0x307;
+                    DAT_004bdd04 = person->field_c;
+                    return;
+                case 3:
+                    DAT_004bdd00 = 0x308;
+                    DAT_004bdd04 = person->field_c;
+                    return;
+                default:
+                    DAT_004bdd00 = 0x306;
+                    DAT_004bdd04 = person->field_c;
+                }
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0043ffb0
 LEGO_EXPORT void RenderBlokeIn3D(struct Bloke *bloke) {
@@ -869,4 +925,4 @@ void FUN_00440980(struct MeshElem *elem, int *out) {
 }
 
 // FUNCTION: LEGOLAND 0x00440a30
-void FUN_00440a30(void) { STUB(); }
+void FUN_00440a30(struct Person *person) { STUB(); }
