@@ -7,7 +7,9 @@
 #include "globals.h"
 #include "controller.h"
 #include "input.h"
-#include "crt.h"
+#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
 #include "debug_alloc.h"
 #include "bricks.h"
 #include "screens.h"

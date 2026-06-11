@@ -1,7 +1,10 @@
 #include "legoland.h"
 #include <windows.h>
 
-#include "crt.h"
+#include <io.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "llidb.h"
 #include "tilemap.h"

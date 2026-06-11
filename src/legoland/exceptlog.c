@@ -1,5 +1,5 @@
 #include "legoland.h"
-#include "crt.h"
+#include <string.h>
 
 struct ExceptionEntry {
     unsigned int code;

@@ -1,7 +1,9 @@
 #include "legoland.h"
 #include <ddraw.h>
 
-#include "crt.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "debug.h"
 #include "debug_alloc.h"
 #include "gfx.h"

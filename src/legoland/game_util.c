@@ -1,5 +1,6 @@
 #include "legoland.h"
-#include "crt.h"
+#include <stdlib.h>
+#include <string.h>
 
 #include "game_util.h"
 #include "gamemain.h"
