@@ -629,7 +629,50 @@ void FUN_00471d60(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00471d90
-void FUN_00471d90(void) { STUB(); }
+void FUN_00471d90(void) {
+    int iVar1;
+    short sVar2;
+    char *str;
+    unsigned int uVar4;
+    int iVar5;
+    int iVar6;
+    struct PrintCtx ctx;
+    char local_14[20];
+
+    iVar6 = DAT_007fdecc;
+    uVar4 = DAT_007fdfac & 0xff;
+    iVar5 = uVar4 * 0x14;
+    ctx.node = 0;
+    iVar1 = DAT_007fded0 + 0x48 + iVar5;
+    ctx.field_8 = 0;
+    ctx.flags = 1;
+    PrintSprite(DAT_00668904, DAT_007fdecc, iVar1, 0, (int *)&ctx);
+    iVar6 = iVar6 + 0x7a;
+    for (; uVar4 != 0; uVar4 = uVar4 - 1) {
+        PrintSprite(DAT_00668908, iVar6, iVar1, 0, (int *)&ctx);
+        iVar6 = iVar6 + 0x20;
+    }
+    PrintSprite(DAT_0066890c, iVar6, iVar1, 0, (int *)&ctx);
+    DAT_007fdea8->flags = DAT_007fdea8->flags & 0xfffffbff;
+    DAT_007fdea8->x = (short)iVar6 + 3;
+    sVar2 = (short)iVar1 + 3;
+    DAT_007fdea8->y = sVar2;
+    DAT_007fe000->flags = DAT_007fe000->flags & 0xfffffbff;
+    DAT_007fe000->x = (short)iVar6 + 0x27;
+    DAT_007fe000->y = sVar2;
+    str = GetString(0xa2);
+    sprintf(local_14, (char *)DAT_004b8bbc, str);
+    FUN_00455e50(local_14, DAT_007fdecc + 0xc, iVar1 + 6,
+                 (DAT_007fdecc + 0x86 + iVar5) - (DAT_007fdecc + 0xc), (iVar1 + 0x21) - (iVar1 + 6), 1, 5,
+                 0xff0000, 0xffffff);
+    if ((DAT_007fe000->x + 0x24 < (int)DAT_00813a44) || ((int)DAT_00813a44 < DAT_007fdea8->x)) {
+        FUN_00471d60();
+    }
+    if ((iVar1 + 0x1b < (int)DAT_00813a48) || ((int)DAT_00813a48 < iVar1)) {
+        FUN_00471d60();
+    }
+    FUN_00471470();
+}
 
 // FUNCTION: LEGOLAND 0x00471f10
 void FUN_00471f10(void) { STUB(); }
