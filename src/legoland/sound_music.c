@@ -1,7 +1,8 @@
 #include <windows.h>
 #include <dsound.h>
 #include "legoland.h"
-#include "crt.h"
+#include <stdio.h>
+#include <string.h>
 
 #include "sound_sfx.h"
 #include "sound_music.h"

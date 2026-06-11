@@ -2,7 +2,7 @@
 #include <windows.h>
 
 #include "globals.h"
-#include "crt.h"
+#include <stdlib.h>
 #include "resource.h"
 #include "wndenv.h"
 #include "input.h"

@@ -1,6 +1,7 @@
 #include "legoland.h"
 #include "math.h"
-#include "crt.h"
+#include <stdlib.h>
+#include <string.h>
 
 #include "pathfind.h"
 #include "tilemap.h"

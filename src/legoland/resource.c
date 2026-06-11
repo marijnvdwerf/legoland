@@ -1,6 +1,9 @@
 #include <windows.h>
 #include "legoland.h"
-#include "crt.h"
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "cdcheck.h"
 #include "debug.h"
 #include "saveload.h"

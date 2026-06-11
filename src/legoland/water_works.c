@@ -1,6 +1,6 @@
 #include <string.h>
 #include "legoland.h"
-#include "crt.h"
+#include <stdlib.h>
 #include "globals.h"
 
 #include "gamemap.h"

@@ -1,6 +1,7 @@
 #include <windows.h>
 #include "legoland.h"
-#include "crt.h"
+#include <io.h>
+#include <string.h>
 #include "globals.h"
 
 #include "stream.h"

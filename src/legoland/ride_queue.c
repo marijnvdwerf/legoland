@@ -1,5 +1,5 @@
 #include "legoland.h"
-#include "crt.h"
+#include <stdlib.h>
 
 #include "ride_queue.h"
 #include "globals.h"

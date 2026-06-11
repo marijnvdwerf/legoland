@@ -1,5 +1,5 @@
 #include "legoland.h"
-#include "crt.h"
+#include <string.h>
 
 #include "binv.h"
 #include "render3d.h"
