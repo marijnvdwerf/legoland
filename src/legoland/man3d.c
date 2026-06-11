@@ -12,6 +12,10 @@ extern int Get_XScroll(void);
 extern int Get_YScroll(void);
 LEGO_EXPORT void SetPersonPosition(struct Person *person, unsigned int x, unsigned int y);
 extern void *FUN_00442580(struct Person *person, void *context, unsigned int arg3, unsigned int arg4, unsigned int arg5);
+extern void FUN_00485fc0(unsigned int param_1);
+extern unsigned int FUN_00443710(void);
+extern void FUN_00443720(void *param_1, const char *param_2);
+extern void FUN_00442980(const char *param_1, const char *param_2, const char *param_3, int param_4, unsigned int param_5);
 
 struct Person {
     struct Person *prev;
@@ -325,7 +329,7 @@ void FUN_0043fa10(float *param_1, int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0043fa80
-void FUN_0043fa80(void) { STUB(); }
+void *FUN_0043fa80(const char *name, const char *dir, unsigned int ctx) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043fde0
 void FUN_0043fde0(struct Mesh *mesh) {
@@ -512,7 +516,66 @@ void *FUN_004402d0(const char *param_1, const char *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00440350
-LEGO_EXPORT void InitMan(void) { STUB(); }
+LEGO_EXPORT void InitMan(void) {
+    unsigned int ctx;
+
+    FUN_00485fc0((DAT_00668088 == 2) + 5);
+    ctx = FUN_00443710();
+    // STRING: LEGOLAND 0x004b7cdc
+    DAT_0081c8c0 = FUN_0043f990("NewProject.loc", "visitor");
+    ((unsigned int *)DAT_0081c8c0)[1] = ctx;
+    // STRING: LEGOLAND 0x004b7cec
+    FUN_00443720(DAT_0081c8c0, "visitor");
+    // STRING: LEGOLAND 0x004b7cc4
+    DAT_0062fed4[1] = FUN_0043fa80("WomanWalk.WomanWalk.3d", "visitor", ctx);
+    // STRING: LEGOLAND 0x004b7cac
+    DAT_0062fed4[0] = FUN_0043fa80("WomanSit.WomanSit.3d", "visitor", ctx);
+    // STRING: LEGOLAND 0x004b7c94
+    DAT_0062fed4[2] = FUN_0043fa80("WomanWave.WomanWave.3d", "visitor", ctx);
+    // STRING: LEGOLAND 0x004b7c78
+    DAT_0062fed4[3] = FUN_0043fa80("WomanStand.WomanStand.3d", "visitor", ctx);
+    // STRING: LEGOLAND 0x004b7c5c
+    DAT_0062fed4[5] = FUN_0043fa80("WomanPanWalk.WomPanWalk.3d", "visitor", ctx);
+    // STRING: LEGOLAND 0x004b7c44
+    DAT_0062fed4[4] = FUN_0043fa80("WomanPan.WomanPan.3d", "visitor", ctx);
+    // STRING: LEGOLAND 0x004b7c30
+    DAT_0062febc[1] = FUN_0043fa80("ManWalk.ManWalk.3d", "visitor", ctx);
+    // STRING: LEGOLAND 0x004b7c1c
+    DAT_0062febc[0] = FUN_0043fa80("ManSit.ManSit.3d", "visitor", ctx);
+    // STRING: LEGOLAND 0x004b7c08
+    DAT_0062febc[2] = FUN_0043fa80("ManWave.ManWave.3d", "visitor", ctx);
+    // STRING: LEGOLAND 0x004b7bf0
+    DAT_0062febc[3] = FUN_0043fa80("ManStand.ManStand.3d", "visitor", ctx);
+    // STRING: LEGOLAND 0x004b7bd4
+    DAT_0062febc[5] = FUN_0043fa80("ManPanWalk.ManPanWalk.3d", "visitor", ctx);
+    // STRING: LEGOLAND 0x004b7bc0
+    DAT_0062febc[4] = FUN_0043fa80("ManPan.ManPan.3d", "visitor", ctx);
+    // STRING: LEGOLAND 0x004b7ba4
+    // STRING: LEGOLAND 0x004b7bb0
+    FUN_00442980("altman.txt", "NewProject.txt", "visitor", 0, ctx);
+    // STRING: LEGOLAND 0x004b7b94
+    FUN_00442980("altwoman.txt", "NewProject.txt", "visitor", 1, ctx);
+    DAT_00630100 = FUN_004402d0("visitor", "altman.txt");
+    DAT_0062feac = FUN_004402d0("visitor", "altwoman.txt");
+    ctx = FUN_00443710();
+    // STRING: LEGOLAND 0x004b7b80
+    DAT_0081c8c8 = FUN_0043f990("geoff.loc", "geoff");
+    ((unsigned int *)DAT_0081c8c8)[1] = ctx;
+    // STRING: LEGOLAND 0x004b7b8c
+    FUN_00443720(DAT_0081c8c8, "geoff");
+    // STRING: LEGOLAND 0x004b7b68
+    DAT_0062feb0[0] = FUN_0043fa80("geofWalk.GeofWalk.3d", "geoff", ctx);
+    // STRING: LEGOLAND 0x004b7b50
+    DAT_0062feb0[1] = FUN_0043fa80("GeofPour.GeofPour.3d", "geoff", ctx);
+    ctx = FUN_00443710();
+    // STRING: LEGOLAND 0x004b7b3c
+    DAT_0081c8c4 = FUN_0043f990("tracy.loc", "tracy");
+    ((unsigned int *)DAT_0081c8c4)[1] = ctx;
+    // STRING: LEGOLAND 0x004b7b48
+    FUN_00443720(DAT_0081c8c4, "tracy");
+    // STRING: LEGOLAND 0x004b7b24
+    DAT_0062fef4 = FUN_0043fa80("TracyWalk.TraceWalk.3d", "tracy", ctx);
+}
 
 // FUNCTION: LEGOLAND 0x004405a0
 LEGO_EXPORT void UnInitMan(void) {
