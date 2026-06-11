@@ -1,8 +1,8 @@
 #include "legoland.h"
 
-#include "mapscreen.h"
-#include "interface.h"
 #include "globals.h"
+#include "interface.h"
+#include "mapscreen.h"
 
 struct MapPoint {
     int field0;

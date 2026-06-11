@@ -1,10 +1,10 @@
-#include "legoland.h"
 #include <stdlib.h>
+#include "legoland.h"
 
-#include "pathfind.h"
-#include "objclass.h"
-#include "llidb.h"
 #include "globals.h"
+#include "llidb.h"
+#include "objclass.h"
+#include "pathfind.h"
 
 struct BestNode {
     struct BestNode *next;
@@ -39,7 +39,6 @@ struct DirNode {
     unsigned int x;
     unsigned int y;
 };
-
 
 // FUNCTION: LEGOLAND 0x00481c50
 LEGO_EXPORT void AddPathSquare(struct InstancePos *pos) {

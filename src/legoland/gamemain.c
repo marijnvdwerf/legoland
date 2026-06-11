@@ -1,17 +1,17 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
+#include "bloke.h"
+#include "challenge.h"
 #include "gamemain.h"
 #include "gamemap.h"
-#include "nerps.h"
-#include "title.h"
-#include "bloke.h"
-#include "objectives.h"
-#include "challenge.h"
 #include "interface.h"
 #include "map_object.h"
+#include "nerps.h"
+#include "objectives.h"
+#include "title.h"
 
 struct GameMainNode {
     struct GameMainNode *next;
@@ -29,8 +29,6 @@ struct GameMainEntry {
     unsigned char pad_0[0x4];
     char *name;
 };
-
-
 
 // FUNCTION: LEGOLAND 0x004777c0
 struct GameMainNode *FUN_004777c0(struct GameMainArg *arg) {

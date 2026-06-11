@@ -1,20 +1,20 @@
-#include "legoland.h"
 #include <windows.h>
+#include "legoland.h"
 
 #include <io.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "llidb.h"
-#include "tilemap.h"
-#include "globals.h"
-#include "wndenv.h"
-#include "objclass.h"
-#include "resource.h"
-#include "render3d.h"
 #include "debug.h"
+#include "globals.h"
+#include "llidb.h"
+#include "objclass.h"
+#include "render3d.h"
+#include "resource.h"
 #include "setcustomcallbacks.h"
+#include "tilemap.h"
+#include "wndenv.h"
 
 #include "image_sprite.h"
 

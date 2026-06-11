@@ -1,17 +1,17 @@
 #include <windows.h>
-#include "legoland.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
-#include "image_sprite.h"
-#include "string.h"
+#include "debug_alloc.h"
+#include "draw.h"
 #include "gfx.h"
+#include "image_sprite.h"
 #include "llidb.h"
 #include "resource.h"
-#include "draw.h"
-#include "debug_alloc.h"
+#include "string.h"
 #include "timer.h"
 
 struct SpriteListNode;
@@ -797,11 +797,11 @@ LEGO_EXPORT int GetSprite(unsigned int *param_1, struct Sprite *param_2) {
         locals[3] = (unsigned int)(short)param_2->height;
         param_1[2] = locals[3];
         param_1[4] = (unsigned int)param_2->surface;
-        iVar1 = (*(int (__stdcall **)(void *, unsigned int *, unsigned char *, int, int))(*(unsigned int *)param_2->surface + 0x64))(
+        iVar1 = (*(int(__stdcall **)(void *, unsigned int *, unsigned char *, int, int))(*(unsigned int *)param_2->surface + 0x64))(
             param_2->surface, locals, surfDesc, 1, 0);
         if (iVar1 == (int)0x887601c2) {
-            (*(void (__stdcall **)(void *))(*(unsigned int *)param_2->surface + 0x6c))(param_2->surface);
-            iVar1 = (*(int (__stdcall **)(void *, unsigned int *, unsigned char *, int, int))(*(unsigned int *)param_2->surface + 0x64))(
+            (*(void(__stdcall **)(void *))(*(unsigned int *)param_2->surface + 0x6c))(param_2->surface);
+            iVar1 = (*(int(__stdcall **)(void *, unsigned int *, unsigned char *, int, int))(*(unsigned int *)param_2->surface + 0x64))(
                 param_2->surface, locals, surfDesc, 1, 0);
         }
         if (iVar1 != 0) {
@@ -813,11 +813,11 @@ LEGO_EXPORT int GetSprite(unsigned int *param_1, struct Sprite *param_2) {
         locals[3] = (unsigned int)*((unsigned short *)lpConfig + 1);
         param_1[2] = locals[3];
         param_1[4] = (unsigned int)DDRAWENV[194];
-        iVar1 = (*(int (__stdcall **)(void *, unsigned int *, unsigned char *, int, int))(*(unsigned int *)DDRAWENV[194] + 0x64))(
+        iVar1 = (*(int(__stdcall **)(void *, unsigned int *, unsigned char *, int, int))(*(unsigned int *)DDRAWENV[194] + 0x64))(
             (void *)DDRAWENV[194], locals, surfDesc, 1, 0);
         if (iVar1 == (int)0x887601c2) {
-            (*(void (__stdcall **)(void *))(*(unsigned int *)DDRAWENV[194] + 0x6c))((void *)DDRAWENV[194]);
-            iVar1 = (*(int (__stdcall **)(void *, unsigned int *, unsigned char *, int, int))(*(unsigned int *)DDRAWENV[194] + 0x64))(
+            (*(void(__stdcall **)(void *))(*(unsigned int *)DDRAWENV[194] + 0x6c))((void *)DDRAWENV[194]);
+            iVar1 = (*(int(__stdcall **)(void *, unsigned int *, unsigned char *, int, int))(*(unsigned int *)DDRAWENV[194] + 0x64))(
                 (void *)DDRAWENV[194], locals, surfDesc, 1, 0);
         }
         if (iVar1 != 0) {
@@ -933,5 +933,3 @@ LEGO_EXPORT void TellAllLayersToStopAnimating(struct LayerOwner *owner) {
         }
     }
 }
-
-

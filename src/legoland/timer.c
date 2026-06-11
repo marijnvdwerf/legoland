@@ -1,10 +1,10 @@
 #include <windows.h>
 
-#include "timer.h"
 #include "draw.h"
+#include "timer.h"
 
-#include "image_sprite.h"
 #include "globals.h"
+#include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x00499430
 LEGO_EXPORT unsigned int GetGameTimer(void) {

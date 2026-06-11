@@ -1,19 +1,19 @@
 #include <windows.h>
-#include "legoland.h"
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
-#include "gamemap.h"
-#include "debug_alloc.h"
-#include "path_control.h"
-#include "timer.h"
-#include "obj_instance.h"
-#include "draw.h"
+#include <math.h>
 #include "castle.h"
+#include "debug_alloc.h"
+#include "draw.h"
+#include "gamemap.h"
 #include "interface.h"
 #include "llidb.h"
 #include "map_object.h"
-#include <math.h>
+#include "obj_instance.h"
+#include "path_control.h"
+#include "timer.h"
 
 struct LookupResult;
 struct CastleObj;
@@ -2906,7 +2906,6 @@ struct Struct4274f0Coord {
     short field_2;
 };
 
-
 // FUNCTION: LEGOLAND 0x004274f0
 void FUN_004274f0(struct Struct4274f0Coord *coord) {
     if (DAT_004b55f4 != 0) {
@@ -2942,7 +2941,6 @@ void FUN_00427940(struct Struct427940 *param_1) {
 
 // FUNCTION: LEGOLAND 0x00427970
 void FUN_00427970(void) { STUB(); }
-
 
 // FUNCTION: LEGOLAND 0x004279f0
 void FUN_004279f0(void) {
@@ -3117,7 +3115,6 @@ void FUN_00427ff0(struct Struct427ff0Point *point) {
     AddRollerCoasterPath(coords);
 }
 
-
 struct CastleCarNode {
     /* 0x00 */ unsigned char pad_0[0x10];
     /* 0x10 */ unsigned int field_10;
@@ -3207,7 +3204,6 @@ struct Struct428e70 {
     unsigned int (**vtable)(void *self, const char *name);
 };
 
-
 // FUNCTION: LEGOLAND 0x00428e70
 void FUN_00428e70(struct Struct428e70 *p, unsigned int a, unsigned int b) {
     unsigned short handle = FUN_004236f0();
@@ -3232,7 +3228,6 @@ void FUN_00429270(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004292f0
 void FUN_004292f0(void) { STUB(); }
-
 
 // FUNCTION: LEGOLAND 0x00429490
 void FUN_00429490(unsigned int param_1, unsigned int param_2) {
@@ -3430,7 +3425,6 @@ void FUN_0042a150(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0042a1b0
 void FUN_0042a1b0(void) { STUB(); }
 
-
 // FUNCTION: LEGOLAND 0x0042a2e0
 void FUN_0042a2e0(void) {
     FUN_00421540(&DAT_00615f98, 3);
@@ -3451,7 +3445,6 @@ void FUN_0042a620(unsigned int *param_1, unsigned int *param_2, unsigned int par
 // FUNCTION: LEGOLAND 0x0042a640
 unsigned int FUN_0042a640(void *ptr, unsigned int a, unsigned int b) { STUB(); }
 
-
 // FUNCTION: LEGOLAND 0x0042a670
 float FUN_0042a670(void) {
     return FLOAT_004ab390;
@@ -3459,7 +3452,6 @@ float FUN_0042a670(void) {
 
 // FUNCTION: LEGOLAND 0x0042a680
 void FUN_0042a680(void) { STUB(); }
-
 
 // FUNCTION: LEGOLAND 0x0042a780
 void FUN_0042a780(void) {

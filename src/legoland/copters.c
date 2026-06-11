@@ -1,16 +1,16 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include <string.h>
+#include "legoland.h"
 
-#include "gamemap.h"
-#include "ride_queue.h"
 #include "copters.h"
-#include "man3d.h"
-#include "sound_sfx.h"
-#include "sound_music.h"
-#include "map_object.h"
-#include "llidb.h"
+#include "gamemap.h"
 #include "globals.h"
+#include "llidb.h"
+#include "man3d.h"
+#include "map_object.h"
+#include "ride_queue.h"
+#include "sound_music.h"
+#include "sound_sfx.h"
 
 typedef void (*CopterVtblFn)(void);
 

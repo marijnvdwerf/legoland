@@ -1,19 +1,19 @@
 #include <windows.h>
 #include <dsound.h>
-#include "legoland.h"
 #include <stdio.h>
 #include <string.h>
+#include "legoland.h"
 
-#include "sound_sfx.h"
-#include "sound_music.h"
-#include "timer.h"
+#include "debug_alloc.h"
 #include "globals.h"
 #include "math.h"
-#include "debug_alloc.h"
-#include "stream.h"
-#include "wndenv.h"
 #include "profile_io.h"
+#include "sound_music.h"
+#include "sound_sfx.h"
+#include "stream.h"
 #include "tilemap.h"
+#include "timer.h"
+#include "wndenv.h"
 
 struct AVISoundBuffer;
 struct AVISoundBufferVtbl;
@@ -449,7 +449,7 @@ LEGO_EXPORT void *KLIBAUDIO_LockAVISoundBuffer(LPDIRECTSOUNDBUFFER buffer, unsig
     }
     if (buffer->lpVtbl->GetStatus(buffer, (LPDWORD)&status) == 0 && (status & 1) != 0) {
         while (buffer->lpVtbl->GetCurrentPosition(buffer, (LPDWORD)&playPos, (LPDWORD)&writePos) == 0 &&
-               playPos >= offset && playPos < offset + size) {
+            playPos >= offset && playPos < offset + size) {
         }
     }
     result = buffer->lpVtbl->Lock(buffer, offset, size, &DAT_007988a4, (LPDWORD)&DAT_00798898, &DAT_007988a8, (LPDWORD)&DAT_0079889c, 0);
@@ -850,7 +850,7 @@ LEGO_EXPORT void KillAllSamplesFromSource(struct SampleSource *source) {
                 matched = sample->field_10 == source->field_4;
             default:
                 if (matched != 0) {
-unlink:
+                unlink:
                     if (prev != 0) {
                         prev->next = next;
                         FUN_00492b20(sample);
@@ -871,7 +871,7 @@ unlink:
             }
         }
         prev = sample;
-advance:
+    advance:
         sample = next;
     } while (sample != 0);
 }
@@ -923,7 +923,7 @@ LEGO_EXPORT void UnSourceAndFadeAllSamplesFromSource(void *source, int fade) {
                 }
             case 0:
                 matched = 1;
-fade_it:
+            fade_it:
                 UnSourceAndFadeSample(sample, fade);
             }
         }

@@ -1,16 +1,16 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
 #include "bricks.h"
 #include "debug_alloc.h"
-#include "timer.h"
-#include "sound_sfx.h"
-#include "objectives.h"
 #include "interface.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "objectives.h"
+#include "sound_sfx.h"
+#include "timer.h"
 
 struct ThemeQueryArg {
     unsigned char pad_0[0xc];
@@ -40,7 +40,6 @@ struct MapElement {
     unsigned short flags;
     unsigned char pad_e[0x14 - 0xe];
 };
-
 
 // FUNCTION: LEGOLAND 0x00468810
 void FUN_00468810(char *name) {

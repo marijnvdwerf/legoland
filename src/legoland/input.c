@@ -1,22 +1,22 @@
-#include "legoland.h"
 #include <windows.h>
 #include <dinput.h>
+#include "legoland.h"
 
-#include "icon.h"
-#include "llidb.h"
-#include "globals.h"
-#include "controller.h"
-#include "input.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-#include "debug_alloc.h"
 #include "bricks.h"
-#include "screens.h"
-#include "nerps.h"
+#include "controller.h"
+#include "debug_alloc.h"
+#include "globals.h"
+#include "icon.h"
+#include "input.h"
+#include "llidb.h"
 #include "map_object.h"
-#include "wndenv.h"
+#include "nerps.h"
+#include "screens.h"
 #include "sound_sfx.h"
+#include "wndenv.h"
 
 struct DInputDeviceVtbl {
     void *pad_0[2];

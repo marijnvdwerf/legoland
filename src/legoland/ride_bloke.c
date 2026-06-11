@@ -1,14 +1,14 @@
 #include "legoland.h"
 
-#include "man3d.h"
-#include "math.h"
-#include "print_sprite.h"
-#include "ride_queue.h"
-#include "ride_bloke.h"
 #include "draw.h"
-#include "map_object.h"
 #include "globals.h"
 #include "image_sprite.h"
+#include "man3d.h"
+#include "map_object.h"
+#include "math.h"
+#include "print_sprite.h"
+#include "ride_bloke.h"
+#include "ride_queue.h"
 
 struct CountNode {
     struct CountNode *next;
@@ -55,15 +55,33 @@ struct BlokeSprite {
 };
 
 // FUNCTION: LEGOLAND 0x00401000
-__int64 FUN_00401000(int x, int y, int rot)
-{
-    union { __int64 i; struct { int lo; int hi; } p; } r;
+__int64 FUN_00401000(int x, int y, int rot) {
+    union {
+        __int64 i;
+        struct {
+            int lo;
+            int hi;
+        } p;
+    } r;
     switch (rot) {
-    case 1: r.p.lo = y; r.p.hi = -x; return r.i;
-    case 3: r.p.lo = x; r.p.hi = y; return r.i;
-    case 5: r.p.lo = -y; r.p.hi = x; return r.i;
-    case 7: r.p.lo = -x; r.p.hi = -y; return r.i;
-    default: return r.i;
+    case 1:
+        r.p.lo = y;
+        r.p.hi = -x;
+        return r.i;
+    case 3:
+        r.p.lo = x;
+        r.p.hi = y;
+        return r.i;
+    case 5:
+        r.p.lo = -y;
+        r.p.hi = x;
+        return r.i;
+    case 7:
+        r.p.lo = -x;
+        r.p.hi = -y;
+        return r.i;
+    default:
+        return r.i;
     }
 }
 
@@ -74,11 +92,13 @@ void FUN_00401080(void) { STUB(); }
 void FUN_00401320(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004015c0
-LEGO_EXPORT void GetSpriteSize(struct Sprite *sprite, unsigned short *pWidth, unsigned short *pHeight) { *pWidth = sprite->width; *pHeight = sprite->height; }
+LEGO_EXPORT void GetSpriteSize(struct Sprite *sprite, unsigned short *pWidth, unsigned short *pHeight) {
+    *pWidth = sprite->width;
+    *pHeight = sprite->height;
+}
 
 // FUNCTION: LEGOLAND 0x004015e0
-void FUN_004015e0(unsigned char *param_1)
-{
+void FUN_004015e0(unsigned char *param_1) {
     struct Point local;
     unsigned int frame;
 
@@ -98,11 +118,16 @@ void FUN_004015e0(unsigned char *param_1)
 void FUN_00401660(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004017c0
-LEGO_EXPORT __int64 MapToPlayfield(int param_1, int param_2)
-{
+LEGO_EXPORT __int64 MapToPlayfield(int param_1, int param_2) {
     int w;
     int h;
-    union { __int64 i; struct { int lo; int hi; } p; } r;
+    union {
+        __int64 i;
+        struct {
+            int lo;
+            int hi;
+        } p;
+    } r;
     GetTileDimensions(&w, &h);
     r.p.lo = (param_1 - param_2) * w >> 9;
     r.p.hi = (param_1 + param_2) * h >> 9;
@@ -110,11 +135,13 @@ LEGO_EXPORT __int64 MapToPlayfield(int param_1, int param_2)
 }
 
 // FUNCTION: LEGOLAND 0x00401800
-LEGO_EXPORT unsigned int IsSemiPermiable(int param_1, int param_2) { unsigned char rf_flags = Get_RFFlags(param_1, param_2); return (rf_flags & 0x3) == 0x3; }
+LEGO_EXPORT unsigned int IsSemiPermiable(int param_1, int param_2) {
+    unsigned char rf_flags = Get_RFFlags(param_1, param_2);
+    return (rf_flags & 0x3) == 0x3;
+}
 
 // FUNCTION: LEGOLAND 0x00401820
-LEGO_EXPORT unsigned char SPGetRFFlags(int param_1, int param_2)
-{
+LEGO_EXPORT unsigned char SPGetRFFlags(int param_1, int param_2) {
     struct SPHandlers *src;
     int tile_ptr;
     int tx, ty;
@@ -137,8 +164,7 @@ LEGO_EXPORT unsigned char SPGetRFFlags(int param_1, int param_2)
 }
 
 // FUNCTION: LEGOLAND 0x00401890
-LEGO_EXPORT void SPEnter(unsigned int param_1, unsigned int param_2)
-{
+LEGO_EXPORT void SPEnter(unsigned int param_1, unsigned int param_2) {
     struct SPHandlers *src;
     int tile_ptr;
     int tx, ty;
@@ -160,8 +186,7 @@ LEGO_EXPORT void SPEnter(unsigned int param_1, unsigned int param_2)
 }
 
 // FUNCTION: LEGOLAND 0x00401900
-LEGO_EXPORT void SPLeave(unsigned int param_1, unsigned int param_2)
-{
+LEGO_EXPORT void SPLeave(unsigned int param_1, unsigned int param_2) {
     struct SPHandlers *src;
     int tile_ptr;
     int tx, ty;
@@ -183,8 +208,7 @@ LEGO_EXPORT void SPLeave(unsigned int param_1, unsigned int param_2)
 }
 
 // FUNCTION: LEGOLAND 0x00401970
-int *FUN_00401970(int *param_1, int param_2, int param_3)
-{
+int *FUN_00401970(int *param_1, int param_2, int param_3) {
     int *piVar1;
 
     if (DAT_004c10d4 == 0) {
@@ -293,8 +317,7 @@ int FUN_00402340(int a1) {
 }
 
 // FUNCTION: LEGOLAND 0x00402390
-int FUN_00402390(unsigned char *param_1)
-{
+int FUN_00402390(unsigned char *param_1) {
     void *iVar1;
     struct Point local;
 
@@ -305,7 +328,7 @@ int FUN_00402390(unsigned char *param_1)
     local.x = *(int *)((char *)iVar1 + 0xc);
     local.y = *(int *)((char *)iVar1 + 0x10);
     FUN_004808d0((int *)&local, (int *)&local,
-                 DAT_004b4034[(unsigned int)*(unsigned char *)(param_1 + 0xb8)]);
+        DAT_004b4034[(unsigned int)*(unsigned char *)(param_1 + 0xb8)]);
     iVar1 = FUN_004125a0(local.x, local.y);
     if ((iVar1 != 0) && ((*(unsigned char *)((char *)iVar1 + 0x14) & 0xf) == 5)) {
         return FUN_00402340(DAT_004b4034[(unsigned int)*(unsigned char *)(param_1 + 0xb8)]);
@@ -343,15 +366,15 @@ void FUN_00402550(struct BlokeSprite *arg) {
     IP_RenderBlokeIn3DNow((struct Bloke *)arg->var_cc);
 
     switch (arg->var_c3) {
-        case 1:
-            SetOverridePalette(DAT_0082c6bc);
-            break;
-        case 2:
-            SetOverridePalette(DAT_0082c6b8);
-            break;
-        case 3:
-            SetOverridePalette(DAT_0082c690);
-            break;
+    case 1:
+        SetOverridePalette(DAT_0082c6bc);
+        break;
+    case 2:
+        SetOverridePalette(DAT_0082c6b8);
+        break;
+    case 3:
+        SetOverridePalette(DAT_0082c690);
+        break;
     }
 
     SetOverrideFrame(arg->var_b9 + 16);

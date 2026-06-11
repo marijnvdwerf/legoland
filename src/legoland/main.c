@@ -1,10 +1,9 @@
-#include "legoland.h"
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
+#include "legoland.h"
 
 #include "globals.h"
 #include "main.h"
-
 
 // FUNCTION: LEGOLAND 0x00453cd0
 void FUN_00453cd0(char *text) {}

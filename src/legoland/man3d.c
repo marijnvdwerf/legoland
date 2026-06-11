@@ -1,18 +1,18 @@
-#include "legoland.h"
+#include "man3d.h"
+#include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "challenge.h"
+#include "draw.h"
 #include "globals.h"
-#include "man3d.h"
-#include "resource.h"
+#include "legoland.h"
+#include "map_object.h"
 #include "print_sprite.h"
 #include "render.h"
 #include "render3d.h"
-#include "map_object.h"
-#include "draw.h"
+#include "resource.h"
 #include "worker_mouse.h"
-#include "challenge.h"
-#include <windows.h>
 
 struct Person {
     struct Person *prev;
@@ -111,7 +111,6 @@ struct Bloke {
     unsigned char pad_0[4];
     struct Person *person;
 };
-
 
 // FUNCTION: LEGOLAND 0x0043f660
 LEGO_EXPORT struct Position *LoadPos(const char *path) {
@@ -378,8 +377,7 @@ LEGO_EXPORT void Render3DPerson(struct Person *person) {
             FUN_00488700((unsigned int)vid.field_c, &DAT_00813a44);
             Render_SetViewport(&clip);
             __asm { fstcw word ptr [DAT_00638358] }
-            __asm { fldcw word ptr [DAT_004b7abc] }
-            FUN_00440a30(person);
+            __asm {fldcw word ptr[DAT_004b7abc]} FUN_00440a30(person);
             __asm { fldcw word ptr [DAT_00638358] }
             if (DAT_007feb14 != 0) {
                 if (DAT_00668954 != 0 && person->field_c == (unsigned int)FUN_004700f0()) {

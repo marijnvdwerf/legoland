@@ -1,16 +1,16 @@
-#include "legoland.h"
 #include "globals.h"
+#include "legoland.h"
 
 #include "bloke_ai.h"
+#include "challenge.h"
+#include "draw.h"
 #include "gamemain.h"
+#include "icon.h"
+#include "llidb.h"
 #include "print_sprite.h"
 #include "screens.h"
-#include "timer.h"
-#include "draw.h"
-#include "challenge.h"
-#include "icon.h"
 #include "sound_music.h"
-#include "llidb.h"
+#include "timer.h"
 
 struct AnimHandle;
 struct RideElem;
@@ -51,7 +51,6 @@ struct Bloke {
 };
 
 #include "image_sprite.h"
-
 
 // FUNCTION: LEGOLAND 0x004434d0
 unsigned int FUN_004434d0(unsigned int param_1) { STUB(); }

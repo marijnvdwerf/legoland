@@ -1,16 +1,16 @@
-#include "legoland.h"
-#include "math.h"
 #include <stdlib.h>
 #include <string.h>
+#include "legoland.h"
+#include "math.h"
 
-#include "pathfind.h"
-#include "tilemap.h"
-#include "llidb.h"
-#include "gamemap.h"
 #include "clipping.h"
-#include "print_sprite.h"
-#include "globals.h"
 #include "gamemain.h"
+#include "gamemap.h"
+#include "globals.h"
+#include "llidb.h"
+#include "pathfind.h"
+#include "print_sprite.h"
+#include "tilemap.h"
 
 struct MapTile {
     /* 0x00 */ unsigned char pad_0[8];
@@ -22,12 +22,10 @@ struct MapTile {
     /* 0x11 */ unsigned char pad_11[3];
 };
 
-
 struct TileSprite {
     unsigned char pad_0[0x16];
     short size;
 };
-
 
 #include "image_sprite.h"
 

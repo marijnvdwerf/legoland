@@ -1,16 +1,16 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
-#include "gamemap.h"
 #include "bricks.h"
-#include "ride_queue.h"
-#include "tilemap.h"
-#include "objclass.h"
+#include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "objclass.h"
 #include "pumps.h"
+#include "ride_queue.h"
+#include "tilemap.h"
 
 struct RoadQueueEntry {
     struct RoadQueueEntry *next;
@@ -50,7 +50,6 @@ struct RoadPlaceArg {
     unsigned int field_0;
     unsigned int field_4;
 };
-
 
 // FUNCTION: LEGOLAND 0x004132a0
 void FUN_004132a0(void) { STUB(); }

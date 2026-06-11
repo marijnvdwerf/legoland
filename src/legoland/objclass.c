@@ -1,12 +1,12 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
 #include "gamemap.h"
-#include "objclass.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "objclass.h"
 
 struct ObjectClass {
     struct ObjectClass *next;
@@ -114,7 +114,6 @@ struct ObjInstance {
     unsigned short uid;
     unsigned int field_10;
 };
-
 
 // FUNCTION: LEGOLAND 0x00480990
 LEGO_EXPORT struct ObjectClass *AddNewObjectClass(void) {

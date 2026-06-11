@@ -1,8 +1,8 @@
 #include "legoland.h"
 
 #include "bricks.h"
-#include "llidb.h"
 #include "globals.h"
+#include "llidb.h"
 
 // FUNCTION: LEGOLAND 0x00457870
 void FUN_00457870(int param_1) {

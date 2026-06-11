@@ -1,8 +1,8 @@
 #include "legoland.h"
 
 #include "build.h"
-#include "objclass.h"
 #include "globals.h"
+#include "objclass.h"
 
 // FUNCTION: LEGOLAND 0x00450b90
 LEGO_EXPORT void AddObjectToBuildList(void) { STUB(); }

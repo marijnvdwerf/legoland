@@ -1,7 +1,7 @@
-#include "legoland.h"
-#include <stdlib.h>
 #include "obj_instance.h"
+#include <stdlib.h>
 #include "globals.h"
+#include "legoland.h"
 
 struct ObjClassKey {
     unsigned short hi;
@@ -48,7 +48,6 @@ struct Ride {
     unsigned char pad_0[0xcc];
     struct RideNode *riders;
 };
-
 
 // FUNCTION: LEGOLAND 0x00489e60
 void FUN_00489e60(void) { STUB(); }

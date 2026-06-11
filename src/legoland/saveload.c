@@ -1,10 +1,10 @@
 #include "legoland.h"
 
-#include "timer.h"
-#include "saveload.h"
-#include "llidb.h"
-#include "globals.h"
 #include <io.h>
+#include "globals.h"
+#include "llidb.h"
+#include "saveload.h"
+#include "timer.h"
 
 // FUNCTION: LEGOLAND 0x0047d790
 LEGO_EXPORT int BeginMeasuredBlock(void) {

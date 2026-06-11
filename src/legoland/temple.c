@@ -1,10 +1,10 @@
-#include "legoland.h"
 #include <string.h>
+#include "legoland.h"
 
 #include "gamemap.h"
-#include "obj_instance.h"
-#include "map_object.h"
 #include "globals.h"
+#include "map_object.h"
+#include "obj_instance.h"
 
 typedef void (*TempleHandler)(void);
 

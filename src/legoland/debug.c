@@ -1,23 +1,22 @@
 #include <windows.h>
 
-#include "legoland.h"
-#include "globals.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "cdcheck.h"
 #include "debug.h"
 #include "debug_alloc.h"
-#include "cdcheck.h"
 #include "draw.h"
+#include "globals.h"
 #include "image_sprite.h"
-#include "stream.h"
 #include "input.h"
+#include "legoland.h"
 #include "llidb.h"
 #include "resource.h"
 #include "saveload.h"
 #include "screens.h"
+#include "stream.h"
 #include "string.h"
-
 
 // FUNCTION: LEGOLAND 0x0047f870
 void FUN_0047f870(const char *fmt, ...) {}
@@ -222,7 +221,7 @@ int WinMainBody(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, i
     if (FUN_0047fc40(lpCmdLine, "WINDEBUG")) {
         DAT_004b9ca4 = FUN_004661d0;
         DAT_00667d6c = 1;
-    // STRING: LEGOLAND 0x004bcd6c
+        // STRING: LEGOLAND 0x004bcd6c
     } else if (FUN_0047fc40(lpCmdLine, "BLT")) {
         DAT_004b9ca4 = FUN_004661d0;
     }

@@ -1,17 +1,17 @@
-#include "legoland.h"
-#include <stdlib.h>
-#include <string.h>
 #include <windows.h>
 #include <ddraw.h>
+#include <stdlib.h>
+#include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
-#include "draw.h"
 #include "debug_alloc.h"
+#include "draw.h"
 #include "gfx.h"
-#include "render.h"
-#include "print_sprite.h"
-#include "text.h"
 #include "llidb.h"
+#include "print_sprite.h"
+#include "render.h"
+#include "text.h"
 
 #pragma intrinsic(strlen, strcmp, strcpy)
 

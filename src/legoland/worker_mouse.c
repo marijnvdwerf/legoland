@@ -1,9 +1,9 @@
-#include "legoland.h"
-#include "globals.h"
-#include "man3d.h"
-#include "tilemap.h"
 #include "worker_mouse.h"
+#include "globals.h"
+#include "legoland.h"
+#include "man3d.h"
 #include "render3d.h"
+#include "tilemap.h"
 
 struct WorkerInner {
     unsigned char pad_0[0x1c];

@@ -1,7 +1,7 @@
-#include "legoland.h"
-#include "globals.h"
 #include "tooltip.h"
 #include <windows.h>
+#include "globals.h"
+#include "legoland.h"
 
 #include "image_sprite.h"
 #include "stream.h"

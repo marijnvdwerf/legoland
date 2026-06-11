@@ -1,17 +1,17 @@
-#include "legoland.h"
+#include "options.h"
 #include "globals.h"
-#include "string.h"
+#include "icon.h"
+#include "interface.h"
+#include "legoland.h"
 #include "profile.h"
 #include "profile_io.h"
 #include "savegame_ui.h"
-#include "options.h"
-#include "icon.h"
-#include "interface.h"
 #include "sound_music.h"
+#include "string.h"
 
+#include "help.h"
 #include "image_sprite.h"
 #include "stream.h"
-#include "help.h"
 
 // FUNCTION: LEGOLAND 0x0048eb40
 void FUN_0048eb40(void) {

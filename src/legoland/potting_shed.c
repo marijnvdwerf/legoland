@@ -1,8 +1,8 @@
 #include "legoland.h"
 
 #include "gamemap.h"
-#include "map_object.h"
 #include "globals.h"
+#include "map_object.h"
 
 struct PSCarInner {
     unsigned char pad_0[0x10];

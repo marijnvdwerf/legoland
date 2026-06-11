@@ -1,14 +1,14 @@
+#include "resource.h"
 #include <windows.h>
-#include "legoland.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "cdcheck.h"
 #include "debug.h"
-#include "saveload.h"
-#include "resource.h"
 #include "globals.h"
+#include "legoland.h"
+#include "saveload.h"
 
 struct ResVolume;
 struct ResVolEntry;
@@ -82,7 +82,6 @@ struct ResDirEntry {
     int base;
     char *name;
 };
-
 
 // FUNCTION: LEGOLAND 0x00489440
 struct MasterDirNode *FUN_00489440(char *name) {

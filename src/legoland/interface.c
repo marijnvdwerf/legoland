@@ -1,21 +1,21 @@
-#include "legoland.h"
+#include "interface.h"
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
-#include "string.h"
-#include "worker_mouse.h"
+#include "icon.h"
+#include "legoland.h"
+#include "llidb.h"
+#include "nerps.h"
+#include "objclass.h"
+#include "popupinfo.h"
+#include "print_sprite.h"
 #include "profile_io.h"
 #include "screens.h"
-#include "title.h"
-#include "nerps.h"
-#include "popupinfo.h"
-#include "objclass.h"
-#include "icon.h"
-#include "interface.h"
 #include "sound_music.h"
-#include "llidb.h"
-#include "print_sprite.h"
+#include "string.h"
 #include "timer.h"
+#include "title.h"
+#include "worker_mouse.h"
 
 struct ProfileObj {
     unsigned char pad_0[0x34];
@@ -80,13 +80,10 @@ struct QueryNode {
     unsigned int field_c;
 };
 
-
-
 #include "image_sprite.h"
-#include "stream.h"
-#include "mapscreen.h"
 #include "imports.h"
-
+#include "mapscreen.h"
+#include "stream.h"
 
 // FUNCTION: LEGOLAND 0x004741f0
 LEGO_EXPORT void Load_Interface_ControlIcons(void) {

@@ -1,10 +1,8 @@
-#include "legoland.h"
-#include "globals.h"
-#include "sound_music.h"
-#include "map_object.h"
 #include "power.h"
-
-
+#include "globals.h"
+#include "legoland.h"
+#include "map_object.h"
+#include "sound_music.h"
 
 // FUNCTION: LEGOLAND 0x00452990
 void FUN_00452990(void) {

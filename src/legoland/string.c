@@ -6,9 +6,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "timer.h"
-#include "string.h"
 #include "globals.h"
+#include "string.h"
+#include "timer.h"
 
 #pragma intrinsic(memset)
 // FUNCTION: LEGOLAND 0x00498d00
@@ -212,8 +212,7 @@ void FUN_00499040(const char *path, char *directory, char *filename) {
 }
 
 // FUNCTION: LEGOLAND 0x004990c0
-void FUN_004990c0(char *path, char *ext)
-{
+void FUN_004990c0(char *path, char *ext) {
     int i = strlen(path);
     while (path[i] != '.' && path[i] != '\\' && i > 0) {
         i--;
@@ -224,8 +223,7 @@ void FUN_004990c0(char *path, char *ext)
 }
 
 // FUNCTION: LEGOLAND 0x00499120
-void FUN_00499120(char *path, char *ext)
-{
+void FUN_00499120(char *path, char *ext) {
     int i = strlen(path);
     while (path[i] != '.' && path[i] != '\\' && i > 0) {
         i--;
@@ -237,8 +235,7 @@ void FUN_00499120(char *path, char *ext)
 }
 
 // FUNCTION: LEGOLAND 0x00499190
-void FUN_00499190(char *path, char *dir)
-{
+void FUN_00499190(char *path, char *dir) {
     char tmp[200];
     int i = strlen(path);
     while (path[i] != '\\' && path[i] != ':' && i > 0) {
@@ -252,8 +249,7 @@ void FUN_00499190(char *path, char *dir)
 }
 
 // FUNCTION: LEGOLAND 0x00499240
-void FUN_00499240(char *path, char *dir)
-{
+void FUN_00499240(char *path, char *dir) {
     char tmp[200];
     int i = strlen(path);
     while (path[i] != '\\' && path[i] != ':' && i > 0) {

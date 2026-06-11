@@ -1,9 +1,9 @@
-#include "legoland.h"
 #include <windows.h>
 #include <mmsystem.h>
+#include "legoland.h"
 
-#include "globals.h"
 #include <stdlib.h>
+#include "globals.h"
 #include "resource.h"
 #include "wndenv.h"
 

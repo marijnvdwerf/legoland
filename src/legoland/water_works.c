@@ -1,15 +1,15 @@
-#include <string.h>
-#include "legoland.h"
 #include <stdlib.h>
+#include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
-#include "gamemap.h"
-#include "man3d.h"
-#include "tilemap.h"
 #include "draw.h"
-#include "sound_music.h"
+#include "gamemap.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
+#include "sound_music.h"
+#include "tilemap.h"
 
 struct WaterNode {
     struct WaterNode *next;
@@ -97,9 +97,8 @@ struct WaterListNode {
     unsigned char field_9;
 };
 
-#include "power.h"
 #include "image_sprite.h"
-
+#include "power.h"
 
 // FUNCTION: LEGOLAND 0x00417a90
 unsigned int FUN_00417a90(void) {

@@ -1,11 +1,10 @@
-#include "legoland.h"
 #include <string.h>
+#include "legoland.h"
 
 struct ExceptionEntry {
     unsigned int code;
     const char *message;
 };
-
 
 // FUNCTION: LEGOLAND 0x00453da0
 void FUN_00453da0(void) { STUB(); }
@@ -75,8 +74,7 @@ const char *FUN_00454700(unsigned int code) {
         // STRING: LEGOLAND 0x004b8de8
         {0xc0000142, "a DLL Initialization Failed"},
         // STRING: LEGOLAND 0x004b8dcc
-        {0xe06d7363, "a Microsoft C++ Exception"}
-    };
+        {0xe06d7363, "a Microsoft C++ Exception"}};
     unsigned int i = 0;
     while (i < 24) {
         if (code == table[i].code) {

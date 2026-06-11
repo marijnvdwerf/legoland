@@ -1,9 +1,9 @@
-#include "legoland.h"
 #include <windows.h>
+#include "legoland.h"
 
-#include "globals.h"
 #include <string.h>
 #include "debug.h"
+#include "globals.h"
 #include "saveload.h"
 
 // FUNCTION: LEGOLAND 0x00450f30

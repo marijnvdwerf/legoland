@@ -1,7 +1,7 @@
+#include "globals.h"
 #include "legoland.h"
 #include "money.h"
 #include "sound_music.h"
-#include "globals.h"
 
 struct EntranceParam {
     unsigned char pad_0[0xc];

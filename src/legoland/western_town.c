@@ -1,11 +1,11 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include "globals.h"
+#include "legoland.h"
 
 #include "gamemap.h"
-#include "money.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "money.h"
 
 struct Building {
     unsigned char pad_0[0x1c];
@@ -23,7 +23,6 @@ struct JailCell {
 };
 
 #include "image_sprite.h"
-
 
 // FUNCTION: LEGOLAND 0x004375d0
 void FUN_004375d0(struct MapObject *obj) {

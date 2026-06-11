@@ -1,23 +1,23 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
 #include "bricks.h"
 #include "debug_alloc.h"
-#include "gamemap.h"
-#include "saveload.h"
-#include "screens.h"
 #include "draw.h"
+#include "gamemap.h"
+#include "help.h"
+#include "interface.h"
+#include "llidb.h"
+#include "map_object.h"
 #include "nerps.h"
 #include "objclass.h"
 #include "objectives.h"
-#include "worker.h"
-#include "interface.h"
-#include "map_object.h"
-#include "help.h"
-#include "llidb.h"
+#include "saveload.h"
+#include "screens.h"
 #include "timer.h"
+#include "worker.h"
 
 #pragma intrinsic(strcpy, strlen)
 
@@ -31,7 +31,6 @@ struct NerpsArg {
     unsigned int field_1c;
     unsigned int field_20;
 };
-
 
 struct ObjectClass {
     struct ObjectClass *next;
@@ -70,7 +69,6 @@ struct EventList {
     unsigned char pad_0[0x10];
     struct ObjectiveEvent *head;
 };
-
 
 // FUNCTION: LEGOLAND 0x0046a040
 void FUN_0046a040(unsigned int param_1, unsigned int param_2) { STUB(); }

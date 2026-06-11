@@ -1,7 +1,7 @@
-#include "legoland.h"
 #include "path_control.h"
-#include "tilemap.h"
 #include "globals.h"
+#include "legoland.h"
+#include "tilemap.h"
 
 struct PathSpriteHeader {
     unsigned short id;

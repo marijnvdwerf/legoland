@@ -1,12 +1,12 @@
-#include "legoland.h"
 #include "globals.h"
+#include "legoland.h"
 
 #include "clipping.h"
+#include "icon.h"
 #include "profile.h"
 #include "profile_io.h"
-#include "title.h"
-#include "icon.h"
 #include "sound_music.h"
+#include "title.h"
 
 struct ProfileFlags {
     unsigned char pad_0[0x34];

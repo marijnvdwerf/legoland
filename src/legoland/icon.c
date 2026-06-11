@@ -1,21 +1,21 @@
-#include "legoland.h"
-#include "math.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
+#include "math.h"
 
 #include "clipping.h"
-#include "timer.h"
-#include "icon.h"
-#include "render.h"
-#include "gfx.h"
-#include "llidb.h"
-#include "interface.h"
-#include "print_sprite.h"
-#include "string.h"
-#include "map_object.h"
 #include "controller.h"
+#include "gfx.h"
+#include "icon.h"
+#include "interface.h"
+#include "llidb.h"
+#include "map_object.h"
+#include "print_sprite.h"
+#include "render.h"
+#include "string.h"
+#include "timer.h"
 
 struct Sprite;
 
@@ -29,7 +29,6 @@ struct IconSprite {
     /* 0x00 */ unsigned char pad_0[8];
     /* 0x08 */ struct IconAnim *anim;
 };
-
 
 struct IconGroupRef {
     unsigned char pad_0[3];
@@ -58,7 +57,6 @@ struct Config {
     unsigned short field_0;
     unsigned short field_2;
 };
-
 
 struct Bbox {
     int min_x;
@@ -152,16 +150,15 @@ struct TimedIndicator {
     unsigned int field_1c;
 };
 
-#include "image_sprite.h"
-#include "render3d.h"
-#include "objclass.h"
-#include "popupinfo.h"
-#include "sound_music.h"
 #include "bricks.h"
 #include "freeplay.h"
-#include "text.h"
+#include "image_sprite.h"
+#include "objclass.h"
+#include "popupinfo.h"
+#include "render3d.h"
 #include "screens.h"
-
+#include "sound_music.h"
+#include "text.h"
 
 // FUNCTION: LEGOLAND 0x0046d3a0
 void FUN_0046d3a0(void) { DAT_006687a4 = 4; }
@@ -698,8 +695,8 @@ int FUN_0046df60(int param) {
 LEGO_EXPORT int RenderBoxIcon(struct IconNode *node) {
     unsigned short border = node->box.border;
     RenderThickBox(node->field_c - border, node->field_e - border,
-                   node->field_10 + border * 2, node->field_12 + border * 2,
-                   border, node->box.box_color);
+        node->field_10 + border * 2, node->field_12 + border * 2,
+        border, node->box.box_color);
     if ((node->field_34 & 0x20) != 0) {
         FUN_0046df30((struct Rect16 *)node);
     }
@@ -1408,7 +1405,7 @@ unsigned char FUN_0046f2e0(struct IconNode *node, unsigned int buttons, short dx
 // FUNCTION: LEGOLAND 0x0046f300
 int FUN_0046f300(struct Point *point, struct Bbox *bbox) {
     return point->x >= bbox->min_x && point->x <= bbox->max_x &&
-           point->y >= bbox->min_y && point->y <= bbox->max_y;
+        point->y >= bbox->min_y && point->y <= bbox->max_y;
 }
 
 // FUNCTION: LEGOLAND 0x0046f330
@@ -1434,10 +1431,10 @@ LEGO_EXPORT struct IconNode *GetIconAtPos(struct Point *param_1, unsigned char *
             unsigned int flags = cur->field_34;
             if (doGeom &&
                 (((flags & 0x10) == 0 || (flags & 0x400) != 0) ||
-                 (x < cur->field_c) ||
-                 (y < cur->field_e) ||
-                 (cur->field_10 + cur->field_c < x) ||
-                 (candidate = cur, cur->field_12 + cur->field_e < y)) &&
+                    (x < cur->field_c) ||
+                    (y < cur->field_e) ||
+                    (cur->field_10 + cur->field_c < x) ||
+                    (candidate = cur, cur->field_12 + cur->field_e < y)) &&
                 (candidate = found, (flags & 0x40) != 0 && (flags & 0x400) == 0) &&
                 FUN_0046f330(param_1, cur) != 0) {
                 *param_2 = *param_2 | 4;

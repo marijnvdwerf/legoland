@@ -1,13 +1,13 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include "globals.h"
+#include "legoland.h"
 
 #include "gamemap.h"
 #include "jungle_cruise.h"
-#include "objclass.h"
-#include "render3d.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "objclass.h"
+#include "render3d.h"
 
 struct JungleNode {
     unsigned short field_0;
@@ -75,7 +75,6 @@ struct JungleFishHolder {
     unsigned int pad_0[3];
     struct JungleFishObj *field_c;
 };
-
 
 #include "image_sprite.h"
 

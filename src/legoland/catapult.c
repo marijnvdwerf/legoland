@@ -1,12 +1,12 @@
-#include "legoland.h"
 #include <string.h>
+#include "legoland.h"
 
 #include "gamemap.h"
+#include "globals.h"
+#include "llidb.h"
+#include "map_object.h"
 #include "render3d.h"
 #include "sound_music.h"
-#include "map_object.h"
-#include "llidb.h"
-#include "globals.h"
 
 typedef void (*CatapultVtblFn)(void);
 
@@ -59,7 +59,6 @@ struct CatapultInner {
 };
 
 #include "image_sprite.h"
-
 
 // FUNCTION: LEGOLAND 0x004030f0
 void FUN_004030f0(void) { STUB(); }
@@ -188,7 +187,9 @@ unsigned int *FUN_004039e0(struct CatapultLayer *arg1, unsigned short arg2) {
 
 // FUNCTION: LEGOLAND 0x00403a20
 LEGO_EXPORT int Catapult_Save(void) {
-    struct CatapultSaveBuf { unsigned int data[15]; };
+    struct CatapultSaveBuf {
+        unsigned int data[15];
+    };
     struct CatapultNode *node;
     int *field;
     unsigned int *cursor;

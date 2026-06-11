@@ -1,18 +1,17 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include "globals.h"
+#include "legoland.h"
 
 #include "gamemap.h"
+#include "llidb.h"
 #include "man3d.h"
+#include "map_object.h"
 #include "money.h"
 #include "obj_instance.h"
 #include "render3d.h"
 #include "sound_music.h"
-#include "llidb.h"
-#include "map_object.h"
 
 #include "image_sprite.h"
-
 
 struct EateryObj;
 struct EateryFX;
@@ -69,7 +68,6 @@ struct SaveBlock {
     struct SaveBlock *next;
     unsigned char data[60];
 };
-
 
 // FUNCTION: LEGOLAND 0x0042e220
 void FUN_0042e220(struct EateryObj *obj) {

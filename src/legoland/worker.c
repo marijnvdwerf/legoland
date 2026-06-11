@@ -1,16 +1,16 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include "globals.h"
+#include "legoland.h"
 
+#include "bloke.h"
 #include "bloke_ai.h"
 #include "bricks.h"
 #include "debug_alloc.h"
 #include "gamemap.h"
-#include "man3d.h"
-#include "bloke.h"
-#include "worker.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
+#include "worker.h"
 
 struct LegoConfig;
 
@@ -45,7 +45,6 @@ struct RepairOrder {
     int var_18;
     int var_1c;
 };
-
 
 // FUNCTION: LEGOLAND 0x00499530
 LEGO_EXPORT void LoadWorkerInterfaceGFX(void) {

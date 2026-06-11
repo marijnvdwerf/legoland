@@ -1,10 +1,10 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
-#include "gamemap.h"
 #include "binv.h"
+#include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
 #include "spinning_barrels.h"

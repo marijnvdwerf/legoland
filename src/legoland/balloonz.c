@@ -1,8 +1,8 @@
-#include "legoland.h"
 #include "globals.h"
+#include "legoland.h"
 
-#include "gamemap.h"
 #include "binv.h"
+#include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
 

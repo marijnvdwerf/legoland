@@ -1,13 +1,13 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include <string.h>
+#include "legoland.h"
 
 #include "gamemap.h"
-#include "ride_queue.h"
-#include "render3d.h"
-#include "map_object.h"
-#include "llidb.h"
 #include "globals.h"
+#include "llidb.h"
+#include "map_object.h"
+#include "render3d.h"
+#include "ride_queue.h"
 
 typedef void (*GoldVtblFn)(void);
 

@@ -1,20 +1,18 @@
-#include "legoland.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
 #include "gamemap.h"
-#include "ride_queue.h"
-#include "log_flume.h"
 #include "llidb.h"
+#include "log_flume.h"
 #include "map_object.h"
-
+#include "ride_queue.h"
 
 struct Sprite;
 
 #include "image_sprite.h"
-
 
 struct ChainNode {
     struct ChainNode *next;

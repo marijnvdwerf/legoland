@@ -1,18 +1,18 @@
-#include "legoland.h"
+#include "render3d.h"
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
-#include "man3d.h"
-#include "render3d.h"
-#include "render.h"
-#include "resource.h"
+#include "legoland.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "math.h"
-#include "tilemap.h"
 #include "obj_instance.h"
 #include "print_sprite.h"
-#include <math.h>
+#include "render.h"
+#include "resource.h"
+#include "tilemap.h"
 
 #include "image_sprite.h"
 
@@ -115,7 +115,13 @@ struct BlokeRideNode {
 
 // FUNCTION: LEGOLAND 0x00441a60
 LEGO_EXPORT void Put3DBlokesOnRide(struct ViewportEntry *param_1, unsigned char *param_2, int param_3, int *param_4) {
-    union { __int64 i; struct { int lo; int hi; } p; } coords;
+    union {
+        __int64 i;
+        struct {
+            int lo;
+            int hi;
+        } p;
+    } coords;
     int i;
 
     coords.i = GetScreenCoordsForObject(param_2, param_1);
@@ -289,7 +295,13 @@ struct RinRender {
 
 // FUNCTION: LEGOLAND 0x00441d60
 LEGO_EXPORT void RenderUsingRin(struct RinRender *param_1, int param_2, struct ViewportEntry *param_3, unsigned char *param_4) {
-    union { __int64 i; struct { int lo; int hi; } p; } coords;
+    union {
+        __int64 i;
+        struct {
+            int lo;
+            int hi;
+        } p;
+    } coords;
     int idx;
     int *entry;
     int i;
@@ -388,7 +400,13 @@ struct LayerOffsetHolder {
 // FUNCTION: LEGOLAND 0x00441ee0
 LEGO_EXPORT __int64 GetRenderOffsetForLayer(struct LayerOffsetHolder *param_1, int param_2) {
     struct LayerOffsets *o = param_1->field_8;
-    union { __int64 i; struct { int lo; int hi; } p; } r;
+    union {
+        __int64 i;
+        struct {
+            int lo;
+            int hi;
+        } p;
+    } r;
     r.p.lo = o->x_offsets[param_2];
     r.p.hi = o->y_offsets[param_2];
     return r.i;
@@ -601,7 +619,7 @@ char *FUN_004427e0(struct ResFile *param_1, char *param_2, int param_3) {
         if (*c == '\r') goto skip_lf;
     } while (*c != '\n' && count < param_3 && read != 0);
     if (*c == '\r') {
-skip_lf:
+    skip_lf:
         RES_ReadFile(file, &param_1, 1);
     }
 terminate:
@@ -695,7 +713,13 @@ LEGO_EXPORT __int64 GetScreenCoordsForObject(unsigned char *param_1, void *param
     struct Point ref;
     int iVar1;
     int iVar2;
-    union { __int64 i; struct { int lo; int hi; } p; } r;
+    union {
+        __int64 i;
+        struct {
+            int lo;
+            int hi;
+        } p;
+    } r;
 
     ref.x = param_1[0];
     ref.y = param_1[1];

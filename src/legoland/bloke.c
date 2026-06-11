@@ -1,20 +1,19 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include <string.h>
+#include "legoland.h"
 
-#include "debug_alloc.h"
-#include "man3d.h"
-#include "timer.h"
-#include "pathfind.h"
-#include "objclass.h"
 #include "bloke.h"
+#include "debug_alloc.h"
 #include "globals.h"
+#include "man3d.h"
+#include "objclass.h"
+#include "pathfind.h"
+#include "timer.h"
 
 struct BestNode {
     unsigned char pad_0[0x20];
     unsigned char flags_20;
 };
-
 
 struct PendingObject {
     unsigned char pad_0[0xe];
@@ -62,7 +61,6 @@ struct BNVPath {
     unsigned char pad_0[0x40];
     unsigned int field_40;
 };
-
 
 struct Person {
     unsigned int field_0;

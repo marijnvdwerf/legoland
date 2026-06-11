@@ -1,14 +1,14 @@
-#include "legoland.h"
 #include <string.h>
+#include "legoland.h"
 
 #include "gamemap.h"
+#include "globals.h"
+#include "llidb.h"
+#include "map_object.h"
 #include "obj_instance.h"
+#include "render3d.h"
 #include "sound_music.h"
 #include "space_tower.h"
-#include "render3d.h"
-#include "map_object.h"
-#include "llidb.h"
-#include "globals.h"
 
 struct RideObject {
     unsigned short var_0;

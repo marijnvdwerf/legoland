@@ -1,9 +1,9 @@
-#include "legoland.h"
 #include <string.h>
+#include "legoland.h"
 
 #include "gamemap.h"
-#include "map_object.h"
 #include "globals.h"
+#include "map_object.h"
 
 typedef void (*FortVtblFn)(void);
 
@@ -20,7 +20,6 @@ struct FortInterface {
     FortVtblFn field_ac;
     FortVtblFn field_b0;
 };
-
 
 #include "image_sprite.h"
 

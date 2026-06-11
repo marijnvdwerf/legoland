@@ -1,10 +1,9 @@
-#include "legoland.h"
 #include <malloc.h>
 #include <stdlib.h>
+#include "legoland.h"
 
 #include "debug_alloc.h"
 #include "globals.h"
-
 
 // FUNCTION: LEGOLAND 0x00453a20
 LEGO_EXPORT void DBPrintf(const char *format, ...) {}

@@ -1,11 +1,11 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include "globals.h"
+#include "legoland.h"
 
-#include "ride_queue.h"
-#include "ride_bloke.h"
-#include "sound_music.h"
 #include "llidb.h"
+#include "ride_bloke.h"
+#include "ride_queue.h"
+#include "sound_music.h"
 
 struct DrivingSchoolNode {
     struct DrivingSchoolNode *next;
@@ -56,8 +56,8 @@ struct CountNode {
     struct CountNode *next;
 };
 
-#include "pumps.h"
 #include "image_sprite.h"
+#include "pumps.h"
 
 // FUNCTION: LEGOLAND 0x004051a0
 unsigned int FUN_004051a0(unsigned int param_1) { STUB(); }

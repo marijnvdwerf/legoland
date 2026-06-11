@@ -1,7 +1,7 @@
-#include "legoland.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "legoland.h"
 
 #include "binv.h"
 

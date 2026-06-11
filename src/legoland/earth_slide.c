@@ -1,12 +1,12 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include <string.h>
+#include "legoland.h"
 
 #include "gamemap.h"
-#include "man3d.h"
-#include "render3d.h"
-#include "map_object.h"
 #include "globals.h"
+#include "man3d.h"
+#include "map_object.h"
+#include "render3d.h"
 
 struct EarthNode {
     unsigned short field_0;
@@ -81,8 +81,7 @@ struct ListNodeC {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0042cd70
-void FUN_0042cd70(unsigned short *a1)
-{
+void FUN_0042cd70(unsigned short *a1) {
     struct EarthNode *v = (struct EarthNode *)malloc(0x24);
     if (v != NULL) {
         memset(v, 0, 0x24);
@@ -108,8 +107,7 @@ void FUN_0042ce20(void) { STUB(); }
 void FUN_0042ce50(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0042ce90
-void FUN_0042ce90(struct QueueA *p, struct QueueB *value)
-{
+void FUN_0042ce90(struct QueueA *p, struct QueueB *value) {
     if (p->field_1c == NULL && p->field_20 == NULL) {
         p->field_1c = value;
         p->field_20 = value;
@@ -123,8 +121,7 @@ void FUN_0042ce90(struct QueueA *p, struct QueueB *value)
 void FUN_0042cec0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0042cf40
-int FUN_0042cf40(struct CellOuter *param1, unsigned int param2)
-{
+int FUN_0042cf40(struct CellOuter *param1, unsigned int param2) {
     if (param1->field_1c != NULL) {
         if (param1->field_1c->field_4->field_8 == param2) {
             return 1;
@@ -137,8 +134,7 @@ int FUN_0042cf40(struct CellOuter *param1, unsigned int param2)
 void FUN_0042cf70(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0042d040
-void FUN_0042d040(struct Pool *list)
-{
+void FUN_0042d040(struct Pool *list) {
     if (list->field_1c != 0) {
         struct PoolNode *node = (struct PoolNode *)list->field_1c;
         list->field_1c = node->next;
@@ -156,8 +152,7 @@ void FUN_0042d070(void) { STUB(); }
 void FUN_0042d100(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0042d1f0
-void FUN_0042d1f0(struct EarthArg *arg1)
-{
+void FUN_0042d1f0(struct EarthArg *arg1) {
     DAT_006160d0 = arg1->field_c;
     UnLoadRin(DAT_006160d4);
     UnloadPos(DAT_006160e4);
@@ -166,8 +161,7 @@ void FUN_0042d1f0(struct EarthArg *arg1)
 }
 
 // FUNCTION: LEGOLAND 0x0042d230
-void FUN_0042d230(void)
-{
+void FUN_0042d230(void) {
     struct CursorRoot *temp = (struct CursorRoot *)DAT_006160d0;
     EditMode = 1;
     DAT_008119b8 = temp;
@@ -185,8 +179,7 @@ void FUN_0042d2c0(void) { STUB(); }
 void FUN_0042d2f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0042d3e0
-unsigned int FUN_0042d3e0(struct ListNode *param_1, struct ListNode *param_2)
-{
+unsigned int FUN_0042d3e0(struct ListNode *param_1, struct ListNode *param_2) {
     unsigned int count = 0;
     struct ListNode *node = param_1;
 
@@ -207,8 +200,7 @@ void FUN_0042d540(void) { STUB(); }
 void FUN_0042d560(struct ListNodeC *param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0042d5f0
-void FUN_0042d5f0(void)
-{
+void FUN_0042d5f0(void) {
     struct ListNodeC *node = (struct ListNodeC *)DAT_006160e8;
     while (node != NULL) {
         FUN_0042d560(node);

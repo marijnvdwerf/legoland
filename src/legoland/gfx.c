@@ -1,5 +1,5 @@
-#include "legoland.h"
 #include <ddraw.h>
+#include "legoland.h"
 
 #include <stdio.h>
 #include <stdlib.h>

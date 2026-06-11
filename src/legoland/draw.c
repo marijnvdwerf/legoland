@@ -1,6 +1,6 @@
-#include "legoland.h"
 #include <windows.h>
 #include <ddraw.h>
+#include "legoland.h"
 
 #include <stdlib.h>
 #include <string.h>

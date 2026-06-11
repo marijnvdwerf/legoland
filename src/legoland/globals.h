@@ -2,8 +2,8 @@
 
 #include <windows.h>
 
-#include "legoland.h"
 #include "gamemap.h"
+#include "legoland.h"
 
 /* DirectInput stays private to the input subsystem (input.c) + its definitions
  * (globals.c) — both include <dinput.h> directly. globals.h only needs an opaque

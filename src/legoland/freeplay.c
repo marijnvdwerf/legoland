@@ -1,5 +1,5 @@
-#include "legoland.h"
 #include "globals.h"
+#include "legoland.h"
 
 #include "clipping.h"
 #include "freeplay.h"

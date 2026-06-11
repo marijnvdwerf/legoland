@@ -1,21 +1,20 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include <string.h>
+#include "legoland.h"
 
+#include "bloke.h"
+#include "draw.h"
 #include "game_util.h"
 #include "gamemain.h"
 #include "gamemap.h"
-#include "nerps.h"
-#include "sound_sfx.h"
-#include "title.h"
-#include "objclass.h"
-#include "bloke.h"
-#include "objectives.h"
-#include "draw.h"
+#include "globals.h"
 #include "llidb.h"
 #include "map_object.h"
-#include "globals.h"
-
+#include "nerps.h"
+#include "objclass.h"
+#include "objectives.h"
+#include "sound_sfx.h"
+#include "title.h"
 
 struct GameObject {
     unsigned char pad_0[8];

@@ -1,24 +1,24 @@
-#include "legoland.h"
 #include <direct.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
+#include "debug_alloc.h"
+#include "draw.h"
+#include "icon.h"
+#include "input.h"
+#include "main.h"
+#include "options.h"
 #include "profile.h"
 #include "profile_io.h"
 #include "savegame_ui.h"
 #include "saveload.h"
-#include "draw.h"
-#include "main.h"
-#include "debug_alloc.h"
-#include "icon.h"
-#include "sound_music.h"
-#include "options.h"
 #include "screens.h"
-#include "title.h"
-#include "input.h"
+#include "sound_music.h"
 #include "timer.h"
+#include "title.h"
 
 #include "image_sprite.h"
 #include "stream.h"

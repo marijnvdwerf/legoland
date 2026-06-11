@@ -1,10 +1,10 @@
-#include "legoland.h"
 #include <string.h>
+#include "legoland.h"
 
 #include "binv.h"
-#include "render3d.h"
-#include "llidb.h"
 #include "globals.h"
+#include "llidb.h"
+#include "render3d.h"
 
 struct TempleRide {
     unsigned char pad_0[4];

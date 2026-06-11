@@ -1,8 +1,8 @@
 #include "legoland.h"
 
 #include "gamemap.h"
-#include "map_object.h"
 #include "globals.h"
+#include "map_object.h"
 
 struct HutObject {
     unsigned char pad_0[0x1c];
@@ -15,7 +15,6 @@ struct HutContext {
     unsigned char pad_0[0xc];
     struct HutObject *field_c;
 };
-
 
 #include "image_sprite.h"
 

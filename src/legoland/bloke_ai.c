@@ -1,8 +1,8 @@
-#include "legoland.h"
-#include <stdlib.h>
 #include "bloke_ai.h"
+#include <stdlib.h>
 #include "bloke.h"
 #include "globals.h"
+#include "legoland.h"
 
 struct BlokeList {
     unsigned char pad_0[0xcc];
@@ -17,7 +17,6 @@ struct BlokeRideState {
     unsigned char pad_58[0x62 - 0x58];
     unsigned short flags;
 };
-
 
 // FUNCTION: LEGOLAND 0x0044e760
 LEGO_EXPORT void NewLongTermAction(struct Bloke *bloke, unsigned short action) {

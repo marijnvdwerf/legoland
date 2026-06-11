@@ -1,36 +1,35 @@
-#include "legoland.h"
+#include "title.h"
+#include <ddraw.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ddraw.h>
-#include "globals.h"
-#include "text.h"
-#include "tooltip.h"
-#include "string.h"
-#include "options.h"
-#include "sound_sfx.h"
-#include "title.h"
 #include "draw.h"
-#include "nerps.h"
+#include "globals.h"
 #include "icon.h"
 #include "interface.h"
+#include "legoland.h"
+#include "nerps.h"
+#include "options.h"
 #include "sound_music.h"
+#include "sound_sfx.h"
+#include "string.h"
+#include "text.h"
+#include "tooltip.h"
 
 struct PopUp {
     unsigned char pad_0[0x34];
     unsigned int field_34;
 };
 
-#include "image_sprite.h"
-#include "stream.h"
-#include "help.h"
-#include "print_sprite.h"
-#include "profile_io.h"
-#include "profile.h"
-#include "resource.h"
-#include "timer.h"
 #include "certificate.h"
-
+#include "help.h"
+#include "image_sprite.h"
+#include "print_sprite.h"
+#include "profile.h"
+#include "profile_io.h"
+#include "resource.h"
+#include "stream.h"
+#include "timer.h"
 
 // FUNCTION: LEGOLAND 0x0048fc40
 LEGO_EXPORT void InitTitleScreen(void) {

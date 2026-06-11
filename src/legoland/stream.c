@@ -1,8 +1,8 @@
 #include <windows.h>
-#include "legoland.h"
 #include <io.h>
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
 #include "stream.h"
 

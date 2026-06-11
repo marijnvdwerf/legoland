@@ -1,14 +1,13 @@
-#include "legoland.h"
 #include <stdlib.h>
+#include "legoland.h"
 
-#include "globals.h"
 #include "controller.h"
-#include "timer.h"
-#include "tilemap.h"
+#include "globals.h"
 #include "map_object.h"
+#include "tilemap.h"
+#include "timer.h"
 
 #include <windows.h>
-
 
 // FUNCTION: LEGOLAND 0x00451e70
 LEGO_EXPORT int SetupControllers(void) {

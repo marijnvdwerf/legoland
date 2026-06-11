@@ -1,13 +1,12 @@
-#include "legoland.h"
 #include <windows.h>
+#include "legoland.h"
 
-#include "globals.h"
 #include <stdlib.h>
+#include "gfx.h"
+#include "globals.h"
+#include "input.h"
 #include "resource.h"
 #include "wndenv.h"
-#include "input.h"
-#include "gfx.h"
-
 
 struct MidiTrack {
     unsigned char pad_0[4];
@@ -84,8 +83,12 @@ void FUN_00480150(struct ResFile *file, void *dst) {
     {
         unsigned char *p = (unsigned char *)dst;
         unsigned char t;
-        t = p[0]; p[0] = p[3]; p[3] = t;
-        t = p[1]; p[1] = p[2]; p[2] = t;
+        t = p[0];
+        p[0] = p[3];
+        p[3] = t;
+        t = p[1];
+        p[1] = p[2];
+        p[2] = t;
     }
 #endif
 }

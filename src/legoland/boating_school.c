@@ -1,10 +1,10 @@
-#include "legoland.h"
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
 #include "gamemap.h"
-#include "objclass.h"
 #include "map_object.h"
+#include "objclass.h"
 
 struct NameNode {
     unsigned short value;

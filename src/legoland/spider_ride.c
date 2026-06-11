@@ -1,13 +1,12 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
 #include "binv.h"
 #include "llidb.h"
 #include "sound_music.h"
 #include "spider_ride.h"
-
 
 struct FadeParams {
     unsigned int field_0;
@@ -57,8 +56,7 @@ struct RideObject {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x004158f0
-int FUN_004158f0(struct SpiderNode *arg0)
-{
+int FUN_004158f0(struct SpiderNode *arg0) {
     struct SpiderNode *node = (struct SpiderNode *)malloc(0x30);
     if (node == NULL) {
         return;
@@ -74,8 +72,7 @@ int FUN_004158f0(struct SpiderNode *arg0)
 void FUN_00415930(struct SpiderNode *node) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00415990
-void FUN_00415990(void)
-{
+void FUN_00415990(void) {
     struct SpiderNode *node = (struct SpiderNode *)DAT_004cbf58;
     while (node != NULL) {
         FUN_00415930(node);
@@ -87,8 +84,7 @@ void FUN_00415990(void)
 void FUN_004159b0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004159e0
-void FUN_004159e0(const unsigned char *arg0)
-{
+void FUN_004159e0(const unsigned char *arg0) {
     struct SampleParams params;
     params.field_0 = 0x2;
     params.field_8 = arg0[0];
@@ -97,8 +93,7 @@ void FUN_004159e0(const unsigned char *arg0)
 }
 
 // FUNCTION: LEGOLAND 0x00415a20
-void FUN_00415a20(const unsigned char *src)
-{
+void FUN_00415a20(const unsigned char *src) {
     struct FadeParams params;
     params.field_0 = 2;
     params.field_8 = src[0];
@@ -107,8 +102,7 @@ void FUN_00415a20(const unsigned char *src)
 }
 
 // FUNCTION: LEGOLAND 0x00415a60
-void FUN_00415a60(struct SpiderState *a)
-{
+void FUN_00415a60(struct SpiderState *a) {
     a->field_3 = a->field_2;
     a->field_2 = 0;
     a->field_8 = (a->field_8 & 0xffffbfff) | 0x1;
@@ -127,8 +121,7 @@ void FUN_00415ae0(void) { STUB(); }
 void FUN_00415e80(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00415fd0
-void FUN_00415fd0(struct CarNode *param_1)
-{
+void FUN_00415fd0(struct CarNode *param_1) {
     DAT_004cbf20 = ((unsigned int *)param_1)[3];
 
     if (DAT_0082c668 != NULL) {
@@ -159,8 +152,7 @@ void FUN_004160a0(void) { STUB(); }
 void FUN_004160f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00416120
-unsigned int *FUN_00416120(unsigned int *a1, unsigned short a2)
-{
+unsigned int *FUN_00416120(unsigned int *a1, unsigned short a2) {
     struct CarNode *car = *(struct CarNode **)((unsigned char *)a1 + 0xc);
     DAT_004cbf40 = (unsigned int)car->next;
     DAT_004cbf44 = car->field_14;
@@ -172,8 +164,7 @@ unsigned int *FUN_00416120(unsigned int *a1, unsigned short a2)
 }
 
 // FUNCTION: LEGOLAND 0x00416160
-void SpiderRide(char **name_ptr, struct RideObject *obj)
-{
+void SpiderRide(char **name_ptr, struct RideObject *obj) {
     // STRING: LEGOLAND 0x004b4eb8
     if (_stricmp("SPIDER RIDE", *name_ptr) == 0) {
         obj->field_a4 = FUN_00415e80;
@@ -193,8 +184,7 @@ void SpiderRide(char **name_ptr, struct RideObject *obj)
 void FUN_004161f0(struct SpiderNode *node) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00416310
-void FUN_00416310(void)
-{
+void FUN_00416310(void) {
     struct SpiderNode *node = (struct SpiderNode *)DAT_004cbf58;
     while (node != NULL) {
         FUN_004161f0(node);

@@ -1,10 +1,10 @@
-#include "legoland.h"
 #include "globals.h"
+#include "legoland.h"
 
 #include "gamemap.h"
+#include "map_object.h"
 #include "money.h"
 #include "obj_instance.h"
-#include "map_object.h"
 
 struct Building {
     unsigned char pad_0[0x1c];

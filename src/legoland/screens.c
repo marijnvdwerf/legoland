@@ -1,38 +1,38 @@
-#include "legoland.h"
 #include <stdio.h>
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
-#include "gamemap.h"
+#include "bloke.h"
 #include "bricks.h"
 #include "build.h"
 #include "clipping.h"
-#include "obj_instance.h"
-#include "print_sprite.h"
-#include "profile_io.h"
-#include "screens.h"
-#include "popupinfo.h"
+#include "controller.h"
 #include "draw.h"
-#include "nerps.h"
-#include "objclass.h"
-#include "bloke.h"
-#include "worker.h"
+#include "freeplay.h"
+#include "gamemap.h"
+#include "help.h"
 #include "icon.h"
 #include "interface.h"
 #include "map_object.h"
-#include "string.h"
-#include "sound_sfx.h"
-#include "sound_music.h"
-#include "saveload.h"
 #include "mapscreen.h"
-#include "profile.h"
-#include "savegame_ui.h"
+#include "nerps.h"
+#include "obj_instance.h"
+#include "objclass.h"
 #include "options.h"
+#include "popupinfo.h"
+#include "print_sprite.h"
+#include "profile.h"
+#include "profile_io.h"
 #include "progress.h"
-#include "freeplay.h"
+#include "savegame_ui.h"
+#include "saveload.h"
+#include "screens.h"
+#include "sound_music.h"
+#include "sound_sfx.h"
+#include "string.h"
 #include "title.h"
-#include "help.h"
-#include "controller.h"
+#include "worker.h"
 
 struct ScreenConfig {
     unsigned short width;
@@ -43,7 +43,6 @@ struct ScreenConfig {
 
 #include "image_sprite.h"
 #include "stream.h"
-
 
 // FUNCTION: LEGOLAND 0x004585c0
 void FUN_004585c0(void) { STUB(); }
@@ -152,8 +151,7 @@ void RenderFrontEndScreen(unsigned char param_1) {
 void FUN_00458830(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004588c0
-void FUN_004588c0(void)
-{
+void FUN_004588c0(void) {
     struct ScreenConfig *config;
     struct Sprite *sprite;
 
@@ -179,8 +177,7 @@ void FUN_004588c0(void)
 int FUN_00458930(double value) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00458940
-void FUN_00458940(void)
-{
+void FUN_00458940(void) {
     EditMode = 0;
     DAT_008119b4 = 3;
     FUN_00474880();
@@ -197,8 +194,7 @@ void FUN_004589a0(void) { STUB(); }
 void FUN_00458a50(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00458b20
-void FUN_00458b20(void)
-{
+void FUN_00458b20(void) {
     if (DAT_00667c7c != 0) {
         FUN_00481170();
         FUN_0046fb40(0xd2);
@@ -226,16 +222,14 @@ void FUN_00458b20(void)
 void FUN_00458bb0(unsigned int param_1) { DAT_00667c7c = param_1; }
 
 // FUNCTION: LEGOLAND 0x00458bc0
-void FUN_00458bc0(void)
-{
+void FUN_00458bc0(void) {
     DAT_008119b4 = 2;
     DAT_0080ff84 = 0xffffffff;
     DAT_0080ff88 = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00458be0
-void FUN_00458be0(void)
-{
+void FUN_00458be0(void) {
     int slot = ((struct ScreenConfig *)lpConfig)->slot;
 
     if (slot < 0xf) {
@@ -365,8 +359,7 @@ void FUN_00458ee0(void) { STUB(); }
 void FUN_00459360(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004594e0
-void FUN_004594e0(void)
-{
+void FUN_004594e0(void) {
     switch (DAT_008119b4) {
     case 2:
         FUN_004585c0();
@@ -377,8 +370,7 @@ void FUN_004594e0(void)
 }
 
 // FUNCTION: LEGOLAND 0x004594f0
-void FUN_004594f0(void)
-{
+void FUN_004594f0(void) {
     int i;
 
     for (i = 0; i < 68; i = i + 1) {
@@ -397,8 +389,7 @@ void FUN_00459520(void) { STUB(); }
 void FUN_00459710(char *s) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004597e0
-void FUN_004597e0(int param0, const char *param1)
-{
+void FUN_004597e0(int param0, const char *param1) {
     char *buffer;
 
     if (param0) {
@@ -416,8 +407,7 @@ void FUN_004597e0(int param0, const char *param1)
 }
 
 // FUNCTION: LEGOLAND 0x00459820
-void FUN_00459820(unsigned int a1)
-{
+void FUN_00459820(unsigned int a1) {
     DAT_00832ba0 = a1;
     if (a1 == 1) {
         FUN_00459710(DAT_00832998);

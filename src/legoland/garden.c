@@ -1,9 +1,9 @@
 #include "legoland.h"
 
 #include "gamemap.h"
+#include "globals.h"
 #include "llidb.h"
 #include "map_object.h"
-#include "globals.h"
 
 struct GardenLayer {
     unsigned char pad_0[0xc];

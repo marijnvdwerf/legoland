@@ -1,17 +1,17 @@
 #include <windows.h>
 #include <ddraw.h>
 
-#include "legoland.h"
 #include <stdlib.h>
 #include <string.h>
+#include "legoland.h"
 
-#include "print_sprite.h"
-#include "render.h"
 #include "challenge.h"
-#include "globals.h"
-#include "image_sprite.h"
 #include "draw.h"
 #include "gfx.h"
+#include "globals.h"
+#include "image_sprite.h"
+#include "print_sprite.h"
+#include "render.h"
 
 struct ZBlitDesc {
     /* 0x00 */ int left;
@@ -66,7 +66,6 @@ struct TextureDesc {
     /* 0x0c */ unsigned char *index_map;
     /* 0x10 */ struct TextureFrame **frame_table;
 };
-
 
 // FUNCTION: LEGOLAND 0x004860f0
 void FUN_004860f0(void) { STUB(); }

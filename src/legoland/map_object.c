@@ -1,13 +1,13 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
 #include "gamemap.h"
 #include "map_object.h"
 #include "print_sprite.h"
-#include "timer.h"
 #include "tilemap.h"
+#include "timer.h"
 
 struct ObjInfo {
     unsigned char pad_c[12];
@@ -48,7 +48,6 @@ struct TileSprite {
     unsigned char pad_0[0x16];
     short size;
 };
-
 
 struct MapTile {
     unsigned char pad_0[8];
@@ -120,7 +119,6 @@ struct Overlay {
    map_object views the same memory through its own struct MapTile layout. */
 #define MapTileGrid ((struct MapTile **)GameMap)
 
-
 // FUNCTION: LEGOLAND 0x0045dd80
 LEGO_EXPORT void AddObjectToMap(int param_1, unsigned short param_2, int param_3) { STUB(); }
 
@@ -144,7 +142,7 @@ int FUN_0045e620(struct ObjBox *obj) {
         rect = obj->rect;
         if (obj->state != 3 && obj->state != 2 && obj->state != 0 &&
             (rect.v[0] > obj->field_c || obj->field_c > rect.v[2] ||
-             rect.v[1] > obj->field_10 || obj->field_10 > rect.v[3])) {
+                rect.v[1] > obj->field_10 || obj->field_10 > rect.v[3])) {
             return 1;
         }
     }
@@ -299,7 +297,7 @@ int FUN_0045e960(struct ObjNode *node, int *offset) {
 // FUNCTION: LEGOLAND 0x0045ea40
 void FUN_0045ea40(struct ObjBox *obj, int *out) {
     if ((obj->field_c < obj->rect.v[0] || obj->field_c > obj->rect.v[2] ||
-         obj->field_10 < obj->rect.v[1] || obj->field_10 > obj->rect.v[3]) &&
+            obj->field_10 < obj->rect.v[1] || obj->field_10 > obj->rect.v[3]) &&
         (obj->state == 1 || obj->state == 4 || obj->state == 5)) {
         out[0] = obj->field_c;
         out[1] = obj->field_10;

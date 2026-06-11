@@ -1,22 +1,22 @@
-#include "legoland.h"
 #include <direct.h>
 #include <io.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "legoland.h"
 
 #include <windows.h>
 #include <ddraw.h>
 
+#include "clipping.h"
+#include "draw.h"
+#include "globals.h"
+#include "input.h"
 #include "profile_io.h"
 #include "savegame_ui.h"
-#include "clipping.h"
-#include "title.h"
-#include "input.h"
-#include "timer.h"
-#include "draw.h"
 #include "text.h"
-#include "globals.h"
+#include "timer.h"
+#include "title.h"
 
 #pragma intrinsic(memset, memcpy, strcpy, strlen)
 
@@ -25,7 +25,6 @@ struct ProfileSprite {
     short field_c;
     short field_e;
 };
-
 
 struct RideState {
     unsigned char pad_0[0x18];

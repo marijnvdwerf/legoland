@@ -1,8 +1,8 @@
+#include "sound_sfx.h"
 #include <windows.h>
-#include "legoland.h"
 #include <stdlib.h>
 #include "globals.h"
-#include "sound_sfx.h"
+#include "legoland.h"
 
 struct DirectSoundObj;
 struct DirectMusicObj;
@@ -55,7 +55,6 @@ struct DirectMusicComposerVtbl {
 struct DirectMusicObj {
     void *vtable;
 };
-
 
 // FUNCTION: LEGOLAND 0x004921c0
 void FUN_004921c0(void) { STUB(); }

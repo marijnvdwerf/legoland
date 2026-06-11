@@ -1,5 +1,5 @@
 #include "globals.h"
-#include <dinput.h>   /* this TU defines the DInput data symbols (c_dfDI*, GUID_Sys*, DAT_00668d78) */
+#include <dinput.h> /* this TU defines the DInput data symbols (c_dfDI*, GUID_Sys*, DAT_00668d78) */
 #include "icon.h"
 
 // GLOBAL: LEGOLAND 0x004ab38c
@@ -338,8 +338,15 @@ unsigned char DAT_004b9550[8];
 
 // GLOBAL: LEGOLAND 0x004b9558
 unsigned int DAT_004b9558[9] = {
-    0x01ce7000, 0x00e73800, 0x00739c00, 0x000e7380, 0x000739c0,
-    0x00039ce0, 0x0000739c, 0x000039ce, 0x00001ce7,
+    0x01ce7000,
+    0x00e73800,
+    0x00739c00,
+    0x000e7380,
+    0x000739c0,
+    0x00039ce0,
+    0x0000739c,
+    0x000039ce,
+    0x00001ce7,
 };
 
 // GLOBAL: LEGOLAND 0x004b957c

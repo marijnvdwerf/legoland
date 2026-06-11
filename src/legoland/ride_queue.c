@@ -1,8 +1,8 @@
-#include "legoland.h"
 #include <stdlib.h>
+#include "legoland.h"
 
-#include "ride_queue.h"
 #include "globals.h"
+#include "ride_queue.h"
 
 struct QueueItemInner {
     unsigned char pad_0[0xe];
@@ -26,7 +26,6 @@ struct Queue {
     struct QueueNode *head;
     struct QueueNode *tail;
 };
-
 
 struct RideQueueEntry {
     struct RideQueueEntry *next;
@@ -52,7 +51,6 @@ struct RideSlot {
     unsigned char pad_54[0xc];
     unsigned char field_60;
 };
-
 
 // FUNCTION: LEGOLAND 0x00411e30
 void FUN_00411e30(struct Queue *queue, struct QueueNode *node) {

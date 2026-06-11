@@ -1,12 +1,12 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include "globals.h"
+#include "legoland.h"
 
-#include "gamemap.h"
 #include "binv.h"
-#include "sound_music.h"
+#include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "sound_music.h"
 
 struct CarouselNode {
     struct CarouselNode *next;

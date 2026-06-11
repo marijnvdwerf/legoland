@@ -1,17 +1,16 @@
-#include "legoland.h"
 #include <stdlib.h>
 #include <string.h>
+#include "legoland.h"
 
 #include "gamemap.h"
+#include "globals.h"
 #include "map_object.h"
 #include "pumps.h"
-#include "globals.h"
 
 struct PumpSource {
     unsigned char pad_0[0xc];
     unsigned int var_c;
 };
-
 
 // FUNCTION: LEGOLAND 0x00411a10
 void FUN_00411a10(struct PumpSource *param_1) {

@@ -1,14 +1,14 @@
-#include "legoland.h"
+#include "popupinfo.h"
+#include <windows.h>
+#include <ddraw.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <windows.h>
-#include <ddraw.h>
 #include "globals.h"
-#include "worker_mouse.h"
-#include "popupinfo.h"
 #include "icon.h"
+#include "legoland.h"
 #include "text.h"
+#include "worker_mouse.h"
 
 #pragma intrinsic(strlen, strcpy, memcpy)
 
@@ -43,22 +43,21 @@ struct InfoObjInner {
     /* 0x60 */ unsigned char field_60;
 };
 
-
-#include "image_sprite.h"
-#include "stream.h"
-#include "worker.h"
-#include "timer.h"
-#include "help.h"
-#include "print_sprite.h"
-#include "debug_alloc.h"
-#include "llidb.h"
-#include "string.h"
-#include "gamemap.h"
-#include "map_object.h"
 #include "controller.h"
+#include "debug_alloc.h"
 #include "draw.h"
+#include "gamemap.h"
+#include "help.h"
+#include "image_sprite.h"
+#include "llidb.h"
+#include "map_object.h"
+#include "print_sprite.h"
 #include "sound_music.h"
+#include "stream.h"
+#include "string.h"
 #include "tilemap.h"
+#include "timer.h"
+#include "worker.h"
 
 struct NewObjInfo {
     /* 0x00 */ unsigned char pad_0[0x26];
@@ -70,7 +69,6 @@ struct NewObjInfo {
     /* 0x84 */ unsigned char pad_84[0xc4 - 0x84];
     /* 0xc4 */ char **name;
 };
-
 
 // FUNCTION: LEGOLAND 0x00470bb0
 LEGO_EXPORT void InitPopUpInfo(void) {
@@ -617,8 +615,8 @@ LEGO_EXPORT void PopUpInfoSetUp(int param_1, void *param_2, unsigned int param_3
             iVar5 = *(int *)(iVar4 + 8);
             if ((iVar5 < 0) ||
                 (((int)(unsigned int)lpConfig->width <= iVar5 ||
-                  (iVar2 = *(int *)(iVar4 + 0xc), iVar2 < 0)) ||
-                 ((int)(unsigned int)lpConfig->height <= iVar2))) {
+                     (iVar2 = *(int *)(iVar4 + 0xc), iVar2 < 0)) ||
+                    ((int)(unsigned int)lpConfig->height <= iVar2))) {
                 iVar5 = 0;
             } else {
                 iVar5 = (int)GameMap[iVar2] + iVar5 * 0x14;
@@ -756,8 +754,8 @@ void FUN_00471d90(void) {
     str = GetString(0xa2);
     sprintf(local_14, (char *)DAT_004b8bbc, str);
     FUN_00455e50(local_14, DAT_007fdecc + 0xc, iVar1 + 6,
-                 (DAT_007fdecc + 0x86 + iVar5) - (DAT_007fdecc + 0xc), (iVar1 + 0x21) - (iVar1 + 6), 1, 5,
-                 0xff0000, 0xffffff);
+        (DAT_007fdecc + 0x86 + iVar5) - (DAT_007fdecc + 0xc), (iVar1 + 0x21) - (iVar1 + 6), 1, 5,
+        0xff0000, 0xffffff);
     if ((DAT_007fe000->x + 0x24 < (int)DAT_00813a44) || ((int)DAT_00813a44 < DAT_007fdea8->x)) {
         FUN_00471d60();
     }
@@ -1198,8 +1196,8 @@ void FUN_004736f0(void) {
         DAT_007fe000->x = (short)iVar3 + 0x27;
         DAT_007fe000->y = (short)DAT_007fe014 + 3;
         FUN_00455e50(DAT_00668968, DAT_007fe010 + 0xc, DAT_007fe014 + 6,
-                     (DAT_007fe010 + 0x86 + DAT_00668964 * 0x14) - (DAT_007fe010 + 0xc),
-                     (DAT_007fe014 + 0x21) - (DAT_007fe014 + 6), 1, 5, 0xff0000, 0xffffff);
+            (DAT_007fe010 + 0x86 + DAT_00668964 * 0x14) - (DAT_007fe010 + 0xc),
+            (DAT_007fe014 + 0x21) - (DAT_007fe014 + 6), 1, 5, 0xff0000, 0xffffff);
         if ((DAT_007fe000->x + 0x24 < (int)DAT_00813a44) || ((int)DAT_00813a44 < DAT_007fdea8->x)) {
             FUN_00471d60();
         }

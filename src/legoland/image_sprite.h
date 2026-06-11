@@ -56,4 +56,3 @@ LEGO_EXPORT void ReleaseSprite(struct Sprite *sprite);
 struct LayerOwner;
 LEGO_EXPORT void HideLayer(struct LayerOwner *owner, unsigned int index);
 LEGO_EXPORT void ShowLayer(struct LayerOwner *owner, unsigned int index);
-

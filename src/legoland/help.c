@@ -1,23 +1,22 @@
-#include "legoland.h"
+#include <windows.h>
 #include <stdlib.h>
 #include "globals.h"
-#include <windows.h>
+#include "legoland.h"
 
-#include "help.h"
-#include "timer.h"
-#include "text.h"
-#include "nerps.h"
-#include "popupinfo.h"
-#include "objectives.h"
 #include "challenge.h"
+#include "help.h"
 #include "icon.h"
 #include "interface.h"
+#include "nerps.h"
+#include "objectives.h"
+#include "popupinfo.h"
+#include "text.h"
+#include "timer.h"
 
 struct HelpAdvisor {
     unsigned char pad_0[0xc];
     unsigned int field_c;
 };
-
 
 #include "image_sprite.h"
 #include "stream.h"

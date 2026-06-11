@@ -1,6 +1,6 @@
-#include "legoland.h"
-#include "globals.h"
 #include "money.h"
+#include "globals.h"
+#include "legoland.h"
 
 #include "bricks.h"
 #include "sound_music.h"
@@ -19,8 +19,7 @@ struct BuyItemArg {
 LEGO_EXPORT void LoadMoneySFX(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00453930
-LEGO_EXPORT void KillMoneySFX(void)
-{
+LEGO_EXPORT void KillMoneySFX(void) {
     if (--DAT_00667120 == 0) {
         Kill_FXList(MONEY_SFX, 2);
     }
@@ -33,8 +32,7 @@ LEGO_EXPORT void PlayMoneySFX(int a0, int a1, int a2) { STUB(); }
 LEGO_EXPORT void StopMoneySFX(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004539e0
-LEGO_EXPORT void BuyItem(struct BuyItemArg *item, int a2, int a3)
-{
+LEGO_EXPORT void BuyItem(struct BuyItemArg *item, int a2, int a3) {
     int val = item->field_c->field_28;
 
     if (val != 0) {

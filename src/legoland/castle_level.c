@@ -1,9 +1,9 @@
-#include "legoland.h"
 #include <string.h>
+#include "legoland.h"
 
 #include "gamemap.h"
-#include "map_object.h"
 #include "globals.h"
+#include "map_object.h"
 
 typedef void (*CastleVtblFn)(void);
 
@@ -20,7 +20,6 @@ struct CastleLevelInterface {
     CastleVtblFn field_ac;
     CastleVtblFn field_b0;
 };
-
 
 #include "image_sprite.h"
 

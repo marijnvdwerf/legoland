@@ -1,13 +1,12 @@
-#include "legoland.h"
 #include <string.h>
 #include "globals.h"
+#include "legoland.h"
 
 #include "gamemap.h"
-#include "timer.h"
-#include "sound_music.h"
 #include "llidb.h"
 #include "map_object.h"
-
+#include "sound_music.h"
+#include "timer.h"
 
 struct RenderObjectVtable {
     unsigned char pad_0[0xc];

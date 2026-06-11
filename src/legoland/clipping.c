@@ -1,5 +1,5 @@
-#include "legoland.h"
 #include <windows.h>
+#include "legoland.h"
 
 #include "clipping.h"
 #include "globals.h"
