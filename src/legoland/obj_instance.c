@@ -1,5 +1,5 @@
 #include "legoland.h"
-#include "crt.h"
+#include <stdlib.h>
 #include "obj_instance.h"
 #include "globals.h"
 

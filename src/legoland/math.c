@@ -1,6 +1,6 @@
 #include "legoland.h"
 #include "math.h"
-#include "crt.h"
+#include <stdlib.h>
 
 struct Navigator {
     int x;

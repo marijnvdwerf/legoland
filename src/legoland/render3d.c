@@ -1,5 +1,7 @@
 #include "legoland.h"
-#include "crt.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "globals.h"
 #include "man3d.h"
 #include "render3d.h"
