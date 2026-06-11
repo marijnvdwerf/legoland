@@ -6,3 +6,5 @@ void FUN_004441f0(void);
 void FUN_0044db20(void);
 void FUN_0044db80(void);
 void FUN_0044dc70(unsigned int param_1, unsigned int param_2);
+unsigned int FUN_00443710(void);
+void FUN_00443720(void *param_1, const char *param_2);

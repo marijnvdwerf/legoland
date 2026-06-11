@@ -8,6 +8,8 @@ struct SpriteLLS;
 struct LayerContainer;
 struct Matrix3x3;
 struct AdjustStruct;
+struct Viewport;
+struct Person;
 
 struct BlokePos {
     unsigned int field_0;
@@ -34,3 +36,6 @@ LEGO_EXPORT void Ride_SetFlagToNotLetAnyoneOn(unsigned char *param_1);
 LEGO_EXPORT void Ride_ClearFlagToNotLetAnyoneOn(unsigned char *param_1);
 unsigned int FUN_00443120(void);
 LEGO_EXPORT void AdjustOffsetForViewMode(struct AdjustStruct *param_1);
+LEGO_EXPORT void Render_SetViewport(struct Viewport *viewport);
+void *FUN_00442580(struct Person *person, void *context, unsigned int arg3, unsigned int arg4, unsigned int arg5);
+void FUN_00442980(const char *param_1, const char *param_2, const char *param_3, int param_4, unsigned int param_5);

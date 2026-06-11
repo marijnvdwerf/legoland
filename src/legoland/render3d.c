@@ -577,7 +577,7 @@ void FUN_004424e0(struct ColourRef *param_1, struct ColourRef *param_2, unsigned
 }
 
 // FUNCTION: LEGOLAND 0x00442580
-void FUN_00442580(void) { STUB(); }
+void *FUN_00442580(struct Person *person, void *context, unsigned int arg3, unsigned int arg4, unsigned int arg5) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004427e0
 char *FUN_004427e0(struct ResFile *param_1, char *param_2, int param_3) {
@@ -662,7 +662,7 @@ unsigned char *FUN_004428f0(char *param_1, int param_2, int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00442980
-void FUN_00442980(void) { STUB(); }
+void FUN_00442980(const char *param_1, const char *param_2, const char *param_3, int param_4, unsigned int param_5) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00442c70
 unsigned int FUN_00442c70(void) {

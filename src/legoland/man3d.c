@@ -8,22 +8,9 @@
 #include "render3d.h"
 #include "map_object.h"
 #include "draw.h"
+#include "worker_mouse.h"
+#include "challenge.h"
 #include <windows.h>
-
-extern void FUN_00485f30(unsigned int param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4);
-extern void FUN_00488700(unsigned int base, void *vp);
-extern void Render_SetViewport(void *viewport);
-extern void *FUN_004700f0(void);
-void FUN_00440a30(struct Person *person);
-
-extern int Get_XScroll(void);
-extern int Get_YScroll(void);
-LEGO_EXPORT void SetPersonPosition(struct Person *person, unsigned int x, unsigned int y);
-extern void *FUN_00442580(struct Person *person, void *context, unsigned int arg3, unsigned int arg4, unsigned int arg5);
-extern void FUN_00485fc0(unsigned int param_1);
-extern unsigned int FUN_00443710(void);
-extern void FUN_00443720(void *param_1, const char *param_2);
-extern void FUN_00442980(const char *param_1, const char *param_2, const char *param_3, int param_4, unsigned int param_5);
 
 struct Person {
     struct Person *prev;

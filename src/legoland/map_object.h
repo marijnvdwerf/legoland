@@ -21,6 +21,8 @@ LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, uns
 LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, unsigned int param);
 LEGO_EXPORT void CalcBasicObjectCursor(struct CursorObj *obj, unsigned int a2, unsigned int a3);
 LEGO_EXPORT void GetTileDimensions(int *width, int *height);
+LEGO_EXPORT int Get_XScroll(void);
+LEGO_EXPORT int Get_YScroll(void);
 void FUN_00460560(int index);
 /* True signature unknown (still a STUB): declared with unspecified params so callers
  * don't force argument conversions that diverge from the original codegen. */
