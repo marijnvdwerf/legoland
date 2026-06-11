@@ -56,12 +56,7 @@ struct InfoObjInner {
 #include "controller.h"
 #include "draw.h"
 #include "sound_music.h"
-
-extern unsigned char FUN_0045f4b0(struct Cursor *cursor);
-extern int FUN_0045d3d0();
-extern void RemObjFromMap();
-extern void FUN_00470100();
-extern void FUN_00499eb0(void *order);
+#include "tilemap.h"
 
 struct NewObjInfo {
     /* 0x00 */ unsigned char pad_0[0x26];
@@ -74,15 +69,6 @@ struct NewObjInfo {
     /* 0xc4 */ char **name;
 };
 
-extern int FUN_0049a120(void);
-extern int FUN_0049a160(void);
-extern void SetObjRectFlags();
-extern void FUN_00470950();
-extern void FUN_00455e50(char *text, int x, int y, int w, int h, int a6, int a7, unsigned int color1, unsigned int color2);
-
-unsigned char FUN_004733b0(void *arg0, unsigned char flags);
-unsigned char FUN_00473310(void *param1, unsigned char param2);
-unsigned char FUN_004731e0(void *param_1, unsigned char flags);
 
 // FUNCTION: LEGOLAND 0x00470bb0
 LEGO_EXPORT void InitPopUpInfo(void) {

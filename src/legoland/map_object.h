@@ -14,6 +14,8 @@ LEGO_EXPORT unsigned int AddBasicObject(unsigned int param1, unsigned int param2
 LEGO_EXPORT void AddObjectToMap(int param_1, unsigned short param_2, int param_3);
 LEGO_EXPORT void StandardRemoveObject(unsigned int a, unsigned int b, unsigned int c);
 LEGO_EXPORT void SetEditCursorFootPrint(void *src);
+unsigned char FUN_0045f4b0(struct Cursor *cursor);
+LEGO_EXPORT void SetObjRectFlags();
 void FUN_0045f460(struct Cursor *cursor);
 void FUN_0045f480(struct Cursor *cursor, int param);
 void FUN_0045f4d0(struct Cursor *cursor);

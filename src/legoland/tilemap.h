@@ -4,6 +4,7 @@
 
 struct MapTile;
 struct Point;
+struct PathFootprint;
 
 LEGO_EXPORT void GetTileBounds(struct Point *ref, int *out);
 LEGO_EXPORT void GetTileCentre(struct Point *ref, int *out);
@@ -16,3 +17,4 @@ int FUN_0045ce30(int *param_1);
 unsigned char FUN_0045ceb0(int *coords);
 unsigned char FUN_0045d080(unsigned char flags, int *coords);
 LEGO_EXPORT void RemovePathTile(int *param_1, unsigned short param_2);
+void FUN_0045d3d0(struct PathFootprint *param_1, int *param_2);

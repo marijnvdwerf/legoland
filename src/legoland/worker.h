@@ -29,4 +29,7 @@ LEGO_EXPORT int IterateNoneWorkersRepairOrders(void);
 LEGO_EXPORT void RemoveGardenersWorkOrderAt(unsigned int x, unsigned int y);
 LEGO_EXPORT void RemoveMechanicsWorkOrderAt(unsigned int x, unsigned int y);
 LEGO_EXPORT void RemoveNoneWorkersRepairOrderAT(unsigned int x, unsigned int y);
+void FUN_00499eb0(void *order);
+int FUN_0049a120(void);
+int FUN_0049a160(void);
 void FUN_0049cfc0(void);

@@ -36,3 +36,4 @@ LEGO_EXPORT void CalculateMapRenderOrder(void);
 LEGO_EXPORT struct RenderObject *GetFirstRenderObject(void);
 LEGO_EXPORT struct RenderObject *GetNextRenderObject(struct RenderObject *object);
 LEGO_EXPORT struct RenderObject *GetFirstObjectMatching(struct RenderObjectVtable *vtable);
+LEGO_EXPORT void RemObjFromMap();
