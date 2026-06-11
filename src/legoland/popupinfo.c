@@ -422,7 +422,27 @@ void FUN_00471610(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004716a0
-LEGO_EXPORT void InfoPrintCent(void) { STUB(); }
+LEGO_EXPORT void InfoPrintCent(int len, char *text, int font, RECT rc, int flag) {
+    HRGN region = CreateRectRgn(SPRITE_ClipRect.left, SPRITE_ClipRect.top, SPRITE_ClipRect.right, SPRITE_ClipRect.bottom);
+    HDC hdc;
+    HGDIOBJ old_region;
+    HGDIOBJ old_font;
+
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->GetDC((LPDIRECTDRAWSURFACE)renderEngine, &hdc);
+    SetBkMode(hdc, 1);
+    SetTextColor(hdc, 0xffffff);
+    old_region = SelectObject(hdc, region);
+    old_font = (HGDIOBJ)SelectFont(hdc, font);
+    if (flag != 0) {
+        DrawTextA(hdc, text, strlen(text), &rc, 0x11);
+    } else {
+        DrawTextA(hdc, text, strlen(text), &rc, 0x10);
+    }
+    SelectObject(hdc, old_font);
+    SelectObject(hdc, old_region);
+    ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->ReleaseDC((LPDIRECTDRAWSURFACE)renderEngine, hdc);
+    DeleteObject(region);
+}
 
 // FUNCTION: LEGOLAND 0x004717a0
 int FUN_004717a0(const char *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) {
