@@ -1,5 +1,6 @@
 #include "legoland.h"
-#include "crt.h"
+#include <malloc.h>
+#include <stdlib.h>
 
 #include "debug_alloc.h"
 #include "globals.h"

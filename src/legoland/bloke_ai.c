@@ -1,5 +1,5 @@
 #include "legoland.h"
-#include "crt.h"
+#include <stdlib.h>
 #include "bloke_ai.h"
 #include "bloke.h"
 #include "globals.h"

@@ -2,7 +2,7 @@
 #include <windows.h>
 
 #include "globals.h"
-#include "crt.h"
+#include <string.h>
 #include "debug.h"
 #include "saveload.h"
 

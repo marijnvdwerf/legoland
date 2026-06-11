@@ -2,7 +2,8 @@
 #include <windows.h>
 #include <ddraw.h>
 
-#include "crt.h"
+#include <stdlib.h>
+#include <string.h>
 #include "debug_alloc.h"
 #include "globals.h"
 
