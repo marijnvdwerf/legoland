@@ -8,6 +8,10 @@ struct ObjClass {
     /* 0x40 */ int field_40;
     /* 0x44 */ int field_44;
     /* 0x48 */ int field_48;
+    /* 0x4c */ unsigned char pad_4c[0x94 - 0x4c];
+    /* 0x94 */ void (*method_94)(unsigned int param_1, void *cursor);
+    /* 0x98 */ unsigned char pad_98[0xc4 - 0x98];
+    /* 0xc4 */ unsigned int field_c4;
 };
 
 struct CtrlBuffer {

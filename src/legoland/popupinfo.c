@@ -8,7 +8,7 @@
 #include "icon.h"
 #include "text.h"
 
-#pragma intrinsic(strlen, strcpy)
+#pragma intrinsic(strlen, strcpy, memcpy)
 
 struct Sprite;
 
@@ -51,6 +51,11 @@ struct InfoObjInner {
 #include "debug_alloc.h"
 #include "llidb.h"
 #include "string.h"
+#include "gamemap.h"
+#include "map_object.h"
+#include "controller.h"
+
+extern unsigned char FUN_0045f4b0(struct Cursor *cursor);
 
 struct NewObjInfo {
     /* 0x00 */ unsigned char pad_0[0xc4];
@@ -635,7 +640,28 @@ void FUN_00472090(void) {
 void FUN_004720a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004723f0
-void FUN_004723f0(void) { STUB(); }
+void FUN_004723f0(void) {
+    unsigned int local_8[2];
+    struct Cursor local_cursor;
+    void *saved_class;
+    struct ObjClass *cls;
+    unsigned int v;
+
+    saved_class = QueryClass;
+    v = DAT_007fdec8 & 0xffff;
+    memcpy(&local_cursor, &QueryCursor, sizeof(struct Cursor));
+    local_8[0] = v & 0xff;
+    local_8[1] = v >> 8;
+    cls = *(struct ObjClass **)((char *)DAT_007fdec4 + 0xc);
+    QueryCursor.field_1408 = v >> 8;
+    QueryClass = cls;
+    QueryCursor.field_1404 = v & 0xff;
+    cls->method_94(cls->field_c4, local_8);
+    BuildCursorPtr(&QueryCursor, 0, 0);
+    FUN_0045f4b0(&QueryCursor);
+    memcpy(&QueryCursor, &local_cursor, sizeof(struct Cursor));
+    QueryClass = saved_class;
+}
 
 // FUNCTION: LEGOLAND 0x004724a0
 LEGO_EXPORT void DrawPopUpInfo(void) { STUB(); }
