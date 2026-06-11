@@ -54,13 +54,20 @@ struct InfoObjInner {
 #include "gamemap.h"
 #include "map_object.h"
 #include "controller.h"
+#include "draw.h"
 
 extern unsigned char FUN_0045f4b0(struct Cursor *cursor);
 extern int FUN_0045d3d0();
 extern void RemObjFromMap();
 
 struct NewObjInfo {
-    /* 0x00 */ unsigned char pad_0[0xc4];
+    /* 0x00 */ unsigned char pad_0[0x26];
+    /* 0x26 */ short field_26;
+    /* 0x28 */ unsigned char pad_28[0x78 - 0x28];
+    /* 0x78 */ char *field_78;
+    /* 0x7c */ unsigned char pad_7c[0x80 - 0x7c];
+    /* 0x80 */ char *field_80;
+    /* 0x84 */ unsigned char pad_84[0xc4 - 0x84];
     /* 0xc4 */ char **name;
 };
 
@@ -731,7 +738,76 @@ void FUN_00472090(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004720a0
-void FUN_004720a0(void) { STUB(); }
+void FUN_004720a0(void) {
+    short sVar2;
+    short sVar3;
+    short sVar4;
+    unsigned int uVar5;
+    struct NewObjInfo *obj;
+    struct PrintCtx ctx;
+    char local_80[128];
+
+    ctx.node = 0;
+    ctx.flags = 1;
+    ctx.field_8 = 0;
+    PrintSprite(DAT_00668910, 0xbe, 0x28, 0, (int *)&ctx);
+    DAT_007fdfe8->flags = DAT_007fdfe8->flags & 0xfffffbff;
+    DAT_007fdfe8->x = 0xc1;
+    DAT_007fdfe8->y = 0x46;
+    sVar2 = DAT_007fdfc0->field_10;
+    sVar3 = DAT_00668910->width;
+    DAT_007fdfc4->flags = DAT_007fdfc4->flags & 0xfffffbff;
+    DAT_007fdfc4->x = (sVar3 - sVar2) + 0xbb;
+    DAT_007fdfc4->y = 0x46;
+    sVar2 = DAT_00668910->width;
+    sVar3 = DAT_00668910->height;
+    sVar4 = DAT_007fdfc0->field_12;
+    DAT_007fdfc0->flags = DAT_007fdfc0->flags & 0xfffffbff;
+    DAT_007fdfc0->x = (sVar2 - DAT_007fdfc0->field_10) + 0xbb;
+    DAT_007fdfc0->y = (sVar3 - sVar4) + 0x25;
+    PushRenderingStatusAndUnlockVideoSurface();
+    if (DAT_007fdf74 == 1) {
+        // STRING: LEGOLAND 0x004bad04
+        sprintf(local_80, "You have a new object");
+    } else {
+        // STRING: LEGOLAND 0x004bacec
+        sprintf(local_80, "You have %d new objects", DAT_007fdf74);
+    }
+    FUN_00455e50(local_80, 0xc1, 0x30, DAT_00668910->width + -6, 0x14, 2, 5, 0xff0000, 0xffffff);
+    obj = (struct NewObjInfo *)(&DAT_007fded4)[DAT_007fdf78];
+    FUN_00455e50(obj->field_78, 0xc1, 0x4b, DAT_00668910->width + -6, 0x14, 2, 5, 0xff0000, 0xffffff);
+    obj = (struct NewObjInfo *)(&DAT_007fded4)[DAT_007fdf78];
+    FUN_00455e50(obj->field_80, 0x13e, 0x68, 0xfc, 0x77, 2, 0x10, 0xff0000, 0xffffff);
+    obj = (struct NewObjInfo *)(&DAT_007fded4)[DAT_007fdf78];
+    // STRING: LEGOLAND 0x004b8a80
+    sprintf(local_80, "%d", obj->field_26);
+    FUN_00455e50(local_80, 0xf0, 0xd1, 0x43, 0x12, 2, 1, 0xff0000, 0xffffff);
+    PopRenderingStatus();
+    PrintSprite((&DAT_007fdf24)[DAT_007fdf78], 0xc4, 100, 0, 0);
+    if (((unsigned int)(int)DAT_007fdfc0->field_10 <= (unsigned int)(DAT_00813a44 - DAT_007fdfc0->x)) ||
+        ((unsigned int)(int)DAT_007fdfc0->field_12 <= (unsigned int)(DAT_00813a48 - DAT_007fdfc0->y))) {
+        FUN_0046d680((struct IconNode *)DAT_007fdfc0, DAT_00668920);
+    }
+    if (((unsigned int)(int)DAT_007fdfc4->field_10 <= (unsigned int)(DAT_00813a44 - DAT_007fdfc4->x)) ||
+        ((unsigned int)(int)DAT_007fdfc4->field_12 <= (unsigned int)(DAT_00813a48 - DAT_007fdfc4->y))) {
+        FUN_0046d680((struct IconNode *)DAT_007fdfc4, DAT_00668928);
+    }
+    if (((unsigned int)(int)DAT_007fdfe8->field_10 <= (unsigned int)(DAT_00813a44 - DAT_007fdfe8->x)) ||
+        ((unsigned int)(int)DAT_007fdfe8->field_12 <= (unsigned int)(DAT_00813a48 - DAT_007fdfe8->y))) {
+        FUN_0046d680((struct IconNode *)DAT_007fdfe8, DAT_00668930);
+    }
+    if (DAT_007fdf78 == 0) {
+        uVar5 = DAT_007fdfe8->flags | 0x400;
+    } else {
+        uVar5 = DAT_007fdfe8->flags & 0xfffffbff;
+    }
+    DAT_007fdfe8->flags = uVar5;
+    if (DAT_007fdf78 == (int)(DAT_007fdf74 + -1)) {
+        DAT_007fdfc4->flags = DAT_007fdfc4->flags | 0x400;
+        return;
+    }
+    DAT_007fdfc4->flags = DAT_007fdfc4->flags & 0xfffffbff;
+}
 
 // FUNCTION: LEGOLAND 0x004723f0
 void FUN_004723f0(void) {
