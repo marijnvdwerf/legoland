@@ -8,7 +8,7 @@
 #include "icon.h"
 #include "text.h"
 
-#pragma intrinsic(strlen)
+#pragma intrinsic(strlen, strcpy)
 
 struct Sprite;
 
@@ -40,10 +40,13 @@ struct InfoObjInner {
 #include "image_sprite.h"
 #include "stream.h"
 #include "worker.h"
+#include "timer.h"
+#include "help.h"
 
 extern int FUN_0049a120(void);
 extern int FUN_0049a160(void);
 extern void SetObjRectFlags();
+extern void FUN_00470950();
 
 // FUNCTION: LEGOLAND 0x00470bb0
 LEGO_EXPORT void InitPopUpInfo(void) { STUB(); }
@@ -559,7 +562,23 @@ void FUN_004735b0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004735e0
-unsigned int FUN_004735e0(unsigned int param) { STUB(); }
+unsigned int FUN_004735e0(unsigned int param) {
+    struct InfoTimedEntry *entry;
+    unsigned long now;
+
+    entry = &DAT_004ba8e0[param];
+    if ((int)DAT_00668960 < (int)param) {
+        now = GetTicks();
+        if ((int)(entry->interval + entry->last_time) < (int)now) {
+            if (FUN_0046d280(entry->sample) != 0) {
+                DAT_00668960 = param;
+                entry->last_time = now;
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00473640
 unsigned int FUN_00473640(unsigned int param_1) {
@@ -578,7 +597,13 @@ void FUN_00473660(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00473680
-void FUN_00473680(void) { STUB(); }
+void FUN_00473680(int param_1, int param_2, char *param_3, unsigned int param_4, unsigned int param_5) {
+    strcpy(DAT_00668968, param_3);
+    DAT_007fe010 = param_1;
+    DAT_007fe014 = param_2;
+    FUN_00470950(param_4, param_5);
+    DAT_00668d68 = 1;
+}
 
 // FUNCTION: LEGOLAND 0x004736e0
 void FUN_004736e0(void) {

@@ -101,7 +101,7 @@ struct ClipRect {
 };
 
 struct InfoTimedEntry {
-    /* 0x00 */ void *sample;
+    /* 0x00 */ unsigned int sample;
     /* 0x04 */ int interval;
     /* 0x08 */ int last_time;
 };
