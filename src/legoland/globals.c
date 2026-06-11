@@ -3008,7 +3008,7 @@ int DAT_007fdecc;
 int DAT_007fded0;
 
 // GLOBAL: LEGOLAND 0x007fded4
-unsigned int DAT_007fded4;
+void *DAT_007fded4;
 
 // GLOBAL: LEGOLAND 0x007fdf24
 struct Sprite *DAT_007fdf24;

@@ -11,7 +11,7 @@ void FUN_004735b0(void);
 void FUN_00473660(void);
 
 LEGO_EXPORT void DisableInfoPopUPIcons(void);
-void FUN_00471ca0(unsigned int param);
+void FUN_00471ca0(void *param);
 unsigned char FUN_004730f0(void *param1, unsigned char param2, unsigned int param3, unsigned int param4);
 unsigned char FUN_004731a0(void *param_1, unsigned char param_2);
 unsigned char FUN_00473360(void *arg1, unsigned char flags, unsigned int arg3, unsigned int arg4);

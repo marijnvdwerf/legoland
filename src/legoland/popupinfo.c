@@ -48,6 +48,12 @@ struct InfoObjInner {
 #include "timer.h"
 #include "help.h"
 #include "print_sprite.h"
+#include "debug_alloc.h"
+
+struct NewObjInfo {
+    /* 0x00 */ unsigned char pad_0[0xc4];
+    /* 0xc4 */ char **name;
+};
 
 extern int FUN_0049a120(void);
 extern int FUN_0049a160(void);
@@ -368,10 +374,71 @@ void FUN_00471bf0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00471c10
-void FUN_00471c10(void) { STUB(); }
+void FUN_00471c10(struct NewObjInfo *param_1) {
+    struct Sprite *sprite;
+    char local_200[512];
+
+    if ((int)DAT_007fdf74 < 0x14) {
+        // STRING: LEGOLAND 0x004bacd8
+        sprintf(local_200, "NewObjIcons\\%s.bmp", *param_1->name);
+        sprite = LoadSprite(local_200, 0);
+        (&DAT_007fdf24)[DAT_007fdf74] = sprite;
+        if ((&DAT_007fdf24)[DAT_007fdf74] != NULL) {
+            (&DAT_007fded4)[DAT_007fdf74] = param_1;
+            DAT_007fdf74 = DAT_007fdf74 + 1;
+            return;
+        }
+        // STRING: LEGOLAND 0x004bacb4
+        DBPrintf("Failied to open New Obj graphic %s\n", local_200);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00471ca0
-void FUN_00471ca0(unsigned int param) { STUB(); }
+void FUN_00471ca0(void *param) {
+    struct Sprite **puVar2;
+    int iVar3;
+    int iVar4;
+    int iVar5;
+    struct Sprite **puVar6;
+    int iVar7;
+
+    if (0 < (int)DAT_007fdf74) {
+        puVar6 = &DAT_007fdf24;
+        iVar5 = DAT_007fdf74;
+        iVar7 = 1;
+        do {
+            if (param == ((void **)puVar6)[-0x14]) {
+                if (*puVar6 != NULL) {
+                    KillSprite(*puVar6);
+                    *puVar6 = NULL;
+                    iVar5 = DAT_007fdf74;
+                }
+                puVar2 = puVar6;
+                iVar3 = iVar7;
+                iVar4 = iVar5;
+                if (iVar7 < iVar5) {
+                    do {
+                        iVar3 = iVar3 + 1;
+                        *puVar2 = puVar2[1];
+                        ((void **)puVar2)[-0x14] = ((void **)puVar2)[-0x13];
+                        puVar2 = puVar2 + 1;
+                        iVar4 = DAT_007fdf74;
+                    } while (iVar3 < DAT_007fdf74);
+                }
+                iVar5 = iVar4 + -1;
+                if (iVar5 <= DAT_007fdf78) {
+                    DAT_007fdf78 = iVar4 + -2;
+                }
+                DAT_007fdf74 = iVar5;
+                if ((iVar5 == 0) && (DAT_007fdfa0 == 2)) {
+                    DAT_007fdfa0 = 0;
+                }
+            }
+            puVar6 = puVar6 + 1;
+            iVar7 = iVar7 + 1;
+        } while (iVar7 + -1 < iVar5);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00471d40
 void FUN_00471d40(void) {

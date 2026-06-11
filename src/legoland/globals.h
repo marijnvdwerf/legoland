@@ -2177,7 +2177,7 @@ extern int DAT_007fdecc;
 // 0x007fded0
 extern int DAT_007fded0;
 // 0x007fded4
-extern unsigned int DAT_007fded4;
+extern void *DAT_007fded4;
 // 0x007fdf24
 extern struct Sprite *DAT_007fdf24;
 // 0x007fdf74
