@@ -58,6 +58,12 @@ struct Element;
 struct SortNode;
 
 // Full definitions needed by typed globals defined in globals.c.
+struct MapElement {
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ unsigned short flags;
+    /* 0x0e */ unsigned char pad_e[0x14 - 0xe];
+};
+
 struct LegoConfig {
     /* 0x00 */ unsigned short field_0;
     /* 0x02 */ unsigned short field_2;

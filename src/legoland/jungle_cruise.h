@@ -41,7 +41,7 @@ struct JungleScore {
 
 struct JungleFish {
     /* 0x00 */ unsigned short field_0;
-    /* 0x02 */ unsigned char pad_2[2];
+    /* 0x02 */ unsigned short field_2;
     /* 0x04 */ unsigned int field_4;
     /* 0x08 */ struct JungleFish *next;
 };
@@ -90,8 +90,8 @@ void FUN_004373c0(unsigned short param_1);
 void FUN_00437440(short param_1);
 void FUN_004367b0(int param_1, int param_2, unsigned short *param_3);
 void FUN_00433fc0(void *param_1, unsigned short param_2, void *param_3);
-void FUN_00434670(void *param_1, unsigned short param_2, void *param_3);
-void FUN_00434b40(void *param_1, unsigned short param_2, void *param_3);
+void FUN_00434670(void *param_1, unsigned short param_2, struct Cursor *param_3);
+void FUN_00434b40(void *param_1, unsigned short param_2, struct Cursor *param_3);
 
 int Find3DPersonFromBloke();
 void SetPersonRotation();

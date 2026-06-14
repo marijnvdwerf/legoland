@@ -35,12 +35,6 @@ struct MapRectArg {
     int y1;
 };
 
-struct MapElement {
-    unsigned char pad_0[0xc];
-    unsigned short flags;
-    unsigned char pad_e[0x14 - 0xe];
-};
-
 // FUNCTION: LEGOLAND 0x00468810
 void FUN_00468810(char *name) {
     strncpy(DAT_0066869c, name, 0x80);

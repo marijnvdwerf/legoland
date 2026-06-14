@@ -318,7 +318,46 @@ unsigned int FUN_00434650(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00434670
-void FUN_00434670(void) { STUB(); }
+void FUN_00434670(void *param_1, unsigned short param_2, struct Cursor *param_3) {
+    struct JungleFish *node = DAT_00629c30;
+    struct JungleFish *prev = NULL;
+    struct JungleFish *nxt;
+    int x;
+    int y;
+
+    y = DAT_0081cb74->field_3c.v[1];
+    if (y <= DAT_0081cb74->field_3c.v[3]) {
+        do {
+            x = DAT_0081cb74->field_3c.v[0];
+            if (x <= DAT_0081cb74->field_3c.v[2]) {
+                do {
+                    RestoreBaseMap(param_3->field_1404 + x, param_3->field_1408 + y);
+                    x = x + 1;
+                } while (x <= DAT_0081cb74->field_3c.v[2]);
+            }
+            y = y + 1;
+        } while (y <= DAT_0081cb74->field_3c.v[3]);
+    }
+    StandardRemoveObject((unsigned int)param_1, param_2, (unsigned int)param_3);
+    while (node->field_0 != param_2) {
+        nxt = node->next;
+        if (nxt == NULL) {
+            return;
+        }
+        prev = node;
+        node = nxt;
+    }
+    if (node != NULL) {
+        FUN_00436130(node->field_2, 0xfffffffe);
+        if (prev != NULL) {
+            prev->next = node->next;
+            free(node);
+            return;
+        }
+        DAT_00629c30 = node->next;
+        free(node);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00434740
 unsigned int *FUN_00434740(struct JungleHolder *param_1, short param_2) {
@@ -352,7 +391,61 @@ unsigned int *FUN_00434740(struct JungleHolder *param_1, short param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00434b40
-void FUN_00434b40(void) { STUB(); }
+void FUN_00434b40(void *param_1, unsigned short param_2, struct Cursor *param_3) {
+    struct JungleFish *node = DAT_00629c34;
+    struct JungleFish *prev;
+    int x;
+    int y;
+    struct MapElement *tile;
+
+    param_3->field_1414[1] = 0xffffffff;
+    param_3->field_1414[3] = 1;
+    param_3->field_1414[0] = 0;
+    param_3->field_1414[2] = 0;
+    StandardRemoveObject((unsigned int)param_1, param_2, (unsigned int)param_3);
+    y = param_3->field_1408;
+    x = param_3->field_1404 - 6;
+    if (x < 0 || (int)(unsigned int)lpConfig->width <= x || y < 0 || (int)(unsigned int)lpConfig->height <= y) {
+        tile = NULL;
+    } else {
+        tile = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
+    }
+    tile->flags &= 0xffbf;
+    y = y - 1;
+    if (x < 0 || (int)(unsigned int)lpConfig->width <= x || y < 0 || (int)(unsigned int)lpConfig->height <= y) {
+        tile = NULL;
+    } else {
+        tile = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
+    }
+    tile->flags &= 0xffbf;
+    y = y + 2;
+    if (x < 0 || (int)(unsigned int)lpConfig->width <= x || y < 0 || (int)(unsigned int)lpConfig->height <= y) {
+        tile = NULL;
+    } else {
+        tile = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
+    }
+    tile->flags &= 0xffbf;
+    if (node->field_0 == param_2) {
+        prev = NULL;
+    } else {
+        do {
+            prev = node;
+            node = node->next;
+            if (node == NULL) {
+                return;
+            }
+        } while (node->field_0 != param_2);
+    }
+    if (node != NULL) {
+        if (prev != NULL) {
+            prev->next = node->next;
+            free(node);
+            return;
+        }
+        DAT_00629c34 = node->next;
+        free(node);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00434cb0
 void FUN_00434cb0(void) { STUB(); }
@@ -479,7 +572,83 @@ void FUN_00436f30(void *param_1, unsigned short param_2, struct Cursor *param_3)
 }
 
 // FUNCTION: LEGOLAND 0x00436fb0
-unsigned int FUN_00436fb0(int param_1, int param_2, unsigned short *param_3) { STUB(); }
+unsigned int FUN_00436fb0(int param_1, int param_2, unsigned short *param_3) {
+    struct JungleScore *score = DAT_00629c3c;
+    struct JunglePath *p;
+    unsigned int result = 0;
+    int found;
+    short id;
+
+    p = FUN_004371b0(param_1, param_2);
+    found = p != NULL;
+    if (found) {
+        *param_3 = p->field_2;
+    }
+    if (param_1 >= 0 && param_2 - 5 >= 0 && param_1 < lpConfig->width && param_2 - 5 < lpConfig->height &&
+        (p = FUN_004371b0(param_1, param_2 - 5)) != NULL) {
+        if (found) {
+            if (p->field_2 == *param_3) {
+                result = 1;
+            }
+        } else {
+            result = 1;
+            *param_3 = p->field_2;
+            found = 1;
+        }
+    }
+    if (param_1 + 5 >= 0 && param_2 >= 0 && param_1 + 5 < lpConfig->width && param_2 < lpConfig->height &&
+        (p = FUN_004371b0(param_1 + 5, param_2)) != NULL) {
+        if (found) {
+            if (p->field_2 == *param_3) {
+                result = result | 2;
+            }
+        } else {
+            result = result | 2;
+            *param_3 = p->field_2;
+            found = 1;
+        }
+    }
+    if (param_1 >= 0 && param_2 + 5 >= 0 && param_1 < lpConfig->width && param_2 + 5 < lpConfig->height &&
+        (p = FUN_004371b0(param_1, param_2 + 5)) != NULL) {
+        if (found) {
+            if (p->field_2 == *param_3) {
+                result = result | 4;
+            }
+        } else {
+            result = result | 4;
+            *param_3 = p->field_2;
+            found = 1;
+        }
+    }
+    if (param_1 - 5 >= 0 && param_2 >= 0 && param_1 - 5 < lpConfig->width && param_2 < lpConfig->height &&
+        (p = FUN_004371b0(param_1 - 5, param_2)) != NULL) {
+        if (found) {
+            if (p->field_2 == *param_3) {
+                result = result | 8;
+            }
+        } else {
+            result = result | 8;
+            *param_3 = p->field_2;
+        }
+    }
+    id = (short)((param_1 & 0xff) | (param_2 << 8));
+    if (score != NULL) {
+        while (1) {
+            if (id == *(short *)&score->field_2) {
+                return result | 1;
+            }
+            if (id == *(short *)&score->field_4) {
+                break;
+            }
+            score = score->next;
+            if (score == NULL) {
+                return result;
+            }
+        }
+        result = result | 4;
+    }
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x004371b0
 struct JunglePath *FUN_004371b0(unsigned char param_1, unsigned char param_2) {
