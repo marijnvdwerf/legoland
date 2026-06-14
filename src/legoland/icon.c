@@ -30,14 +30,6 @@ struct IconSprite {
     /* 0x08 */ struct IconAnim *anim;
 };
 
-struct IconGroupRef {
-    unsigned char pad_0[3];
-    unsigned char field_3;
-    unsigned char field_4;
-    unsigned char field_5;
-    unsigned char field_6;
-};
-
 struct Rect16 {
     unsigned char pad_0[0xc];
     short field_c;
@@ -1705,24 +1697,22 @@ int FUN_0046f9a0(int param_1, int param_2, int param_3, int param_4, unsigned in
 
 // FUNCTION: LEGOLAND 0x0046fb40
 void FUN_0046fb40(unsigned int group) {
-    /* TODO: fold group id into IconGroupRef; Ghidra models the id base as a struct pointer */
-    struct IconGroupRef *g = (struct IconGroupRef *)group;
     struct IconNode *icon1;
     struct IconNode *icon2;
     struct IconNode *icon3;
     struct IconNode *icon4;
 
-    icon1 = FindIcon(&g->field_5);
+    icon1 = FindIcon(group + 5);
     if (icon1) {
-        icon2 = FindIcon(&g->field_3);
+        icon2 = FindIcon(group + 3);
         if (icon2) {
             FUN_0046d4e0(icon2);
         }
-        icon3 = FindIcon(&g->field_4);
+        icon3 = FindIcon(group + 4);
         if (icon3) {
             FUN_0046d4e0(icon3);
         }
-        icon4 = FindIcon(&g->field_6);
+        icon4 = FindIcon(group + 6);
         if (icon4) {
             FUN_0046d4e0(icon4);
         }
