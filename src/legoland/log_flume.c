@@ -1917,7 +1917,7 @@ void FUN_00410d60(struct ClassNode *flume, struct CallbackTable *vtbl) {
     }
     // STRING: LEGOLAND 0x004b4b24
     if (_stricmp("LOG FLUME CSAW", flume->name) == 0) {
-        vtbl->cb_a4 = FUN_0040f8b0;
+        vtbl->cb_a4 = (RideCallback)FUN_0040f8b0;
         vtbl->cb_8c = FUN_0040fa00;
         vtbl->cb_a0 = FUN_0040ed50;
         vtbl->cb_b0 = FUN_0040f920;
@@ -1943,7 +1943,7 @@ void FUN_00410d60(struct ClassNode *flume, struct CallbackTable *vtbl) {
     }
     // STRING: LEGOLAND 0x004b4b00
     if (_stricmp("LOG FLUME DROP", flume->name) == 0) {
-        vtbl->cb_a4 = FUN_004103e0;
+        vtbl->cb_a4 = (RideCallback)FUN_004103e0;
         vtbl->cb_8c = FUN_004106e0;
         vtbl->cb_a0 = FUN_0040ed50;
         vtbl->cb_b0 = FUN_004104b0;
