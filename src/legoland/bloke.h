@@ -26,7 +26,8 @@ struct Bloke {
     short field_2e;
     unsigned char pad_30[0x54 - 0x30];
     unsigned int field_54;
-    unsigned char pad_58[0x60 - 0x58];
+    unsigned int field_58;
+    unsigned char pad_5c[0x60 - 0x5c];
     unsigned char param_action;
     unsigned char pad_61[0x1];
     unsigned short flags;

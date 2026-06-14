@@ -2,6 +2,7 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include "bloke.h"
 #include "gamemap.h"
 #include "image_sprite.h"
 #include "jungle_cruise.h"
@@ -859,7 +860,50 @@ void FUN_00436200(void) { STUB(); }
 void FUN_00436470(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004365f0
-void FUN_004365f0(void) { STUB(); }
+void FUN_004365f0(unsigned int param_1, int *param_2) {
+    struct JungleScore *score = DAT_00629c3c;
+    unsigned int mask;
+    unsigned short coord;
+    int result;
+
+    mask = FUN_00436fb0(param_2[0], param_2[1], (unsigned short *)&coord);
+    FUN_00436dc0(param_2[0], param_2[1], mask, &coord);
+    IncrementObjectCount(*(unsigned int *)(param_1 + 0xc));
+    FUN_004367b0(param_2[0], param_2[1], &coord);
+    if ((mask & 1) != 0) {
+        result = FUN_00436fb0(param_2[0], param_2[1] - 5, &coord);
+        FUN_00436dc0(param_2[0], param_2[1] - 5, result, &coord);
+        FUN_004367b0(param_2[0], param_2[1] - 5, &coord);
+    }
+    if ((mask & 2) != 0) {
+        result = FUN_00436fb0(param_2[0] + 5, param_2[1], &coord);
+        FUN_00436dc0(param_2[0] + 5, param_2[1], result, &coord);
+        FUN_004367b0(param_2[0] + 5, param_2[1], &coord);
+    }
+    if ((mask & 4) != 0) {
+        result = FUN_00436fb0(param_2[0], param_2[1] + 5, &coord);
+        FUN_00436dc0(param_2[0], param_2[1] + 5, result, &coord);
+        FUN_004367b0(param_2[0], param_2[1] + 5, &coord);
+    }
+    if ((mask & 8) != 0) {
+        result = FUN_00436fb0(param_2[0] - 5, param_2[1], &coord);
+        FUN_00436dc0(param_2[0] - 5, param_2[1], result, &coord);
+        FUN_004367b0(param_2[0] - 5, param_2[1], &coord);
+    }
+    if (score != NULL) {
+        while (score->field_0 != coord) {
+            score = score->next;
+            if (score == NULL) {
+                return;
+            }
+        }
+        result = FUN_004371e0(score->field_2, score->field_3, score->field_4, score->field_5);
+        score->field_8 = result;
+        if (result != 0) {
+            FUN_004373c0(coord);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004367b0
 void FUN_004367b0(int param_1, int param_2, unsigned short *param_3) {
@@ -1231,4 +1275,28 @@ void FUN_00437440(short param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00437570
-void FUN_00437570(void) { STUB(); }
+int FUN_00437570(struct JungleScore *param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
+    struct Bloke *bloke;
+    unsigned int v;
+    int r;
+    int result;
+
+    bloke = (struct Bloke *)param_1->field_8;
+    if (bloke->field_58 == 0) {
+        bloke->param_action = bloke->param_action + 1;
+    }
+    v = bloke->field_58;
+    bloke->field_58 = v - 1;
+    result = (int)bloke;
+    if ((v & 0x1f) == 0) {
+        r = rand();
+        result = r / 100;
+        if (r % 100 < 0x1f) {
+            BuyItem(param_2, param_3, param_4);
+            bloke = (struct Bloke *)param_1->field_8;
+            result = (int)bloke;
+            bloke->param_action = bloke->param_action + 1;
+        }
+    }
+    return result;
+}
