@@ -1,15 +1,19 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "globals.h"
 #include "legoland.h"
 
 #include "bloke_ai.h"
 #include "challenge.h"
+#include "debug_alloc.h"
 #include "draw.h"
 #include "gamemain.h"
 #include "gfx.h"
 #include "icon.h"
+#include "imports.h"
 #include "llidb.h"
 #include "print_sprite.h"
+#include "render.h"
 #include "resource.h"
 #include "screens.h"
 #include "sound_music.h"
@@ -22,8 +26,16 @@ struct ObjectClass;
 struct Bloke;
 
 struct AnimHandle {
-    unsigned char pad_0[0x24];
-    void *callback;
+    /* 0x00 */ int frame_bottom;
+    /* 0x04 */ int fps;
+    /* 0x08 */ int width;
+    /* 0x0c */ int height;
+    /* 0x10 */ void *avifile;
+    /* 0x14 */ void *getframe;
+    /* 0x18 */ unsigned char pad_18[0x1c - 0x18];
+    /* 0x1c */ void *stream;
+    /* 0x20 */ void (*open_cb)(struct AnimHandle *handle);
+    /* 0x24 */ void *callback;
 };
 
 struct RideObj {
@@ -162,7 +174,19 @@ void FUN_004437d0(unsigned int arg, void *ptr) { STUB(); }
 struct AnimHandle *FUN_00443bd0(const char *filename) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00443d50
-void FUN_00443d50(struct AnimHandle *handle) { STUB(); }
+void FUN_00443d50(struct AnimHandle *handle) {
+    if (handle->getframe != NULL) {
+        AVIStreamGetFrameClose(handle->getframe);
+    }
+    if (handle->stream != NULL) {
+        AVIStreamRelease(handle->stream);
+    }
+    free(handle);
+    DAT_00665f48 = DAT_00665f48 - 1;
+    if (DAT_00665f48 == 0) {
+        AVIFileExit();
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00443d90
 void FUN_00443d90(void) {
@@ -179,13 +203,42 @@ void FUN_00443dc0(struct AnimHandle *handle) { STUB(); }
 void FUN_00443e30(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00443f90
-unsigned int FUN_00443f90(unsigned int param_1) { STUB(); }
+void *FUN_00443f90(unsigned int param_1) {
+    switch (param_1) {
+    case 1:
+        return DAT_0081c094;
+    case 2:
+        return DAT_0081c0a0;
+    case 3:
+        return DAT_0081c0a4;
+    case 4:
+        return DAT_0081c098;
+    case 5:
+        return DAT_0081c090;
+    default:
+        return DAT_0081c08c;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00443fe0
-unsigned int FUN_00443fe0(unsigned int param_1) { STUB(); }
+unsigned int FUN_00443fe0(unsigned int param_1) {
+    switch (param_1) {
+    case 1:
+        return 1;
+    case 2:
+        return 3;
+    case 3:
+        return 4;
+    case 4:
+    case 5:
+        return 5;
+    default:
+        return 0;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00444020
-unsigned int FUN_00444020(void) {
+void *FUN_00444020(void) {
     unsigned int handle;
 
     if (DAT_00665fec == DAT_00665fe8) {
