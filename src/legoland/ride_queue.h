@@ -1,7 +1,19 @@
 #pragma once
 
 struct Queue;
-struct RideQueueEntry;
+
+struct RideQueueEntry {
+    /* 0x00 */ struct RideQueueEntry *next;
+    /* 0x04 */ struct RideQueueEntry *field_4;
+    /* 0x08 */ unsigned short field_8;
+    /* 0x0a */ unsigned char pad_a[0x2];
+    /* 0x0c */ int x;
+    /* 0x10 */ int y;
+    /* 0x14 */ unsigned char field_14;
+    /* 0x15 */ unsigned char field_15;
+    /* 0x16 */ unsigned char pad_16[0x2];
+    /* 0x18 */ struct RideQueueEntry *field_18;
+};
 
 void FUN_00411f00(struct Queue *queue);
 void FUN_00412290(void *param_1);

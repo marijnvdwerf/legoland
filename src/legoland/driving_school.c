@@ -7,21 +7,6 @@
 #include "ride_queue.h"
 #include "sound_music.h"
 
-struct DrivingSchoolNode {
-    struct DrivingSchoolNode *next;
-    unsigned char pad_4[4];
-    unsigned short field_8;
-    unsigned char pad_a[14];
-    unsigned int field_18;
-};
-
-struct RetStruct {
-    unsigned char pad_0[4];
-    unsigned int field_4;
-    unsigned char pad_8[13];
-    unsigned char field_15;
-};
-
 struct Node0 {
     void *next;
 };
@@ -60,40 +45,96 @@ struct CountNode {
 #include "pumps.h"
 
 // FUNCTION: LEGOLAND 0x004051a0
-unsigned int FUN_004051a0(unsigned int param_1) { STUB(); }
+void FUN_004051a0(short param_1) {
+    struct RideQueueEntry *node;
+    struct RideQueueEntry *e0;
+    struct RideQueueEntry *e1;
+    struct RideQueueEntry *e2;
+    struct RideQueueEntry *e3;
+
+    for (node = DAT_004c11c4; node != NULL; node = node->field_4) {
+        e0 = FUN_004125a0(node->x, node->y - 4);
+        e1 = FUN_004125a0(node->x + 4, node->y);
+        e2 = FUN_004125a0(node->x, node->y + 4);
+        e3 = FUN_004125a0(node->x - 4, node->y);
+        if ((node->field_14 & 0xf) == 6) {
+            e2 = NULL;
+            e3 = NULL;
+            e0 = NULL;
+        } else if (e0 != NULL && ((short)e0->field_8 != param_1 || e0->field_18 != NULL)) {
+            e0 = NULL;
+        }
+        if (e1 != NULL && ((short)e1->field_8 != param_1 || e1->field_18 != NULL)) {
+            e1 = NULL;
+        }
+        if (e2 != NULL && ((short)e2->field_8 != param_1 || e2->field_18 != NULL)) {
+            e2 = NULL;
+        }
+        if (e3 != NULL && ((short)e3->field_8 != param_1 || e3->field_18 != NULL)) {
+            e3 = NULL;
+        }
+        if (e0 != NULL) {
+            e0->field_18 = node;
+            e0->field_15 = node->field_15 + 1;
+        }
+        if (e1 != NULL) {
+            e1->field_18 = node;
+            e1->field_15 = node->field_15 + 1;
+        }
+        if (e2 != NULL) {
+            e2->field_18 = node;
+            e2->field_15 = node->field_15 + 1;
+        }
+        if (e3 != NULL) {
+            e3->field_18 = node;
+            e3->field_15 = node->field_15 + 1;
+        }
+        if (e0 != NULL) {
+            e0->field_4 = DAT_004c11c8;
+            DAT_004c11c8 = e0;
+        }
+        if (e1 != NULL) {
+            e1->field_4 = DAT_004c11c8;
+            DAT_004c11c8 = e1;
+        }
+        if (e2 != NULL) {
+            e2->field_4 = DAT_004c11c8;
+            DAT_004c11c8 = e2;
+        }
+        if (e3 != NULL) {
+            e3->field_4 = DAT_004c11c8;
+            DAT_004c11c8 = e3;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00405310
 void FUN_00405310(unsigned int param_1) {
-    struct DrivingSchoolNode *cur;
-    struct RetStruct *ret;
-    unsigned int tmp;
-    unsigned short param_16;
+    struct RideQueueEntry *cur;
+    struct RideQueueEntry *ret;
+    struct RideQueueEntry *tmp;
 
-    cur = (struct DrivingSchoolNode *)DAT_004cbeac;
-    param_16 = (unsigned short)param_1;
+    cur = DAT_004cbeac;
     while (cur != NULL) {
-        if (cur->field_8 == param_16) {
-            cur->field_18 = 0;
+        if (cur->field_8 == (unsigned short)param_1) {
+            cur->field_18 = NULL;
         }
         cur = cur->next;
     }
 
-    /* FUN_00412650 returns struct RideQueueEntry*; driving_school views the same
-       object through its own partial RetStruct layout (fields at 0x4/0x15 that
-       RideQueueEntry doesn't model), so the pointer is reinterpreted here. */
-    ret = (struct RetStruct *)FUN_00412650((unsigned short)param_1);
+    ret = FUN_00412650((unsigned short)param_1);
     ret->field_15 = 0;
-    ret->field_4 = 0;
+    ret->field_4 = NULL;
 
-    DAT_004c11c4 = (unsigned int)ret;
-    DAT_004c11c8 = 0;
+    DAT_004c11c4 = ret;
+    DAT_004c11c8 = NULL;
 
     do {
         FUN_004051a0(param_1);
         tmp = DAT_004c11c8;
         DAT_004c11c4 = tmp;
-        DAT_004c11c8 = 0;
-    } while (tmp != 0);
+        DAT_004c11c8 = NULL;
+    } while (tmp != NULL);
 }
 
 // FUNCTION: LEGOLAND 0x00405370

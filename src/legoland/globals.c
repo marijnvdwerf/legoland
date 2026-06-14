@@ -654,10 +654,10 @@ struct CopterNode *DAT_004c11b4;
 void *DAT_004c11bc;
 
 // GLOBAL: LEGOLAND 0x004c11c4
-unsigned int DAT_004c11c4;
+struct RideQueueEntry *DAT_004c11c4;
 
 // GLOBAL: LEGOLAND 0x004c11c8
-unsigned int DAT_004c11c8;
+struct RideQueueEntry *DAT_004c11c8;
 
 // GLOBAL: LEGOLAND 0x004c11cc
 struct Sprite *DAT_004c11cc;

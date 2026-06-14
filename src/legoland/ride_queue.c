@@ -27,16 +27,6 @@ struct Queue {
     struct QueueNode *tail;
 };
 
-struct RideQueueEntry {
-    struct RideQueueEntry *next;
-    unsigned char pad_4[0x4];
-    unsigned short field_8;
-    unsigned char pad_a[0x2];
-    int x;
-    int y;
-    unsigned char field_14;
-};
-
 struct RideSlotArg {
     unsigned short field_0;
 };

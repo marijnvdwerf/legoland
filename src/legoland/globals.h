@@ -635,9 +635,9 @@ extern struct CopterNode *DAT_004c11b4;
 // 0x004c11bc
 extern void *DAT_004c11bc;
 // 0x004c11c4
-extern unsigned int DAT_004c11c4;
+extern struct RideQueueEntry *DAT_004c11c4;
 // 0x004c11c8
-extern unsigned int DAT_004c11c8;
+extern struct RideQueueEntry *DAT_004c11c8;
 // 0x004c11cc
 extern struct Sprite *DAT_004c11cc;
 // 0x004c11dc
