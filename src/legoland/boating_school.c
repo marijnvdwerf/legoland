@@ -1519,6 +1519,8 @@ void FUN_0041b6f0(void *param_1, unsigned short param_2, struct Cursor *param_3)
     struct SampleParams params;
 
     StandardRemoveObject((unsigned int)param_1, param_2, (unsigned int)param_3);
+    params.field_8 = param_2 & 0xff;
+    params.field_c = param_2 >> 8 & 0xff;
     params.field_0 = 2;
     n = CountSamplesFromSource(&params);
     if (n != 1) {
@@ -2004,15 +2006,18 @@ void FUN_0041c620(void *param_1, unsigned short param_2, struct Cursor *param_3)
     struct PathNode *node = DAT_004d823c;
     struct PathNode *prev = NULL;
     struct PathNode *nxt;
+    short key;
 
     StandardRemoveObject((unsigned int)param_1, param_2, (unsigned int)param_3);
-    while (node->field_2 != param_2) {
+    key = *(short *)node;
+    while (key != (short)param_2) {
         nxt = node->next;
         if (nxt == NULL) {
             return;
         }
         prev = node;
         node = nxt;
+        key = *(short *)nxt;
     }
     if (node != NULL) {
         if (prev != NULL) {
@@ -2203,7 +2208,7 @@ void FUN_0041caa0(unsigned short param_1) {
     int again;
 
     for (node = DAT_004d823c; node != NULL; node = node->next) {
-        if (node->field_2 == (short)param_1) {
+        if (node->field_2 == param_1) {
             node->field_18 = NULL;
         }
     }
