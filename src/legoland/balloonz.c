@@ -207,6 +207,7 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
     struct BalloonListElem *elem;
     struct BalloonListElem *nextNode;
     struct BalloonNode *node;
+    struct BalloonNode *aiNode;
     int blokepos;
     char cVar9;
     char cVar15;
@@ -287,20 +288,20 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
         }
         nextNode = elem->next;
         blokepos = (int)elem->bloke;
-        node = FUN_0042a980(&elem->id);
-        if (node == NULL) {
+        aiNode = FUN_0042a980(&elem->id);
+        if (aiNode == NULL) {
             return;
         }
-        cVar9 = *(char *)((int)node + 0xc);
-        local_2c = *(int *)((int)node + 8);
-        local_10 = *(unsigned int *)((int)node + 0xd);
-        cVar15 = *(char *)((int)node + 0x14);
-        local_c = *(unsigned short *)((int)node + 0x11);
-        cVar1 = *(char *)((int)node + 0x13);
-        iVar4 = *(int *)((int)node + 0x1c);
-        local_32 = *(char *)((int)node + 0x17);
-        iVar5 = *(int *)((int)node + 0x18);
-        *(short *)**(int **)((char *)DAT_0081cde8 + 8) = (short)*(char *)((int)node + 0x15);
+        cVar9 = *(char *)((int)aiNode + 0xc);
+        local_2c = *(int *)((int)aiNode + 8);
+        local_10 = *(unsigned int *)((int)aiNode + 0xd);
+        cVar15 = *(char *)((int)aiNode + 0x14);
+        local_c = *(unsigned short *)((int)aiNode + 0x11);
+        cVar1 = *(char *)((int)aiNode + 0x13);
+        iVar4 = *(int *)((int)aiNode + 0x1c);
+        local_32 = *(char *)((int)aiNode + 0x17);
+        iVar5 = *(int *)((int)aiNode + 0x18);
+        *(short *)**(int **)((char *)DAT_0081cde8 + 8) = (short)*(char *)((int)aiNode + 0x15);
         iVar18 = ride->x + (unsigned int)*(unsigned char *)((int)elem + 0xc);
         iVar16 = (unsigned int)*(unsigned char *)((int)&elem->id + 1) + ride->y;
         if (*(short *)(blokepos + 0xe) == 0) {
@@ -497,20 +498,20 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
                 *(char *)(blokepos + 0x60) = cVar11 + '\x01';
                 break;
             case 0xf:
-                RemoveBlokeFromRide((void *)blokepos, node);
+                RemoveBlokeFromRide(ride, elem);
                 *(unsigned short *)(blokepos + 0x62) &= 0xfff7;
                 break;
             }
         }
-        *(char *)((int)node + 0xc) = cVar9;
-        *(int *)((int)node + 8) = local_2c;
-        *(char *)((int)node + 0x13) = cVar1;
-        *(unsigned int *)((int)node + 0xd) = local_10;
-        *(int *)((int)node + 0x18) = iVar5;
-        *(unsigned short *)((int)node + 0x11) = local_c;
-        *(char *)((int)node + 0x15) = cVar15;
-        *(char *)((int)node + 0x17) = local_32;
-        *(int *)((int)node + 0x1c) = iVar4;
+        *(char *)((int)aiNode + 0xc) = cVar9;
+        *(int *)((int)aiNode + 8) = local_2c;
+        *(char *)((int)aiNode + 0x13) = cVar1;
+        *(unsigned int *)((int)aiNode + 0xd) = local_10;
+        *(int *)((int)aiNode + 0x18) = iVar5;
+        *(unsigned short *)((int)aiNode + 0x11) = local_c;
+        *(char *)((int)aiNode + 0x15) = cVar15;
+        *(char *)((int)aiNode + 0x17) = local_32;
+        *(int *)((int)aiNode + 0x1c) = iVar4;
         elem = nextNode;
     }
 }
@@ -532,8 +533,8 @@ void FUN_0042b2e0(struct BalloonRideObj *param_1, void *param_2, void *param_3, 
     struct BalloonRide *ride = param_1->ride;
     struct BalloonListElem *elem;
     struct BalloonListElem *list2;
-    int blokes[107];
-    int count;
+    int blokes[6];
+    char count;
     char cVar1;
     char cVar4;
     int local_4c;
