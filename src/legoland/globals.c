@@ -1274,6 +1274,9 @@ struct Sprite *DAT_00616108;
 // GLOBAL: LEGOLAND 0x0061610c
 struct Sprite *DAT_0061610c;
 
+// GLOBAL: LEGOLAND 0x00616118
+unsigned int DAT_00616118;
+
 // GLOBAL: LEGOLAND 0x00616120
 unsigned int DAT_00616120;
 
@@ -3820,6 +3823,12 @@ struct Sprite *DAT_0081cd20;
 // GLOBAL: LEGOLAND 0x0081cd28
 struct Sprite *DAT_0081cd28;
 
+// GLOBAL: LEGOLAND 0x0081cd2c
+unsigned int DAT_0081cd2c;
+
+// GLOBAL: LEGOLAND 0x0081cd30
+unsigned int DAT_0081cd30;
+
 // GLOBAL: LEGOLAND 0x0081cd34
 struct Sprite *DAT_0081cd34;
 
@@ -3828,6 +3837,9 @@ struct EateryFX *DAT_0081cd38;
 
 // GLOBAL: LEGOLAND 0x0081cd3c
 unsigned int DAT_0081cd3c;
+
+// GLOBAL: LEGOLAND 0x0081cd40
+unsigned int DAT_0081cd40;
 
 // GLOBAL: LEGOLAND 0x0081cd44
 struct EateryFX *DAT_0081cd44;

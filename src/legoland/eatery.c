@@ -80,9 +80,37 @@ struct UserFlagsArg {
     int var_4;
 };
 
+struct UnSourceArg {
+    /* 0x00 */ unsigned char pad_0[8];
+    /* 0x08 */ int field_8;
+    /* 0x0c */ unsigned char pad_c[0x10 - 0xc];
+    /* 0x10 */ int field_10;
+    /* 0x14 */ int field_14;
+};
+
 struct SaveBlock {
-    struct SaveBlock *next;
-    unsigned char data[60];
+    /* 0x00 */ struct SaveBlock *next;
+    /* 0x04 */ unsigned short value;
+    /* 0x06 */ unsigned char field_6;
+    /* 0x07 */ unsigned char field_7;
+    /* 0x08 */ unsigned char field_8;
+    /* 0x09 */ unsigned char field_9;
+    /* 0x0a */ unsigned char pad_a[0xc - 0xa];
+    /* 0x0c */ unsigned int field_c;
+    /* 0x10 */ unsigned char field_10;
+    /* 0x11 */ unsigned char field_11;
+    /* 0x12 */ unsigned char pad_12[0x14 - 0x12];
+    /* 0x14 */ unsigned int field_14;
+    /* 0x18 */ unsigned int field_18;
+    /* 0x1c */ unsigned int field_1c;
+    /* 0x20 */ unsigned int field_20;
+    /* 0x24 */ unsigned int field_24;
+    /* 0x28 */ unsigned int field_28;
+    /* 0x2c */ unsigned int field_2c;
+    /* 0x30 */ unsigned int field_30;
+    /* 0x34 */ unsigned int field_34;
+    /* 0x38 */ unsigned int field_38;
+    /* 0x3c */ unsigned int field_3c;
 };
 
 // FUNCTION: LEGOLAND 0x0042e220
@@ -304,9 +332,11 @@ struct BrollyNode *FUN_0042eec0(unsigned short *param_1) {
 
 // FUNCTION: LEGOLAND 0x0042ef10
 void FUN_0042ef10(unsigned int param_1, unsigned char *param_2) {
-    unsigned short value = (unsigned short)*param_2 | (unsigned short)(param_2[4] << 8);
+    unsigned char id[2];
+    id[0] = param_2[0];
+    id[1] = param_2[4];
     AddBasicObject(param_1, (unsigned int)param_2);
-    FUN_0042eec0(&value);
+    FUN_0042eec0((unsigned short *)id);
 }
 
 // FUNCTION: LEGOLAND 0x0042ef40
@@ -349,10 +379,41 @@ void FUN_0042ef70(struct BrollyNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0042efb0
-void FUN_0042efb0(void) { STUB(); }
+void FUN_0042efb0(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+    struct UnSourceArg local;
+    struct BrollyNode *node = FUN_0042ef40((unsigned short *)&param_2);
+    if (node != NULL) {
+        FUN_0042ef70(node);
+    }
+    StandardRemoveObject(param_1, param_2, param_3);
+    RemoveAllBlokesFromRide((unsigned int)((struct EateryObj *)param_1)->fx_c, (void *)param_2);
+    local.field_8 = 2;
+    local.field_10 = param_2 & 0xff;
+    local.field_14 = param_2 >> 8 & 0xff;
+    UnSourceAndFadeAllSamplesFromSource(&local, 0xffffff38);
+}
 
 // FUNCTION: LEGOLAND 0x0042f030
-void FUN_0042f030(void) { STUB(); }
+void FUN_0042f030(struct EateryObj *obj) {
+    DAT_0081cd40 = (unsigned int)obj->fx_c;
+    ((struct EateryFX *)DAT_0081cd40)->flags_1c |= 0x20;
+    DAT_0081cd2c = (unsigned int)((struct EateryFX *)DAT_0081cd40)->inner_64;
+    ((struct EateryInner *)DAT_0081cd2c)->flags_10 |= 0x2000;
+    // STRING: LEGOLAND 0x004b6f2c
+    DAT_0081cd28 = LoadSprite("RestMask_Main.lls", 1);
+    // STRING: LEGOLAND 0x004b6f14
+    DAT_0081cd8c = LoadSprite("RestMaskLevel1aa.lls", 1);
+    // STRING: LEGOLAND 0x004b6f00
+    DAT_0081cd88 = LoadSprite("RestMaskLevel1.lls", 1);
+    // STRING: LEGOLAND 0x004b6eec
+    DAT_0081cd94 = LoadSprite("RestMaskLevel2.lls", 1);
+    // STRING: LEGOLAND 0x004b6ed8
+    DAT_0081cd90 = LoadSprite("RestMaskLevel3.lls", 1);
+    HideLayer((struct LayerOwner *)DAT_0081cd2c, 1);
+    StopLayerPlaying(DAT_0081cd2c, 1);
+    LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_0081cd2c, 1), 0);
+    LoadMoneySFX();
+}
 
 // FUNCTION: LEGOLAND 0x0042f0f0
 void FUN_0042f0f0(void) { STUB(); }
@@ -374,24 +435,125 @@ void FUN_0042f720(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0042f770
-void FUN_0042f770(void) { STUB(); }
+void FUN_0042f770(struct EateryObj *obj) {
+    Load_FXList(OCTOPUS_SFX, 3);
+    LoadMoneySFX();
+    DAT_0081cd30 = (unsigned int)obj->fx_c;
+    ((struct EateryFX *)DAT_0081cd30)->flags_1c |= 0x420;
+    DAT_00616118 = (unsigned int)((struct EateryFX *)DAT_0081cd30)->inner_64;
+    ((struct EateryInner *)DAT_00616118)->flags_10 |= 0x2000;
+    // STRING: LEGOLAND 0x004b6f70
+    DAT_0081cd34 = LoadSprite("R2Fdoor_m.lls", 1);
+    // STRING: LEGOLAND 0x004b6f60
+    DAT_0081cd48 = LoadSprite("R2Fdoor_m1.lls", 1);
+    // STRING: LEGOLAND 0x004b6f50
+    DAT_0081cd84 = LoadSprite("R2Bdoor_m.lls", 1);
+    // STRING: LEGOLAND 0x004b6f40
+    DAT_0081cd20 = LoadSprite("R2Tower_m.lls", 1);
+    HideLayer((struct LayerOwner *)DAT_00616118, 0);
+    StopLayerPlaying(DAT_00616118, 0);
+    LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 0), 0);
+    HideLayer((struct LayerOwner *)DAT_00616118, 6);
+    StopLayerPlaying(DAT_00616118, 6);
+    LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 6), 0);
+    HideLayer((struct LayerOwner *)DAT_00616118, 2);
+    StopLayerPlaying(DAT_00616118, 2);
+    LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 2), 0);
+    HideLayer((struct LayerOwner *)DAT_00616118, 5);
+    HideLayer((struct LayerOwner *)DAT_00616118, 1);
+    StopLayerPlaying(DAT_00616118, 1);
+    LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 1), 0);
+    HideLayer((struct LayerOwner *)DAT_00616118, 3);
+    StopLayerPlaying(DAT_00616118, 3);
+    LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), 0);
+}
 
 // FUNCTION: LEGOLAND 0x0042f920
-void FUN_0042f920(void) { STUB(); }
+void FUN_0042f920(unsigned short *param_1) {
+    struct SaveBlock *node = malloc(sizeof(struct SaveBlock));
+    if (node != NULL) {
+        unsigned int *p = (unsigned int *)node;
+        int i;
+        for (i = 0x10; i != 0; i = i - 1) {
+            *p = 0;
+            p = p + 1;
+        }
+        node->value = *param_1;
+        node->next = DAT_00616148;
+        node->field_6 = 0;
+        node->field_7 = 0;
+        node->field_8 = 0;
+        node->field_9 = 0;
+        node->field_c = 0;
+        node->field_10 = 0;
+        node->field_11 = 0;
+        node->field_14 = 0;
+        node->field_18 = 0;
+        node->field_1c = 0;
+        node->field_20 = 0;
+        node->field_24 = 0;
+        node->field_28 = 0;
+        node->field_2c = 0;
+        node->field_30 = 0;
+        node->field_34 = 0;
+        node->field_38 = 0x143;
+        node->field_3c = 0;
+        DAT_00616148 = node;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0042f9a0
-void FUN_0042f9a0(void) { STUB(); }
+void FUN_0042f9a0(unsigned int param_1, unsigned char *param_2) {
+    unsigned char id[2];
+    id[0] = param_2[0];
+    id[1] = param_2[4];
+    AddBasicObject(param_1, (unsigned int)param_2);
+    FUN_0042f920((unsigned short *)id);
+}
 
 // FUNCTION: LEGOLAND 0x0042f9d0
-unsigned int FUN_0042f9d0(unsigned int *param) { STUB(); }
+struct SaveBlock *FUN_0042f9d0(unsigned short *param) {
+    struct SaveBlock *node = DAT_00616148;
+    while (node != NULL) {
+        if (node->value == *param) {
+            return node;
+        }
+        if (node->next == NULL) {
+            break;
+        }
+        node = node->next;
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x0042fa00
-void FUN_0042fa00(unsigned int param) { STUB(); }
+void FUN_0042fa00(struct SaveBlock *param) {
+    struct SaveBlock *node;
+    struct SaveBlock *prev;
+    if (DAT_00616148 == param) {
+        DAT_00616148 = param->next;
+        goto done;
+    }
+    node = DAT_00616148->next;
+    prev = DAT_00616148;
+    while (node != param) {
+        prev = prev->next;
+        if (prev == NULL) {
+            goto done;
+        }
+        node = prev->next;
+    }
+    if (prev != NULL) {
+        prev->next = param->next;
+    }
+done:
+    free(param);
+}
 
 // FUNCTION: LEGOLAND 0x0042fa40
 void FUN_0042fa40(unsigned int arg1, unsigned int arg2, unsigned int arg3, unsigned int arg4, unsigned int arg5) {
-    unsigned int result = FUN_0042f9d0(&arg2);
-    if (result != 0) {
+    struct SaveBlock *result = FUN_0042f9d0((unsigned short *)&arg2);
+    if (result != NULL) {
         FUN_0042fa00(result);
     }
     StandardRemoveObject(arg1, arg2, arg3);

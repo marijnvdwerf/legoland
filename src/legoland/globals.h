@@ -1035,6 +1035,8 @@ extern struct Sprite *DAT_00616104;
 extern struct Sprite *DAT_00616108;
 // 0x0061610c
 extern struct Sprite *DAT_0061610c;
+// 0x00616118
+extern unsigned int DAT_00616118;
 // 0x00616120
 extern unsigned int DAT_00616120;
 // 0x00616124
@@ -2726,12 +2728,18 @@ extern struct EateryFX *DAT_0081cd1c;
 extern struct Sprite *DAT_0081cd20;
 // 0x0081cd28
 extern struct Sprite *DAT_0081cd28;
+// 0x0081cd2c
+extern unsigned int DAT_0081cd2c;
+// 0x0081cd30
+extern unsigned int DAT_0081cd30;
 // 0x0081cd34
 extern struct Sprite *DAT_0081cd34;
 // 0x0081cd38
 extern struct EateryFX *DAT_0081cd38;
 // 0x0081cd3c
 extern unsigned int DAT_0081cd3c;
+// 0x0081cd40
+extern unsigned int DAT_0081cd40;
 // 0x0081cd44
 extern struct EateryFX *DAT_0081cd44;
 // 0x0081cd48
