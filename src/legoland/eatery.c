@@ -416,7 +416,30 @@ void FUN_0042e8d0(struct EditArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0042e910
-void FUN_0042e910(void) { STUB(); }
+void FUN_0042e910(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6) {
+    int ride = *(int *)(param_1 + 0xc);
+    unsigned int *node;
+    union {
+        __int64 q;
+        int i[2];
+    } coords;
+    union {
+        __int64 q;
+        int i[2];
+    } offset;
+    for (node = *(unsigned int **)(ride + 0xcc); node != NULL; node = (unsigned int *)*node) {
+        if (*param_4 == *(short *)(node + 3)) {
+            IP_RenderBlokeIn3DNow((struct Bloke *)node[2]);
+        }
+    }
+    coords.q = GetScreenCoordsForObject((unsigned char *)param_4, (void *)ride);
+    offset.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0081cd10, 1);
+    AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
+    if (GetSpriteForLayer((struct LayerContainer *)DAT_0081cd10, 1) != 0) {
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_0081cd10, 1),
+                    offset.i[0] + coords.i[0], offset.i[1] + coords.i[1], param_6, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0042e9c0
 void FUN_0042e9c0(unsigned int param_1, unsigned int *param_2) {
