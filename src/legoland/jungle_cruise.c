@@ -237,7 +237,26 @@ void FUN_00433ce0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00433d20
-void FUN_00433d20(void) { STUB(); }
+void FUN_00433d20(unsigned int param_1, int *param_2) {
+    struct JungleObj *obj;
+    unsigned char temp[2];
+    unsigned short coord;
+    int local_4;
+
+    temp[0] = (unsigned char)param_2[0];
+    temp[1] = (unsigned char)param_2[1];
+    coord = *(unsigned short *)temp;
+    FUN_00436fb0(param_2[0], param_2[1], (unsigned short *)&local_4);
+    obj = (struct JungleObj *)malloc(8);
+    if (obj != NULL) {
+        obj->field_0 = coord;
+        obj->field_2 = (unsigned short)local_4;
+        obj->next = DAT_00629c2c;
+        DAT_00629c2c = obj;
+        AddBasicObject(param_1, (unsigned int)param_2);
+        FUN_00436130((unsigned short)local_4, 1);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00433d90
 void FUN_00433d90(void) { STUB(); }
@@ -307,7 +326,68 @@ void FUN_004340c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00434100
-void FUN_00434100(void) { STUB(); }
+void FUN_00434100(unsigned int param_1, int *param_2) {
+    struct JungleFish *fish;
+    unsigned char temp[2];
+    unsigned short coord;
+    short local_2;
+    int x;
+    int y;
+    short tile;
+    struct Cursor *cursor;
+
+    temp[0] = (unsigned char)param_2[0];
+    temp[1] = (unsigned char)param_2[1];
+    coord = *(unsigned short *)temp;
+    if (FUN_00436fb0(param_2[0], param_2[1], (unsigned short *)&local_2) == 0) {
+        FUN_00436fb0(param_2[0], param_2[1] - 5, (unsigned short *)&local_2);
+    }
+    fish = (struct JungleFish *)malloc(0xc);
+    if (fish == NULL) {
+        return;
+    }
+    fish->field_0 = coord;
+    fish->field_2 = local_2;
+    fish->next = DAT_00629c30;
+    fish->field_4 = 0;
+    DAT_00629c30 = fish;
+    FUN_00436130(fish->field_2, 2);
+    AddBasicObject(param_1, (unsigned int)param_2);
+    y = DAT_0081cb74->field_3c.v[1];
+    cursor = DAT_0081cb74;
+    if (y <= DAT_0081cb74->field_3c.v[3]) {
+        do {
+            x = cursor->field_3c.v[0];
+            if (x <= cursor->field_3c.v[2]) {
+                do {
+                    if (x == cursor->field_3c.v[0]) {
+                        tile = DAT_0081cb58->tiles[0] + 9;
+                        SetMapTile(param_2[0] + x, param_2[1] + y, tile);
+                    } else if (x == cursor->field_3c.v[2]) {
+                        tile = DAT_0081cb58->tiles[0] + 0xc;
+                        SetMapTile(param_2[0] + x, param_2[1] + y, tile);
+                    } else if (y == cursor->field_3c.v[1]) {
+                        tile = DAT_0081cb58->tiles[0] + 10;
+                        SetMapTile(param_2[0] + x, param_2[1] + y, tile);
+                    } else if (y == cursor->field_3c.v[3]) {
+                        tile = DAT_0081cb58->tiles[0] + 0xb;
+                        SetMapTile(param_2[0] + x, param_2[1] + y, tile);
+                    } else {
+                        tile = DAT_0081cb58->tiles[0];
+                        SetMapTile(param_2[0] + x, param_2[1] + y, tile);
+                    }
+                    x = x + 1;
+                    cursor = DAT_0081cb74;
+                } while (x <= DAT_0081cb74->field_3c.v[2]);
+            }
+            y = y + 1;
+        } while (y <= cursor->field_3c.v[3]);
+    }
+    SetMapTile(cursor->field_3c.v[0] + param_2[0], cursor->field_3c.v[1] + param_2[1], DAT_0081cb58->tiles[0] + 5);
+    SetMapTile(DAT_0081cb74->field_3c.v[2] + param_2[0], DAT_0081cb74->field_3c.v[1] + param_2[1], DAT_0081cb58->tiles[0] + 8);
+    SetMapTile(DAT_0081cb74->field_3c.v[0] + param_2[0], DAT_0081cb74->field_3c.v[3] + param_2[1], DAT_0081cb58->tiles[0] + 6);
+    SetMapTile(DAT_0081cb74->field_3c.v[2] + param_2[0], DAT_0081cb74->field_3c.v[3] + param_2[1], DAT_0081cb58->tiles[0] + 7);
+}
 
 // FUNCTION: LEGOLAND 0x00434330
 void FUN_00434330(void) { STUB(); }
