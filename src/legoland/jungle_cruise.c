@@ -14,7 +14,65 @@
 void FUN_00432ac0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00432b90
-int FUN_00432b90(unsigned int param_1, void *param_2, void *param_3, void *param_4) { STUB(); }
+int FUN_00432b90(unsigned int param_1, void *param_2, void *param_3, void *param_4) {
+    short id = (short)param_1;
+    struct JungleScore *score;
+    struct JungleRide *node;
+    struct JungleRide *fresh;
+    short *fill;
+    int i;
+    unsigned int r;
+
+    for (score = DAT_00629c3c; node = DAT_00616164, score != NULL && score->field_0 != (unsigned short)id;
+         score = score->next) {
+    }
+    while (node != NULL) {
+        if (node->field_0 == (unsigned short)id) {
+            if (node->field_4 == score->field_2 && node->field_8 == score->field_3) {
+                return 0;
+            }
+            if (node->field_c == score->field_2 && node->field_10 == score->field_3) {
+                return 0;
+            }
+            if (node->field_3e0 == 1) {
+                return 0;
+            }
+        }
+        node = node->next;
+    }
+    fresh = (struct JungleRide *)malloc(sizeof(struct JungleRide));
+    if (fresh == NULL) {
+        return 0;
+    }
+    fresh->next = DAT_00616164;
+    i = (param_1 >> 8 & 0xff) + 5;
+    fresh->field_0 = id;
+    fresh->field_4 = param_1 & 0xff;
+    fresh->field_8 = i;
+    fresh->field_c = param_1 & 0xff;
+    fresh->field_10 = i;
+    fresh->field_3dc = 1;
+    fresh->field_3e0 = 1;
+    r = rand();
+    fresh->blokes[2] = (unsigned int)param_4;
+    fresh->blokes[0] = (unsigned int)param_2;
+    fresh->field_3e4 = (r & 0xf) + 4;
+    fresh->blokes[1] = (unsigned int)param_3;
+    fill = (short *)fresh->field_1c;
+    DAT_00616164 = fresh;
+    for (i = 0xa0; i != 0; i = i - 1) {
+        fill[0] = -0xe0f;
+        fill[1] = -0xe0f;
+        fill = fill + 2;
+    }
+    fill = (short *)fresh->field_29c;
+    for (i = 0x50; i != 0; i = i - 1) {
+        fill[0] = 0;
+        fill[1] = 0;
+        fill = fill + 2;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00432cb0
 void FUN_00432cb0(struct JungleRide *param_1) {
@@ -190,7 +248,30 @@ unsigned int FUN_00433fa0(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00433fc0
-void FUN_00433fc0(void) { STUB(); }
+void FUN_00433fc0(void *param_1, unsigned short param_2, void *param_3) {
+    struct JungleObj *node = DAT_00629c2c;
+    struct JungleObj *prev = NULL;
+    struct JungleObj *nxt;
+    StandardRemoveObject((unsigned int)param_1, param_2, (unsigned int)param_3);
+    while (node->field_0 != param_2) {
+        nxt = node->next;
+        if (nxt == NULL) {
+            return;
+        }
+        prev = node;
+        node = nxt;
+    }
+    if (node != NULL) {
+        FUN_00436130(node->field_2, 0xffffffff);
+        if (prev != NULL) {
+            prev->next = node->next;
+            free(node);
+            return;
+        }
+        DAT_00629c2c = node->next;
+        free(node);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00434040
 unsigned int *FUN_00434040(struct JungleHolder *param_1, unsigned short param_2) {
@@ -372,7 +453,30 @@ void FUN_00436a40(void) { STUB(); }
 void FUN_00436dc0(int param_1, int param_2, int param_3, unsigned short *param_4) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00436f30
-void FUN_00436f30(void *param_1, unsigned short param_2, struct Cursor *param_3) { STUB(); }
+void FUN_00436f30(void *param_1, unsigned short param_2, struct Cursor *param_3) {
+    struct JunglePath *node = DAT_0062fd2c;
+    struct JunglePath *prev = NULL;
+    struct JunglePath *nxt;
+    StandardRemoveObject((unsigned int)param_1, param_2, (unsigned int)param_3);
+    while (*(unsigned short *)&node->x != param_2) {
+        nxt = node->next;
+        if (nxt == NULL) {
+            return;
+        }
+        prev = node;
+        node = nxt;
+    }
+    if (node != NULL) {
+        FUN_00436130(node->field_2, 0xffffffff);
+        if (prev != NULL) {
+            prev->next = node->next;
+            free(node);
+            return;
+        }
+        DAT_0062fd2c = node->next;
+        free(node);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00436fb0
 unsigned int FUN_00436fb0(int param_1, int param_2, unsigned short *param_3) { STUB(); }

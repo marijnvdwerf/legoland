@@ -89,6 +89,9 @@ void FUN_00437260(int param_1, int param_2, int param_3, int param_4, unsigned s
 void FUN_004373c0(unsigned short param_1);
 void FUN_00437440(short param_1);
 void FUN_004367b0(int param_1, int param_2, unsigned short *param_3);
+void FUN_00433fc0(void *param_1, unsigned short param_2, void *param_3);
+void FUN_00434670(void *param_1, unsigned short param_2, void *param_3);
+void FUN_00434b40(void *param_1, unsigned short param_2, void *param_3);
 
 int Find3DPersonFromBloke();
 void SetPersonRotation();
