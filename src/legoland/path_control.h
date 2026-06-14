@@ -11,5 +11,5 @@ LEGO_EXPORT void AddRollerCoasterPath(int *coords);
 LEGO_EXPORT void RemoveRollerCoasterPath(const struct Struct427f70Tmp *tmp);
 
 LEGO_EXPORT void AddBasicPath(void);
-LEGO_EXPORT void DrawBasicPath(void);
+LEGO_EXPORT unsigned int *DrawBasicPath(void);
 LEGO_EXPORT void RemoveBasicPath(void);

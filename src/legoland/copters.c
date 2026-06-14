@@ -154,7 +154,7 @@ void FUN_00404450(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00404490
-void FUN_00404490(void) { STUB(); }
+unsigned int *FUN_00404490(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00404580
 void FUN_00404580(void) { STUB(); }

@@ -22,4 +22,4 @@ LEGO_EXPORT void RemoveRollerCoasterPath(const struct Struct427f70Tmp *tmp) {
 }
 
 // FUNCTION: LEGOLAND 0x0045dcf0
-LEGO_EXPORT void DrawBasicPath(void) { STUB(); }
+LEGO_EXPORT unsigned int *DrawBasicPath(void) { STUB(); }

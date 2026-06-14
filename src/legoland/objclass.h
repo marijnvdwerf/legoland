@@ -12,6 +12,7 @@ struct ObjClassNames;
 struct ObjectInfo;
 
 typedef void (*RideCallback)();
+typedef unsigned int *(*CbA0Fn)();
 
 struct CallbackTable {
     /* 0x00 */ unsigned char pad_0[0x8c];
@@ -20,7 +21,7 @@ struct CallbackTable {
     /* 0x94 */ RideCallback cb_94;
     /* 0x98 */ RideCallback cb_98;
     /* 0x9c */ RideCallback cb_9c;
-    /* 0xa0 */ RideCallback cb_a0;
+    /* 0xa0 */ CbA0Fn cb_a0;
     /* 0xa4 */ RideCallback cb_a4;
     /* 0xa8 */ RideCallback cb_a8;
     /* 0xac */ RideCallback cb_ac;
