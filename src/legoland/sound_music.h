@@ -6,7 +6,7 @@ struct Sample;
 
 struct SampleParams {
     /* 0x00 */ int field_0;
-    /* 0x04 */ unsigned int pad_4;
+    /* 0x04 */ unsigned int field_4;
     /* 0x08 */ int field_8;
     /* 0x0c */ int field_c;
 };
@@ -18,5 +18,4 @@ LEGO_EXPORT void Load_FXList(const unsigned char *list, int count);
 LEGO_EXPORT void Kill_FXList(const unsigned char *list, int count);
 void FUN_004969d0(void);
 LEGO_EXPORT void AdjustPSampleFreq(struct Sample *sample, unsigned int param_2);
-struct SampleSource;
-LEGO_EXPORT int CountSamplesFromSource(struct SampleSource *source);
+LEGO_EXPORT int CountSamplesFromSource(struct SampleParams *source);

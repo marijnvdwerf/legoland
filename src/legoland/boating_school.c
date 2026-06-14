@@ -639,7 +639,7 @@ void FUN_00419d10(struct BoatHolder *param_1) {
     DAT_0082c654 = LoadSprite("bs_railm.lls", 1);
     DAT_0082ae00 = GetSpriteForLayer((void *)DAT_0082c658->field_64, 5);
     lls = GetLLSForSprite((struct SpriteLLS *)DAT_0082ae00);
-    LLSStop((struct LLS *)lls);
+    LLSStop(lls);
     LLSSetFrame((struct LLS *)lls, *(short *)(lls + 0x10));
     src = (int *)&DAT_0082c658->field_3c;
     dst = DAT_004cc078;

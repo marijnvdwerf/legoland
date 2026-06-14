@@ -795,7 +795,7 @@ LEGO_EXPORT unsigned int SourcePlayableSampleToLevelXY(struct Sample *sample, un
 }
 
 // FUNCTION: LEGOLAND 0x00496b10
-LEGO_EXPORT int CountSamplesFromSource(struct SampleSource *source) {
+LEGO_EXPORT int CountSamplesFromSource(struct SampleParams *source) {
     int count;
     struct Sample *sample;
 
@@ -803,8 +803,8 @@ LEGO_EXPORT int CountSamplesFromSource(struct SampleSource *source) {
     if (DAT_007988cc != 0) {
         sample = (struct Sample *)DAT_007988cc;
         do {
-            if (sample->field_c == source->type) {
-                switch (source->type) {
+            if (sample->field_c == source->field_0) {
+                switch (source->field_0) {
                 case 0:
                     count = count + 1;
                     break;
