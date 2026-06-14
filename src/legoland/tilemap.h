@@ -16,5 +16,6 @@ int FUN_0045ce10(struct MapTile *tile);
 int FUN_0045ce30(int *param_1);
 unsigned char FUN_0045ceb0(int *coords);
 unsigned char FUN_0045d080(unsigned char flags, int *coords);
+void FUN_0045d260(struct Point *param);
 LEGO_EXPORT void RemovePathTile(int *param_1, unsigned short param_2);
 void FUN_0045d3d0(struct PathFootprint *param_1, int *param_2);

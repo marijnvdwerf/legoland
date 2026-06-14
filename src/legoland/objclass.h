@@ -50,6 +50,7 @@ LEGO_EXPORT void SetStandardCallbacks(struct CallbackTable *table);
 LEGO_EXPORT int LoadObjectLibrary(void *obj, const char *name);
 void FUN_00480aa0(struct ObjClassNames *names, struct ObjectInfo *info);
 void FUN_00481170(void);
+void *FUN_00481720(void);
 LEGO_EXPORT void SetEditObject(struct EditObject *obj);
 struct BestNode *FUN_00481730(void);
 struct BestNode *FUN_00481790(struct InstancePos *pos);

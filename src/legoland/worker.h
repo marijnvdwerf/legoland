@@ -29,6 +29,9 @@ LEGO_EXPORT int IterateNoneWorkersRepairOrders(void);
 LEGO_EXPORT void RemoveGardenersWorkOrderAt(unsigned int x, unsigned int y);
 LEGO_EXPORT void RemoveMechanicsWorkOrderAt(unsigned int x, unsigned int y);
 LEGO_EXPORT void RemoveNoneWorkersRepairOrderAT(unsigned int x, unsigned int y);
+LEGO_EXPORT void RemoveRepairOrderAT(struct Worker *worker, unsigned int x, unsigned int y);
+/* FUN_0049b270 is still a STUB with an unverified signature; declared K&R. */
+void FUN_0049b270();
 void FUN_00499eb0(void *order);
 int FUN_0049a120(void);
 int FUN_0049a160(void);

@@ -486,6 +486,10 @@ extern char *DAT_004b81d0;
 extern char *DAT_004b81d4;
 // 0x004b81d8
 extern char *DAT_004b81d8;
+// 0x004b8320
+extern int DAT_004b8320;
+// 0x004b8324
+extern int DAT_004b8324;
 // 0x004b8334
 extern int DAT_004b8334;
 // 0x004b8340
@@ -512,6 +516,8 @@ extern unsigned int DAT_004b90fc;
 extern LEGO_EXPORT unsigned int BGFullUpdate;
 // 0x004b9228
 extern const unsigned char DAT_004b9228[1];
+// 0x004b9248
+extern void *DAT_004b9248;
 // 0x004b929c
 extern void *DAT_004b929c;
 // 0x004b92c0
@@ -1515,6 +1521,8 @@ extern LEGO_EXPORT int ScrollSpeedX;
 extern LEGO_EXPORT int ScrollSpeedY;
 // 0x00667cd8
 extern unsigned int DAT_00667cd8;
+// 0x00667cdc
+extern unsigned int DAT_00667cdc;
 // 0x00667ce0
 extern int DAT_00667ce0;
 // 0x00667ce4
@@ -1531,8 +1539,14 @@ extern int DAT_00667cf4;
 extern int DAT_00667cf8;
 // 0x00667cfc
 extern int DAT_00667cfc;
+// 0x00667d00
+extern int DAT_00667d00;
+// 0x00667d04
+extern int DAT_00667d04;
 // 0x00667d08
 extern int DAT_00667d08;
+// 0x00667d0c
+extern int DAT_00667d0c;
 // 0x00667d10
 extern unsigned int DAT_00667d10;
 // 0x00667d3c
@@ -2511,6 +2525,8 @@ extern unsigned int DAT_008003f8;
 extern LEGO_EXPORT unsigned int ObjectPartArray[1024];
 // 0x00801400
 extern LEGO_EXPORT struct MapElement **GameMap;
+// 0x00801408
+extern unsigned int DAT_00801408;
 // 0x00801420
 extern struct DeferredSprite DAT_00801420[100];
 // 0x00801a6c
@@ -2527,6 +2543,8 @@ extern LEGO_EXPORT struct TileSpriteEntry TileSpriteInfo[2048];
 extern unsigned int DAT_00805f48;
 // 0x00805f60
 extern LEGO_EXPORT void *TileSpriteArray[2048];
+// 0x00807f60
+extern struct MapRenderOrderEntry MapRenderOrderList[4096];
 // 0x0080ff60
 extern unsigned int DAT_0080ff60;
 // 0x0080ff64
@@ -3131,6 +3149,8 @@ extern unsigned int DAT_00832bac;
 extern unsigned int DAT_00832ba4;
 // 0x00832ba8
 extern unsigned int DAT_00832ba8;
+// 0x00832bcc
+extern int DAT_00832bcc;
 // 0x00832bd0
 extern int DAT_00832bd0;
 // 0x00832bd4

@@ -411,6 +411,12 @@ char *DAT_004b81d4 = ".\\graphics\\icons\\";
 // STRING: LEGOLAND 0x004b81f8
 char *DAT_004b81d8 = ".\\graphics\\models\\";
 
+// GLOBAL: LEGOLAND 0x004b8320
+int DAT_004b8320;
+
+// GLOBAL: LEGOLAND 0x004b8324
+int DAT_004b8324;
+
 // GLOBAL: LEGOLAND 0x004b8334
 int DAT_004b8334;
 
@@ -449,6 +455,9 @@ LEGO_EXPORT unsigned int BGFullUpdate;
 
 // GLOBAL: LEGOLAND 0x004b9228
 const unsigned char DAT_004b9228[1];
+
+// GLOBAL: LEGOLAND 0x004b9248
+void *DAT_004b9248;
 
 // GLOBAL: LEGOLAND 0x004b929c
 void *DAT_004b929c;
@@ -1982,6 +1991,9 @@ LEGO_EXPORT int ScrollSpeedY;
 // GLOBAL: LEGOLAND 0x00667cd8
 unsigned int DAT_00667cd8;
 
+// GLOBAL: LEGOLAND 0x00667cdc
+unsigned int DAT_00667cdc;
+
 // GLOBAL: LEGOLAND 0x00667ce0
 int DAT_00667ce0;
 
@@ -2006,8 +2018,17 @@ int DAT_00667cf8;
 // GLOBAL: LEGOLAND 0x00667cfc
 int DAT_00667cfc;
 
+// GLOBAL: LEGOLAND 0x00667d00
+int DAT_00667d00;
+
+// GLOBAL: LEGOLAND 0x00667d04
+int DAT_00667d04;
+
 // GLOBAL: LEGOLAND 0x00667d08
 int DAT_00667d08;
+
+// GLOBAL: LEGOLAND 0x00667d0c
+int DAT_00667d0c;
 
 // GLOBAL: LEGOLAND 0x00667d10
 unsigned int DAT_00667d10;
@@ -3481,6 +3502,9 @@ LEGO_EXPORT unsigned int ObjectPartArray[1024];
 // GLOBAL: LEGOLAND 0x00801400
 LEGO_EXPORT struct MapElement **GameMap;
 
+// GLOBAL: LEGOLAND 0x00801408
+unsigned int DAT_00801408;
+
 // GLOBAL: LEGOLAND 0x00801420
 struct DeferredSprite DAT_00801420[100];
 
@@ -3504,6 +3528,9 @@ unsigned int DAT_00805f48;
 
 // GLOBAL: LEGOLAND 0x00805f60
 LEGO_EXPORT void *TileSpriteArray[2048];
+
+// GLOBAL: LEGOLAND 0x00807f60
+struct MapRenderOrderEntry MapRenderOrderList[4096];
 
 // GLOBAL: LEGOLAND 0x0080ff60
 unsigned int DAT_0080ff60;
@@ -4416,6 +4443,9 @@ unsigned int DAT_00832ba8;
 
 // GLOBAL: LEGOLAND 0x00832bac
 unsigned int DAT_00832bac;
+
+// GLOBAL: LEGOLAND 0x00832bcc
+int DAT_00832bcc;
 
 // GLOBAL: LEGOLAND 0x00832bd0
 int DAT_00832bd0;

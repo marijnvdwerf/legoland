@@ -9,14 +9,6 @@ struct Navigator {
     short dy;
 };
 
-struct RectNode {
-    int field_0;
-    int field_4;
-    int field_8;
-    int field_c;
-    struct RectNode *next;
-};
-
 // FUNCTION: LEGOLAND 0x004806a0
 LEGO_EXPORT unsigned int Rand_Max(unsigned int max_value) {
     return (unsigned int)rand() % (max_value + 1);

@@ -6,6 +6,13 @@
 struct RenderObject;
 struct RenderObjectVtable;
 
+struct MapRenderOrderEntry {
+    /* 0x00 */ unsigned int flag;
+    /* 0x04 */ unsigned short coords;
+    /* 0x06 */ unsigned char x;
+    /* 0x07 */ unsigned char height;
+};
+
 struct EditCursorData {
     /* 0x00 */ unsigned char pad_0[0x3c];
     /* 0x3c */ unsigned char field_3c;

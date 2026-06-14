@@ -80,7 +80,11 @@ void FUN_0045a000(int power, struct RenderObject *object) {
 }
 
 // FUNCTION: LEGOLAND 0x0045a030
-void FUN_0045a030(int power, struct RenderObject *object) { STUB(); }
+void FUN_0045a030(int power, struct RenderObject *object) {
+    object->flags.bytes[1] |= 1;
+    DAT_00832bd8 = DAT_00832bd8 + power;
+    DAT_00832bdc = DAT_00832bdc + 1;
+}
 
 // FUNCTION: LEGOLAND 0x0045a060
 void FUN_0045a060(void) {
