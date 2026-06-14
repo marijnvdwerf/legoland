@@ -5,6 +5,7 @@
 #include <windows.h>
 
 void FUN_00455f70(int param_1);
+void FUN_00454d80(char *text, int font, RECT rc, COLORREF color);
 LEGO_EXPORT void PrintCent(int cx, int y, int width, const char *text, int font);
 LEGO_EXPORT void BubbleHelp(int *rect, char *text, int font);
 LEGO_EXPORT HGDIOBJ SelectFont(HDC hdc, int font_id);

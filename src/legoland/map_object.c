@@ -792,4 +792,4 @@ LEGO_EXPORT void ProcessDamage(void) { STUB(); }
 void FUN_00463680(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004636c0
-void FUN_004636c0(void) { STUB(); }
+int FUN_004636c0() { STUB(); }

@@ -172,7 +172,7 @@ void FUN_0044f170(struct Bloke *bloke) {
 void FUN_0044f180(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044f360
-void FUN_0044f360(void) { STUB(); }
+int FUN_0044f360() { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044f3d0
 unsigned int FUN_0044f3d0(struct BlokeList *list, unsigned short *value) {

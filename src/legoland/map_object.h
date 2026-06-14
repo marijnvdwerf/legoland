@@ -41,3 +41,4 @@ void FUN_00462e50(unsigned int index, unsigned int value);
 void FUN_00462e70(unsigned int index, unsigned int value);
 void FUN_00462e90(void);
 void FUN_00463560(void);
+int FUN_004636c0();
