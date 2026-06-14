@@ -482,10 +482,196 @@ void FUN_00435750(void) { STUB(); }
 void FUN_00435bd0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00435c70
-void FUN_00435c70(void) { STUB(); }
+int FUN_00435c70(void) {
+    struct JungleScore *score;
+    struct JungleObj *obj;
+    struct JungleFish *fish;
+    struct JunglePath *path;
+    struct JungleRide *ride;
+    struct JungleScore scoreCopy;
+    struct JungleRide rideCopy;
+    int count;
+    int i;
+    unsigned int *blokes;
+
+    score = DAT_00629c3c;
+    count = 0;
+    for (; score != NULL; score = score->next) {
+        count = count + 1;
+    }
+    SaveGameWrite(&count, 4);
+    score = DAT_00629c3c;
+    path = DAT_0062fd2c;
+    while (count-- != 0) {
+        scoreCopy = *score;
+        blokes = scoreCopy.blokes;
+        i = 5;
+        do {
+            *blokes = GetBlokeNum(*blokes);
+            blokes = blokes + 1;
+            i = i - 1;
+        } while (i != 0);
+        SaveGameWrite(&scoreCopy, 0x44);
+        score = score->next;
+        path = DAT_0062fd2c;
+    }
+    count = 0;
+    for (; path != NULL; path = path->next) {
+        count = count + 1;
+    }
+    SaveGameWrite(&count, 4);
+    path = DAT_0062fd2c;
+    fish = DAT_00629c30;
+    while (count-- != 0) {
+        SaveGameWrite(path, 0x1c);
+        path = path->next;
+        fish = DAT_00629c30;
+    }
+    count = 0;
+    for (; fish != NULL; fish = fish->next) {
+        count = count + 1;
+    }
+    SaveGameWrite(&count, 4);
+    fish = DAT_00629c30;
+    obj = DAT_00629c2c;
+    while (count-- != 0) {
+        SaveGameWrite(fish, 0xc);
+        fish = fish->next;
+        obj = DAT_00629c2c;
+    }
+    count = 0;
+    for (; obj != NULL; obj = obj->next) {
+        count = count + 1;
+    }
+    SaveGameWrite(&count, 4);
+    obj = DAT_00629c2c;
+    ride = DAT_00616164;
+    while (count-- != 0) {
+        SaveGameWrite(obj, 8);
+        obj = obj->next;
+        ride = DAT_00616164;
+    }
+    count = 0;
+    for (; ride != NULL; ride = ride->next) {
+        count = count + 1;
+    }
+    SaveGameWrite(&count, 4);
+    ride = DAT_00616164;
+    while (count-- != 0) {
+        rideCopy = *ride;
+        blokes = rideCopy.blokes;
+        i = 3;
+        do {
+            *blokes = GetBlokeNum(*blokes);
+            blokes = blokes + 1;
+            i = i - 1;
+        } while (i != 0);
+        SaveGameWrite(&rideCopy, 0x3f8);
+        ride = ride->next;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00435ec0
-void FUN_00435ec0(void) { STUB(); }
+int FUN_00435ec0(void) {
+    struct JungleScore *score;
+    struct JungleScore *prevScore;
+    struct JunglePath *path;
+    struct JunglePath *prevPath;
+    struct JungleFish *fish;
+    struct JungleFish *prevFish;
+    struct JungleObj *obj;
+    struct JungleObj *prevObj;
+    struct JungleRide *ride;
+    struct JungleRide *prevRide;
+    unsigned int *blokes;
+    int count;
+    int i;
+
+    prevScore = NULL;
+    SaveGameRead(&count, 4);
+    while (count-- != 0) {
+        if (prevScore == NULL) {
+            score = (struct JungleScore *)malloc(0x44);
+            DAT_00629c3c = score;
+        } else {
+            score = (struct JungleScore *)malloc(0x44);
+            prevScore->next = score;
+        }
+        SaveGameRead(score, 0x44);
+        blokes = score->blokes;
+        i = 5;
+        do {
+            *blokes = GetBlokePtr(*blokes);
+            blokes = blokes + 1;
+            i = i - 1;
+        } while (i != 0);
+        prevScore = score;
+    }
+    SaveGameRead(&count, 4);
+    prevPath = NULL;
+    while (count-- != 0) {
+        if (prevPath == NULL) {
+            path = (struct JunglePath *)malloc(0x1c);
+            DAT_0062fd2c = path;
+        } else {
+            path = (struct JunglePath *)malloc(0x1c);
+            prevPath->next = path;
+        }
+        SaveGameRead(path, 0x1c);
+        prevPath = path;
+    }
+    SaveGameRead(&count, 4);
+    prevFish = NULL;
+    while (count-- != 0) {
+        if (prevFish == NULL) {
+            fish = (struct JungleFish *)malloc(0xc);
+            DAT_00629c30 = fish;
+        } else {
+            fish = (struct JungleFish *)malloc(0xc);
+            prevFish->next = fish;
+        }
+        SaveGameRead(fish, 0xc);
+        prevFish = fish;
+    }
+    SaveGameRead(&count, 4);
+    prevObj = NULL;
+    while (count-- != 0) {
+        if (prevObj == NULL) {
+            obj = (struct JungleObj *)malloc(8);
+            DAT_00629c2c = obj;
+        } else {
+            obj = (struct JungleObj *)malloc(8);
+            prevObj->next = obj;
+        }
+        SaveGameRead(obj, 8);
+        prevObj = obj;
+    }
+    SaveGameRead(&count, 4);
+    prevRide = NULL;
+    while (count-- != 0) {
+        if (prevRide == NULL) {
+            ride = (struct JungleRide *)malloc(sizeof(struct JungleRide));
+            DAT_00616164 = ride;
+        } else {
+            ride = (struct JungleRide *)malloc(sizeof(struct JungleRide));
+            prevRide->next = ride;
+        }
+        SaveGameRead(ride, 0x3f8);
+        blokes = ride->blokes;
+        i = 3;
+        do {
+            *blokes = GetBlokePtr(*blokes);
+            blokes = blokes + 1;
+            i = i - 1;
+        } while (i != 0);
+        prevRide = ride;
+    }
+    for (score = DAT_00629c3c; score != NULL; score = score->next) {
+        FUN_004373c0(score->field_0);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00436130
 void FUN_00436130(unsigned short param_1, unsigned int param_2) {
