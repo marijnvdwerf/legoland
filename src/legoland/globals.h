@@ -41,6 +41,12 @@ struct JungleScore;
 struct JungleObj;
 struct JunglePath;
 struct JungleTileMap;
+struct BoatRide;
+struct RideNode;
+struct PathNode;
+struct MermaidNode;
+struct RideBuilding;
+struct BoatTileMap;
 struct CatapultNode;
 struct Position;
 struct RinData;
@@ -316,8 +322,26 @@ extern unsigned char SpiderRide_SFX[8];
 extern void *DAT_004b4d90;
 // 0x004b4fa8
 extern unsigned char WATERWORKS_SFX[28];
+// 0x004b5118
+extern int DAT_004b5118[0x10];
+// 0x004b5158
+extern float DAT_004b5158[0x10];
+// 0x004b5198
+extern float DAT_004b5198[0x10];
+// 0x004b51d8
+extern int DAT_004b51d8[0x80];
+// 0x004b5260
+extern int DAT_004b5260[5];
+// 0x004b5278
+extern int DAT_004b5278[5];
+// 0x004b5290
+extern int DAT_004b5290[0xc];
+// 0x004b52c0
+extern unsigned char PTR_s_Boat_Noise_wav[0x18];
 // 0x004b53c0
 extern unsigned int DAT_004b53c0[5];
+// 0x004b53d4
+extern unsigned char DAT_004b53d4[0x190];
 // 0x004b55f4
 extern unsigned int DAT_004b55f4;
 // 0x004b5608
@@ -890,21 +914,33 @@ extern void *DAT_004cc030;
 // 0x004cc034
 extern void *DAT_004cc034;
 // 0x004cc03c
-extern void *DAT_004cc03c;
+extern struct BoatRide *DAT_004cc03c;
 // 0x004cc048
-extern unsigned int DAT_004cc048;
+extern int DAT_004cc048[5];
 // 0x004cc060
-extern unsigned int DAT_004cc060;
+extern int DAT_004cc060[4];
 // 0x004cc070
 extern void *DAT_004cc070;
 // 0x004cc074
-extern void *DAT_004cc074;
+extern struct RideNode *DAT_004cc074;
 // 0x004cc078
-extern unsigned int DAT_004cc078;
+extern int DAT_004cc078[4];
 // 0x004cc088
 extern void *DAT_004cc088;
+// 0x004cc08c
+extern unsigned int DAT_004cc08c;
+// 0x004cc090
+extern struct Cursor DAT_004cc090[4];
+// 0x004d2164
+extern struct MermaidNode *DAT_004d2164;
+// 0x004d2168
+extern struct Cursor DAT_004d2168[4];
 // 0x004d823c
-extern void *DAT_004d823c;
+extern struct PathNode *DAT_004d823c;
+// 0x004d8240
+extern struct RideNode *DAT_004d8240;
+// 0x004d8244
+extern struct RideNode *DAT_004d8244;
 // 0x004d8250
 extern const unsigned char DAT_004d8250[1];
 // 0x004d8268
@@ -2454,6 +2490,8 @@ extern struct ScreenState DAT_0080ffa0;
 extern char DAT_008100c0[0x80];
 // 0x00810140
 extern unsigned int DAT_00810140;
+// 0x00810144
+extern unsigned int DAT_00810144;
 // 0x00810148
 extern struct Sprite *SPRITE_TitleScreenBk;
 // 0x0081014c
@@ -2899,13 +2937,23 @@ extern unsigned int DAT_0082ade8;
 // 0x0082adec
 extern unsigned int DAT_0082adec;
 // 0x0082adf0
-extern void *DAT_0082adf0;
+extern struct RideBuilding *DAT_0082adf0;
+// 0x0082adf4
+extern struct BoatTileMap *DAT_0082adf4;
 // 0x0082adf8
-extern unsigned int DAT_0082adf8;
+extern struct RideBuilding *DAT_0082adf8;
+// 0x0082adfc
+extern struct Sprite *DAT_0082adfc;
+// 0x0082ae00
+extern void *DAT_0082ae00;
 // 0x0082ae20
 extern struct Cursor DAT_0082ae20;
+// 0x0082c654
+extern struct Sprite *DAT_0082c654;
 // 0x0082c658
-extern unsigned int DAT_0082c658;
+extern struct Cursor *DAT_0082c658;
+// 0x0082c65c
+extern void *DAT_0082c65c;
 // 0x0082c668
 extern struct Sprite *DAT_0082c668;
 // 0x0082c678

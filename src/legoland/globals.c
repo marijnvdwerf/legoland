@@ -165,8 +165,35 @@ void *DAT_004b4d90;
 // GLOBAL: LEGOLAND 0x004b4fa8
 unsigned char WATERWORKS_SFX[28];
 
+// GLOBAL: LEGOLAND 0x004b5118
+int DAT_004b5118[0x10];
+
+// GLOBAL: LEGOLAND 0x004b5158
+float DAT_004b5158[0x10];
+
+// GLOBAL: LEGOLAND 0x004b5198
+float DAT_004b5198[0x10];
+
+// GLOBAL: LEGOLAND 0x004b51d8
+int DAT_004b51d8[0x80];
+
+// GLOBAL: LEGOLAND 0x004b5260
+int DAT_004b5260[5];
+
+// GLOBAL: LEGOLAND 0x004b5278
+int DAT_004b5278[5];
+
+// GLOBAL: LEGOLAND 0x004b5290
+int DAT_004b5290[0xc];
+
+// GLOBAL: LEGOLAND 0x004b52c0
+unsigned char PTR_s_Boat_Noise_wav[0x18];
+
 // GLOBAL: LEGOLAND 0x004b53c0
 unsigned int DAT_004b53c0[5];
+
+// GLOBAL: LEGOLAND 0x004b53d4
+unsigned char DAT_004b53d4[0x190];
 
 // GLOBAL: LEGOLAND 0x004b55f4
 unsigned int DAT_004b55f4;
@@ -1056,28 +1083,46 @@ struct InterfaceEventNode;
 struct InterfaceResearchNode;
 
 // GLOBAL: LEGOLAND 0x004cc03c
-void *DAT_004cc03c;
+struct BoatRide *DAT_004cc03c;
 
 // GLOBAL: LEGOLAND 0x004cc048
-unsigned int DAT_004cc048;
+int DAT_004cc048[5];
 
 // GLOBAL: LEGOLAND 0x004cc060
-unsigned int DAT_004cc060;
+int DAT_004cc060[4];
 
 // GLOBAL: LEGOLAND 0x004cc070
 void *DAT_004cc070;
 
 // GLOBAL: LEGOLAND 0x004cc074
-void *DAT_004cc074;
+struct RideNode *DAT_004cc074;
 
 // GLOBAL: LEGOLAND 0x004cc078
-unsigned int DAT_004cc078;
+int DAT_004cc078[4];
 
 // GLOBAL: LEGOLAND 0x004cc088
 void *DAT_004cc088;
 
+// GLOBAL: LEGOLAND 0x004cc08c
+unsigned int DAT_004cc08c;
+
+// GLOBAL: LEGOLAND 0x004cc090
+struct Cursor DAT_004cc090[4];
+
+// GLOBAL: LEGOLAND 0x004d2164
+struct MermaidNode *DAT_004d2164;
+
+// GLOBAL: LEGOLAND 0x004d2168
+struct Cursor DAT_004d2168[4];
+
 // GLOBAL: LEGOLAND 0x004d823c
-void *DAT_004d823c;
+struct PathNode *DAT_004d823c;
+
+// GLOBAL: LEGOLAND 0x004d8240
+struct RideNode *DAT_004d8240;
+
+// GLOBAL: LEGOLAND 0x004d8244
+struct RideNode *DAT_004d8244;
 
 // GLOBAL: LEGOLAND 0x004d8250
 const unsigned char DAT_004d8250[1];
@@ -3412,6 +3457,9 @@ char DAT_008100c0[0x80];
 // GLOBAL: LEGOLAND 0x00810140
 unsigned int DAT_00810140;
 
+// GLOBAL: LEGOLAND 0x00810144
+unsigned int DAT_00810144;
+
 // GLOBAL: LEGOLAND 0x00810148
 struct Sprite *SPRITE_TitleScreenBk;
 
@@ -4079,16 +4127,31 @@ unsigned int DAT_0082ade8;
 unsigned int DAT_0082adec;
 
 // GLOBAL: LEGOLAND 0x0082adf0
-void *DAT_0082adf0;
+struct RideBuilding *DAT_0082adf0;
+
+// GLOBAL: LEGOLAND 0x0082adf4
+struct BoatTileMap *DAT_0082adf4;
 
 // GLOBAL: LEGOLAND 0x0082adf8
-unsigned int DAT_0082adf8;
+struct RideBuilding *DAT_0082adf8;
+
+// GLOBAL: LEGOLAND 0x0082adfc
+struct Sprite *DAT_0082adfc;
+
+// GLOBAL: LEGOLAND 0x0082ae00
+void *DAT_0082ae00;
 
 // GLOBAL: LEGOLAND 0x0082ae20
 struct Cursor DAT_0082ae20;
 
+// GLOBAL: LEGOLAND 0x0082c654
+struct Sprite *DAT_0082c654;
+
 // GLOBAL: LEGOLAND 0x0082c658
-unsigned int DAT_0082c658;
+struct Cursor *DAT_0082c658;
+
+// GLOBAL: LEGOLAND 0x0082c65c
+void *DAT_0082c65c;
 
 // GLOBAL: LEGOLAND 0x0082c668
 struct Sprite *DAT_0082c668;
