@@ -815,7 +815,7 @@ void FUN_0041a3d0(void *param_1, unsigned int param_2) {
 
     BasicObjectDCalcCursor((unsigned int)param_1, param_2);
     PathCursor.field_1408 = QueryCursor.field_1408;
-    PathCursor.field_1414[2] = QueryCursor.field_1414[2] + 1;
+    PathCursor.field_1414[0] = QueryCursor.field_1414[2] + 1;
     PathCursor.field_1404 = QueryCursor.field_1404;
     PathCursor.field_1414[3] = QueryCursor.field_1414[3];
     PathCursor.field_1414[1] = QueryCursor.field_1414[1];
@@ -824,7 +824,7 @@ void FUN_0041a3d0(void *param_1, unsigned int param_2) {
     PathCursor.field_1830 = 0;
     QueryCursor.field_1830 = (unsigned int)&PathCursor;
     DAT_00810144 = 1;
-    PathCursor.field_1414[2] = PathCursor.field_1414[2];
+    PathCursor.field_1414[2] = PathCursor.field_1414[0];
     DefaultCursor(&DAT_0082ae20);
     *(struct Footprint *)DAT_0082ae20.field_1414 = *(struct Footprint *)DAT_004b53c0;
     for (; path != NULL; path = path->next) {
@@ -1577,39 +1577,40 @@ void FUN_0041b880(void) {
     memcpy(state->footprint, DAT_004b53c0, 20);
     DefaultCursor(&EditCursor);
     EditCursor.field_1828 |= 0x8;
-    SetEditCursorFootPrint(DAT_0082adf0->footprint);
+    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x0041b8e0
 void FUN_0041b8e0(int param_1, int *param_2) {
+    int *piVar1 = param_2;
     struct RideNode *score = DAT_004cc074;
     unsigned int mask;
     int dir;
 
-    mask = FUN_0041c690(param_2[0], param_2[1], (unsigned short *)&param_2);
-    FUN_0041c4c0(param_2[0], param_2[1], mask, (unsigned short *)&param_2);
+    mask = FUN_0041c690(*param_2, param_2[1], (unsigned short *)&param_2);
+    FUN_0041c4c0(*piVar1, piVar1[1], mask, (unsigned short *)&param_2);
     IncrementObjectCount(*(void **)(param_1 + 0xc));
     FUN_0041b0d0((unsigned short)(unsigned int)param_2, 1);
-    FUN_0041bab0(param_2[0], param_2[1], (unsigned short *)&param_2);
+    FUN_0041bab0(*piVar1, piVar1[1], (unsigned short *)&param_2);
     if ((mask & 1) != 0) {
-        dir = FUN_0041c690(param_2[0], param_2[1] - 5, (unsigned short *)&param_2);
-        FUN_0041c4c0(param_2[0], param_2[1] - 5, dir, (unsigned short *)&param_2);
-        FUN_0041bab0(param_2[0], param_2[1] - 5, (unsigned short *)&param_2);
+        dir = FUN_0041c690(*piVar1, piVar1[1] - 5, (unsigned short *)&param_2);
+        FUN_0041c4c0(*piVar1, piVar1[1] - 5, dir, (unsigned short *)&param_2);
+        FUN_0041bab0(*piVar1, piVar1[1] - 5, (unsigned short *)&param_2);
     }
     if ((mask & 2) != 0) {
-        dir = FUN_0041c690(param_2[0] + 5, param_2[1], (unsigned short *)&param_2);
-        FUN_0041c4c0(param_2[0] + 5, param_2[1], dir, (unsigned short *)&param_2);
-        FUN_0041bab0(param_2[0] + 5, param_2[1], (unsigned short *)&param_2);
+        dir = FUN_0041c690(*piVar1 + 5, piVar1[1], (unsigned short *)&param_2);
+        FUN_0041c4c0(*piVar1 + 5, piVar1[1], dir, (unsigned short *)&param_2);
+        FUN_0041bab0(*piVar1 + 5, piVar1[1], (unsigned short *)&param_2);
     }
     if ((mask & 4) != 0) {
-        dir = FUN_0041c690(param_2[0], param_2[1] + 5, (unsigned short *)&param_2);
-        FUN_0041c4c0(param_2[0], param_2[1] + 5, dir, (unsigned short *)&param_2);
-        FUN_0041bab0(param_2[0], param_2[1] + 5, (unsigned short *)&param_2);
+        dir = FUN_0041c690(*piVar1, piVar1[1] + 5, (unsigned short *)&param_2);
+        FUN_0041c4c0(*piVar1, piVar1[1] + 5, dir, (unsigned short *)&param_2);
+        FUN_0041bab0(*piVar1, piVar1[1] + 5, (unsigned short *)&param_2);
     }
     if ((mask & 8) != 0) {
-        dir = FUN_0041c690(param_2[0] - 5, param_2[1], (unsigned short *)&param_2);
-        FUN_0041c4c0(param_2[0] - 5, param_2[1], dir, (unsigned short *)&param_2);
-        FUN_0041bab0(param_2[0] - 5, param_2[1], (unsigned short *)&param_2);
+        dir = FUN_0041c690(*piVar1 - 5, piVar1[1], (unsigned short *)&param_2);
+        FUN_0041c4c0(*piVar1 - 5, piVar1[1], dir, (unsigned short *)&param_2);
+        FUN_0041bab0(*piVar1 - 5, piVar1[1], (unsigned short *)&param_2);
     }
     if (score != NULL) {
         while (score->id != (unsigned short)(unsigned int)param_2) {
@@ -1618,8 +1619,9 @@ void FUN_0041b8e0(int param_1, int *param_2) {
                 return;
             }
         }
-        score->value = FUN_0041c8c0(score->field_2, score->field_3, score->field_4, score->field_5);
-        if (score->value != 0) {
+        dir = FUN_0041c8c0(score->field_2, score->field_3, score->field_4, score->field_5);
+        score->field_8 = dir;
+        if (dir != 0) {
             FUN_0041caa0((unsigned short)(unsigned int)param_2);
         }
     }
