@@ -6,9 +6,12 @@
 #include "bricks.h"
 #include "gamemap.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
+#include "math.h"
 #include "obj_instance.h"
 #include "objclass.h"
+#include "print_sprite.h"
 #include "render3d.h"
 #include "ride_bloke.h"
 #include "ride_queue.h"
@@ -76,6 +79,26 @@ struct DSObjClass {
 struct DSBlokeNode {
     /* 0x00 */ struct DSBlokeNode *next;
     /* 0x04 */ short field_4;
+};
+
+struct DSRenderNode {
+    /* 0x00 */ struct DSRenderNode *next;
+    /* 0x04 */ unsigned char pad_4[0x8 - 0x4];
+    /* 0x08 */ struct Bloke *field_8;
+    /* 0x0c */ short field_c;
+};
+
+struct DSRenderSub {
+    /* 0x00 */ unsigned char pad_0[0x14];
+    /* 0x14 */ int field_14;
+    /* 0x18 */ int field_18;
+    /* 0x1c */ unsigned char pad_1c[0xcc - 0x1c];
+    /* 0xcc */ struct DSRenderNode *field_cc;
+};
+
+struct DSRenderRoot {
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ struct DSRenderSub *field_c;
 };
 
 #include "image_sprite.h"
@@ -453,7 +476,41 @@ unsigned int *FUN_00405ad0(struct DSCarLayer *arg1, unsigned short arg2) {
 }
 
 // FUNCTION: LEGOLAND 0x00405b10
-void FUN_00405b10(void) { STUB(); }
+void FUN_00405b10(struct DSRenderRoot *param_1, unsigned int param_2, unsigned int param_3, unsigned char *param_4, unsigned int param_5, unsigned int param_6) {
+    struct DSRenderSub *sub = param_1->field_c;
+    struct DSRenderNode *node;
+    struct Point ref;
+    int bounds[4];
+    int dx;
+    int dy;
+
+    ref.x = param_4[0];
+    ref.y = param_4[1];
+    for (node = sub->field_cc; node != NULL; node = node->next) {
+        if (*(short *)param_4 == node->field_c) {
+            unsigned char state = *((unsigned char *)node->field_8 + 0x60);
+            if (state <= 1 || state >= 3) {
+                IP_RenderBlokeIn3DNow(node->field_8);
+            }
+        }
+    }
+    GetTileBounds(&ref, bounds);
+    if (DAT_0082c6c0 != NULL) {
+        dx = sub->field_14;
+        dy = sub->field_18;
+        if (dx < 0) {
+            dx = -(-dx >> 1);
+        } else {
+            dx = dx >> 1;
+        }
+        if (dy < 0) {
+            dy = -(-dy >> 1);
+        } else {
+            dy = dy >> 1;
+        }
+        PrintSprite(DAT_0082c6c0, bounds[0] + dx, bounds[1] + dy, param_6, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00405bd0
 void FUN_00405bd0(void) { STUB(); }
