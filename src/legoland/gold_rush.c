@@ -131,12 +131,11 @@ struct GoldArray *FUN_00406f00(struct GoldItem *item) {
 }
 
 // FUNCTION: LEGOLAND 0x00406f30
-void FUN_00406f30(int param) {
-    /* param is a RideObject* carried as int (also passed to FUN_00406e90 as void*) */
-    if (FUN_00406e90((void *)param) == 0) {
-        Ride_SetFlagToNotLetAnyoneOn((struct RideObject *)param);
+void FUN_00406f30(void *param) {
+    if (FUN_00406e90(param) == 0) {
+        Ride_SetFlagToNotLetAnyoneOn(param);
     } else {
-        Ride_ClearFlagToNotLetAnyoneOn((struct RideObject *)param);
+        Ride_ClearFlagToNotLetAnyoneOn(param);
     }
 }
 

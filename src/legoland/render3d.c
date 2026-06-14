@@ -914,11 +914,12 @@ struct RideInstance {
 };
 
 // FUNCTION: LEGOLAND 0x00442fa0
-LEGO_EXPORT void Ride_SetFlagToNotLetAnyoneOn(unsigned char *param_1) {
+LEGO_EXPORT void Ride_SetFlagToNotLetAnyoneOn(void *param_1) {
     struct MapCellElement *cell;
     struct RideInstance *instance;
-    int x = param_1[0];
-    int y = param_1[1];
+    unsigned char *coords = param_1;
+    int x = coords[0];
+    int y = coords[1];
 
     if (x >= 0 && x < (int)lpConfig->width && y >= 0 && y < (int)lpConfig->height) {
         cell = (struct MapCellElement *)((char *)GameMap[y] + x * 0x14);
@@ -932,11 +933,12 @@ LEGO_EXPORT void Ride_SetFlagToNotLetAnyoneOn(unsigned char *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00443000
-LEGO_EXPORT void Ride_ClearFlagToNotLetAnyoneOn(unsigned char *param_1) {
+LEGO_EXPORT void Ride_ClearFlagToNotLetAnyoneOn(void *param_1) {
     struct MapCellElement *cell;
     struct RideInstance *instance;
-    int x = param_1[0];
-    int y = param_1[1];
+    unsigned char *coords = param_1;
+    int x = coords[0];
+    int y = coords[1];
 
     if (x >= 0 && x < (int)lpConfig->width && y >= 0 && y < (int)lpConfig->height) {
         cell = (struct MapCellElement *)((char *)GameMap[y] + x * 0x14);
