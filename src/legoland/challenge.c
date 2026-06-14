@@ -21,6 +21,7 @@
 #include "resource.h"
 #include "screens.h"
 #include "sound_music.h"
+#include "stream.h"
 #include "timer.h"
 
 struct AnimHandle;
@@ -1231,7 +1232,7 @@ int FUN_00444df0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00444eb0
-unsigned char FUN_00444eb0(unsigned int param_1, unsigned int param_2) {
+unsigned char FUN_00444eb0(unsigned int param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
     if ((param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         DAT_0081c038 = 0;
@@ -1242,10 +1243,49 @@ unsigned char FUN_00444eb0(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00444ef0
-void FUN_00444ef0(void) { STUB(); }
+unsigned char FUN_00444ef0(unsigned int param_1, unsigned int param_2) {
+    struct IconNode *icon;
+
+    icon = DAT_006660a8;
+    if (icon == NULL) {
+        return 1;
+    }
+    if (((icon->field_34 == 0) & 0x400) != 0) {
+        FUN_0046d680(icon, DAT_0081c034);
+        icon = DAT_006660a8;
+    }
+    if ((param_2 & 2) == 0) {
+        return 1;
+    }
+    if ((icon->field_34 & 0x400) != 0) {
+        return (unsigned char)FUN_00444eb0(0, param_2, 0, 0);
+    }
+    DAT_0081c07c = 1;
+    PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
+    FUN_00498920();
+    DAT_006687b0 = 4;
+    if (DAT_006660a4 < DAT_006660a0 - 1) {
+        DAT_006660a4 = DAT_006660a4 + 1;
+    }
+    FUN_00445310();
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00444f90
-void FUN_00444f90(void) { STUB(); }
+unsigned char FUN_00444f90(unsigned int param_1, unsigned char param_2) {
+    FUN_0046d680(DAT_006660ac, DAT_0081c084);
+    if ((param_2 & 2) != 0) {
+        DAT_0081c07c = 1;
+        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
+        if (DAT_006660a4 != 0) {
+            DAT_006660a4 = DAT_006660a4 - 1;
+        }
+        FUN_00498920();
+        DAT_006687b0 = 4;
+        FUN_00445310();
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00445000
 void FUN_00445000(void) {

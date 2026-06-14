@@ -19,6 +19,7 @@ struct _DIMOUSESTATE;
 // ---------------------------------------------------------------------------
 struct Sprite;
 struct Image;
+struct IconNode;
 struct CursorSource;
 struct Building;
 struct JailCell;
@@ -1418,10 +1419,14 @@ extern unsigned int DAT_00666094;
 extern unsigned int DAT_00666098;
 // 0x0066609c
 extern int DAT_0066609c;
+// 0x006660a0
+extern int DAT_006660a0;
+// 0x006660a4
+extern int DAT_006660a4;
 // 0x006660a8
-extern unsigned int DAT_006660a8;
+extern struct IconNode *DAT_006660a8;
 // 0x006660ac
-extern unsigned int DAT_006660ac;
+extern struct IconNode *DAT_006660ac;
 // 0x006660b0
 extern char DAT_006660b0[256];
 // 0x006661bc
@@ -2727,6 +2732,8 @@ extern struct Sprite *DAT_0081c040[1];
 extern struct Sprite *DAT_0081c054[1];
 // 0x0081c068
 extern struct Sprite *DAT_0081c068[1];
+// 0x0081c07c
+extern unsigned int DAT_0081c07c;
 // 0x0081c080
 extern struct Sprite *DAT_0081c080;
 // 0x0081c084
