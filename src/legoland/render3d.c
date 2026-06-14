@@ -1,4 +1,5 @@
 #include "render3d.h"
+#include <windows.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,19 +22,12 @@ struct AdjustStruct {
     int field4;
 };
 
-struct Viewport {
-    unsigned int field_0;
-    unsigned int field_4;
-    unsigned int field_8;
-    unsigned int field_c;
-};
-
 // FUNCTION: LEGOLAND 0x00441800
-LEGO_EXPORT void Render_SetViewport(struct Viewport *viewport) {
-    DAT_0081c8d0 = viewport->field_0;
-    DAT_0081c8d8 = viewport->field_8;
-    DAT_0081c8d4 = viewport->field_4;
-    DAT_0081c8dc = viewport->field_c;
+LEGO_EXPORT void Render_SetViewport(struct tagRECT *viewport) {
+    DAT_0081c8d0 = viewport->left;
+    DAT_0081c8d8 = viewport->right;
+    DAT_0081c8d4 = viewport->top;
+    DAT_0081c8dc = viewport->bottom;
 }
 
 struct RenderListNode {
