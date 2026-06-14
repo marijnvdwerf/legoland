@@ -120,7 +120,183 @@ void FUN_00432cb0(struct JungleRide *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00432d00
-void FUN_00432d00(int param_1) { STUB(); }
+void FUN_00432d00(int param_1) {
+    struct JungleRide *ride = DAT_00616164;
+    int idx;
+    int tw;
+    int th;
+    int tw2;
+    int th2;
+    int dx;
+    int dy;
+    int baseX;
+    int baseY;
+    int local_20;
+    int local_1c;
+    int frame;
+    int row;
+    int off;
+    int person;
+    unsigned int spr;
+    int local_10;
+    int local_c;
+    unsigned int angleIdx;
+
+    GetTileDimensions(&tw, &th);
+    idx = DAT_00629c54;
+    while (ride != NULL) {
+        int mode = ride->field_3e0;
+        if (param_1 == 0) {
+            if (mode != 1 && mode != 0x10 && (ride->field_8 != (ride->field_0 & 0xff) || (int)ride->field_10 >= (int)((ride->field_0 >> 8 & 0xff) + 5))) {
+                goto draw;
+            }
+        } else if (mode == 1 || mode == 0x10 ||
+                   (ride->field_8 == (ride->field_0 & 0xff) && (int)((ride->field_0 >> 8 & 0xff) + 5) <= (int)ride->field_10)) {
+        draw:
+            frame = ride->field_1c[idx * 2 + 1];
+            idx = ride->field_1c[idx * 2];
+            GetTileDimensions(&tw2, &th2);
+            dx = (idx - frame) * tw2 >> 9;
+            dy = (idx + frame) * th2 >> 9;
+            baseX = (((int)ride->field_8 - (int)ride->field_10) * (tw >> 1) - ((tw + 1) >> 1)) - (ScrollX >> 8);
+            baseY = ((int)ride->field_8 + (int)ride->field_10) * (th >> 1) - (ScrollY >> 8);
+            angleIdx = ride->field_29c[DAT_00629c54] & 0xff;
+            local_20 = *(int *)(*(int *)((char *)DAT_0081cd00 + 0xc) + angleIdx * 4) >> 1;
+            local_1c = *(int *)(*(int *)((char *)DAT_0081cd00 + 0x10) + angleIdx * 4) >> 1;
+            AdjustOffsetForViewMode((struct AdjustStruct *)&local_20);
+            ride->field_14 = (unsigned int)lpConfig->field_20 + dx + local_20 + baseX;
+            ride->field_18 = (unsigned int)lpConfig->field_22 + dy + local_1c + baseY;
+            PrintSprite(*(struct Sprite **)(*(int *)((char *)DAT_0081cd00 + 8) + (ride->field_29c[DAT_00629c54] & 0xff) * 4),
+                        ride->field_14, ride->field_18, 0, 0);
+            local_20 = (unsigned int)lpConfig->field_20 + dx + baseX;
+            local_1c = (unsigned int)lpConfig->field_22 + dy + baseY;
+            AdjustBlokePosition((struct BlokePos *)&local_20);
+            idx = DAT_00629c54;
+            if ((int)ride->field_29c[DAT_00629c54] < 4 || 0xb < (int)ride->field_29c[DAT_00629c54]) {
+                row = 2;
+                do {
+                    off = 0;
+                    if ((int)ride->field_29c[idx] < 8) {
+                        if (row == 1) {
+                            off = 1;
+                        } else if (row == 2) {
+                            off = -1;
+                        }
+                    }
+                    off = off + row;
+                    if (ride->blokes[off] != 0) {
+                        person = Find3DPersonFromBloke(ride->blokes[off]);
+                        local_10 = DAT_0081cb80[((ride->field_29c[DAT_00629c54] & 0xf) + off * 0x10) * 2] + 0x20;
+                        frame = DAT_0081cb80[((ride->field_29c[DAT_00629c54] & 0xf) + off * 0x10) * 2 + 1];
+                        local_c = frame + 0x18;
+                        if (off == 0) {
+                            *(float *)(person + 0x44) = ((float)(int)ride->field_29c[DAT_00629c54] * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3e0 * DAT_004ab3dc;
+                        } else {
+                            unsigned int a;
+                            if (off == 1) {
+                                a = ride->field_29c[DAT_00629c54] + 6;
+                            } else if (off == 2) {
+                                a = ride->field_29c[DAT_00629c54] - 6;
+                            } else {
+                                goto skip1;
+                            }
+                            a = a & 0xf;
+                            *(float *)(person + 0x44) = ((float)(int)a * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3e0 * DAT_004ab3dc;
+                            local_c = frame + 8;
+                        }
+                    skip1:
+                        SetPersonRotation(person, person + 0x40);
+                        AdjustOffsetForViewMode((struct AdjustStruct *)&local_10);
+                        *(int *)(person + 0x1c) = local_10 + local_20;
+                        *(int *)(person + 0x20) = local_c + local_1c;
+                        IP_RenderBlokeIn3DNow((struct Bloke *)ride->blokes[off]);
+                        idx = DAT_00629c54;
+                    }
+                    if (row == 0) {
+                        spr = ride->field_29c[idx] + 0x20;
+                        goto print1;
+                    } else if (row == 1) {
+                        spr = ride->field_29c[idx] + 0x10;
+                    print1:
+                        PrintSprite(*(struct Sprite **)(*(int *)((char *)DAT_0081cd00 + 8) + (spr & 0xff) * 4),
+                                    *(unsigned int *)((char *)ride + 0x14), *(unsigned int *)((char *)ride + 0x18), 0, 0);
+                        idx = DAT_00629c54;
+                    }
+                    row = row - 1;
+                } while (-1 < row);
+            } else {
+                row = 0;
+                do {
+                    off = 0;
+                    if (8 < (int)ride->field_29c[idx]) {
+                        if (row == 1) {
+                            off = 1;
+                        } else if (row == 2) {
+                            off = -1;
+                        }
+                    }
+                    off = off + row;
+                    if (ride->blokes[off] != 0) {
+                        person = Find3DPersonFromBloke(ride->blokes[off]);
+                        local_10 = DAT_0081cb80[((ride->field_29c[DAT_00629c54] & 0xf) + off * 0x10) * 2] + 0x20;
+                        frame = DAT_0081cb80[((ride->field_29c[DAT_00629c54] & 0xf) + off * 0x10) * 2 + 1];
+                        local_c = frame + 0x18;
+                        if (off == 0) {
+                            *(float *)(person + 0x44) = ((float)(int)ride->field_29c[DAT_00629c54] * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3e0 * DAT_004ab3dc;
+                        } else {
+                            unsigned int a;
+                            if (off == 1) {
+                                a = ride->field_29c[DAT_00629c54] + 6;
+                            } else if (off == 2) {
+                                a = ride->field_29c[DAT_00629c54] - 6;
+                            } else {
+                                goto skip2;
+                            }
+                            a = a & 0xf;
+                            *(float *)(person + 0x44) = ((float)(int)a * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3e0 * DAT_004ab3dc;
+                            local_c = frame + 8;
+                        }
+                    skip2:
+                        SetPersonRotation(person, person + 0x40);
+                        AdjustOffsetForViewMode((struct AdjustStruct *)&local_10);
+                        *(int *)(person + 0x1c) = local_10 + local_20;
+                        *(int *)(person + 0x20) = local_c + local_1c;
+                        IP_RenderBlokeIn3DNow((struct Bloke *)ride->blokes[off]);
+                        idx = DAT_00629c54;
+                    }
+                    if (row == 0) {
+                        spr = ride->field_29c[idx] + 0x10;
+                        goto print2;
+                    } else if (row == 2) {
+                        spr = ride->field_29c[idx] + 0x20;
+                    print2:
+                        PrintSprite(*(struct Sprite **)(*(int *)((char *)DAT_0081cd00 + 8) + (spr & 0xff) * 4),
+                                    *(unsigned int *)((char *)ride + 0x14), *(unsigned int *)((char *)ride + 0x18), 0, 0);
+                        idx = DAT_00629c54;
+                    }
+                    row = row + 1;
+                } while (row < 3);
+            }
+        }
+        if (ride->field_3e0 == 0x10 && ride->field_3e4 == 2 && idx == 0x4f && param_1 != 0 && ride->blokes[0] != 0) {
+            *(char *)(ride->blokes[0] + 0x60) += 1;
+            idx = ride->blokes[1];
+            ride->blokes[0] = 0;
+            if (idx != 0) {
+                *(char *)(idx + 0x60) += 1;
+                ride->blokes[1] = 0;
+            }
+            frame = ride->blokes[2];
+            idx = DAT_00629c54;
+            if (frame != 0) {
+                *(char *)(frame + 0x60) += 1;
+                ride->blokes[2] = 0;
+                idx = DAT_00629c54;
+            }
+        }
+        ride = ride->next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004332c0
 unsigned int FUN_004332c0(unsigned short *param_1) {
