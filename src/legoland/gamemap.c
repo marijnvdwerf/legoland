@@ -413,7 +413,48 @@ LEGO_EXPORT void AddObjectsPowerStats(unsigned int classid, struct Point *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x0045a230
-LEGO_EXPORT void RemoveObjectsPowerStats(unsigned int classid, unsigned int coords) { STUB(); }
+LEGO_EXPORT void RemoveObjectsPowerStats(unsigned int classid, unsigned int coords) {
+    int power;
+    struct MapCell *cell;
+    int amount;
+
+    power = FindObjectsPower(((struct ClassNode *)classid)->iface);
+    if (power != 0) {
+        if (0 < power) {
+            if ((coords & 0xff) < lpConfig->width && (coords >> 8 & 0xff) < lpConfig->height) {
+                cell = (struct MapCell *)((char *)GameMap[coords >> 8 & 0xff] + (coords & 0xff) * 0x14);
+            } else {
+                cell = NULL;
+            }
+            if ((cell->flags.bytes[1] & 2) == 0) {
+                DAT_00832bd0 = DAT_00832bd0 - power;
+                if (DAT_00832bd0 < DAT_00832bd4 - (int)DAT_00832bd8) {
+                    FUN_0045a0d0();
+                }
+            }
+        } else {
+            amount = (power ^ power >> 0x1f) - (power >> 0x1f);
+            DAT_00832bd4 = DAT_00832bd4 - amount;
+            if (DAT_00832bd8 != 0) {
+                if ((coords & 0xff) < lpConfig->width && (coords >> 8 & 0xff) < lpConfig->height) {
+                    cell = (struct MapCell *)((char *)GameMap[coords >> 8 & 0xff] + (coords & 0xff) * 0x14);
+                } else {
+                    cell = NULL;
+                }
+                if ((cell->flags.bytes[1] & 1) != 0) {
+                    DAT_00832bd8 = DAT_00832bd8 - amount;
+                    DAT_00832bdc = DAT_00832bdc + -1;
+                }
+                FUN_0045a060();
+            }
+        }
+        if (DAT_00832bd0 <= DAT_00832bd4) {
+            DAT_00832bcc = 0;
+            return;
+        }
+        DAT_00832bcc = 100 - (DAT_00832bd4 * 100) / DAT_00832bd0;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045a390
 LEGO_EXPORT void DefaultCursor(struct Cursor *cursor) {
