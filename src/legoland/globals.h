@@ -1613,6 +1613,8 @@ extern int DAT_00667d44;
 extern unsigned int DAT_00667d48;
 // 0x00667d4c
 extern unsigned int DAT_00667d4c;
+// 0x00667d50
+extern unsigned int DAT_00667d50;
 // 0x00667d54
 extern unsigned int DAT_00667d54;
 // 0x00667d58
@@ -2581,16 +2583,28 @@ extern unsigned int DAT_008003f8;
 extern LEGO_EXPORT unsigned int ObjectPartArray[1024];
 // 0x00801400
 extern LEGO_EXPORT struct MapElement **GameMap;
+// 0x00801404
+extern void *DAT_00801404;
 // 0x00801408
 extern unsigned int DAT_00801408;
+// 0x0080140c
+extern void *DAT_0080140c;
+// 0x00801410
+extern void *DAT_00801410;
 // 0x00801420
 extern struct DeferredSprite DAT_00801420[100];
 // 0x00801a60
 extern int DAT_00801a60;
 // 0x00801a64
 extern int DAT_00801a64;
+// 0x00801a68
+extern void *DAT_00801a68;
 // 0x00801a6c
 extern void *DAT_00801a6c;
+// 0x00801a70
+extern void *DAT_00801a70;
+// 0x00801a74
+extern int DAT_00801a74;
 // 0x00801a80
 extern struct MapRect DAT_00801a80[10];
 // 0x00801b20
