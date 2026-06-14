@@ -99,6 +99,7 @@ void FUN_00434670(void *param_1, unsigned short param_2, struct Cursor *param_3)
 void FUN_00434b40(void *param_1, unsigned short param_2, struct Cursor *param_3);
 int FUN_00435c70(void);
 int FUN_00435ec0(void);
+void FUN_00435470(void *param_1, unsigned int param_2, struct Cursor *param_3);
 
 int Find3DPersonFromBloke();
 void SetPersonRotation();

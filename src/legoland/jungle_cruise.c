@@ -613,7 +613,7 @@ void FUN_00435150(void) { STUB(); }
 void FUN_00435230(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00435470
-void FUN_00435470(void) { STUB(); }
+void FUN_00435470(void *param_1, unsigned int param_2, struct Cursor *param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00435750
 void FUN_00435750(void) { STUB(); }
@@ -857,7 +857,59 @@ void FUN_004361a0(void) {
 void FUN_00436200(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00436470
-void FUN_00436470(void) { STUB(); }
+void FUN_00436470(unsigned int param_1, unsigned int *param_2) {
+    struct JungleScore *score = DAT_00629c3c;
+    struct JungleRide *ride;
+    struct MapElement *tile;
+    struct JunglePath *path;
+    unsigned char bx;
+    unsigned char by;
+    unsigned int x;
+    unsigned int y;
+    unsigned char local_14[12];
+    struct Cursor *local_8;
+
+    x = param_2[0];
+    y = param_2[1];
+    if ((int)x < 0 || (int)(unsigned int)lpConfig->width <= (int)x || (int)y < 0 || (int)(unsigned int)lpConfig->height <= (int)y) {
+        tile = NULL;
+    } else {
+        tile = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
+    }
+    bx = ((unsigned char *)tile)[4];
+    param_2[0] = bx;
+    by = ((unsigned char *)tile)[5];
+    param_2[1] = by;
+    ride = DAT_00616164;
+    if (score != NULL) {
+        do {
+            if ((short)((bx) | (by << 8)) == *(short *)&score->field_2 || (short)((bx) | (by << 8)) == *(short *)&score->field_4) {
+                path = FUN_004371b0(param_2[0], by);
+                QueryObj = path->field_2;
+                param_2[0] = (unsigned char)QueryObj;
+                param_2[1] = (unsigned char)(QueryObj >> 8);
+                *(struct Footprint *)((char *)QueryClass + 0x3c) = DAT_004b7478;
+                local_8 = DAT_0081cb60;
+                FUN_00435230(local_14, param_2);
+                return;
+            }
+            score = score->next;
+        } while (score != NULL);
+    }
+    *(struct Footprint *)((char *)QueryClass + 0x3c) = DAT_004b7478;
+    BasicObjectDCalcCursor(param_1, (unsigned int)param_2);
+    if (ride != NULL) {
+        x = (unsigned char)((bx) | (by << 8)) & 0xff;
+        while ((x != ride->field_4 || (unsigned int)by != ride->field_8) &&
+               (x != ride->field_c || (unsigned int)by != ride->field_10)) {
+            ride = ride->next;
+            if (ride == NULL) {
+                return;
+            }
+        }
+        FUN_0045f480(&QueryCursor, 1);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004365f0
 void FUN_004365f0(unsigned int param_1, int *param_2) {
@@ -957,7 +1009,107 @@ void FUN_004367b0(int param_1, int param_2, unsigned short *param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00436a40
-void FUN_00436a40(void) { STUB(); }
+void FUN_00436a40(void *param_1, unsigned int param_2, struct Cursor *param_3) {
+    struct JungleScore *score = DAT_00629c3c;
+    struct JungleScore *cur = DAT_00629c3c;
+    struct MapElement *tile;
+    unsigned int mask;
+    unsigned short coord;
+    unsigned int result;
+    int x;
+    int y;
+    int yc;
+
+    yc = (param_2 >> 8) & 0xff;
+    if ((param_2 & 0xff) < (unsigned int)lpConfig->width && (unsigned int)yc < (unsigned int)lpConfig->height) {
+        tile = (struct MapElement *)((char *)GameMap[yc] + (param_2 & 0xff) * 0x14);
+    } else {
+        tile = NULL;
+    }
+    if (tile->field_0 != DAT_0081cb54->field_c4) {
+        FUN_00435470(param_1, param_2, param_3);
+        return;
+    }
+    mask = FUN_00436fb0(param_3->field_1404, param_3->field_1408, &coord);
+    FUN_00436f30(param_1, (unsigned short)param_2, param_3);
+    if ((mask & 1) != 0) {
+        x = param_3->field_1404;
+        y = param_3->field_1408 - 5;
+        result = FUN_00436fb0(x, y, &coord);
+        FUN_00436dc0(x, y, result, &coord);
+        FUN_004367b0(x, y, &coord);
+    }
+    if ((mask & 2) != 0) {
+        y = param_3->field_1408;
+        x = param_3->field_1404 + 5;
+        result = FUN_00436fb0(x, y, &coord);
+        FUN_00436dc0(x, y, result, &coord);
+        FUN_004367b0(x, y, &coord);
+    }
+    if ((mask & 4) != 0) {
+        x = param_3->field_1404;
+        y = param_3->field_1408 + 5;
+        result = FUN_00436fb0(x, y, &coord);
+        FUN_00436dc0(x, y, result, &coord);
+        FUN_004367b0(x, y, &coord);
+    }
+    if ((mask & 8) != 0) {
+        y = param_3->field_1408;
+        x = param_3->field_1404 - 5;
+        result = FUN_00436fb0(x, y, &coord);
+        FUN_00436dc0(x, y, result, &coord);
+        FUN_004367b0(x, y, &coord);
+    }
+    if ((mask & 1) != 0) {
+        if ((mask & 8) != 0) {
+            y = param_3->field_1408 - 5;
+            x = param_3->field_1404 - 5;
+            if (FUN_004371b0(x, y) != NULL) {
+                result = FUN_00436fb0(x, y, &coord);
+                FUN_00436dc0(x, y, result, &coord);
+                FUN_004367b0(x, y, &coord);
+            }
+        }
+        if ((mask & 2) != 0) {
+            y = param_3->field_1408 - 5;
+            x = param_3->field_1404 + 5;
+            if (FUN_004371b0(x, y) != NULL) {
+                result = FUN_00436fb0(x, y, &coord);
+                FUN_00436dc0(x, y, result, &coord);
+                FUN_004367b0(x, y, &coord);
+            }
+        }
+    }
+    if ((mask & 4) != 0 && (mask & 8) != 0) {
+        y = param_3->field_1408 + 5;
+        x = param_3->field_1404 - 5;
+        if (FUN_004371b0(x, y) != NULL) {
+            result = FUN_00436fb0(x, y, &coord);
+            FUN_00436dc0(x, y, result, &coord);
+            FUN_004367b0(x, y, &coord);
+        }
+    }
+    if ((mask & 4) != 0 && (mask & 2) != 0) {
+        y = param_3->field_1408 + 5;
+        x = param_3->field_1404 + 5;
+        if (FUN_004371b0(x, y) != NULL) {
+            result = FUN_00436fb0(x, y, &coord);
+            FUN_00436dc0(x, y, result, &coord);
+            FUN_004367b0(x, y, &coord);
+        }
+    }
+    FUN_004373c0(coord);
+    if (score != NULL) {
+        while (cur->field_0 != coord) {
+            cur = cur->next;
+            if (cur == NULL) {
+                return;
+            }
+        }
+        result = FUN_004371e0(cur->field_2, cur->field_3, cur->field_4, cur->field_5);
+        cur->field_8 = result;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00436dc0
 void FUN_00436dc0(int param_1, int param_2, int param_3, unsigned short *param_4) {
