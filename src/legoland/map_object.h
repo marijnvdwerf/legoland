@@ -23,6 +23,7 @@ unsigned int GetObjSalvageValue(unsigned int obj, unsigned int salvage);
 int CheckForPeople(void *rect);
 void AddPathTile(struct Point *p, unsigned short param1);
 int AddRepairOrderForObject(int obj, int x, int y);
+LEGO_EXPORT void Print(int x, int y, const char *text, int font);
 int GetInstanceOfClass(unsigned int obj, unsigned short *uid);
 void RemoveInstanceFromList(int node);
 LEGO_EXPORT unsigned short RestoreBaseMap(int tile_x, int row_y);
