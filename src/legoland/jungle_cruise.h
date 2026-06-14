@@ -69,6 +69,11 @@ struct JungleHolder {
     /* 0x0c */ struct Cursor *cursor;
 };
 
+struct JungleTileMap {
+    /* 0x00 */ unsigned char pad_0[4];
+    /* 0x04 */ short *tiles;
+};
+
 void FUN_00432ac0(void);
 void FUN_00432d00(int param_1);
 int FUN_00432b90(unsigned int param_1, void *param_2, void *param_3, void *param_4);

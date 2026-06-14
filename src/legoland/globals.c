@@ -216,6 +216,9 @@ unsigned char DAT_004b7278[0x10];
 // GLOBAL: LEGOLAND 0x004b7288
 void *DAT_004b7288;
 
+// GLOBAL: LEGOLAND 0x004b72e4
+unsigned char DAT_004b72e4[0x190];
+
 // GLOBAL: LEGOLAND 0x004b7478
 struct Footprint DAT_004b7478;
 
@@ -3701,7 +3704,7 @@ struct Sprite *DAT_0081cb50;
 struct Cursor *DAT_0081cb54;
 
 // GLOBAL: LEGOLAND 0x0081cb58
-void *DAT_0081cb58;
+struct JungleTileMap *DAT_0081cb58;
 
 // GLOBAL: LEGOLAND 0x0081cb5c
 struct Sprite *DAT_0081cb5c;

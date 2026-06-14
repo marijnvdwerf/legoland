@@ -38,6 +38,7 @@ struct JungleFish;
 struct JungleScore;
 struct JungleObj;
 struct JunglePath;
+struct JungleTileMap;
 struct CatapultNode;
 struct Position;
 struct RinData;
@@ -59,9 +60,13 @@ struct SortNode;
 
 // Full definitions needed by typed globals defined in globals.c.
 struct MapElement {
-    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x00 */ unsigned int field_0;
+    /* 0x04 */ unsigned short field_4;
+    /* 0x06 */ unsigned char pad_6[0xc - 0x6];
     /* 0x0c */ unsigned short flags;
-    /* 0x0e */ unsigned char pad_e[0x14 - 0xe];
+    /* 0x0e */ unsigned char pad_e[0x10 - 0xe];
+    /* 0x10 */ unsigned char field_10;
+    /* 0x11 */ unsigned char pad_11[0x14 - 0x11];
 };
 
 struct LegoConfig {
@@ -343,6 +348,8 @@ extern unsigned char DAT_004b7260[0x18];
 extern unsigned char DAT_004b7278[0x10];
 // 0x004b7288
 extern void *DAT_004b7288;
+// 0x004b72e4
+extern unsigned char DAT_004b72e4[0x190];
 // 0x004b7478
 extern struct Footprint DAT_004b7478;
 // 0x004b7618
@@ -2640,7 +2647,7 @@ extern struct Sprite *DAT_0081cb50;
 // 0x0081cb54
 extern struct Cursor *DAT_0081cb54;
 // 0x0081cb58
-extern void *DAT_0081cb58;
+extern struct JungleTileMap *DAT_0081cb58;
 // 0x0081cb5c
 extern struct Sprite *DAT_0081cb5c;
 // 0x0081cb60

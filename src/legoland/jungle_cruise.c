@@ -537,13 +537,111 @@ void FUN_00436470(void) { STUB(); }
 void FUN_004365f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004367b0
-void FUN_004367b0(int param_1, int param_2, unsigned short *param_3) { STUB(); }
+void FUN_004367b0(int param_1, int param_2, unsigned short *param_3) {
+    struct JungleScore *score = DAT_00629c3c;
+    struct JunglePath *p;
+    struct JunglePath *adj;
+    unsigned int mask;
+
+    p = FUN_004371b0(param_1, param_2);
+    if (score != NULL) {
+        do {
+            if (score->field_0 == *param_3) {
+                break;
+            }
+            score = score->next;
+        } while (score != NULL);
+    }
+    if (p == NULL) {
+        return;
+    }
+    mask = p->field_4;
+    if (*(short *)&p->x == *(short *)&score->field_2) {
+        mask = mask & 0xfffffffe;
+    } else if (*(short *)&p->x == *(short *)&score->field_4) {
+        mask = mask & 0xfffffffb;
+    }
+    if ((mask & 8) != 0 && (mask & 1) != 0 && (adj = FUN_004371b0(param_1, param_2 - 5)) != NULL && (adj->field_4 & 8) != 0) {
+        SetMapTile(param_1 - 3, param_2 - 3, DAT_0081cb58->tiles[0]);
+        SetMapTile(param_1 - 2, param_2 - 3, DAT_0081cb58->tiles[0]);
+        SetMapTile(param_1 - 3, param_2 - 2, DAT_0081cb58->tiles[0]);
+        SetMapTile(param_1 - 2, param_2 - 2, DAT_0081cb58->tiles[0]);
+    }
+    if ((mask & 8) != 0 && (mask & 4) != 0 && (adj = FUN_004371b0(param_1, param_2 + 5)) != NULL && (adj->field_4 & 8) != 0) {
+        SetMapTile(param_1 - 3, param_2 + 3, DAT_0081cb58->tiles[0]);
+        SetMapTile(param_1 - 2, param_2 + 3, DAT_0081cb58->tiles[0]);
+        SetMapTile(param_1 - 3, param_2 + 2, DAT_0081cb58->tiles[0]);
+        SetMapTile(param_1 - 2, param_2 + 2, DAT_0081cb58->tiles[0]);
+    }
+    if ((mask & 2) != 0 && (mask & 1) != 0 && (adj = FUN_004371b0(param_1, param_2 - 5)) != NULL && (adj->field_4 & 2) != 0) {
+        SetMapTile(param_1 + 3, param_2 - 3, DAT_0081cb58->tiles[0]);
+        SetMapTile(param_1 + 2, param_2 - 3, DAT_0081cb58->tiles[0]);
+        SetMapTile(param_1 + 3, param_2 - 2, DAT_0081cb58->tiles[0]);
+        SetMapTile(param_1 + 2, param_2 - 2, DAT_0081cb58->tiles[0]);
+    }
+    if ((mask & 2) != 0 && (mask & 4) != 0 && (adj = FUN_004371b0(param_1, param_2 + 5)) != NULL && (adj->field_4 & 2) != 0) {
+        SetMapTile(param_1 + 3, param_2 + 3, DAT_0081cb58->tiles[0]);
+        SetMapTile(param_1 + 2, param_2 + 3, DAT_0081cb58->tiles[0]);
+        SetMapTile(param_1 + 3, param_2 + 2, DAT_0081cb58->tiles[0]);
+        SetMapTile(param_1 + 2, param_2 + 2, DAT_0081cb58->tiles[0]);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00436a40
 void FUN_00436a40(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00436dc0
-void FUN_00436dc0(int param_1, int param_2, int param_3, unsigned short *param_4) { STUB(); }
+void FUN_00436dc0(int param_1, int param_2, int param_3, unsigned short *param_4) {
+    struct JunglePath *path;
+    struct MapElement *tile;
+    unsigned char x;
+    unsigned char y;
+    unsigned char *row;
+    int j;
+    int ty;
+    int tx;
+    unsigned short coord;
+
+    coord = (unsigned short)((param_1 & 0xff) | (param_2 << 8));
+    path = FUN_004371b0(param_1, param_2);
+    if (path == NULL) {
+        path = (struct JunglePath *)malloc(sizeof(struct JunglePath));
+        if (path == NULL) {
+            return;
+        }
+        path->field_c = 0;
+        path->next = DAT_0062fd2c;
+        DAT_0062fd2c = path;
+        FUN_00436130(*param_4, 1);
+    }
+    *(unsigned short *)&path->x = coord;
+    path->field_4 = param_3;
+    if (param_4 != NULL) {
+        path->field_2 = *param_4;
+    }
+    BGFullUpdate = 1;
+    row = &DAT_004b72e4[param_3 * 0x19];
+    j = 0;
+    do {
+        ty = param_2 - 2 + j;
+        tx = param_1 - 2;
+        do {
+            if (tx < 0 || (int)(unsigned int)lpConfig->width <= tx || ty < 0 || (int)(unsigned int)lpConfig->height <= ty) {
+                tile = NULL;
+            } else {
+                tile = &GameMap[ty][tx];
+            }
+            tile->flags = 8;
+            tile->field_10 = 2;
+            tile->field_0 = DAT_0081cb54->field_c4;
+            tile->field_4 = coord;
+            SetMapTile(tx, ty, DAT_0081cb58->tiles[0] + (unsigned short)*row);
+            tx = tx + 1;
+            row = row + 1;
+        } while ((2 - param_1) + tx < 5);
+        j = j + 1;
+    } while (j < 5);
+}
 
 // FUNCTION: LEGOLAND 0x00436f30
 void FUN_00436f30(void *param_1, unsigned short param_2, struct Cursor *param_3) {
