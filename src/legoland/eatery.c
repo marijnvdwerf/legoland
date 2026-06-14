@@ -2,6 +2,8 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include "bloke_ai.h"
+#include "eatery.h"
 #include "gamemap.h"
 #include "llidb.h"
 #include "man3d.h"
@@ -136,7 +138,78 @@ void FUN_0042e260(struct BlokeArg *arg, unsigned int param2, unsigned int param3
 }
 
 // FUNCTION: LEGOLAND 0x0042e2a0
-void FUN_0042e2a0(void) { STUB(); }
+void FUN_0042e2a0(int param_1) {
+    int ride = *(int *)(param_1 + 0xc);
+    unsigned int *node = *(unsigned int **)(ride + 0xcc);
+    unsigned int *next;
+    int bloke;
+    unsigned char *pos;
+    int x;
+    int y;
+    char cv;
+    int mx;
+    int my;
+    while (node != NULL) {
+        next = (unsigned int *)*node;
+        bloke = node[2];
+        pos = (unsigned char *)(node + 3);
+        x = (unsigned int)pos[0] + *(int *)(ride + 0xc);
+        y = (unsigned int)pos[1] + *(int *)(ride + 0x10);
+        if (*(short *)(bloke + 0xe) == 0) {
+            switch (*(unsigned char *)(bloke + 0x60)) {
+            case 0:
+                *(unsigned char *)(bloke + 0x62) |= 8;
+                *(int *)(bloke + 0x24) = x * 0x100;
+                y = (y + 1) * 0x100;
+                *(int *)(bloke + 0x28) = y;
+                x = *(int *)(bloke + 0x24);
+                my = *(int *)(bloke + 0x6c);
+                mx = *(int *)(bloke + 0x68);
+                goto calc;
+            case 1:
+                x = x * 0x100 + -0x80;
+                *(int *)(bloke + 0x28) = (y + 1) * 0x100;
+                *(int *)(bloke + 0x24) = x;
+                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), x,
+                                  *(unsigned int *)(bloke + 0x28), bloke + 0x98);
+                *(short *)(bloke + 0xe) = 7;
+                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
+                *(char *)(bloke + 0x60) += 1;
+            case 2:
+                *(unsigned char *)(bloke + 0x72) = 7;
+                *(char *)(bloke + 0x60) += 1;
+                *(unsigned int *)(bloke + 0x58) = (rand() & 0x1f) + 4;
+                break;
+            case 3:
+                if (*(int *)(bloke + 0x58) == 0) {
+                    *(char *)(bloke + 0x60) += 1;
+                    BuyItem(param_1, node + 3, 0);
+                }
+                *(int *)(bloke + 0x58) += -1;
+                break;
+            case 4:
+                x = x * 0x100 + 0x80;
+                *(int *)(bloke + 0x28) = y * 0x100 + 0x80;
+                *(int *)(bloke + 0x24) = x;
+                y = *(int *)(bloke + 0x28);
+                my = *(int *)(bloke + 0x6c);
+                mx = *(int *)(bloke + 0x68);
+calc:
+                cv = CalcMoveLine(mx, my, x, y, bloke + 0x98);
+                *(short *)(bloke + 0xe) = 7;
+                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
+                *(char *)(bloke + 0x60) += 1;
+                break;
+            case 5:
+                RemoveBlokeFromRide((void *)ride, node);
+                *(unsigned short *)(bloke + 0x62) &= 0xfff7;
+            }
+        }
+        node = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0042e460
 void FUN_0042e460(struct EateryObj *obj) {
@@ -155,9 +228,9 @@ void FUN_0042e4b0(void) {
 
 // FUNCTION: LEGOLAND 0x0042e4c0
 void FUN_0042e4c0(void) {
-    unsigned int temp = DAT_0081cd38;
+    struct EateryFX *temp = DAT_0081cd38;
     EditMode = 1;
-    DAT_008119b8 = (void *)temp;
+    DAT_008119b8 = temp;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint((void *)((unsigned int)DAT_008119b8 + 0x3c));
 }
