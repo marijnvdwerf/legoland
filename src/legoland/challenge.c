@@ -1432,7 +1432,16 @@ void FUN_0044db20(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0044db40
-void FUN_0044db40(void) { STUB(); }
+void FUN_0044db40(void) {
+    unsigned int now;
+
+    if (DAT_00832978 != 0) {
+        now = GetGameTimer();
+        DAT_00666098 = now + DAT_00832978 * 60000;
+        return;
+    }
+    DAT_00666098 = 0;
+}
 
 // FUNCTION: LEGOLAND 0x0044db80
 void FUN_0044db80(void) {
