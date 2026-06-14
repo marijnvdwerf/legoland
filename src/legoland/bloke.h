@@ -39,7 +39,7 @@ struct Bloke {
     unsigned char field_75;
     unsigned char pad_76[0x78 - 0x76];
     unsigned short field_78;
-    unsigned char pad_7a[0x7c - 0x7a];
+    short field_7a;
     unsigned short field_7c;
     unsigned char pad_7e[0x80 - 0x7e];
     unsigned char field_80;
@@ -51,7 +51,10 @@ struct Bloke {
     unsigned char pad_98[0xac - 0x98];
 };
 
+struct InstancePos;
 void FUN_00482b10(void);
+void FUN_00482b20(int force);
+int FUN_00482b60(struct InstancePos *pos);
 void FUN_00482d60(unsigned int index, int value);
 void FUN_00482d70(void);
 void FUN_00483090(void);

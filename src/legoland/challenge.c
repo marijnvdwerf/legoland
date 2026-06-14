@@ -3,16 +3,19 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include "bloke.h"
 #include "bloke_ai.h"
 #include "challenge.h"
 #include "debug_alloc.h"
 #include "draw.h"
 #include "gamemain.h"
+#include "gamemap.h"
 #include "gfx.h"
 #include "icon.h"
 #include "imports.h"
 #include "llidb.h"
 #include "nerps.h"
+#include "pathfind.h"
 #include "print_sprite.h"
 #include "render.h"
 #include "resource.h"
@@ -24,7 +27,6 @@ struct AnimHandle;
 struct RideElem;
 struct RideObj;
 struct ObjectClass;
-struct Bloke;
 
 struct AnimHandle {
     /* 0x00 */ int length;
@@ -58,12 +60,6 @@ struct ObjectClass {
     unsigned int count;
     unsigned char pad_c[0x20 - 0xc];
     unsigned short type;
-};
-
-struct Bloke {
-    struct Bloke *next;
-    unsigned char pad_4[0x7a - 0x4];
-    short field_7a;
 };
 
 #include "image_sprite.h"
@@ -1168,8 +1164,71 @@ void FUN_00444d70(unsigned int *param_1, unsigned int *param_2, int *param_3) {
     } while (bloke != 0);
 }
 
+struct GslImage {
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ int field_c;
+    /* 0x10 */ int field_10;
+    /* 0x14 */ unsigned char pad_14[0x20 - 0x14];
+    /* 0x20 */ short type;
+    /* 0x22 */ unsigned char pad_22[0x78 - 0x22];
+    /* 0x78 */ char *name;
+};
+
+struct RenderObjVtbl {
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ struct GslImage *img;
+};
+
+struct RenderObj {
+    /* 0x00 */ struct RenderObjVtbl *vtbl;
+    /* 0x04 */ unsigned char field_4;
+    /* 0x05 */ unsigned char field_5;
+    /* 0x06 */ unsigned char pad_6[0xc - 0x6];
+    /* 0x0c */ unsigned char flags;
+};
+
 // FUNCTION: LEGOLAND 0x00444df0
-void FUN_00444df0(void) { STUB(); }
+int FUN_00444df0(void) {
+    struct RenderObj *obj;
+    struct GslImage *img;
+    short type;
+    int ix;
+    int iy;
+    int linked;
+    int total;
+    struct InstancePos coord;
+
+    obj = (struct RenderObj *)GetFirstRenderObject();
+    linked = 0;
+    total = 0;
+    FUN_00482b20(1);
+    if (obj != NULL) {
+        do {
+            if ((obj->flags & 0x80) != 0) {
+                img = obj->vtbl->img;
+                type = img->type;
+                if (type == 1 || type == 4 || type == 5) {
+                    ix = img->field_c;
+                    iy = img->field_10;
+                    coord.x = obj->field_4 + ix;
+                    coord.y = obj->field_5 + iy;
+                    total = total + 1;
+                    if (FUN_00482b60(&coord) != 0) {
+                        linked = linked + 1;
+                    } else {
+                        // STRING: LEGOLAND 0x004b8124
+                        DBPrintf("Unlinked Object %s\n", img->name);
+                    }
+                }
+            }
+            obj = (struct RenderObj *)GetNextRenderObject((struct RenderObject *)obj);
+        } while (obj != NULL);
+        if (total != 0) {
+            return (linked * 100) / total;
+        }
+    }
+    return 100;
+}
 
 // FUNCTION: LEGOLAND 0x00444eb0
 unsigned char FUN_00444eb0(unsigned int param_1, unsigned int param_2) {
