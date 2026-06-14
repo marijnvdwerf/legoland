@@ -5,12 +5,29 @@
 #include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "math.h"
 #include "sound_music.h"
 #include "timer.h"
 
 struct RenderObjectVtable {
     unsigned char pad_0[0xc];
     void *get_power;
+};
+
+struct MapCellObjKind {
+    unsigned char pad_0[0x20];
+    short field_20;
+};
+
+struct MapCellObj {
+    unsigned char pad_0[0xc];
+    struct MapCellObjKind *field_c;
+};
+
+struct MapCell {
+    struct MapCellObj *obj;
+    unsigned char pad_4[8];
+    unsigned short flags;
 };
 
 struct RenderObject {
@@ -53,7 +70,30 @@ void FUN_00459880(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004598d0
-void FUN_004598d0(void) { STUB(); }
+void FUN_004598d0(struct Point *coord, int *param_2, int *param_3) {
+    struct MapCell *cell;
+    short kind;
+
+    if (coord->x >= 0 && coord->x < (int)lpConfig->width && coord->y >= 0 && coord->y < (int)lpConfig->height &&
+        (cell = (struct MapCell *)((char *)GameMap[coord->y] + coord->x * 0x14)) != NULL) {
+        if ((cell->flags & 0x10) != 0) {
+            *param_2 = *param_2 + -1;
+            return;
+        }
+        if ((cell->flags & 0x80) != 0) {
+            if (cell->obj->field_c == DAT_007fd624) {
+                *param_2 = *param_2 + -1;
+                return;
+            }
+            kind = cell->obj->field_c->field_20;
+            if (kind == 2 || kind == 3) {
+                *param_3 = *param_3 + 1;
+            }
+        }
+        return;
+    }
+    *param_2 = *param_2 + -1;
+}
 
 // FUNCTION: LEGOLAND 0x00459960
 void FUN_00459960(void) {

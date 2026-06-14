@@ -50,6 +50,9 @@ struct Cursor {
     unsigned int field_1830;
 };
 
+struct Point;
+
+void FUN_004598d0(struct Point *coord, int *param_2, int *param_3);
 void FUN_00459960(void);
 void FUN_00459970(void);
 LEGO_EXPORT int FindObjectsPower(void *object);
