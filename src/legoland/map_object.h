@@ -42,6 +42,7 @@ LEGO_EXPORT void SetObjRectFlags();
 void FUN_0045f460(struct Cursor *cursor);
 void FUN_0045f480(struct Cursor *cursor, int param);
 void FUN_0045f4d0(struct Cursor *cursor);
+struct Cursor *FUN_0045f540(struct Cursor *cursor);
 LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, unsigned int param_3);
 LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, unsigned int param);
 LEGO_EXPORT void CalcBasicObjectCursor(struct CursorObj *obj, unsigned int a2, unsigned int a3);

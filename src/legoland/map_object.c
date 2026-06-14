@@ -1065,10 +1065,52 @@ unsigned char FUN_0045f4b0(struct Cursor *cursor) {
 }
 
 // FUNCTION: LEGOLAND 0x0045f4d0
-void FUN_0045f4d0(struct Cursor *cursor) { STUB(); }
+void FUN_0045f4d0(struct Cursor *cursor) {
+    struct Cursor *node;
+    struct Cursor *best;
+
+    best = cursor;
+    for (node = cursor; node != 0; node = (struct Cursor *)node->field_1830) {
+        node->field_1828 |= 8;
+        if (node->field_140c < best->field_140c) {
+            best = node;
+        }
+    }
+    if ((int)FUN_0045f4b0(best) == 0) {
+        for (; cursor != 0; cursor = (struct Cursor *)cursor->field_1830) {
+            FUN_0045f480(cursor, best->field_1410);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045f540
-void FUN_0045f540(void) { STUB(); }
+struct Cursor *FUN_0045f540(struct Cursor *cursor) {
+    struct Cursor *node;
+    struct Cursor *last;
+
+    node = cursor;
+    if (cursor == 0) {
+        return 0;
+    }
+    do {
+        last = node;
+        if ((last->field_1828 & 0x1000) != 0) {
+            return last;
+        }
+        node = (struct Cursor *)last->field_1830;
+    } while (node != 0);
+    FUN_0045f460(&PathCursor);
+    PathCursor.field_1404 = cursor->field_1404;
+    PathCursor.field_1408 = cursor->field_1408;
+    PathCursor.field_1414[0] = cursor->field_1414[0] - 1;
+    PathCursor.field_1414[1] = cursor->field_1414[1] - 1;
+    PathCursor.field_1414[2] = cursor->field_1414[2] + 1;
+    PathCursor.field_1414[3] = cursor->field_1414[3] + 1;
+    PathCursor.field_1828 = 0x1008;
+    PathCursor.field_1830 = 0;
+    last->field_1830 = (unsigned int)&PathCursor;
+    return &PathCursor;
+}
 
 // FUNCTION: LEGOLAND 0x0045f5f0
 LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, unsigned int param_3) { STUB(); }
