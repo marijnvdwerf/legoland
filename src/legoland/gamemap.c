@@ -20,8 +20,11 @@ struct RenderObjectVtable {
 };
 
 struct MapCellObjKind {
-    unsigned char pad_0[0x20];
-    short field_20;
+    /* 0x00 */ unsigned char pad_0[0x20];
+    /* 0x20 */ short field_20;
+    /* 0x22 */ unsigned char pad_22[0x44 - 0x22];
+    /* 0x44 */ int field_44;
+    /* 0x48 */ char field_48;
 };
 
 struct MapCellObj {
@@ -31,9 +34,14 @@ struct MapCellObj {
 
 struct MapCell {
     /* 0x00 */ struct MapCellObj *obj;
-    /* 0x04 */ unsigned char byte_4;
-    /* 0x05 */ unsigned char byte_5;
-    /* 0x06 */ unsigned char pad_6[2];
+    /* 0x04 */ union {
+        unsigned short coords;
+        struct {
+            unsigned char byte_4;
+            unsigned char byte_5;
+        } b;
+    } src;
+    /* 0x06 */ unsigned short field_6;
     /* 0x08 */ unsigned short word_8;
     /* 0x0a */ unsigned short word_a;
     /* 0x0c */ union {
@@ -225,9 +233,9 @@ LEGO_EXPORT void PutObjOnMap(struct ObjClass *obj, unsigned int classid, struct 
         } else {
             cell = (struct MapCell *)((char *)GameMap[pos->y] + pos->x * 0x14);
         }
-        DAT_004b8320 = (cell->byte_4 + entrance->field_3c) * 0x100 + -0x100;
+        DAT_004b8320 = (cell->src.b.byte_4 + entrance->field_3c) * 0x100 + -0x100;
         DAT_004b8324 = ((unsigned int)(entrance->field_48 - entrance->field_40) >> 1) * 0x100 +
-                       (cell->byte_5 + entrance->field_40) * 0x100;
+                       (cell->src.b.byte_5 + entrance->field_40) * 0x100;
     }
     DAT_00668610 = DAT_00668610 | 1;
 }
@@ -508,7 +516,81 @@ void FUN_0045a430(short param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0045a4a0
-LEGO_EXPORT void CalculateMapRenderOrder(void) { STUB(); }
+LEGO_EXPORT void CalculateMapRenderOrder(void) {
+    struct LegoConfig *cfg;
+    unsigned short *out_coords;
+    unsigned int width;
+    struct MapCell *cell;
+    struct MapCell *src;
+    struct MapCellObjKind *tile;
+    unsigned int sx;
+    unsigned char sy;
+    int idx;
+    unsigned int *clear;
+    int n;
+    struct Point pt;
+
+    cfg = lpConfig;
+    pt.x = 0;
+    pt.y = 0;
+    DAT_00801408 = 0;
+    clear = (unsigned int *)MapRenderOrderList;
+    for (n = 0x2000; n != 0; n = n + -1) {
+        *clear = 0;
+        clear = clear + 1;
+    }
+    width = cfg->width;
+    out_coords = &DAT_007febb8;
+    if (width != 0) {
+        do {
+            idx = DAT_00801408;
+            if (pt.x < 0 || (int)width <= pt.x || pt.y < 0 || (int)cfg->height <= pt.y) {
+                cell = NULL;
+            } else {
+                cell = (struct MapCell *)((char *)GameMap[pt.y] + pt.x * 0x14);
+            }
+            if ((cell->flags.bytes[0] & 0xa0) == 0) {
+                pt.y = pt.y + 1;
+            } else {
+                sx = cell->src.b.byte_4;
+                sy = cell->src.b.byte_5;
+                if (sx < width && sy < cfg->height) {
+                    src = (struct MapCell *)((char *)GameMap[sy] + sx * 0x14);
+                } else {
+                    src = NULL;
+                }
+                tile = src->obj->field_c;
+                DAT_00801408 = DAT_00801408 + 1;
+                if (DAT_00801408 == 0x1000) {
+                    DAT_00801408 = 0;
+                }
+                MapRenderOrderList[idx].coords = cell->src.coords;
+                MapRenderOrderList[idx].x = (unsigned char)pt.x;
+                MapRenderOrderList[idx].flag = 1;
+                MapRenderOrderList[idx].height = tile->field_48 + sy + 1;
+                if (pt.x == tile->field_44 + sx || pt.x == cfg->width - 1) {
+                    *out_coords = src->src.coords;
+                    FUN_0045a430(cell->src.coords, &pt.x);
+                    cfg = lpConfig;
+                    out_coords = &src->field_6;
+                } else {
+                    pt.x = pt.x + 1;
+                    FUN_0045a3e0(&pt.x);
+                    cfg = lpConfig;
+                }
+            }
+            if ((int)cfg->height <= pt.y) {
+                do {
+                    pt.x = pt.x + 1;
+                    FUN_0045a3e0(&pt.x);
+                    cfg = lpConfig;
+                } while ((int)cfg->height <= pt.y);
+            }
+            width = cfg->width;
+        } while (pt.x < (int)width);
+    }
+    *out_coords = 0;
+}
 
 // FUNCTION: LEGOLAND 0x0045a660
 void FUN_0045a660(void) { STUB(); }
