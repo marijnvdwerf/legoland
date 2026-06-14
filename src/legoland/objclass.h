@@ -8,9 +8,34 @@ struct EditObject;
 struct BestNode;
 struct InstancePos;
 struct Bloke;
-struct CallbackTable;
 struct ObjClassNames;
 struct ObjectInfo;
+
+typedef void (*RideCallback)();
+
+struct CallbackTable {
+    /* 0x00 */ unsigned char pad_0[0x8c];
+    /* 0x8c */ RideCallback cb_8c;
+    /* 0x90 */ RideCallback cb_90;
+    /* 0x94 */ RideCallback cb_94;
+    /* 0x98 */ RideCallback cb_98;
+    /* 0x9c */ RideCallback cb_9c;
+    /* 0xa0 */ RideCallback cb_a0;
+    /* 0xa4 */ RideCallback cb_a4;
+    /* 0xa8 */ RideCallback cb_a8;
+    /* 0xac */ RideCallback cb_ac;
+    /* 0xb0 */ RideCallback cb_b0;
+    /* 0xb4 */ unsigned char pad_b4[4];
+    /* 0xb8 */ RideCallback cb_b8;
+    /* 0xbc */ RideCallback cb_bc;
+    /* 0xc0 */ RideCallback cb_c0;
+};
+
+struct ClassNode {
+    /* 0x00 */ char *name;
+    /* 0x04 */ unsigned char pad_4[8];
+    /* 0x0c */ struct CallbackTable *iface;
+};
 
 LEGO_EXPORT int GetObjCost(struct CostInfo *info);
 LEGO_EXPORT unsigned int BasicObjectDCalcCursor(unsigned int param_1, unsigned int param_2);

@@ -7,7 +7,6 @@
 #include "llidb.h"
 #include "map_object.h"
 #include "objclass.h"
-#include "ride_interfaces.h"
 
 struct ObjectClass {
     struct ObjectClass *next;
