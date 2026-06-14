@@ -4,6 +4,7 @@
 #include "legoland.h"
 
 #include "bloke.h"
+#include "bloke_ai.h"
 #include "bricks.h"
 #include "clipping.h"
 #include "controller.h"
@@ -2438,7 +2439,138 @@ void FUN_00462e90(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00462ef0
-LEGO_EXPORT void DoMapAI(void) { STUB(); }
+LEGO_EXPORT void DoMapAI(void) {
+    int i;
+    int *p;
+    struct MapElement *tile;
+    struct MapObject *obj;
+    short type;
+    unsigned char xb;
+    unsigned char yb;
+    int r;
+    int v1;
+    int v2;
+    int v3;
+    int v4;
+    unsigned int x;
+    unsigned int *cls;
+
+    if (((unsigned char)DAT_008119a4 & 0x3f) != 0) {
+        i = 0;
+        x = DAT_00832804;
+        do {
+            if (DAT_0083280c == 0) {
+                p = &DAT_0083282c;
+                do {
+                    p[1] = 0;
+                    p[0] = 0;
+                    p[2] = 0;
+                    p[3] = 0;
+                    p = p + 0xb;
+                } while ((int)p < 0x832934);
+                DAT_0083280c = DAT_0083280c + 1;
+                DAT_00832804 = 0;
+                DAT_00832808 = 0;
+                x = 0;
+            } else if (DAT_0083280c == 1) {
+                if ((int)x < 0 || lpConfig->width <= (int)x || DAT_00832808 < 0 || lpConfig->height <= DAT_00832808) {
+                    tile = 0;
+                } else {
+                    tile = (struct MapElement *)((int)GameMap[DAT_00832808] + x * 0x14);
+                }
+                if ((tile->field_10 & 1) == 0) {
+                    if ((tile->flags & 0x88) != 0 && tile->field_0 != 0) {
+                        obj = ((struct EditObject *)tile->field_0)->obj;
+                        type = obj->type;
+                        if (type != 0) {
+                            (&DAT_0083282c)[type * 0xb] = (&DAT_0083282c)[type * 0xb] + 1;
+                            xb = *((unsigned char *)&tile->field_4);
+                            x = DAT_00832804;
+                            if (xb == DAT_00832804 && (yb = *((unsigned char *)&tile->field_4 + 1), yb == DAT_00832808) &&
+                                (r = FUN_0044f360((int)obj, &xb), x = DAT_00832804, r != 0)) {
+                                (&DAT_00832830)[obj->type * 0xb] = (&DAT_00832830)[obj->type * 0xb] + 1;
+                                type = obj->type;
+                                r = GetObjSalvageValue((unsigned int)obj, tile->field_11);
+                                (&DAT_00832834)[type * 0xb] = (&DAT_00832834)[type * 0xb] + r;
+                                (&DAT_00832838)[obj->type * 0xb] = (&DAT_00832838)[obj->type * 0xb] + (int)*(short *)((char *)obj + 0x2e);
+                                x = DAT_00832804;
+                            }
+                        }
+                    }
+                } else {
+                    DAT_00832830 = DAT_00832830 + 1;
+                    DAT_0083282c = DAT_0083282c + 1;
+                    DAT_00832838 = DAT_00832838 + 1;
+                }
+                DAT_00832804 = x + 1;
+                x = DAT_00832804;
+                if (lpConfig->width <= (int)DAT_00832804) {
+                    DAT_00832808 = DAT_00832808 + 1;
+                    DAT_00832804 = 0;
+                    x = 0;
+                    if (lpConfig->height <= DAT_00832808) {
+                        DAT_0083280c = DAT_0083280c + 1;
+                    }
+                }
+            } else if (DAT_0083280c == 2) {
+                DAT_0083280c = 0;
+                DAT_00832918 = 0;
+                p = &DAT_00832820;
+                i = 6;
+                do {
+                    p[0] = p[5];
+                    p[-1] = p[3];
+                    p[-4] = p[4];
+                    p[-2] = p[6];
+                    DAT_00832918 = DAT_00832918 + p[-1];
+                    p = p + 0xb;
+                } while ((int)p < 0x832928);
+                DAT_00832818 = DAT_00832818 / 100;
+                v1 = (int)(DAT_00832824[0] * DAT_0083281c) / 100;
+                if ((int)(DAT_00832828[0] * 100) < v1) {
+                    v1 = (int)(DAT_00832828[0] * 100);
+                }
+                v2 = DAT_00832850 * DAT_00832844;
+                if (DAT_00832854 * 100 <= v2) {
+                    v2 = DAT_00832854 * 100;
+                }
+                v3 = DAT_008328d4 * DAT_008328c8;
+                if (DAT_008328d8 * 100 <= v3) {
+                    v3 = DAT_008328d8 * 100;
+                }
+                v4 = DAT_00832900 * DAT_008328f4;
+                if (DAT_00832904 * 100 <= v4) {
+                    v4 = DAT_00832904 * 100;
+                }
+                DAT_0083291c = (v4 + v1 + v2 + v3) / 100;
+                if ((int)DAT_0083291c < (int)DAT_00832924) {
+                    DAT_0083291c = DAT_00832924;
+                }
+                if ((int)DAT_00832920 < (int)DAT_0083291c) {
+                    DAT_0083291c = DAT_00832920;
+                }
+                x = DAT_00832804;
+                if ((int)(unsigned int)lpConfig->field_1a < (int)DAT_0083291c) {
+                    DAT_0083291c = lpConfig->field_1a;
+                }
+            }
+            i = i + 1;
+        } while (i < 0x100);
+        return;
+    }
+    p = &DAT_00832814;
+    do {
+        if (p != &DAT_00832814) {
+            *p = 0;
+        }
+        p = p + 0xb;
+    } while ((int)p < 0x83291c);
+    for (cls = (unsigned int *)ObjectClassList; cls != 0; cls = (unsigned int *)*cls) {
+        if (*(short *)(cls + 8) != 0 && cls[2] != 0) {
+            (&DAT_00832814)[*(short *)(cls + 8) * 0xb] = (&DAT_00832814)[*(short *)(cls + 8) * 0xb] + 1;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004632b0
 void FUN_004632b0(void) { STUB(); }

@@ -3180,10 +3180,34 @@ extern void *DAT_00830f9c;
 extern LEGO_EXPORT struct Cursor PathCursor;
 // 0x00832800
 extern LEGO_EXPORT unsigned int MapStats;
+// 0x00832804
+extern int DAT_00832804;
+// 0x00832808
+extern int DAT_00832808;
+// 0x0083280c
+extern int DAT_0083280c;
+// 0x00832814
+extern int DAT_00832814;
+// 0x00832818
+extern int DAT_00832818;
+// 0x0083281c
+extern int DAT_0083281c;
+// 0x00832820
+extern int DAT_00832820;
 // 0x00832824
 extern unsigned int DAT_00832824[1];
 // 0x00832828
 extern unsigned int DAT_00832828[1];
+// 0x0083282c
+extern int DAT_0083282c;
+// 0x00832830
+extern int DAT_00832830;
+// 0x00832834
+extern int DAT_00832834;
+// 0x00832838
+extern int DAT_00832838;
+// 0x00832844
+extern int DAT_00832844;
 // 0x00832850
 extern int DAT_00832850;
 // 0x00832854
@@ -3196,14 +3220,20 @@ extern int DAT_00832880;
 extern int DAT_008328a8;
 // 0x008328ac
 extern int DAT_008328ac;
+// 0x008328c8
+extern int DAT_008328c8;
 // 0x008328d4
 extern int DAT_008328d4;
 // 0x008328d8
 extern int DAT_008328d8;
+// 0x008328f4
+extern int DAT_008328f4;
 // 0x00832900
 extern int DAT_00832900;
 // 0x00832904
 extern int DAT_00832904;
+// 0x00832918
+extern int DAT_00832918;
 // 0x0083291c
 extern unsigned int DAT_0083291c;
 // 0x00832920
