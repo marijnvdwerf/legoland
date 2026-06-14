@@ -583,7 +583,79 @@ void FUN_00433d20(unsigned int param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00433d90
-void FUN_00433d90(void) { STUB(); }
+void FUN_00433d90(int param_1, unsigned int param_2, unsigned int param_3) {
+    struct Cursor *cursor = *(struct Cursor **)(param_1 + 0xc);
+    unsigned int mask;
+    int valid;
+    int x;
+    int y;
+    unsigned int n;
+    int i;
+
+    *(struct Footprint *)EditCursor.field_1414 = cursor->field_3c;
+    ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
+    mask = FUN_00436fb0(EditCursor.field_1404, EditCursor.field_1408, (unsigned short *)&param_1);
+    EditCursor.field_1830 = 0;
+    if (mask == 0) {
+        FUN_0045f480(&EditCursor, 0xe);
+        return;
+    }
+    ValidateCursor(&EditCursor, (unsigned int)cursor);
+    valid = FUN_0045f4b0(&EditCursor);
+    if (valid == 0) {
+        return;
+    }
+    DefaultCursor(&DAT_00622320[0]);
+    DefaultCursor(&DAT_00622320[1]);
+    DefaultCursor(&DAT_00622320[2]);
+    DefaultCursor(&DAT_00622320[3]);
+    *(struct Footprint *)DAT_00622320[0].field_1414 = *(struct Footprint *)EditCursor.field_1414;
+    *(struct Footprint *)DAT_00622320[1].field_1414 = *(struct Footprint *)EditCursor.field_1414;
+    *(struct Footprint *)DAT_00622320[2].field_1414 = *(struct Footprint *)EditCursor.field_1414;
+    *(struct Footprint *)DAT_00622320[3].field_1414 = *(struct Footprint *)EditCursor.field_1414;
+    FUN_0045f460(&DAT_00622320[0]);
+    FUN_0045f460(&DAT_00622320[1]);
+    FUN_0045f460(&DAT_00622320[2]);
+    FUN_0045f460(&DAT_00622320[3]);
+    y = EditCursor.field_1408;
+    x = EditCursor.field_1404;
+    DAT_00622320[0].field_1828 = 0x2034;
+    DAT_00622320[1].field_1828 = 0x2034;
+    DAT_00622320[2].field_1828 = 0x2034;
+    DAT_00622320[3].field_1828 = 0x2034;
+    if ((mask & 1) != 0) {
+        DAT_00622320[0].field_1408 = EditCursor.field_1408 - 5;
+        DAT_00622320[0].field_1404 = EditCursor.field_1404;
+    }
+    n = mask & 1;
+    if ((mask & 2) != 0) {
+        DAT_00622320[n].field_1404 = EditCursor.field_1404 + 5;
+        DAT_00622320[n].field_1408 = y;
+        n = n + 1;
+    }
+    if ((mask & 4) != 0) {
+        DAT_00622320[n].field_1404 = x;
+        DAT_00622320[n].field_1408 = y + 5;
+        n = n + 1;
+    }
+    if ((mask & 8) != 0) {
+        DAT_00622320[n].field_1404 = x - 5;
+        DAT_00622320[n].field_1408 = y;
+        n = n + 1;
+    }
+    if (n != 0) {
+        EditCursor.field_1830 = (unsigned int)&DAT_00622320[0];
+        if (1 < n) {
+            struct Cursor *c = &DAT_00622320[1];
+            i = n - 1;
+            do {
+                c[-1].field_1830 = (unsigned int)c;
+                c = c + 1;
+                i = i - 1;
+            } while (i != 0);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00433fa0
 unsigned int FUN_00433fa0(unsigned int param_1, unsigned int param_2) {
