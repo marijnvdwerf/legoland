@@ -4,22 +4,7 @@
 #include "gamemap.h"
 #include "globals.h"
 #include "map_object.h"
-
-typedef void (*CastleVtblFn)(void);
-
-struct CastleLevelInterface {
-    unsigned char pad_0[0x8c];
-    CastleVtblFn field_8c;
-    CastleVtblFn field_90;
-    CastleVtblFn field_94;
-    CastleVtblFn field_98;
-    CastleVtblFn field_9c;
-    CastleVtblFn field_a0;
-    CastleVtblFn field_a4;
-    CastleVtblFn field_a8;
-    CastleVtblFn field_ac;
-    CastleVtblFn field_b0;
-};
+#include "ride_interfaces.h"
 
 #include "image_sprite.h"
 
@@ -56,15 +41,15 @@ void FUN_00403060(unsigned int param1, unsigned int param2) {
 }
 
 // FUNCTION: LEGOLAND 0x00403080
-void FUN_00403080(const char **name, struct CastleLevelInterface *ci) {
+void FUN_00403080(struct ClassNode *name, struct CallbackTable *ci) {
     // STRING: LEGOLAND 0x004b408c
-    if (_stricmp("CASTLE LEVEL 1", *name) == 0) {
-        ci->field_a4 = FUN_00402ca0;
-        ci->field_ac = FUN_00402ce0;
-        ci->field_8c = FUN_00402ff0;
-        ci->field_98 = (CastleVtblFn)FUN_00403060;
-        ci->field_9c = FUN_00403030;
-        ci->field_a8 = FUN_00402dc0;
-        ci->field_b0 = FUN_00402d00;
+    if (_stricmp("CASTLE LEVEL 1", name->name) == 0) {
+        ci->cb_a4 = FUN_00402ca0;
+        ci->cb_ac = FUN_00402ce0;
+        ci->cb_8c = FUN_00402ff0;
+        ci->cb_98 = FUN_00403060;
+        ci->cb_9c = FUN_00403030;
+        ci->cb_a8 = FUN_00402dc0;
+        ci->cb_b0 = FUN_00402d00;
     }
 }
