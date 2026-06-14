@@ -229,7 +229,165 @@ struct JungleRide *FUN_004333e0(struct JungleRide *param_1) {
 void FUN_004334c0(struct JungleRide *param_1, int param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00433840
-void FUN_00433840(struct JungleRide *param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
+void FUN_00433840(struct JungleRide *param_1, unsigned int param_2, unsigned int param_3) {
+    int *p;
+    int i;
+    int bit;
+    unsigned int idx;
+    float *table;
+    int cx;
+    int cy;
+    int tx;
+    int ty;
+    int dx;
+    int dy;
+    int angle;
+
+    table = NULL;
+    if (param_3 == 0xffffffff) {
+        if (param_2 == 0xffffffff) {
+            p = param_1->field_1c;
+            for (i = 0xa0; i != 0; i = i - 1) {
+                *p = 0;
+                p = p + 1;
+            }
+        } else {
+            bit = 0;
+            do {
+                if ((param_2 & (1 << bit)) != 0) {
+                    break;
+                }
+                bit = bit + 1;
+            } while (bit < 4);
+            cx = FUN_00458930((float)(DAT_004b7148[bit * 4] * 0x50) * DAT_004ab3fc);
+            cy = FUN_00458930((float)(DAT_004b7148[bit * 4 + 1] * 0x50) * DAT_004ab3fc);
+            p = &param_1->field_1c[1];
+            i = 0;
+            do {
+                cx = FUN_00458930((float)(DAT_004b7148[0] * i) * DAT_004ab3fc) + cx;
+                p[-1] = cx;
+                cy = FUN_00458930((float)(DAT_004b7148[1] * i) * DAT_004ab3fc) + cy;
+                p[0] = cy;
+                i = i + 1;
+                p = p + 2;
+            } while (i < 0x28);
+        }
+    } else if (param_2 == 0xffffffff) {
+        bit = 0;
+        do {
+            if ((param_3 & (1 << bit)) != 0) {
+                break;
+            }
+            bit = bit + 1;
+        } while (bit < 4);
+        idx = (bit + 2) & 0x80000003;
+        if ((int)idx < 0) {
+            idx = ((idx - 1) | 0xfffffffc) + 1;
+        }
+        i = 0;
+        p = param_1->field_1c;
+        do {
+            if (i < 0x28) {
+                p[0] = 0;
+                p[1] = 0;
+            } else {
+                p[0] = DAT_004b7148[idx * 4] * 0x10 + p[-2];
+                p[1] = DAT_004b7148[idx * 4 + 1] * 0x10 + p[-1];
+            }
+            i = i + 1;
+            p = p + 2;
+        } while (i < 0x50);
+    } else {
+        if (param_2 == 1) {
+            param_2 = 0x11;
+        }
+        if (param_3 == 1) {
+            param_3 = 0x11;
+        }
+        if (((int)param_3 < (int)param_2 && (param_3 & ((int)param_2 >> 2)) == 0) ||
+            ((int)param_3 >= (int)param_2 && param_3 != param_2 && (param_2 & ((int)param_3 >> 2)) == 0)) {
+            if ((param_3 & param_2 * 2) != 0) {
+                table = DAT_004b7188;
+            } else if ((param_2 & param_3 * 2) != 0) {
+                table = DAT_004b71c8;
+            }
+            bit = 0;
+            do {
+                if ((param_2 & (1 << bit)) != 0) {
+                    break;
+                }
+                bit = bit + 1;
+            } while (bit < 4);
+            cx = FUN_00458930((float)((sin((double)table[bit * 4] * (double)DAT_004ab3f4) + (double)DAT_004ab3ec) * (double)DAT_004ab3f4));
+            param_1->field_1c[0] = cx;
+            cy = FUN_00458930((float)((cos((double)table[bit * 4] * (double)DAT_004ab3f4) + (double)DAT_004ab3ec) * (double)DAT_004ab3f4));
+            param_1->field_1c[1] = cy;
+            p = &param_1->field_1c[3];
+            i = 0x4f;
+            do {
+                cx = FUN_00458930((float)sin((double)DAT_004ab3f4));
+                p[-1] = cx;
+                cy = FUN_00458930((float)cos((double)DAT_004ab3f4));
+                p[0] = cy;
+                p = p + 2;
+                i = i - 1;
+            } while (i != 0);
+        } else {
+            bit = 0;
+            do {
+                if ((param_2 & (1 << bit)) != 0) {
+                    break;
+                }
+                bit = bit + 1;
+            } while (bit < 4);
+            FUN_00458930((float)0);
+            FUN_00458930((float)0);
+            if (param_2 == param_3) {
+                i = 0x50;
+                p = &param_1->field_1c[1];
+                do {
+                    p[-1] = FUN_00458930((float)0);
+                    p[0] = FUN_00458930((float)0);
+                    p = p + 2;
+                    i = i - 1;
+                } while (0 < i);
+            } else {
+                i = 0;
+                p = &param_1->field_1c[1];
+                do {
+                    p[-1] = FUN_00458930((float)0);
+                    p[0] = FUN_00458930((float)0);
+                    i = i + 1;
+                    p = p + 2;
+                } while (i < 0x50);
+            }
+        }
+    }
+    i = 0;
+    p = param_1->field_29c;
+    do {
+        if (i < 0x4c) {
+            tx = param_1->field_1c[i * 2 + 0x1c];
+            ty = param_1->field_1c[i * 2 + 0x1d];
+        } else {
+            tx = param_1->field_1c[0x9e];
+            ty = param_1->field_1c[0x9f];
+        }
+        if (i < 4) {
+            cx = param_1->field_1c[0];
+            cy = param_1->field_1c[1];
+        } else {
+            cx = param_1->field_1c[i * 2];
+            cy = param_1->field_1c[i * 2 + 1];
+        }
+        dx = tx - cx;
+        dy = ty - cy;
+        angle = ArcTan256(dx, dy);
+        *p = (unsigned int)((angle >> 4) + 6) & 0xf;
+        i = i + 1;
+        p = p + 1;
+    } while (i < 0x50);
+}
 
 // FUNCTION: LEGOLAND 0x00433ca0
 void FUN_00433ca0(struct JungleHolder *param_1) {
