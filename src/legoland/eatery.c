@@ -80,14 +80,6 @@ struct UserFlagsArg {
     int var_4;
 };
 
-struct UnSourceArg {
-    /* 0x00 */ unsigned char pad_0[8];
-    /* 0x08 */ int field_8;
-    /* 0x0c */ unsigned char pad_c[0x10 - 0xc];
-    /* 0x10 */ int field_10;
-    /* 0x14 */ int field_14;
-};
-
 struct SaveBlock {
     /* 0x00 */ struct SaveBlock *next;
     /* 0x04 */ unsigned short value;
@@ -297,10 +289,25 @@ void FUN_0042e8d0(struct EditArg *arg) {
 void FUN_0042e910(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0042e9c0
-void FUN_0042e9c0(void) { STUB(); }
+void FUN_0042e9c0(unsigned int param_1, unsigned int *param_2) {
+    struct SampleParams params;
+    AddBasicObject(param_1, (unsigned int)param_2);
+    params.field_8 = *param_2;
+    params.field_c = param_2[1];
+    params.field_0 = 2;
+    PlayInstanceOfSample(*(void **)(RESTAURANT_SFX + 8), 1, 1, &params);
+}
 
 // FUNCTION: LEGOLAND 0x0042ea10
-void FUN_0042ea10(void) { STUB(); }
+void FUN_0042ea10(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+    unsigned char *b = (unsigned char *)&param_2;
+    struct SampleParams params;
+    StandardRemoveObject(param_1, param_2, param_3);
+    params.field_8 = b[0];
+    params.field_c = b[1];
+    params.field_0 = 2;
+    UnSourceAndFadeAllSamplesFromSource(&params, 0xffffff38);
+}
 
 // FUNCTION: LEGOLAND 0x0042ea60
 void FUN_0042ea60(void) { STUB(); }
@@ -380,17 +387,17 @@ void FUN_0042ef70(struct BrollyNode *node) {
 
 // FUNCTION: LEGOLAND 0x0042efb0
 void FUN_0042efb0(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
-    struct UnSourceArg local;
+    struct SampleParams params;
     struct BrollyNode *node = FUN_0042ef40((unsigned short *)&param_2);
     if (node != NULL) {
         FUN_0042ef70(node);
     }
     StandardRemoveObject(param_1, param_2, param_3);
     RemoveAllBlokesFromRide((unsigned int)((struct EateryObj *)param_1)->fx_c, (void *)param_2);
-    local.field_8 = 2;
-    local.field_10 = param_2 & 0xff;
-    local.field_14 = param_2 >> 8 & 0xff;
-    UnSourceAndFadeAllSamplesFromSource(&local, 0xffffff38);
+    params.field_8 = ((unsigned char *)&param_2)[0];
+    params.field_c = ((unsigned char *)&param_2)[1];
+    params.field_0 = 2;
+    UnSourceAndFadeAllSamplesFromSource(&params, 0xffffff38);
 }
 
 // FUNCTION: LEGOLAND 0x0042f030
@@ -561,13 +568,38 @@ void FUN_0042fa40(unsigned int arg1, unsigned int arg2, unsigned int arg3, unsig
 }
 
 // FUNCTION: LEGOLAND 0x0042fa90
-void FUN_0042fa90(void) { STUB(); }
+void FUN_0042fa90(int param_1, int param_2, int param_3) {
+    int bloke = *(int *)(param_1 + 8);
+    if (param_2 == 1) {
+        *(int *)(bloke + 0x68) = *(int *)(bloke + 0x68) + DAT_004b6860[param_3] * -8;
+        *(int *)(*(int *)(param_1 + 8) + 0x6c) = *(int *)(*(int *)(param_1 + 8) + 0x6c) + DAT_004b6860[param_3] * -8;
+    } else {
+        *(int *)(bloke + 0x68) = *(int *)(bloke + 0x68) + DAT_004b68e0[param_3] * 8;
+        *(int *)(*(int *)(param_1 + 8) + 0x6c) = *(int *)(*(int *)(param_1 + 8) + 0x6c) + DAT_004b68e0[param_3] * 8;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0042fb00
-void FUN_0042fb00(void) { STUB(); }
+void FUN_0042fb00(unsigned int param_1) {
+    unsigned char *b = (unsigned char *)&param_1;
+    struct SampleParams params;
+    params.field_8 = b[0];
+    params.field_c = b[1];
+    params.field_0 = 2;
+    PlayInstanceOfSample(*(void **)(OCTOPUS_SFX + 8), 0, 1, &params);
+    PlayInstanceOfSample(*(void **)(OCTOPUS_SFX + 0x14), 1, 1, &params);
+}
 
 // FUNCTION: LEGOLAND 0x0042fb60
-void FUN_0042fb60(void) { STUB(); }
+void FUN_0042fb60(unsigned int param_1) {
+    unsigned char *b = (unsigned char *)&param_1;
+    struct SampleParams params;
+    params.field_0 = 2;
+    params.field_8 = b[0];
+    params.field_c = b[1];
+    UnSourceAndFadeAllSamplesFromSource(&params, 0xffffff38);
+    PlayInstanceOfSample(*(void **)(OCTOPUS_SFX + 0x20), 0, 1, &params);
+}
 
 // FUNCTION: LEGOLAND 0x0042fbb0
 void FUN_0042fbb0(void) { STUB(); }

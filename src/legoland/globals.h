@@ -362,8 +362,12 @@ extern unsigned char CAROUSSEL_SFX[12];
 extern unsigned char ENTRANCE_SFX[0x1c];
 // 0x004b66e8
 extern unsigned char RESTAURANT_SFX[0x1c];
+// 0x004b6860
+extern int DAT_004b6860[0x20];
+// 0x004b68e0
+extern int DAT_004b68e0[0x22];
 // 0x004b6968
-extern unsigned char OCTOPUS_SFX[0x1c];
+extern unsigned char OCTOPUS_SFX[0x24];
 // 0x004b7260
 extern int DAT_004b7260[6];
 // 0x004b7278
