@@ -1005,7 +1005,64 @@ void FUN_00434f90(unsigned int param_1, int *param_2) {
 void FUN_00435150(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00435230
-void FUN_00435230(void) { STUB(); }
+void FUN_00435230(unsigned int param_1, unsigned int param_2) {
+    struct JunglePath *p1 = DAT_0062fd2c;
+    struct JungleFish *p4 = DAT_00629c34;
+    struct JungleFish *p3 = DAT_00629c30;
+    struct JungleObj *p2 = DAT_00629c2c;
+
+    BasicObjectDCalcCursor(param_1, param_2);
+    DefaultCursor(&DAT_0082ae20);
+    *(struct Footprint *)DAT_0082ae20.field_1414 = DAT_004b7478;
+    for (; p1 != NULL; p1 = p1->next) {
+        if (p1->field_2 == QueryObj) {
+            DAT_0082ae20.field_1404 = p1->x;
+            DAT_0082ae20.field_1408 = p1->y;
+            FUN_0045f460(&DAT_0082ae20);
+            DAT_0082ae20.field_1828 = 8;
+            BuildCursorPtr(&DAT_0082ae20, 0, 0);
+            RenderCursor(&DAT_0082ae20);
+        }
+    }
+    for (; p2 != NULL; p2 = p2->next) {
+        if (p2->field_2 == QueryObj) {
+            DAT_0082ae20.field_1404 = (unsigned char)p2->field_0;
+            DAT_0082ae20.field_1408 = (unsigned char)(p2->field_0 >> 8);
+            FUN_0045f460(&DAT_0082ae20);
+            DAT_0082ae20.field_1828 = 8;
+            BuildCursorPtr(&DAT_0082ae20, 0, 0);
+            RenderCursor(&DAT_0082ae20);
+        }
+    }
+    DAT_0082ae20.field_1414[1] -= 5;
+    for (; p3 != NULL; p3 = p3->next) {
+        if (p3->field_2 == QueryObj) {
+            DAT_0082ae20.field_1404 = (unsigned char)p3->field_0;
+            DAT_0082ae20.field_1408 = (unsigned char)(p3->field_0 >> 8);
+            FUN_0045f460(&DAT_0082ae20);
+            DAT_0082ae20.field_1828 = 8;
+            BuildCursorPtr(&DAT_0082ae20, 0, 0);
+            RenderCursor(&DAT_0082ae20);
+        }
+    }
+    for (; p4 != NULL; p4 = p4->next) {
+        if (p4->field_2 == QueryObj) {
+            DAT_0082ae20.field_1414[1] = 0xffffffff;
+            DAT_0082ae20.field_1414[3] = 1;
+            DAT_0082ae20.field_1414[0] = 0;
+            DAT_0082ae20.field_1414[2] = 0;
+            DAT_0082ae20.field_1404 = (unsigned char)p4->field_0;
+            DAT_0082ae20.field_1408 = (unsigned char)(p4->field_0 >> 8);
+            FUN_0045f460(&DAT_0082ae20);
+            DAT_0082ae20.field_1828 = 8;
+            BuildCursorPtr(&DAT_0082ae20, 0, 0);
+            RenderCursor(&DAT_0082ae20);
+            DAT_0082ae20.field_1404 = DAT_0082ae20.field_1404 - 6;
+            BuildCursorPtr(&DAT_0082ae20, 0, 0);
+            RenderCursor(&DAT_0082ae20);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00435470
 void FUN_00435470(void *param_1, unsigned int param_2, struct Cursor *param_3) { STUB(); }

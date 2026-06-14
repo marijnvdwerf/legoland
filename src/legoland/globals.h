@@ -2860,6 +2860,8 @@ extern unsigned int DAT_0082adec;
 extern void *DAT_0082adf0;
 // 0x0082adf8
 extern unsigned int DAT_0082adf8;
+// 0x0082ae20
+extern struct Cursor DAT_0082ae20;
 // 0x0082c658
 extern unsigned int DAT_0082c658;
 // 0x0082c668
