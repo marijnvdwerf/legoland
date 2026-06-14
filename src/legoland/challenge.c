@@ -12,6 +12,7 @@
 #include "icon.h"
 #include "imports.h"
 #include "llidb.h"
+#include "nerps.h"
 #include "print_sprite.h"
 #include "render.h"
 #include "resource.h"
@@ -35,7 +36,7 @@ struct AnimHandle {
     /* 0x18 */ unsigned char pad_18[0x1c - 0x18];
     /* 0x1c */ void *stream;
     /* 0x20 */ void (*open_cb)(struct AnimHandle *handle);
-    /* 0x24 */ void *callback;
+    /* 0x24 */ void *(*callback)(void);
 };
 
 struct RideObj {
@@ -301,8 +302,71 @@ void FUN_00443dc0(struct AnimHandle *handle) {
     }
 }
 
+struct AdvisorObject {
+    /* 0x00 */ unsigned char pad_0[4];
+    /* 0x04 */ struct Sprite *sprite;
+    /* 0x08 */ unsigned char pad_8[0xc - 0x8];
+    /* 0x0c */ short x;
+    /* 0x0e */ short y;
+};
+
+struct AviFrame {
+    /* 0x00 */ unsigned char pad_0[4];
+    /* 0x04 */ int width;
+    /* 0x08 */ int height;
+};
+
 // FUNCTION: LEGOLAND 0x00443e30
-void FUN_00443e30(void) { STUB(); }
+unsigned int FUN_00443e30(struct AdvisorObject *param_1) {
+    struct AnimHandle *anim;
+    struct AviFrame *frame;
+    int state[3];
+
+    state[0] = 2;
+    state[1] = (int)param_1;
+    state[2] = 0;
+    if (FUN_0046b280() == 0) {
+        anim = (struct AnimHandle *)DAT_00665f5c;
+        if (anim != NULL) {
+            if (DAT_00665eec >= anim->length) {
+                if (anim->callback != NULL) {
+                    anim->callback();
+                    anim = (struct AnimHandle *)DAT_00665f5c;
+                }
+                if (DAT_00665f60 == NULL) {
+                    DAT_00665f60 = anim;
+                }
+                // STRING: LEGOLAND 0x004b7dc4
+                DAT_00667c40 = "SetVidAnim";
+                FUN_00443dc0((struct AnimHandle *)DAT_00665f60);
+                anim = (struct AnimHandle *)DAT_00665f5c;
+                DAT_00665f60 = NULL;
+            }
+            // STRING: LEGOLAND 0x004b7db4
+            DAT_00667c40 = "AVI GetFrame";
+            frame = (struct AviFrame *)AVIStreamGetFrame(anim->getframe, DAT_00665eec);
+            // STRING: LEGOLAND 0x004b7da8
+            DAT_00667c40 = "BltAdvisor";
+            PushRenderingStatusAndLockVideoSurface();
+            FUN_004659a0((int)frame, param_1->x, param_1->y);
+            PopRenderingStatus();
+            DAT_00665eec = DAT_00665eec + 1;
+            // STRING: LEGOLAND 0x004b7d98
+            DAT_00667c40 = "Exit Advisor";
+            if ((int)DAT_00813a44 >= param_1->x && (int)DAT_00813a48 >= param_1->y &&
+                (int)DAT_00813a44 < frame->width + param_1->x && (int)DAT_00813a48 < frame->height + param_1->y) {
+                DAT_004bdd08 = state[2];
+                DAT_004bdd00 = state[0];
+                DAT_004bdd04 = state[1];
+            }
+        }
+        return 0;
+    }
+    PushRenderingStatusAndLockVideoSurface();
+    PrintSprite(param_1->sprite, param_1->x, param_1->y, 0, state);
+    PopRenderingStatus();
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00443f90
 void *FUN_00443f90(unsigned int param_1) {
