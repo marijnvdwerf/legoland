@@ -678,7 +678,16 @@ unsigned int FUN_004442f0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00444320
-void FUN_00444320(void) { STUB(); }
+unsigned int FUN_00444320(void) {
+    struct RideElem *elem;
+
+    // STRING: LEGOLAND 0x004b5c0c
+    elem = (struct RideElem *)ElemID("CASTLE OBJ");
+    if ((elem->flags & 1) != 0) {
+        return elem->obj->func(elem->obj->arg, 0);
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00444350
 unsigned int FUN_00444350(void) {
