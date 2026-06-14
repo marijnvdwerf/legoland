@@ -10,6 +10,7 @@
 #include "llidb.h"
 #include "man3d.h"
 #include "map_object.h"
+#include "obj_instance.h"
 #include "objclass.h"
 #include "print_sprite.h"
 #include "render3d.h"
@@ -1089,7 +1090,103 @@ void FUN_00435230(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00435470
-void FUN_00435470(void *param_1, unsigned int param_2, struct Cursor *param_3) { STUB(); }
+void FUN_00435470(void *param_1, unsigned int param_2, struct Cursor *param_3) {
+    struct JungleScore *score = DAT_00629c3c;
+    struct JungleScore *prev = NULL;
+    struct JungleRide *ride = DAT_00616164;
+    struct JunglePath *path;
+    struct JungleObj *obj;
+    struct JungleFish *fish;
+    unsigned int savedX;
+    unsigned int savedY;
+    unsigned char local_14[12];
+
+    StandardRemoveObject((unsigned int)param_1, param_2, (unsigned int)param_3);
+    while (score->field_0 != (unsigned short)param_2) {
+        prev = score;
+        score = score->next;
+        if (score == NULL) {
+            return;
+        }
+    }
+    if (score == NULL) {
+        return;
+    }
+    IncrementObjectCount((unsigned int)DAT_0081cb54);
+    IncrementObjectCount((unsigned int)DAT_0081cb54);
+    *(struct Footprint *)DAT_0082ae20.field_1414 = DAT_004b7478;
+    path = DAT_0062fd2c;
+    while (path != NULL) {
+        if (path->field_2 == (unsigned short)param_2) {
+            DAT_0082ae20.field_1404 = path->x;
+            DAT_0082ae20.field_1408 = path->y;
+            FUN_00436f30(local_14, *(unsigned short *)&path->x, &DAT_0082ae20);
+            path = DAT_0062fd2c;
+        } else {
+            path = path->next;
+        }
+    }
+    obj = DAT_00629c2c;
+    while (obj != NULL) {
+        if (obj->field_2 == (unsigned short)param_2) {
+            savedX = param_3->field_1404;
+            savedY = param_3->field_1408;
+            param_3->field_1404 = (unsigned char)obj->field_0;
+            param_3->field_1408 = (unsigned char)(obj->field_0 >> 8);
+            FUN_00433fc0(local_14, obj->field_0, param_3);
+            param_3->field_1404 = savedX;
+            param_3->field_1408 = savedY;
+            obj = DAT_00629c2c;
+        } else {
+            obj = obj->next;
+        }
+    }
+    fish = DAT_00629c30;
+    while (fish != NULL) {
+        if (fish->field_2 == (unsigned short)param_2) {
+            savedX = param_3->field_1404;
+            savedY = param_3->field_1408;
+            param_3->field_1404 = (unsigned char)fish->field_0;
+            param_3->field_1408 = (unsigned char)(fish->field_0 >> 8);
+            FUN_00434670(local_14, fish->field_0, param_3);
+            param_3->field_1404 = savedX;
+            param_3->field_1408 = savedY;
+            fish = DAT_00629c30;
+        } else {
+            fish = fish->next;
+        }
+    }
+    fish = DAT_00629c34;
+    while (fish != NULL) {
+        if (fish->field_2 == (unsigned short)param_2) {
+            savedX = param_3->field_1404;
+            savedY = param_3->field_1408;
+            param_3->field_1404 = (unsigned char)fish->field_0;
+            param_3->field_1408 = (unsigned char)(fish->field_0 >> 8);
+            FUN_00434b40(local_14, fish->field_0, param_3);
+            param_3->field_1404 = savedX;
+            param_3->field_1408 = savedY;
+            fish = DAT_00629c34;
+        } else {
+            fish = fish->next;
+        }
+    }
+    if (prev == NULL) {
+        DAT_00629c3c = score->next;
+    } else {
+        prev->next = score->next;
+    }
+    while (ride != NULL) {
+        if (ride->field_0 == (unsigned short)param_2) {
+            FUN_00432cb0(ride);
+            ride = DAT_00616164;
+        } else {
+            ride = ride->next;
+        }
+    }
+    RemoveAllBlokesFromRide(*(unsigned int *)((char *)param_1 + 0xc), (void *)param_2);
+    free(score);
+}
 
 // FUNCTION: LEGOLAND 0x00435750
 void FUN_00435750(void) { STUB(); }
