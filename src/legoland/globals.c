@@ -3571,6 +3571,9 @@ unsigned short DAT_007febb8;
 // GLOBAL: LEGOLAND 0x007febc0
 LEGO_EXPORT struct Cursor EditCursor;
 
+// GLOBAL: LEGOLAND 0x008003f4
+int DAT_008003f4;
+
 // GLOBAL: LEGOLAND 0x008003f8
 unsigned int DAT_008003f8;
 
@@ -3621,6 +3624,9 @@ unsigned int DAT_00801b20;
 
 // GLOBAL: LEGOLAND 0x00801b24
 LEGO_EXPORT unsigned int ObjectPartCount;
+
+// GLOBAL: LEGOLAND 0x00801b28
+int DAT_00801b28;
 
 // GLOBAL: LEGOLAND 0x00801f40
 LEGO_EXPORT struct TileSpriteEntry TileSpriteInfo[2048];

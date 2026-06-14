@@ -105,7 +105,6 @@ int Find3DPersonFromBloke();
 void SetPersonRotation();
 void RestoreBaseMap();
 void RenderCursor();
-void IncrementObjectCount();
 int CheckForPeople();
 int GetBlokeNum();
 int GetBlokePtr();

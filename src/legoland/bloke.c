@@ -448,4 +448,4 @@ LEGO_EXPORT void BNVPath_GetBINVScreenCoords(void) { STUB(); }
 LEGO_EXPORT void BNVPath_SetDFrame(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00485260
-LEGO_EXPORT void CheckForPeople(void) { STUB(); }
+LEGO_EXPORT int CheckForPeople(void) { STUB(); }

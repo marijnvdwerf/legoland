@@ -659,7 +659,7 @@ LEGO_EXPORT void RemoveNoneWorkersRepairOrderAT(unsigned int x, unsigned int y) 
 LEGO_EXPORT int IterateNoneWorkersRepairOrders(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049b930
-LEGO_EXPORT void AddRepairOrderForObject(void) { STUB(); }
+LEGO_EXPORT int AddRepairOrderForObject(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049ba10
 LEGO_EXPORT void Garderner_Repair(void) { STUB(); }

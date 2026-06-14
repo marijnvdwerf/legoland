@@ -5,7 +5,7 @@
 #include "objclass.h"
 
 // FUNCTION: LEGOLAND 0x00450b90
-LEGO_EXPORT void AddObjectToBuildList(void) { STUB(); }
+LEGO_EXPORT int AddObjectToBuildList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00450c00
 void FUN_00450c00(void) { STUB(); }

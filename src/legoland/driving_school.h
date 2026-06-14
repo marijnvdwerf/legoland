@@ -13,7 +13,6 @@ void NewDirForAction();
 void BlokeSitAnim();
 void BlokeSetFrame();
 void KillAllSamplesFromSource();
-void IncrementObjectCount();
 void RenderCursor();
 int GetBlokeNum();
 int GetBlokePtr();

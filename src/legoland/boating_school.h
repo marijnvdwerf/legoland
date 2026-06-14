@@ -103,7 +103,6 @@ void FUN_0041a530(int param_1, unsigned int param_2, int param_3);
 int Find3DPersonFromBloke();
 void SetPersonRotation();
 void RestoreBaseMap();
-void IncrementObjectCount();
 int CheckForPeople();
 int GetBlokeNum();
 int GetBlokePtr();

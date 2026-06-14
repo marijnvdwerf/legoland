@@ -2579,6 +2579,8 @@ extern unsigned int DAT_007feb14;
 extern unsigned short DAT_007febb8;
 // 0x007febc0
 extern LEGO_EXPORT struct Cursor EditCursor;
+// 0x008003f4
+extern int DAT_008003f4;
 // 0x008003f8
 extern unsigned int DAT_008003f8;
 // 0x00800400
@@ -2613,6 +2615,8 @@ extern struct MapRect DAT_00801a80[10];
 extern unsigned int DAT_00801b20;
 // 0x00801b24
 extern LEGO_EXPORT unsigned int ObjectPartCount;
+// 0x00801b28
+extern int DAT_00801b28;
 // 0x00801f40
 extern LEGO_EXPORT struct TileSpriteEntry TileSpriteInfo[2048];
 // 0x00805f40
