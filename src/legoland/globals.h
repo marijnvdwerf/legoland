@@ -32,10 +32,12 @@ struct WaterSub;
 struct EateryFX;
 struct BlokeNode;
 struct SaveBlock;
-struct JungleNode;
+struct JungleRide;
 struct JungleCursor;
 struct JungleFish;
 struct JungleScore;
+struct JungleObj;
+struct JunglePath;
 struct CatapultNode;
 struct Position;
 struct RinData;
@@ -1003,17 +1005,27 @@ extern unsigned int DAT_00616158;
 // 0x0061615c
 extern unsigned int DAT_0061615c;
 // 0x00616164
-extern struct JungleNode *DAT_00616164;
+extern struct JungleRide *DAT_00616164;
+// 0x00629c2c
+extern struct JungleObj *DAT_00629c2c;
 // 0x00629c30
 extern struct JungleFish *DAT_00629c30;
+// 0x00629c34
+extern struct JungleFish *DAT_00629c34;
 // 0x00629c3c
 extern struct JungleScore *DAT_00629c3c;
 // 0x00629c40
-extern unsigned char DAT_00629c40[16];
+extern int DAT_00629c40[5];
 // 0x00629c50
 extern void *DAT_00629c50;
+// 0x00629c54
+extern int DAT_00629c54;
 // 0x0062fd2c
-extern unsigned int DAT_0062fd2c;
+extern struct JunglePath *DAT_0062fd2c;
+// 0x0062fd30
+extern struct JunglePath *DAT_0062fd30;
+// 0x0062fd34
+extern struct JunglePath *DAT_0062fd34;
 // 0x0062fd3c
 extern struct JailCell *DAT_0062fd3c;
 // 0x0062fd48
@@ -2618,17 +2630,25 @@ extern struct Building *DAT_0081cb4c;
 // 0x0081cb50
 extern struct Sprite *DAT_0081cb50;
 // 0x0081cb54
-extern unsigned int DAT_0081cb54;
+extern struct Cursor *DAT_0081cb54;
+// 0x0081cb58
+extern void *DAT_0081cb58;
+// 0x0081cb5c
+extern struct Sprite *DAT_0081cb5c;
 // 0x0081cb60
-extern void *DAT_0081cb60;
+extern struct Cursor *DAT_0081cb60;
+// 0x0081cb64
+extern struct Cursor *DAT_0081cb64;
 // 0x0081cb68
 extern struct Sprite *DAT_0081cb68;
 // 0x0081cb6c
 extern struct Sprite *DAT_0081cb6c;
 // 0x0081cb70
-extern struct JungleCursor *DAT_0081cb70;
+extern struct Cursor *DAT_0081cb70;
 // 0x0081cb74
-extern unsigned int DAT_0081cb74;
+extern struct Cursor *DAT_0081cb74;
+// 0x0081cd00
+extern void *DAT_0081cd00;
 // 0x0081cd04
 extern void *DAT_0081cd04;
 // 0x0081cd08

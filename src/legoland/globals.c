@@ -1248,22 +1248,37 @@ unsigned int DAT_00616158;
 unsigned int DAT_0061615c;
 
 // GLOBAL: LEGOLAND 0x00616164
-struct JungleNode *DAT_00616164;
+struct JungleRide *DAT_00616164;
+
+// GLOBAL: LEGOLAND 0x00629c2c
+struct JungleObj *DAT_00629c2c;
 
 // GLOBAL: LEGOLAND 0x00629c30
 struct JungleFish *DAT_00629c30;
+
+// GLOBAL: LEGOLAND 0x00629c34
+struct JungleFish *DAT_00629c34;
 
 // GLOBAL: LEGOLAND 0x00629c3c
 struct JungleScore *DAT_00629c3c;
 
 // GLOBAL: LEGOLAND 0x00629c40
-unsigned char DAT_00629c40[16];
+int DAT_00629c40[5];
 
 // GLOBAL: LEGOLAND 0x00629c50
 void *DAT_00629c50;
 
+// GLOBAL: LEGOLAND 0x00629c54
+int DAT_00629c54;
+
 // GLOBAL: LEGOLAND 0x0062fd2c
-unsigned int DAT_0062fd2c;
+struct JunglePath *DAT_0062fd2c;
+
+// GLOBAL: LEGOLAND 0x0062fd30
+struct JunglePath *DAT_0062fd30;
+
+// GLOBAL: LEGOLAND 0x0062fd34
+struct JunglePath *DAT_0062fd34;
 
 // GLOBAL: LEGOLAND 0x0062fd3c
 struct JailCell *DAT_0062fd3c;
@@ -3680,10 +3695,19 @@ struct Building *DAT_0081cb4c;
 struct Sprite *DAT_0081cb50;
 
 // GLOBAL: LEGOLAND 0x0081cb54
-unsigned int DAT_0081cb54;
+struct Cursor *DAT_0081cb54;
+
+// GLOBAL: LEGOLAND 0x0081cb58
+void *DAT_0081cb58;
+
+// GLOBAL: LEGOLAND 0x0081cb5c
+struct Sprite *DAT_0081cb5c;
 
 // GLOBAL: LEGOLAND 0x0081cb60
-void *DAT_0081cb60;
+struct Cursor *DAT_0081cb60;
+
+// GLOBAL: LEGOLAND 0x0081cb64
+struct Cursor *DAT_0081cb64;
 
 // GLOBAL: LEGOLAND 0x0081cb68
 struct Sprite *DAT_0081cb68;
@@ -3692,10 +3716,13 @@ struct Sprite *DAT_0081cb68;
 struct Sprite *DAT_0081cb6c;
 
 // GLOBAL: LEGOLAND 0x0081cb70
-struct JungleCursor *DAT_0081cb70;
+struct Cursor *DAT_0081cb70;
 
 // GLOBAL: LEGOLAND 0x0081cb74
-unsigned int DAT_0081cb74;
+struct Cursor *DAT_0081cb74;
+
+// GLOBAL: LEGOLAND 0x0081cd00
+void *DAT_0081cd00;
 
 // GLOBAL: LEGOLAND 0x0081cd04
 void *DAT_0081cd04;
