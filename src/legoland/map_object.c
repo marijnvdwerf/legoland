@@ -2331,7 +2331,39 @@ LEGO_EXPORT void RateBlokeOnLeaving(int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00463460
-void FUN_00463460(void) { STUB(); }
+void FUN_00463460(struct MapElement *tile, int *coords) {
+    unsigned short flags;
+    struct MapObject *obj;
+    unsigned char threshold;
+    int power;
+
+    if (tile->field_11 != 0) {
+        flags = tile->flags;
+        obj = ((struct EditObject *)tile->field_0)->obj;
+        threshold = obj->field_2c;
+        tile->flags = flags & 0xfdff;
+        threshold = threshold >> 2;
+        if (tile->field_11 < threshold) {
+            if ((flags & 4) != 0) {
+                *((unsigned char *)&tile->flags + 1) |= 2;
+                tile->field_11 = threshold;
+                return;
+            }
+            if (lpConfig->field_3c != 0 && (flags & 0x4000) == 0) {
+                if (AddRepairOrderForObject((int)obj, coords[0], coords[1]) != 0) {
+                    *((unsigned char *)&tile->flags + 1) |= 0x40;
+                }
+            }
+            if ((flags & 0x200) == 0) {
+                power = FindObjectsPower(obj);
+                if (0 < power && (DAT_00832bd0 = DAT_00832bd0 - power, DAT_00832bd0 < DAT_00832bd4 - (int)DAT_00832bd8)) {
+                    FUN_0045a0d0();
+                }
+            }
+            *((unsigned char *)&tile->flags + 1) |= 2;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00463520
 int FUN_00463520(void) {
@@ -2362,7 +2394,43 @@ void FUN_00463560(void) {
 LEGO_EXPORT void ProcessDamage(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00463680
-void FUN_00463680(void) { STUB(); }
+void FUN_00463680(void) {
+    int row;
+    int off;
+    int *tile;
+
+    row = 0;
+    do {
+        off = 0;
+        do {
+            tile = (int *)(*(int *)((int)GameMap + row) + off);
+            off = off + 0x14;
+            tile[0] = 0;
+            tile[1] = 0;
+            tile[2] = 0;
+            tile[3] = 0;
+            tile[4] = 0;
+        } while (off < 0x1400);
+        row = row + 4;
+    } while (row < 0x400);
+    ClearOverlays();
+}
 
 // FUNCTION: LEGOLAND 0x004636c0
-int FUN_004636c0() { STUB(); }
+int FUN_004636c0(void) {
+    int total;
+    unsigned int rows;
+
+    total = 0;
+    rows = lpConfig->height;
+    if (rows != 0) {
+        unsigned int width = lpConfig->width;
+        do {
+            if (width != 0) {
+                total = total + width;
+            }
+            rows = rows - 1;
+        } while (rows != 0);
+    }
+    return total;
+}

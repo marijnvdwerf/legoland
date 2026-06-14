@@ -111,7 +111,7 @@ struct LegoConfig {
     /* 0x30 */ unsigned int field_30;
     /* 0x34 */ unsigned int field_34;
     /* 0x38 */ unsigned int field_38;
-    /* 0x3c */ unsigned char pad_3c[4];
+    /* 0x3c */ int field_3c;
     /* 0x40 */ unsigned int field_40;
 };
 
