@@ -1406,7 +1406,22 @@ void FUN_00445190(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00445310
-void FUN_00445310(void) { STUB(); }
+void FUN_00445310(void) {
+    if (DAT_006660a0 <= 1 || DAT_006660a4 >= DAT_006660a0 - 1) {
+        DAT_006660a8->field_2c = 0;
+        DAT_006660a8->field_34 |= 0x400;
+    } else {
+        DAT_006660a8->field_2c = (void *)FUN_00444ef0;
+        DAT_006660a8->field_34 &= 0xfffffbff;
+    }
+    if (DAT_006660a4 != 0) {
+        DAT_006660ac->field_2c = (void *)FUN_00444f90;
+        DAT_006660ac->field_34 &= 0xfffffbff;
+    } else {
+        DAT_006660ac->field_2c = 0;
+        DAT_006660ac->field_34 |= 0x400;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004453a0
 void FUN_004453a0(void) { STUB(); }
