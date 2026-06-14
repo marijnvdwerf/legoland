@@ -53,6 +53,7 @@ struct RinData;
 struct CopterNode;
 struct GoldNode;
 struct CarouselNode;
+struct CarouselRide;
 struct JoustNode;
 struct InterfaceIconNode;
 struct IconNode;
@@ -380,6 +381,8 @@ extern unsigned char DAT_004b5f60[1];
 extern unsigned int DAT_004b62f0;
 // 0x004b6300
 extern unsigned int DAT_004b6300;
+// 0x004b64d4
+extern char DAT_004b64d4[4];
 // 0x004b64d8
 extern unsigned char CAROUSSEL_SFX[12];
 // 0x004b6668
@@ -1045,10 +1048,22 @@ extern struct Sprite *DAT_00616058;
 extern struct Sprite *DAT_0061605c;
 // 0x00616060
 extern void *DAT_00616060;
+// 0x00616068
+extern void *DAT_00616068;
 // 0x0061606c
 extern struct Sprite *DAT_0061606c;
 // 0x00616070
 extern struct Sprite *DAT_00616070;
+// 0x00616078
+extern int DAT_00616078;
+// 0x0061607c
+extern int DAT_0061607c;
+// 0x00616080
+extern void *DAT_00616080;
+// 0x00616084
+extern void *DAT_00616084;
+// 0x0061608c
+extern void *DAT_0061608c;
 // 0x00616090
 extern void *DAT_00616090;
 // 0x00616094
@@ -1063,8 +1078,10 @@ extern unsigned int DAT_006160a4;
 extern unsigned int DAT_006160a8;
 // 0x006160ac
 extern unsigned short DAT_006160ac;
+// 0x006160b8
+extern struct Sprite *DAT_006160b8;
 // 0x006160bc
-extern unsigned int DAT_006160bc;
+extern struct CarouselRide *DAT_006160bc;
 // 0x006160c0
 extern struct Sprite *DAT_006160c0;
 // 0x006160c4

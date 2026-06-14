@@ -17,7 +17,6 @@
 struct SpriteListNode;
 struct Layer;
 struct LayerHost;
-struct LayerResult;
 
 struct LayerVtbl {
     void *func_0;
@@ -42,12 +41,6 @@ struct LayerOwner {
     struct LayerArrays *arrays;
     unsigned char pad_c[0x10 - 0xc];
     unsigned int flags;
-};
-
-struct LayerResult {
-    void *field_0;
-    void *field_4;
-    void *field_8;
 };
 
 struct ILFTable {
