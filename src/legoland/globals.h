@@ -368,6 +368,8 @@ extern int DAT_004b6860[0x20];
 extern int DAT_004b68e0[0x22];
 // 0x004b6968
 extern unsigned char OCTOPUS_SFX[0x24];
+// 0x004b6d58
+extern unsigned char DAT_004b6d58[0x120];
 // 0x004b7260
 extern int DAT_004b7260[6];
 // 0x004b7278

@@ -10,6 +10,7 @@
 #include "map_object.h"
 #include "money.h"
 #include "obj_instance.h"
+#include "print_sprite.h"
 #include "render3d.h"
 #include "sound_music.h"
 
@@ -1160,10 +1161,141 @@ void FUN_00431520(void) {
 void FUN_004316f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00431c50
-void FUN_00431c50(void) { STUB(); }
+void FUN_00431c50(unsigned int param_1, unsigned int param_2, struct Sprite *param_3, struct Sprite *param_4, struct Sprite *param_5, int param_6, int param_7, int param_8, int param_9, unsigned int param_10) {
+    PrintSprite(param_3, param_1, param_2, param_10, 0);
+    if (param_6 == 0) {
+        if (param_7 != 0) {
+            goto render7;
+        }
+    } else {
+        IP_RenderBlokeIn3DNow((struct Bloke *)param_6);
+        if (param_7 != 0) {
+render7:
+            IP_RenderBlokeIn3DNow((struct Bloke *)param_7);
+            goto print4;
+        }
+print4:
+        PrintSprite(param_4, param_1, param_2, param_10, 0);
+    }
+    if (param_8 == 0) {
+        if (param_9 == 0) {
+            return;
+        }
+    } else {
+        IP_RenderBlokeIn3DNow((struct Bloke *)param_8);
+        if (param_9 == 0) {
+            goto print5;
+        }
+    }
+    IP_RenderBlokeIn3DNow((struct Bloke *)param_9);
+print5:
+    PrintSprite(param_5, param_1, param_2, param_10, 0);
+}
 
 // FUNCTION: LEGOLAND 0x00431d00
-void FUN_00431d00(void) { STUB(); }
+void FUN_00431d00(int param_1, unsigned int param_2, unsigned int param_3, unsigned char *param_4, unsigned int param_5, unsigned int param_6) {
+    int buckets[0x20];
+    int blokes[0x20];
+    int count;
+    int i;
+    int *p;
+    int bloke;
+    int *node;
+    p = buckets;
+    buckets[0] = 0;
+    for (i = 0x1f; p = p + 1, i != 0; i = i - 1) {
+        *p = 0;
+    }
+    count = 0;
+    node = *(int **)(*(int *)(param_1 + 0xc) + 0xcc);
+    if (node != NULL) {
+        int *dst = blokes;
+        do {
+            if (*(short *)param_4 == (short)node[3]) {
+                bloke = node[2];
+                if (*(short *)(bloke + 0x40) == 0) {
+                    int gx = *(int *)(bloke + 0x68);
+                    unsigned char b0 = *param_4;
+                    *dst = bloke;
+                    count = count + 1;
+                    dst = dst + 1;
+                    *(unsigned char *)(bloke + 0x37) =
+                        DAT_004b6d58[((((gx >> 8) - (unsigned int)b0) * 0xb - (*(int *)(bloke + 0x6c) >> 8)) +
+                                      (unsigned int)param_4[1]) * 4];
+                } else {
+                    buckets[*(unsigned char *)(bloke + 0x36)] = bloke;
+                }
+            }
+            node = (int *)*node;
+        } while (node != NULL);
+    }
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 1) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 2) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    FUN_00431c50(param_2, param_3, DAT_0081cd70, DAT_0081cdc0, DAT_0081cdc4, buckets[14], buckets[15], buckets[12], buckets[13], param_6);
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 3) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 4) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    FUN_00431c50(param_2, param_3, DAT_0081cd74, DAT_0081cdc8, DAT_0081cdcc, buckets[17], buckets[18], buckets[16], buckets[19], param_6);
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 5) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 6) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    FUN_00431c50(param_2, param_3, DAT_0081cd6c, DAT_0081cdb8, DAT_0081cdbc, buckets[10], buckets[11], buckets[8], buckets[9], param_6);
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 7) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    FUN_00431c50(param_2, param_3, DAT_0081cd68, DAT_0081cdb0, DAT_0081cdb4, buckets[4], buckets[7], buckets[5], buckets[6], param_6);
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 8) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 9) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 10) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    PrintSprite(DAT_0081cd80, param_2, param_3, param_6, 0);
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 0xb) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 0xc) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    FUN_00431c50(param_2, param_3, DAT_0081cd78, DAT_0081cdd0, DAT_0081cdd4, buckets[21], buckets[22], buckets[20], buckets[23], param_6);
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 0xd) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 0xe) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    FUN_00431c50(param_2, param_3, DAT_0081cd7c, DAT_0081cdd8, DAT_0081cddc, buckets[24], buckets[25], buckets[26], buckets[27], param_6);
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 0xf) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 0x10) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    FUN_00431c50(param_2, param_3, DAT_0081cd64, DAT_0081cda8, DAT_0081cdac, buckets[0], buckets[3], buckets[1], buckets[2], param_6);
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 0x11) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 0x12) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+    FUN_00431c50(param_2, param_3, DAT_0081cd60, DAT_0081cda0, DAT_0081cda4, buckets[28], buckets[29], buckets[30], buckets[31], param_6);
+    for (i = 0; i < count; i = i + 1) {
+        if (*(char *)(blokes[i] + 0x37) == 0x13) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004322a0
 int FUN_004322a0(void) {
