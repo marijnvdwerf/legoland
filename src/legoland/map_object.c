@@ -425,7 +425,63 @@ void FUN_0045e300(struct EditObject *editObj, struct Point *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x0045e4a0
-void FUN_0045e4a0(int element, void *data) { STUB(); }
+void FUN_0045e4a0(struct EditObject *editObj, struct Point *pos) {
+    struct MapObject *obj;
+    unsigned char coords[2];
+    struct Cursor *node;
+    unsigned int node_flags;
+    struct FootprintNode rect;
+    struct FootprintNode *next;
+    struct MapElement *tile;
+    int x;
+    int y;
+    unsigned int saved[0x60d];
+    int center[2];
+
+    obj = editObj->obj;
+    coords[1] = *((unsigned char *)pos + 4);
+    memcpy(saved, &EditCursor, 0x60d * sizeof(unsigned int));
+    coords[0] = *(unsigned char *)pos;
+    GetTileCentre(pos, center);
+    obj->method_90(obj->field_c4, saved, 0x8f8);
+    node = &EditCursor;
+    do {
+        node_flags = node->field_1828;
+        rect.x0 = node->field_1414[0];
+        rect.y0 = node->field_1414[1];
+        rect.x1 = node->field_1414[2];
+        rect.y1 = node->field_1414[3];
+        rect.next = (struct FootprintNode *)node->field_1414[4];
+        if ((node_flags & 0x3000) == 0) {
+            y = rect.y0;
+            while (1) {
+                for (; y <= rect.y1; y++) {
+                    for (x = rect.x0; x <= rect.x1; x++) {
+                        int tx = node->field_1404 + x;
+                        int ty = node->field_1408 + y;
+                        if (tx >= 0 && tx < lpConfig->width && ty >= 0 && ty < lpConfig->height) {
+                            tile = (struct MapElement *)((int)GameMap[ty] + tx * 0x14);
+                            if (tile != 0) {
+                                tile->flags = 0;
+                                tile->field_0 = (unsigned int)editObj;
+                                tile->field_4 = *(unsigned short *)coords;
+                                tile->field_10 = 0;
+                            }
+                        }
+                    }
+                }
+                next = rect.next;
+                if (next == 0) {
+                    break;
+                }
+                rect = *next;
+                y = rect.y0;
+            }
+        }
+        node = (struct Cursor *)node->field_1830;
+    } while (node != 0);
+    memcpy(&EditCursor, saved, 0x60d * sizeof(unsigned int));
+}
 
 // FUNCTION: LEGOLAND 0x0045e620
 int FUN_0045e620(struct ObjBox *obj) {

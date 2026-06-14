@@ -9,9 +9,10 @@
 struct Cursor;
 struct CursorObj;
 struct EditObject;
+struct Point;
 
 void IncrementObjectCount(void *obj);
-void FUN_0045e4a0(int element, void *data);
+void FUN_0045e4a0(struct EditObject *editObj, struct Point *pos);
 LEGO_EXPORT unsigned int AddBasicObject(unsigned int param1, unsigned int param2);
 LEGO_EXPORT void AddObjectToMap(struct EditObject *param_1, unsigned int param_2, int param_3);
 LEGO_EXPORT void StandardRemoveObject(unsigned int a, unsigned int b, unsigned int c);
