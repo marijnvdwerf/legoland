@@ -7,3 +7,4 @@ void BlokeSitAnim();
 void BlokeSetFrame();
 void SetPersonDirection();
 void PlayMoneySFX();
+void StopMoneySFX();

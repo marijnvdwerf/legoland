@@ -947,10 +947,68 @@ void FUN_00431120(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00431170
-void FUN_00431170(void) { STUB(); }
+void FUN_00431170(int param_1) {
+    int ride = *(int *)(param_1 + 0xc);
+    unsigned int *node = *(unsigned int **)(ride + 0xcc);
+    unsigned int *next;
+    int bloke;
+    unsigned char *pos;
+    int x;
+    int y;
+    char cv;
+    char state;
+    while (node != NULL) {
+        next = (unsigned int *)*node;
+        bloke = node[2];
+        pos = (unsigned char *)(node + 3);
+        x = (unsigned int)pos[0] + *(int *)(ride + 0xc);
+        y = (unsigned int)pos[1] + *(int *)(ride + 0x10);
+        if (*(short *)(bloke + 0xe) == 0) {
+            state = *(char *)(bloke + 0x60);
+            switch (state) {
+            case 0:
+                *(unsigned char *)(bloke + 0x62) |= 8;
+                *(int *)(bloke + 0x24) = x * 0x100 + 0x80;
+                x = y * 0x100 + -0x80;
+                goto calc;
+            case 1:
+                *(char *)(bloke + 0x60) = state + 1;
+                *(unsigned int *)(bloke + 0x58) = (rand() & 0x1f) + 4;
+                break;
+            case 2:
+                if (*(int *)(bloke + 0x58) == 0) {
+                    *(char *)(bloke + 0x60) = state + 1;
+                    BuyItem(param_1, node + 3, 1);
+                }
+                *(int *)(bloke + 0x58) += -1;
+                break;
+            case 3:
+                *(int *)(bloke + 0x24) = x * 0x100 + 0x80;
+                x = y * 0x100 + 0x80;
+calc:
+                *(int *)(bloke + 0x28) = x;
+                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
+                                  *(unsigned int *)(bloke + 0x24), x, bloke + 0x98);
+                *(short *)(bloke + 0xe) = 7;
+                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
+                *(char *)(bloke + 0x60) += 1;
+                break;
+            case 4:
+                RemoveBlokeFromRide((void *)ride, node);
+                *(unsigned short *)(bloke + 0x62) &= 0xfff7;
+            }
+        }
+        node = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004312c0
-void FUN_004312c0(void) { STUB(); }
+void FUN_004312c0(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+    StandardRemoveObject(param_1, param_2, param_3);
+    RemoveAllBlokesFromRide(*(unsigned int *)(param_1 + 0xc), (void *)param_2);
+    StopMoneySFX(&param_2);
+}
 
 // FUNCTION: LEGOLAND 0x00431300
 void FUN_00431300(struct EateryObj *obj) {
@@ -1108,13 +1166,68 @@ void FUN_00431c50(void) { STUB(); }
 void FUN_00431d00(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004322a0
-void FUN_004322a0(void) { STUB(); }
+int FUN_004322a0(void) {
+    unsigned int one = 1;
+    unsigned int zero = 0;
+    struct BrollyNode *node = DAT_00616144;
+    while (node != NULL) {
+        if (SaveGameWrite(&one, 4) == 0) {
+            return 0;
+        }
+        if (SaveGameWrite(node, 0xc) == 0) {
+            return 0;
+        }
+        node = node->next;
+    }
+    return SaveGameWrite(&zero, 4) != 0;
+}
 
 // FUNCTION: LEGOLAND 0x00432310
-void FUN_00432310(void) { STUB(); }
+int FUN_00432310(void) {
+    unsigned int count;
+    struct BrollyNode *prev = NULL;
+    struct BrollyNode *node;
+    if (!SaveGameRead(&count, 4)) {
+        return 0;
+    }
+    if (count == 0) {
+        return 1;
+    }
+    while (count != 0) {
+        node = malloc(sizeof(struct BrollyNode));
+        if (!SaveGameRead(node, 0xc)) {
+            return 0;
+        }
+        node->next = NULL;
+        if (prev != NULL) {
+            prev->next = node;
+        } else {
+            DAT_00616144 = node;
+        }
+        prev = node;
+        if (!SaveGameRead(&count, 4)) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00432390
-void FUN_00432390(void) { STUB(); }
+int FUN_00432390(void) {
+    unsigned int one = 1;
+    unsigned int zero = 0;
+    struct SaveBlock *node = DAT_00616148;
+    while (node != NULL) {
+        if (SaveGameWrite(&one, 4) == 0) {
+            return 0;
+        }
+        if (SaveGameWrite(node, 0x40) == 0) {
+            return 0;
+        }
+        node = node->next;
+    }
+    return SaveGameWrite(&zero, 4) != 0;
+}
 
 // FUNCTION: LEGOLAND 0x00432400
 int FUN_00432400(void) {
