@@ -3959,7 +3959,7 @@ void *DAT_0082c680;
 void *DAT_0082c684;
 
 // GLOBAL: LEGOLAND 0x0082c688
-unsigned int DAT_0082c688;
+void *DAT_0082c688;
 
 // GLOBAL: LEGOLAND 0x0082c690
 unsigned int DAT_0082c690;

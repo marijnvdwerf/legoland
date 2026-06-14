@@ -8,6 +8,7 @@
 #include "llidb.h"
 #include "log_flume.h"
 #include "map_object.h"
+#include "ride_interfaces.h"
 #include "ride_queue.h"
 
 struct Sprite;
@@ -213,32 +214,6 @@ struct FlumeBytes {
     unsigned char b0;
     unsigned char pad_1[3];
     unsigned char b4;
-};
-
-typedef void (*FlumeVtblFn)(void);
-
-struct FlumeObj {
-    char *name;
-    unsigned char pad_4[0xc - 0x4];
-    unsigned int field_c;
-};
-
-struct FlumeVtbl {
-    unsigned char pad_0[0x8c];
-    FlumeVtblFn var_8c;
-    FlumeVtblFn var_90;
-    FlumeVtblFn var_94;
-    FlumeVtblFn var_98;
-    FlumeVtblFn var_9c;
-    FlumeVtblFn var_a0;
-    FlumeVtblFn var_a4;
-    FlumeVtblFn var_a8;
-    FlumeVtblFn var_ac;
-    FlumeVtblFn var_b0;
-    unsigned char pad_b4[4];
-    FlumeVtblFn var_b8;
-    FlumeVtblFn var_bc;
-    FlumeVtblFn var_c0;
 };
 
 // FUNCTION: LEGOLAND 0x00408e40
@@ -1858,138 +1833,138 @@ void FUN_00410bb0(void *arg0, struct FlumeNode *arg1) {
 void FUN_00410c10(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00410d60
-void FUN_00410d60(struct FlumeObj *flume, struct FlumeVtbl *vtbl) {
+void FUN_00410d60(struct ClassNode *flume, struct CallbackTable *vtbl) {
     if (_stricmp("LOG FLUME ENTRANCE", flume->name) == 0) {
-        vtbl->var_a4 = FUN_0040a2e0;
-        vtbl->var_8c = FUN_0040a540;
-        vtbl->var_90 = FUN_0040a930;
-        vtbl->var_94 = FUN_0040aac0;
-        vtbl->var_98 = FUN_0040a600;
-        vtbl->var_9c = FUN_0040abf0;
-        vtbl->var_a8 = FUN_0040bf70;
-        vtbl->var_b0 = FUN_0040b420;
-        vtbl->var_ac = FUN_0040a410;
-        vtbl->var_bc = FUN_00410930;
-        vtbl->var_b8 = FUN_00410c10;
-        vtbl->var_c0 = FUN_004119c0;
+        vtbl->cb_a4 = FUN_0040a2e0;
+        vtbl->cb_8c = FUN_0040a540;
+        vtbl->cb_90 = FUN_0040a930;
+        vtbl->cb_94 = FUN_0040aac0;
+        vtbl->cb_98 = FUN_0040a600;
+        vtbl->cb_9c = FUN_0040abf0;
+        vtbl->cb_a8 = FUN_0040bf70;
+        vtbl->cb_b0 = FUN_0040b420;
+        vtbl->cb_ac = FUN_0040a410;
+        vtbl->cb_bc = FUN_00410930;
+        vtbl->cb_b8 = FUN_00410c10;
+        vtbl->cb_c0 = FUN_004119c0;
         return;
     }
     // STRING: LEGOLAND 0x004b4ba4
     if (_stricmp("LOG FLUME TRACK", flume->name) == 0) {
-        DAT_0082c688 = flume->field_c;
-        vtbl->var_a4 = FUN_0040c350;
-        vtbl->var_8c = FUN_0040dbb0;
-        vtbl->var_a0 = FUN_0040c970;
-        vtbl->var_b0 = FUN_0040cc50;
-        vtbl->var_90 = FUN_0040c4a0;
-        vtbl->var_94 = FUN_0040c6c0;
-        vtbl->var_98 = FUN_0040c780;
-        vtbl->var_9c = FUN_0040c8d0;
-        vtbl->var_ac = FUN_0040c430;
+        DAT_0082c688 = flume->iface;
+        vtbl->cb_a4 = FUN_0040c350;
+        vtbl->cb_8c = FUN_0040dbb0;
+        vtbl->cb_a0 = FUN_0040c970;
+        vtbl->cb_b0 = FUN_0040cc50;
+        vtbl->cb_90 = FUN_0040c4a0;
+        vtbl->cb_94 = FUN_0040c6c0;
+        vtbl->cb_98 = FUN_0040c780;
+        vtbl->cb_9c = FUN_0040c8d0;
+        vtbl->cb_ac = FUN_0040c430;
         return;
     }
     // STRING: LEGOLAND 0x004b4b88
     if (_stricmp("LOG FLUME SPECIAL CORNER 1", flume->name) == 0) {
-        vtbl->var_a4 = FUN_0040e8b0;
-        vtbl->var_8c = FUN_0040e630;
-        vtbl->var_a0 = FUN_0040ed50;
-        vtbl->var_b0 = FUN_0040edb0;
-        vtbl->var_90 = FUN_0040e6f0;
-        vtbl->var_94 = FUN_0040e830;
-        vtbl->var_98 = FUN_0040ead0;
-        vtbl->var_9c = FUN_0040ec90;
-        vtbl->var_ac = FUN_0040ea30;
+        vtbl->cb_a4 = FUN_0040e8b0;
+        vtbl->cb_8c = FUN_0040e630;
+        vtbl->cb_a0 = FUN_0040ed50;
+        vtbl->cb_b0 = FUN_0040edb0;
+        vtbl->cb_90 = FUN_0040e6f0;
+        vtbl->cb_94 = FUN_0040e830;
+        vtbl->cb_98 = FUN_0040ead0;
+        vtbl->cb_9c = FUN_0040ec90;
+        vtbl->cb_ac = FUN_0040ea30;
         return;
     }
     // STRING: LEGOLAND 0x004b4b6c
     if (_stricmp("LOG FLUME SPECIAL CORNER 2", flume->name) == 0) {
-        vtbl->var_a4 = FUN_0040e920;
-        vtbl->var_8c = FUN_0040e660;
-        vtbl->var_a0 = FUN_0040ed50;
-        vtbl->var_b0 = FUN_0040ee60;
-        vtbl->var_90 = FUN_0040e740;
-        vtbl->var_94 = FUN_0040e850;
-        vtbl->var_98 = FUN_0040eb40;
-        vtbl->var_9c = FUN_0040ecc0;
-        vtbl->var_ac = FUN_0040ea60;
+        vtbl->cb_a4 = FUN_0040e920;
+        vtbl->cb_8c = FUN_0040e660;
+        vtbl->cb_a0 = FUN_0040ed50;
+        vtbl->cb_b0 = FUN_0040ee60;
+        vtbl->cb_90 = FUN_0040e740;
+        vtbl->cb_94 = FUN_0040e850;
+        vtbl->cb_98 = FUN_0040eb40;
+        vtbl->cb_9c = FUN_0040ecc0;
+        vtbl->cb_ac = FUN_0040ea60;
         return;
     }
     // STRING: LEGOLAND 0x004b4b50
     if (_stricmp("LOG FLUME SPECIAL CORNER 3", flume->name) == 0) {
-        vtbl->var_a4 = FUN_0040e970;
-        vtbl->var_8c = FUN_0040e690;
-        vtbl->var_a0 = FUN_0040ed50;
-        vtbl->var_b0 = FUN_0040ef00;
-        vtbl->var_90 = FUN_0040e790;
-        vtbl->var_94 = FUN_0040e870;
-        vtbl->var_98 = FUN_0040ebb0;
-        vtbl->var_9c = FUN_0040ecf0;
-        vtbl->var_ac = FUN_0040ea80;
+        vtbl->cb_a4 = FUN_0040e970;
+        vtbl->cb_8c = FUN_0040e690;
+        vtbl->cb_a0 = FUN_0040ed50;
+        vtbl->cb_b0 = FUN_0040ef00;
+        vtbl->cb_90 = FUN_0040e790;
+        vtbl->cb_94 = FUN_0040e870;
+        vtbl->cb_98 = FUN_0040ebb0;
+        vtbl->cb_9c = FUN_0040ecf0;
+        vtbl->cb_ac = FUN_0040ea80;
         return;
     }
     // STRING: LEGOLAND 0x004b4b34
     if (_stricmp("LOG FLUME SPECIAL CORNER 4", flume->name) == 0) {
-        vtbl->var_a4 = FUN_0040e9e0;
-        vtbl->var_8c = FUN_0040e6c0;
-        vtbl->var_a0 = FUN_0040ed50;
-        vtbl->var_b0 = FUN_0040efb0;
-        vtbl->var_90 = FUN_0040e7e0;
-        vtbl->var_94 = FUN_0040e890;
-        vtbl->var_98 = FUN_0040ec20;
-        vtbl->var_9c = FUN_0040ed20;
-        vtbl->var_ac = FUN_0040eab0;
+        vtbl->cb_a4 = FUN_0040e9e0;
+        vtbl->cb_8c = FUN_0040e6c0;
+        vtbl->cb_a0 = FUN_0040ed50;
+        vtbl->cb_b0 = FUN_0040efb0;
+        vtbl->cb_90 = FUN_0040e7e0;
+        vtbl->cb_94 = FUN_0040e890;
+        vtbl->cb_98 = FUN_0040ec20;
+        vtbl->cb_9c = FUN_0040ed20;
+        vtbl->cb_ac = FUN_0040eab0;
         return;
     }
     // STRING: LEGOLAND 0x004b4b24
     if (_stricmp("LOG FLUME CSAW", flume->name) == 0) {
-        vtbl->var_a4 = FUN_0040f8b0;
-        vtbl->var_8c = FUN_0040fa00;
-        vtbl->var_a0 = FUN_0040ed50;
-        vtbl->var_b0 = FUN_0040f920;
-        vtbl->var_90 = FUN_0040fa20;
-        vtbl->var_94 = FUN_0040fa50;
-        vtbl->var_98 = FUN_0040fa60;
-        vtbl->var_9c = FUN_0040fab0;
-        vtbl->var_ac = FUN_0040f900;
+        vtbl->cb_a4 = FUN_0040f8b0;
+        vtbl->cb_8c = FUN_0040fa00;
+        vtbl->cb_a0 = FUN_0040ed50;
+        vtbl->cb_b0 = FUN_0040f920;
+        vtbl->cb_90 = FUN_0040fa20;
+        vtbl->cb_94 = FUN_0040fa50;
+        vtbl->cb_98 = FUN_0040fa60;
+        vtbl->cb_9c = FUN_0040fab0;
+        vtbl->cb_ac = FUN_0040f900;
         return;
     }
     // STRING: LEGOLAND 0x004b4b10
     if (_stricmp("LOG FLUME TUNNEL", flume->name) == 0) {
-        vtbl->var_a4 = FUN_0040f3e0;
-        vtbl->var_8c = FUN_0040f4f0;
-        vtbl->var_a0 = FUN_0040ed50;
-        vtbl->var_b0 = FUN_0040f450;
-        vtbl->var_90 = FUN_0040f510;
-        vtbl->var_94 = FUN_0040f5a0;
-        vtbl->var_98 = FUN_0040f540;
-        vtbl->var_9c = FUN_0040f580;
-        vtbl->var_ac = FUN_0040f430;
+        vtbl->cb_a4 = FUN_0040f3e0;
+        vtbl->cb_8c = FUN_0040f4f0;
+        vtbl->cb_a0 = FUN_0040ed50;
+        vtbl->cb_b0 = FUN_0040f450;
+        vtbl->cb_90 = FUN_0040f510;
+        vtbl->cb_94 = FUN_0040f5a0;
+        vtbl->cb_98 = FUN_0040f540;
+        vtbl->cb_9c = FUN_0040f580;
+        vtbl->cb_ac = FUN_0040f430;
         return;
     }
     // STRING: LEGOLAND 0x004b4b00
     if (_stricmp("LOG FLUME DROP", flume->name) == 0) {
-        vtbl->var_a4 = FUN_004103e0;
-        vtbl->var_8c = FUN_004106e0;
-        vtbl->var_a0 = FUN_0040ed50;
-        vtbl->var_b0 = FUN_004104b0;
-        vtbl->var_90 = FUN_00410700;
-        vtbl->var_94 = FUN_00410730;
-        vtbl->var_98 = FUN_00410740;
-        vtbl->var_9c = FUN_00410790;
-        vtbl->var_ac = FUN_00410450;
+        vtbl->cb_a4 = FUN_004103e0;
+        vtbl->cb_8c = FUN_004106e0;
+        vtbl->cb_a0 = FUN_0040ed50;
+        vtbl->cb_b0 = FUN_004104b0;
+        vtbl->cb_90 = FUN_00410700;
+        vtbl->cb_94 = FUN_00410730;
+        vtbl->cb_98 = FUN_00410740;
+        vtbl->cb_9c = FUN_00410790;
+        vtbl->cb_ac = FUN_00410450;
         return;
     }
     // STRING: LEGOLAND 0x004b4aec
     if (_stricmp("LOG FLUME HOLD UP", flume->name) == 0) {
-        vtbl->var_a4 = FUN_0040ff30;
-        vtbl->var_8c = FUN_004100b0;
-        vtbl->var_a0 = FUN_0040ed50;
-        vtbl->var_b0 = FUN_0040ffd0;
-        vtbl->var_90 = FUN_004100d0;
-        vtbl->var_94 = FUN_00410100;
-        vtbl->var_98 = FUN_00410110;
-        vtbl->var_9c = FUN_00410160;
-        vtbl->var_ac = FUN_0040ffa0;
+        vtbl->cb_a4 = FUN_0040ff30;
+        vtbl->cb_8c = FUN_004100b0;
+        vtbl->cb_a0 = FUN_0040ed50;
+        vtbl->cb_b0 = FUN_0040ffd0;
+        vtbl->cb_90 = FUN_004100d0;
+        vtbl->cb_94 = FUN_00410100;
+        vtbl->cb_98 = FUN_00410110;
+        vtbl->cb_9c = FUN_00410160;
+        vtbl->cb_ac = FUN_0040ffa0;
     }
 }
 

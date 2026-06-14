@@ -2804,7 +2804,7 @@ extern void *DAT_0082c680;
 // 0x0082c684
 extern void *DAT_0082c684;
 // 0x0082c688
-extern unsigned int DAT_0082c688;
+extern void *DAT_0082c688;
 // 0x0082c690
 extern unsigned int DAT_0082c690;
 // 0x0082c694
