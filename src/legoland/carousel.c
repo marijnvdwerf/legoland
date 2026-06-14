@@ -98,8 +98,8 @@ void FUN_0042bc90(struct CarouselNode *node) {
     node->flags = node->flags & 0xffffbfff | 1;
     node->field_6 = 0;
     node->field_14 = 0;
-    params.field_c = *(unsigned char *)((char *)node + 5);
     params.field_8 = *(unsigned char *)((char *)node + 4);
+    params.field_c = *(unsigned char *)((char *)node + 5);
     node->field_8 = 1;
     PlayInstanceOfSample(*(void **)(CAROUSSEL_SFX + 8), 1, 1, &params);
 }
@@ -186,7 +186,7 @@ void FUN_0042c460(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0042c4a0
-void FUN_0042c4a0(struct CarouselRide *param_1, unsigned int param_2, unsigned int param_3) {
+void FUN_0042c4a0(struct CarouselRideObj *param_1, unsigned int param_2, unsigned int param_3) {
     struct CarouselNode *node;
     struct SampleParams params;
 
@@ -195,9 +195,9 @@ void FUN_0042c4a0(struct CarouselRide *param_1, unsigned int param_2, unsigned i
         FUN_0042bc00(node);
     }
     StandardRemoveObject((unsigned int)param_1, param_2, param_3);
-    RemoveAllBlokesFromRide(*(unsigned int *)((char *)param_1 + 0xc), param_2);
+    RemoveAllBlokesFromRide((unsigned int)param_1->ride, param_2);
     params.field_8 = param_2 & 0xff;
-    params.field_c = param_2 >> 8 & 0xff;
+    params.field_c = *((unsigned char *)&param_2 + 1);
     params.field_0 = 2;
     UnSourceAndFadeAllSamplesFromSource(&params, 0xffffff38);
 }
@@ -205,11 +205,13 @@ void FUN_0042c4a0(struct CarouselRide *param_1, unsigned int param_2, unsigned i
 // FUNCTION: LEGOLAND 0x0042c520
 void FUN_0042c520(unsigned int param_1, unsigned char *param_2) {
     unsigned char *src = param_2;
-    unsigned short id;
+    unsigned char b0 = param_2[0];
+    unsigned char b4 = param_2[4];
 
-    id = (unsigned short)(*param_2 | (unsigned short)param_2[4] << 8);
+    *(unsigned char *)&param_2 = b0;
+    *((unsigned char *)&param_2 + 1) = b4;
     AddBasicObject(param_1, (unsigned int)src);
-    FUN_0042bbc0(&id);
+    FUN_0042bbc0((unsigned short *)&param_2);
 }
 
 // FUNCTION: LEGOLAND 0x0042c550
@@ -253,20 +255,14 @@ int FUN_0042c600(struct CarouselRideObj *param_1) {
     struct CarouselNode *prev;
     struct CarouselListElem *elem;
     unsigned int marker;
-    int ok;
 
-    ok = SaveGameRead(&marker, 4);
     prev = NULL;
-    while (1) {
-        if (ok == 0) {
-            return 0;
-        }
-        if (marker == 0) {
-            break;
-        }
+    if (SaveGameRead(&marker, 4) == 0) {
+        return 0;
+    }
+    while (marker != 0) {
         node = (struct CarouselNode *)malloc(sizeof(struct CarouselNode));
-        ok = SaveGameRead(node, 0x2c);
-        if (ok == 0) {
+        if (SaveGameRead(node, 0x2c) == 0) {
             return 0;
         }
         node->next = NULL;
@@ -275,16 +271,18 @@ int FUN_0042c600(struct CarouselRideObj *param_1) {
         } else {
             DAT_006160c4 = node;
         }
-        ok = SaveGameRead(&marker, 4);
         prev = node;
+        if (SaveGameRead(&marker, 4) == 0) {
+            return 0;
+        }
     }
     for (elem = ride->list; elem != NULL; elem = elem->next) {
         unsigned int *comp = *(unsigned int **)((char *)elem + 0x10);
-        if (comp[0xc] == 0) {
+        if (comp[0xc] != 0) {
+            comp[0xb] = ((unsigned int *)&DAT_006160bc)[comp[0xc]];
+        } else {
             comp[0xb] = 0;
             (*(unsigned int **)((char *)elem + 0x10))[0xc] = 0;
-        } else {
-            comp[0xb] = ((unsigned int *)&DAT_006160bc)[comp[0xc]];
         }
         {
             unsigned int *h = *(unsigned int **)((char *)elem->bloke + 0x54);
