@@ -67,7 +67,7 @@ struct DSRoadElem {
     /* 0x00 */ unsigned char pad_0[0x8];
     /* 0x08 */ unsigned char flags;
     /* 0x09 */ unsigned char pad_9[0xc - 0x9];
-    /* 0x0c */ struct ObjectCount *obj;
+    /* 0x0c */ void *obj;
 };
 
 struct DSSampleConfig {

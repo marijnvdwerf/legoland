@@ -4,7 +4,6 @@
 
 struct CostInfo;
 struct ObjCountWrap;
-struct ObjectCount;
 struct EditObject;
 struct BestNode;
 struct InstancePos;
@@ -17,7 +16,6 @@ LEGO_EXPORT int GetObjCost(struct CostInfo *info);
 LEGO_EXPORT unsigned int BasicObjectDCalcCursor(unsigned int param_1, unsigned int param_2);
 LEGO_EXPORT void ClearObjectCounters(void);
 LEGO_EXPORT unsigned int ObjCount(struct ObjCountWrap *wrap);
-LEGO_EXPORT void IncrementObjectCount(struct ObjectCount *count);
 LEGO_EXPORT void FreeBlokeCounters(void);
 LEGO_EXPORT void ClearBlokeCounters(unsigned int index, struct Bloke *bloke);
 LEGO_EXPORT void UnLoadObjectLibrary(void *library);
