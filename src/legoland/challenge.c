@@ -983,7 +983,40 @@ void FUN_00444970(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x004449b0
-void FUN_004449b0(void) { STUB(); }
+void FUN_004449b0(void) {
+    int i;
+    struct Sprite **slot;
+    char buffer[0x20];
+    char *p;
+
+    buffer[0] = '\0';
+    p = buffer + 1;
+    for (i = 7; i != 0; i--) {
+        *(int *)p = 0;
+        p += 4;
+    }
+    *(short *)p = 0;
+    *(p + 2) = 0;
+    i = 0;
+    slot = DAT_0081c054;
+    do {
+        // STRING: LEGOLAND 0x004b8114
+        sprintf(buffer, "App_tick%d.lls", i);
+        slot[-5] = LoadSprite(buffer, 4);
+        // STRING: LEGOLAND 0x004b8104
+        sprintf(buffer, "App_cross%d.lls", i);
+        slot[0] = LoadSprite(buffer, 4);
+        // STRING: LEGOLAND 0x004b80f0
+        sprintf(buffer, "App_bullet%d.lls", i);
+        slot[5] = LoadSprite(buffer, 4);
+        slot++;
+        i++;
+    } while ((int)slot < (int)DAT_0081c068);
+    // STRING: LEGOLAND 0x004b80dc
+    DAT_0081c030 = LoadSprite("App_barmarker.lls", 4);
+    // STRING: LEGOLAND 0x004b80d0
+    DAT_0081c028 = LoadSprite("App_bar.lls", 4);
+}
 
 // FUNCTION: LEGOLAND 0x00444a70
 void FUN_00444a70(void) { STUB(); }
