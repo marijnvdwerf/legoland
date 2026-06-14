@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "globals.h"
 #include "legoland.h"
 
@@ -5,9 +6,11 @@
 #include "challenge.h"
 #include "draw.h"
 #include "gamemain.h"
+#include "gfx.h"
 #include "icon.h"
 #include "llidb.h"
 #include "print_sprite.h"
+#include "resource.h"
 #include "screens.h"
 #include "sound_music.h"
 #include "timer.h"
@@ -53,7 +56,81 @@ struct Bloke {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x004434d0
-unsigned int FUN_004434d0(unsigned int param_1) { STUB(); }
+unsigned int FUN_004434d0(struct Image *param_1) {
+    char header[0xe];
+    char info[0x2c];
+    char *path;
+    struct ResFile *file;
+    unsigned int offbits;
+    int pixel_offset;
+    unsigned int row_size;
+    unsigned int aligned_width;
+    unsigned char *pixels;
+    unsigned char *dst;
+    unsigned char *src;
+    int x;
+    int y;
+
+    path = GetGFXFName(param_1->name, param_1->type, NULL);
+    file = RES_OpenFile(path);
+    if (file == NULL) {
+        return 0;
+    }
+    RES_ReadFile(file, header, 0xe);
+    offbits = *(unsigned int *)(header + 0xa);
+    pixel_offset = RES_GetFilePointer(file) + 0x28;
+    RES_ReadFile(file, info, 0x2c);
+    if (*(int *)(info + 0x10) != 0) {
+        RES_CloseFile(file);
+        return 0;
+    }
+    if (*(short *)(info + 0xe) != 8) {
+        RES_CloseFile(file);
+        return 0;
+    }
+    aligned_width = (*(int *)(info + 4) + 3) & 0xfffffffc;
+    row_size = *(int *)(info + 8) * aligned_width;
+    RES_SetFilePointer(file, offbits);
+    pixels = (unsigned char *)malloc(row_size);
+    if (pixels == NULL) {
+        free(param_1);
+        RES_CloseFile(file);
+        return 0;
+    }
+    param_1->aux = malloc(0x400);
+    param_1->width = (short)*(int *)(info + 4);
+    param_1->height = (short)*(int *)(info + 8);
+    param_1->field_14 = 1;
+    dst = (unsigned char *)malloc(*(int *)(info + 8) * *(int *)(info + 4));
+    param_1->data = dst;
+    if (dst == NULL) {
+        free(pixels);
+        free(param_1);
+        RES_CloseFile(file);
+        return 0;
+    }
+    if (*(short *)(info + 0xe) == 8) {
+        src = pixels + row_size;
+        RES_SetFilePointer(file, pixel_offset);
+        for (x = 0; x < 0x100; x++) {
+            (&DAT_0081c0c0[256])[x] = 0;
+        }
+        RES_ReadFile(file, &DAT_0081c0c0[256], *(int *)(info + 0x20) * 4);
+        RES_SetFilePointer(file, offbits);
+        RES_ReadFile(file, pixels, row_size);
+        for (y = 0; y < param_1->height; y++) {
+            src -= aligned_width;
+            for (x = 0; x < param_1->width; x++) {
+                *dst = *src;
+                src++;
+                dst++;
+            }
+        }
+    }
+    free(pixels);
+    RES_CloseFile(file);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004436d0
 unsigned int FUN_004436d0(const char *param_1, unsigned char param_2) {
@@ -63,7 +140,7 @@ unsigned int FUN_004436d0(const char *param_1, unsigned char param_2) {
     if (image == NULL) {
         return 0;
     }
-    if (FUN_004434d0((unsigned int)image) == 0) {
+    if (FUN_004434d0(image) == 0) {
         KillImage(image);
         return 0;
     }

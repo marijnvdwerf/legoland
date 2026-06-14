@@ -156,7 +156,7 @@ LEGO_EXPORT int __BMPLoader(struct Image *image) {
         RES_CloseFile(file);
         return 0;
     }
-    RES_SetFilePointer(file, offbits, 0);
+    RES_SetFilePointer(file, offbits);
     pixels = (unsigned char *)malloc(row_size);
     if (pixels == NULL) {
         free(image);
@@ -172,10 +172,10 @@ LEGO_EXPORT int __BMPLoader(struct Image *image) {
         unsigned char *high;
         unsigned char *entry;
 
-        RES_SetFilePointer(file, pixel_offset, 0);
+        RES_SetFilePointer(file, pixel_offset);
         memset(palette, 0, 0x100 * sizeof(unsigned int));
         RES_ReadFile(file, palette, *(unsigned int *)(info + 0x20) * 4);
-        RES_SetFilePointer(file, offbits, 0);
+        RES_SetFilePointer(file, offbits);
         RES_ReadFile(file, pixels, row_size);
         image->data = pixels;
         high = pixels + (image->height - 1) * ((image->width + 3) & 0xfffffffc);

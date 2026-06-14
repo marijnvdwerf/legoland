@@ -472,7 +472,7 @@ LEGO_EXPORT int RES_ReadFile(struct ResFile *file, void *buffer, int count) {
 }
 
 // FUNCTION: LEGOLAND 0x00489d70
-LEGO_EXPORT int RES_SetFilePointer(struct ResFile *file, int offset, int param_3) {
+LEGO_EXPORT int RES_SetFilePointer(struct ResFile *file, int offset) {
     struct ResVolume *volume;
 
     if (file != 0) {
