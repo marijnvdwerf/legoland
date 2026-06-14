@@ -2,4 +2,6 @@
 
 #include "legoland.h"
 
-LEGO_EXPORT void SetCustomCallbacks(void *head);
+struct ClassNode;
+
+LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head);
