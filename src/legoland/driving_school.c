@@ -4,6 +4,7 @@
 #include "legoland.h"
 
 #include "bricks.h"
+#include "driving_school.h"
 #include "gamemap.h"
 #include "llidb.h"
 #include "man3d.h"
@@ -69,6 +70,11 @@ struct DSRoadElem {
     /* 0x0c */ struct ObjectCount *obj;
 };
 
+struct DSSampleConfig {
+    /* 0x00 */ int field_0;
+    /* 0x04 */ int field_4;
+};
+
 struct DSObjClass {
     /* 0x00 */ unsigned char pad_0[0x26];
     /* 0x26 */ short field_26;
@@ -89,7 +95,9 @@ struct DSRenderNode {
 };
 
 struct DSRenderSub {
-    /* 0x00 */ unsigned char pad_0[0x14];
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ int field_c;
+    /* 0x10 */ int field_10;
     /* 0x14 */ int field_14;
     /* 0x18 */ int field_18;
     /* 0x1c */ unsigned char pad_1c[0xcc - 0x1c];
@@ -513,7 +521,93 @@ void FUN_00405b10(struct DSRenderRoot *param_1, unsigned int param_2, unsigned i
 }
 
 // FUNCTION: LEGOLAND 0x00405bd0
-void FUN_00405bd0(void) { STUB(); }
+void FUN_00405bd0(struct DSRenderRoot *param_1) {
+    struct DSRenderSub *sub = param_1->field_c;
+    struct DSRenderNode *node = sub->field_cc;
+    struct DSSampleConfig params;
+    struct DSSampleConfig params2;
+
+    FUN_00402c10();
+    FUN_00414440();
+
+    while (node != NULL) {
+        int bloke = (int)node->field_8;
+        struct DSRenderNode *next = node->next;
+        if (*(short *)(bloke + 0xe) == 0) {
+            char dir;
+            int frame;
+            switch (*(unsigned char *)(bloke + 0x60)) {
+            case 0:
+                *(unsigned int *)(bloke + 0x24) = (sub->field_c + (unsigned int)((unsigned char *)node)[0xc]) * 0x100;
+                frame = (((unsigned char *)node)[0xd] - 3 + sub->field_10) * 0x100;
+                *(int *)(bloke + 0x28) = frame;
+                dir = CalcMoveLine(*(int *)(bloke + 0x68), *(int *)(bloke + 0x6c), *(int *)(bloke + 0x24), frame, bloke + 0x98);
+                *(short *)(bloke + 0xe) = 7;
+                *(unsigned char *)(bloke + 0x73) = dir + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                *(unsigned int *)(bloke + 0x58) = (rand() & 7) + 1;
+                *(char *)(bloke + 0x60) += 1;
+                break;
+            case 1:
+                if (*(int *)(bloke + 0x58) == 0) {
+                    int count = FUN_00401c40(node->field_c);
+                    unsigned int limit = FUN_00413970(node->field_c);
+                    if ((unsigned int)(count * 5) < limit) {
+                        int res = FUN_00401ae0(node->field_c, bloke);
+                        if (res == 0) {
+                            struct Sample *sample;
+                            unsigned int r;
+                            params.field_0 = 1;
+                            params.field_4 = bloke;
+                            PlayInstanceOfSample(DAT_004b4400, 0, 1, &params);
+                            r = rand();
+                            r &= 0x80000003;
+                            if ((int)r < 0) {
+                                r = (r - 1 | 0xfffffffc) + 1;
+                            }
+                            sample = PlayInstanceOfSample((&DAT_004b4400)[(r + 1) * 3], 1, 1, &params);
+                            AdjustPSampleFreq(sample, 10);
+                            BlokeSitAnim(bloke);
+                            BlokeSetFrame(bloke, 0);
+                            *(unsigned char *)(bloke + 0x62) |= 0x80;
+                            *(char *)(bloke + 0x60) += 1;
+                        } else if (res == -1) {
+                            *(unsigned char *)(bloke + 0x60) = 3;
+                        } else if (res == -2) {
+                            *(unsigned int *)(bloke + 0x58) = (rand() & 0x1f) + 2;
+                        }
+                    }
+                } else {
+                    *(int *)(bloke + 0x58) -= 1;
+                }
+                break;
+            case 3:
+                *(unsigned short *)(bloke + 0x62) &= 0xff7f;
+                BlokeWalkAnim(bloke);
+                BlokeSetFrame(bloke, 0);
+                *(unsigned int *)(bloke + 0x68) = ((unsigned int)((unsigned char *)node)[0xc] + sub->field_c) * 0x100;
+                *(unsigned int *)(bloke + 0x6c) = (((unsigned char *)node)[0xd] - 3 + sub->field_10) * 0x100;
+                *(unsigned int *)(bloke + 0x24) = ((unsigned int)((unsigned char *)node)[0xc] + sub->field_c) * 0x100 + 0x80;
+                frame = ((unsigned int)((unsigned char *)node)[0xd] + sub->field_10) * 0x100 + 0x80;
+                *(int *)(bloke + 0x28) = frame;
+                dir = CalcMoveLine(*(int *)(bloke + 0x68), *(int *)(bloke + 0x6c), *(int *)(bloke + 0x24), frame, bloke + 0x98);
+                *(short *)(bloke + 0xe) = 7;
+                *(unsigned char *)(bloke + 0x73) = dir + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                *(char *)(bloke + 0x60) += 1;
+                break;
+            case 4:
+                RemoveBlokeFromRide(sub, node);
+                *(unsigned short *)(bloke + 0x62) &= 0xfff7;
+                params2.field_0 = 1;
+                params2.field_4 = bloke;
+                KillAllSamplesFromSource(&params2);
+                break;
+            }
+        }
+        node = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00405e70
 void FUN_00405e70(void) { STUB(); }

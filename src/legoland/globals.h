@@ -294,6 +294,8 @@ extern unsigned char Catapult_SFX[0x70];
 extern unsigned char Helicopter_SFX[0x70];
 // 0x004b43f8
 extern unsigned char DRIVING_SCHOOL_SFX[0xa8];
+// 0x004b4400
+extern void *DAT_004b4400;
 // 0x004b4440
 extern unsigned int DAT_004b4440[5];
 // 0x004b4458

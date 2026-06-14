@@ -119,6 +119,9 @@ unsigned char Helicopter_SFX[0x70];
 // GLOBAL: LEGOLAND 0x004b43f8
 unsigned char DRIVING_SCHOOL_SFX[0xa8];
 
+// GLOBAL: LEGOLAND 0x004b4400
+void *DAT_004b4400;
+
 // GLOBAL: LEGOLAND 0x004b4440
 unsigned int DAT_004b4440[5];
 
