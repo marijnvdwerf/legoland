@@ -786,7 +786,102 @@ void FUN_00434100(unsigned int param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00434330
-void FUN_00434330(void) { STUB(); }
+void FUN_00434330(int *param_1, unsigned int param_2, int *param_3) {
+    struct Cursor *cursor = *(struct Cursor **)((char *)param_1 + 0xc);
+    unsigned int mask;
+    int valid;
+    int row;
+    int count;
+    short local_2c[2];
+    int local_14[5];
+    unsigned int *posX;
+    unsigned int *posY;
+    struct Cursor *c;
+
+    row = 0;
+    local_2c[0] = 0;
+    local_2c[1] = 0;
+    count = 0;
+    *(struct Footprint *)EditCursor.field_1414 = cursor->field_3c;
+    ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
+    EditCursor.field_1830 = 0;
+    posY = &DAT_00616180[0].field_1408;
+    posX = &DAT_00616180[0].field_1404;
+    do {
+        mask = FUN_00436fb0(EditCursor.field_1404, EditCursor.field_1408 + row * -5, local_2c + row);
+        if (row == 1 && local_2c[0] != local_2c[1] && (char)local_2c[0] != '\0') {
+            return;
+        }
+        if (mask == 0 && row == 1) {
+            FUN_0045f480(&EditCursor, 0xe);
+            return;
+        }
+        ValidateCursor(&EditCursor, (unsigned int)cursor);
+        valid = FUN_0045f4b0(&EditCursor);
+        if (valid != 0) {
+            local_14[0] = EditCursor.field_1414[0];
+            local_14[1] = EditCursor.field_1414[1] + 5;
+            local_14[2] = EditCursor.field_1414[2];
+            local_14[3] = EditCursor.field_1414[3];
+            local_14[4] = EditCursor.field_1414[4];
+            DefaultCursor(&DAT_00616180[row * 4 + 0]);
+            DefaultCursor(&DAT_00616180[row * 4 + 1]);
+            DefaultCursor(&DAT_00616180[row * 4 + 2]);
+            DefaultCursor(&DAT_00616180[row * 4 + 3]);
+            *(struct Footprint *)DAT_00616180[row * 4 + 0].field_1414 = *(struct Footprint *)local_14;
+            *(struct Footprint *)DAT_00616180[row * 4 + 1].field_1414 = *(struct Footprint *)local_14;
+            *(struct Footprint *)DAT_00616180[row * 4 + 2].field_1414 = *(struct Footprint *)local_14;
+            *(struct Footprint *)DAT_00616180[row * 4 + 3].field_1414 = *(struct Footprint *)local_14;
+            FUN_0045f460(&DAT_00616180[row * 4 + 0]);
+            FUN_0045f460(&DAT_00616180[row * 4 + 1]);
+            FUN_0045f460(&DAT_00616180[row * 4 + 2]);
+            FUN_0045f460(&DAT_00616180[row * 4 + 3]);
+            DAT_00616180[row * 4 + 0].field_1828 = 0x2034;
+            DAT_00616180[row * 4 + 1].field_1828 = 0x2034;
+            DAT_00616180[row * 4 + 2].field_1828 = 0x2034;
+            DAT_00616180[row * 4 + 3].field_1828 = 0x2034;
+            if ((mask & 1) != 0) {
+                *posX = EditCursor.field_1404;
+                posX = posX + 0x60d;
+                *posY = EditCursor.field_1408 - (row * 5 + 5);
+                count = count + 1;
+                posY = posY + 0x60d;
+            }
+            if ((mask & 2) != 0) {
+                *posX = EditCursor.field_1404 + 5;
+                *posY = EditCursor.field_1408 + row * -5;
+                count = count + 1;
+                posX = posX + 0x60d;
+                posY = posY + 0x60d;
+            }
+            if ((mask & 4) != 0) {
+                *posX = EditCursor.field_1404;
+                *posY = EditCursor.field_1408 + row * -5 + 5;
+                count = count + 1;
+                posX = posX + 0x60d;
+                posY = posY + 0x60d;
+            }
+            if ((mask & 8) != 0) {
+                *posX = EditCursor.field_1404 - 5;
+                *posY = EditCursor.field_1408 + row * -5;
+                count = count + 1;
+                posX = posX + 0x60d;
+                posY = posY + 0x60d;
+            }
+            if (posX != &DAT_00616180[0].field_1404 && (char *)posX > (char *)&DAT_00616180[1].field_1404) {
+                EditCursor.field_1830 = (unsigned int)&DAT_00616180[0];
+                c = &DAT_00616180[1];
+                valid = count - 1;
+                do {
+                    c[-1].field_1830 = (unsigned int)c;
+                    c = c + 1;
+                    valid = valid - 1;
+                } while (valid != 0);
+            }
+        }
+        row = row + 1;
+    } while (row < 2);
+}
 
 // FUNCTION: LEGOLAND 0x00434650
 unsigned int FUN_00434650(unsigned int param_1, unsigned int param_2) {

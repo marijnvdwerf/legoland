@@ -947,6 +947,8 @@ extern unsigned int DAT_0061168c;
 extern unsigned int DAT_00611958;
 // 0x00612178
 extern char DAT_00612178[1];
+// 0x00616180
+extern struct Cursor DAT_00616180[8];
 // 0x00622320
 extern struct Cursor DAT_00622320[4];
 // 0x00615f6c
