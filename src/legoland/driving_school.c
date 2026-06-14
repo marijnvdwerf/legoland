@@ -298,7 +298,48 @@ void FUN_00405630(unsigned int param_1, unsigned char *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00405740
-void FUN_00405740(void) { STUB(); }
+void FUN_00405740(struct DSHead *param_1, unsigned int param_2, unsigned int param_3) {
+    struct DSCursorSource *src = param_1->field_c;
+    struct DSCursorSource *c694;
+    unsigned int mapx;
+    unsigned int mapy;
+
+    memcpy(EditCursor.field_1414, (char *)src + 0x3c, 20);
+    EditCursor.field_1830 = 0;
+    EditCursor.field_1828 = 0x4408;
+    ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
+
+    c694 = DAT_0082c694;
+    mapx = EditCursor.field_1404;
+    memcpy(&DAT_00830b74, DAT_004b4440, 20);
+    DAT_00830f90 = 0;
+    mapy = EditCursor.field_1408;
+    DAT_00830f88 = 0x4108;
+    DAT_00830b64 = c694->field_3c + mapx;
+    DAT_00830b68 = c694->field_40 + mapy;
+
+    memcpy(DAT_0082c6e0.field_1414, DAT_004b4458, 20);
+    DAT_0082c6e0.field_1830 = 0;
+    DAT_0082c6e0.field_1828 = 0x4208;
+    DAT_0082c6e0.field_1404 = c694->field_3c + mapx;
+    DAT_0082c6e0.field_1408 = c694->field_40 + mapy;
+
+    memcpy(DAT_0082df20.field_1414, DAT_004b4470, 20);
+    DAT_0082df20.field_1830 = 0;
+    DAT_0082df20.field_1828 = 0x5008;
+    DAT_0082df20.field_1404 = c694->field_3c + mapx;
+    DAT_0082df20.field_1408 = c694->field_40 + mapy;
+
+    ValidateCursor(&DAT_0082df20, (unsigned int)src);
+    ValidateCursor(&DAT_0082c6e0, (unsigned int)src);
+    ValidateCursor(&DAT_0082f760, (unsigned int)src);
+    ValidateCursor(&EditCursor, (unsigned int)src);
+
+    EditCursor.field_1830 = (unsigned int)&DAT_0082f760;
+    DAT_00830f90 = (unsigned int)&DAT_0082c6e0;
+    DAT_0082c6e0.field_1830 = (unsigned int)&DAT_0082df20;
+    FUN_0045f4d0(&EditCursor);
+}
 
 // FUNCTION: LEGOLAND 0x004058a0
 void FUN_004058a0(void) { STUB(); }

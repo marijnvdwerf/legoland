@@ -3016,6 +3016,10 @@ extern struct Cursor DAT_0082c6e0;
 extern struct Cursor DAT_0082df20;
 // 0x0082f760
 extern struct Cursor DAT_0082f760;
+// 0x00830b64
+extern unsigned int DAT_00830b64;
+// 0x00830b68
+extern unsigned int DAT_00830b68;
 // 0x00830b74
 extern unsigned int DAT_00830b74;
 // 0x00830f88
