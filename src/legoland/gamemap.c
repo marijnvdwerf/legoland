@@ -487,7 +487,25 @@ void FUN_0045a3e0(int *param) {
 }
 
 // FUNCTION: LEGOLAND 0x0045a430
-void FUN_0045a430(short param_1, int *param_2) { STUB(); }
+void FUN_0045a430(short param_1, int *param_2) {
+    struct MapRenderOrderEntry *entry;
+    int i;
+
+    i = 0;
+    entry = MapRenderOrderList;
+    while (entry->flag == 0 || (short)entry->coords != param_1) {
+        entry = entry + 1;
+        i = i + 1;
+        if (&entry->coords >= &MapRenderOrderList[0x1000].coords) {
+            *param_2 = lpConfig->width;
+            param_2[1] = lpConfig->height;
+            return;
+        }
+    }
+    *param_2 = MapRenderOrderList[i].x;
+    param_2[1] = MapRenderOrderList[i].height;
+    MapRenderOrderList[i].flag = 0;
+}
 
 // FUNCTION: LEGOLAND 0x0045a4a0
 LEGO_EXPORT void CalculateMapRenderOrder(void) { STUB(); }
