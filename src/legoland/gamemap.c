@@ -468,7 +468,23 @@ LEGO_EXPORT void DefaultCursor(struct Cursor *cursor) {
 }
 
 // FUNCTION: LEGOLAND 0x0045a3e0
-void FUN_0045a3e0(int *param) { STUB(); }
+void FUN_0045a3e0(int *param) {
+    struct MapRenderOrderEntry *entry;
+    int i;
+
+    i = 0;
+    entry = MapRenderOrderList;
+    while (entry->flag == 0 || (unsigned int)entry->x != *param) {
+        entry = entry + 1;
+        i = i + 1;
+        if (&entry->x >= &MapRenderOrderList[0x1000].x) {
+            param[1] = 0;
+            return;
+        }
+    }
+    param[1] = MapRenderOrderList[i].height;
+    MapRenderOrderList[i].flag = 0;
+}
 
 // FUNCTION: LEGOLAND 0x0045a430
 void FUN_0045a430(short param_1, int *param_2) { STUB(); }
