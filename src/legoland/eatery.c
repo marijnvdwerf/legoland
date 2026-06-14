@@ -80,6 +80,9 @@ void FUN_0042e220(struct EateryObj *obj) {
     LoadMoneySFX();
 }
 
+// FUNCTION: LEGOLAND 0x0042e250
+void FUN_0042e250(void) { KillMoneySFX(); }
+
 // FUNCTION: LEGOLAND 0x0042e260
 void FUN_0042e260(struct BlokeArg *arg, unsigned int param2, unsigned int param3, unsigned short *value) {
     struct BlokeOwner *owner = arg->owner_c;
@@ -133,6 +136,9 @@ void FUN_0042e5d0(struct EateryObj *obj) {
     LoadMoneySFX();
 }
 
+// FUNCTION: LEGOLAND 0x0042e600
+void FUN_0042e600(void) { KillMoneySFX(); }
+
 // FUNCTION: LEGOLAND 0x0042e610
 void FUN_0042e610(void) { STUB(); }
 
@@ -147,6 +153,9 @@ void FUN_0042e770(struct EateryObj *obj) {
     LoadMoneySFX();
 }
 
+// FUNCTION: LEGOLAND 0x0042e7a0
+void FUN_0042e7a0(void) { KillMoneySFX(); }
+
 // FUNCTION: LEGOLAND 0x0042e7b0
 void FUN_0042e7b0(struct EateryObj *obj) {
     struct EateryFX *fx = obj->fx_c;
@@ -158,6 +167,9 @@ void FUN_0042e7b0(struct EateryObj *obj) {
     LoadMoneySFX();
 }
 
+// FUNCTION: LEGOLAND 0x0042e7e0
+void FUN_0042e7e0(void) { KillMoneySFX(); }
+
 // FUNCTION: LEGOLAND 0x0042e7f0
 void FUN_0042e7f0(struct EateryObj *obj) {
     struct EateryFX *fx = obj->fx_c;
@@ -168,6 +180,9 @@ void FUN_0042e7f0(struct EateryObj *obj) {
     inner->flags_10 |= 0x2000;
     LoadMoneySFX();
 }
+
+// FUNCTION: LEGOLAND 0x0042e820
+void FUN_0042e820(void) { KillMoneySFX(); }
 
 // FUNCTION: LEGOLAND 0x0042e830
 void FUN_0042e830(struct BlokeArg *arg, unsigned int param2, unsigned int param3, unsigned short *value) {

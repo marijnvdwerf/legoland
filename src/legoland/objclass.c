@@ -7,6 +7,7 @@
 #include "llidb.h"
 #include "map_object.h"
 #include "objclass.h"
+#include "ride_interfaces.h"
 
 struct ObjectClass {
     struct ObjectClass *next;
@@ -35,15 +36,6 @@ struct ObjectInfo {
     unsigned char field_25;
     unsigned char pad_26[0x2e - 0x26];
     unsigned short field_2e;
-};
-
-struct CallbackTable {
-    unsigned char pad_0[0x8c];
-    void *func_8c;
-    void *func_90;
-    void *func_94;
-    void *func_98;
-    void *func_9c;
 };
 
 struct CountHolder {
@@ -191,11 +183,11 @@ LEGO_EXPORT unsigned int BasicObjectDCalcCursor(unsigned int param_1, unsigned i
 
 // FUNCTION: LEGOLAND 0x00480cd0
 LEGO_EXPORT void SetStandardCallbacks(struct CallbackTable *table) {
-    table->func_8c = FUN_00480b70;
-    table->func_90 = CalcBasicObjectCursor;
-    table->func_94 = BasicObjectDCalcCursor;
-    table->func_98 = AddBasicObject;
-    table->func_9c = StandardRemoveObject;
+    table->cb_8c = FUN_00480b70;
+    table->cb_90 = CalcBasicObjectCursor;
+    table->cb_94 = BasicObjectDCalcCursor;
+    table->cb_98 = AddBasicObject;
+    table->cb_9c = StandardRemoveObject;
 }
 
 // FUNCTION: LEGOLAND 0x00480d10
