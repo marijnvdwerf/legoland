@@ -348,6 +348,10 @@ extern int DAT_004b7260[6];
 extern int DAT_004b7278[4];
 // 0x004b7288
 extern void *DAT_004b7288;
+// 0x004b7230
+extern struct Footprint DAT_004b7230;
+// 0x004b7248
+extern struct Footprint DAT_004b7248;
 // 0x004b72e4
 extern unsigned char DAT_004b72e4[0x190];
 // 0x004b7478

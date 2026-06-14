@@ -529,10 +529,86 @@ void FUN_00434b40(void *param_1, unsigned short param_2, struct Cursor *param_3)
 }
 
 // FUNCTION: LEGOLAND 0x00434cb0
-void FUN_00434cb0(void) { STUB(); }
+void FUN_00434cb0(struct JungleHolder *param_1) {
+    void *handle;
+    unsigned int i;
+    int sprite;
+    unsigned int lls;
+
+    DAT_0081cb60 = param_1->cursor;
+    DAT_0081cb60->field_1c |= 0x20;
+    *(unsigned int *)((char *)DAT_0081cb60->field_64 + 0x10) |= 0x2000;
+    if (LLIDB_FindElement("BOATING SCHOOL TILE MAPPING", (unsigned int *)&handle, 0) == 0) {
+        DAT_0081cb58 = (struct JungleTileMap *)LLIDB_LoadData(handle);
+    }
+    if (LLIDB_FindElement("JUNGLE CRUISE BOATS", (unsigned int *)&handle, 0) == 0) {
+        DAT_0081cd00 = LLIDB_LoadData(handle);
+    }
+    i = 0;
+    if (0 < *(int *)((char *)DAT_0081cd00 + 4)) {
+        do {
+            sprite = *(int *)(*(int *)((char *)DAT_0081cd00 + 8) + (i & 0xff) * 4);
+            lls = GetLLSForSprite((struct SpriteLLS *)sprite);
+            LLSPlay((struct LLS *)lls, *(unsigned int *)(sprite + 8));
+            i = i + 1;
+        } while ((int)i < *(int *)((char *)DAT_0081cd00 + 4));
+    }
+    // STRING: LEGOLAND 0x004b72b8
+    DAT_0081cb5c = LoadSprite("jungmask.lls", 1);
+    *(struct Footprint *)DAT_00629c40 = DAT_0081cb60->field_3c;
+    *(struct Footprint *)DAT_004b7260 = DAT_004b7230;
+    DAT_004b7260[1] = DAT_004b7230.v[1] + DAT_00629c40[1];
+    DAT_004b7260[3] += DAT_00629c40[1];
+    DAT_004b7260[0] += DAT_00629c40[0];
+    DAT_004b7260[2] += DAT_00629c40[0];
+    *(struct Footprint *)DAT_004b7278 = DAT_004b7248;
+    DAT_004b7278[0] += DAT_00629c40[0];
+    DAT_004b7278[1] = DAT_004b7248.v[1] + 1 + DAT_00629c40[3];
+    DAT_004b7278[2] += DAT_00629c40[0];
+    DAT_004b7278[3] += DAT_00629c40[3];
+    FUN_00432ac0();
+}
 
 // FUNCTION: LEGOLAND 0x00434e50
-void FUN_00434e50(void) { STUB(); }
+void FUN_00434e50(struct JungleHolder *param_1) {
+    void *handle;
+    unsigned int i;
+    struct JungleScore *score;
+    struct JunglePath *path;
+
+    DAT_0081cb60 = param_1->cursor;
+    // STRING: LEGOLAND 0x004b5334
+    if (LLIDB_FindElement("BOATING SCHOOL TILE MAPPING", (unsigned int *)&handle, 0) == 0) {
+        LLIDB_UnLoadData((unsigned int)handle);
+    }
+    i = 0;
+    if (0 < *(int *)((char *)DAT_0081cd00 + 4)) {
+        do {
+            LLSStop(GetLLSForSprite(*(struct SpriteLLS **)(*(int *)((char *)DAT_0081cd00 + 8) + (i & 0xff) * 4)));
+            i = i + 1;
+        } while ((int)i < *(int *)((char *)DAT_0081cd00 + 4));
+    }
+    // STRING: LEGOLAND 0x004b72c8
+    if (LLIDB_FindElement("JUNGLE CRUISE BOATS", (unsigned int *)&handle, 0) == 0) {
+        LLIDB_UnLoadData((unsigned int)handle);
+    }
+    while (DAT_00629c3c != NULL) {
+        score = DAT_00629c3c->next;
+        free(DAT_00629c3c);
+        DAT_00629c3c = score;
+    }
+    DAT_00629c3c = NULL;
+    while (DAT_00616164 != NULL) {
+        FUN_00432cb0(DAT_00616164);
+    }
+    DAT_00616164 = NULL;
+    while (DAT_0062fd2c != NULL) {
+        path = DAT_0062fd2c->next;
+        free(DAT_0062fd2c);
+        DAT_0062fd2c = path;
+    }
+    KillSprite(DAT_0081cb5c);
+}
 
 // FUNCTION: LEGOLAND 0x00434f50
 void FUN_00434f50(void) {
