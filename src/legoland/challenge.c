@@ -22,6 +22,7 @@
 #include "screens.h"
 #include "sound_music.h"
 #include "stream.h"
+#include "string.h"
 #include "timer.h"
 
 struct AnimHandle;
@@ -1371,7 +1372,38 @@ skip:
 }
 
 // FUNCTION: LEGOLAND 0x00445190
-void FUN_00445190(void) { STUB(); }
+void FUN_00445190(void) {
+    struct SpriteIcon *icon;
+
+    DAT_0081c02c = LoadSprite("NextPage.lls", 4);
+    DAT_0081c034 = LoadSprite("NextPageLit.lls", 4);
+    DAT_0081c080 = LoadSprite("PreviousPage.lls", 4);
+    DAT_0081c084 = LoadSprite("PreviousPageLit.lls", 4);
+    // STRING: LEGOLAND 0x004b8150
+    SPRITE_TitleScreenBk = LoadSprite("AppraisalBK.lls", 0);
+    // STRING: LEGOLAND 0x004b8138
+    icon = LoadSpriteIcon("GoBack_on_Report.lls", 4, 0x1fb, 0x161, 1);
+    icon->field_3c = 0xde;
+    icon->field_38 = GetString(0xde);
+    icon->field_34 |= 0x6002;
+    icon->event_handler = (unsigned char (*)(unsigned int, unsigned int))FUN_00444eb0;
+    DAT_006687c0 = (unsigned int)FUN_00444eb0;
+    DAT_006660a8 = InsertIcon(0x1b9, 0x1ae, 1, DAT_0081c02c);
+    DAT_006660a8->field_3c = 0xdc;
+    DAT_006660a8->field_38 = (unsigned int)GetString(0xdc);
+    DAT_006660a8->field_34 |= 0x2000;
+    DAT_006660a8->field_34 |= 0x4002;
+    DAT_006660a8->field_2c = (void *)FUN_00444ef0;
+    DAT_006687bc = (unsigned int)FUN_00444ef0;
+    DAT_006660ac = InsertIcon(6, 0x1ae, 1, DAT_0081c080);
+    DAT_006660ac->field_3c = 0xdd;
+    DAT_006660ac->field_38 = (unsigned int)GetString(0xdd);
+    DAT_006660ac->field_34 |= 0x2000;
+    DAT_006660ac->field_34 |= 0x4002;
+    DAT_006660ac->field_2c = (void *)FUN_00444f90;
+    FUN_00445310();
+    DAT_0081c038 = 1;
+}
 
 // FUNCTION: LEGOLAND 0x00445310
 void FUN_00445310(void) { STUB(); }
