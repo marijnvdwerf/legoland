@@ -66,3 +66,14 @@ void NewDirForAction();
 void BlokeSetFrame();
 void UnAdjustBlokePosition();
 LEGO_EXPORT void *LoadBinV(const char *filename);
+
+void FUN_0042bcf0();
+void FUN_0042c280();
+void FUN_0042c3f0();
+void FUN_0042c460();
+void FUN_0042c4a0();
+void FUN_0042c520();
+unsigned int * FUN_0042c550(struct CarouselRideObj *param1, unsigned short param2);
+int FUN_0042c590(void);
+int FUN_0042c600(struct CarouselRideObj *param_1);
+void FUN_0042c820();

@@ -44,3 +44,5 @@ void FUN_00429270(void);
 void FUN_004294b0(void);
 unsigned int FUN_00429910(unsigned int *s, unsigned int v, unsigned int c);
 unsigned int FUN_0042a640(void *ptr, unsigned int a, unsigned int b);
+
+void FUN_004254d0();

@@ -24,3 +24,14 @@ double GetUnitDepth();
 char CalcMoveLine();
 void NewDirForAction();
 LEGO_EXPORT void *LoadBinV(const char *filename);
+
+void FUN_0042a7b0();
+void FUN_0042a950();
+void FUN_0042aa10();
+void FUN_0042aa90();
+unsigned int * FUN_0042b2a0(struct BalloonRideObj *arg1, unsigned short arg2);
+void FUN_0042b2e0();
+void FUN_0042b9d0();
+void FUN_0042ba40();
+unsigned int FUN_0042ba80(void);
+unsigned int FUN_0042baf0(struct BalloonRideObj *param_1);

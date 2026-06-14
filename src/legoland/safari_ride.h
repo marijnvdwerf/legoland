@@ -8,3 +8,5 @@ struct SafariNode {
 };
 
 void FUN_00414b10(struct SafariNode *node);
+
+void FUN_00415030();

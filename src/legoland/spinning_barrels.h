@@ -17,3 +17,5 @@ struct BarrelNode {
 
 void FUN_0043c2f0(struct BarrelNode *node);
 void FUN_0043c950(void);
+
+void FUN_0043c760();

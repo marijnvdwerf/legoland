@@ -60,3 +60,13 @@ char CalcMoveLine();
 void NewDirForAction();
 void BlokeSitAnim();
 void BlokeSetFrame();
+
+void FUN_0042d070();
+void FUN_0042d100();
+void FUN_0042d1f0();
+void FUN_0042d230();
+void FUN_0042d270();
+void FUN_0042d2c0();
+int FUN_0042d2f0(void);
+int FUN_0042d400(void);
+void FUN_0042d610();
