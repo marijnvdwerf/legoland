@@ -9,4 +9,5 @@ struct PumpNode {
 };
 
 struct PumpNode *FUN_00411aa0(unsigned int arg1, unsigned int arg2);
+void FUN_00411ba0(unsigned short param_1);
 void FUN_00411bd0(void);

@@ -7,6 +7,7 @@
 #include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "obj_instance.h"
 #include "objclass.h"
 #include "render3d.h"
 #include "ride_bloke.h"
@@ -63,6 +64,18 @@ struct DSRoadElem {
     /* 0x08 */ unsigned char flags;
     /* 0x09 */ unsigned char pad_9[0xc - 0x9];
     /* 0x0c */ struct ObjectCount *obj;
+};
+
+struct DSObjClass {
+    /* 0x00 */ unsigned char pad_0[0x26];
+    /* 0x26 */ short field_26;
+    /* 0x28 */ unsigned char pad_28[0xc4 - 0x28];
+    /* 0xc4 */ unsigned int field_c4;
+};
+
+struct DSBlokeNode {
+    /* 0x00 */ struct DSBlokeNode *next;
+    /* 0x04 */ short field_4;
 };
 
 #include "image_sprite.h"
@@ -363,7 +376,65 @@ void FUN_004058a0(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00405940
-void FUN_00405940(void) { STUB(); }
+void FUN_00405940(int param_1, unsigned int param_2, unsigned int param_3) {
+    struct RideQueueEntry *queue = DAT_004cbeac;
+    struct CountNode *count = (struct CountNode *)DAT_004c11bc;
+    struct DSBlokeNode *blokes = (struct DSBlokeNode *)DAT_004c10d4;
+    short id = (short)param_2;
+
+    StandardRemoveObject(param_1, param_2, param_3);
+    DefaultCursor(&DAT_0082f760);
+    memcpy(&DAT_00830b74, DAT_004b4bf0, 20);
+
+    if ((short)count->field_0 == id) {
+        DAT_004c11bc = count->next;
+        free(count);
+    } else {
+        struct CountNode *prev = count;
+        struct CountNode *cur = count->next;
+        if (cur != NULL) {
+            do {
+                if ((short)cur->field_0 == id) {
+                    prev->next = prev->next->next;
+                    free(cur);
+                    break;
+                }
+                prev = cur;
+                cur = cur->next;
+            } while (cur != NULL);
+        }
+    }
+
+    FUN_00411ba0(QueryObj);
+
+    while (queue != NULL) {
+        struct RideQueueEntry *next = queue->next;
+        if (queue->field_8 == QueryObj) {
+            if (queue->field_14 & 0x10) {
+                queue->field_14 &= 0xef;
+                FUN_00413650(queue->field_8, queue->x, queue->y);
+                AddBricks(((struct DSObjClass *)DAT_0082c678)->field_26);
+            }
+            DAT_00830b64 = queue->x;
+            DAT_00830b68 = queue->y;
+            StandardRemoveObject(((struct DSObjClass *)DAT_0082c684)->field_c4, queue->field_8, (unsigned int)&DAT_0082f760);
+            FUN_004133e0(queue->x, queue->y);
+        }
+        queue = next;
+    }
+
+    AddBricks(((struct DSObjClass *)DAT_0082c684)->field_26 * 5);
+
+    while (blokes != NULL) {
+        struct DSBlokeNode *next = blokes->next;
+        if (blokes->field_4 == (short)QueryObj) {
+            FUN_00401c60(blokes);
+        }
+        blokes = next;
+    }
+
+    RemoveAllBlokesFromRide(*(unsigned int *)(param_1 + 0xc), param_2);
+}
 
 // FUNCTION: LEGOLAND 0x00405ad0
 unsigned int *FUN_00405ad0(struct DSCarLayer *arg1, unsigned short arg2) {
