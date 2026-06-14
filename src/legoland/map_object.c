@@ -971,7 +971,68 @@ LEGO_EXPORT void RemoveObjectFromMap(unsigned int coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045f220
-LEGO_EXPORT void StandardRemoveObject(unsigned int a, unsigned int b, unsigned int c) { STUB(); }
+LEGO_EXPORT void StandardRemoveObject(struct EditObject *editObj, unsigned int coords, struct Cursor *cursor) {
+    int cx;
+    int cy;
+    struct MapElement *tile;
+    struct MapObject *obj;
+    struct FootprintNode rect;
+    struct FootprintNode *next;
+    struct MapElement *tile2;
+    int x;
+    int y;
+    int instance;
+
+    cx = coords & 0xff;
+    cy = (coords >> 8) & 0xff;
+    if (cx >= 0 && cx < lpConfig->width && cy >= 0 && cy < lpConfig->height) {
+        tile = (struct MapElement *)((int)GameMap[cy] + cx * 0x14);
+    } else {
+        tile = 0;
+    }
+    obj = editObj->obj;
+    if (obj->flags & 0x20000) {
+        BGFullUpdate = 1;
+    }
+    AddBricks(GetObjSalvageValue((unsigned int)obj, tile->field_11));
+    if ((tile->flags & 0x80) == 0) {
+        rect = *(struct FootprintNode *)&cursor->field_1414[0];
+        DecrementObjectCount(obj);
+        while (1) {
+            for (y = rect.y0; y <= rect.y1; y++) {
+                for (x = rect.x0; x <= rect.x1; x++) {
+                    RestoreBaseMap(cursor->field_1404 + x, cursor->field_1408 + y);
+                    SetMapFlags(cursor->field_1404 + x, cursor->field_1408 + y, 0);
+                    Set_RFFlags((cursor->field_1404 + x) * 0x100, (cursor->field_1408 + y) * 0x100, 0);
+                    *(unsigned int *)((int)GameMap[cursor->field_1408 + y] + (cursor->field_1404 + x) * 0x14) = 0;
+                }
+            }
+            next = rect.next;
+            if (next == 0) {
+                break;
+            }
+            rect = *next;
+        }
+    } else {
+        ApplyDestrTileMap(editObj, coords);
+        FUN_0045e850((struct ObjNode *)editObj, (int *)&cx);
+        RemoveObjectFromMap(coords);
+    }
+    if (obj->type != 2) {
+        ((unsigned char *)&cursor)[0] = (unsigned char)cx;
+        ((unsigned char *)&cursor)[1] = (unsigned char)cy;
+        if (cx >= 0 && cx < lpConfig->width && cy >= 0 && cy < lpConfig->height) {
+            tile2 = (struct MapElement *)((int)GameMap[cy] + cx * 0x14);
+        } else {
+            tile2 = 0;
+        }
+        instance = GetInstanceOfClass((unsigned int)((struct EditObject *)tile2->field_0)->obj, (unsigned short *)&cursor);
+        if (instance != 0) {
+            RemoveInstanceFromList(instance);
+            free((void *)instance);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045f440
 LEGO_EXPORT void SetEditCursorFootPrint(void *src) {
