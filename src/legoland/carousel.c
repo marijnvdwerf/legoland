@@ -416,7 +416,7 @@ void FUN_0042c820(struct CarouselRideObj *param_1) {
                 *(float *)(*(int *)(blokepos + 4) + 0x3c) = (float)GetUnitDepth(0xc9c57dea, 0xc9c585e8);
                 *(unsigned char *)(blokepos + 0x35) = 0;
                 // STRING: LEGOLAND 0x004b4704
-                sprintf(DAT_004b64d4, "%02d", FUN_0042cd20(elem, (struct CarouselNode *)bloke, DAT_006160bc->capacity));
+                sprintf(DAT_004b64d4, "%02d", FUN_0042cd20(elem, (struct CarouselNode *)bloke, *(unsigned char *)((char *)DAT_006160bc + 0x2e)));
                 // STRING: LEGOLAND 0x004b64cc
                 *(unsigned int *)(blokepos + 0x54) = (unsigned int)NewBNVPath(DAT_00616090, 0, "BlokeBox??", 0xc9c57dea, 0xc9c585e8, &local_18);
                 UpdateBlokeFromBNVPath(blokepos, *(unsigned int *)(blokepos + 0x54));
