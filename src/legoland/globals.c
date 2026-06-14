@@ -1289,8 +1289,11 @@ unsigned short DAT_0061612c;
 // GLOBAL: LEGOLAND 0x0061613c
 unsigned int DAT_0061613c;
 
+// GLOBAL: LEGOLAND 0x00616140
+struct BrollyData *DAT_00616140;
+
 // GLOBAL: LEGOLAND 0x00616144
-struct BlokeNode *DAT_00616144;
+struct BrollyNode *DAT_00616144;
 
 // GLOBAL: LEGOLAND 0x00616148
 struct SaveBlock *DAT_00616148;
@@ -3821,7 +3824,7 @@ struct Sprite *DAT_0081cd28;
 struct Sprite *DAT_0081cd34;
 
 // GLOBAL: LEGOLAND 0x0081cd38
-unsigned int DAT_0081cd38;
+struct EateryFX *DAT_0081cd38;
 
 // GLOBAL: LEGOLAND 0x0081cd3c
 unsigned int DAT_0081cd3c;
@@ -4071,6 +4074,9 @@ unsigned int DAT_0082c6a4;
 
 // GLOBAL: LEGOLAND 0x0082c6a8
 unsigned int DAT_0082c6a8;
+
+// GLOBAL: LEGOLAND 0x0082c6b0
+unsigned int DAT_0082c6b0;
 
 // GLOBAL: LEGOLAND 0x0082c6ac
 unsigned short DAT_0082c6ac;

@@ -37,11 +37,27 @@ struct EateryObj {
     struct EateryFX *fx_c;
 };
 
+struct BrollyData {
+    /* 0x00 */ unsigned char pad_0[4];
+    /* 0x04 */ int count_4;
+    /* 0x08 */ int *table_8;
+    /* 0x0c */ int *table_c;
+    /* 0x10 */ int *table_10;
+};
+
 struct BlokeNode {
     struct BlokeNode *next;
     unsigned char pad_4[4];
     unsigned int field_8;
     unsigned short field_c;
+};
+
+struct BrollyNode {
+    /* 0x00 */ struct BrollyNode *next;
+    /* 0x04 */ unsigned short value;
+    /* 0x06 */ unsigned short field_6;
+    /* 0x08 */ unsigned char field_8;
+    /* 0x09 */ unsigned char field_9;
 };
 
 struct BlokeOwner {
@@ -103,7 +119,14 @@ void FUN_0042e260(struct BlokeArg *arg, unsigned int param2, unsigned int param3
 void FUN_0042e2a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0042e460
-void FUN_0042e460(void) { STUB(); }
+void FUN_0042e460(struct EateryObj *obj) {
+    DAT_0081cd38 = obj->fx_c;
+    DAT_0081cd38->flags_1c |= 0x400;
+    // STRING: LEGOLAND 0x004b6ec8
+    if (LLIDB_FindElement("BROLLY IMAGES", &DAT_0061613c, 0) == 0) {
+        DAT_00616140 = (struct BrollyData *)LLIDB_LoadData((void *)DAT_0061613c);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0042e4b0
 void FUN_0042e4b0(void) {
@@ -120,10 +143,27 @@ void FUN_0042e4c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0042e500
-void FUN_0042e500(void) { STUB(); }
+void FUN_0042e500(int param_1, unsigned char *param_2) {
+    unsigned char id[2];
+    id[0] = param_2[0];
+    id[1] = param_2[4];
+    AddObjectToMap(param_1, *(unsigned short *)id, 0);
+    if (DAT_00616140 != NULL) {
+        int r = rand();
+        Set_UserFlags(*(int *)param_2 << 8, *(int *)(param_2 + 4) << 8, (unsigned short)(r % DAT_00616140->count_4));
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0042e560
-void FUN_0042e560(void) { STUB(); }
+unsigned int *FUN_0042e560(int param_1, unsigned int param_2) {
+    unsigned char *b = (unsigned char *)&param_2;
+    int idx = (Get_UserFlags((unsigned int)b[0] << 8, (unsigned int)b[1] << 8) & 0xff) * 4;
+    DAT_0082c6a0 = *(int *)((char *)DAT_00616140->table_8 + idx);
+    DAT_0082c6a4 = *(int *)((char *)DAT_00616140->table_c + idx) >> 1;
+    DAT_0082c6b0 = 0;
+    DAT_0082c6a8 = *(int *)((char *)DAT_00616140->table_10 + idx) >> 1;
+    return &DAT_0082c6a0;
+}
 
 // FUNCTION: LEGOLAND 0x0042e5d0
 void FUN_0042e5d0(struct EateryObj *obj) {
@@ -244,21 +284,58 @@ void FUN_0042ec10(void) { STUB(); }
 void FUN_0042ed70(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0042eec0
-void FUN_0042eec0(void) { STUB(); }
+struct BrollyNode *FUN_0042eec0(unsigned short *param_1) {
+    struct BrollyNode *node = malloc(sizeof(struct BrollyNode));
+    if (node != NULL) {
+        node->next = NULL;
+        node->value = 0;
+        node->field_6 = 0;
+        node->field_8 = 0;
+        node->field_9 = 0;
+        node->value = *param_1;
+        node->next = DAT_00616144;
+        node->field_6 = 0;
+        node->field_8 = 0;
+        node->field_9 = 0;
+        DAT_00616144 = node;
+    }
+    return node;
+}
 
 // FUNCTION: LEGOLAND 0x0042ef10
-void FUN_0042ef10(void) { STUB(); }
+void FUN_0042ef10(unsigned int param_1, unsigned char *param_2) {
+    unsigned short value = (unsigned short)*param_2 | (unsigned short)(param_2[4] << 8);
+    AddBasicObject(param_1, (unsigned int)param_2);
+    FUN_0042eec0(&value);
+}
 
 // FUNCTION: LEGOLAND 0x0042ef40
-void FUN_0042ef40(void) { STUB(); }
+struct BrollyNode *FUN_0042ef40(unsigned short *param_1) {
+    struct BrollyNode *node = DAT_00616144;
+    if (node != NULL) {
+        if (*param_1 == node->value) {
+            return node;
+        }
+        while (1) {
+            node = node->next;
+            if (node == NULL) {
+                break;
+            }
+            if (*param_1 == node->value) {
+                return node;
+            }
+        }
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x0042ef70
-void FUN_0042ef70(struct BlokeNode *node) {
-    struct BlokeNode *head = DAT_00616144;
+void FUN_0042ef70(struct BrollyNode *node) {
+    struct BrollyNode *head = DAT_00616144;
     if (head == node) {
         DAT_00616144 = node->next;
     } else {
-        struct BlokeNode *current = head;
+        struct BrollyNode *current = head;
         if (current->next != node) {
             do {
                 current = current->next;

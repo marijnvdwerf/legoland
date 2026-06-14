@@ -30,6 +30,8 @@ struct MapElement;
 struct WaterContext;
 struct WaterSub;
 struct EateryFX;
+struct BrollyData;
+struct BrollyNode;
 struct BlokeNode;
 struct SaveBlock;
 struct JungleRide;
@@ -1043,8 +1045,10 @@ extern unsigned int DAT_00616128;
 extern unsigned short DAT_0061612c;
 // 0x0061613c
 extern unsigned int DAT_0061613c;
+// 0x00616140
+extern struct BrollyData *DAT_00616140;
 // 0x00616144
-extern struct BlokeNode *DAT_00616144;
+extern struct BrollyNode *DAT_00616144;
 // 0x00616148
 extern struct SaveBlock *DAT_00616148;
 // 0x0061614c
@@ -2725,7 +2729,7 @@ extern struct Sprite *DAT_0081cd28;
 // 0x0081cd34
 extern struct Sprite *DAT_0081cd34;
 // 0x0081cd38
-extern unsigned int DAT_0081cd38;
+extern struct EateryFX *DAT_0081cd38;
 // 0x0081cd3c
 extern unsigned int DAT_0081cd3c;
 // 0x0081cd44
@@ -2892,6 +2896,8 @@ extern unsigned int DAT_0082c6a0;
 extern unsigned int DAT_0082c6a4;
 // 0x0082c6a8
 extern unsigned int DAT_0082c6a8;
+// 0x0082c6b0
+extern unsigned int DAT_0082c6b0;
 // 0x0082c6ac
 extern unsigned short DAT_0082c6ac;
 // 0x0082c6b8
