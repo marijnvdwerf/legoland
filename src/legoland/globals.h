@@ -459,6 +459,8 @@ extern unsigned char DAT_004b79d0[0x18];
 extern unsigned short DAT_004b7abc;
 // 0x004b7ac0
 extern unsigned char DAT_004b7ac0[0x18];
+// 0x004b7d70
+extern unsigned int DAT_004b7d70;
 // 0x004b7d74
 extern unsigned int DAT_004b7d74;
 // 0x004b7d78

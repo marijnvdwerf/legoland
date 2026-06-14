@@ -26,7 +26,7 @@ struct ObjectClass;
 struct Bloke;
 
 struct AnimHandle {
-    /* 0x00 */ int frame_bottom;
+    /* 0x00 */ int length;
     /* 0x04 */ int fps;
     /* 0x08 */ int width;
     /* 0x0c */ int height;
@@ -170,8 +170,91 @@ void FUN_00443720(void *param_1, const char *param_2) { STUB(); }
 // FUNCTION: LEGOLAND 0x004437d0
 void FUN_004437d0(unsigned int arg, void *ptr) { STUB(); }
 
+struct AviFileInfo {
+    /* 0x00 */ unsigned int dwMaxBytesPerSec;
+    /* 0x04 */ unsigned int dwFlags;
+    /* 0x08 */ unsigned int dwCaps;
+    /* 0x0c */ int dwStreams;
+    /* 0x10 */ unsigned char pad_10[0x6c - 0x10];
+};
+
+struct AviStreamInfo {
+    /* 0x00 */ unsigned int fccType;
+    /* 0x04 */ unsigned int fccHandler;
+    /* 0x08 */ unsigned char pad_8[0x14 - 0x8];
+    /* 0x14 */ unsigned int dwScale;
+    /* 0x18 */ unsigned int dwRate;
+    /* 0x1c */ unsigned int dwStart;
+    /* 0x20 */ unsigned int dwLength;
+    /* 0x24 */ unsigned char pad_24[0x34 - 0x24];
+    /* 0x34 */ int rcFrameLeft;
+    /* 0x38 */ int rcFrameTop;
+    /* 0x3c */ int rcFrameRight;
+    /* 0x40 */ int rcFrameBottom;
+    /* 0x44 */ unsigned char pad_44[0x8c - 0x44];
+};
+
 // FUNCTION: LEGOLAND 0x00443bd0
-struct AnimHandle *FUN_00443bd0(const char *filename) { STUB(); }
+struct AnimHandle *FUN_00443bd0(const char *filename) {
+    void *file;
+    void *stream;
+    struct AviFileInfo finfo;
+    struct AviStreamInfo sinfo;
+    struct AnimHandle *result;
+    void *found;
+    unsigned int length;
+    unsigned int fps;
+    int width;
+    int height;
+    int i;
+
+    if (DAT_00665f48 == 0) {
+        AVIFileInit();
+    }
+    found = NULL;
+    if (AVIFileOpenA(&file, filename, 0, 0) == 0) {
+        AVIFileInfoA(file, &finfo, 0x6c);
+        length = 0;
+        fps = 0;
+        width = 0;
+        height = 0;
+        for (i = 0; i < finfo.dwStreams; i++) {
+            if (AVIFileGetStream(file, &stream, 0, i) != 0) {
+                break;
+            }
+            if (AVIStreamInfoA(stream, &sinfo, 0x8c) == 0 && sinfo.fccType == 0x73646976) {
+                found = stream;
+                AVIStreamAddRef(stream);
+                fps = sinfo.dwRate / sinfo.dwScale;
+                width = sinfo.rcFrameRight - sinfo.rcFrameLeft;
+                height = sinfo.rcFrameBottom - sinfo.rcFrameTop;
+                length = sinfo.dwLength;
+            }
+        }
+        if (found != NULL) {
+            result = (struct AnimHandle *)malloc(sizeof(struct AnimHandle));
+            if (result != NULL) {
+                result->length = length;
+                result->fps = fps;
+                result->width = width;
+                result->height = height;
+                result->avifile = file;
+                result->getframe = NULL;
+                result->stream = found;
+                result->open_cb = NULL;
+                result->callback = NULL;
+                DAT_00665f48 = DAT_00665f48 + 1;
+                return result;
+            }
+            AVIStreamRelease(found);
+        }
+        AVIFileRelease(file);
+    }
+    if (DAT_00665f48 == 0) {
+        AVIFileExit();
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00443d50
 void FUN_00443d50(struct AnimHandle *handle) {
@@ -197,7 +280,26 @@ void FUN_00443d90(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00443dc0
-void FUN_00443dc0(struct AnimHandle *handle) { STUB(); }
+void FUN_00443dc0(struct AnimHandle *handle) {
+    struct AnimHandle *current;
+
+    DAT_00665f68 = 0;
+    DAT_00665f6c = 0;
+    DAT_00665f64 = 0;
+    DAT_00665eec = 0;
+    if (handle->open_cb != NULL) {
+        handle->open_cb(handle);
+    }
+    current = (struct AnimHandle *)DAT_00665f5c;
+    if (current != NULL) {
+        AVIStreamGetFrameClose(current->getframe);
+        ((struct AnimHandle *)DAT_00665f5c)->getframe = NULL;
+    }
+    DAT_00665f5c = handle;
+    if (handle != NULL) {
+        handle->getframe = AVIStreamGetFrameOpen(handle->stream, &DAT_004b7d70);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00443e30
 void FUN_00443e30(void) { STUB(); }
