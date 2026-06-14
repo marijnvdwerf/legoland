@@ -26,6 +26,7 @@ int AddRepairOrderForObject(int obj, int x, int y);
 int GetInstanceOfClass(unsigned int obj, unsigned short *uid);
 void RemoveInstanceFromList(int node);
 LEGO_EXPORT unsigned short RestoreBaseMap(int tile_x, int row_y);
+LEGO_EXPORT struct Point PlayfieldToMap(int a, int b);
 LEGO_EXPORT void SetMapFlags(int x, int y, short value);
 LEGO_EXPORT void Set_RFFlags(int x, int y, unsigned char value);
 LEGO_EXPORT void ApplyConsTileMap(struct EditObject *editObj, unsigned int coords);
