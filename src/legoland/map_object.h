@@ -55,9 +55,7 @@ LEGO_EXPORT void GetTileDimensions(int *width, int *height);
 LEGO_EXPORT int Get_XScroll(void);
 LEGO_EXPORT int Get_YScroll(void);
 void FUN_00460560(int index);
-/* True signature unknown (still a STUB): declared with unspecified params so callers
- * don't force argument conversions that diverge from the original codegen. */
-void FUN_00461290();
+void FUN_00461290(int param_1, int param_2, int param_3, int param_4);
 LEGO_EXPORT void MouseScrollMap(void);
 LEGO_EXPORT void ProcessScrolling(unsigned int a, unsigned int b);
 LEGO_EXPORT unsigned char Get_RFFlags(int x, int y);

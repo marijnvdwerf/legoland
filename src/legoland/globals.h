@@ -551,6 +551,26 @@ extern unsigned char DAT_004b95cc[8];
 extern unsigned char DAT_004b95d4[8];
 // 0x004b95dc
 extern unsigned char DAT_004b95dc[8];
+// 0x004b95e8
+extern int DAT_004b95e8;
+// 0x004b95ec
+extern int DAT_004b95ec;
+// 0x004b95f4
+extern int DAT_004b95f4;
+// 0x004b95f8
+extern int DAT_004b95f8;
+// 0x004b95fc
+extern int DAT_004b95fc;
+// 0x004b9600
+extern int DAT_004b9600;
+// 0x004b9604
+extern int DAT_004b9604;
+// 0x004b9608
+extern int DAT_004b9608;
+// 0x004b960c
+extern int DAT_004b960c;
+// 0x004b9610
+extern int DAT_004b9610;
 // 0x004b9ca4
 extern int (*DAT_004b9ca4)(void);
 // 0x004b9ca8
@@ -1532,6 +1552,10 @@ extern LEGO_EXPORT int ScrollY;
 extern LEGO_EXPORT int ScrollSpeedX;
 // 0x00667cc0
 extern LEGO_EXPORT int ScrollSpeedY;
+// 0x00667cd0
+extern int DAT_00667cd0;
+// 0x00667cd4
+extern int DAT_00667cd4;
 // 0x00667cd8
 extern unsigned int DAT_00667cd8;
 // 0x00667cdc

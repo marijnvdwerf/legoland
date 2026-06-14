@@ -1729,10 +1729,30 @@ void FUN_00460560(int index) {
 }
 
 // FUNCTION: LEGOLAND 0x004608c0
-void FUN_004608c0(void) { STUB(); }
+void FUN_004608c0(int *param_1, int *param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00460e00
-void FUN_00460e00(void) { STUB(); }
+void FUN_00460e00(void) {
+    int sx;
+    int sy;
+    int rect[2];
+    int clip[4];
+
+    sx = ScrollX >> 8;
+    sy = ScrollY >> 8;
+    clip[0] = lpConfig->field_20;
+    clip[1] = lpConfig->field_22;
+    clip[2] = lpConfig->field_10 + clip[0];
+    clip[3] = lpConfig->field_12 + clip[1];
+    rect[0] = sx;
+    rect[1] = sy;
+    FUN_004608c0(rect, clip);
+    DAT_004b95ec = sy;
+    DAT_004b95e8 = sx;
+    DAT_00667cd0 = 0;
+    DAT_00667cd4 = 0;
+    BGFullUpdate = 0;
+}
 
 // FUNCTION: LEGOLAND 0x00460e90
 void FUN_00460e90(int *coords, unsigned int x, unsigned int y) {
@@ -1820,7 +1840,76 @@ void FUN_00461220(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00461290
-void FUN_00461290(unsigned int a, unsigned int b, unsigned int c, unsigned int d) { STUB(); }
+void FUN_00461290(int param_1, int param_2, int param_3, int param_4) {
+    int v10;
+    int v4;
+    int vc;
+    int v8;
+    int v14;
+    int v18;
+    int v20;
+    int iv4;
+    int dim[2];
+    int tile;
+    int wfull;
+    int hhalf;
+    int whalf;
+    int hneg;
+    int ix;
+    int iy;
+    int adj;
+
+    v10 = DAT_004b95f4 >> 1;
+    v4 = DAT_004b95f8 >> 1;
+    vc = DAT_004b95fc >> 1;
+    v8 = DAT_004b9600 >> 1;
+    v14 = DAT_004b960c >> 1;
+    v18 = DAT_004b9610 >> 1;
+    v20 = DAT_004b9608 >> 1;
+    iv4 = DAT_004b9604 >> 1;
+    GetTileDimensions(dim, &tile);
+    dim[0] = dim[0] * 0x80;
+    wfull = lpConfig->width * dim[0];
+    hhalf = lpConfig->height * (dim[0] >> 1);
+    whalf = lpConfig->width * (dim[0] >> 1);
+    hneg = -(lpConfig->height * dim[0]);
+    iv4 = iv4 + (wfull - param_1);
+    ix = param_3 + ScrollX;
+    if (iv4 < param_3 + ScrollX) {
+        ix = iv4;
+    }
+    if (ix < hneg - v20) {
+        ix = hneg - v20;
+    }
+    v18 = ((hhalf + whalf) - param_2) + v18;
+    iy = param_4 + ScrollY;
+    if (v18 < param_4 + ScrollY) {
+        iy = v18;
+    }
+    if (iy < -v14) {
+        iy = -v14;
+    }
+    if (iy < whalf && 0 < param_1 + ix && (adj = ((ix + iy * -2) - v10) + param_1, 0 < adj)) {
+        ix = ix - (adj >> 1);
+        iy = iy + (adj >> 2);
+    }
+    if (iy < hhalf && ix < 0 && (vc = (iy * -2 - ix) - vc, 0 < vc)) {
+        ix = ix + (vc >> 1);
+        iy = iy + (vc >> 2);
+    }
+    if (whalf < param_2 + iy && hneg + wfull < param_1 + ix &&
+        (param_1 = ((((iy - whalf) + param_2) * 2 - wfull) - v8) + ix + param_1, 0 < param_1)) {
+        ix = ix - (param_1 >> 1);
+        iy = iy - (param_1 >> 2);
+    }
+    if (hhalf < param_2 + iy && ix < hneg + wfull &&
+        (hneg = ((((iy - hhalf) + param_2) * 2 - ix) - v4) + hneg, 0 < hneg)) {
+        ix = ix + (hneg >> 1);
+        iy = iy - (hneg >> 2);
+    }
+    ScrollX = ix - param_3;
+    ScrollY = iy - param_4;
+}
 
 // FUNCTION: LEGOLAND 0x004614a0
 LEGO_EXPORT void ProcessScrolling(unsigned int a, unsigned int b) {
