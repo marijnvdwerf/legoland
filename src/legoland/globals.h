@@ -220,6 +220,26 @@ extern float FLOAT_004ab390;
 extern double DAT_004ab3a8;
 // 0x004ab3d0
 extern float DAT_004ab3d0;
+// 0x004ab3dc
+extern float DAT_004ab3dc;
+// 0x004ab3e0
+extern float DAT_004ab3e0;
+// 0x004ab3e4
+extern float DAT_004ab3e4;
+// 0x004ab3e8
+extern float DAT_004ab3e8;
+// 0x004ab3ec
+extern float DAT_004ab3ec;
+// 0x004ab3f0
+extern float DAT_004ab3f0;
+// 0x004ab3f4
+extern float DAT_004ab3f4;
+// 0x004ab3f8
+extern float DAT_004ab3f8;
+// 0x004ab3fc
+extern float DAT_004ab3fc;
+// 0x004ab4a0
+extern float DAT_004ab4a0;
 // 0x004ab430
 extern float DAT_004ab430;
 // 0x004ab454
@@ -2666,6 +2686,8 @@ extern struct Sprite *DAT_0081cb6c;
 extern struct Cursor *DAT_0081cb70;
 // 0x0081cb74
 extern struct Cursor *DAT_0081cb74;
+// 0x0081cb80
+extern int DAT_0081cb80[0x60];
 // 0x0081cd00
 extern void *DAT_0081cd00;
 // 0x0081cd04

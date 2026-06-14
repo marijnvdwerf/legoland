@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <math.h>
 #include "globals.h"
 #include "legoland.h"
 
@@ -12,7 +13,23 @@
 #include "render3d.h"
 
 // FUNCTION: LEGOLAND 0x00432ac0
-void FUN_00432ac0(void) { STUB(); }
+void FUN_00432ac0(void) {
+    int *p = &DAT_0081cb80[1];
+    int i = 0;
+    do {
+        double angle = (double)i * (double)DAT_004ab3e8 * (double)DAT_004ab3f4;
+        p[-1] = FUN_00458930((float)sin(angle));
+        p[0] = FUN_00458930((float)cos(angle));
+        angle = (sin(angle) + (double)DAT_004ab3ec - (double)DAT_004ab3fc) * (double)DAT_004ab3f4;
+        p[0x1f] = FUN_00458930((float)sin(angle));
+        p[0x20] = FUN_00458930((float)cos(angle));
+        angle = (cos(angle) + (double)DAT_004ab4a0) * (double)DAT_004ab3f4;
+        p[0x3f] = FUN_00458930((float)sin(angle));
+        p[0x40] = FUN_00458930((float)cos(angle));
+        p = p + 2;
+        i = i + 1;
+    } while (p < &DAT_0081cb80[0x21]);
+}
 
 // FUNCTION: LEGOLAND 0x00432b90
 int FUN_00432b90(unsigned int param_1, void *param_2, void *param_3, void *param_4) {
