@@ -50,7 +50,7 @@ void FUN_0042ce50(struct EarthNode *node, struct EarthBlokeElem *elem);
 void FUN_0042ce90(struct EarthNode *p, struct EarthQueue *value);
 void FUN_0042cec0(struct Cursor *param_1, unsigned char *param_2, int *param_3);
 int FUN_0042cf40(struct EarthNode *param_1, void *param_2);
-void FUN_0042cf70(struct Cursor *param_1);
+void FUN_0042cf70(struct EarthNode *param_1);
 void FUN_0042d040(struct EarthNode *list);
 unsigned int FUN_0042d3e0(struct EarthBlokeElem *param_1, struct EarthBlokeElem *param_2);
 struct EarthBlokeElem *FUN_0042d540(struct EarthBlokeElem *param_1, unsigned int param_2);
