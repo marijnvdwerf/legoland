@@ -54,6 +54,7 @@ void FUN_0042cdc0(struct EarthNode *node) {
     }
 done:
     free(node);
+    return;
 }
 
 // FUNCTION: LEGOLAND 0x0042ce20
