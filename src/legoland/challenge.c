@@ -1019,7 +1019,34 @@ void FUN_004449b0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00444a70
-void FUN_00444a70(void) { STUB(); }
+void FUN_00444a70(int param_1, int param_2, int param_3, int param_4, int param_5, int param_6, int param_7) {
+    int negative;
+    int bar;
+    unsigned int colour;
+
+    negative = 0;
+    if (param_6 < 0) {
+        negative = 1;
+        param_6 = -param_6;
+        param_7 = param_6 - param_7;
+    }
+    if (param_5 > param_6) {
+        param_5 = param_6;
+    }
+    if (negative != 0) {
+        param_5 = param_6 - param_5;
+    }
+    if (param_7 <= param_5) {
+        colour = GetNearestColour(0, 0xff, 0);
+    } else {
+        colour = GetNearestColour(0xff, 0, 0);
+    }
+    bar = ((param_3 - param_1) * param_5) / param_6;
+    PrintSprite(DAT_0081c028, param_1, param_2, 0, 0);
+    RenderBlock(param_1 + 3, param_2 + 2, bar - 2, 1, colour);
+    RenderBlock(param_1 + 2, param_2 + 3, bar, (param_4 - param_2) - 1, colour);
+    PrintSprite(DAT_0081c030, (((param_3 - param_1) - 2) * param_7) / param_6 + 2 + param_1, param_2 + 2, 0, 0);
+}
 
 // FUNCTION: LEGOLAND 0x00444b70
 void FUN_00444b70(unsigned int param_1, unsigned int param_2, int param_3, unsigned int param_4, unsigned int param_5) {
