@@ -273,7 +273,63 @@ void FUN_0042e5d0(struct EateryObj *obj) {
 void FUN_0042e600(void) { KillMoneySFX(); }
 
 // FUNCTION: LEGOLAND 0x0042e610
-void FUN_0042e610(void) { STUB(); }
+void FUN_0042e610(int param_1) {
+    int ride = *(int *)(param_1 + 0xc);
+    unsigned int *node = *(unsigned int **)(ride + 0xcc);
+    unsigned int *next;
+    int bloke;
+    unsigned char b1;
+    int x;
+    int y;
+    char cv;
+    char state;
+    while (node != NULL) {
+        next = (unsigned int *)*node;
+        bloke = node[2];
+        y = *(int *)(ride + 0x10);
+        x = (unsigned int)*(unsigned char *)(node + 3) + *(int *)(ride + 0xc);
+        b1 = *((unsigned char *)node + 0xd);
+        if (*(short *)(bloke + 0xe) == 0) {
+            state = *(char *)(bloke + 0x60);
+            switch (state) {
+            case 0:
+                *(unsigned char *)(bloke + 0x62) |= 8;
+                x = x * 0x100 + -0x80;
+                goto calc;
+            case 1:
+                *(unsigned char *)(bloke + 0x72) = 7;
+                *(char *)(bloke + 0x60) = state + 1;
+                *(unsigned int *)(bloke + 0x58) = (rand() & 0x1f) + 4;
+                break;
+            case 2:
+                if (*(int *)(bloke + 0x58) == 0) {
+                    *(char *)(bloke + 0x60) = state + 1;
+                    BuyItem(param_1, node + 3, 1);
+                }
+                *(int *)(bloke + 0x58) += -1;
+                break;
+            case 3:
+                x = x * 0x100 + 0x80;
+calc:
+                y = ((unsigned int)b1 + y) * 0x100 + 0x80;
+                *(int *)(bloke + 0x24) = x;
+                *(int *)(bloke + 0x28) = y;
+                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
+                                  *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                *(short *)(bloke + 0xe) = 7;
+                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
+                *(char *)(bloke + 0x60) += 1;
+                break;
+            case 4:
+                RemoveBlokeFromRide((void *)ride, node);
+                *(unsigned short *)(bloke + 0x62) &= 0xfff7;
+                NewLongTermAction((struct Bloke *)bloke, 0xd);
+            }
+        }
+        node = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0042e770
 void FUN_0042e770(struct EateryObj *obj) {
@@ -383,13 +439,197 @@ void FUN_0042ea10(unsigned int param_1, unsigned int param_2, unsigned int param
 }
 
 // FUNCTION: LEGOLAND 0x0042ea60
-void FUN_0042ea60(void) { STUB(); }
+void FUN_0042ea60(int param_1) {
+    int ride = *(int *)(param_1 + 0xc);
+    unsigned int *node = *(unsigned int **)(ride + 0xcc);
+    unsigned int *next;
+    int bloke;
+    unsigned char *pos;
+    int x;
+    int y;
+    char cv;
+    int mx;
+    int my;
+    while (node != NULL) {
+        next = (unsigned int *)*node;
+        bloke = node[2];
+        pos = (unsigned char *)(node + 3);
+        x = (unsigned int)pos[0] + *(int *)(ride + 0xc);
+        y = (unsigned int)pos[1] + *(int *)(ride + 0x10);
+        if (*(short *)(bloke + 0xe) == 0) {
+            switch (*(char *)(bloke + 0x60)) {
+            case 0:
+                *(unsigned char *)(bloke + 0x62) |= 8;
+                x = x * 0x100 + 0x280;
+                goto calc05;
+            case 1:
+                x = x * 0x100 + 0x280;
+                *(int *)(bloke + 0x28) = y * 0x100;
+                *(int *)(bloke + 0x24) = x;
+                y = *(int *)(bloke + 0x28);
+                my = *(int *)(bloke + 0x6c);
+                mx = *(int *)(bloke + 0x68);
+                goto calc;
+            case 2:
+                *(unsigned int *)(bloke + 0x58) = (rand() & 0x1f) + 4;
+                *(char *)(bloke + 0x60) += 1;
+                break;
+            case 3:
+                if (*(int *)(bloke + 0x58) == 0) {
+                    *(char *)(bloke + 0x60) += 1;
+                    PlayMoneySFX(node + 3, 0, 0);
+                }
+                *(int *)(bloke + 0x58) += -1;
+                break;
+            case 4:
+                *(int *)(bloke + 0x24) = x * 0x100 + 0x280;
+                y = y * 0x100 + 0x80;
+                *(int *)(bloke + 0x28) = y;
+                x = *(int *)(bloke + 0x24);
+                my = *(int *)(bloke + 0x6c);
+                mx = *(int *)(bloke + 0x68);
+                goto calc;
+            case 5:
+                x = x * 0x100 + 0x80;
+calc05:
+                y = y * 0x100 + 0x80;
+                *(int *)(bloke + 0x24) = x;
+                *(int *)(bloke + 0x28) = y;
+                x = *(int *)(bloke + 0x24);
+                my = *(int *)(bloke + 0x6c);
+                mx = *(int *)(bloke + 0x68);
+calc:
+                cv = CalcMoveLine(mx, my, x, y, bloke + 0x98);
+                *(short *)(bloke + 0xe) = 7;
+                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
+                *(char *)(bloke + 0x60) += 1;
+                break;
+            case 6:
+                RemoveBlokeFromRide((void *)ride, node);
+                *(unsigned short *)(bloke + 0x62) &= 0xfff7;
+            }
+        }
+        node = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0042ec10
-void FUN_0042ec10(void) { STUB(); }
+void FUN_0042ec10(int param_1) {
+    int ride = *(int *)(param_1 + 0xc);
+    unsigned int *node = *(unsigned int **)(ride + 0xcc);
+    unsigned int *next;
+    int bloke;
+    unsigned char *pos;
+    int x;
+    int y;
+    char cv;
+    char state;
+    while (node != NULL) {
+        next = (unsigned int *)*node;
+        bloke = node[2];
+        pos = (unsigned char *)(node + 3);
+        x = (unsigned int)pos[0] + *(int *)(ride + 0xc);
+        y = (unsigned int)pos[1] + *(int *)(ride + 0x10);
+        if (*(short *)(bloke + 0xe) == 0) {
+            state = *(char *)(bloke + 0x60);
+            switch (state) {
+            case 0:
+                *(unsigned char *)(bloke + 0x62) |= 8;
+                *(int *)(bloke + 0x24) = x * 0x100 + -0x80;
+                x = y * 0x100 + 0x180;
+                goto calc;
+            case 1:
+                *(unsigned char *)(bloke + 0x72) = 7;
+                *(char *)(bloke + 0x60) = state + 1;
+                *(unsigned int *)(bloke + 0x58) = (rand() & 0x1f) + 4;
+                break;
+            case 2:
+                if (*(int *)(bloke + 0x58) == 0) {
+                    *(char *)(bloke + 0x60) = state + 1;
+                    BuyItem(param_1, node + 3, 1);
+                }
+                *(int *)(bloke + 0x58) += -1;
+                break;
+            case 3:
+                *(unsigned char *)(bloke + 0x72) = 3;
+                *(int *)(bloke + 0x24) = x * 0x100 + 0x80;
+                x = y * 0x100 + 0x80;
+calc:
+                *(int *)(bloke + 0x28) = x;
+                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
+                                  *(unsigned int *)(bloke + 0x24), x, bloke + 0x98);
+                *(short *)(bloke + 0xe) = 7;
+                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
+                *(char *)(bloke + 0x60) += 1;
+                break;
+            case 4:
+                RemoveBlokeFromRide((void *)ride, node);
+                *(unsigned short *)(bloke + 0x62) &= 0xfff7;
+            }
+        }
+        node = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0042ed70
-void FUN_0042ed70(void) { STUB(); }
+void FUN_0042ed70(int param_1) {
+    int ride = *(int *)(param_1 + 0xc);
+    unsigned int *node = *(unsigned int **)(ride + 0xcc);
+    unsigned int *next;
+    int bloke;
+    unsigned char b1;
+    int x;
+    int y;
+    char cv;
+    char state;
+    while (node != NULL) {
+        next = (unsigned int *)*node;
+        bloke = node[2];
+        y = *(int *)(ride + 0x10);
+        x = (unsigned int)*(unsigned char *)(node + 3) + *(int *)(ride + 0xc);
+        b1 = *((unsigned char *)node + 0xd);
+        if (*(short *)(bloke + 0xe) == 0) {
+            state = *(char *)(bloke + 0x60);
+            switch (state) {
+            case 0:
+                *(unsigned char *)(bloke + 0x62) |= 8;
+                x = x * 0x100 + -0x80;
+                goto calc;
+            case 1:
+                *(unsigned char *)(bloke + 0x72) = 7;
+                *(char *)(bloke + 0x60) = state + 1;
+                *(unsigned int *)(bloke + 0x58) = (rand() & 0x1f) + 4;
+                break;
+            case 2:
+                if (*(int *)(bloke + 0x58) == 0) {
+                    *(char *)(bloke + 0x60) = state + 1;
+                    BuyItem(param_1, node + 3, 1);
+                }
+                *(int *)(bloke + 0x58) += -1;
+                break;
+            case 3:
+                x = x * 0x100 + 0x80;
+calc:
+                y = ((unsigned int)b1 + y) * 0x100 + 0x80;
+                *(int *)(bloke + 0x24) = x;
+                *(int *)(bloke + 0x28) = y;
+                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
+                                  *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                *(short *)(bloke + 0xe) = 7;
+                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
+                *(char *)(bloke + 0x60) += 1;
+                break;
+            case 4:
+                RemoveBlokeFromRide((void *)ride, node);
+                *(unsigned short *)(bloke + 0x62) &= 0xfff7;
+            }
+        }
+        node = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0042eec0
 struct BrollyNode *FUN_0042eec0(unsigned short *param_1) {
