@@ -9,8 +9,10 @@
 #include "math.h"
 #include "obj_instance.h"
 #include "objclass.h"
+#include "pathfind.h"
 #include "sound_music.h"
 #include "timer.h"
+#include "worker.h"
 
 struct RenderObjectVtable {
     unsigned char pad_0[0xc];
@@ -31,8 +33,16 @@ struct MapCell {
     /* 0x00 */ struct MapCellObj *obj;
     /* 0x04 */ unsigned char byte_4;
     /* 0x05 */ unsigned char byte_5;
-    /* 0x06 */ unsigned char pad_6[6];
-    /* 0x0c */ unsigned short flags;
+    /* 0x06 */ unsigned char pad_6[2];
+    /* 0x08 */ unsigned short word_8;
+    /* 0x0a */ unsigned short word_a;
+    /* 0x0c */ union {
+        unsigned short word;
+        unsigned char bytes[2];
+    } flags;
+    /* 0x0e */ unsigned char pad_e[2];
+    /* 0x10 */ unsigned char byte_10;
+    /* 0x11 */ unsigned char pad_11[3];
 };
 
 struct RectListNode {
@@ -42,6 +52,13 @@ struct RectListNode {
     /* 0x0c */ int field_c;
     /* 0x10 */ int field_10;
     /* 0x14 */ int field_14;
+};
+
+struct RemBlock {
+    /* 0x00 */ int f0;
+    /* 0x04 */ int f4;
+    /* 0x08 */ int f8;
+    /* 0x0c */ int fc;
 };
 
 struct RenderObject {
@@ -90,11 +107,11 @@ void FUN_004598d0(struct Point *coord, int *param_2, int *param_3) {
 
     if (coord->x >= 0 && coord->x < (int)lpConfig->width && coord->y >= 0 && coord->y < (int)lpConfig->height &&
         (cell = (struct MapCell *)((char *)GameMap[coord->y] + coord->x * 0x14)) != NULL) {
-        if ((cell->flags & 0x10) != 0) {
+        if ((cell->flags.word & 0x10) != 0) {
             *param_2 = *param_2 + -1;
             return;
         }
-        if ((cell->flags & 0x80) != 0) {
+        if ((cell->flags.word & 0x80) != 0) {
             if (cell->obj->field_c == DAT_007fd624) {
                 *param_2 = *param_2 + -1;
                 return;
@@ -216,7 +233,91 @@ LEGO_EXPORT void PutObjOnMap(struct ObjClass *obj, unsigned int classid, struct 
 }
 
 // FUNCTION: LEGOLAND 0x00459c90
-LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsigned int coords, void *cursor) { STUB(); }
+LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsigned int coords, void *cursor) {
+    int area;
+    struct MapCell *cell;
+    struct Cursor *query;
+    unsigned int x;
+    unsigned int y;
+    struct RemBlock blk;
+
+    FUN_0049b270(obj, coords);
+    if (classid == DAT_0080ff64) {
+        DAT_0079a8d0 = 0;
+    }
+    if (DAT_00667cd8 == 0) {
+        blk.f8 = coords & 0xff;
+        blk.fc = coords >> 8 & 0xff;
+        blk.f0 = 2;
+        PlayInstanceOfSample(DAT_004b9248, 0, 1, &blk);
+    } else {
+        DAT_00667cdc = 1;
+    }
+    RemoveObjectsPowerStats(classid, coords);
+    obj->method_9c(classid, coords, cursor);
+    if (obj == DAT_007fd624) {
+        DAT_00667cf4 = DAT_00667cf4 + -1;
+        DAT_00667ce0 = DAT_00667ce0 + -1;
+        DAT_00667d0c = 1;
+    } else {
+        area = GetRectArea((struct RectNode *)&obj->field_3c);
+        switch (obj->type) {
+        case 1:
+            FUN_00489f50((struct ObjClassKey *)&blk);
+            DAT_00667ce4 = DAT_00667ce4 - area;
+            break;
+        case 2:
+            DAT_00667d0c = 1;
+            DAT_00667cf8 = DAT_00667cf8 - area;
+            break;
+        case 3:
+            DAT_00667cf0 = DAT_00667cf0 - area;
+            break;
+        case 4:
+            FUN_00489f50((struct ObjClassKey *)&blk);
+            DAT_00667ce8 = DAT_00667ce8 - area;
+            break;
+        case 5:
+            FUN_00489f50((struct ObjClassKey *)&blk);
+            DAT_00667cec = DAT_00667cec - area;
+        }
+        DAT_00667ce0 = DAT_00667ce0 - area;
+    }
+    x = coords & 0xff;
+    y = coords >> 8 & 0xff;
+    if (x < lpConfig->width && y < lpConfig->height) {
+        cell = (struct MapCell *)((char *)GameMap[y] + x * 0x14);
+    } else {
+        cell = NULL;
+    }
+    if (cell->flags.bytes[1] & 0x40) {
+        RemoveRepairOrderAT((struct Worker *)obj, x, y);
+        cell->flags.word = cell->flags.word & 0xbfff;
+    }
+    query = &QueryCursor;
+    do {
+        if ((query->field_1828 & 0x1000) != 0) {
+            if (query != NULL) {
+                for (blk.f4 = query->field_1414[1] + query->field_1408;
+                     blk.f4 <= (int)(query->field_1408 + query->field_1414[3]); blk.f4 = blk.f4 + 1) {
+                    for (blk.f0 = query->field_1404 + query->field_1414[0];
+                         blk.f0 <= (int)(query->field_1404 + query->field_1414[2]); blk.f0 = blk.f0 + 1) {
+                        cell = (struct MapCell *)((char *)GameMap[blk.f4] + blk.f0 * 0x14);
+                        cell->flags.word = cell->flags.word & 0xffe7;
+                        cell->byte_10 = 0;
+                        cell->word_8 = cell->word_a;
+                        FUN_0045d260((struct Point *)&blk);
+                        RemovePathSquare((struct InstancePos *)&blk);
+                    }
+                }
+            }
+            DAT_00668610 = DAT_00668610 | 4;
+            return;
+        }
+        query = (struct Cursor *)query->field_1830;
+    } while (query != NULL);
+    DAT_00668610 = DAT_00668610 | 4;
+}
 
 // FUNCTION: LEGOLAND 0x00459fa0
 LEGO_EXPORT int FindObjectsPower(void *object) { STUB(); }
