@@ -1345,7 +1345,30 @@ void FUN_00445000(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00445100
-void FUN_00445100(void) { STUB(); }
+void FUN_00445100(void) {
+    struct IconNode *a;
+    struct IconNode *b;
+    int x;
+    int y;
+
+    a = DAT_006660a8;
+    x = DAT_00813a44;
+    if (x >= a->field_c && x <= a->field_10 + a->field_c) {
+        y = DAT_00813a48;
+        if (y >= a->field_e && y <= a->field_12 + a->field_e) {
+            goto skip;
+        }
+    }
+    FUN_0046d680(a, DAT_0081c02c);
+skip:
+    x = DAT_00813a44;
+    y = DAT_00813a48;
+    b = DAT_006660ac;
+    if (x < b->field_c || x > b->field_10 + b->field_c ||
+        y < b->field_e || y > b->field_12 + b->field_e) {
+        FUN_0046d680(b, DAT_0081c080);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00445190
 void FUN_00445190(void) { STUB(); }
