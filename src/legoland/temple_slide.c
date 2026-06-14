@@ -5,6 +5,7 @@
 #include "globals.h"
 #include "llidb.h"
 #include "render3d.h"
+#include "ride_interfaces.h"
 
 struct TempleRide {
     unsigned char pad_0[4];
@@ -29,22 +30,6 @@ struct SlideTrack {
 struct SlideContext {
     unsigned char pad_0[0xc];
     struct SlideTrack *var_c;
-};
-
-struct TempleSlideObject {
-    unsigned char pad_0[0x8c];
-    void (*field_8c)(void);
-    unsigned char pad_90[8];
-    void (*field_98)(void);
-    void (*field_9c)(void);
-    void (*field_a0)(void);
-    void (*field_a4)(void);
-    void (*field_a8)(void);
-    void (*field_ac)(void);
-    void (*field_b0)(void);
-    unsigned char pad_b4[4];
-    void (*field_b8)(void);
-    void (*field_bc)(void);
 };
 
 struct SaveNode {
@@ -170,18 +155,18 @@ LEGO_EXPORT int SaveTempleSlide(void) {
 LEGO_EXPORT void LoadTempleSlide(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00417a00
-LEGO_EXPORT void TempleSlide_GetInterfaces(const char **ctx, struct TempleSlideObject *interfaces) {
+LEGO_EXPORT void TempleSlide_GetInterfaces(struct ClassNode *ctx, struct CallbackTable *interfaces) {
     // STRING: LEGOLAND 0x004b4f8c
-    if (_stricmp("TEMPLE SLIDE", *ctx) == 0) {
-        interfaces->field_a4 = FUN_00417150;
-        interfaces->field_ac = FUN_00417200;
-        interfaces->field_8c = FUN_00417240;
-        interfaces->field_a8 = FUN_00417430;
-        interfaces->field_b0 = FUN_00416fa0;
-        interfaces->field_9c = FUN_00417280;
-        interfaces->field_98 = FUN_004172d0;
-        interfaces->field_a0 = FUN_00417300;
-        interfaces->field_bc = SaveTempleSlide;
-        interfaces->field_b8 = LoadTempleSlide;
+    if (_stricmp("TEMPLE SLIDE", ctx->name) == 0) {
+        interfaces->cb_a4 = FUN_00417150;
+        interfaces->cb_ac = FUN_00417200;
+        interfaces->cb_8c = FUN_00417240;
+        interfaces->cb_a8 = FUN_00417430;
+        interfaces->cb_b0 = FUN_00416fa0;
+        interfaces->cb_9c = FUN_00417280;
+        interfaces->cb_98 = FUN_004172d0;
+        interfaces->cb_a0 = FUN_00417300;
+        interfaces->cb_bc = SaveTempleSlide;
+        interfaces->cb_b8 = LoadTempleSlide;
     }
 }

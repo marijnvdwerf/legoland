@@ -7,6 +7,7 @@
 #include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "ride_interfaces.h"
 #include "sound_music.h"
 
 struct JoustNode {
@@ -36,24 +37,6 @@ struct JoustBlock {
 struct JoustRoot {
     unsigned char pad_0[0xc];
     struct JoustBlock *field_c;
-};
-
-typedef void (*JoustMethod)(void);
-
-struct JoustInterface {
-    unsigned char pad_0[0x8c];
-    JoustMethod field_8c;
-    unsigned char pad_90[8];
-    JoustMethod field_98;
-    JoustMethod field_9c;
-    JoustMethod field_a0;
-    JoustMethod field_a4;
-    JoustMethod field_a8;
-    JoustMethod field_ac;
-    JoustMethod field_b0;
-    unsigned char pad_b4[4];
-    JoustMethod field_b8;
-    JoustMethod field_bc;
 };
 
 #include "image_sprite.h"
@@ -214,18 +197,18 @@ LEGO_EXPORT int LoadJoust(struct JoustLoadArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00408db0
-LEGO_EXPORT void Joust_GetInterfaces(const char **interface_name, struct JoustInterface *pInterface) {
+LEGO_EXPORT void Joust_GetInterfaces(struct ClassNode *head, struct CallbackTable *iface) {
     // STRING: LEGOLAND 0x004b4718
-    if (_stricmp("JOUST", *interface_name) == 0) {
-        pInterface->field_a4 = (JoustMethod)FUN_00407b50;
-        pInterface->field_ac = (JoustMethod)FUN_00408c00;
-        pInterface->field_8c = (JoustMethod)FUN_00408bc0;
-        pInterface->field_a8 = (JoustMethod)FUN_00407c30;
-        pInterface->field_b0 = (JoustMethod)FUN_00408580;
-        pInterface->field_9c = (JoustMethod)FUN_00407ad0;
-        pInterface->field_98 = (JoustMethod)FUN_004079e0;
-        pInterface->field_a0 = (JoustMethod)FUN_00408c50;
-        pInterface->field_bc = (JoustMethod)SaveJoust;
-        pInterface->field_b8 = (JoustMethod)LoadJoust;
+    if (_stricmp("JOUST", head->name) == 0) {
+        iface->cb_a4 = FUN_00407b50;
+        iface->cb_ac = FUN_00408c00;
+        iface->cb_8c = FUN_00408bc0;
+        iface->cb_a8 = FUN_00407c30;
+        iface->cb_b0 = FUN_00408580;
+        iface->cb_9c = FUN_00407ad0;
+        iface->cb_98 = FUN_004079e0;
+        iface->cb_a0 = FUN_00408c50;
+        iface->cb_bc = SaveJoust;
+        iface->cb_b8 = LoadJoust;
     }
 }
