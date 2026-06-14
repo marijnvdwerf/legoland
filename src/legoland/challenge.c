@@ -2653,10 +2653,141 @@ LAB_00447d21:
             piVar11 = rep + (iVar12 + 3) * 0x13;
             (rep + 1)[(iVar12 + 3) * 0x13 + *piVar11] = 0x150;
             *piVar11 = *piVar11 + 1;
+            iVar14 = iVar12 + 3;
+            iVar6 = iVar14 * 0x4c;
+            *(int *)((char *)rep + 0x24 + iVar6) = DAT_006660a0;
+            *(int *)((char *)rep + 0x28 + iVar6) = iVar13;
+            *(int *)((char *)rep + 0x2c + iVar6) = 0xfffffffe;
+            iVar7 = rand();
+            *(int *)((char *)rep + 0x30 + iVar6) = iVar7 % 5;
+            uVar5 = GetString(0x151);
+            *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
+            *(int *)((char *)rep + 0x38 + iVar6) = 0;
+            *(int *)((char *)rep + 0x3c + iVar6) = 0;
+            *(int *)((char *)rep + 0x40 + iVar6) = 0;
+            *(int *)((char *)rep + 0x44 + iVar6) = 0;
+            *(int *)((char *)rep + 0x48 + iVar6) = 0;
+            *(int *)((char *)rep + 0x4c + iVar6) = 0;
     LAB_0044855b:
             ysave = iVar4 + 0x2e;
             iVar4 = iVar4 + 0x18;
             iVar14 = iVar12 + 3;
+            iVar6 = iVar4;
+            if ((flags & 1) != 0) {
+              if (0x1b5 < ysave) {
+                if (iVar3 != iVar12) goto LAB_0044a60b;
+                DAT_006660a0 = DAT_006660a0 + 1;
+                iVar6 = ystart;
+                iVar3 = iVar14;
+              }
+              iVar4 = iVar14 * 0x4c;
+              *(int *)((char *)rep + 0x24 + iVar4) = DAT_006660a0;
+              *(int *)((char *)rep + 0x28 + iVar4) = iVar13;
+              *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
+              iVar7 = rand();
+              *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
+              uVar5 = GetString(0x155);
+              iVar14 = iVar14 + 1;
+              *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
+              *(int *)((char *)rep + 0x38 + iVar4) = 0;
+              *(int *)((char *)rep + 0x3c + iVar4) = 0;
+              *(int *)((char *)rep + 0x40 + iVar4) = 0;
+              *(int *)((char *)rep + 0x44 + iVar4) = 0;
+              *(int *)((char *)rep + 0x48 + iVar4) = 0;
+              *(int *)((char *)rep + 0x4c + iVar4) = 0;
+              piVar11 = rep + iVar14 * 0x13;
+              (rep + 1)[iVar14 * 0x13 + *piVar11] = 0x155;
+              *piVar11 = *piVar11 + 1;
+              iVar4 = iVar6 + 0x18;
+              ysave = iVar6 + 0x2e;
+            }
+            iVar6 = iVar4;
+            if ((flags & 2) != 0) {
+              if (0x1b5 < ysave) {
+                if (iVar3 != iVar12) goto LAB_0044a60b;
+                DAT_006660a0 = DAT_006660a0 + 1;
+                iVar6 = ystart;
+                iVar3 = iVar14;
+              }
+              iVar4 = iVar14 * 0x4c;
+              *(int *)((char *)rep + 0x24 + iVar4) = DAT_006660a0;
+              *(int *)((char *)rep + 0x28 + iVar4) = iVar13;
+              *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
+              iVar7 = rand();
+              *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
+              uVar5 = GetString(0x156);
+              iVar14 = iVar14 + 1;
+              *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
+              *(int *)((char *)rep + 0x38 + iVar4) = 0;
+              *(int *)((char *)rep + 0x3c + iVar4) = 0;
+              *(int *)((char *)rep + 0x40 + iVar4) = 0;
+              *(int *)((char *)rep + 0x44 + iVar4) = 0;
+              *(int *)((char *)rep + 0x48 + iVar4) = 0;
+              *(int *)((char *)rep + 0x4c + iVar4) = 0;
+              piVar11 = rep + iVar14 * 0x13;
+              (rep + 1)[iVar14 * 0x13 + *piVar11] = 0x156;
+              *piVar11 = *piVar11 + 1;
+              iVar4 = iVar6 + 0x18;
+              ysave = iVar6 + 0x2e;
+            }
+            iVar6 = iVar4;
+            if ((flags & 4) != 0) {
+              if (0x1b5 < ysave) {
+                if (iVar3 != iVar12) goto LAB_0044a60b;
+                DAT_006660a0 = DAT_006660a0 + 1;
+                iVar6 = ystart;
+                iVar3 = iVar14;
+              }
+              iVar4 = iVar14 * 0x4c;
+              *(int *)((char *)rep + 0x24 + iVar4) = DAT_006660a0;
+              *(int *)((char *)rep + 0x28 + iVar4) = iVar13;
+              *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
+              iVar7 = rand();
+              *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
+              uVar5 = GetString(0x157);
+              iVar14 = iVar14 + 1;
+              *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
+              *(int *)((char *)rep + 0x38 + iVar4) = 0;
+              *(int *)((char *)rep + 0x3c + iVar4) = 0;
+              *(int *)((char *)rep + 0x40 + iVar4) = 0;
+              *(int *)((char *)rep + 0x44 + iVar4) = 0;
+              *(int *)((char *)rep + 0x48 + iVar4) = 0;
+              *(int *)((char *)rep + 0x4c + iVar4) = 0;
+              piVar11 = rep + iVar14 * 0x13;
+              (rep + 1)[iVar14 * 0x13 + *piVar11] = 0x157;
+              *piVar11 = *piVar11 + 1;
+              iVar4 = iVar6 + 0x18;
+              ysave = iVar6 + 0x2e;
+            }
+            iVar6 = iVar4;
+            if ((flags & 8) != 0) {
+              if (0x1b5 < ysave) {
+                if (iVar3 != iVar12) goto LAB_0044a60b;
+                DAT_006660a0 = DAT_006660a0 + 1;
+                iVar6 = ystart;
+                iVar3 = iVar14;
+              }
+              iVar4 = iVar14 * 0x4c;
+              *(int *)((char *)rep + 0x24 + iVar4) = DAT_006660a0;
+              *(int *)((char *)rep + 0x28 + iVar4) = iVar13;
+              *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
+              iVar7 = rand();
+              *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
+              uVar5 = GetString(0x158);
+              iVar14 = iVar14 + 1;
+              *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
+              *(int *)((char *)rep + 0x38 + iVar4) = 0;
+              *(int *)((char *)rep + 0x3c + iVar4) = 0;
+              *(int *)((char *)rep + 0x40 + iVar4) = 0;
+              *(int *)((char *)rep + 0x44 + iVar4) = 0;
+              *(int *)((char *)rep + 0x48 + iVar4) = 0;
+              *(int *)((char *)rep + 0x4c + iVar4) = 0;
+              piVar11 = rep + iVar14 * 0x13;
+              (rep + 1)[iVar14 * 0x13 + *piVar11] = 0x158;
+              *piVar11 = *piVar11 + 1;
+              iVar4 = iVar6 + 0x18;
+              ysave = iVar6 + 0x2e;
+            }
             uVar9 = flags & 0x30;
             iVar6 = iVar4;
             if (uVar9 == 0x10) {
@@ -2672,7 +2803,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
               iVar14 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar14 % 5;
-              uVar5 = GetString(0x151);
+              uVar5 = GetString(0x159);
               iVar14 = iVar12 + 4;
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -2702,7 +2833,7 @@ LAB_00447d21:
                 *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
                 iVar14 = rand();
                 *(int *)((char *)rep + 0x30 + iVar4) = iVar14 % 5;
-                uVar5 = GetString(0x158);
+                uVar5 = GetString(0x15a);
                 iVar14 = iVar12 + 4;
                 *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
                 *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -2777,7 +2908,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
               iVar7 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar7 % 5;
-              uVar5 = GetString(0x15a);
+              uVar5 = GetString(0x15c);
               iVar7 = iVar14 + 1;
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -2801,7 +2932,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xfffffffd;
               iVar4 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
-              uVar5 = GetString(0x159);
+              uVar5 = GetString(0x15d);
               iVar14 = iVar14 + 2;
               iVar4 = ysave + 0x18;
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
@@ -2827,7 +2958,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
               iVar7 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
-              uVar5 = GetString(0x15c);
+              uVar5 = GetString(0x15e);
               iVar14 = iVar14 + 1;
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -2856,7 +2987,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
               iVar7 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
-              uVar5 = GetString(0x15d);
+              uVar5 = GetString(0x15f);
               iVar14 = iVar14 + 1;
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -2885,7 +3016,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
               iVar7 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
-              uVar5 = GetString(0x15e);
+              uVar5 = GetString(0x160);
               iVar14 = iVar14 + 1;
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -2914,7 +3045,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
               iVar7 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
-              uVar5 = GetString(0x15f);
+              uVar5 = GetString(0x161);
               iVar14 = iVar14 + 1;
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -2943,7 +3074,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
               iVar7 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
-              uVar5 = GetString(0x160);
+              uVar5 = GetString(0x162);
               iVar14 = iVar14 + 1;
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -2973,7 +3104,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
               iVar7 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
-              uVar5 = GetString(0x161);
+              uVar5 = GetString(0x163);
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
               *(int *)((char *)rep + 0x3c + iVar4) = 0;
@@ -3003,7 +3134,7 @@ LAB_00447d21:
                 *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
                 iVar7 = rand();
                 *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
-                uVar5 = GetString(0x162);
+                uVar5 = GetString(0x164);
                 *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
                 *(int *)((char *)rep + 0x38 + iVar4) = 0;
                 *(int *)((char *)rep + 0x3c + iVar4) = 0;
@@ -3056,7 +3187,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
               iVar7 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
-              uVar5 = GetString(0x164);
+              uVar5 = GetString(0x166);
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
               *(int *)((char *)rep + 0x3c + iVar4) = 0;
@@ -3086,7 +3217,7 @@ LAB_00447d21:
                 *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
                 iVar7 = rand();
                 *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
-                uVar5 = GetString(0x163);
+                uVar5 = GetString(0x167);
                 *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
                 *(int *)((char *)rep + 0x38 + iVar4) = 0;
                 *(int *)((char *)rep + 0x3c + iVar4) = 0;
@@ -3139,7 +3270,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
               iVar7 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
-              uVar5 = GetString(0x167);
+              uVar5 = GetString(0x169);
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
               *(int *)((char *)rep + 0x3c + iVar4) = 0;
@@ -3169,7 +3300,7 @@ LAB_00447d21:
                 *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
                 iVar7 = rand();
                 *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
-                uVar5 = GetString(0x166);
+                uVar5 = GetString(0x16a);
                 *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
                 *(int *)((char *)rep + 0x38 + iVar4) = 0;
                 *(int *)((char *)rep + 0x3c + iVar4) = 0;
@@ -3245,7 +3376,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
               iVar7 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
-              uVar5 = GetString(0x16a);
+              uVar5 = GetString(0x16c);
               iVar14 = iVar14 + 1;
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -3274,7 +3405,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
               iVar7 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
-              uVar5 = GetString(0x169);
+              uVar5 = GetString(0x16d);
               iVar14 = iVar14 + 1;
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -3303,7 +3434,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
               iVar7 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
-              uVar5 = GetString(0x16c);
+              uVar5 = GetString(0x16f);
               iVar14 = iVar14 + 1;
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -3332,7 +3463,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xffffffff;
               iVar7 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar7 % 5;
-              uVar5 = GetString(0x16d);
+              uVar5 = GetString(0x170);
               iVar14 = iVar14 + 1;
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -3360,7 +3491,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
               iVar7 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar7 % 5;
-              uVar5 = GetString(0x16f);
+              uVar5 = GetString(0x171);
               iVar7 = iVar14 + 1;
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -3384,7 +3515,7 @@ LAB_00447d21:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xfffffffd;
               iVar4 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
-              uVar5 = GetString(0x170);
+              uVar5 = GetString(0x172);
               iVar14 = iVar14 + 2;
               iVar4 = ysave + 0x18;
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
@@ -3716,6 +3847,232 @@ LAB_0044abd8:
         rep[iVar13 * 0x13] = rep[iVar13 * 0x13] + 1;
         xbase = xbase + 0x30;
         tmp8 = 0;
+        if ((flags & 0xf) != 0) {
+          uVar9 = rand();
+          uVar9 = uVar9 & 3;
+          if (uVar9 == 0) {
+            if (0x1b5 < iVar12 + 0x16) {
+              if (iVar3 != iVar14) goto LAB_0044d594;
+              DAT_006660a0 = DAT_006660a0 + 1;
+              iVar12 = ystart;
+              iVar3 = iVar13;
+            }
+            *(int *)((char *)rep + 0x24 + iVar6) = DAT_006660a0;
+            *(int *)((char *)rep + 0x28 + iVar6) = xbase;
+            *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
+            iVar4 = rand();
+            *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
+            uVar5 = GetString(0x17c);
+            *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
+            iVar13 = iVar14 + 2;
+            *(int *)((char *)rep + 0x38 + iVar6) = 0;
+            *(int *)((char *)rep + 0x3c + iVar6) = 0;
+            *(int *)((char *)rep + 0x40 + iVar6) = 0;
+            *(int *)((char *)rep + 0x44 + iVar6) = 0;
+            *(int *)((char *)rep + 0x48 + iVar6) = 0;
+            iVar6 = iVar13 * 0x4c;
+            *flatp = 0;
+            (rep + 1)[iVar13 * 0x13 + rep[iVar13 * 0x13]] = 0x17c;
+            rep[iVar13 * 0x13] = rep[iVar13 * 0x13] + 1;
+            iVar4 = iVar12 + 0x18;
+            if (0x1b5 < iVar12 + 0x2e) {
+              if (iVar3 != iVar14) goto LAB_0044d594;
+              DAT_006660a0 = DAT_006660a0 + 1;
+              iVar4 = ystart;
+              iVar3 = iVar13;
+            }
+            *(int *)((char *)rep + 0x24 + iVar6) = DAT_006660a0;
+            *(int *)((char *)rep + 0x28 + iVar6) = xbase;
+            *(int *)((char *)rep + 0x2c + iVar6) = 0xfffffffd;
+            iVar12 = rand();
+            *(int *)((char *)rep + 0x30 + iVar6) = iVar12 % 5;
+            uVar5 = GetString(0x17d);
+            *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
+            iVar13 = iVar14 + 3;
+            *(int *)((char *)rep + 0x38 + iVar6) = 0;
+            *(int *)((char *)rep + 0x3c + iVar6) = 0;
+            *(int *)((char *)rep + 0x40 + iVar6) = 0;
+            *(int *)((char *)rep + 0x44 + iVar6) = 0;
+            *(int *)((char *)rep + 0x48 + iVar6) = 0;
+            iVar6 = iVar13 * 0x4c;
+            *(int *)((char *)rep + 0x4c + iVar6) = 0;
+            flatp = (int *)(((char *)rep + 0x4c) + iVar6);
+            (rep + 1)[iVar13 * 0x13 + rep[iVar13 * 0x13]] = 0x17d;
+            iVar12 = iVar4;
+          } else if (uVar9 == 1) {
+            if (0x1b5 < iVar12 + 0x16) {
+              if (iVar3 != iVar14) goto LAB_0044d594;
+              DAT_006660a0 = DAT_006660a0 + 1;
+              iVar12 = ystart;
+              iVar3 = iVar13;
+            }
+            *(int *)((char *)rep + 0x24 + iVar6) = DAT_006660a0;
+            *(int *)((char *)rep + 0x28 + iVar6) = xbase;
+            *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
+            iVar4 = rand();
+            *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
+            uVar5 = GetString(0x187);
+            *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
+            iVar13 = iVar14 + 2;
+            *(int *)((char *)rep + 0x38 + iVar6) = 0;
+            *(int *)((char *)rep + 0x3c + iVar6) = 0;
+            *(int *)((char *)rep + 0x40 + iVar6) = 0;
+            *(int *)((char *)rep + 0x44 + iVar6) = 0;
+            *(int *)((char *)rep + 0x48 + iVar6) = 0;
+            iVar6 = iVar13 * 0x4c;
+            *flatp = 0;
+            (rep + 1)[iVar13 * 0x13 + rep[iVar13 * 0x13]] = 0x187;
+            rep[iVar13 * 0x13] = rep[iVar13 * 0x13] + 1;
+            iVar4 = iVar12 + 0x18;
+            if (0x1b5 < iVar12 + 0x2e) {
+              if (iVar3 != iVar14) goto LAB_0044d594;
+              DAT_006660a0 = DAT_006660a0 + 1;
+              iVar4 = ystart;
+              iVar3 = iVar13;
+            }
+            *(int *)((char *)rep + 0x24 + iVar6) = DAT_006660a0;
+            *(int *)((char *)rep + 0x28 + iVar6) = xbase;
+            *(int *)((char *)rep + 0x2c + iVar6) = 0xfffffffd;
+            iVar12 = rand();
+            *(int *)((char *)rep + 0x30 + iVar6) = iVar12 % 5;
+            uVar5 = GetString(0x188);
+            *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
+            iVar13 = iVar14 + 3;
+            *(int *)((char *)rep + 0x38 + iVar6) = 0;
+            *(int *)((char *)rep + 0x3c + iVar6) = 0;
+            *(int *)((char *)rep + 0x40 + iVar6) = 0;
+            *(int *)((char *)rep + 0x44 + iVar6) = 0;
+            *(int *)((char *)rep + 0x48 + iVar6) = 0;
+            iVar6 = iVar13 * 0x4c;
+            *(int *)((char *)rep + 0x4c + iVar6) = 0;
+            flatp = (int *)(((char *)rep + 0x4c) + iVar6);
+            (rep + 1)[iVar13 * 0x13 + rep[iVar13 * 0x13]] = 0x188;
+            iVar12 = iVar4;
+          } else if (uVar9 == 2) {
+            if (0x1b5 < iVar12 + 0x16) {
+              if (iVar3 != iVar14) goto LAB_0044d594;
+              DAT_006660a0 = DAT_006660a0 + 1;
+              iVar12 = ystart;
+              iVar3 = iVar13;
+            }
+            *(int *)((char *)rep + 0x24 + iVar6) = DAT_006660a0;
+            *(int *)((char *)rep + 0x28 + iVar6) = xbase;
+            *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
+            iVar4 = rand();
+            *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
+            uVar5 = GetString(0x190);
+            *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
+            iVar13 = iVar14 + 2;
+            *(int *)((char *)rep + 0x38 + iVar6) = 0;
+            *(int *)((char *)rep + 0x3c + iVar6) = 0;
+            *(int *)((char *)rep + 0x40 + iVar6) = 0;
+            *(int *)((char *)rep + 0x44 + iVar6) = 0;
+            *(int *)((char *)rep + 0x48 + iVar6) = 0;
+            iVar6 = iVar13 * 0x4c;
+            *flatp = 0;
+            (rep + 1)[iVar13 * 0x13 + rep[iVar13 * 0x13]] = 0x190;
+            rep[iVar13 * 0x13] = rep[iVar13 * 0x13] + 1;
+            iVar4 = iVar12 + 0x18;
+            if (0x1b5 < iVar12 + 0x2e) {
+              if (iVar3 != iVar14) goto LAB_0044d594;
+              DAT_006660a0 = DAT_006660a0 + 1;
+              iVar4 = ystart;
+              iVar3 = iVar13;
+            }
+            *(int *)((char *)rep + 0x24 + iVar6) = DAT_006660a0;
+            *(int *)((char *)rep + 0x28 + iVar6) = xbase;
+            *(int *)((char *)rep + 0x2c + iVar6) = 0xfffffffd;
+            iVar12 = rand();
+            *(int *)((char *)rep + 0x30 + iVar6) = iVar12 % 5;
+            uVar5 = GetString(0x191);
+            *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
+            iVar13 = iVar14 + 3;
+            *(int *)((char *)rep + 0x38 + iVar6) = 0;
+            *(int *)((char *)rep + 0x3c + iVar6) = 0;
+            *(int *)((char *)rep + 0x40 + iVar6) = 0;
+            *(int *)((char *)rep + 0x44 + iVar6) = 0;
+            *(int *)((char *)rep + 0x48 + iVar6) = 0;
+            iVar6 = iVar13 * 0x4c;
+            *(int *)((char *)rep + 0x4c + iVar6) = 0;
+            (rep + 1)[iVar13 * 0x13 + rep[iVar13 * 0x13]] = 0x191;
+            rep[iVar13 * 0x13] = rep[iVar13 * 0x13] + 1;
+            iVar4 = iVar4 + 0x18;
+            if (0x1b5 < iVar4 + 0x2e) {
+              if (iVar3 != iVar14) goto LAB_0044d594;
+              DAT_006660a0 = DAT_006660a0 + 1;
+              iVar4 = ystart;
+              iVar3 = iVar13;
+            }
+            *(int *)((char *)rep + 0x24 + iVar6) = DAT_006660a0;
+            *(int *)((char *)rep + 0x28 + iVar6) = xbase;
+            *(int *)((char *)rep + 0x2c + iVar6) = 0xfffffffd;
+            iVar12 = rand();
+            *(int *)((char *)rep + 0x30 + iVar6) = iVar12 % 5;
+            uVar5 = GetString(0x192);
+            *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
+            iVar13 = iVar14 + 4;
+            *(int *)((char *)rep + 0x38 + iVar6) = 0;
+            *(int *)((char *)rep + 0x3c + iVar6) = 0;
+            *(int *)((char *)rep + 0x40 + iVar6) = 0;
+            *(int *)((char *)rep + 0x44 + iVar6) = 0;
+            *(int *)((char *)rep + 0x48 + iVar6) = 0;
+            iVar6 = iVar13 * 0x4c;
+            *(int *)((char *)rep + 0x4c + iVar6) = 0;
+            flatp = (int *)(((char *)rep + 0x4c) + iVar6);
+            (rep + 1)[iVar13 * 0x13 + rep[iVar13 * 0x13]] = 0x192;
+            iVar12 = iVar4;
+          } else {
+            if (0x1b5 < iVar12 + 0x16) {
+              if (iVar3 != iVar14) goto LAB_0044d594;
+              DAT_006660a0 = DAT_006660a0 + 1;
+              iVar12 = ystart;
+              iVar3 = iVar13;
+            }
+            *(int *)((char *)rep + 0x24 + iVar6) = DAT_006660a0;
+            *(int *)((char *)rep + 0x28 + iVar6) = xbase;
+            *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
+            iVar4 = rand();
+            *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
+            uVar5 = GetString(0x19a);
+            *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
+            iVar13 = iVar14 + 2;
+            *(int *)((char *)rep + 0x38 + iVar6) = 0;
+            *(int *)((char *)rep + 0x3c + iVar6) = 0;
+            *(int *)((char *)rep + 0x40 + iVar6) = 0;
+            *(int *)((char *)rep + 0x44 + iVar6) = 0;
+            *(int *)((char *)rep + 0x48 + iVar6) = 0;
+            iVar6 = iVar13 * 0x4c;
+            *flatp = 0;
+            (rep + 1)[iVar13 * 0x13 + rep[iVar13 * 0x13]] = 0x19a;
+            rep[iVar13 * 0x13] = rep[iVar13 * 0x13] + 1;
+            iVar4 = iVar12 + 0x18;
+            if (0x1b5 < iVar12 + 0x2e) {
+              if (iVar3 != iVar14) goto LAB_0044d594;
+              DAT_006660a0 = DAT_006660a0 + 1;
+              iVar4 = ystart;
+              iVar3 = iVar13;
+            }
+            *(int *)((char *)rep + 0x24 + iVar6) = DAT_006660a0;
+            *(int *)((char *)rep + 0x28 + iVar6) = xbase;
+            *(int *)((char *)rep + 0x2c + iVar6) = 0xfffffffd;
+            iVar12 = rand();
+            *(int *)((char *)rep + 0x30 + iVar6) = iVar12 % 5;
+            uVar5 = GetString(0x19b);
+            *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
+            iVar13 = iVar14 + 3;
+            *(int *)((char *)rep + 0x38 + iVar6) = 0;
+            *(int *)((char *)rep + 0x3c + iVar6) = 0;
+            *(int *)((char *)rep + 0x40 + iVar6) = 0;
+            *(int *)((char *)rep + 0x44 + iVar6) = 0;
+            *(int *)((char *)rep + 0x48 + iVar6) = 0;
+            iVar6 = iVar13 * 0x4c;
+            *(int *)((char *)rep + 0x4c + iVar6) = 0;
+            flatp = (int *)(((char *)rep + 0x4c) + iVar6);
+            (rep + 1)[iVar13 * 0x13 + rep[iVar13 * 0x13]] = 0x19b;
+            iVar12 = iVar4;
+          }
+          rep[iVar13 * 0x13] = rep[iVar13 * 0x13] + 1;
+        }
         if ((flags & 0x70) == 0) {
     LAB_0044bed0:
           if ((flags & 0x7000) != 0) {
@@ -3732,7 +4089,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
               iVar4 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
-              uVar5 = GetString(0x1b8);
+              uVar5 = GetString(0x1c2);
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               iVar7 = iVar13 + 1;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -3756,7 +4113,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xfffffffd;
               iVar12 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar12 % 5;
-              uVar5 = GetString(0x1b9);
+              uVar5 = GetString(0x1c3);
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               iVar8 = iVar13 + 2;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -3780,7 +4137,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar12) = 0xfffffffd;
               iVar4 = rand();
               *(int *)((char *)rep + 0x30 + iVar12) = iVar4 % 5;
-              uVar5 = GetString(0x1ae);
+              uVar5 = GetString(0x1c4);
               *(int *)((char *)rep + 0x34 + iVar12) = (int)uVar5;
               iVar13 = iVar13 + 3;
               *(int *)((char *)rep + 0x38 + iVar12) = 0;
@@ -3806,7 +4163,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
               iVar4 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
-              uVar5 = GetString(0x1af);
+              uVar5 = GetString(0x1cc);
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               iVar8 = iVar13 + 1;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -3830,7 +4187,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xfffffffd;
               iVar12 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar12 % 5;
-              uVar5 = GetString(0x1b0);
+              uVar5 = GetString(0x1cd);
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               iVar13 = iVar13 + 2;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -3862,7 +4219,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
               iVar4 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
-              uVar5 = GetString(0x1a4);
+              uVar5 = GetString(0x1d6);
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               iVar7 = iVar13 + 1;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -3886,7 +4243,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xfffffffd;
               iVar12 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar12 % 5;
-              uVar5 = GetString(0x1a5);
+              uVar5 = GetString(0x1d7);
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               iVar8 = iVar13 + 2;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -3910,7 +4267,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar12) = 0xfffffffd;
               iVar4 = rand();
               *(int *)((char *)rep + 0x30 + iVar12) = iVar4 % 5;
-              uVar5 = GetString(0x1a6);
+              uVar5 = GetString(0x1d8);
               *(int *)((char *)rep + 0x34 + iVar12) = (int)uVar5;
               iVar13 = iVar13 + 3;
               *(int *)((char *)rep + 0x38 + iVar12) = 0;
@@ -3936,7 +4293,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
               iVar4 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
-              uVar5 = GetString(0x1cc);
+              uVar5 = GetString(0x1e0);
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               iVar8 = iVar13 + 1;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -3960,7 +4317,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xfffffffd;
               iVar12 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar12 % 5;
-              uVar5 = GetString(0x1cd);
+              uVar5 = GetString(0x1e1);
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               iVar13 = iVar13 + 2;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -3994,7 +4351,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
               iVar4 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
-              uVar5 = GetString(0x1c2);
+              uVar5 = GetString(0x1ea);
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               iVar7 = iVar13 + 1;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -4018,7 +4375,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xfffffffd;
               iVar12 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar12 % 5;
-              uVar5 = GetString(0x1c3);
+              uVar5 = GetString(0x1eb);
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               iVar8 = iVar13 + 2;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -4042,7 +4399,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar12) = 0xfffffffd;
               iVar4 = rand();
               *(int *)((char *)rep + 0x30 + iVar12) = iVar4 % 5;
-              uVar5 = GetString(0x1c4);
+              uVar5 = GetString(0x1ec);
               *(int *)((char *)rep + 0x34 + iVar12) = (int)uVar5;
               iVar13 = iVar13 + 3;
               *(int *)((char *)rep + 0x38 + iVar12) = 0;
@@ -4067,7 +4424,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
               iVar4 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
-              uVar5 = GetString(0x1e0);
+              uVar5 = GetString(0x1f4);
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               iVar8 = iVar13 + 1;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -4091,7 +4448,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xfffffffd;
               iVar12 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar12 % 5;
-              uVar5 = GetString(0x1e1);
+              uVar5 = GetString(0x1f5);
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               iVar13 = iVar13 + 2;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -4117,7 +4474,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
               iVar4 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
-              uVar5 = GetString(0x1d6);
+              uVar5 = GetString(0x1fe);
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               iVar8 = iVar13 + 1;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -4141,7 +4498,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xfffffffd;
               iVar12 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar12 % 5;
-              uVar5 = GetString(0x1d7);
+              uVar5 = GetString(0x1ff);
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               iVar13 = iVar13 + 2;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -4173,7 +4530,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
               iVar4 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
-              uVar5 = GetString(0x1d8);
+              uVar5 = GetString(0x212);
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               iVar8 = iVar13 + 1;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -4197,7 +4554,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar7) = 0xfffffffd;
               iVar12 = rand();
               *(int *)((char *)rep + 0x30 + iVar7) = iVar12 % 5;
-              uVar5 = GetString(0x1fe);
+              uVar5 = GetString(0x213);
               *(int *)((char *)rep + 0x34 + iVar7) = (int)uVar5;
               iVar13 = iVar13 + 2;
               *(int *)((char *)rep + 0x38 + iVar7) = 0;
@@ -4223,7 +4580,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
               iVar12 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar12 % 5;
-              uVar5 = GetString(0x1ff);
+              uVar5 = GetString(0x208);
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               iVar13 = iVar13 + 1;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -4255,7 +4612,7 @@ LAB_0044abd8:
             *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
             iVar4 = rand();
             *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
-            uVar5 = GetString(0x1f4);
+            uVar5 = GetString(0x21c);
             iVar4 = iVar13 + 1;
             *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
             *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -4277,7 +4634,7 @@ LAB_0044abd8:
             *(int *)((char *)rep + 0x2c + iVar4) = 0xfffffffd;
             iVar3 = rand();
             *(int *)((char *)rep + 0x30 + iVar4) = iVar3 % 5;
-            uVar5 = GetString(0x1f5);
+            uVar5 = GetString(0x21d);
             iVar3 = iVar13 + 2;
             *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
             *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -4302,7 +4659,7 @@ LAB_0044abd8:
           *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
           iVar4 = rand();
           *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
-          uVar5 = GetString(0x1ea);
+          uVar5 = GetString(0x226);
           iVar4 = iVar13 + 1;
           *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
           *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -4324,7 +4681,7 @@ LAB_0044abd8:
             *(int *)((char *)rep + 0x2c + iVar4) = 0xfffffffd;
             iVar3 = rand();
             *(int *)((char *)rep + 0x30 + iVar4) = iVar3 % 5;
-            uVar5 = GetString(0x1eb);
+            uVar5 = GetString(0x227);
             iVar3 = iVar13 + 2;
             *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
             *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -4514,7 +4871,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
               iVar4 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
-              uVar5 = GetString(0x208);
+              uVar5 = GetString(0x1ae);
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               iVar13 = iVar14 + 2;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -4538,7 +4895,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xfffffffd;
               iVar12 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar12 % 5;
-              uVar5 = GetString(0x212);
+              uVar5 = GetString(0x1af);
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               iVar13 = iVar14 + 3;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -4562,7 +4919,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar12) = 0xfffffffd;
               iVar4 = rand();
               *(int *)((char *)rep + 0x30 + iVar12) = iVar4 % 5;
-              uVar5 = GetString(0x213);
+              uVar5 = GetString(0x1b0);
               *(int *)((char *)rep + 0x34 + iVar12) = (int)uVar5;
               iVar13 = iVar14 + 4;
               *(int *)((char *)rep + 0x38 + iVar12) = 0;
@@ -4588,7 +4945,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
               iVar4 = rand();
               *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
-              uVar5 = GetString(0x21c);
+              uVar5 = GetString(0x1b8);
               *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
               iVar13 = iVar14 + 2;
               *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -4612,7 +4969,7 @@ LAB_0044abd8:
               *(int *)((char *)rep + 0x2c + iVar4) = 0xfffffffd;
               iVar12 = rand();
               *(int *)((char *)rep + 0x30 + iVar4) = iVar12 % 5;
-              uVar5 = GetString(0x226);
+              uVar5 = GetString(0x1b9);
               *(int *)((char *)rep + 0x34 + iVar4) = (int)uVar5;
               iVar13 = iVar14 + 3;
               *(int *)((char *)rep + 0x38 + iVar4) = 0;
@@ -4638,7 +4995,7 @@ LAB_0044abd8:
             *(int *)((char *)rep + 0x2c + iVar6) = 0xffffffff;
             iVar4 = rand();
             *(int *)((char *)rep + 0x30 + iVar6) = iVar4 % 5;
-            uVar5 = GetString(0x21d);
+            uVar5 = GetString(0x1a4);
             *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
             iVar13 = iVar14 + 2;
             *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -4662,7 +5019,7 @@ LAB_0044abd8:
             *(int *)((char *)rep + 0x2c + iVar6) = 0xfffffffd;
             iVar12 = rand();
             *(int *)((char *)rep + 0x30 + iVar6) = iVar12 % 5;
-            uVar5 = GetString(0x227);
+            uVar5 = GetString(0x1a5);
             *(int *)((char *)rep + 0x34 + iVar6) = (int)uVar5;
             iVar13 = iVar14 + 3;
             *(int *)((char *)rep + 0x38 + iVar6) = 0;
@@ -4686,7 +5043,7 @@ LAB_0044abd8:
             *(int *)((char *)rep + 0x2c + iVar12) = 0xfffffffd;
             iVar4 = rand();
             *(int *)((char *)rep + 0x30 + iVar12) = iVar4 % 5;
-            uVar5 = GetString(0x228);
+            uVar5 = GetString(0x1a6);
             *(int *)((char *)rep + 0x34 + iVar12) = (int)uVar5;
             iVar13 = iVar14 + 4;
             *(int *)((char *)rep + 0x38 + iVar12) = 0;
