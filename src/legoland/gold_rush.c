@@ -7,25 +7,8 @@
 #include "llidb.h"
 #include "map_object.h"
 #include "render3d.h"
+#include "ride_interfaces.h"
 #include "ride_queue.h"
-
-typedef void (*GoldVtblFn)(void);
-
-struct GoldRushModule {
-    unsigned char pad_0[0x8c];
-    GoldVtblFn field_8c;
-    unsigned char pad_90[8];
-    GoldVtblFn field_98;
-    GoldVtblFn field_9c;
-    unsigned char pad_a0[4];
-    GoldVtblFn field_a4;
-    GoldVtblFn field_a8;
-    GoldVtblFn field_ac;
-    GoldVtblFn field_b0;
-    unsigned char pad_b4[4];
-    GoldVtblFn field_b8;
-    GoldVtblFn field_bc;
-};
 
 struct GoldArray {
     unsigned char pad_0[0x14];
@@ -245,17 +228,17 @@ LEGO_EXPORT int LoadGoldWash(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004078f0
-void FUN_004078f0(const char **str, struct GoldRushModule *module) {
+void FUN_004078f0(struct ClassNode *str, struct CallbackTable *module) {
     // STRING: LEGOLAND 0x004b4670
-    if (_stricmp("GOLD RUSH", *str) == 0) {
-        module->field_a4 = FUN_00406a10;
-        module->field_ac = FUN_00406ab0;
-        module->field_8c = FUN_004075b0;
-        module->field_a8 = FUN_004072b0;
-        module->field_b0 = FUN_00406b10;
-        module->field_98 = FUN_004075f0;
-        module->field_9c = FUN_004076e0;
-        module->field_b8 = LoadGoldWash;
-        module->field_bc = SaveGoldWash;
+    if (_stricmp("GOLD RUSH", str->name) == 0) {
+        module->cb_a4 = FUN_00406a10;
+        module->cb_ac = FUN_00406ab0;
+        module->cb_8c = FUN_004075b0;
+        module->cb_a8 = FUN_004072b0;
+        module->cb_b0 = FUN_00406b10;
+        module->cb_98 = FUN_004075f0;
+        module->cb_9c = FUN_004076e0;
+        module->cb_b8 = LoadGoldWash;
+        module->cb_bc = SaveGoldWash;
     }
 }

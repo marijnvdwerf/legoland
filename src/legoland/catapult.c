@@ -6,26 +6,8 @@
 #include "llidb.h"
 #include "map_object.h"
 #include "render3d.h"
+#include "ride_interfaces.h"
 #include "sound_music.h"
-
-typedef void (*CatapultVtblFn)(void);
-
-struct CatapultInterface {
-    unsigned char pad_0[0x8c];
-    CatapultVtblFn field_8c;
-    CatapultVtblFn field_90;
-    CatapultVtblFn field_94;
-    CatapultVtblFn field_98;
-    CatapultVtblFn field_9c;
-    CatapultVtblFn field_a0;
-    CatapultVtblFn field_a4;
-    CatapultVtblFn field_a8;
-    CatapultVtblFn field_ac;
-    CatapultVtblFn field_b0;
-    CatapultVtblFn pad_b4;
-    CatapultVtblFn field_b8;
-    CatapultVtblFn field_bc;
-};
 
 struct CatapultNode {
     unsigned int field_0;
@@ -238,18 +220,18 @@ LEGO_EXPORT int Catapult_Save(void) {
 LEGO_EXPORT void Catapult_Load(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00403bb0
-void FUN_00403bb0(const char **name, struct CatapultInterface *ci) {
+void FUN_00403bb0(struct ClassNode *name, struct CallbackTable *ci) {
     // STRING: LEGOLAND 0x004b412c
-    if (_stricmp("CATAPULT", *name) == 0) {
-        ci->field_a4 = (CatapultVtblFn)FUN_004031e0;
-        ci->field_ac = (CatapultVtblFn)FUN_00403250;
-        ci->field_8c = (CatapultVtblFn)FUN_00403930;
-        ci->field_a8 = FUN_00403820;
-        ci->field_b0 = FUN_00403270;
-        ci->field_9c = FUN_004039a0;
-        ci->field_98 = FUN_00403970;
-        ci->field_a0 = (CatapultVtblFn)FUN_004039e0;
-        ci->field_bc = Catapult_Save;
-        ci->field_b8 = Catapult_Load;
+    if (_stricmp("CATAPULT", name->name) == 0) {
+        ci->cb_a4 = FUN_004031e0;
+        ci->cb_ac = FUN_00403250;
+        ci->cb_8c = FUN_00403930;
+        ci->cb_a8 = FUN_00403820;
+        ci->cb_b0 = FUN_00403270;
+        ci->cb_9c = FUN_004039a0;
+        ci->cb_98 = FUN_00403970;
+        ci->cb_a0 = FUN_004039e0;
+        ci->cb_bc = Catapult_Save;
+        ci->cb_b8 = Catapult_Load;
     }
 }

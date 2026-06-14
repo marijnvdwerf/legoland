@@ -8,27 +8,10 @@
 #include "llidb.h"
 #include "man3d.h"
 #include "map_object.h"
+#include "ride_interfaces.h"
 #include "ride_queue.h"
 #include "sound_music.h"
 #include "sound_sfx.h"
-
-typedef void (*CopterVtblFn)(void);
-
-struct CopterInterface {
-    unsigned char pad_0[0x8c];
-    CopterVtblFn field_8c;
-    unsigned char pad_90[8];
-    CopterVtblFn field_98;
-    CopterVtblFn field_9c;
-    CopterVtblFn field_a0;
-    CopterVtblFn field_a4;
-    CopterVtblFn field_a8;
-    CopterVtblFn field_ac;
-    CopterVtblFn field_b0;
-    unsigned char pad_b4[4];
-    CopterVtblFn field_b8;
-    CopterVtblFn field_bc;
-};
 
 struct CopterNode {
     unsigned short field_0;
@@ -283,18 +266,18 @@ LEGO_EXPORT int Copters_Save(void) {
 LEGO_EXPORT void Copters_Load(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00405110
-void FUN_00405110(const char **name, struct CopterInterface *interfaces) {
+void FUN_00405110(struct ClassNode *name, struct CallbackTable *interfaces) {
     // STRING: LEGOLAND 0x004b43e4
-    if (_stricmp("COPTERS", *name) == 0) {
-        interfaces->field_a4 = FUN_00403d90;
-        interfaces->field_8c = FUN_00404450;
-        interfaces->field_98 = FUN_00404600;
-        interfaces->field_9c = FUN_00404580;
-        interfaces->field_a8 = FUN_00404be0;
-        interfaces->field_a0 = FUN_00404490;
-        interfaces->field_b0 = FUN_00404290;
-        interfaces->field_ac = FUN_00404040;
-        interfaces->field_bc = Copters_Save;
-        interfaces->field_b8 = Copters_Load;
+    if (_stricmp("COPTERS", name->name) == 0) {
+        interfaces->cb_a4 = FUN_00403d90;
+        interfaces->cb_8c = FUN_00404450;
+        interfaces->cb_98 = FUN_00404600;
+        interfaces->cb_9c = FUN_00404580;
+        interfaces->cb_a8 = FUN_00404be0;
+        interfaces->cb_a0 = FUN_00404490;
+        interfaces->cb_b0 = FUN_00404290;
+        interfaces->cb_ac = FUN_00404040;
+        interfaces->cb_bc = Copters_Save;
+        interfaces->cb_b8 = Copters_Load;
     }
 }

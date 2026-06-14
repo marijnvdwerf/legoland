@@ -4,22 +4,7 @@
 #include "gamemap.h"
 #include "globals.h"
 #include "map_object.h"
-
-typedef void (*FortVtblFn)(void);
-
-struct FortInterface {
-    unsigned char pad_0[0x8c];
-    FortVtblFn field_8c;
-    FortVtblFn field_90;
-    FortVtblFn field_94;
-    FortVtblFn field_98;
-    FortVtblFn field_9c;
-    FortVtblFn field_a0;
-    FortVtblFn field_a4;
-    FortVtblFn field_a8;
-    FortVtblFn field_ac;
-    FortVtblFn field_b0;
-};
+#include "ride_interfaces.h"
 
 #include "image_sprite.h"
 
@@ -60,16 +45,16 @@ unsigned int FUN_00406860(unsigned int param1, unsigned int param2) {
 void FUN_00406880(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004068b0
-void FUN_004068b0(const char **name, struct FortInterface *ci) {
+void FUN_004068b0(struct ClassNode *name, struct CallbackTable *ci) {
     // STRING: LEGOLAND 0x004b45a0
-    if (_stricmp("FORT", *name) != 0) {
+    if (_stricmp("FORT", name->name) != 0) {
         return;
     }
-    ci->field_a4 = FUN_00406240;
-    ci->field_ac = FUN_004062a0;
-    ci->field_8c = FUN_00406820;
-    ci->field_a8 = FUN_00406660;
-    ci->field_b0 = FUN_004062c0;
-    ci->field_9c = FUN_00406880;
-    ci->field_98 = (FortVtblFn)FUN_00406860;
+    ci->cb_a4 = FUN_00406240;
+    ci->cb_ac = FUN_004062a0;
+    ci->cb_8c = FUN_00406820;
+    ci->cb_a8 = FUN_00406660;
+    ci->cb_b0 = FUN_004062c0;
+    ci->cb_9c = FUN_00406880;
+    ci->cb_98 = FUN_00406860;
 }
