@@ -11,6 +11,7 @@
 #include "map_object.h"
 #include "objclass.h"
 #include "render3d.h"
+#include "tilemap.h"
 
 // FUNCTION: LEGOLAND 0x00432ac0
 void FUN_00432ac0(void) {
@@ -1002,7 +1003,28 @@ void FUN_00434f90(unsigned int param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00435150
-void FUN_00435150(void) { STUB(); }
+void FUN_00435150(int param_1, unsigned int param_2, unsigned int param_3) {
+    *(struct Footprint *)EditCursor.field_1414 = *(struct Footprint *)DAT_00629c40;
+    EditCursor.field_1830 = 0;
+    DAT_00629c50 = DAT_004b7278;
+    DAT_004b7288 = DAT_004b7260;
+    DAT_004b7260[4] = 0;
+    ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
+    FUN_0045f460(&EditCursor);
+    PathCursor.field_1408 = EditCursor.field_1408;
+    PathCursor.field_1414[0] = EditCursor.field_1414[2] + 1;
+    PathCursor.field_1404 = EditCursor.field_1404;
+    PathCursor.field_1414[1] = EditCursor.field_1414[1];
+    PathCursor.field_1414[3] = EditCursor.field_1414[3];
+    PathCursor.field_1414[4] = 0;
+    PathCursor.field_1828 = 0x1008;
+    PathCursor.field_1830 = 0;
+    PathCursor.field_1414[2] = PathCursor.field_1414[0];
+    FUN_0045f460(&PathCursor);
+    EditCursor.field_1830 = (unsigned int)&PathCursor;
+    PathCursor.field_1830 = 0;
+    ValidateCursor(&EditCursor, *(unsigned int *)(param_1 + 0xc));
+}
 
 // FUNCTION: LEGOLAND 0x00435230
 void FUN_00435230(unsigned int param_1, unsigned int param_2) {
