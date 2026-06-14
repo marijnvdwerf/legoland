@@ -7,9 +7,8 @@
 #include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "ride_interfaces.h"
 #include "spinning_barrels.h"
-
-typedef void (*BarrelVtblFn)(void);
 
 struct BarrelSource {
     unsigned short field_0;
@@ -24,22 +23,9 @@ struct BarrelCarNode {
     /* 0x64 */ struct BarrelCarNode *next;
 };
 
-struct BarrelRide {
+struct BarrelRoot {
     /* 0x00 */ unsigned char pad_0[0xc];
     /* 0x0c */ struct BarrelCarNode *car;
-    /* 0x10 */ unsigned char pad_10[0x7c];
-    /* 0x8c */ BarrelVtblFn var_8c;
-    unsigned char pad_1[8];
-    BarrelVtblFn var_98;
-    BarrelVtblFn var_9c;
-    BarrelVtblFn var_a0;
-    BarrelVtblFn var_a4;
-    BarrelVtblFn var_a8;
-    BarrelVtblFn var_ac;
-    BarrelVtblFn var_b0;
-    unsigned char pad_2[4];
-    BarrelVtblFn var_b8;
-    BarrelVtblFn var_bc;
 };
 
 #include "image_sprite.h"
@@ -113,7 +99,7 @@ void FUN_0043c4f0(void) { STUB(); }
 void FUN_0043c540(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043c570
-unsigned int *FUN_0043c570(struct BarrelRide *ride, unsigned short param2) {
+unsigned int *FUN_0043c570(struct BarrelRoot *ride, unsigned short param2) {
     struct BarrelCarNode *target = ride->car;
 
     DAT_0062fdb0 = (unsigned int)target->next;
@@ -250,19 +236,19 @@ LEGO_EXPORT int LoadSBarrel(struct BarrelLoadArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0043c760
-void FUN_0043c760(const char **str, struct BarrelRide *ride) {
+void FUN_0043c760(struct ClassNode *str, struct CallbackTable *ride) {
     // STRING: LEGOLAND 0x004b7978
-    if (_stricmp("SPINNING BARRELS RIDE", *str) == 0) {
-        ride->var_a4 = FUN_0043c340;
-        ride->var_8c = FUN_0043c490;
-        ride->var_a8 = FUN_0043c950;
-        ride->var_b0 = FUN_0043be70;
-        ride->var_9c = FUN_0043c4f0;
-        ride->var_98 = FUN_0043c540;
-        ride->var_ac = FUN_0043c5b0;
-        ride->var_a0 = (BarrelVtblFn)FUN_0043c570;
-        ride->var_bc = (BarrelVtblFn)SaveSBarrel;
-        ride->var_b8 = LoadSBarrel;
+    if (_stricmp("SPINNING BARRELS RIDE", str->name) == 0) {
+        ride->cb_a4 = FUN_0043c340;
+        ride->cb_8c = FUN_0043c490;
+        ride->cb_a8 = FUN_0043c950;
+        ride->cb_b0 = FUN_0043be70;
+        ride->cb_9c = FUN_0043c4f0;
+        ride->cb_98 = FUN_0043c540;
+        ride->cb_ac = FUN_0043c5b0;
+        ride->cb_a0 = FUN_0043c570;
+        ride->cb_bc = SaveSBarrel;
+        ride->cb_b8 = LoadSBarrel;
     }
 }
 
