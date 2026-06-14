@@ -133,7 +133,31 @@ void FUN_00499620(void *order) {
 }
 
 // FUNCTION: LEGOLAND 0x004996a0
-int FUN_004996a0(void *order) { STUB(); }
+int FUN_004996a0(struct WorkOrder *order) {
+    struct Rect *rect;
+    struct MapElement *row;
+    struct MapElement *cell;
+    int x;
+    int y;
+    int maxy;
+
+    rect = (struct Rect *)order->var_10;
+    maxy = rect->maxy;
+    x = order->var_24 + order->var_8 + rect->minx + maxy;
+    y = order->var_c - order->var_28 + maxy;
+
+    if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+        row = GameMap[y];
+        cell = (struct MapElement *)((char *)row + x * 20);
+        if (row != 0) {
+            if ((cell->flags & 0x88) == 0) {
+                return 1;
+            }
+            return cell->field_0 == (unsigned int)DAT_007fd624;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00499720
 void FUN_00499720(int *order) {
