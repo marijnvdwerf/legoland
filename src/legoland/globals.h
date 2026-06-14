@@ -3107,7 +3107,7 @@ extern unsigned int DAT_00832974;
 // 0x00832978
 extern unsigned int DAT_00832978;
 // 0x0083297c
-extern unsigned int DAT_0083297c;
+extern int DAT_0083297c;
 // 0x00832980
 extern unsigned int DAT_00832980;
 // 0x00832984
@@ -3123,7 +3123,7 @@ extern char DAT_00832998[256];
 // 0x00832a98
 extern char DAT_00832a98[256];
 // 0x00832b9c
-extern unsigned int DAT_00832b9c;
+extern int DAT_00832b9c;
 // 0x00832ba0
 extern unsigned int DAT_00832ba0;
 extern unsigned int DAT_00832bac;

@@ -6,6 +6,7 @@
 #include "bloke.h"
 #include "bloke_ai.h"
 #include "challenge.h"
+#include "clipping.h"
 #include "debug_alloc.h"
 #include "draw.h"
 #include "gamemain.h"
@@ -21,6 +22,7 @@
 #include "resource.h"
 #include "screens.h"
 #include "sound_music.h"
+#include "sound_sfx.h"
 #include "stream.h"
 #include "string.h"
 #include "timer.h"
@@ -1424,7 +1426,7 @@ void FUN_00445310(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004453a0
-void FUN_004453a0(void) { STUB(); }
+unsigned int FUN_004453a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044db20
 void FUN_0044db20(void) {
@@ -1450,7 +1452,45 @@ void FUN_0044db80(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0044db90
-void FUN_0044db90(void) { STUB(); }
+int FUN_0044db90(void) {
+    int now;
+    int v;
+
+    now = GetGameTimer();
+    if (FUN_0046b280() == 0 && DAT_00666098 != 0 && (int)DAT_00666098 <= now) {
+        FUN_00499380();
+        FUN_00492830();
+        FUN_00498920();
+        DAT_006687b0 = 4;
+        DAT_0066609c = FUN_004453a0();
+        if (DAT_0066609c != 0) {
+            v = DAT_00832b9c;
+            if (v > 0) {
+                DAT_00832b9c = v + 1;
+            } else {
+                DAT_00832b9c = 1;
+            }
+            FUN_0046b240(1);
+            lpConfig->field_30 = 1;
+            FUN_0048a750();
+        } else {
+            if (DAT_00832b9c < 0) {
+                DAT_00832b9c = DAT_00832b9c - 1;
+            } else {
+                DAT_00832b9c = -1;
+            }
+            if (DAT_0083297c != 0 && DAT_00832b9c <= -DAT_0083297c) {
+                FUN_00459820(2);
+            }
+        }
+        DAT_00666098 = 0;
+        FUN_0044db40();
+        FUN_004993c0();
+        FUN_00492850();
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0044dc70
 void FUN_0044dc70(unsigned int param_1, unsigned int param_2) {
