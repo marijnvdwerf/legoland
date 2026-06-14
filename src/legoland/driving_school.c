@@ -342,7 +342,25 @@ void FUN_00405740(struct DSHead *param_1, unsigned int param_2, unsigned int par
 }
 
 // FUNCTION: LEGOLAND 0x004058a0
-void FUN_004058a0(void) { STUB(); }
+void FUN_004058a0(unsigned int param_1, unsigned int param_2) {
+    struct RideQueueEntry *node = DAT_004cbeac;
+
+    BasicObjectDCalcCursor(param_1, param_2);
+    DefaultCursor(&DAT_0082f760);
+    memcpy(&DAT_00830b74, DAT_004b4bf0, 20);
+
+    while (node != NULL) {
+        if (node->field_8 == QueryObj) {
+            DAT_00830b64 = node->x;
+            DAT_00830b68 = node->y;
+            FUN_0045f460(&DAT_0082f760);
+            DAT_00830f88 = 0x18;
+            BuildCursorPtr(&DAT_0082f760, 0, 0);
+            RenderCursor(&DAT_0082f760);
+        }
+        node = node->next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00405940
 void FUN_00405940(void) { STUB(); }
