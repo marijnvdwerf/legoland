@@ -1370,7 +1370,9 @@ void FUN_0041b260(void) {
 
 // FUNCTION: LEGOLAND 0x0041b2a0
 void FUN_0041b2a0(int param_1, int *param_2) {
-    struct Cursor *cursor = *(struct Cursor **)(param_1 + 0xc);
+    int *piVar2 = param_2;
+    int iVar9 = param_1;
+    int iVar1 = *(int *)(param_1 + 0xc);
     struct MermaidNode *node;
     unsigned char temp[2];
     int x;
@@ -1382,7 +1384,7 @@ void FUN_0041b2a0(int param_1, int *param_2) {
     temp[0] = (unsigned char)param_2[0];
     temp[1] = (unsigned char)param_2[1];
     coord = *(unsigned short *)temp;
-    FUN_0041c690(param_2[0], param_2[1], (unsigned short *)&param_2);
+    FUN_0041c690(*param_2, param_2[1], (unsigned short *)&param_2);
     node = (struct MermaidNode *)malloc(8);
     if (node == NULL) {
         return;
@@ -1392,37 +1394,37 @@ void FUN_0041b2a0(int param_1, int *param_2) {
     node->next = DAT_004d2164;
     DAT_004d2164 = node;
     FUN_0041b0d0((unsigned short)(unsigned int)param_2, 1);
-    AddBasicObject(param_1, (unsigned int)param_2);
-    y = cursor->field_3c.v[1];
-    if (cursor->field_3c.v[1] <= cursor->field_3c.v[3]) {
+    AddBasicObject(iVar9, (unsigned int)piVar2);
+    y = *(int *)(iVar1 + 0x40);
+    if (*(int *)(iVar1 + 0x40) <= *(int *)(iVar1 + 0x48)) {
         do {
-            x = cursor->field_3c.v[0];
-            if (cursor->field_3c.v[0] <= cursor->field_3c.v[2]) {
+            x = *(int *)(iVar1 + 0x3c);
+            if (*(int *)(iVar1 + 0x3c) <= *(int *)(iVar1 + 0x44)) {
                 do {
-                    if (x == cursor->field_3c.v[0]) {
+                    if (x == *(int *)(iVar1 + 0x3c)) {
                         tile = *DAT_0082adf4->tiles + 9;
-                    } else if (x == cursor->field_3c.v[2]) {
+                    } else if (x == *(int *)(iVar1 + 0x44)) {
                         tile = *DAT_0082adf4->tiles + 0xc;
-                    } else if (y == cursor->field_3c.v[1]) {
+                    } else if (y == *(int *)(iVar1 + 0x40)) {
                         tile = *DAT_0082adf4->tiles + 10;
-                    } else if (y == cursor->field_3c.v[3]) {
+                    } else if (y == *(int *)(iVar1 + 0x48)) {
                         tile = *DAT_0082adf4->tiles + 0xb;
                     } else {
                         tile = *DAT_0082adf4->tiles;
                     }
-                    SetMapTile(param_2[0] + x, param_2[1] + y, tile);
+                    SetMapTile(*piVar2 + x, piVar2[1] + y, tile);
                     x = x + 1;
-                } while (x <= cursor->field_3c.v[2]);
+                } while (x <= *(int *)(iVar1 + 0x44));
             }
             y = y + 1;
-        } while (y <= cursor->field_3c.v[3]);
+        } while (y <= *(int *)(iVar1 + 0x48));
     }
-    SetMapTile(cursor->field_3c.v[0] + param_2[0], cursor->field_3c.v[1] + param_2[1], *DAT_0082adf4->tiles + 5);
-    SetMapTile(param_2[0] + cursor->field_3c.v[2], cursor->field_3c.v[1] + param_2[1], *DAT_0082adf4->tiles + 8);
-    SetMapTile(cursor->field_3c.v[0] + param_2[0], cursor->field_3c.v[3] + param_2[1], *DAT_0082adf4->tiles + 6);
-    SetMapTile(param_2[0] + cursor->field_3c.v[2], cursor->field_3c.v[3] + param_2[1], *DAT_0082adf4->tiles + 7);
-    params.field_8 = param_2[0];
-    params.field_c = param_2[1];
+    SetMapTile(*(int *)(iVar1 + 0x3c) + *piVar2, *(int *)(iVar1 + 0x40) + piVar2[1], *DAT_0082adf4->tiles + 5);
+    SetMapTile(*piVar2 + *(int *)(iVar1 + 0x44), *(int *)(iVar1 + 0x40) + piVar2[1], *DAT_0082adf4->tiles + 8);
+    SetMapTile(*(int *)(iVar1 + 0x3c) + *piVar2, *(int *)(iVar1 + 0x48) + piVar2[1], *DAT_0082adf4->tiles + 6);
+    SetMapTile(*piVar2 + *(int *)(iVar1 + 0x44), *(int *)(iVar1 + 0x48) + piVar2[1], *DAT_0082adf4->tiles + 7);
+    params.field_8 = *piVar2;
+    params.field_c = piVar2[1];
     params.field_0 = 2;
     PlayInstanceOfSample(*(void **)(PTR_s_Boat_Noise_wav + 0x14), 1, 1, &params);
 }
