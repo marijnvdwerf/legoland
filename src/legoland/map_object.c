@@ -844,7 +844,20 @@ LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, unsigned int coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045ef50
-LEGO_EXPORT void ObjectIsBuilding(void) { STUB(); }
+LEGO_EXPORT void ObjectIsBuilding(struct ObjClass *obj, unsigned int coords) {
+    struct BuildBuf buf;
+
+    buf.x = coords & 0xff;
+    buf.y = (coords >> 8) & 0xff;
+    if ((((struct MapObject *)obj)->flags & 0x200000) == 0) {
+        buf.two = 2;
+        buf.x2 = buf.x;
+        buf.y2 = buf.y;
+        if (CountSamplesFromSource((struct SampleParams *)&buf.two) == 0) {
+            PlayAppropriateBuildEffect(obj, (int *)&buf.x);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045efc0
 LEGO_EXPORT void ApplyConsTileMap(void) {
