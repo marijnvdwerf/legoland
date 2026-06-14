@@ -610,7 +610,66 @@ void FUN_00405bd0(struct DSRenderRoot *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00405e70
-void FUN_00405e70(void) { STUB(); }
+int FUN_00405e70(void) {
+    struct CountNode *countNode;
+    struct RideQueueEntry *queue;
+    struct PumpNode *pump;
+    struct DSBlokeNode *bloke;
+    int count;
+    int buf[52];
+
+    count = 0;
+    for (countNode = (struct CountNode *)DAT_004c11bc; countNode != NULL; countNode = countNode->next) {
+        count++;
+    }
+    SaveGameWrite(&count, 4);
+    countNode = (struct CountNode *)DAT_004c11bc;
+    while (count != 0) {
+        count--;
+        SaveGameWrite(countNode, 0xc);
+        countNode = countNode->next;
+    }
+
+    count = 0;
+    for (queue = DAT_004cbeac; queue != NULL; queue = queue->next) {
+        count++;
+    }
+    SaveGameWrite(&count, 4);
+    queue = DAT_004cbeac;
+    while (count != 0) {
+        count--;
+        SaveGameWrite(queue, 0x20);
+        queue = queue->next;
+    }
+
+    count = 0;
+    for (pump = (struct PumpNode *)DAT_004cbea4; pump != NULL; pump = pump->next) {
+        count++;
+    }
+    SaveGameWrite(&count, 4);
+    pump = (struct PumpNode *)DAT_004cbea4;
+    while (count != 0) {
+        count--;
+        SaveGameWrite(pump, 0x10);
+        pump = pump->next;
+    }
+
+    count = 0;
+    for (bloke = (struct DSBlokeNode *)DAT_004c10d4; bloke != NULL; bloke = bloke->next) {
+        count++;
+    }
+    SaveGameWrite(&count, 4);
+    bloke = (struct DSBlokeNode *)DAT_004c10d4;
+    while (count != 0) {
+        count--;
+        memcpy(buf, bloke, 0xd0);
+        buf[51] = GetBlokeNum(buf[51]);
+        SaveGameWrite(buf, 0xd0);
+        bloke = bloke->next;
+    }
+
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00406020
 void FUN_00406020(unsigned short arg1, unsigned int arg2) {
@@ -642,4 +701,82 @@ int FUN_00406050(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00406070
-void FUN_00406070(void) { STUB(); }
+int FUN_00406070(void) {
+    struct CountNode *countPrev;
+    struct CountNode *countNode;
+    struct RideQueueEntry *queuePrev;
+    struct RideQueueEntry *queueNode;
+    struct PumpNode *pumpPrev;
+    struct PumpNode *pumpNode;
+    struct DSBlokeNode *blokePrev;
+    struct DSBlokeNode *blokeNode;
+    int count;
+
+    DAT_004c11bc = NULL;
+    SaveGameRead(&count, 4);
+    countPrev = NULL;
+    while (count-- != 0) {
+        if (countPrev == NULL) {
+            countNode = (struct CountNode *)malloc(0xc);
+            DAT_004c11bc = countNode;
+        } else {
+            countNode = (struct CountNode *)malloc(0xc);
+            countPrev->next = countNode;
+        }
+        SaveGameRead(countNode, 0xc);
+        countPrev = countNode;
+    }
+
+    DAT_004cbeac = NULL;
+    SaveGameRead(&count, 4);
+    queuePrev = NULL;
+    while (count-- != 0) {
+        if (queuePrev == NULL) {
+            queueNode = (struct RideQueueEntry *)malloc(0x20);
+            DAT_004cbeac = queueNode;
+        } else {
+            queueNode = (struct RideQueueEntry *)malloc(0x20);
+            queuePrev->next = queueNode;
+        }
+        SaveGameRead(queueNode, 0x20);
+        queuePrev = queueNode;
+    }
+
+    DAT_004cbea4 = NULL;
+    SaveGameRead(&count, 4);
+    pumpPrev = NULL;
+    while (count-- != 0) {
+        if (pumpPrev == NULL) {
+            pumpNode = (struct PumpNode *)malloc(0x10);
+            DAT_004cbea4 = pumpNode;
+        } else {
+            pumpNode = (struct PumpNode *)malloc(0x10);
+            pumpPrev->next = pumpNode;
+        }
+        SaveGameRead(pumpNode, 0x10);
+        pumpPrev = pumpNode;
+    }
+
+    DAT_004c10d4 = NULL;
+    SaveGameRead(&count, 4);
+    blokePrev = NULL;
+    while (count-- != 0) {
+        if (blokePrev == NULL) {
+            blokeNode = (struct DSBlokeNode *)malloc(0xd0);
+            DAT_004c10d4 = blokeNode;
+        } else {
+            blokeNode = (struct DSBlokeNode *)malloc(0xd0);
+            blokePrev->next = blokeNode;
+        }
+        SaveGameRead(blokeNode, 0xd0);
+        *(int *)((char *)blokeNode + 0xcc) = GetBlokePtr(*(int *)((char *)blokeNode + 0xcc));
+        blokePrev = blokeNode;
+    }
+
+    count = -1;
+    for (countNode = (struct CountNode *)DAT_004c11bc; countNode != NULL; countNode = countNode->next) {
+        FUN_00405310(countNode->field_0);
+    }
+
+    return 1;
+}

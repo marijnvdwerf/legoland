@@ -13,3 +13,5 @@ void NewDirForAction();
 void BlokeSitAnim();
 void BlokeSetFrame();
 void KillAllSamplesFromSource();
+int GetBlokeNum();
+int GetBlokePtr();
