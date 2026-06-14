@@ -1112,8 +1112,81 @@ struct Cursor *FUN_0045f540(struct Cursor *cursor) {
     return &PathCursor;
 }
 
+struct CursorPts {
+    /* 0x0000 */ unsigned short count;
+    /* 0x0002 */ unsigned short xpts[0x400];
+    /* 0x0802 */ unsigned short ypts[0x400];
+    /* 0x1002 */ unsigned char fpts[0x400];
+};
+
 // FUNCTION: LEGOLAND 0x0045f5f0
-LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, unsigned int param_3) { STUB(); }
+LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, int param_3) {
+    struct CursorPts *pts;
+    struct TileSprite *sprite;
+    short size;
+    unsigned char fbits;
+    int built;
+    struct FootprintNode rect;
+    int x;
+    int y;
+    short half2;
+    short half;
+
+    while (1) {
+        rect = *(struct FootprintNode *)&cursor->field_1414[0];
+        if (param_3 != 0) {
+            FUN_0045f540(cursor);
+        }
+        sprite = (struct TileSprite *)TileSpriteArray[DAT_00667ca4];
+        size = sprite->size;
+        pts = (struct CursorPts *)cursor;
+        pts->count = 0;
+        built = FUN_0045f4b0(cursor);
+        fbits = (unsigned char)(((built != 0) + 1) * 4 - 4);
+        *(unsigned char *)((char *)cursor + 0x1428) = fbits;
+        for (y = rect.y0; y <= rect.y1; y++) {
+            if (rect.x0 <= rect.x1) {
+                half2 = (short)((short)(size * 2) / 2);
+                half = (short)(size / 2);
+                x = rect.x0;
+                do {
+                    unsigned short ux = (unsigned short)(((short)x - (short)y) * half2);
+                    unsigned short uy = (unsigned short)(((short)y + (short)x) * half);
+                    if (x == rect.x0 && (cursor->field_1828 & 0x100) == 0) {
+                        pts->xpts[pts->count] = (unsigned short)(half2 + ux);
+                        pts->ypts[pts->count] = uy;
+                        pts->fpts[pts->count] = fbits | 1;
+                        pts->count++;
+                    }
+                    if (x == rect.x1 && (cursor->field_1828 & 0x200) == 0) {
+                        pts->xpts[pts->count] = (unsigned short)(size * 2 + ux);
+                        pts->ypts[pts->count] = (unsigned short)(half + uy);
+                        pts->fpts[pts->count] = fbits | 1;
+                        pts->count++;
+                    }
+                    if (y == rect.y0 && (cursor->field_1828 & 0x40) == 0) {
+                        pts->xpts[pts->count] = (unsigned short)(half2 + ux);
+                        pts->ypts[pts->count] = uy;
+                        pts->fpts[pts->count] = fbits | 2;
+                        pts->count++;
+                    }
+                    if (y == rect.y1 && (cursor->field_1828 & 0x80) == 0) {
+                        pts->xpts[pts->count] = ux;
+                        pts->ypts[pts->count] = (unsigned short)(half + uy);
+                        pts->fpts[pts->count] = fbits | 2;
+                        pts->count++;
+                    }
+                    x++;
+                } while (x <= rect.x1);
+            }
+        }
+        cursor = (struct Cursor *)cursor->field_1830;
+        if (cursor == 0) {
+            break;
+        }
+        param_3 = 0;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045f810
 LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, unsigned int param) {
