@@ -42,11 +42,6 @@ struct CursorBitmap {
     void *pixels;
 };
 
-struct TextureNode {
-    unsigned char pad_0[8];
-    void *data_8;
-    void *data_c;
-};
 
 struct RenderViewport {
     unsigned int x;
@@ -149,10 +144,10 @@ void FUN_004877b0(void) { STUB(); }
 void FUN_00487d40(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00488670
-void FUN_00488670(unsigned int arg, unsigned int index) {
-    void *ptr = malloc(0x2c);
+void FUN_00488670(struct Image *image, unsigned int index) {
+    struct TextureNode *ptr = (struct TextureNode *)malloc(sizeof(struct TextureNode));
     if (ptr != 0) {
-        FUN_004437d0(arg, ptr);
+        FUN_004437d0(image, ptr);
         DAT_00798190[index] = ptr;
     }
 }
