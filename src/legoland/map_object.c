@@ -5,7 +5,9 @@
 
 #include "bloke.h"
 #include "bricks.h"
+#include "clipping.h"
 #include "controller.h"
+#include "draw.h"
 #include "gamemain.h"
 #include "gamemap.h"
 #include "gfx.h"
@@ -1478,7 +1480,161 @@ void FUN_0045fca0(int *surface, int dir, int px, int py, unsigned char *color, i
 }
 
 // FUNCTION: LEGOLAND 0x0045ff00
-LEGO_EXPORT void RenderCursor(void) { STUB(); }
+LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
+    struct CursorPts *pts;
+    struct FootprintNode *nextp;
+    struct FootprintNode rect;
+    struct MapElement *tile;
+    struct Sprite *sprite;
+    struct ObjBox *editing;
+    short size;
+    int code;
+    unsigned int color;
+    unsigned char *pat;
+    unsigned char fbits;
+    int bx;
+    int by;
+    int x;
+    int y;
+    int i;
+    int clip[4];
+    int tilept[2];
+    int screen[2];
+    struct ClipRect saved_clip;
+    struct VideoArg surf;
+
+    clip[0] = lpConfig->field_20;
+    clip[1] = lpConfig->field_22;
+    clip[2] = lpConfig->field_10 + lpConfig->field_20;
+    clip[3] = lpConfig->field_12 + lpConfig->field_22;
+    GetClipping(&saved_clip);
+    SetClipping(clip);
+    nextp = (struct FootprintNode *)&cursor->field_1414[0];
+    do {
+        rect = *nextp;
+        if ((cursor->field_1828 & 0x10) == 0) {
+            for (y = rect.y0; y <= rect.y1; y++) {
+                for (x = rect.x0; x <= rect.x1; x++) {
+                    tilept[0] = cursor->field_1404 + x;
+                    tilept[1] = cursor->field_1408 + y;
+                    GetTileBounds((struct Point *)tilept, screen);
+                    if ((cursor->field_1828 & 6) == 0) {
+                        if (tilept[0] < 0 || lpConfig->width <= tilept[0] || tilept[1] < 0 ||
+                            lpConfig->height <= tilept[1] ||
+                            (tile = (struct MapElement *)((int)GameMap[tilept[1]] + tilept[0] * 0x14)) == 0 ||
+                            (tile->flags & 0x8f8) != 0) {
+                            color = 0xff0000;
+                            sprite = (struct Sprite *)((struct Sprite **)TileSpriteArray)[(DAT_00805f48 & 0xff) + *(int *)DAT_00801a6c];
+                        } else {
+                            color = 0;
+                            if ((*(unsigned char *)((char *)cursor + 0x1428) & 0xc) == 0) {
+                                sprite = (struct Sprite *)((struct Sprite **)TileSpriteArray)[(DAT_00801b20 & 0xff) + *(int *)DAT_00801a6c];
+                            } else {
+                                sprite = (struct Sprite *)((struct Sprite **)TileSpriteArray)[(DAT_008003f8 & 0xff) + *(int *)DAT_00801a6c];
+                            }
+                        }
+                    } else {
+                        color = 0;
+                        sprite = (struct Sprite *)((struct Sprite **)TileSpriteArray)[(DAT_0080ff60 & 0xff) + *(int *)DAT_00801a6c];
+                    }
+                    PrintSprite(sprite, screen[0], screen[1], color, 0);
+                }
+            }
+        }
+        nextp = rect.next;
+    } while (nextp != 0);
+    if (GetVideoSurface(&surf) == 0) {
+        return;
+    }
+    pts = (struct CursorPts *)cursor;
+    size = ((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
+    for (i = 0; i < (int)pts->count; i++) {
+        GetTileBounds((struct Point *)&cursor->field_1404, screen);
+        bx = (short)pts->xpts[i] + screen[0];
+        by = (short)pts->ypts[i] + screen[1];
+        fbits = pts->fpts[i];
+        if (cursor->field_1828 & 4) {
+            pat = DAT_004b95cc;
+        } else if (cursor->field_1828 & 2) {
+            pat = DAT_004b95c4;
+        } else if ((fbits & 0xc) == 0) {
+            pat = DAT_004b95dc;
+        } else {
+            pat = DAT_004b95d4;
+        }
+        if ((cursor->field_1828 & 0x20) == 0) {
+            if ((fbits & 3) == 0) {
+                FUN_0045fad0((int *)&surf, 0, bx, by, pat, lpConfig->field_18);
+            } else if ((fbits & 3) == 1) {
+                FUN_0045fad0((int *)&surf, 1, bx, by, pat, size);
+            } else if ((fbits & 3) == 2) {
+                FUN_0045fad0((int *)&surf, 2, bx, by, pat, size);
+            }
+        } else if ((fbits & 3) == 0) {
+            FUN_0045fca0((int *)&surf, 0, bx, by, pat, lpConfig->field_18);
+        } else if ((fbits & 3) == 1) {
+            FUN_0045fca0((int *)&surf, 1, bx, by, pat, size);
+        } else if ((fbits & 3) == 2) {
+            FUN_0045fca0((int *)&surf, 2, bx, by, pat, size);
+        }
+    }
+    SetClipping((int *)&saved_clip);
+    if (cursor->field_1830 != 0) {
+        RenderCursor((struct Cursor *)cursor->field_1830);
+    }
+    if ((cursor->field_1828 & 0x400) == 0) {
+        return;
+    }
+    editing = (struct ObjBox *)DAT_008119b8;
+    if (FUN_0045e620(editing) == 0) {
+        return;
+    }
+    if (EditMode != 1) {
+        return;
+    }
+    tilept[0] = ((struct ObjBox *)DAT_008119b8)->field_c + cursor->field_1404;
+    tilept[1] = ((struct ObjBox *)DAT_008119b8)->field_10 + cursor->field_1408;
+    GetTileBounds((struct Point *)tilept, screen);
+    code = FUN_0045e6b0((struct ObjBox *)DAT_008119b8);
+    switch (code) {
+    case 1:
+        sprite = DAT_00667c8c;
+        break;
+    case 2:
+        sprite = DAT_00667c94;
+        break;
+    case 4:
+        sprite = DAT_00667c90;
+        break;
+    case 8:
+        sprite = DAT_00667c88;
+        break;
+    default:
+        goto after_first;
+    }
+    PrintSprite(sprite, screen[0], screen[1], 0, 0);
+after_first:
+    if ((cursor->field_1828 & 0x800) != 0 && FUN_0045e690((struct ObjInfo *)DAT_008119b8) != 0) {
+        tilept[0] = ((signed char *)DAT_008119b8)[0x24] + cursor->field_1404;
+        tilept[1] = ((signed char *)DAT_008119b8)[0x25] + cursor->field_1408;
+        GetTileBounds((struct Point *)tilept, screen);
+        code = FUN_0045e710((struct ObjBox *)DAT_008119b8);
+        switch (code) {
+        case 0x10:
+            PrintSprite(DAT_00667c8c, screen[0], screen[1], 0, 0);
+            break;
+        case 0x20:
+            PrintSprite(DAT_00667c94, screen[0], screen[1], 0, 0);
+            return;
+        case 0x40:
+            PrintSprite(DAT_00667c90, screen[0], screen[1], 0, 0);
+            return;
+        case 0x80:
+            PrintSprite(DAT_00667c88, screen[0], screen[1], 0, 0);
+            return;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00460540
 LEGO_EXPORT void GetTileDimensions(int *width, int *height) {

@@ -92,7 +92,7 @@ struct LegoConfig {
     /* 0x12 */ unsigned short field_12;
     /* 0x14 */ unsigned short width;
     /* 0x16 */ unsigned short height;
-    /* 0x18 */ unsigned char pad_18[2];
+    /* 0x18 */ unsigned short field_18;
     /* 0x1a */ unsigned short field_1a;
     /* 0x1c */ unsigned char field_1c;
     /* 0x1d */ unsigned char pad_1d[1];
@@ -543,6 +543,14 @@ extern unsigned int DAT_004b9558[9];
 extern int DAT_004b957c[9];
 // 0x004b95a0
 extern int DAT_004b95a0[9];
+// 0x004b95c4
+extern unsigned char DAT_004b95c4[8];
+// 0x004b95cc
+extern unsigned char DAT_004b95cc[8];
+// 0x004b95d4
+extern unsigned char DAT_004b95d4[8];
+// 0x004b95dc
+extern unsigned char DAT_004b95dc[8];
 // 0x004b9ca4
 extern int (*DAT_004b9ca4)(void);
 // 0x004b9ca8

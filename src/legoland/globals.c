@@ -502,6 +502,18 @@ int DAT_004b957c[9] = {-2, -1, 0, -2, -1, 0, -2, -1, 0};
 // GLOBAL: LEGOLAND 0x004b95a0
 int DAT_004b95a0[9] = {-2, -2, -2, -1, -1, -1, 0, 0, 0};
 
+// GLOBAL: LEGOLAND 0x004b95c4
+unsigned char DAT_004b95c4[8];
+
+// GLOBAL: LEGOLAND 0x004b95cc
+unsigned char DAT_004b95cc[8];
+
+// GLOBAL: LEGOLAND 0x004b95d4
+unsigned char DAT_004b95d4[8];
+
+// GLOBAL: LEGOLAND 0x004b95dc
+unsigned char DAT_004b95dc[8];
+
 // GLOBAL: LEGOLAND 0x004b95f0
 struct DeferredSprite *PTR_DAT_004b95f0;
 
