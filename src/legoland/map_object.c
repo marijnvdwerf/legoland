@@ -138,11 +138,14 @@ struct FootprintNode {
 struct MapObject {
     /* 0x00 */ unsigned char pad_0[0x1c];
     /* 0x1c */ unsigned int flags;
-    /* 0x20 */ unsigned char pad_20[0x2c - 0x20];
+    /* 0x20 */ short type;
+    /* 0x22 */ unsigned char pad_22[0x2c - 0x22];
     /* 0x2c */ unsigned char field_2c;
     /* 0x2d */ unsigned char pad_2d[0x3c - 0x2d];
     /* 0x3c */ struct FootprintNode footprint;
-    /* 0x50 */ unsigned char pad_50[0x90 - 0x50];
+    /* 0x50 */ unsigned char pad_50[0x74 - 0x50];
+    /* 0x74 */ unsigned short *field_74;
+    /* 0x78 */ unsigned char pad_78[0x90 - 0x78];
     /* 0x90 */ void (*method_90)(unsigned int param_1, void *footprint, int param_3);
     /* 0x94 */ unsigned char pad_94[0xc4 - 0x94];
     /* 0xc4 */ unsigned int field_c4;
@@ -860,15 +863,61 @@ LEGO_EXPORT void ObjectIsBuilding(struct ObjClass *obj, unsigned int coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045efc0
-LEGO_EXPORT void ApplyConsTileMap(void) {
+LEGO_EXPORT void ApplyConsTileMap(struct EditObject *editObj, unsigned int coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045efd0
-LEGO_EXPORT void ApplyDestrTileMap(void) {
+LEGO_EXPORT void ApplyDestrTileMap(struct EditObject *editObj, unsigned int coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045efe0
-LEGO_EXPORT unsigned int AddBasicObject(unsigned int param1, unsigned int param2) { STUB(); }
+LEGO_EXPORT unsigned int AddBasicObject(struct EditObject *editObj, int *coords) {
+    struct MapObject *obj;
+    struct MapElement *tile;
+    unsigned char packed[2];
+    int instance;
+
+    obj = editObj->obj;
+    if (obj->flags & 0x20000) {
+        BGFullUpdate = 1;
+    }
+    if (obj->flags & 0x40000) {
+        if (coords[0] >= 0 && coords[0] < lpConfig->width && coords[1] >= 0 && coords[1] < lpConfig->height) {
+            tile = (struct MapElement *)((int)GameMap[coords[1]] + coords[0] * 0x14);
+        } else {
+            tile = 0;
+        }
+        tile->field_0 = (unsigned int)editObj;
+        tile->field_8 = *obj->field_74;
+        *((unsigned char *)&tile->field_4) = (unsigned char)coords[0];
+        *((unsigned char *)&tile->field_4 + 1) = (unsigned char)coords[1];
+        if (obj->flags & 2) {
+            tile->field_10 = 2;
+        }
+        if (obj->flags & 1) {
+            tile->field_10 = 1;
+        }
+        *(unsigned char *)&tile->flags |= 8;
+        if (obj->flags & 0x800000) {
+            tile->flags |= 0x8000;
+        }
+        IncrementObjectCount(obj);
+    } else {
+        packed[0] = (unsigned char)coords[0];
+        packed[1] = (unsigned char)coords[1];
+        AddObjectToMap(editObj, *(unsigned short *)packed, 0);
+        ApplyConsTileMap(editObj, *(unsigned short *)packed);
+        if (obj->type != 2) {
+            unsigned short id;
+            *((unsigned char *)&id) = (unsigned char)coords[0];
+            *((unsigned char *)&id + 1) = (unsigned char)coords[1];
+            instance = CreateObjectInstance((unsigned int)obj, &id);
+            if (instance != 0) {
+                AddInstanceToList(instance);
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045f100
 LEGO_EXPORT void RemoveObjectFromMap(void) { STUB(); }
