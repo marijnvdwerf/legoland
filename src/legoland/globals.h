@@ -1033,6 +1033,8 @@ extern unsigned int DAT_00615f98;
 extern unsigned int DAT_00616000;
 // 0x00616004
 extern unsigned int DAT_00616004;
+// 0x00616010
+extern void *DAT_00616010;
 // 0x00616018
 extern void *DAT_00616018;
 // 0x00616028
@@ -1043,6 +1045,12 @@ extern unsigned int DAT_0061602c;
 extern unsigned int DAT_00616030;
 // 0x00616034
 extern unsigned short DAT_00616034;
+// 0x0061603c
+extern unsigned int DAT_0061603c;
+// 0x00616040
+extern struct Sprite *DAT_00616040;
+// 0x00616044
+extern void *DAT_00616044;
 // 0x00616048
 extern struct Sprite *DAT_00616048;
 // 0x0061604c
