@@ -11,6 +11,7 @@
 #include "gamemain.h"
 #include "gamemap.h"
 #include "gfx.h"
+#include "llidb.h"
 #include "map_object.h"
 #include "math.h"
 #include "objclass.h"
@@ -2132,7 +2133,40 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) { STUB(); }
 void FUN_004629e0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00462b30
-LEGO_EXPORT void AddOvSav(void) { STUB(); }
+LEGO_EXPORT void AddOvSav(struct OverlayParam *param) {
+    struct Overlay *cur;
+    struct Overlay *node;
+    int tbl;
+    int sample;
+    int *lls;
+
+    cur = (struct Overlay *)OverlayList;
+    while (cur != 0 && cur->next != 0) {
+        cur = cur->next;
+    }
+    if (OverlayILF != 0 && ((char)(param->field_10 >> 8) == 0 || DAT_00667cb0 != 0)) {
+        node = (struct Overlay *)malloc(sizeof(struct Overlay));
+        node->next = 0;
+        if (cur != 0) {
+            cur->next = node;
+        } else {
+            OverlayList = node;
+        }
+        node->field_14 = param->field_0;
+        node->field_18 = param->field_4;
+        *(struct OverlayParam *)node = *param;
+        tbl = OverlayILF;
+        if ((char)(param->field_10 >> 8) != 0) {
+            tbl = (int)DAT_00667cb0;
+        }
+        sample = *(int *)(*(int *)(tbl + 8) + (param->field_10 & 0xff) * 4);
+        node->field_20 = sample;
+        lls = *(int **)(sample + 8);
+        if ((lls[5] == 2 || lls[5] == 3) && 1 < *(short *)(*lls + 0x10)) {
+            LLSPlay((struct LLS *)*lls, (unsigned int)lls);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00462c00
 void FUN_00462c00(struct OverlayParam *param) {
@@ -2158,7 +2192,37 @@ void FUN_00462c00(struct OverlayParam *param) {
 }
 
 // FUNCTION: LEGOLAND 0x00462c60
-void FUN_00462c60(void) { STUB(); }
+void FUN_00462c60(void) {
+    struct Overlay *node;
+    int sample;
+    int *lls;
+
+    node = (struct Overlay *)OverlayList;
+    while (node != 0) {
+        if ((char)(node->field_10 >> 8) == 0) {
+            sample = *(int *)(*(int *)(OverlayILF + 8) + (node->field_10 & 0xff) * 4);
+            node->field_20 = sample;
+            if (sample != 0) {
+                lls = *(int **)(sample + 8);
+                if ((lls[5] == 2 || lls[5] == 3) && 1 < *(short *)(*lls + 0x10)) {
+                    LLSPlay((struct LLS *)*lls, (unsigned int)lls);
+                }
+            }
+        } else if (DAT_00667cb0 != 0) {
+            sample = *(int *)(*(int *)((int)DAT_00667cb0 + 8) + (node->field_10 & 0xff) * 4);
+            node->field_20 = sample;
+            if (sample != 0) {
+                lls = *(int **)(sample + 8);
+                if ((lls[5] == 2 || lls[5] == 3) && 1 < *(short *)(*lls + 0x10)) {
+                    LLSPlay((struct LLS *)*lls, (unsigned int)lls);
+                }
+            }
+        } else {
+            node->field_20 = 0;
+        }
+        node = node->next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00462ce0
 LEGO_EXPORT void ClearOverlays(void) {
@@ -2178,7 +2242,31 @@ LEGO_EXPORT void ClearOverlays(void) {
 LEGO_EXPORT void PlayAppropriateBuildEffect(struct ObjClass *obj, int *coords) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00462dd0
-LEGO_EXPORT void ResetMapAI(void) { STUB(); }
+LEGO_EXPORT void ResetMapAI(void) {
+    unsigned int *p;
+    int i;
+
+    p = &MapStats;
+    for (i = 0xfc; i != 0; i--) {
+        *p = 0;
+        p++;
+    }
+    DAT_0083291c = 0;
+    MapStats = 0x1fff;
+    p = (unsigned int *)DAT_00832bb0;
+    for (i = 6; i != 0; i--) {
+        *p = 0x2020202;
+        p++;
+    }
+    *(unsigned char *)p = 2;
+    DAT_00832928 = 0xffffe0c0;
+    DAT_0083292c = 0xfffffc18;
+    DAT_00832930 = 100;
+    DAT_00832934 = 1000;
+    DAT_00832938 = 5000;
+    DAT_00832bc9 = 0;
+    DAT_00832984 = 0;
+}
 
 // FUNCTION: LEGOLAND 0x00462e50
 void FUN_00462e50(unsigned int index, unsigned int value) {

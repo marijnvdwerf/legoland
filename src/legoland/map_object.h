@@ -65,6 +65,8 @@ LEGO_EXPORT short Get_UserFlags(int x, int y);
 LEGO_EXPORT void Set_UserFlags(int x, int y, unsigned short value);
 LEGO_EXPORT void SetMapTile(int x, int y, unsigned short value);
 LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1);
+struct OverlayParam;
+LEGO_EXPORT void AddOvSav(struct OverlayParam *param);
 void FUN_004629e0(void);
 void FUN_00462e50(unsigned int index, unsigned int value);
 void FUN_00462e70(unsigned int index, unsigned int value);

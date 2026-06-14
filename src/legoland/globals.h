@@ -1557,6 +1557,8 @@ extern unsigned int DAT_00667ca4;
 extern LEGO_EXPORT void *OverlayList;
 // 0x00667cac
 extern LEGO_EXPORT unsigned int OverlayILF;
+// 0x00667cb0
+extern void *DAT_00667cb0;
 // 0x00667cb4
 extern LEGO_EXPORT int ScrollX;
 // 0x00667cb8
@@ -3172,6 +3174,12 @@ extern unsigned int DAT_0083291c;
 extern unsigned int DAT_00832920;
 // 0x00832924
 extern unsigned int DAT_00832924;
+// 0x00832928
+extern int DAT_00832928;
+// 0x0083292c
+extern int DAT_0083292c;
+// 0x00832930
+extern int DAT_00832930;
 // 0x00832934
 extern int DAT_00832934;
 // 0x00832938
@@ -3209,6 +3217,10 @@ extern unsigned int DAT_00832bac;
 extern unsigned int DAT_00832ba4;
 // 0x00832ba8
 extern unsigned int DAT_00832ba8;
+// 0x00832bb0
+extern int DAT_00832bb0[6];
+// 0x00832bc9
+extern unsigned char DAT_00832bc9;
 // 0x00832bcc
 extern int DAT_00832bcc;
 // 0x00832bd0
