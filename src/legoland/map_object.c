@@ -3,10 +3,14 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include "bloke.h"
+#include "bricks.h"
+#include "controller.h"
 #include "gamemain.h"
 #include "gamemap.h"
 #include "map_object.h"
 #include "math.h"
+#include "objclass.h"
 #include "pathfind.h"
 #include "print_sprite.h"
 #include "tilemap.h"
@@ -685,7 +689,69 @@ int FUN_0045eaf0(struct ObjData *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0045eb30
-LEGO_EXPORT void BuildObject(void) { STUB(); }
+LEGO_EXPORT int BuildObject(struct EditObject *editObj, int *coords) {
+    struct MapObject *obj;
+    unsigned char packed[2];
+    int cost;
+    unsigned int *effect;
+    int out[2];
+
+    obj = editObj->obj;
+    packed[0] = (unsigned char)coords[0];
+    packed[1] = (unsigned char)coords[1];
+    cost = GetObjCost((struct CostInfo *)obj);
+    if (GetBrickCount() < cost) {
+        return 0;
+    }
+    if (editObj == (struct EditObject *)DAT_0080ff64) {
+        DAT_0079a8d0 = 1;
+    }
+    if (DAT_00667cd8 == 0) {
+        PlayAppropriateBuildEffect((struct ObjClass *)obj, coords);
+    } else {
+        DAT_00667cdc = 1;
+    }
+    if ((obj->flags & 0x80000) == 0) {
+        UseBricks(GetObjCost((struct CostInfo *)obj));
+        if (FUN_0045eab0((struct ObjFlags *)obj) != 0 || FUN_0045eaf0((struct ObjData *)obj) != 0) {
+            FUN_0045e080(editObj, (struct Point *)coords, 0);
+        }
+        FUN_0045ea40((struct ObjBox *)obj, out);
+        out[0] = out[0] + coords[0];
+        out[1] = out[1] + coords[1];
+        PutObjOnMap((struct ObjClass *)obj, (unsigned int)editObj, (struct Point *)coords);
+        if ((obj->flags & 0x400000) != 0) {
+            FUN_00482a90();
+            FUN_00482b20(1);
+            effect = FUN_00482b00();
+            FUN_00477bd0(out[0], out[1], effect[0], effect[1]);
+        }
+    } else {
+        if (AddObjectToBuildList((struct ObjClass *)obj, (short)(unsigned int)editObj) == 0) {
+            return 0;
+        }
+        UseBricks(GetObjCost((struct CostInfo *)obj));
+        if (FUN_0045eab0((struct ObjFlags *)obj) != 0 || FUN_0045eaf0((struct ObjData *)obj) != 0) {
+            FUN_0045e080(editObj, (struct Point *)coords, 0x20);
+        } else {
+            SetObjRectFlags(editObj, (struct Point *)coords, 0x20);
+        }
+        FUN_0045ea40((struct ObjBox *)obj, out);
+        out[0] = out[0] + coords[0];
+        out[1] = out[1] + coords[1];
+        if ((obj->flags & 0x400000) != 0) {
+            FUN_00482a90();
+            FUN_00482b20(1);
+            effect = FUN_00482b00();
+            FUN_00477bd0(out[0], out[1], effect[0], effect[1]);
+        }
+        if (DAT_00667cd8 == 0) {
+            CalculateMapRenderOrder();
+        }
+    }
+    FUN_0045e770((struct ObjNode *)editObj, coords);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0045ed30
 LEGO_EXPORT void ObjectIsBuilt(void) { STUB(); }
@@ -1069,7 +1135,7 @@ LEGO_EXPORT void ClearOverlays(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00462d10
-LEGO_EXPORT void PlayAppropriateBuildEffect(void) { STUB(); }
+LEGO_EXPORT void PlayAppropriateBuildEffect(struct ObjClass *obj, int *coords) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00462dd0
 LEGO_EXPORT void ResetMapAI(void) { STUB(); }

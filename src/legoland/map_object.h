@@ -10,8 +10,14 @@ struct Cursor;
 struct CursorObj;
 struct EditObject;
 struct Point;
+struct ObjClass;
 
 void IncrementObjectCount(void *obj);
+int AddObjectToBuildList(struct ObjClass *obj, short id);
+void FUN_00477bd0(int x, int y, int a, int b);
+unsigned int *FUN_00482b00(void);
+LEGO_EXPORT int BuildObject(struct EditObject *editObj, int *coords);
+LEGO_EXPORT void PlayAppropriateBuildEffect(struct ObjClass *obj, int *coords);
 void FUN_0045e4a0(struct EditObject *editObj, struct Point *pos);
 LEGO_EXPORT unsigned int AddBasicObject(unsigned int param1, unsigned int param2);
 LEGO_EXPORT void AddObjectToMap(struct EditObject *param_1, unsigned int param_2, int param_3);
