@@ -6,6 +6,7 @@
 #include "llidb.h"
 #include "map_object.h"
 #include "math.h"
+#include "objclass.h"
 #include "sound_music.h"
 #include "timer.h"
 
@@ -28,6 +29,15 @@ struct MapCell {
     struct MapCellObj *obj;
     unsigned char pad_4[8];
     unsigned short flags;
+};
+
+struct RectListNode {
+    /* 0x00 */ struct RectListNode *next;
+    /* 0x04 */ unsigned char pad_4[4];
+    /* 0x08 */ int field_8;
+    /* 0x0c */ int field_c;
+    /* 0x10 */ int field_10;
+    /* 0x14 */ int field_14;
 };
 
 struct RenderObject {
@@ -101,7 +111,52 @@ void FUN_00459960(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00459970
-void FUN_00459970(void) { STUB(); }
+void FUN_00459970(void) {
+    int now;
+    struct RectListNode *node;
+    int total;
+    int matched;
+    struct Point coord;
+
+    now = GetGameTimer();
+    if (10000 < now - (int)DAT_00667d10) {
+        DAT_00667d0c = 0;
+        matched = 0;
+        total = 0;
+        DAT_00667d10 = now;
+        for (node = (struct RectListNode *)FUN_00481720(); node != NULL; node = node->next) {
+            total = total + 4 + (((node->field_14 - node->field_8) - node->field_c) + node->field_10) * 2;
+            coord.x = node->field_8;
+            if (coord.x <= node->field_10) {
+                do {
+                    coord.y = node->field_c + -1;
+                    FUN_004598d0(&coord, &total, &matched);
+                    coord.y = node->field_14 + 1;
+                    FUN_004598d0(&coord, &total, &matched);
+                    coord.x = coord.x + 1;
+                } while (coord.x <= node->field_10);
+            }
+            coord.y = node->field_c;
+            if (coord.y <= node->field_14) {
+                do {
+                    coord.x = node->field_8 + -1;
+                    FUN_004598d0(&coord, &total, &matched);
+                    coord.x = node->field_10 + 1;
+                    FUN_004598d0(&coord, &total, &matched);
+                    coord.y = coord.y + 1;
+                } while (coord.y <= node->field_14);
+            }
+        }
+        DAT_00667d00 = total;
+        DAT_00667d04 = matched;
+        if (total != 0) {
+            DAT_00667d08 = (matched * 100) / total;
+            return;
+        }
+        DAT_00667d08 = 0;
+        DAT_00667d00 = 0;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00459ad0
 LEGO_EXPORT void PutObjOnMap(void) { STUB(); }
