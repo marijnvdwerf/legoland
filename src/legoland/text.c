@@ -643,7 +643,7 @@ struct TextCell *FUN_00455c80(char *name, int width, int height, int font, unsig
 }
 
 // FUNCTION: LEGOLAND 0x00455d40
-struct TextCell *FUN_00455d40(char *name, int font, unsigned int format, unsigned int bg_color, unsigned int text_color) {
+struct TextCell *FUN_00455d40(const char *name, int font, unsigned int format, unsigned int bg_color, unsigned int text_color) {
     int i = 0;
     struct TextCell *cell;
 

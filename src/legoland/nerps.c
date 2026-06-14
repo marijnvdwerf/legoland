@@ -778,7 +778,7 @@ void FUN_0046b6b0(struct Ctx6b0 *ctx, unsigned int param_2) {
 
 // FUNCTION: LEGOLAND 0x0046b700
 unsigned int FUN_0046b700(void) {
-    if (DAT_0066879c != NULL) {
+    if (DAT_0066879c != 0) {
         if (DAT_00668614 != 0) {
             FUN_00468bb0(DAT_004b8bbc, DAT_007fe120[DAT_00668614]);
             DAT_00668618 = 1;
@@ -794,7 +794,7 @@ unsigned int FUN_0046b700(void) {
 // FUNCTION: LEGOLAND 0x0046b760
 unsigned int FUN_0046b760(void) {
     if (FUN_0046b280() == 0) {
-        if (DAT_0066879c != NULL) {
+        if (DAT_0066879c != 0) {
             FUN_0046b6b0((struct Ctx6b0 *)DAT_0066879c, 1);
             FUN_00468d00();
             return 1;

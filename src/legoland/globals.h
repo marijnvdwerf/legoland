@@ -2273,7 +2273,7 @@ extern struct SortNode *DAT_007fd600;
 // 0x007fd620
 extern LEGO_EXPORT void *NewObjectPtr;
 // 0x007fd624
-extern unsigned int DAT_007fd624;
+extern void *DAT_007fd624;
 // 0x007fd630
 extern unsigned int DAT_007fd630;
 // 0x007fd634

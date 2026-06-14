@@ -3123,7 +3123,7 @@ struct SortNode *DAT_007fd600;
 LEGO_EXPORT void *NewObjectPtr;
 
 // GLOBAL: LEGOLAND 0x007fd624
-unsigned int DAT_007fd624;
+void *DAT_007fd624;
 
 // GLOBAL: LEGOLAND 0x007fd630
 unsigned int DAT_007fd630;

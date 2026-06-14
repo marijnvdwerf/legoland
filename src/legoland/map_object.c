@@ -26,7 +26,7 @@ struct ObjEntry {
 
 struct Obj0c {
     unsigned char pad_0[12];
-    unsigned int field_c;
+    void *field_c;
 };
 
 struct ObjFlags {
