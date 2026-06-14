@@ -3168,6 +3168,26 @@ extern LEGO_EXPORT unsigned int MapStats;
 extern unsigned int DAT_00832824[1];
 // 0x00832828
 extern unsigned int DAT_00832828[1];
+// 0x00832850
+extern int DAT_00832850;
+// 0x00832854
+extern int DAT_00832854;
+// 0x0083287c
+extern int DAT_0083287c;
+// 0x00832880
+extern int DAT_00832880;
+// 0x008328a8
+extern int DAT_008328a8;
+// 0x008328ac
+extern int DAT_008328ac;
+// 0x008328d4
+extern int DAT_008328d4;
+// 0x008328d8
+extern int DAT_008328d8;
+// 0x00832900
+extern int DAT_00832900;
+// 0x00832904
+extern int DAT_00832904;
 // 0x0083291c
 extern unsigned int DAT_0083291c;
 // 0x00832920

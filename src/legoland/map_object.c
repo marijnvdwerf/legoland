@@ -2289,7 +2289,20 @@ void FUN_00462e70(unsigned int index, unsigned int value) {
 }
 
 // FUNCTION: LEGOLAND 0x00462e90
-void FUN_00462e90(void) { STUB(); }
+void FUN_00462e90(void) {
+    DAT_00832824[0] = 0x32;
+    DAT_00832854 = 0x32;
+    DAT_00832828[0] = 0x14;
+    DAT_0083287c = 0;
+    DAT_00832880 = 0;
+    DAT_008328a8 = 0;
+    DAT_008328ac = 0;
+    DAT_00832850 = 0x21;
+    DAT_008328d4 = 0x21;
+    DAT_008328d8 = 0x28;
+    DAT_00832900 = 0x21;
+    DAT_00832904 = 0x28;
+}
 
 // FUNCTION: LEGOLAND 0x00462ef0
 LEGO_EXPORT void DoMapAI(void) { STUB(); }
@@ -2298,7 +2311,24 @@ LEGO_EXPORT void DoMapAI(void) { STUB(); }
 void FUN_004632b0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004633f0
-LEGO_EXPORT void RateBlokeOnLeaving(void) { STUB(); }
+LEGO_EXPORT void RateBlokeOnLeaving(int param_1) {
+    int rating;
+
+    if (param_1 < DAT_00832928) {
+        rating = 0;
+    } else if (param_1 < DAT_00832930) {
+        rating = 1;
+    } else if (param_1 < DAT_00832934) {
+        rating = 2;
+    } else {
+        rating = (DAT_00832938 <= param_1) + 3;
+    }
+    *((char *)DAT_00832bb0 + DAT_00832bc9) = (char)rating;
+    DAT_00832bc9 = DAT_00832bc9 + 1;
+    if (DAT_00832bc9 == 0x19) {
+        DAT_00832bc9 = 0;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00463460
 void FUN_00463460(void) { STUB(); }
