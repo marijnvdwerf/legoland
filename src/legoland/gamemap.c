@@ -2,10 +2,12 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include "controller.h"
 #include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
 #include "math.h"
+#include "obj_instance.h"
 #include "objclass.h"
 #include "sound_music.h"
 #include "timer.h"
@@ -26,9 +28,11 @@ struct MapCellObj {
 };
 
 struct MapCell {
-    struct MapCellObj *obj;
-    unsigned char pad_4[8];
-    unsigned short flags;
+    /* 0x00 */ struct MapCellObj *obj;
+    /* 0x04 */ unsigned char byte_4;
+    /* 0x05 */ unsigned char byte_5;
+    /* 0x06 */ unsigned char pad_6[6];
+    /* 0x0c */ unsigned short flags;
 };
 
 struct RectListNode {
@@ -159,10 +163,60 @@ void FUN_00459970(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00459ad0
-LEGO_EXPORT void PutObjOnMap(void) { STUB(); }
+LEGO_EXPORT void PutObjOnMap(struct ObjClass *obj, unsigned int classid, struct Point *pos) {
+    int area;
+    struct ObjClass *entrance;
+    struct MapCell *cell;
+
+    if (classid == DAT_0080ff64) {
+        DAT_0079a8d0 = 1;
+    }
+    obj->method_98(classid, pos);
+    if (obj == DAT_007fd624) {
+        DAT_00667cf4 = DAT_00667cf4 + 1;
+        DAT_00667ce0 = DAT_00667ce0 + 1;
+        DAT_00667d0c = 1;
+    } else {
+        area = GetRectArea((struct RectNode *)&obj->field_3c);
+        switch (obj->type) {
+        case 1:
+            FUN_00489f00(pos);
+            DAT_00667ce4 = DAT_00667ce4 + area;
+            break;
+        case 2:
+            DAT_00667d0c = 1;
+            DAT_00667cf8 = DAT_00667cf8 + area;
+            break;
+        case 3:
+            DAT_00667cf0 = DAT_00667cf0 + area;
+            break;
+        case 4:
+            FUN_00489f00(pos);
+            DAT_00667ce8 = DAT_00667ce8 + area;
+            break;
+        case 5:
+            FUN_00489f00(pos);
+            DAT_00667cec = DAT_00667cec + area;
+        }
+        DAT_00667ce0 = DAT_00667ce0 + area;
+        AddObjectsPowerStats(classid, pos);
+    }
+    if (classid == ElemID("ENTRANCE 1")) {
+        entrance = (struct ObjClass *)((struct ClassNode *)ElemID("ENTRANCE 1"))->iface;
+        if (pos->x < 0 || pos->x >= (int)lpConfig->width || pos->y < 0 || pos->y >= (int)lpConfig->height) {
+            cell = NULL;
+        } else {
+            cell = (struct MapCell *)((char *)GameMap[pos->y] + pos->x * 0x14);
+        }
+        DAT_004b8320 = (cell->byte_4 + entrance->field_3c) * 0x100 + -0x100;
+        DAT_004b8324 = ((unsigned int)(entrance->field_48 - entrance->field_40) >> 1) * 0x100 +
+                       (cell->byte_5 + entrance->field_40) * 0x100;
+    }
+    DAT_00668610 = DAT_00668610 | 1;
+}
 
 // FUNCTION: LEGOLAND 0x00459c90
-LEGO_EXPORT void RemObjFromMap(void) { STUB(); }
+LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsigned int coords, void *cursor) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00459fa0
 LEGO_EXPORT int FindObjectsPower(void *object) { STUB(); }
@@ -221,10 +275,10 @@ void FUN_0045a0d0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0045a130
-LEGO_EXPORT void AddObjectsPowerStats(void) { STUB(); }
+LEGO_EXPORT void AddObjectsPowerStats(unsigned int classid, struct Point *pos) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a230
-LEGO_EXPORT void RemoveObjectsPowerStats(void) { STUB(); }
+LEGO_EXPORT void RemoveObjectsPowerStats(unsigned int classid, unsigned int coords) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a390
 LEGO_EXPORT void DefaultCursor(struct Cursor *cursor) {
@@ -238,10 +292,10 @@ LEGO_EXPORT void DefaultCursor(struct Cursor *cursor) {
 }
 
 // FUNCTION: LEGOLAND 0x0045a3e0
-void FUN_0045a3e0(void) { STUB(); }
+void FUN_0045a3e0(int *param) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a430
-void FUN_0045a430(void) { STUB(); }
+void FUN_0045a430(short param_1, int *param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045a4a0
 LEGO_EXPORT void CalculateMapRenderOrder(void) { STUB(); }

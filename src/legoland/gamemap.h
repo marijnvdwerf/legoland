@@ -51,15 +51,23 @@ struct Cursor {
 };
 
 struct Point;
+struct ObjClass;
 
 void FUN_004598d0(struct Point *coord, int *param_2, int *param_3);
 void FUN_00459960(void);
 void FUN_00459970(void);
+LEGO_EXPORT void PutObjOnMap(struct ObjClass *obj, unsigned int classid, struct Point *pos);
 LEGO_EXPORT int FindObjectsPower(void *object);
+void FUN_0045a030(int power, struct RenderObject *object);
 void FUN_0045a060(void);
+void FUN_0045a0d0(void);
+LEGO_EXPORT void AddObjectsPowerStats(unsigned int classid, struct Point *pos);
+LEGO_EXPORT void RemoveObjectsPowerStats(unsigned int classid, unsigned int coords);
 LEGO_EXPORT void DefaultCursor(struct Cursor *cursor);
+void FUN_0045a3e0(int *param);
+void FUN_0045a430(short param_1, int *param_2);
 LEGO_EXPORT void CalculateMapRenderOrder(void);
 LEGO_EXPORT struct RenderObject *GetFirstRenderObject(void);
 LEGO_EXPORT struct RenderObject *GetNextRenderObject(struct RenderObject *object);
 LEGO_EXPORT struct RenderObject *GetFirstObjectMatching(struct RenderObjectVtable *vtable);
-LEGO_EXPORT void RemObjFromMap();
+LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsigned int coords, void *cursor);
