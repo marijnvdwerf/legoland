@@ -737,7 +737,25 @@ void FUN_0042f030(struct EateryObj *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0042f0f0
-void FUN_0042f0f0(void) { STUB(); }
+void FUN_0042f0f0(int param_1, int param_2, int param_3, int param_4) {
+    int idx = (param_4 + (unsigned int)*(unsigned char *)(param_1 + 0x36) * 5) * 6;
+    int y_add = DAT_004b66f4[idx + 1];
+    int dir_flag = DAT_004b66f4[idx + 4];
+    int frame = DAT_004b66f4[idx + 5];
+    char cv;
+    int y;
+    *(int *)(param_1 + 0x24) = (DAT_004b66f4[idx] + param_2) * 0x100 + DAT_004b66f4[idx + 2];
+    y = (param_3 + y_add) * 0x100 + DAT_004b66f4[idx + 3];
+    *(int *)(param_1 + 0x28) = y;
+    cv = CalcMoveLine(*(unsigned int *)(param_1 + 0x68), *(unsigned int *)(param_1 + 0x6c),
+                      *(unsigned int *)(param_1 + 0x24), y, param_1 + 0x98);
+    *(unsigned char *)(param_1 + 0x73) = cv + 0x10;
+    *(short *)(param_1 + 0xe) = 7;
+    *(char *)(param_1 + 0x37) = (char)frame;
+    if (dir_flag == 1) {
+        NewDirForAction(param_1, ((unsigned char)(cv + 0x10) >> 5) + 3);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0042f1a0
 void FUN_0042f1a0(void) { STUB(); }

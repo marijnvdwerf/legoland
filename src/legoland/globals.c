@@ -232,7 +232,10 @@ unsigned char CAROUSSEL_SFX[12];
 unsigned char ENTRANCE_SFX[0x1c];
 
 // GLOBAL: LEGOLAND 0x004b66e8
-unsigned char RESTAURANT_SFX[0x1c];
+unsigned char RESTAURANT_SFX[0xc];
+
+// GLOBAL: LEGOLAND 0x004b66f4
+int DAT_004b66f4[15 * 6];
 
 // GLOBAL: LEGOLAND 0x004b6860
 int DAT_004b6860[0x20];
