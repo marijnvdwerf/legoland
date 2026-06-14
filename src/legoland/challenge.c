@@ -928,7 +928,15 @@ void FUN_00444830(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00444870
-void FUN_00444870(void) { STUB(); }
+void FUN_00444870(unsigned int param_1, unsigned int param_2) {
+    if ((param_1 | param_2) != 0) {
+        DAT_00665ff8 |= 0x1000000;
+        DAT_00666050 = param_1;
+        DAT_00666054 = param_2;
+    } else {
+        DAT_00665ff8 &= 0xfeffffff;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004448b0
 void FUN_004448b0(unsigned int param_1, unsigned int param_2) {
