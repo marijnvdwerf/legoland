@@ -172,7 +172,7 @@ void FUN_0042e2a0(int param_1) {
                 *(int *)(bloke + 0x28) = (y + 1) * 0x100;
                 *(int *)(bloke + 0x24) = x;
                 cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), x,
-                                  *(unsigned int *)(bloke + 0x28), bloke + 0x98);
+                    *(unsigned int *)(bloke + 0x28), bloke + 0x98);
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -196,7 +196,7 @@ void FUN_0042e2a0(int param_1) {
                 y = *(int *)(bloke + 0x28);
                 my = *(int *)(bloke + 0x6c);
                 mx = *(int *)(bloke + 0x68);
-calc:
+            calc:
                 cv = CalcMoveLine(mx, my, x, y, bloke + 0x98);
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
@@ -311,12 +311,12 @@ void FUN_0042e610(int param_1) {
                 break;
             case 3:
                 x = x * 0x100 + 0x80;
-calc:
+            calc:
                 y = ((unsigned int)b1 + y) * 0x100 + 0x80;
                 *(int *)(bloke + 0x24) = x;
                 *(int *)(bloke + 0x28) = y;
                 cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
-                                  *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                    *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -437,7 +437,7 @@ void FUN_0042e910(int param_1, unsigned int param_2, unsigned int param_3, short
     AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
     if (GetSpriteForLayer((struct LayerContainer *)DAT_0081cd10, 1) != 0) {
         PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_0081cd10, 1),
-                    offset.i[0] + coords.i[0], offset.i[1] + coords.i[1], param_6, 0);
+            offset.i[0] + coords.i[0], offset.i[1] + coords.i[1], param_6, 0);
     }
 }
 
@@ -515,14 +515,14 @@ void FUN_0042ea60(int param_1) {
                 goto calc;
             case 5:
                 x = x * 0x100 + 0x80;
-calc05:
+            calc05:
                 y = y * 0x100 + 0x80;
                 *(int *)(bloke + 0x24) = x;
                 *(int *)(bloke + 0x28) = y;
                 x = *(int *)(bloke + 0x24);
                 my = *(int *)(bloke + 0x6c);
                 mx = *(int *)(bloke + 0x68);
-calc:
+            calc:
                 cv = CalcMoveLine(mx, my, x, y, bloke + 0x98);
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
@@ -579,10 +579,10 @@ void FUN_0042ec10(int param_1) {
                 *(unsigned char *)(bloke + 0x72) = 3;
                 *(int *)(bloke + 0x24) = x * 0x100 + 0x80;
                 x = y * 0x100 + 0x80;
-calc:
+            calc:
                 *(int *)(bloke + 0x28) = x;
                 cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
-                                  *(unsigned int *)(bloke + 0x24), x, bloke + 0x98);
+                    *(unsigned int *)(bloke + 0x24), x, bloke + 0x98);
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -635,12 +635,12 @@ void FUN_0042ed70(int param_1) {
                 break;
             case 3:
                 x = x * 0x100 + 0x80;
-calc:
+            calc:
                 y = ((unsigned int)b1 + y) * 0x100 + 0x80;
                 *(int *)(bloke + 0x24) = x;
                 *(int *)(bloke + 0x28) = y;
                 cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
-                                  *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                    *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -686,19 +686,11 @@ void FUN_0042ef10(unsigned int param_1, unsigned char *param_2) {
 // FUNCTION: LEGOLAND 0x0042ef40
 struct BrollyNode *FUN_0042ef40(unsigned short *param_1) {
     struct BrollyNode *node = DAT_00616144;
-    if (node != NULL) {
-        if (*param_1 == node->value) {
+    while (node != NULL) {
+        if (node->value == *param_1) {
             return node;
         }
-        while (1) {
-            node = node->next;
-            if (node == NULL) {
-                break;
-            }
-            if (*param_1 == node->value) {
-                return node;
-            }
-        }
+        node = node->next;
     }
     return NULL;
 }
@@ -771,7 +763,7 @@ void FUN_0042f0f0(int param_1, int param_2, int param_3, int param_4) {
     y = (param_3 + y_add) * 0x100 + DAT_004b66f4[idx + 3];
     *(int *)(param_1 + 0x28) = y;
     cv = CalcMoveLine(*(unsigned int *)(param_1 + 0x68), *(unsigned int *)(param_1 + 0x6c),
-                      *(unsigned int *)(param_1 + 0x24), y, param_1 + 0x98);
+        *(unsigned int *)(param_1 + 0x24), y, param_1 + 0x98);
     *(unsigned char *)(param_1 + 0x73) = cv + 0x10;
     *(short *)(param_1 + 0xe) = 7;
     *(char *)(param_1 + 0x37) = (char)frame;
@@ -861,7 +853,7 @@ void FUN_0042f1a0(int param_1) {
                 goto move;
             case 3:
                 arg = 2;
-move:
+            move:
                 FUN_0042f0f0(bloke, x, y, arg);
                 *(char *)(bloke + 0x60) += 1;
                 break;
@@ -996,7 +988,7 @@ void FUN_0042f4c0(int param_1, unsigned int param_2, unsigned int param_3, short
         offset.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0081cd2c, 1);
         AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
         PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_0081cd2c, 1),
-                    offset.i[0] + coords.i[0], offset.i[1] + coords.i[1], param_6, (int *)&cfg);
+            offset.i[0] + coords.i[0], offset.i[1] + coords.i[1], param_6, (int *)&cfg);
         state->field_9 = frame;
     }
 }
@@ -1860,10 +1852,10 @@ void FUN_00431170(int param_1) {
             case 3:
                 *(int *)(bloke + 0x24) = x * 0x100 + 0x80;
                 x = y * 0x100 + 0x80;
-calc:
+            calc:
                 *(int *)(bloke + 0x28) = x;
                 cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
-                                  *(unsigned int *)(bloke + 0x24), x, bloke + 0x98);
+                    *(unsigned int *)(bloke + 0x24), x, bloke + 0x98);
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -2209,11 +2201,11 @@ void FUN_00431c50(unsigned int param_1, unsigned int param_2, struct Sprite *par
     } else {
         IP_RenderBlokeIn3DNow((struct Bloke *)param_6);
         if (param_7 != 0) {
-render7:
+        render7:
             IP_RenderBlokeIn3DNow((struct Bloke *)param_7);
             goto print4;
         }
-print4:
+    print4:
         PrintSprite(param_4, param_1, param_2, param_10, 0);
     }
     if (param_8 == 0) {
@@ -2260,7 +2252,8 @@ void FUN_00431d00(int param_1, unsigned int param_2, unsigned int param_3, unsig
                     dst = dst + 1;
                     *(unsigned char *)(bloke + 0x37) =
                         DAT_004b6d58[((((gx >> 8) - (unsigned int)b0) * 0xb - (*(int *)(bloke + 0x6c) >> 8)) +
-                                      (unsigned int)param_4[1]) * 4];
+                                         (unsigned int)param_4[1]) *
+                            4];
                 } else {
                     buckets[*(unsigned char *)(bloke + 0x36)] = bloke;
                 }
