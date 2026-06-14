@@ -1116,7 +1116,91 @@ struct Cursor *FUN_0045f540(struct Cursor *cursor) {
 LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045f810
-LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, unsigned int param) { STUB(); }
+LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, unsigned int param) {
+    struct Cursor *node;
+    struct FootprintNode *rect;
+    struct MapElement *tile;
+    struct Obj0c *gtile;
+    int people;
+    int x;
+    int y;
+    RECT inter;
+    RECT box;
+    RECT bounds;
+
+    if (FUN_0045ead0((struct ObjState *)param) != 0 && (cursor->field_1828 & 0x4000) == 0) {
+        FUN_0045f540(cursor);
+    }
+    FUN_0045f460(cursor);
+    node = cursor;
+    while (1) {
+        if (node == 0) {
+            FUN_0045f4d0(cursor);
+            return;
+        }
+        if ((node->field_1828 & 0x2000) == 0) {
+            for (rect = (struct FootprintNode *)&node->field_1414[0]; rect != 0; rect = rect->next) {
+                bounds.top = 0;
+                bounds.left = 0;
+                bounds.bottom = lpConfig->height;
+                bounds.right = lpConfig->height;
+                box.top = rect->y0 + node->field_1408;
+                box.bottom = node->field_1408 + rect->y1;
+                box.left = rect->x0 + node->field_1404;
+                box.right = rect->x1 + node->field_1404;
+                if (IntersectRect(&inter, &box, &bounds) != 0) {
+                    people = CheckForPeople(&inter);
+                    if (people == -1) {
+                        FUN_0045f480(node, 4);
+                    } else if (people == 1) {
+                        FUN_0045f480(node, 3);
+                    }
+                }
+                for (y = rect->y0; y <= rect->y1; y++) {
+                    for (x = rect->x0; x <= rect->x1; x++) {
+                        int tx = node->field_1404 + x;
+                        int ty = node->field_1408 + y;
+                        if (tx < 0 || lpConfig->width <= tx || ty < 0 || lpConfig->height <= ty ||
+                            (tile = (struct MapElement *)((int)GameMap[ty] + tx * 0x14)) == 0) {
+                            FUN_0045f480(node, 7);
+                        } else {
+                            unsigned int objval;
+                            int run_eab0 = 1;
+                            if (tile->flags & 0x40) {
+                                FUN_0045f480(node, 1);
+                            }
+                            gtile = (struct Obj0c *)tile->field_0;
+                            if ((tile->flags & 0xa8) == 0 || (objval = (unsigned int)gtile->field_c) == (unsigned int)DAT_007fd624) {
+                                objval = 0;
+                            } else if (objval == 0 || (((struct MapObject *)objval)->flags & 0x200000) != 0) {
+                                /* fall through to eab0 with objval kept */
+                            } else {
+                                FUN_0045f480(node, 10);
+                                run_eab0 = 0;
+                            }
+                            if (run_eab0 && FUN_0045eab0((struct ObjFlags *)param) == 0) {
+                                if (objval != 0) {
+                                    FUN_0045f480(node, 6);
+                                }
+                                if (*((unsigned char *)&tile->flags + 1) & 8) {
+                                    FUN_0045f480(node, 5);
+                                }
+                            }
+                            if (FUN_0045eaf0((struct ObjData *)param) == 0) {
+                                if ((tile->flags & 0x10) || (tile->field_10 & 1)) {
+                                    FUN_0045f480(node, 8);
+                                }
+                            } else if ((tile->flags & 0x10) && (tile->field_10 & 1) == 0) {
+                                FUN_0045f480(node, 9);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        node = (struct Cursor *)node->field_1830;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045fa80
 LEGO_EXPORT void CalcBasicObjectCursor(struct CursorObj *obj, unsigned int a2, unsigned int a3) {
