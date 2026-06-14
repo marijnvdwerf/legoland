@@ -208,10 +208,10 @@ unsigned char RESTAURANT_SFX[0x1c];
 unsigned char OCTOPUS_SFX[0x1c];
 
 // GLOBAL: LEGOLAND 0x004b7260
-unsigned char DAT_004b7260[0x18];
+int DAT_004b7260[6];
 
 // GLOBAL: LEGOLAND 0x004b7278
-unsigned char DAT_004b7278[0x10];
+int DAT_004b7278[4];
 
 // GLOBAL: LEGOLAND 0x004b7288
 void *DAT_004b7288;

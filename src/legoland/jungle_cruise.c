@@ -544,7 +544,66 @@ void FUN_00434f50(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00434f90
-void FUN_00434f90(void) { STUB(); }
+void FUN_00434f90(unsigned int param_1, int *param_2) {
+    struct JungleScore *score;
+    unsigned char temp[2];
+    int x;
+    int y;
+    int tile;
+    int i;
+
+    temp[0] = (unsigned char)param_2[0];
+    temp[1] = (unsigned char)param_2[1];
+    score = (struct JungleScore *)malloc(0x44);
+    if (score == NULL) {
+        return;
+    }
+    score->field_0 = *(unsigned short *)temp;
+    score->field_2 = (unsigned char)param_2[0] + (char)DAT_004b7278[0] + 2;
+    score->field_3 = (unsigned char)param_2[1] + (char)DAT_004b7278[1] + 2;
+    score->field_4 = (unsigned char)param_2[0] + (char)DAT_004b7260[0] + 2;
+    score->field_8 = 0;
+    score->field_c = 9999;
+    score->field_10 = 0;
+    score->field_5 = (unsigned char)param_2[1] + (char)DAT_004b7260[1] + 2;
+    score->field_14 = 0;
+    score->field_2c = 0x96;
+    score->field_40 = 3;
+    score->blokes[0] = 0;
+    score->blokes[1] = 0;
+    score->blokes[2] = 0;
+    score->blokes[3] = 0;
+    score->blokes[4] = 0;
+    score->field_30[0] = 0;
+    score->field_30[1] = 0;
+    score->next = DAT_00629c3c;
+    DAT_00629c3c = score;
+    AddBasicObject(param_1, (unsigned int)param_2);
+    FUN_00436dc0(param_2[0] + 2 + DAT_004b7278[0], param_2[1] + 2 + DAT_004b7278[1], 1, &score->field_0);
+    FUN_00436dc0(param_2[0] + 2 + DAT_004b7260[0], param_2[1] + 2 + DAT_004b7260[1], 4, &score->field_0);
+    y = DAT_00629c40[1];
+    if (DAT_00629c40[1] <= DAT_00629c40[3]) {
+        do {
+            i = DAT_00629c40[2] - 1;
+            x = DAT_00629c40[0];
+            if (DAT_00629c40[0] <= i) {
+                do {
+                    if (x == DAT_00629c40[0]) {
+                        tile = DAT_0081cb58->tiles[0] + 9;
+                    } else if (x == i) {
+                        tile = DAT_0081cb58->tiles[0] + 0xc;
+                    } else {
+                        tile = DAT_0081cb58->tiles[0];
+                    }
+                    SetMapTile(param_2[0] + x, param_2[1] + y, tile);
+                    x = x + 1;
+                    i = DAT_00629c40[2] - 1;
+                } while (x <= i);
+            }
+            y = y + 1;
+        } while (y <= DAT_00629c40[3]);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00435150
 void FUN_00435150(void) { STUB(); }

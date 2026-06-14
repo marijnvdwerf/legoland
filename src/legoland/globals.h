@@ -343,9 +343,9 @@ extern unsigned char RESTAURANT_SFX[0x1c];
 // 0x004b6968
 extern unsigned char OCTOPUS_SFX[0x1c];
 // 0x004b7260
-extern unsigned char DAT_004b7260[0x18];
+extern int DAT_004b7260[6];
 // 0x004b7278
-extern unsigned char DAT_004b7278[0x10];
+extern int DAT_004b7278[4];
 // 0x004b7288
 extern void *DAT_004b7288;
 // 0x004b72e4
