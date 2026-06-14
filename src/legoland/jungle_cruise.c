@@ -328,7 +328,15 @@ void FUN_00436130(unsigned short param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00436160
-void FUN_00436160(void) { STUB(); }
+void FUN_00436160(unsigned int param_1, int param_2) {
+    struct JungleScore *node;
+    int best = 0;
+    for (node = DAT_00629c3c; node != NULL; node = node->next) {
+        if (best < (int)node->field_40 && (param_2 == 0 || node->field_8 != 0)) {
+            best = node->field_40;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00436190
 void FUN_00436190(struct JungleHolder *param_1) {
@@ -336,7 +344,14 @@ void FUN_00436190(struct JungleHolder *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x004361a0
-void FUN_004361a0(void) { STUB(); }
+void FUN_004361a0(void) {
+    EditMode = 1;
+    DAT_008119b8 = DAT_0081cb54;
+    DAT_0081cb54->field_3c = DAT_004b7478;
+    DefaultCursor(&EditCursor);
+    EditCursor.field_1828 |= 0x8;
+    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+}
 
 // FUNCTION: LEGOLAND 0x00436200
 void FUN_00436200(void) { STUB(); }
@@ -375,7 +390,7 @@ struct JunglePath *FUN_004371b0(unsigned char param_1, unsigned char param_2) {
     entry = DAT_0062fd2c;
     if (entry != NULL) {
         while (1) {
-            if (entry->field_0 == combined) {
+            if (*(unsigned short *)&entry->x == combined) {
                 break;
             }
             entry = entry->next;
@@ -388,16 +403,136 @@ struct JunglePath *FUN_004371b0(unsigned char param_1, unsigned char param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x004371e0
-unsigned int FUN_004371e0(unsigned char param_1, unsigned char param_2, unsigned char param_3, unsigned char param_4) { STUB(); }
+unsigned int FUN_004371e0(unsigned char param_1, unsigned char param_2, unsigned char param_3, unsigned char param_4) {
+    struct JunglePath *path;
+    int local_4;
+    unsigned short local_6;
+
+    local_4 = 0;
+    for (path = DAT_0062fd2c; path != NULL; path = path->next) {
+        path->field_c = 0;
+    }
+    path = FUN_004371b0(param_1, param_2);
+    if (path == NULL) {
+        return 0;
+    }
+    local_6 = path->field_2;
+    FUN_00437260(param_1, param_2, param_3, param_4, &local_6, &local_4);
+    return local_4;
+}
 
 // FUNCTION: LEGOLAND 0x00437260
-void FUN_00437260(int param_1, int param_2, int param_3, int param_4, unsigned short *param_5, int *param_6) { STUB(); }
+void FUN_00437260(int param_1, int param_2, int param_3, int param_4, unsigned short *param_5, int *param_6) {
+    struct JunglePath *cur;
+    struct JunglePath *adj;
+
+    if (*param_6 == 1) {
+        return;
+    }
+    while (1) {
+        cur = FUN_004371b0(param_1, param_2);
+        if (cur == NULL) {
+            return;
+        }
+        if (cur->field_2 != *param_5) {
+            return;
+        }
+        if (param_1 == param_3 && param_2 == param_4) {
+            break;
+        }
+        cur->field_c = 1;
+        if ((cur->field_4 & 1) != 0 && (adj = FUN_004371b0(param_1, param_2 - 5)) != NULL && adj->field_c == 0) {
+            FUN_00437260(param_1, param_2 - 5, param_3, param_4, param_5, param_6);
+        }
+        if ((cur->field_4 & 2) != 0 && (adj = FUN_004371b0(param_1 + 5, param_2)) != NULL && adj->field_c == 0) {
+            FUN_00437260(param_1 + 5, param_2, param_3, param_4, param_5, param_6);
+        }
+        if ((cur->field_4 & 4) != 0 && (adj = FUN_004371b0(param_1, param_2 + 5)) != NULL && adj->field_c == 0) {
+            FUN_00437260(param_1, param_2 + 5, param_3, param_4, param_5, param_6);
+        }
+        if ((cur->field_4 & 8) == 0) {
+            return;
+        }
+        param_1 = param_1 - 5;
+        cur = FUN_004371b0(param_1, param_2);
+        if (cur == NULL) {
+            return;
+        }
+        if (cur->field_c != 0) {
+            return;
+        }
+        if (*param_6 == 1) {
+            return;
+        }
+    }
+    *param_6 = 1;
+}
 
 // FUNCTION: LEGOLAND 0x004373c0
-void FUN_004373c0(unsigned short param_1) { STUB(); }
+void FUN_004373c0(unsigned short param_1) {
+    struct JungleScore *score = DAT_00629c3c;
+    struct JunglePath *path;
+    int again;
+
+    for (path = DAT_0062fd2c; path != NULL; path = path->next) {
+        if (path->field_2 == param_1) {
+            path->field_18 = NULL;
+        }
+    }
+    while (score != NULL && score->field_0 != param_1) {
+        score = score->next;
+    }
+    DAT_0062fd30 = FUN_004371b0(score->field_4, score->field_5);
+    DAT_0062fd30->field_8 = 0;
+    DAT_0062fd30->field_14 = NULL;
+    do {
+        DAT_0062fd34 = NULL;
+        FUN_00437440(param_1);
+        again = DAT_0062fd34 != NULL;
+        DAT_0062fd30 = DAT_0062fd34;
+        DAT_0062fd34 = NULL;
+    } while (again);
+}
 
 // FUNCTION: LEGOLAND 0x00437440
-void FUN_00437440(short param_1) { STUB(); }
+void FUN_00437440(short param_1) {
+    struct JunglePath *cur;
+    struct JunglePath *a0;
+    struct JunglePath *a1;
+    struct JunglePath *a2;
+    struct JunglePath *a3;
+
+    for (cur = DAT_0062fd30; cur != NULL; cur = cur->field_14) {
+        a0 = FUN_004371b0(cur->x, cur->y - 5);
+        a1 = FUN_004371b0(cur->x + 5, cur->y);
+        a2 = FUN_004371b0(cur->x, cur->y + 5);
+        a3 = FUN_004371b0(cur->x - 5, cur->y);
+        if (a0 != NULL && a0->field_2 == (unsigned short)param_1 && a0->field_18 == NULL) {
+            a0->field_18 = cur;
+            a0->field_8 = cur->field_8 + 1;
+            a0->field_14 = DAT_0062fd34;
+            DAT_0062fd34 = a0;
+        }
+        if (a1 != NULL && a1->field_2 == (unsigned short)param_1 && a1->field_18 == NULL) {
+            a1->field_18 = cur;
+            a1->field_8 = cur->field_8 + 1;
+            a1->field_14 = DAT_0062fd34;
+            DAT_0062fd34 = a1;
+        }
+        if (a2 != NULL && a2->field_2 == (unsigned short)param_1 && a2->field_18 == NULL) {
+            a2->field_18 = cur;
+            a2->field_8 = cur->field_8 + 1;
+            a2->field_14 = DAT_0062fd34;
+            DAT_0062fd34 = a2;
+        }
+        if (a3 != NULL && a3->field_2 == (unsigned short)param_1 && a3->field_18 == NULL) {
+            a3->field_18 = cur;
+            a3->field_8 = cur->field_8 + 1;
+            a3->field_14 = DAT_0062fd34;
+            DAT_0062fd34 = a3;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00437570
 void FUN_00437570(void) { STUB(); }

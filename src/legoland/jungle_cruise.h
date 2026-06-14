@@ -53,9 +53,9 @@ struct JungleObj {
 };
 
 struct JunglePath {
-    /* 0x00 */ unsigned short field_0;
-    /* 0x02 */ unsigned char field_2;
-    /* 0x03 */ unsigned char field_3;
+    /* 0x00 */ unsigned char x;
+    /* 0x01 */ unsigned char y;
+    /* 0x02 */ unsigned short field_2;
     /* 0x04 */ unsigned int field_4;
     /* 0x08 */ unsigned int field_8;
     /* 0x0c */ unsigned int field_c;

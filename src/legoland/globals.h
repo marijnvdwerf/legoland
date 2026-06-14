@@ -337,6 +337,8 @@ extern unsigned char DAT_004b7260[0x18];
 extern unsigned char DAT_004b7278[0x10];
 // 0x004b7288
 extern void *DAT_004b7288;
+// 0x004b7478
+extern struct Footprint DAT_004b7478;
 // 0x004b7618
 extern const unsigned char SPACE_TOWER_SFX[15];
 // 0x004b7620

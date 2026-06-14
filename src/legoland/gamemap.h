@@ -11,6 +11,10 @@ struct EditCursorData {
     /* 0x3c */ unsigned char field_3c;
 };
 
+struct Footprint {
+    int v[5];
+};
+
 // The map edit cursor. EditCursor / QueryCursor / DAT_0082f760 are instances of
 // this 0x1834-byte structure. Only the fields actually touched are named; the
 // gaps are explicit padding so the layout matches the original byte-for-byte.
@@ -20,7 +24,7 @@ struct Cursor {
     /* 0x018 */ unsigned int field_18;
     /* 0x01c */ unsigned int field_1c;
     /* 0x020 */ unsigned char pad_20[0x3c - 0x20];
-    /* 0x03c */ int field_3c[5];
+    /* 0x03c */ struct Footprint field_3c;
     /* 0x050 */ unsigned char pad_50[0x64 - 0x50];
     /* 0x064 */ unsigned int field_64;
     /* 0x068 */ unsigned char pad_68[0xc4 - 0x68];

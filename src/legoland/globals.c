@@ -216,6 +216,9 @@ unsigned char DAT_004b7278[0x10];
 // GLOBAL: LEGOLAND 0x004b7288
 void *DAT_004b7288;
 
+// GLOBAL: LEGOLAND 0x004b7478
+struct Footprint DAT_004b7478;
+
 // GLOBAL: LEGOLAND 0x004b7618
 const unsigned char SPACE_TOWER_SFX[15] = {0};
 
