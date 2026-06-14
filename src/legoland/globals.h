@@ -1067,6 +1067,8 @@ extern int DAT_00629c40[5];
 extern void *DAT_00629c50;
 // 0x00629c54
 extern int DAT_00629c54;
+// 0x00629c58
+extern struct Cursor DAT_00629c58[4];
 // 0x0062fd2c
 extern struct JunglePath *DAT_0062fd2c;
 // 0x0062fd30
