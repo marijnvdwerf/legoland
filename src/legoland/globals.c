@@ -270,6 +270,12 @@ char DAT_004b64d4[4];
 // GLOBAL: LEGOLAND 0x004b64d8
 unsigned char CAROUSSEL_SFX[12];
 
+// GLOBAL: LEGOLAND 0x004b65c0
+int DAT_004b65c0[8] = {0, 4, 0, 3, 0, 2, 0, 1};
+
+// GLOBAL: LEGOLAND 0x004b6638
+char DAT_004b6638[4] = ".";
+
 // GLOBAL: LEGOLAND 0x004b6668
 unsigned char ENTRANCE_SFX[0x1c];
 
@@ -1364,6 +1370,12 @@ struct Sprite *DAT_006160c0;
 // GLOBAL: LEGOLAND 0x006160c4
 struct CarouselNode *DAT_006160c4;
 
+// GLOBAL: LEGOLAND 0x006160c8
+unsigned int DAT_006160c8;
+
+// GLOBAL: LEGOLAND 0x006160cc
+unsigned int DAT_006160cc;
+
 // GLOBAL: LEGOLAND 0x006160d0
 unsigned int DAT_006160d0;
 
@@ -1380,7 +1392,7 @@ struct Sprite *DAT_006160e0;
 struct Position *DAT_006160e4;
 
 // GLOBAL: LEGOLAND 0x006160e8
-void *DAT_006160e8;
+struct EarthNode *DAT_006160e8;
 
 // GLOBAL: LEGOLAND 0x006160f4
 unsigned int DAT_006160f4;

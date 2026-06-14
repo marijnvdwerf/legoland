@@ -54,6 +54,7 @@ struct CopterNode;
 struct GoldNode;
 struct CarouselNode;
 struct CarouselRide;
+struct EarthNode;
 struct JoustNode;
 struct InterfaceIconNode;
 struct IconNode;
@@ -394,6 +395,10 @@ extern unsigned int DAT_004b6300;
 extern char DAT_004b64d4[4];
 // 0x004b64d8
 extern unsigned char CAROUSSEL_SFX[12];
+// 0x004b65c0
+extern int DAT_004b65c0[8];
+// 0x004b6638
+extern char DAT_004b6638[4];
 // 0x004b6668
 extern unsigned char ENTRANCE_SFX[0x1c];
 // 0x004b66e8
@@ -1113,8 +1118,12 @@ extern struct Sprite *DAT_006160d8;
 extern struct Sprite *DAT_006160e0;
 // 0x006160e4
 extern struct Position *DAT_006160e4;
+// 0x006160c8
+extern unsigned int DAT_006160c8;
+// 0x006160cc
+extern unsigned int DAT_006160cc;
 // 0x006160e8
-extern void *DAT_006160e8;
+extern struct EarthNode *DAT_006160e8;
 // 0x006160f4
 extern unsigned int DAT_006160f4;
 // 0x006160fc
