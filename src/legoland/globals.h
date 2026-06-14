@@ -2745,6 +2745,8 @@ extern void *DAT_0081c0a0;
 extern void *DAT_0081c0a4;
 // 0x0081c0c0
 extern int DAT_0081c0c0[0x200];
+// 0x0081c4c0
+extern unsigned int DAT_0081c4c0[0x100];
 // 0x0081c8c0
 extern void *DAT_0081c8c0;
 // 0x0081c8c4

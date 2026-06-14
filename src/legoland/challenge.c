@@ -165,11 +165,136 @@ unsigned int FUN_00443710(void) {
     return DAT_00665e8c;
 }
 
+struct LocFile {
+    /* 0x00 */ int count;
+    /* 0x04 */ unsigned char pad_4[0xc - 0x4];
+    /* 0x0c */ char name[1];
+};
+
 // FUNCTION: LEGOLAND 0x00443720
-void FUN_00443720(void *param_1, const char *param_2) { STUB(); }
+void FUN_00443720(struct LocFile *param_1, const char *param_2) {
+    int i;
+    char *name;
+    struct Image *image;
+    char filename[64];
+
+    if (param_1->count <= 0) {
+        return;
+    }
+    i = 0;
+    name = param_1->name;
+    do {
+        // STRING: LEGOLAND 0x004b7d58
+        sprintf(filename, "%s\\%s%04d.BMP", param_2, name, i);
+        image = (struct Image *)FUN_004436d0(filename, 9);
+        if (image == NULL) {
+            // STRING: LEGOLAND 0x004b7d3c
+            DBPrintf("Failed to load texture %s", filename);
+        } else {
+            FUN_00488670(image, DAT_00665e8c);
+            DAT_0081c0c0[DAT_00665e8c * 2] = image->width;
+            DAT_0081c0c0[DAT_00665e8c * 2 + 1] = image->height;
+            KillImage(image);
+        }
+        DAT_00665e8c = DAT_00665e8c + 1;
+        i = i + 1;
+    } while (i < param_1->count);
+}
 
 // FUNCTION: LEGOLAND 0x004437d0
-void FUN_004437d0(unsigned int arg, void *ptr) { STUB(); }
+void FUN_004437d0(struct Image *param_1, struct TextureNode *param_2) {
+    int width;
+    int height;
+    int x;
+    int y;
+    unsigned char *src;
+    unsigned char *out;
+    unsigned int *dst;
+    unsigned char index;
+
+    param_2->width_m1 = param_1->width - 1;
+    param_2->height_m1 = param_1->height - 1;
+    width = param_1->width;
+    switch (width) {
+    case 1:
+        param_2->format_w = 0;
+        break;
+    case 2:
+        param_2->format_w = 1;
+        break;
+    case 4:
+        param_2->format_w = 2;
+        break;
+    case 8:
+        param_2->format_w = 3;
+        break;
+    case 0x10:
+        param_2->format_w = 4;
+        break;
+    case 0x20:
+        param_2->format_w = 5;
+        break;
+    case 0x40:
+        param_2->format_w = 6;
+        break;
+    case 0x80:
+        param_2->format_w = 7;
+        break;
+    case 0x100:
+        param_2->format_w = 8;
+    }
+    height = param_1->height;
+    switch (height) {
+    case 1:
+        param_2->format_h = 0;
+        break;
+    case 2:
+        param_2->format_h = 1;
+        break;
+    case 4:
+        param_2->format_h = 2;
+        break;
+    case 8:
+        param_2->format_h = 3;
+        break;
+    case 0x10:
+        param_2->format_h = 4;
+        break;
+    case 0x20:
+        param_2->format_h = 5;
+        break;
+    case 0x40:
+        param_2->format_h = 6;
+        break;
+    case 0x80:
+        param_2->format_h = 7;
+        break;
+    case 0x100:
+        param_2->format_h = 8;
+    }
+    param_2->data_8 = (unsigned char *)malloc(param_1->height * param_1->width);
+    if (param_1 != NULL) {
+        dst = (unsigned int *)malloc(0x404);
+        param_2->data_c = dst;
+        for (x = 0x101; x != 0; x--) {
+            *dst = 0;
+            dst++;
+        }
+        for (y = 0; y < param_1->height; y++) {
+            width = param_1->width;
+            for (x = 0; x < width; x++) {
+                src = (unsigned char *)param_1->data + width * y;
+                out = param_2->data_8 + width * y;
+                index = src[x];
+                out[x] = index;
+                if (param_2->data_c[index] == 0) {
+                    param_2->data_c[index] = FUN_00486280(0x40, &DAT_0081c4c0[index]);
+                }
+                width = param_1->width;
+            }
+        }
+    }
+}
 
 struct AviFileInfo {
     /* 0x00 */ unsigned int dwMaxBytesPerSec;
