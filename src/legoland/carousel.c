@@ -299,42 +299,40 @@ void FUN_0042c6d0(struct CarouselNode *node) {
     struct CarouselListElem *elem = DAT_006160bc->list;
     unsigned int flags = node->flags;
 
-    if ((flags & 1) == 0) {
-        if ((flags & 0x4000) == 0) {
-            if (node->field_6 != 0) {
-                if (node->field_1c == 0) {
-                    node->flags = flags | 0x4000;
-                    Ride_SetFlagToNotLetAnyoneOn((unsigned char *)&node->id);
-                } else {
-                    node->field_1c = node->field_1c - 1;
-                }
-            }
-        } else if ((char)node->field_6 == (char)node->field_18) {
-            node->flags = flags & 0xffffbfff;
-            FUN_0042bc90(node);
-            return;
-        }
-    } else {
+    if ((flags & 1) != 0) {
         int v = node->field_14 + 1;
+        unsigned char f10 = node->field_10;
         node->field_14 = v;
-        if (node->field_10 == 0) {
-            v = GetAllBlokesOffRide((struct Ride *)DAT_006160bc, node->id);
-            if (v == 0) {
+        if (f10 == 0) {
+            if (GetAllBlokesOffRide((struct Ride *)DAT_006160bc, node->id) == 0) {
                 return;
             }
             FUN_0042c210(node);
             return;
         }
-        if (1 < v) {
+        if (2 <= v) {
             char cVar4;
             node->field_14 = 0;
             cVar4 = node->field_8 + '\x01';
             node->field_8 = cVar4;
             if ('?' < cVar4) {
                 node->field_8 = 0;
-                node->field_10 = node->field_10 - 1;
+                node->field_10 = f10 - 1;
             }
         }
+    } else if ((flags & 0x4000) == 0) {
+        if (node->field_6 != 0) {
+            if (node->field_1c == 0) {
+                node->flags = flags | 0x4000;
+                Ride_SetFlagToNotLetAnyoneOn((unsigned char *)&node->id);
+            } else {
+                node->field_1c = node->field_1c - 1;
+            }
+        }
+    } else if ((char)node->field_6 == (char)node->field_18) {
+        node->flags = flags & 0xffffbfff;
+        FUN_0042bc90(node);
+        return;
     }
     for (; elem != NULL; elem = elem->next) {
         if (node->id == elem->id && *(char *)((char *)elem->bloke + 0x35) == '\x01') {
