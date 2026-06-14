@@ -1358,6 +1358,10 @@ extern unsigned int DAT_0066601c;
 extern unsigned int DAT_00666020;
 // 0x00666024
 extern unsigned int DAT_00666024;
+// 0x00666028
+extern unsigned int DAT_00666028;
+// 0x0066602c
+extern unsigned int DAT_0066602c;
 // 0x00666030
 extern unsigned int DAT_00666030;
 // 0x00666034
