@@ -6,7 +6,7 @@
 
 void FUN_00455f70(int param_1);
 LEGO_EXPORT void PrintCent(int cx, int y, int width, const char *text, int font);
-LEGO_EXPORT void BubbleHelp(unsigned int *table, unsigned int a2, unsigned int a3);
+LEGO_EXPORT void BubbleHelp(int *rect, char *text, int font);
 LEGO_EXPORT HGDIOBJ SelectFont(HDC hdc, int font_id);
 
 struct TextCell;

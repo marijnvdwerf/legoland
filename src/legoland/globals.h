@@ -538,7 +538,7 @@ extern unsigned int DAT_004b9ca8;
 // 0x004b9e5c
 extern unsigned int DAT_004b9e5c[1];
 // 0x004b9f78
-extern unsigned int DAT_004b9f78[4];
+extern int DAT_004b9f78[4];
 // 0x004b9f88
 extern unsigned int DAT_004b9f88;
 // 0x004b9f8c
@@ -2441,7 +2441,7 @@ extern unsigned int DAT_007fe040;
 // 0x007fe044
 extern unsigned int DAT_007fe044;
 // 0x007fe048
-extern unsigned int DAT_007fe048;
+extern char *DAT_007fe048;
 // 0x007fe04c
 extern unsigned int DAT_007fe04c;
 // 0x007fe050

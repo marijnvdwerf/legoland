@@ -755,7 +755,7 @@ void FUN_00491080(char *param_1, int param_2, int param_3, int param_4, int para
 
 // FUNCTION: LEGOLAND 0x004910f0
 void FUN_004910f0(void) {
-    unsigned int rc[4];
+    int rc[4];
     char **line;
     int y;
     int n;
@@ -782,7 +782,7 @@ void FUN_004910f0(void) {
         if ((int)GetTicks() > (int)DAT_00798888) {
             DAT_00798888 = 0;
         }
-        BubbleHelp(rc, (unsigned int)((char **)&DAT_007cb140)[DAT_00798884], 2);
+        BubbleHelp(rc, ((char **)&DAT_007cb140)[DAT_00798884], 2);
     }
 }
 

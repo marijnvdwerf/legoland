@@ -529,7 +529,7 @@ LEGO_EXPORT struct ResFile *RES_OpenFileFromVolumePtr(void *param_1, struct ResV
     if (entry == 0) {
         return 0;
     }
-    return RES_OpenFileFromVolume(param_1, &entry->name);
+    return RES_OpenFileFromVolume(param_1, entry->name);
 }
 
 // FUNCTION: LEGOLAND 0x00489e30
