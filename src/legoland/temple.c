@@ -5,21 +5,7 @@
 #include "globals.h"
 #include "map_object.h"
 #include "obj_instance.h"
-
-typedef void (*TempleHandler)(void);
-
-struct TempleObj {
-    unsigned char pad_0[0x8c];
-    TempleHandler field_8c;
-    unsigned char pad_90[0x8];
-    TempleHandler field_98;
-    TempleHandler field_9c;
-    unsigned char pad_a0[0x4];
-    TempleHandler field_a4;
-    TempleHandler field_a8;
-    TempleHandler field_ac;
-    TempleHandler field_b0;
-};
+#include "ride_interfaces.h"
 
 struct TempleObject {
     unsigned char pad_0[12];
@@ -68,15 +54,15 @@ void FUN_00416e20(struct TempleObject *a1, void *a2, unsigned int a3) {
 }
 
 // FUNCTION: LEGOLAND 0x00416e50
-void FUN_00416e50(const char **str, struct TempleObj *obj) {
+void FUN_00416e50(struct ClassNode *str, struct CallbackTable *obj) {
     // STRING: LEGOLAND 0x004b4ef0
-    if (_stricmp("TEMPLE", *str) == 0) {
-        obj->field_a4 = FUN_004169c0;
-        obj->field_ac = FUN_00416a30;
-        obj->field_8c = FUN_00416dc0;
-        obj->field_a8 = FUN_00416b50;
-        obj->field_b0 = FUN_00416a60;
-        obj->field_9c = FUN_00416e20;
-        obj->field_98 = FUN_00416e00;
+    if (_stricmp("TEMPLE", str->name) == 0) {
+        obj->cb_a4 = FUN_004169c0;
+        obj->cb_ac = FUN_00416a30;
+        obj->cb_8c = FUN_00416dc0;
+        obj->cb_a8 = FUN_00416b50;
+        obj->cb_b0 = FUN_00416a60;
+        obj->cb_9c = FUN_00416e20;
+        obj->cb_98 = FUN_00416e00;
     }
 }

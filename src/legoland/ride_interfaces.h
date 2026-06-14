@@ -246,6 +246,6 @@ void FUN_00452bc0();
 LEGO_EXPORT void Joust_GetInterfaces(struct ClassNode *head, struct CallbackTable *iface);
 void RemoveBasicPath();
 void RemoveSoundObject();
-void SpaceTowerRide();
-void SpiderRide();
+void SpaceTowerRide(struct ClassNode *head, struct CallbackTable *iface);
+void SpiderRide(struct ClassNode *head, struct CallbackTable *iface);
 LEGO_EXPORT void TempleSlide_GetInterfaces(struct ClassNode *head, struct CallbackTable *iface);

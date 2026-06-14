@@ -7,6 +7,7 @@
 #include "map_object.h"
 #include "obj_instance.h"
 #include "render3d.h"
+#include "ride_interfaces.h"
 #include "sound_music.h"
 #include "space_tower.h"
 
@@ -40,22 +41,6 @@ struct RideObject {
     unsigned int var_b0;
     unsigned char pad_b4[24];
     unsigned int var_cc;
-};
-
-struct SpaceTowerObject {
-    unsigned char pad_0[0x8c];
-    void (*field_8c)(void);
-    unsigned char pad_90[8];
-    void (*field_98)(void);
-    void (*field_9c)(void);
-    void (*field_a0)(void);
-    void (*field_a4)(void);
-    void (*field_a8)(void);
-    void (*field_ac)(void);
-    void (*field_b0)(void);
-    unsigned char pad_b4[4];
-    void (*field_b8)(void);
-    void (*field_bc)(void);
 };
 
 struct ListNode {
@@ -259,19 +244,19 @@ LEGO_EXPORT int SpaceTower_Save(void) {
 LEGO_EXPORT void SpaceTower_Load(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043b780
-void SpaceTowerRide(const char **name, struct SpaceTowerObject *obj) {
+void SpaceTowerRide(struct ClassNode *name, struct CallbackTable *obj) {
     // STRING: LEGOLAND 0x004b789c
-    if (_stricmp("SPACE TOWER RIDE", *name) == 0) {
-        obj->field_a4 = FUN_0043b2b0;
-        obj->field_8c = FUN_0043b420;
-        obj->field_a8 = FUN_0043bac0;
-        obj->field_a0 = FUN_0043b4e0;
-        obj->field_b0 = FUN_0043af50;
-        obj->field_9c = FUN_0043b460;
-        obj->field_98 = FUN_0043b4b0;
-        obj->field_ac = FUN_0043b570;
-        obj->field_bc = SpaceTower_Save;
-        obj->field_b8 = SpaceTower_Load;
+    if (_stricmp("SPACE TOWER RIDE", name->name) == 0) {
+        obj->cb_a4 = FUN_0043b2b0;
+        obj->cb_8c = FUN_0043b420;
+        obj->cb_a8 = FUN_0043bac0;
+        obj->cb_a0 = FUN_0043b4e0;
+        obj->cb_b0 = FUN_0043af50;
+        obj->cb_9c = FUN_0043b460;
+        obj->cb_98 = FUN_0043b4b0;
+        obj->cb_ac = FUN_0043b570;
+        obj->cb_bc = SpaceTower_Save;
+        obj->cb_b8 = SpaceTower_Load;
     }
 }
 

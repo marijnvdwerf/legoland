@@ -5,6 +5,7 @@
 
 #include "binv.h"
 #include "llidb.h"
+#include "ride_interfaces.h"
 #include "sound_music.h"
 #include "spider_ride.h"
 
@@ -34,23 +35,6 @@ struct CarNode {
     /* 0x18 */ unsigned int field_18;
     /* 0x1c */ unsigned char pad_1c[0x48];
     /* 0x64 */ struct CarNode *next;
-};
-
-struct RideObject {
-    const char *name;
-    unsigned char pad_4[0x88];
-    void (*field_8c)(void);
-    unsigned char pad_90[0x8];
-    void (*field_98)(void);
-    void (*field_9c)(void);
-    void (*field_a0)(void);
-    void (*field_a4)(void);
-    void (*field_a8)(void);
-    void (*field_ac)(void);
-    void (*field_b0)(void);
-    unsigned char pad_b4[4];
-    void (*field_b8)(void);
-    void (*field_bc)(void);
 };
 
 #include "image_sprite.h"
@@ -164,19 +148,19 @@ unsigned int *FUN_00416120(unsigned int *a1, unsigned short a2) {
 }
 
 // FUNCTION: LEGOLAND 0x00416160
-void SpiderRide(char **name_ptr, struct RideObject *obj) {
+void SpiderRide(struct ClassNode *name_ptr, struct CallbackTable *obj) {
     // STRING: LEGOLAND 0x004b4eb8
-    if (_stricmp("SPIDER RIDE", *name_ptr) == 0) {
-        obj->field_a4 = FUN_00415e80;
-        obj->field_ac = FUN_00415fd0;
-        obj->field_8c = FUN_00416060;
-        obj->field_a8 = FUN_00416330;
-        obj->field_b0 = FUN_00415ae0;
-        obj->field_9c = FUN_004160a0;
-        obj->field_98 = FUN_004160f0;
-        obj->field_a0 = FUN_00416120;
-        obj->field_bc = SaveSpider;
-        obj->field_b8 = LoadSpider;
+    if (_stricmp("SPIDER RIDE", name_ptr->name) == 0) {
+        obj->cb_a4 = FUN_00415e80;
+        obj->cb_ac = FUN_00415fd0;
+        obj->cb_8c = FUN_00416060;
+        obj->cb_a8 = FUN_00416330;
+        obj->cb_b0 = FUN_00415ae0;
+        obj->cb_9c = FUN_004160a0;
+        obj->cb_98 = FUN_004160f0;
+        obj->cb_a0 = FUN_00416120;
+        obj->cb_bc = SaveSpider;
+        obj->cb_b8 = LoadSpider;
     }
 }
 

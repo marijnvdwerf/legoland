@@ -40,25 +40,8 @@ struct PlaneRideRoot {
     struct PlaneRideBlock *field_c;
 };
 
-typedef void (*PlaneRideMethod)(void);
-
-struct PlaneRideInterface {
-    unsigned char pad_0[0x8c];
-    PlaneRideMethod field_8c;
-    unsigned char pad_90[8];
-    PlaneRideMethod field_98;
-    PlaneRideMethod field_9c;
-    PlaneRideMethod field_a0;
-    PlaneRideMethod field_a4;
-    PlaneRideMethod field_a8;
-    PlaneRideMethod field_ac;
-    PlaneRideMethod field_b0;
-    unsigned char pad_b4[4];
-    PlaneRideMethod field_b8;
-    PlaneRideMethod field_bc;
-};
-
 #include "image_sprite.h"
+#include "ride_interfaces.h"
 
 // FUNCTION: LEGOLAND 0x0043d880
 void FUN_0043d880(void *param_1) {
@@ -291,19 +274,19 @@ LEGO_EXPORT int LoadZoomer(struct ZoomerLoadArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0043e220
-void FUN_0043e220(const char **name, struct PlaneRideInterface *iface) {
+void FUN_0043e220(struct ClassNode *name, struct CallbackTable *iface) {
     // STRING: LEGOLAND 0x004b7a6c
-    if (_stricmp("PLANE RIDE", *name) == 0) {
-        iface->field_a4 = (PlaneRideMethod)FUN_0043dda0;
-        iface->field_ac = (PlaneRideMethod)FUN_0043dee0;
-        iface->field_8c = (PlaneRideMethod)FUN_0043df50;
-        iface->field_a8 = (PlaneRideMethod)FUN_0043e410;
-        iface->field_b0 = (PlaneRideMethod)FUN_0043da60;
-        iface->field_9c = (PlaneRideMethod)FUN_0043df90;
-        iface->field_98 = (PlaneRideMethod)FUN_0043dfe0;
-        iface->field_a0 = (PlaneRideMethod)FUN_0043e010;
-        iface->field_b8 = (PlaneRideMethod)LoadZoomer;
-        iface->field_bc = (PlaneRideMethod)SaveZoomer;
+    if (_stricmp("PLANE RIDE", name->name) == 0) {
+        iface->cb_a4 = FUN_0043dda0;
+        iface->cb_ac = FUN_0043dee0;
+        iface->cb_8c = FUN_0043df50;
+        iface->cb_a8 = FUN_0043e410;
+        iface->cb_b0 = FUN_0043da60;
+        iface->cb_9c = FUN_0043df90;
+        iface->cb_98 = FUN_0043dfe0;
+        iface->cb_a0 = FUN_0043e010;
+        iface->cb_b8 = LoadZoomer;
+        iface->cb_bc = SaveZoomer;
     }
 }
 
