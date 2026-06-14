@@ -87,7 +87,12 @@ struct MapElement {
 struct LegoConfig {
     /* 0x00 */ unsigned short field_0;
     /* 0x02 */ unsigned short field_2;
-    /* 0x04 */ unsigned char pad_4[0x10 - 0x04];
+    /* 0x04 */ unsigned short field_4;
+    /* 0x06 */ unsigned short field_6;
+    /* 0x08 */ unsigned short field_8;
+    /* 0x0a */ unsigned short field_a;
+    /* 0x0c */ unsigned short field_c;
+    /* 0x0e */ unsigned short field_e;
     /* 0x10 */ unsigned short field_10;
     /* 0x12 */ unsigned short field_12;
     /* 0x14 */ unsigned short width;
@@ -515,6 +520,14 @@ extern unsigned char DAT_004b8bbc[1];
 extern unsigned int DAT_004b90f8;
 // 0x004b90fc
 extern unsigned int DAT_004b90fc;
+// 0x004b9210
+extern int DAT_004b9210;
+// 0x004b9214
+extern int DAT_004b9214;
+// 0x004b9218
+extern int DAT_004b9218;
+// 0x004b921c
+extern int DAT_004b921c;
 // 0x004b9220
 extern LEGO_EXPORT unsigned int BGFullUpdate;
 // 0x004b9228
@@ -1594,6 +1607,8 @@ extern unsigned int DAT_00667d40;
 extern int DAT_00667d44;
 // 0x00667d48
 extern unsigned int DAT_00667d48;
+// 0x00667d4c
+extern unsigned int DAT_00667d4c;
 // 0x00667d54
 extern unsigned int DAT_00667d54;
 // 0x00667d58
@@ -2566,6 +2581,10 @@ extern LEGO_EXPORT struct MapElement **GameMap;
 extern unsigned int DAT_00801408;
 // 0x00801420
 extern struct DeferredSprite DAT_00801420[100];
+// 0x00801a60
+extern int DAT_00801a60;
+// 0x00801a64
+extern int DAT_00801a64;
 // 0x00801a6c
 extern void *DAT_00801a6c;
 // 0x00801a80
@@ -2576,6 +2595,10 @@ extern unsigned int DAT_00801b20;
 extern LEGO_EXPORT unsigned int ObjectPartCount;
 // 0x00801f40
 extern LEGO_EXPORT struct TileSpriteEntry TileSpriteInfo[2048];
+// 0x00805f40
+extern int DAT_00805f40;
+// 0x00805f44
+extern int DAT_00805f44;
 // 0x00805f48
 extern unsigned int DAT_00805f48;
 // 0x00805f60

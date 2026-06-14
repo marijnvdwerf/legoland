@@ -1919,7 +1919,32 @@ LEGO_EXPORT void ProcessScrolling(unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x004614f0
-LEGO_EXPORT void MouseScrollMap(void) { STUB(); }
+LEGO_EXPORT void MouseScrollMap(void) {
+    if ((int)DAT_00813a44 < (int)(unsigned int)lpConfig->field_4) {
+        if (-(int)(unsigned int)lpConfig->field_c < ScrollSpeedX) {
+            ScrollSpeedX = ScrollSpeedX - lpConfig->field_8;
+        }
+    } else if ((int)((unsigned int)lpConfig->field_0 - (unsigned int)lpConfig->field_4) < (int)DAT_00813a44) {
+        if (ScrollSpeedX < (int)(unsigned int)lpConfig->field_c) {
+            ScrollSpeedX = ScrollSpeedX + lpConfig->field_8;
+        }
+    } else {
+        ScrollSpeedX = 0;
+    }
+    if ((int)DAT_00813a48 < (int)(unsigned int)lpConfig->field_6) {
+        if (-(int)(unsigned int)lpConfig->field_e < ScrollSpeedY) {
+            ScrollSpeedY = ScrollSpeedY - lpConfig->field_a;
+        }
+    } else if ((int)((unsigned int)lpConfig->field_2 - (unsigned int)lpConfig->field_6) < (int)DAT_00813a48) {
+        if (ScrollSpeedY < (int)(unsigned int)lpConfig->field_e) {
+            ScrollSpeedY = ScrollSpeedY + lpConfig->field_a;
+        }
+    } else {
+        ScrollSpeedY = 0;
+    }
+    ProcessScrolling((int)(LastFrameMS * ScrollSpeedX) / 0x100, (int)(LastFrameMS * ScrollSpeedY) / 0x100);
+    DAT_00667d4c = LastFrameMS;
+}
 
 // FUNCTION: LEGOLAND 0x004615f0
 LEGO_EXPORT int Get_XScroll(void) {
@@ -2044,10 +2069,61 @@ LEGO_EXPORT void SetMapFlags(int x, int y, short value) {
 }
 
 // FUNCTION: LEGOLAND 0x00461850
-LEGO_EXPORT void GetObjectClassAndInstance(void) { STUB(); }
+LEGO_EXPORT unsigned int GetObjectClassAndInstance(int *coords, unsigned short *out) {
+    struct MapElement local;
+    struct MapElement *tile;
+
+    if (coords[0] >= 0 && coords[0] < lpConfig->width && coords[1] >= 0 && coords[1] < lpConfig->height) {
+        tile = (struct MapElement *)((int)GameMap[coords[1]] + coords[0] * 0x14);
+        local = *tile;
+        if (out != 0) {
+            *out = local.field_4;
+        }
+        if ((local.field_10 & 0x88) != 0 && local.field_0 != 0) {
+            return *(unsigned int *)(local.field_0 + 0xc);
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x004618d0
-void FUN_004618d0(void) { STUB(); }
+void FUN_004618d0(const char *param_1) {
+    // STRING: LEGOLAND 0x004b9c14
+    if (strcmp(param_1, "CASTLE BRIDGES") == 0) {
+        DAT_004b9210 = 4;
+        DAT_004b9214 = 0x6d;
+        DAT_004b9218 = 0x3b;
+        DAT_004b921c = 0x6d;
+        DAT_00801a60 = 0;
+        DAT_00801a64 = 0;
+        DAT_00805f40 = 0;
+        DAT_00805f44 = 0;
+        return;
+    }
+    // STRING: LEGOLAND 0x004b9c00
+    if (strcmp(param_1, "EXPLORER BRIDGES") == 0) {
+        DAT_004b9214 = 0x6a;
+        DAT_004b921c = 0x6a;
+        DAT_004b9210 = 1;
+        DAT_004b9218 = 0x40;
+        DAT_00801a60 = 0xe;
+        DAT_00801a64 = 0x89;
+        DAT_00805f40 = 0x86;
+        DAT_00805f44 = 0x89;
+        return;
+    }
+    // STRING: LEGOLAND 0x004b9bf0
+    if (strcmp(param_1, "WESTERN BRIDGES") == 0) {
+        DAT_004b9210 = 2;
+        DAT_004b9214 = 0x5b;
+        DAT_004b921c = 0x5b;
+        DAT_004b9218 = 0x3e;
+        DAT_00801a60 = 0xe;
+        DAT_00801a64 = 0x79;
+        DAT_00805f40 = 0x85;
+        DAT_00805f44 = 0x79;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00461a50
 LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) { STUB(); }
