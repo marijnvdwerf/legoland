@@ -364,12 +364,26 @@ extern unsigned char ENTRANCE_SFX[0x1c];
 extern unsigned char RESTAURANT_SFX[0xc];
 // 0x004b66f4
 extern int DAT_004b66f4[15 * 6];
+// 0x004b685c
+extern int DAT_004b685c;
 // 0x004b6860
 extern int DAT_004b6860[0x20];
 // 0x004b68e0
 extern int DAT_004b68e0[0x22];
 // 0x004b6968
 extern unsigned char OCTOPUS_SFX[0x24];
+// 0x004b6990
+extern int DAT_004b6990[0x29];
+// 0x004b6a34
+extern int DAT_004b6a34[4];
+// 0x004b6a44
+extern int DAT_004b6a44[0xd];
+// 0x004b6a78
+extern int DAT_004b6a78[0x30];
+// 0x004b6b38
+extern int DAT_004b6b38[0x2c];
+// 0x004b6be8
+extern int DAT_004b6be8[0x5c];
 // 0x004b6d58
 extern unsigned char DAT_004b6d58[0x120];
 // 0x004b7260
