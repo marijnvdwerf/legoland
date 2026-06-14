@@ -74,7 +74,9 @@ struct DSCursorSource;
 struct MapElement {
     /* 0x00 */ unsigned int field_0;
     /* 0x04 */ unsigned short field_4;
-    /* 0x06 */ unsigned char pad_6[0xc - 0x6];
+    /* 0x06 */ unsigned char pad_6[0x8 - 0x6];
+    /* 0x08 */ unsigned short field_8;
+    /* 0x0a */ unsigned short field_a;
     /* 0x0c */ unsigned short flags;
     /* 0x0e */ unsigned char pad_e[0x10 - 0xe];
     /* 0x10 */ unsigned char field_10;
