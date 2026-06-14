@@ -1,26 +1,29 @@
 #include <stdlib.h>
+#include <string.h>
 #include "globals.h"
 #include "legoland.h"
 
 #include "bloke.h"
 #include "bloke_ai.h"
 #include "bricks.h"
+#include "controller.h"
 #include "debug_alloc.h"
 #include "gamemap.h"
 #include "llidb.h"
 #include "man3d.h"
 #include "map_object.h"
+#include "objclass.h"
 #include "worker.h"
 
 struct LegoConfig;
 
 struct WorkOrder {
     /* 0x00 */ struct WorkOrder *next;
-    /* 0x04 */ int var_4;
+    /* 0x04 */ struct EditObject *var_4;
     /* 0x08 */ int var_8;
     /* 0x0c */ int var_c;
     /* 0x10 */ int *var_10;
-    /* 0x14 */ unsigned char pad_14[4];
+    /* 0x14 */ int var_14;
     /* 0x18 */ int var_18;
     /* 0x1c */ int var_1c;
     /* 0x20 */ unsigned char var_20;
@@ -30,6 +33,8 @@ struct WorkOrder {
     /* 0x2c */ unsigned char var_2c;
     /* 0x2d */ unsigned char pad_2d[3];
     /* 0x30 */ int var_30;
+    /* 0x34 */ float var_34;
+    /* 0x38 */ float var_38;
 };
 
 struct Rect {
@@ -160,19 +165,19 @@ int FUN_004996a0(struct WorkOrder *order) {
 }
 
 // FUNCTION: LEGOLAND 0x00499720
-void FUN_00499720(int *order) {
+void FUN_00499720(struct WorkOrder *order) {
     int saved_24;
     int saved_28;
     int done;
 
     FUN_00499620(order);
-    saved_24 = order[9];
-    saved_28 = order[10];
+    saved_24 = order->var_24;
+    saved_28 = order->var_28;
 
     while (1) {
         done = FUN_004996a0(order);
         FUN_00499620(order);
-        if (order[9] == saved_24 && order[10] == saved_28) {
+        if (order->var_24 == saved_24 && order->var_28 == saved_28) {
             break;
         }
         if (done != 0) {
@@ -182,13 +187,46 @@ void FUN_00499720(int *order) {
 }
 
 // FUNCTION: LEGOLAND 0x00499760
-void FUN_00499760(struct Worker *worker, float value) {
-    *(float *)((char *)worker + 0x38) = value;
-    *(float *)((char *)worker + 0x34) = value * FLOAT_004ab480;
+void FUN_00499760(struct WorkOrder *order, float value) {
+    order->var_38 = value;
+    order->var_34 = value * FLOAT_004ab480;
 }
 
 // FUNCTION: LEGOLAND 0x00499780
-void FUN_00499780(void) { STUB(); }
+struct WorkOrder *FUN_00499780(struct EditObject *obj, int *coords, int param_3, int mode) {
+    struct WorkOrder *order;
+    struct ObjClass *cls;
+    unsigned char modeb;
+    float ratio;
+
+    if (DAT_0079a8b8 >= 0xe1) {
+        return 0;
+    }
+
+    order = FUN_00499570();
+    modeb = (unsigned char)mode;
+    order->var_4 = obj;
+    order->var_8 = coords[0];
+    order->var_c = coords[1];
+    order->var_18 = 0;
+    order->var_10 = malloc(0x14);
+    cls = *(struct ObjClass **)((char *)obj + 0xc);
+    order->var_14 = 1;
+    order->var_20 = modeb;
+    order->var_2c = 1;
+    order->var_28 = 0xffffffff;
+
+    memcpy(order->var_10, &cls->field_3c, 20);
+
+    FUN_00499720(order);
+
+    if (mode == 2) {
+        ratio = (float)GetObjCost((struct CostInfo *)cls) / (float)*((unsigned char *)cls + 0x2c);
+        FUN_00499760(order, ratio);
+    }
+
+    return order;
+}
 
 // FUNCTION: LEGOLAND 0x00499830
 void FUN_00499830(void) { STUB(); }
