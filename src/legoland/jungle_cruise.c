@@ -1356,7 +1356,168 @@ void FUN_00435470(void *param_1, unsigned int param_2, struct Cursor *param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00435750
-void FUN_00435750(void) { STUB(); }
+void FUN_00435750(void) {
+    unsigned int *queue = *(unsigned int **)((char *)DAT_0081cb60 + 0xcc);
+    unsigned int *next;
+    struct JungleScore *score;
+    unsigned short id;
+    unsigned char hi;
+    int bloke;
+    int slot;
+    int person;
+    char cv;
+    int local_10;
+    int local_c;
+    unsigned int local_8;
+    unsigned int local_4;
+    int i;
+    unsigned int *qp;
+
+    DAT_00629c54 = DAT_00629c54 + 1;
+    if (DAT_00629c54 == 0x50) {
+        DAT_00629c54 = 0;
+        FUN_004332f0();
+    }
+    FUN_00432d00(0);
+    for (score = DAT_00629c3c; score != NULL; score = score->next) {
+        id = score->field_0;
+        if (score->field_30[0] != 0 && --score->field_2c < 1 && score->field_8 != 0 &&
+            (int)FUN_004332c0((unsigned short *)score) * 6 < (int)score->field_40 &&
+            FUN_00432b90(id, (void *)score->field_30[0], (void *)score->field_30[1], (void *)score->field_30[2]) != 0) {
+            *(unsigned char *)(score->field_30[0] + 0x62) |= 0x80;
+            *(char *)(score->field_30[0] + 0x60) += 1;
+            BlokeSitAnim((struct Bloke *)score->field_30[0]);
+            BlokeSetFrame((struct Bloke *)score->field_30[0], 0);
+            if (score->field_30[1] != 0) {
+                *(unsigned char *)(score->field_30[1] + 0x62) |= 0x80;
+                *(char *)(score->field_30[1] + 0x60) += 1;
+                BlokeSitAnim((struct Bloke *)score->field_30[1]);
+                BlokeSetFrame((struct Bloke *)score->field_30[1], 0);
+            }
+            if (score->field_30[2] != 0) {
+                *(unsigned char *)(score->field_30[2] + 0x62) |= 0x80;
+                *(char *)(score->field_30[2] + 0x60) += 1;
+                BlokeSitAnim((struct Bloke *)score->field_30[2]);
+                BlokeSetFrame((struct Bloke *)score->field_30[2], 0);
+            }
+            score->field_2c = 0x96;
+            score->field_30[0] = 0;
+            score->field_30[1] = 0;
+            score->field_30[2] = 0;
+        }
+    }
+    while (queue != NULL) {
+        next = (unsigned int *)*queue;
+        id = *(unsigned short *)(queue + 3);
+        hi = (unsigned char)(id >> 8);
+        for (score = DAT_00629c3c; score != NULL && score->field_0 != id; score = score->next) {
+        }
+        bloke = queue[2];
+        if (*(short *)(bloke + 0xe) == 0) {
+            switch (*(unsigned char *)(bloke + 0x60)) {
+            case 0:
+                i = 0;
+                qp = &score->blokes[0];
+                do {
+                    slot = i;
+                    if ((int)*qp == bloke) {
+                        break;
+                    }
+                    i = i + 1;
+                    qp = qp + 2;
+                    slot = 4;
+                } while (i < 5);
+                if (i == 5) {
+                    if (score->field_14 == 5 || score->field_2c != 0) {
+                        goto remove;
+                    }
+                    score->blokes[slot * 2] = bloke;
+                    score->field_14 = score->field_14 + 1;
+                } else {
+                    bloke = score->blokes[slot * 2];
+                    if (score->blokes[slot * 2 - 2] != 0) {
+                        break;
+                    }
+                    score->blokes[slot * 2 - 2] = bloke;
+                    score->blokes[slot * 2] = 0;
+                    slot = slot - 1;
+                    if (slot == 0) {
+                        *(char *)(bloke + 0x60) += 1;
+                    }
+                }
+                *(unsigned char *)(bloke + 0x62) |= 8;
+                *(unsigned int *)(bloke + 0x24) = (*(int *)((char *)DAT_0081cb60 + 0xc) + (id & 0xff)) * 0x100 +
+                    *(int *)((char *)&DAT_004b72b0 + slot * -8);
+                person = (*(int *)((char *)DAT_0081cb60 + 0x10) + hi) * 0x100 + *(int *)((char *)&DAT_004b72b0 + slot * -8 + 4);
+                *(int *)(bloke + 0x28) = person;
+                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
+                                  *(unsigned int *)(bloke + 0x24), person, bloke + 0x98);
+                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
+                *(short *)(bloke + 0xe) = 7;
+                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
+                break;
+            case 1:
+                if (bloke == (int)score->blokes[0]) {
+                    i = 0;
+                    qp = &score->field_30[0];
+                    do {
+                        if (*qp == 0) {
+                            *(unsigned int *)(bloke + 0x68) = 0xffffd8f1;
+                            *(unsigned int *)(bloke + 0x6c) = 0xffffd8f1;
+                            score->field_30[i] = bloke;
+                            score->blokes[0] = 0;
+                            score->field_14 = score->field_14 - 1;
+                            break;
+                        }
+                        i = i + 1;
+                        qp = qp + 2;
+                    } while (i < 3);
+                }
+                break;
+            case 3:
+                local_10 = 0;
+                local_c = 0;
+                BlokeWalkAnim((struct Bloke *)bloke);
+                BlokeSetFrame((struct Bloke *)bloke, 0);
+                person = Find3DPersonFromBloke(bloke);
+                AdjustBlokePosition((struct BlokePos *)&local_10);
+                local_10 = (*(int *)(person + 0x1c) - local_10) + -0x10;
+                local_c = *(int *)(person + 0x20) - local_c;
+                ScreenToMapRef2(&local_10, (int *)&local_8, 0);
+                *(unsigned short *)(bloke + 0x62) &= 0xff7f;
+                *(unsigned int *)(bloke + 0x68) = local_8;
+                *(unsigned int *)(bloke + 0x6c) = local_4;
+                *(unsigned char *)(bloke + 0x72) = 10;
+                *(unsigned int *)(bloke + 0x24) = ((int)*(char *)((char *)DAT_0081cb60 + 0x24) + (id & 0xff)) * 0x100 + -0x180;
+                person = ((int)*(char *)((char *)DAT_0081cb60 + 0x25) + hi) * 0x100 + 0x80;
+                *(int *)(bloke + 0x28) = person;
+                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
+                                  *(unsigned int *)(bloke + 0x24), person, bloke + 0x98);
+                *(short *)(bloke + 0xe) = 7;
+                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
+                *(char *)(bloke + 0x60) += 1;
+                break;
+            case 4:
+                *(unsigned int *)(bloke + 0x24) = ((int)*(char *)((char *)DAT_0081cb60 + 0x24) + (id & 0xff)) * 0x100 + 0x80;
+                person = ((int)*(char *)((char *)DAT_0081cb60 + 0x25) + hi) * 0x100 + 0x80;
+                *(int *)(bloke + 0x28) = person;
+                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
+                                  *(unsigned int *)(bloke + 0x24), person, bloke + 0x98);
+                *(short *)(bloke + 0xe) = 7;
+                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
+                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
+                *(char *)(bloke + 0x60) += 1;
+                break;
+            case 5:
+                *(unsigned short *)(bloke + 0x62) &= 0xfff7;
+remove:
+                RemoveBlokeFromRide(DAT_0081cb60, queue);
+            }
+        }
+        queue = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00435bd0
 void FUN_00435bd0(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6) {

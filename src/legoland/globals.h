@@ -374,6 +374,8 @@ extern int DAT_004b7148[0x10];
 extern float DAT_004b7188[0x10];
 // 0x004b71c8
 extern float DAT_004b71c8[0x10];
+// 0x004b72b0
+extern int DAT_004b72b0[2];
 // 0x004b7230
 extern struct Footprint DAT_004b7230;
 // 0x004b7248
