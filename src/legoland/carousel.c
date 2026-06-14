@@ -618,12 +618,12 @@ void FUN_0042bcf0(struct CarouselRideObj *param_1, unsigned int param_2, unsigne
                 }
                 *(short *)**(int **)((char *)DAT_006160b8 + 8) = (short)*(char *)(bloke + 8);
                 {
-                    int local_64 = DAT_00616078;
-                    int local_60 = DAT_0061607c;
                     struct CarouselListElem *e;
-                    int saved_64 = local_64, saved_60 = local_60;
-                    for (e = ride->list; local_60 = DAT_0061607c, local_64 = DAT_00616078,
-                         DAT_00616078 = local_64, DAT_0061607c = local_60, e != NULL; e = e->next) {
+                    int local_64, local_60;
+                    int iVar3 = DAT_00616078;
+                    int iVar4 = DAT_0061607c;
+                    for (e = ride->list; local_60 = iVar4, local_64 = iVar3, DAT_00616078 = local_64,
+                         DAT_0061607c = local_60, e != NULL; e = e->next) {
                         int b = (int)e->bloke;
                         if (*param_4 == (short)e->id && (*(unsigned char *)(b + 0x62) & 0x80) != 0) {
                             int unit = *(int *)(b + 4);
@@ -635,14 +635,10 @@ void FUN_0042bcf0(struct CarouselRideObj *param_1, unsigned int param_2, unsigne
                             *(int *)(unit + 0x20) = *(short *)(b + 0x3e) + local_60 + iVar10;
                             AdjustBlokePosition((struct BlokePos *)(unit + 0x1c));
                             IP_RenderBlokeIn3DNow(e->bloke);
-                            saved_64 = local_64;
-                            saved_60 = local_60;
                         }
-                        local_60 = saved_60;
-                        local_64 = saved_64;
+                        iVar3 = DAT_00616078;
+                        iVar4 = DAT_0061607c;
                     }
-                    (void)saved_64;
-                    (void)saved_60;
                 }
                 local_54 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616068, 1);
                 AdjustOffsetForViewMode((struct AdjustStruct *)&local_54);
