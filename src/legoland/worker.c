@@ -228,8 +228,96 @@ struct WorkOrder *FUN_00499780(struct EditObject *obj, int *coords, int param_3,
     return order;
 }
 
+struct FootNode {
+    /* 0x00 */ int rect[4];
+    /* 0x10 */ struct FootNode *next;
+};
+
 // FUNCTION: LEGOLAND 0x00499830
-void FUN_00499830(void) { STUB(); }
+struct WorkOrder *FUN_00499830(struct EditObject *obj, int *coords, int mode) {
+    struct WorkOrder *order;
+    struct ObjClass *cls;
+    struct Cursor *cursor;
+    struct FootNode *node;
+    int *dst;
+    int *src;
+    int dx;
+    int dy;
+    int x;
+    int y;
+    int i;
+    unsigned char level;
+
+    if (0xe0 < DAT_0079a8c8) {
+        return 0;
+    }
+    order = FUN_004995d0();
+    order->var_4 = obj;
+    order->var_8 = coords[0];
+    order->var_c = coords[1];
+    order->var_18 = 0;
+    cls = *(struct ObjClass **)((char *)obj + 0xc);
+    if (mode == 2) {
+        order->var_10 = malloc(0x14);
+        order->var_14 = 1;
+        src = &cls->field_3c;
+        dst = order->var_10;
+        for (i = 5; i != 0; i--) {
+            *dst++ = *src++;
+        }
+    } else {
+        cursor = &EditCursor;
+        order->var_14 = 0;
+        do {
+            if ((cursor->field_1828 & 0x3000) == 0) {
+                for (node = (struct FootNode *)&cursor->field_1414; node != 0; node = node->next) {
+                    order->var_14++;
+                }
+            }
+            cursor = (struct Cursor *)cursor->field_1830;
+        } while (cursor != 0);
+        order->var_10 = malloc(order->var_14 * 0x14);
+        order->var_14 = 0;
+        cursor = &EditCursor;
+        do {
+            if ((cursor->field_1828 & 0x3000) == 0) {
+                dx = cursor->field_1404 - order->var_8;
+                dy = cursor->field_1408 - order->var_c;
+                for (node = (struct FootNode *)&cursor->field_1414; node != 0; node = node->next) {
+                    src = (int *)node;
+                    dst = (int *)((char *)order->var_10 + order->var_14 * 0x14);
+                    for (i = 5; i != 0; i--) {
+                        *dst++ = *src++;
+                    }
+                    dst = (int *)((char *)order->var_10 + order->var_14 * 0x14);
+                    dst[0] += dx;
+                    dst[1] += dy;
+                    dst[2] += dx;
+                    dst[3] += dy;
+                    order->var_14++;
+                }
+            }
+            cursor = (struct Cursor *)cursor->field_1830;
+        } while (cursor != 0);
+    }
+    order->var_20 = (unsigned char)mode;
+    order->var_2c = 1;
+    order->var_28 = 0xffffffff;
+    FUN_00499720(order);
+    if (mode == 2) {
+        struct MapElement *cell;
+        x = coords[0];
+        if (x < 0 || lpConfig->width <= x || (y = coords[1], y < 0) || lpConfig->height <= y) {
+            cell = 0;
+        } else {
+            cell = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
+        }
+        level = *((unsigned char *)cell + 0x11);
+        FUN_00499760(order, (float)GetObjRepairCost((unsigned int)cls, level) /
+                                (float)(int)(*((unsigned char *)cls + 0x2c) - level));
+    }
+    return order;
+}
 
 // FUNCTION: LEGOLAND 0x00499a70
 void FUN_00499a70(void) { STUB(); }
