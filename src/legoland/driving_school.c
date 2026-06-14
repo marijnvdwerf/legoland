@@ -1,14 +1,30 @@
 #include <stdlib.h>
+#include <string.h>
 #include "globals.h"
 #include "legoland.h"
 
+#include "bricks.h"
+#include "gamemap.h"
 #include "llidb.h"
+#include "map_object.h"
+#include "objclass.h"
+#include "render3d.h"
 #include "ride_bloke.h"
 #include "ride_queue.h"
 #include "sound_music.h"
+#include "tilemap.h"
 
-struct Node0 {
-    void *next;
+struct DSCursorSource {
+    /* 0x00 */ unsigned char pad_0[0x1c];
+    /* 0x1c */ unsigned int field_1c;
+    /* 0x20 */ unsigned char pad_20[0x3c - 0x20];
+    /* 0x3c */ int field_3c;
+    /* 0x40 */ int field_40;
+};
+
+struct DSHead {
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ struct DSCursorSource *field_c;
 };
 
 struct Node8 {
@@ -138,7 +154,35 @@ void FUN_00405310(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00405370
-void FUN_00405370(void) { STUB(); }
+void FUN_00405370(struct DSHead *param_1) {
+    unsigned int lls;
+
+    DAT_0082c694 = param_1->field_c;
+    if (LLIDB_FindElement("DSCHOOL MAPPING", (unsigned int *)&param_1, 0) == 0) {
+        DAT_0082c67c = LLIDB_LoadData(param_1);
+    }
+    if (LLIDB_FindElement("DSCHOOL BLUE CAR", (unsigned int *)&param_1, 0) == 0) {
+        DAT_00830f9c = LLIDB_LoadData(param_1);
+    }
+    DAT_0082c694->field_1c |= 0x420;
+    Load_FXList(DRIVING_SCHOOL_SFX, 6);
+    // STRING: LEGOLAND 0x004b4524
+    DAT_0082c6c0 = LoadSprite("DSchool Matte.lls", 1);
+    // STRING: LEGOLAND 0x004b4510
+    DAT_0082c6bc = LoadPalette((unsigned int)".\\3ddata\\blu.col");
+    // STRING: LEGOLAND 0x004b44fc
+    DAT_0082c6b8 = LoadPalette((unsigned int)".\\3ddata\\yel.col");
+    // STRING: LEGOLAND 0x004b44e8
+    DAT_0082c690 = LoadPalette((unsigned int)".\\3ddata\\red.col");
+    // STRING: LEGOLAND 0x004b44d8
+    DAT_00830f94 = LoadSprite("ds_car&m.lls", 1);
+    if (DAT_00830f94 != NULL) {
+        lls = GetLLSForSprite((struct SpriteLLS *)DAT_00830f94);
+        if (lls != 0) {
+            LLSStop(lls);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00405460
 void FUN_00405460(void) {
@@ -161,14 +205,14 @@ void FUN_00405460(void) {
     FUN_00411bd0();
 
     while (DAT_004cbeac != NULL) {
-        void *next = ((struct Node0 *)DAT_004cbeac)->next;
-        free((unsigned int)DAT_004cbeac);
-        DAT_004cbeac = (struct RideQueueEntry *)next;
+        struct RideQueueEntry *next = DAT_004cbeac->next;
+        free(DAT_004cbeac);
+        DAT_004cbeac = next;
     }
 
     while (DAT_004c11bc != NULL) {
         void *next = ((struct Node8 *)DAT_004c11bc)->next;
-        free((unsigned int)DAT_004c11bc);
+        free(DAT_004c11bc);
         DAT_004c11bc = next;
     }
 
@@ -178,7 +222,7 @@ void FUN_00405460(void) {
     free(DAT_0082c6b8);
     free(DAT_0082c690);
     KillSprite(DAT_00830f94);
-    DAT_0082c694 = 0;
+    DAT_0082c694 = NULL;
 }
 
 // FUNCTION: LEGOLAND 0x00405570

@@ -4183,6 +4183,9 @@ struct Sprite *DAT_0082c668;
 // GLOBAL: LEGOLAND 0x0082c678
 void *DAT_0082c678;
 
+// GLOBAL: LEGOLAND 0x0082c67c
+void *DAT_0082c67c;
+
 // GLOBAL: LEGOLAND 0x0082c680
 void *DAT_0082c680;
 
@@ -4193,10 +4196,10 @@ void *DAT_0082c684;
 void *DAT_0082c688;
 
 // GLOBAL: LEGOLAND 0x0082c690
-unsigned int DAT_0082c690;
+unsigned short *DAT_0082c690;
 
 // GLOBAL: LEGOLAND 0x0082c694
-unsigned int DAT_0082c694;
+struct DSCursorSource *DAT_0082c694;
 
 // GLOBAL: LEGOLAND 0x0082c6a0
 unsigned int DAT_0082c6a0;
@@ -4214,10 +4217,10 @@ unsigned int DAT_0082c6b0;
 unsigned short DAT_0082c6ac;
 
 // GLOBAL: LEGOLAND 0x0082c6b8
-unsigned int DAT_0082c6b8;
+unsigned short *DAT_0082c6b8;
 
 // GLOBAL: LEGOLAND 0x0082c6bc
-unsigned int DAT_0082c6bc;
+unsigned short *DAT_0082c6bc;
 
 // GLOBAL: LEGOLAND 0x0082c6c0
 struct Sprite *DAT_0082c6c0;
@@ -4236,6 +4239,9 @@ unsigned int DAT_00830f88;
 
 // GLOBAL: LEGOLAND 0x00830f94
 struct Sprite *DAT_00830f94;
+
+// GLOBAL: LEGOLAND 0x00830f9c
+void *DAT_00830f9c;
 
 // GLOBAL: LEGOLAND 0x00830f98
 struct Position *DAT_00830f98;

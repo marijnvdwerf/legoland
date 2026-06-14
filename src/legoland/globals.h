@@ -66,6 +66,7 @@ struct InfoIcon;
 struct InfoObjData;
 struct Element;
 struct SortNode;
+struct DSCursorSource;
 
 // Full definitions needed by typed globals defined in globals.c.
 struct MapElement {
@@ -2975,6 +2976,8 @@ extern void *DAT_0082c65c;
 extern struct Sprite *DAT_0082c668;
 // 0x0082c678
 extern void *DAT_0082c678;
+// 0x0082c67c
+extern void *DAT_0082c67c;
 // 0x0082c680
 extern void *DAT_0082c680;
 // 0x0082c684
@@ -2982,9 +2985,9 @@ extern void *DAT_0082c684;
 // 0x0082c688
 extern void *DAT_0082c688;
 // 0x0082c690
-extern unsigned int DAT_0082c690;
+extern unsigned short *DAT_0082c690;
 // 0x0082c694
-extern unsigned int DAT_0082c694;
+extern struct DSCursorSource *DAT_0082c694;
 // 0x0082c6a0
 extern unsigned int DAT_0082c6a0;
 // 0x0082c6a4
@@ -2996,9 +2999,9 @@ extern unsigned int DAT_0082c6b0;
 // 0x0082c6ac
 extern unsigned short DAT_0082c6ac;
 // 0x0082c6b8
-extern unsigned int DAT_0082c6b8;
+extern unsigned short *DAT_0082c6b8;
 // 0x0082c6bc
-extern unsigned int DAT_0082c6bc;
+extern unsigned short *DAT_0082c6bc;
 // 0x0082c6c0
 extern struct Sprite *DAT_0082c6c0;
 // 0x0082f760
@@ -3011,6 +3014,8 @@ extern unsigned int DAT_00830f88;
 extern struct Sprite *DAT_00830f94;
 // 0x00830f98
 extern struct Position *DAT_00830f98;
+// 0x00830f9c
+extern void *DAT_00830f9c;
 // 0x00830fc0
 extern LEGO_EXPORT struct Cursor PathCursor;
 // 0x00832800
