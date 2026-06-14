@@ -320,7 +320,31 @@ struct WorkOrder *FUN_00499830(struct EditObject *obj, int *coords, int mode) {
 }
 
 // FUNCTION: LEGOLAND 0x00499a70
-void FUN_00499a70(void) { STUB(); }
+unsigned __int64 FUN_00499a70(struct WorkOrder *order) {
+    int *rect;
+    int minx;
+    int miny;
+    int dx;
+    int dy;
+    union {
+        unsigned __int64 q;
+        int i[2];
+    } result;
+
+    rect = order->var_10;
+    minx = rect[0];
+    miny = rect[1];
+    dx = rect[2] - minx;
+    dy = rect[3] - miny;
+    if (dx >= dy) {
+        result.i[0] = (dx + (order->var_8 + minx) * 2) * 0x80;
+        result.i[1] = (order->var_c + miny) * 0x100;
+    } else {
+        result.i[0] = (order->var_8 + minx) * 0x100;
+        result.i[1] = (dy + (order->var_c + miny) * 2) * 0x80;
+    }
+    return result.q;
+}
 
 // FUNCTION: LEGOLAND 0x00499ac0
 void FUN_00499ac0(void *arg, void *order) { STUB(); }
