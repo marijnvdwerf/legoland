@@ -119,8 +119,88 @@ struct Overlay {
    map_object views the same memory through its own struct MapTile layout. */
 #define MapTileGrid ((struct MapTile **)GameMap)
 
+struct FootprintNode {
+    /* 0x00 */ int x0;
+    /* 0x04 */ int y0;
+    /* 0x08 */ int x1;
+    /* 0x0c */ int y1;
+    /* 0x10 */ struct FootprintNode *next;
+};
+
+struct MapObject {
+    /* 0x00 */ unsigned char pad_0[0x1c];
+    /* 0x1c */ unsigned int flags;
+    /* 0x20 */ unsigned char pad_20[0x2c - 0x20];
+    /* 0x2c */ unsigned char field_2c;
+    /* 0x2d */ unsigned char pad_2d[0x3c - 0x2d];
+    /* 0x3c */ struct FootprintNode footprint;
+};
+
+struct EditObject {
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ struct MapObject *obj;
+};
+
 // FUNCTION: LEGOLAND 0x0045dd80
-LEGO_EXPORT void AddObjectToMap(int param_1, unsigned short param_2, int param_3) { STUB(); }
+LEGO_EXPORT void AddObjectToMap(struct EditObject *param_1, unsigned int param_2, int param_3) {
+    struct MapObject *obj;
+    unsigned int flags;
+    struct MapElement *tile;
+    int y;
+    int count;
+    struct FootprintNode rect;
+    struct FootprintNode *next;
+
+    obj = param_1->obj;
+    flags = obj->flags;
+    rect = obj->footprint;
+    if (flags & 0x20000) {
+        BGFullUpdate = 1;
+    }
+    IncrementObjectCount(obj);
+    y = rect.y0;
+    while (1) {
+        for (; y <= rect.y1; y++) {
+            if (rect.x0 <= rect.x1) {
+                int ty = ((param_2 >> 8) & 0xff) + y;
+                int tx = (param_2 & 0xff) + rect.x0;
+                count = (rect.x1 - rect.x0) + 1;
+                do {
+                    if (tx >= 0 && tx < lpConfig->width && ty >= 0 && ty < lpConfig->height) {
+                        tile = (struct MapElement *)((int)GameMap[ty] + tx * 0x14);
+                        if (tile != 0) {
+                            tile->field_10 = 0;
+                            tile->field_0 = (unsigned int)param_1;
+                            tile->field_4 = (unsigned short)param_2;
+                            tile->flags = (unsigned short)(((tile->flags & 0x10) | param_3) | 0x80);
+                            tile->field_11 = obj->field_2c;
+                            if (obj->flags & 2) {
+                                tile->field_10 = 2;
+                            }
+                            if (obj->flags & 1) {
+                                tile->field_10 = 1;
+                            }
+                            if (obj->flags & 0x800000) {
+                                *((unsigned char *)&tile->flags + 1) |= 0x80;
+                            }
+                        }
+                    }
+                    tx++;
+                    count--;
+                } while (count != 0);
+            }
+        }
+        next = rect.next;
+        if (next == 0) {
+            break;
+        }
+        rect = *next;
+        y = rect.y0;
+    }
+    if (DAT_00667cd8 == 0 && DAT_00667ca0 == 0) {
+        CalculateMapRenderOrder();
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045dee0
 LEGO_EXPORT void SetObjRectFlags(void) { STUB(); }

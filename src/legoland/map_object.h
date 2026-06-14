@@ -8,10 +8,12 @@
 
 struct Cursor;
 struct CursorObj;
+struct EditObject;
 
+void IncrementObjectCount(void *obj);
 void FUN_0045e4a0(int element, void *data);
 LEGO_EXPORT unsigned int AddBasicObject(unsigned int param1, unsigned int param2);
-LEGO_EXPORT void AddObjectToMap(int param_1, unsigned short param_2, int param_3);
+LEGO_EXPORT void AddObjectToMap(struct EditObject *param_1, unsigned int param_2, int param_3);
 LEGO_EXPORT void StandardRemoveObject(unsigned int a, unsigned int b, unsigned int c);
 LEGO_EXPORT void SetEditCursorFootPrint(void *src);
 unsigned char FUN_0045f4b0(struct Cursor *cursor);

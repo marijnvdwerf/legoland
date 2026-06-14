@@ -78,7 +78,8 @@ struct MapElement {
     /* 0x0c */ unsigned short flags;
     /* 0x0e */ unsigned char pad_e[0x10 - 0xe];
     /* 0x10 */ unsigned char field_10;
-    /* 0x11 */ unsigned char pad_11[0x14 - 0x11];
+    /* 0x11 */ unsigned char field_11;
+    /* 0x12 */ unsigned char pad_12[0x14 - 0x12];
 };
 
 struct LegoConfig {
@@ -1505,6 +1506,8 @@ extern struct Sprite *DAT_00667c90;
 extern struct Sprite *DAT_00667c94;
 // 0x00667c9c
 extern void *DAT_00667c9c;
+// 0x00667ca0
+extern unsigned int DAT_00667ca0;
 // 0x00667ca4
 extern unsigned int DAT_00667ca4;
 // 0x00667ca8
