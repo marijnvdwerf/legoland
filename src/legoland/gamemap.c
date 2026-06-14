@@ -19,6 +19,16 @@ struct RenderObjectVtable {
     void *get_power;
 };
 
+struct PowerObject {
+    unsigned char pad_0[0xc4];
+    struct ClassNode *field_c4;
+};
+
+struct PowerEntry {
+    const char *name;
+    int value;
+};
+
 struct MapCellObjKind {
     /* 0x00 */ unsigned char pad_0[0x20];
     /* 0x20 */ short field_20;
@@ -327,8 +337,86 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsig
     DAT_00668610 = DAT_00668610 | 4;
 }
 
+static const struct PowerEntry PTR_s_Small_Power_Station_004b9340[] = {
+    {"Small Power Station", 800},
+    {"Crystal Power Station", 2500},
+    {"Dino Big", -100},
+    {"Dino Small", -30},
+    {"Dino Mini", -30},
+    {"T-Rex", -130},
+    {"Fountain 1", -10},
+    {"Fountain 2", -10},
+    {"Fountain 3", -10},
+    {"Foodcart Drink", -2},
+    {"FoodCart Food", -2},
+    {"Foodcart Icecream", -2},
+    {"LEGO Shop 1", -3},
+    {"LEGO Shop 2", -3},
+    {"LEGO Media Shop", -3},
+    {"Octopus Cafe", -5},
+    {"Restaurant 1", -10},
+    {"Restaurant 2", -60},
+    {"Shark Cafe", -10},
+    {"Boating School", -200},
+    {"Boating School Mermaid", -30},
+    {"Copters", -100},
+    {"Driving School", -60},
+    {"Space Tower Ride", -40},
+    {"Spider Ride", -100},
+    {"Water Works Entrance", -30},
+    {"Water Works Crocodile Fountain", -6},
+    {"Water Works Elephant Fountain", -6},
+    {"Water Works Water Block", -4},
+    {"Water Pump", -15},
+    {"Bank", -5},
+    {"Chuck Wagon", -6},
+    {"General Store", -4},
+    {"Jail Cell", -2},
+    {"Saloon", -4},
+    {"Sheriff", -3},
+    {"Carousel", -60},
+    {"Fort", -8},
+    {"Gold Rush", -30},
+    {"Log Flume Entrance", -100},
+    {"Spinning Barrels Ride", -90},
+    {"Temple", -3},
+    {"Explorers Institute", -20},
+    {"Balloonz", -140},
+    {"Earth Slide Ride", -40},
+    {"Jungle Cruise", -100},
+    {"Plane Ride", -160},
+    {"Safari Ride", -80},
+    {"Temple Slide", -50},
+    {"Castle BBQ", -20},
+    {"Castle Level 1", -8},
+    {"Castle Obj", -400},
+    {"Catapult", -2},
+    {"Joust", -75},
+    {"Miniland San Francisco", -40},
+    {"Miniland France", -40},
+    {"Miniland Washington", -40},
+    {"Miniland New York", -40},
+    {"Miniland India", -40},
+    {"Miniland Holland", -40},
+    {"Miniland London", -40},
+    {"Miniland Italy", -40},
+    {"Miniland Australia", -40},
+    {"Miniland Egypt", -40},
+    {"Miniland Denmark", -40},
+    {"", 0},
+};
+
 // FUNCTION: LEGOLAND 0x00459fa0
-LEGO_EXPORT int FindObjectsPower(void *object) { STUB(); }
+LEGO_EXPORT int FindObjectsPower(void *object) {
+    const struct PowerEntry *entry;
+
+    for (entry = PTR_s_Small_Power_Station_004b9340; strlen(entry->name) != 0; entry++) {
+        if (_stricmp(((struct PowerObject *)object)->field_c4->name, entry->name) == 0) {
+            return entry->value;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0045a000
 void FUN_0045a000(int power, struct RenderObject *object) {
