@@ -468,6 +468,9 @@ LEGO_EXPORT unsigned int BGFullUpdate;
 // GLOBAL: LEGOLAND 0x004b9228
 const unsigned char DAT_004b9228[1];
 
+// GLOBAL: LEGOLAND 0x004b9230
+void *DAT_004b9230[6];
+
 // GLOBAL: LEGOLAND 0x004b9248
 void *DAT_004b9248;
 

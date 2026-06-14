@@ -532,6 +532,8 @@ extern int DAT_004b921c;
 extern LEGO_EXPORT unsigned int BGFullUpdate;
 // 0x004b9228
 extern const unsigned char DAT_004b9228[1];
+// 0x004b9230
+extern void *DAT_004b9230[6];
 // 0x004b9248
 extern void *DAT_004b9248;
 // 0x004b929c

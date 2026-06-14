@@ -2239,7 +2239,34 @@ LEGO_EXPORT void ClearOverlays(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00462d10
-LEGO_EXPORT void PlayAppropriateBuildEffect(struct ObjClass *obj, int *coords) { STUB(); }
+LEGO_EXPORT void PlayAppropriateBuildEffect(struct ObjClass *obj, int *coords) {
+    unsigned int flags;
+    int *param;
+    int buf[4];
+
+    param = buf;
+    if (coords == 0) {
+        param = 0;
+    } else {
+        buf[0] = 2;
+        buf[2] = coords[0];
+        buf[3] = coords[1];
+    }
+    flags = ((struct MapObject *)obj)->flags;
+    if ((flags & 0x40000) != 0) {
+        PlayInstanceOfSample(DAT_004b9230[3], 0, 1, param);
+        return;
+    }
+    if ((flags & 0x80000) == 0) {
+        PlayInstanceOfSample(DAT_004b9230[0], 0, 1, param);
+        return;
+    }
+    if ((flags & 0x200000) != 0) {
+        PlayInstanceOfSample(DAT_004b9230[0], 0, 1, param);
+        return;
+    }
+    PlayInstanceOfSample(DAT_004b9230[(rand() % 5 + 3) * 3], 0, 1, param);
+}
 
 // FUNCTION: LEGOLAND 0x00462dd0
 LEGO_EXPORT void ResetMapAI(void) {
