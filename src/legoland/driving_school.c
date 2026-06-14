@@ -226,7 +226,22 @@ void FUN_00405460(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00405570
-void FUN_00405570(void) { STUB(); }
+void FUN_00405570(void) {
+    EditMode = 1;
+    DAT_008119b8 = DAT_0082c694;
+    DefaultCursor(&EditCursor);
+    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    DefaultCursor(&DAT_0082f760);
+    memcpy(&DAT_00830b74, DAT_004b4440, 20);
+    DAT_00830f88 |= 0x100;
+    DefaultCursor(&DAT_0082c6e0);
+    memcpy(DAT_0082c6e0.field_1414, DAT_004b4458, 20);
+    DAT_0082c6e0.field_1828 |= 0x200;
+    DefaultCursor(&DAT_0082df20);
+    memcpy(DAT_0082df20.field_1414, DAT_004b4470, 20);
+    EditCursor.field_1830 = (unsigned int)&DAT_0082f760;
+    DAT_00830f90 = (unsigned int)&DAT_0082c6e0;
+}
 
 // FUNCTION: LEGOLAND 0x00405630
 void FUN_00405630(void) { STUB(); }

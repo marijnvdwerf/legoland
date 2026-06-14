@@ -119,6 +119,15 @@ unsigned char Helicopter_SFX[0x70];
 // GLOBAL: LEGOLAND 0x004b43f8
 unsigned char DRIVING_SCHOOL_SFX[0xa8];
 
+// GLOBAL: LEGOLAND 0x004b4440
+unsigned int DAT_004b4440[5];
+
+// GLOBAL: LEGOLAND 0x004b4458
+unsigned int DAT_004b4458[5];
+
+// GLOBAL: LEGOLAND 0x004b4470
+unsigned int DAT_004b4470[5];
+
 // GLOBAL: LEGOLAND 0x004b4688
 unsigned char JOUST_SFX[12];
 
@@ -4225,6 +4234,12 @@ unsigned short *DAT_0082c6bc;
 // GLOBAL: LEGOLAND 0x0082c6c0
 struct Sprite *DAT_0082c6c0;
 
+// GLOBAL: LEGOLAND 0x0082c6e0
+struct Cursor DAT_0082c6e0;
+
+// GLOBAL: LEGOLAND 0x0082df20
+struct Cursor DAT_0082df20;
+
 // GLOBAL: LEGOLAND 0x0082f760
 struct Cursor DAT_0082f760;
 
@@ -4236,6 +4251,9 @@ unsigned int DAT_00830b74;
 
 // GLOBAL: LEGOLAND 0x00830f88
 unsigned int DAT_00830f88;
+
+// GLOBAL: LEGOLAND 0x00830f90
+unsigned int DAT_00830f90;
 
 // GLOBAL: LEGOLAND 0x00830f94
 struct Sprite *DAT_00830f94;
