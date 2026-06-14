@@ -657,4 +657,13 @@ LEGO_EXPORT struct RenderObject *GetNextObjectMatching(struct RenderObject *obje
 }
 
 // FUNCTION: LEGOLAND 0x0045a970
-LEGO_EXPORT void PlayfieldToMap(void) { STUB(); }
+LEGO_EXPORT struct Point PlayfieldToMap(int a, int b) {
+    int width;
+    int height;
+    struct Point result;
+
+    GetTileDimensions(&width, &height);
+    result.x = a / width + b / height;
+    result.y = b / height - a / width;
+    return result;
+}
