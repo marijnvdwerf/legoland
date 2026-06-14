@@ -920,7 +920,55 @@ LEGO_EXPORT unsigned int AddBasicObject(struct EditObject *editObj, int *coords)
 }
 
 // FUNCTION: LEGOLAND 0x0045f100
-LEGO_EXPORT void RemoveObjectFromMap(void) { STUB(); }
+LEGO_EXPORT void RemoveObjectFromMap(unsigned int coords) {
+    int cx;
+    int cy;
+    struct MapElement *tile;
+    struct MapObject *obj;
+    struct FootprintNode rect;
+    struct FootprintNode *next;
+    int y;
+    int off;
+    int count;
+    unsigned short *flagsp;
+    unsigned char *flag10;
+
+    cx = coords & 0xff;
+    cy = (coords >> 8) & 0xff;
+    if (cx >= 0 && cx < lpConfig->width && cy >= 0 && cy < lpConfig->height) {
+        tile = (struct MapElement *)((int)GameMap[cy] + cx * 0x14);
+    } else {
+        tile = 0;
+    }
+    obj = ((struct EditObject *)tile->field_0)->obj;
+    if (obj->flags & 0x20000) {
+        BGFullUpdate = 1;
+    }
+    DecrementObjectCount(obj);
+    next = &obj->footprint;
+    do {
+        rect = *next;
+        for (y = rect.y0; y <= rect.y1; y++) {
+            if (rect.x0 <= rect.x1) {
+                off = (cx + rect.x0) * 0x14;
+                count = (rect.x1 - rect.x0) + 1;
+                do {
+                    flagsp = (unsigned short *)((int)GameMap[cy + y] + 0xc + off);
+                    *flagsp &= 0xff5f;
+                    flag10 = (unsigned char *)((int)GameMap[cy + y] + 0x10 + off);
+                    *flag10 &= 0xfc;
+                    off += 0x14;
+                    count--;
+                } while (count != 0);
+            }
+        }
+        next = rect.next;
+    } while (rect.next != 0);
+    if (DAT_00667cd8 == 0) {
+        CalculateMapRenderOrder();
+        DAT_00667cdc = 1;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0045f220
 LEGO_EXPORT void StandardRemoveObject(unsigned int a, unsigned int b, unsigned int c) { STUB(); }
