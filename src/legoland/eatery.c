@@ -784,7 +784,86 @@ void FUN_0042f0f0(int param_1, int param_2, int param_3, int param_4) {
 void FUN_0042f1a0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0042f4c0
-void FUN_0042f4c0(void) { STUB(); }
+void FUN_0042f4c0(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6) {
+    int ride = *(int *)(param_1 + 0xc);
+    int *node;
+    int blokes[8];
+    int count;
+    int i;
+    int *p;
+    struct BrollyNode *state;
+    union {
+        __int64 q;
+        int i[2];
+    } coords;
+    union {
+        __int64 q;
+        int i[2];
+    } offset;
+    struct {
+        /* 0x00 */ int field_0;
+        /* 0x04 */ int field_4;
+        /* 0x08 */ short field_8;
+    } cfg;
+    node = *(int **)(ride + 0xcc);
+    cfg.field_0 = 0x103;
+    cfg.field_4 = *(int *)(ride + 0xc4);
+    cfg.field_8 = *param_4;
+    p = blokes;
+    blokes[0] = 0;
+    for (i = 7; p = p + 1, i != 0; i = i - 1) {
+        *p = 0;
+    }
+    count = 0;
+    coords.q = GetScreenCoordsForObject((unsigned char *)param_4, (void *)ride);
+    if (node != NULL) {
+        short v = *param_4;
+        p = blokes;
+        do {
+            if (v == (short)node[3]) {
+                count = count + 1;
+                *p = node[2];
+                p = p + 1;
+            }
+            node = (int *)*node;
+        } while (node != NULL);
+        if (count != 0) {
+            for (i = 0; i < count; i = i + 1) {
+                if (*(char *)(blokes[i] + 0x37) == 1) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+            }
+            PrintSprite(DAT_0081cd8c, param_2, param_3, param_6, 0);
+            for (i = 0; i < count; i = i + 1) {
+                if (*(char *)(blokes[i] + 0x37) == 2) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+            }
+            PrintSprite(DAT_0081cd88, param_2, param_3, param_6, 0);
+            for (i = 0; i < count; i = i + 1) {
+                if (*(char *)(blokes[i] + 0x37) == 3) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+            }
+            PrintSprite(DAT_0081cd94, param_2, param_3, param_6, 0);
+            for (i = 0; i < count; i = i + 1) {
+                if (*(char *)(blokes[i] + 0x37) == 4) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+            }
+            PrintSprite(DAT_0081cd90, param_2, param_3, param_6, 0);
+            for (i = 0; i < count; i = i + 1) {
+                if (*(char *)(blokes[i] + 0x37) == 5) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
+            }
+            PrintSprite(DAT_0081cd28, param_2, param_3, param_6, 0);
+        }
+    }
+    state = FUN_0042ef40((unsigned short *)param_4);
+    if (state != NULL) {
+        char frame = state->field_9 + 1;
+        if (frame > 0xf) {
+            frame = 0;
+        }
+        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_0081cd2c, 1), frame);
+        offset.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0081cd2c, 1);
+        AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_0081cd2c, 1),
+                    offset.i[0] + coords.i[0], offset.i[1] + coords.i[1], param_6, (int *)&cfg);
+        state->field_9 = frame;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0042f720
 void FUN_0042f720(void) {
@@ -973,7 +1052,96 @@ void *FUN_004304a0(struct EateryObj *obj, unsigned short a2) {
 }
 
 // FUNCTION: LEGOLAND 0x004304e0
-void FUN_004304e0(void) { STUB(); }
+void FUN_004304e0(unsigned short *param_1, int param_2, unsigned int param_3) {
+    struct SaveBlock *state;
+    union {
+        __int64 q;
+        int i[2];
+    } coords;
+    union {
+        __int64 q;
+        int i[2];
+    } off;
+    struct {
+        /* 0x00 */ int field_0;
+        /* 0x04 */ int field_4;
+        /* 0x08 */ short field_8;
+    } cfg;
+    char c8;
+    char c9;
+    char c6;
+    char c7;
+    int sx;
+    int sy;
+    cfg.field_8 = *param_1;
+    cfg.field_4 = *(int *)(param_2 + 0xc4);
+    cfg.field_0 = 0x103;
+    state = FUN_0042f9d0(param_1);
+    if (state == NULL) {
+        return;
+    }
+    coords.q = GetScreenCoordsForObject((unsigned char *)param_1, (void *)param_2);
+    sy = coords.i[1];
+    sx = coords.i[0];
+    c8 = state->field_8;
+    c9 = state->field_9;
+    c6 = state->field_6;
+    c7 = state->field_7;
+    switch (state->field_18) {
+    case 0:
+    case 1:
+        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 1), c7);
+        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
+        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), off.i[0] + sx, off.i[1] + sy, param_3, (int *)&cfg);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), c9);
+        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
+        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), off.i[0] + sx, off.i[1] + sy, param_3, (int *)&cfg);
+        if (state->field_18 == 0 && state->field_c == 0) {
+            return;
+        }
+        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 6), c8);
+        return;
+    case 2:
+        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 1), c7);
+        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
+        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
+        sx = off.i[0] + sx;
+        sy = off.i[1] + sy;
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), sx, sy, param_3, (int *)&cfg);
+        return;
+    case 3:
+        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 1), c7);
+        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
+        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), off.i[0] + sx, off.i[1] + sy, param_3, (int *)&cfg);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), c9);
+        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
+        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
+        sx = off.i[0] + sx;
+        sy = off.i[1] + sy;
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), sx, sy, param_3, (int *)&cfg);
+        return;
+    case 4:
+    case 5:
+        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 1), c7);
+        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
+        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), off.i[0] + sx, off.i[1] + sy, param_3, (int *)&cfg);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 2), c6);
+        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 2);
+        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 2), off.i[0] + sx, off.i[1] + sy, param_3, (int *)&cfg);
+        LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 0), c6);
+        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 0);
+        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
+        sx = off.i[0] + sx;
+        sy = off.i[1] + sy;
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 0), sx, sy, param_3, (int *)&cfg);
+        return;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00430b10
 void FUN_00430b10(void) { STUB(); }
