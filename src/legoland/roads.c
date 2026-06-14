@@ -52,7 +52,7 @@ struct RoadPlaceArg {
 };
 
 // FUNCTION: LEGOLAND 0x004132a0
-void FUN_004132a0(void) { STUB(); }
+void FUN_004132a0(unsigned short param_1, int param_2, int param_3, unsigned int param_4, unsigned int param_5) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004133e0
 void FUN_004133e0(void) { STUB(); }

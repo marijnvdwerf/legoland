@@ -11,6 +11,7 @@
 #include "render3d.h"
 #include "ride_bloke.h"
 #include "ride_queue.h"
+#include "roads.h"
 #include "sound_music.h"
 #include "tilemap.h"
 
@@ -55,6 +56,13 @@ struct CountNode {
     unsigned char pad_2[2];
     int field_4;
     struct CountNode *next;
+};
+
+struct DSRoadElem {
+    /* 0x00 */ unsigned char pad_0[0x8];
+    /* 0x08 */ unsigned char flags;
+    /* 0x09 */ unsigned char pad_9[0xc - 0x9];
+    /* 0x0c */ struct ObjectCount *obj;
 };
 
 #include "image_sprite.h"
@@ -244,7 +252,50 @@ void FUN_00405570(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00405630
-void FUN_00405630(void) { STUB(); }
+void FUN_00405630(unsigned int param_1, unsigned char *param_2) {
+    unsigned char *src = param_2;
+    unsigned char b0 = param_2[0];
+    unsigned char b4 = param_2[4];
+    unsigned int id;
+    struct CountNode *node;
+    struct Cursor *cursor;
+    int x;
+    int y;
+    struct DSRoadElem *elem;
+
+    *(unsigned char *)&param_2 = b0;
+    *((unsigned char *)&param_2 + 1) = b4;
+    AddBasicObject(param_1, (unsigned int)src);
+
+    node = (struct CountNode *)malloc(sizeof(struct CountNode));
+    id = (unsigned int)param_2;
+    node->field_0 = id;
+    node->next = (struct CountNode *)DAT_004c11bc;
+    cursor = (struct Cursor *)EditCursor.field_1830;
+    DAT_004c11bc = node;
+    y = cursor->field_1408;
+    x = cursor->field_1404;
+
+    FUN_004132a0(id, x - 3, y - 4, 6, 1);
+    FUN_004132a0(id, x + 1, y - 4, 0, 1);
+    x += 5;
+    FUN_004132a0(id, x, y - 4, 3, 1);
+    FUN_004132a0(id, x, y, 0, 0);
+    FUN_004132a0(id, x, y + 4, 0, 0);
+
+    // STRING: LEGOLAND 0x004b455c
+    elem = (struct DSRoadElem *)ElemID("Driving School Roads");
+    if (elem != NULL && (elem->flags & 4) != 0) {
+        IncrementObjectCount(elem->obj);
+        IncrementObjectCount(elem->obj);
+        IncrementObjectCount(elem->obj);
+        IncrementObjectCount(elem->obj);
+        IncrementObjectCount(elem->obj);
+    }
+
+    node->field_4 = 5;
+    FUN_00405310(id);
+}
 
 // FUNCTION: LEGOLAND 0x00405740
 void FUN_00405740(void) { STUB(); }
