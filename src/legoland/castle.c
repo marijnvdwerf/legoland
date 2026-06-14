@@ -3068,23 +3068,23 @@ struct Struct427f70Arg {
 
 // FUNCTION: LEGOLAND 0x00427f70
 void FUN_00427f70(const struct Struct427f70Arg *arg) {
-    struct Struct427f70Tmp tmp;
+    int coords[2];
 
-    tmp.field_0 = arg->field_4;
-    tmp.field_4 = arg->field_6;
-    RemoveRollerCoasterPath(&tmp);
+    coords[0] = arg->field_4;
+    coords[1] = arg->field_6;
+    RemoveRollerCoasterPath(coords);
 
-    tmp.field_0 = arg->field_4 + 1;
-    tmp.field_4 = arg->field_6;
-    RemoveRollerCoasterPath(&tmp);
+    coords[0] = arg->field_4 + 1;
+    coords[1] = arg->field_6;
+    RemoveRollerCoasterPath(coords);
 
-    tmp.field_0 = arg->field_4 + 1;
-    tmp.field_4 = arg->field_6 + 1;
-    RemoveRollerCoasterPath(&tmp);
+    coords[0] = arg->field_4 + 1;
+    coords[1] = arg->field_6 + 1;
+    RemoveRollerCoasterPath(coords);
 
-    tmp.field_0 = arg->field_4;
-    tmp.field_4 = arg->field_6 + 1;
-    RemoveRollerCoasterPath(&tmp);
+    coords[0] = arg->field_4;
+    coords[1] = arg->field_6 + 1;
+    RemoveRollerCoasterPath(coords);
 }
 
 struct Struct427ff0Point {

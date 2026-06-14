@@ -17,8 +17,8 @@ LEGO_EXPORT void AddRollerCoasterPath(int *coords) { STUB(); }
 LEGO_EXPORT void RemoveBasicPath(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0045dcd0
-LEGO_EXPORT void RemoveRollerCoasterPath(const struct Struct427f70Tmp *tmp) {
-    RemovePathTile((unsigned int)tmp, ((struct PathSpriteHeader *)PathSprite)->id);
+LEGO_EXPORT void RemoveRollerCoasterPath(int *coords) {
+    RemovePathTile(coords, ((struct PathSpriteHeader *)PathSprite)->id);
 }
 
 // FUNCTION: LEGOLAND 0x0045dcf0
