@@ -8,8 +8,10 @@
 #include "image_sprite.h"
 #include "jungle_cruise.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "objclass.h"
+#include "print_sprite.h"
 #include "render3d.h"
 #include "tilemap.h"
 
@@ -1093,7 +1095,25 @@ void FUN_00435470(void *param_1, unsigned int param_2, struct Cursor *param_3) {
 void FUN_00435750(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00435bd0
-void FUN_00435bd0(void) { STUB(); }
+void FUN_00435bd0(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6) {
+    int cursor = *(int *)(param_1 + 0xc);
+    unsigned int *node = *(unsigned int **)(cursor + 0xcc);
+    short *lls1;
+    unsigned int lls2;
+    __int64 coords;
+
+    FUN_00432d00(1);
+    for (; node != NULL; node = (unsigned int *)*node) {
+        if (*param_4 == *(short *)(node + 3) && *(char *)(node[2] + 0x60) != '\x02') {
+            IP_RenderBlokeIn3DNow((struct Bloke *)node[2]);
+        }
+    }
+    coords = GetScreenCoordsForObject((unsigned char *)param_4, (void *)cursor);
+    lls1 = (short *)GetLLSForSprite((struct SpriteLLS *)DAT_0081cb60->field_64);
+    lls2 = GetLLSForSprite((struct SpriteLLS *)DAT_0081cb5c);
+    LLSSetFrame((struct LLS *)lls2, *lls1);
+    PrintSprite(DAT_0081cb5c, (unsigned int)coords, param_6, 0, 0);
+}
 
 // FUNCTION: LEGOLAND 0x00435c70
 int FUN_00435c70(void) {
