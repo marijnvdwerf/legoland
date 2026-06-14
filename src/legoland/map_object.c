@@ -1732,7 +1732,180 @@ void FUN_00460560(int index) {
 }
 
 // FUNCTION: LEGOLAND 0x004608c0
-void FUN_004608c0(int *param_1, int *param_2) { STUB(); }
+void FUN_004608c0(int *param_1, int *param_2) {
+    struct Overlay *ov;
+    int dx;
+    int dy;
+    int size;
+    int dbl;
+    int sx;
+    int half_x;
+    int half_y;
+    int rem_x;
+    int row;
+    int phase;
+    int col;
+    int sxpix;
+    int sypix;
+    struct MapElement *tile;
+    unsigned short sprite_id;
+    int draw_x;
+    int draw_y;
+    int sprite;
+    int frame;
+    int k;
+
+    ov = (struct Overlay *)OverlayList;
+    dx = param_1[0] - param_2[0];
+    dy = param_1[1] - param_2[1];
+    SetClipping(param_2);
+    half_y = (int)((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
+    dbl = (int)(short)(((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size * 2);
+    sx = param_1[0] / dbl;
+    half_x = (dbl + 1) >> 1;
+    rem_x = (half_y + 1) >> 1;
+    param_1 = (int *)(param_1[0] % dbl);
+    row = (param_1[1] - rem_x) / half_y;
+    phase = (param_1[1] - rem_x) % half_y;
+    sxpix = row + -3 + sx;
+    sypix = row - sx;
+    {
+        char which = (char)((half_x <= (int)param_1) + 1);
+        if (rem_x < phase) {
+            which = (char)((half_x <= (int)param_1) + 3);
+        }
+        switch (which) {
+        case 1:
+            if ((int)param_1 < half_x + phase * -2) {
+                param_1 = (int *)((int)param_1 + half_x);
+                sxpix = sxpix - 1;
+                phase = phase + rem_x;
+            }
+            break;
+        case 2:
+            if (half_x + phase * 2 <= (int)param_1) {
+                sypix = sypix + -1;
+                param_1 = (int *)((int)param_1 - half_x);
+                phase = phase + rem_x;
+            }
+            break;
+        case 3:
+            if (half_x + (phase - half_y) * 2 <= (int)param_1) {
+                break;
+            }
+            sypix = sypix + 1;
+            size = half_x;
+            param_1 = (int *)((int)param_1 + size);
+            phase = phase - rem_x;
+            break;
+        case 4:
+            if ((int)param_1 < half_x + (half_y - phase) * 2) {
+                break;
+            }
+            sxpix = sxpix + 1;
+            size = -half_x;
+            param_1 = (int *)((int)param_1 + size);
+            phase = phase - rem_x;
+            break;
+        }
+    }
+    {
+        int ybot = param_2[3] + half_y * 2;
+        int xright = param_2[2];
+        PushRenderingStatusAndLockVideoSurface();
+        draw_y = (param_2[1] + half_y * -2) - phase;
+        if (draw_y < ybot) {
+            rem_x = rem_x + draw_y;
+            do {
+                int saved_row = sypix;
+                int saved_col = sxpix;
+                for (col = (param_2[0] + dbl * -2) - (int)param_1; col < xright + dbl * 2; col = col + dbl) {
+                    if ((int)sxpix < 0 || lpConfig->width <= (int)sxpix || sypix < 0 || lpConfig->height <= sypix) {
+                        tile = 0;
+                    } else {
+                        tile = (struct MapElement *)((int)GameMap[sypix] + sxpix * 0x14);
+                        if (tile != 0 && (sprite_id = tile->field_8) != 0) {
+                            if ((tile->flags & 3) == 0 || (tile->flags & 8) == 0 || tile->field_0 == 0) {
+                                FUN_00485f00((struct Sprite *)TileSpriteArray[sprite_id], col, draw_y);
+                                if (FUN_0045ce10((struct MapTile *)tile) != 0) {
+                                    FUN_00460e90((int *)&sxpix, col, draw_y, 0);
+                                }
+                            } else if (*(int *)(*(int *)(tile->field_0 + 0xc) + 0xa0) == 0) {
+                                FUN_00485f00((struct Sprite *)TileSpriteArray[sprite_id], col, draw_y);
+                            }
+                        }
+                    }
+                    sxpix = sxpix + 1;
+                    if (tile == 0) {
+                        if ((int)sxpix >= 0 && (int)sxpix < lpConfig->width && sypix >= 0 && sypix < lpConfig->height &&
+                            (tile = (struct MapElement *)((int)GameMap[sypix] + sxpix * 0x14)) != 0) {
+                            goto draw_lower;
+                        }
+                    } else {
+                        if ((unsigned int)sxpix == lpConfig->width) {
+                            break;
+                        }
+                        tile = tile + 1;
+                        if (tile == 0) {
+                            goto check_lower;
+                        }
+                    draw_lower:
+                        sprite_id = tile->field_8;
+                        if (sprite_id != 0) {
+                            if ((tile->flags & 3) == 0 || (tile->flags & 8) == 0 || tile->field_0 == 0) {
+                                FUN_00485f00((struct Sprite *)TileSpriteArray[sprite_id], col + half_x, rem_x);
+                                if (FUN_0045ce10((struct MapTile *)tile) != 0) {
+                                    FUN_00460e90((int *)&sxpix, col + half_x, rem_x, 0);
+                                }
+                            } else if (*(int *)(*(int *)(tile->field_0 + 0xc) + 0xa0) == 0) {
+                                FUN_00485f00((struct Sprite *)TileSpriteArray[sprite_id], col, draw_y);
+                            }
+                        }
+                    }
+                check_lower:
+                    sypix = sypix + -1;
+                }
+                sxpix = saved_col + 1;
+                sypix = saved_row + 1;
+                draw_y = draw_y + half_y;
+                rem_x = rem_x + half_y;
+            } while (draw_y < ybot);
+        }
+    }
+    while (ov != 0) {
+        if (ov->field_20 != 0) {
+            FUN_00485f00((struct Sprite *)ov->field_20, ov->field_14 - dx, ov->field_18 - dy);
+            frame = ov->field_10;
+            if ((char)((unsigned int)frame >> 8) != 0 && (&DAT_00832bdc)[(int)(unsigned int)frame >> 8] != 0) {
+                if ((frame & 0xff) == 0) {
+                    draw_x = ov->field_14 - dx;
+                    draw_y = ov->field_18 - dy;
+                    FUN_00485f00((struct Sprite *)*(int *)(*(int *)((int)DAT_00667cb0 + 8) + ((frame + 2) & 0xff) * 4),
+                                 draw_x + DAT_004b9218, draw_y + DAT_004b921c);
+                    k = (ov->field_10 + 4) & 0xff;
+                    if (k < *(int *)((int)DAT_00667cb0 + 4)) {
+                        sprite = *(int *)(*(int *)((int)DAT_00667cb0 + 8) + k * 4);
+                        SortSprite((struct Sprite *)sprite, draw_x + DAT_00805f40, draw_y + DAT_00805f44,
+                                   *(short *)(sprite + 0x16) + draw_y + DAT_00805f44, 0, 0);
+                    }
+                } else if ((frame & 0xff) == 1) {
+                    draw_x = ov->field_14 - dx;
+                    draw_y = ov->field_18 - dy;
+                    FUN_00485f00((struct Sprite *)*(int *)(*(int *)((int)DAT_00667cb0 + 8) + ((frame + 2) & 0xff) * 4),
+                                 draw_x + DAT_004b9210, draw_y + DAT_004b9214);
+                    k = (ov->field_10 + 4) & 0xff;
+                    if (k < *(int *)((int)DAT_00667cb0 + 4)) {
+                        sprite = *(int *)(*(int *)((int)DAT_00667cb0 + 8) + k * 4);
+                        SortSprite((struct Sprite *)sprite, draw_x + DAT_00801a60, draw_y + DAT_00801a64,
+                                   *(short *)(sprite + 0x16) + draw_y + DAT_00801a64, 0, 0);
+                    }
+                }
+            }
+        }
+        ov = ov->next;
+    }
+    PopRenderingStatus();
+}
 
 // FUNCTION: LEGOLAND 0x00460e00
 void FUN_00460e00(void) {
@@ -1758,7 +1931,7 @@ void FUN_00460e00(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00460e90
-void FUN_00460e90(int *coords, unsigned int x, unsigned int y) {
+void FUN_00460e90(int *coords, unsigned int x, unsigned int y, unsigned int param_4) {
     unsigned char dir = FUN_0045ceb0(coords);
     unsigned int mode = FUN_0045d080(dir, coords);
 

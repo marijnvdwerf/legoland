@@ -60,6 +60,7 @@ LEGO_EXPORT void GetTileDimensions(int *width, int *height);
 LEGO_EXPORT int Get_XScroll(void);
 LEGO_EXPORT int Get_YScroll(void);
 void FUN_00460560(int index);
+void FUN_00460e90(int *coords, unsigned int x, unsigned int y, unsigned int param_4);
 void FUN_00461290(int param_1, int param_2, int param_3, int param_4);
 LEGO_EXPORT void MouseScrollMap(void);
 LEGO_EXPORT void ProcessScrolling(unsigned int a, unsigned int b);
