@@ -21,6 +21,7 @@ int CreateObjectInstance(unsigned int obj, unsigned short *id);
 void AddInstanceToList(int instance);
 unsigned int GetObjSalvageValue(unsigned int obj, unsigned int salvage);
 int CheckForPeople(void *rect);
+void AddPathTile(struct Point *p, unsigned short param1);
 int GetInstanceOfClass(unsigned int obj, unsigned short *uid);
 void RemoveInstanceFromList(int node);
 LEGO_EXPORT unsigned short RestoreBaseMap(int tile_x, int row_y);

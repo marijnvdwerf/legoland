@@ -120,10 +120,12 @@ struct OverlayParam {
 struct Overlay {
     unsigned int field_0;
     unsigned int field_4;
-    unsigned char pad_8[0xc];
+    unsigned char pad_8[0x10 - 0x8];
+    int field_10;
     unsigned int field_14;
     unsigned int field_18;
     struct Overlay *next;
+    int field_20;
 };
 
 /* globals.h owns MapTileGrid as the canonical struct MapElement** map grid;
@@ -1648,7 +1650,83 @@ LEGO_EXPORT void GetTileDimensions(int *width, int *height) {
 }
 
 // FUNCTION: LEGOLAND 0x00460560
-void FUN_00460560(int index) { STUB(); }
+void FUN_00460560(int index) {
+    struct Overlay *ov;
+    int coord[2];
+    int sc[2];
+    int row;
+    int inner;
+    int outer;
+
+    ov = (struct Overlay *)OverlayList;
+    if (OverlayList == 0) {
+        DAT_00832be0[index] = 1;
+        return;
+    }
+    do {
+        if (ov->field_10 >> 8 == index + 1) {
+            sc[0] = (lpConfig->field_20 - (ScrollX >> 8)) + ov->field_14;
+            sc[1] = (lpConfig->field_22 - (ScrollY >> 8)) + ov->field_18;
+            ScreenToMapRef(sc, coord, 0);
+            if ((char)ov->field_10 == 0) {
+                coord[1] = coord[1] + 0xf;
+                outer = 10;
+                do {
+                    inner = 2;
+                    row = coord[1];
+                    do {
+                        struct MapElement *t;
+                        coord[1] = row;
+                        t = (struct MapElement *)((int)GameMap[coord[0]] + coord[1] * 0x14);
+                        t->field_0 = ((struct MapObject *)DAT_007fd624)->field_c4;
+                        t->field_10 |= 1;
+                        t->field_10 &= 0xfd;
+                        *(unsigned char *)&t->flags |= 0x48;
+                        t->flags &= 0x7fff;
+                        t->field_8 = *(unsigned short *)PathSprite;
+                        *((unsigned char *)&t->field_4) = (unsigned char)coord[1];
+                        *((unsigned char *)&t->field_4 + 1) = (unsigned char)coord[0];
+                        AddPathTile((struct Point *)coord, *(unsigned short *)PathSprite);
+                        inner--;
+                        row = coord[1] + 1;
+                    } while (inner != 0);
+                    coord[1]--;
+                    coord[0]++;
+                    outer--;
+                } while (outer != 0);
+            } else {
+                coord[1] = coord[1] + 10;
+                coord[0] = coord[0] + 6;
+                outer = 2;
+                do {
+                    inner = 10;
+                    row = coord[1];
+                    do {
+                        struct MapElement *t;
+                        coord[1] = row;
+                        t = (struct MapElement *)((int)GameMap[coord[0]] + coord[1] * 0x14);
+                        t->field_0 = ((struct MapObject *)DAT_007fd624)->field_c4;
+                        t->field_10 |= 1;
+                        t->field_10 &= 0xfd;
+                        *(unsigned char *)&t->flags |= 0x48;
+                        t->flags &= 0x7fff;
+                        t->field_8 = *(unsigned short *)PathSprite;
+                        *((unsigned char *)&t->field_4) = (unsigned char)coord[1];
+                        *((unsigned char *)&t->field_4 + 1) = (unsigned char)coord[0];
+                        AddPathTile((struct Point *)coord, *(unsigned short *)PathSprite);
+                        inner--;
+                        row = coord[1] + 1;
+                    } while (inner != 0);
+                    coord[1] = coord[1] - 9;
+                    coord[0]++;
+                    outer--;
+                } while (outer != 0);
+            }
+        }
+        ov = ov->next;
+    } while (ov != 0);
+    DAT_00832be0[index] = 1;
+}
 
 // FUNCTION: LEGOLAND 0x004608c0
 void FUN_004608c0(void) { STUB(); }

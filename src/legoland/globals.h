@@ -3172,5 +3172,6 @@ extern int DAT_00832bd4;
 extern unsigned int DAT_00832bd8;
 // 0x00832bdc
 extern int DAT_00832bdc;
+extern int DAT_00832be0[4];
 // 0x00832bf0
 extern LEGO_EXPORT void *PathSprite;
