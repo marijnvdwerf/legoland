@@ -7,7 +7,7 @@
 #include "llidb.h"
 #include "map_object.h"
 #include "render3d.h"
-#include "ride_interfaces.h"
+#include "objclass.h"
 #include "ride_queue.h"
 
 struct GoldArray {

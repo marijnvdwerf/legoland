@@ -4,7 +4,7 @@
 #include "gamemap.h"
 #include "globals.h"
 #include "map_object.h"
-#include "ride_interfaces.h"
+#include "objclass.h"
 
 #include "image_sprite.h"
 

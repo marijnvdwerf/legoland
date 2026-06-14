@@ -6,7 +6,7 @@
 #include "llidb.h"
 #include "map_object.h"
 #include "render3d.h"
-#include "ride_interfaces.h"
+#include "objclass.h"
 #include "sound_music.h"
 
 struct CatapultNode {

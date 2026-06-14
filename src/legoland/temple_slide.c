@@ -5,7 +5,7 @@
 #include "globals.h"
 #include "llidb.h"
 #include "render3d.h"
-#include "ride_interfaces.h"
+#include "objclass.h"
 
 struct TempleRide {
     unsigned char pad_0[4];

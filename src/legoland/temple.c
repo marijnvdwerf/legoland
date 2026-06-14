@@ -5,7 +5,7 @@
 #include "globals.h"
 #include "map_object.h"
 #include "obj_instance.h"
-#include "ride_interfaces.h"
+#include "objclass.h"
 
 struct TempleObject {
     unsigned char pad_0[12];

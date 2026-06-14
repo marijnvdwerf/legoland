@@ -7,7 +7,7 @@
 #include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
-#include "ride_interfaces.h"
+#include "objclass.h"
 #include "sound_music.h"
 
 struct JoustNode {

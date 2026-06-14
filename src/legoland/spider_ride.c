@@ -5,7 +5,7 @@
 
 #include "binv.h"
 #include "llidb.h"
-#include "ride_interfaces.h"
+#include "objclass.h"
 #include "sound_music.h"
 #include "spider_ride.h"
 

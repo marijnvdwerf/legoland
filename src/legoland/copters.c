@@ -8,7 +8,7 @@
 #include "llidb.h"
 #include "man3d.h"
 #include "map_object.h"
-#include "ride_interfaces.h"
+#include "objclass.h"
 #include "ride_queue.h"
 #include "sound_music.h"
 #include "sound_sfx.h"

@@ -41,7 +41,7 @@ struct PlaneRideRoot {
 };
 
 #include "image_sprite.h"
-#include "ride_interfaces.h"
+#include "objclass.h"
 
 // FUNCTION: LEGOLAND 0x0043d880
 void FUN_0043d880(void *param_1) {

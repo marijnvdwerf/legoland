@@ -16,7 +16,7 @@
 #include "objclass.h"
 #include "print_sprite.h"
 #include "render3d.h"
-#include "ride_interfaces.h"
+#include "objclass.h"
 #include "sound_music.h"
 #include "tilemap.h"
 

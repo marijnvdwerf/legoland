@@ -8,7 +8,7 @@
 #include "llidb.h"
 #include "log_flume.h"
 #include "map_object.h"
-#include "ride_interfaces.h"
+#include "objclass.h"
 #include "ride_queue.h"
 
 struct Sprite;
