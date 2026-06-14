@@ -27,7 +27,7 @@ struct InterfaceObj {
     void *field_2c;
     unsigned char pad_30[0x34 - 0x30];
     unsigned int field_34;
-    unsigned int field_38;
+    char *field_38;
     unsigned int field_3c;
 };
 
@@ -792,7 +792,7 @@ LEGO_EXPORT void ListChildrenBar(void *node, int group, short x, short y) {
     // STRING: LEGOLAND 0x004bb4a8
     icon = LoadSpriteIcon("ListChildrenBar.lls", 4, x, y, group);
     icon->field_3c = 100;
-    icon->field_38 = (unsigned int)GetString(100);
+    icon->field_38 = GetString(100);
     icon->field_34 |= 0x2002;
     icon->event_handler = (unsigned char (*)(unsigned int, unsigned int))FUN_00475c50;
     icon->field_18 = (struct Sprite *)node;
@@ -805,7 +805,7 @@ LEGO_EXPORT void CloseChildrenBar(void *node, int group, short x, short y) {
     // STRING: LEGOLAND 0x004bb4bc
     icon = LoadSpriteIcon("CloseChildrenBar.lls", 4, x, y, group);
     icon->field_3c = 0x65;
-    icon->field_38 = (unsigned int)GetString(0x65);
+    icon->field_38 = GetString(0x65);
     icon->field_34 |= 0x2002;
     icon->event_handler = (unsigned char (*)(unsigned int, unsigned int))FUN_00475c90;
     icon->field_18 = (struct Sprite *)node;
