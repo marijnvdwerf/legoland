@@ -1027,7 +1027,109 @@ LEGO_EXPORT void Gardener_Build(struct Worker *worker) {
 }
 
 // FUNCTION: LEGOLAND 0x0049a7f0
-LEGO_EXPORT void Mechanic_Build(void) { STUB(); }
+LEGO_EXPORT void Mechanic_Build(struct Worker *worker) {
+    char dir;
+    int result;
+    int dx;
+    int dy;
+    int dest[2];
+    int coords[2];
+    struct WorkOrder *order;
+    struct MapElement *cell;
+    int x;
+    int y;
+
+    switch (worker->var_60) {
+    case 0:
+        worker->var_24 = worker->var_2c;
+        worker->var_28 = worker->var_30;
+        dir = CalcMoveLine(worker->var_68, worker->var_6c, worker->var_2c, worker->var_30,
+                           &worker->var_98);
+        worker->state = 0xc;
+        worker->var_73 = dir + 0x10;
+        NewDirForAction(worker, (worker->var_73 >> 5) + 3);
+        worker->var_60 = 0xb;
+        return;
+    case 0xb:
+        dy = worker->var_28 - worker->var_6c;
+        dx = worker->var_24 - worker->var_68;
+        worker->var_60 = (unsigned char)(((0xffff < dy * dy + dx * dx) - 1U & 6) + 0x65);
+        return;
+    case 0x65:
+        result = FUN_00482710(&worker->var_68, &worker->var_2c, dest);
+        if (result == 0) {
+            FUN_00499f40(worker->var_50);
+            worker->flags_c = 0x11;
+            worker->var_60 = 0x65;
+            worker->ticks = 0x70;
+            worker->state = 4;
+            return;
+        }
+        if (result == 1) {
+            worker->var_24 = dest[0];
+            worker->var_28 = dest[1];
+            dir = CalcMoveLine(worker->var_68, worker->var_6c, dest[0], dest[1], &worker->var_98);
+            worker->state = 0xc;
+            worker->var_73 = dir + 0x10;
+            NewDirForAction(worker, (worker->var_73 >> 5) + 3);
+            if ((worker->var_64 & 1) != 0) {
+                worker->var_60 = 0x6a;
+                return;
+            }
+        } else if (result == 2) {
+            worker->var_24 = dest[0];
+            worker->var_28 = dest[1];
+            dir = CalcMoveLine(worker->var_68, worker->var_6c, dest[0], dest[1], &worker->var_98);
+            worker->state = 0xc;
+            worker->var_73 = dir + 0x10;
+            NewDirForAction(worker, (worker->var_73 >> 5) + 3);
+            worker->var_60 = ~worker->var_64 & 1 | 0x6a;
+            return;
+        }
+        break;
+    case 0x6a:
+        worker->ticks = 0x70;
+        worker->state = 4;
+        worker->var_60 = 0x65;
+        return;
+    case 0x6b:
+        order = worker->var_50;
+        *(unsigned char *)&worker->flags |= 8;
+        coords[0] = order->var_8;
+        coords[1] = order->var_c;
+        result = BuildObject(order->var_4, coords);
+        if (result != 0) {
+            worker->var_46 = 0;
+            worker->var_60++;
+            return;
+        }
+        FUN_00499f40(worker->var_50);
+        NewLongTermAction((struct Bloke *)worker, 0x11);
+        worker->var_50->var_30 = 1;
+        return;
+    case 0x6c:
+        worker->var_50->var_30 = 0;
+        x = worker->var_50->var_8;
+        y = worker->var_50->var_c;
+        if (x < 0 || (int)lpConfig->width <= x || y < 0 || (int)lpConfig->height <= y) {
+            cell = 0;
+        } else {
+            cell = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
+        }
+        if ((cell->flags & 0x20) == 0) {
+            worker->var_60++;
+            return;
+        }
+        break;
+    case 0x6d:
+        worker->flags &= 0xfff7;
+        worker->var_46 = 1;
+        FUN_00499eb0(worker->var_50);
+        if (FUN_00499d30(worker) == 0) {
+            NewLongTermAction((struct Bloke *)worker, 0x11);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0049ab30
 LEGO_EXPORT void WorkOrderBuildObject(void) { STUB(); }
