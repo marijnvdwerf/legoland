@@ -47,7 +47,7 @@ void FUN_004689a0(void);
 unsigned int FUN_004689f0(char *param_1, char *param_2, int param_3);
 void FUN_00468b00(struct ObjectiveEvent *node);
 void FUN_00468b40(struct ObjectiveEvent *node, unsigned int param_2, unsigned int param_3);
-void FUN_00468bb0(void *param_1, unsigned int param_2);
+struct ObjectiveEvent *FUN_00468bb0(const char *format, ...);
 void FUN_00468c00(void);
 void FUN_00468d00(void);
 int FUN_00468d10(void);

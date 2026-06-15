@@ -234,7 +234,19 @@ void FUN_00468b40(struct ObjectiveEvent *node, unsigned int param_2, unsigned in
 }
 
 // FUNCTION: LEGOLAND 0x00468bb0
-void FUN_00468bb0(void *param_1, unsigned int param_2) { STUB(); }
+struct ObjectiveEvent *FUN_00468bb0(const char *format, ...) {
+    struct ObjectiveEvent *event;
+    va_list args;
+
+    event = FUN_00468910(0, 1);
+    if (event != NULL) {
+        va_start(args, format);
+        vsprintf(DAT_0066820c, format, args);
+        FUN_00468b40(event, (unsigned int)DAT_0066820c, 1);
+        FUN_00468b00(event);
+    }
+    return event;
+}
 
 // FUNCTION: LEGOLAND 0x00468c00
 void FUN_00468c00(void) { STUB(); }
