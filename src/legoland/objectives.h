@@ -69,3 +69,4 @@ void FUN_00469bd0(unsigned int a, void *b);
 int FUN_00469c40(struct ObjectiveEvent *event);
 int FUN_00469ae0(struct RewardArg *arg);
 int FUN_00469b00(struct RewardArg *arg);
+void FUN_00469900(struct NerpsArg *object, unsigned int a, unsigned int b);

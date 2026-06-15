@@ -15,3 +15,4 @@ struct TextCell *FUN_00455bb0(char *name, int width, int height, int font, unsig
 struct TextCell *FUN_00455d40(const char *name, int font, unsigned int format, unsigned int bg_color, unsigned int text_color);
 void FUN_00455e50(char *name, unsigned int x, unsigned int y, int width, int height, int font, unsigned int format, unsigned int bg_color, unsigned int text_color);
 void FUN_00455ec0(struct TextCell *cell, unsigned int x, unsigned int y);
+LEGO_EXPORT void Print(int x, int y, const char *text, int font);

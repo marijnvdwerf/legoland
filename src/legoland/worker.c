@@ -13,6 +13,7 @@
 #include "man3d.h"
 #include "map_object.h"
 #include "objclass.h"
+#include "popupinfo.h"
 #include "print_sprite.h"
 #include "sound_music.h"
 #include "tilemap.h"

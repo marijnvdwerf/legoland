@@ -18,6 +18,7 @@
 #include "ride_queue.h"
 #include "roads.h"
 #include "sound_music.h"
+#include "sound_sfx.h"
 #include "tilemap.h"
 
 struct DSCursorSource {

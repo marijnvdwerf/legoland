@@ -77,3 +77,4 @@ BOOL FUN_00492d80(void);
 void FUN_00492da0(void);
 int FUN_00495a10(void *hwnd);
 int FUN_00495b00(void);
+LEGO_EXPORT void AdjustPSampleFreq(struct Sample *sample, unsigned int param_2);

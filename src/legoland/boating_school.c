@@ -18,6 +18,7 @@
 #include "render3d.h"
 #include "objclass.h"
 #include "sound_music.h"
+#include "sound_sfx.h"
 #include "tilemap.h"
 
 // FUNCTION: LEGOLAND 0x00418e60

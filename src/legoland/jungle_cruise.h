@@ -115,9 +115,6 @@ void NewDirForAction();
 void BuyItem();
 int ArcTan256();
 int FUN_00458930(float x);
-unsigned char FUN_0045f4b0(struct Cursor *cursor);
-void FUN_0045f460(struct Cursor *cursor);
-void FUN_0045f480(struct Cursor *cursor, int param);
 
 void FUN_00433ca0();
 void FUN_00433cd0();

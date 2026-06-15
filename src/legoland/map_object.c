@@ -22,8 +22,10 @@
 #include "print_sprite.h"
 #include "resource.h"
 #include "sound_music.h"
+#include "text.h"
 #include "tilemap.h"
 #include "timer.h"
+#include "worker.h"
 
 struct ObjInfo {
     unsigned char pad_c[12];

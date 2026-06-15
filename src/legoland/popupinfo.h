@@ -25,3 +25,4 @@ unsigned char FUN_00473360(void *arg1, unsigned char flags, unsigned int arg3, u
 unsigned char FUN_004733f0(void *param_1, unsigned char param_2);
 unsigned char FUN_00473460(void *param_1, unsigned char param_2);
 unsigned char FUN_004734d0(void *param_1, unsigned char param_2);
+unsigned int FUN_004735e0(unsigned int param);

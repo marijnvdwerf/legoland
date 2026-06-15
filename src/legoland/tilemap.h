@@ -23,3 +23,5 @@ LEGO_EXPORT unsigned char Bit_To_Dir(unsigned char bit);
 LEGO_EXPORT unsigned char Dir_To_Bit(unsigned char param);
 LEGO_EXPORT unsigned char Get_Path_Directions(int *param_1, char *param_2, char *param_3);
 LEGO_EXPORT unsigned char ExcludeIsolatedDiags(unsigned char param);
+LEGO_EXPORT void AddPathTile(struct Point *p, unsigned short param1);
+LEGO_EXPORT void AddPathTileGFX(struct Point *p, unsigned short param1);
