@@ -1424,7 +1424,20 @@ LEGO_EXPORT void EraseGardenerOrder(struct WorkOrder *order) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b270
-void FUN_0049b270(void) { STUB(); }
+void FUN_0049b270(int param_1, unsigned int param_2) {
+    unsigned int y;
+    struct WorkOrder *order;
+
+    y = param_2 >> 8 & 0xff;
+    order = GetMechanicWorkOrderAt(param_2 & 0xff, y);
+    if (order != 0) {
+        EraseMechanicOrder(order);
+    }
+    order = GetGardenerWorkOrderAt(param_2 & 0xff, y);
+    if (order != 0) {
+        EraseGardenerOrder(order);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0049b2c0
 LEGO_EXPORT void SetGardenerWorkOrderAtPostion(void) { STUB(); }
