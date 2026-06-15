@@ -106,6 +106,20 @@ struct PathControlElem {
     /* 0x0c */ struct BuildObject *obj;
 };
 
+struct MoviePoolElem {
+    /* 0x00 */ struct MoviePoolElem *next;
+    unsigned char pad_4[0x8 - 0x4];
+    /* 0x08 */ unsigned int field_8;
+    unsigned char pad_c[0x8c - 0xc];
+};
+
+struct MoviePool {
+    /* 0x00 */ unsigned int count;
+    /* 0x04 */ struct MoviePoolElem *array;
+    /* 0x08 */ struct MoviePoolElem *free_elem;
+    unsigned char pad_c[0xc - 0xc];
+};
+
 struct EventNode {
     struct EventNode *next;
     unsigned char pad_4[0x1c - 0x4];
@@ -2150,25 +2164,94 @@ int FUN_004771f0(char *filename, unsigned int param_2, int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00477400
-int FUN_00477400(void) { STUB(); }
+int FUN_00477400(void) {
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00477410
-void FUN_00477410(void) { STUB(); }
+void FUN_00477410(void) {
+    if (DAT_00668fb8 != NULL) {
+        free(DAT_00668fb8);
+        DAT_00668fb8 = NULL;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00477440
-void FUN_00477440(void) { STUB(); }
+struct MoviePoolElem *FUN_00477440(void) {
+    struct MoviePool *grown;
+    struct MoviePoolElem *new_array;
+    struct MoviePoolElem *elem;
+    struct MoviePoolElem *saved;
+    int offset;
+    int i;
+
+    if (DAT_00668fb8 == NULL) {
+        return NULL;
+    }
+    if (DAT_00668fb8->array == NULL) {
+        grown = (struct MoviePool *)realloc(DAT_00668fb8, (DAT_00668fb8->count + 0x400) * 0x8c + 0xc);
+        if (grown == NULL) {
+            return NULL;
+        }
+        offset = (int)grown - (int)DAT_00668fb8;
+        grown->free_elem = (struct MoviePoolElem *)((int)grown->free_elem + offset);
+        elem = grown->free_elem;
+        while (elem->next != NULL) {
+            elem->next = (struct MoviePoolElem *)((int)elem->next + offset);
+            elem = elem->next;
+        }
+        DAT_00668fb8 = grown;
+        new_array = (struct MoviePoolElem *)((char *)DAT_00668fb8 + DAT_00668fb8->count * 0x8c + 0xc);
+        memset(new_array, 0, 0x400 * 0x8c);
+        DAT_00668fb8->array = new_array;
+        for (i = 0; i < 0x3ff; i++) {
+            DAT_00668fb8->array[i].next = &DAT_00668fb8->array[i + 1];
+        }
+    }
+    saved = DAT_00668fb8->free_elem;
+    DAT_00668fb8->free_elem = DAT_00668fb8->array;
+    DAT_00668fb8->array = DAT_00668fb8->array->next;
+    DAT_00668fb8->free_elem->next = saved;
+    return DAT_00668fb8->free_elem;
+}
 
 // FUNCTION: LEGOLAND 0x004775b0
-void *FUN_004775b0(unsigned int size) { STUB(); }
+void *FUN_004775b0(unsigned int size) {
+    return calloc(1, size);
+}
 
 // FUNCTION: LEGOLAND 0x004775d0
-void FUN_004775d0(void *param) { STUB(); }
+void FUN_004775d0(void *param) {
+    free(param);
+}
 
 // FUNCTION: LEGOLAND 0x004775f0
-void FUN_004775f0(void) { STUB(); }
+void FUN_004775f0(void) {
+}
 
 // FUNCTION: LEGOLAND 0x00477600
-void FUN_00477600(void) { STUB(); }
+int FUN_00477600(unsigned int *total_out, unsigned int *count_out) {
+    struct MoviePoolElem *elem;
+    unsigned int total;
+    unsigned int count;
+
+    total = 0;
+    count = 0;
+    if (total_out == NULL || count_out == NULL) {
+        return 0;
+    }
+    if (DAT_00668fb8 != NULL) {
+        elem = DAT_00668fb8->free_elem;
+        while (elem != NULL) {
+            total = total + elem->field_8;
+            count = count + 1;
+            elem = elem->next;
+        }
+    }
+    *total_out = total;
+    *count_out = count;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00477680
 int FUN_00477680(int a, int b) {

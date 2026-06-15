@@ -61,6 +61,7 @@ struct InterfaceIconNode;
 struct IconNode;
 struct InterfaceProfileObj;
 struct InterfaceListNode;
+struct MoviePool;
 struct TrackElemPair;
 struct InterfaceQueryNode;
 struct InterfaceEventNode;
@@ -2045,6 +2046,8 @@ extern unsigned int DAT_00668fac;
 extern unsigned int DAT_00668fb0;
 // 0x00668fb4
 extern unsigned int DAT_00668fb4;
+// 0x00668fb8
+extern struct MoviePool *DAT_00668fb8;
 // 0x00668fc0
 extern void *DAT_00668fc0;
 // 0x00668fc4
