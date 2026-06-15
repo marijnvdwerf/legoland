@@ -80,6 +80,8 @@ struct TileWalker {
     unsigned char field_72;
     unsigned char pad_73[0x7f - 0x73];
     unsigned char field_7f;
+    unsigned char pad_80[0x98 - 0x80];
+    unsigned char field_98[0x10];
 };
 
 struct TileCallback {
@@ -984,7 +986,7 @@ finalize:
 }
 
 // FUNCTION: LEGOLAND 0x004841a0
-unsigned char FUN_004841a0(struct BlokeDist *bloke, int dist) {
+int FUN_004841a0(struct BlokeDist *bloke, int dist) {
     int dx = bloke->field_24 - bloke->field_68;
     int dy = bloke->field_28 - bloke->field_6c;
     return dist * dist >= dy * dy + dx * dx;
@@ -998,13 +1000,91 @@ unsigned char FUN_004841e0(struct BlokeDist *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00484220
-void FUN_00484220(void) { STUB(); }
+void FUN_00484220(struct TileWalker *walker) {
+    struct Point target;
+    if (FUN_004841a0((struct BlokeDist *)walker, (unsigned int)walker->field_7f << 1) != 0) {
+        walker->field_e = 0;
+        return;
+    }
+    NavigMoveLine((struct Navigator *)&walker->field_98, walker->field_7f, &target);
+    if (FUN_004837a0((struct Walker *)walker, target.x, target.y) != 0) {
+        if (HitObstacle((struct OverTile *)walker, target.x, target.y) != 0) {
+            walker->field_e = 0;
+            walker->field_64 |= 1;
+            return;
+        }
+        if (target.x >= 0 && target.x < (int)(lpConfig->width * 0x100) && target.y >= 0 &&
+            target.y < (int)(lpConfig->height * 0x100)) {
+            short mapFlags = Get_MapFlags(target.x, target.y);
+            unsigned char rf = GetCurrentRFFlags(target.x, target.y);
+            if ((rf & 1) != 0 || ((mapFlags & 0x10) != 0 && (rf & 2) == 0)) {
+                goto finalize;
+            }
+        }
+        walker->field_e = 0;
+        walker->field_64 |= 2;
+        return;
+    }
+finalize:
+    FUN_00483680(walker, target.x, target.y);
+    walker->field_68 = target.x;
+    walker->field_6c = target.y;
+    FUN_00483830((struct Walker *)walker);
+}
 
 // FUNCTION: LEGOLAND 0x00484350
-void FUN_00484350(void) { STUB(); }
+void FUN_00484350(struct TileWalker *walker) {
+    struct Point target;
+    if ((*(unsigned char *)&walker->field_62 & 2) != 0) {
+        walker->field_e = 0;
+        return;
+    }
+    if (FUN_004841a0((struct BlokeDist *)walker, (unsigned int)walker->field_7f << 1) != 0) {
+        walker->field_e = 0;
+        return;
+    }
+    NavigMoveLine((struct Navigator *)&walker->field_98, walker->field_7f, &target);
+    if (FUN_004837a0((struct Walker *)walker, target.x, target.y) != 0) {
+        if (HitObstacle((struct OverTile *)walker, target.x, target.y) != 0) {
+            walker->field_e = 0;
+            return;
+        }
+        if (target.x >= 0 && target.x < (int)(lpConfig->width * 0x100) && target.y >= 0 &&
+            target.y < (int)(lpConfig->height * 0x100)) {
+            short mapFlags = Get_MapFlags(target.x, target.y);
+            unsigned char rf = GetCurrentRFFlags(target.x, target.y);
+            if ((rf & 1) != 0 || ((mapFlags & 0x10) != 0 && (rf & 2) == 0)) {
+                walker->field_e = 0;
+                return;
+            }
+        }
+    }
+    FUN_00483680(walker, target.x, target.y);
+    walker->field_68 = target.x;
+    walker->field_6c = target.y;
+    FUN_00483830((struct Walker *)walker);
+}
 
 // FUNCTION: LEGOLAND 0x00484470
-void FUN_00484470(void) { STUB(); }
+void FUN_00484470(struct TileWalker *walker) {
+    struct Point target;
+    if (FUN_004841a0((struct BlokeDist *)walker, (unsigned int)walker->field_7f << 1) != 0) {
+        walker->field_e = 0;
+        return;
+    }
+    NavigMoveLine((struct Navigator *)&walker->field_98, walker->field_7f, &target);
+    if (FUN_004837a0((struct Walker *)walker, target.x, target.y) != 0) {
+        if (HitObstacle((struct OverTile *)walker, target.x, target.y) != 0) {
+            walker->field_e = 0;
+            walker->field_64 |= 1;
+            return;
+        }
+    }
+    FUN_00483680(walker, target.x, target.y);
+    walker->field_68 = target.x;
+    walker->field_6c = target.y;
+    FUN_00483830((struct Walker *)walker);
+}
 
 // FUNCTION: LEGOLAND 0x00484520
 void FUN_00484520(void) { STUB(); }
