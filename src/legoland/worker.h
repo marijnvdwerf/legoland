@@ -4,10 +4,11 @@
 
 struct WorkOrder;
 struct EditObject;
+struct Person;
 
 struct Worker {
     /* 0x00 */ struct Worker *next;
-    /* 0x04 */ struct EditObject *field_4;
+    /* 0x04 */ struct Person *field_4;
     /* 0x08 */ unsigned char field_8;
     /* 0x09 */ unsigned char pad_9[1];
     /* 0x0a */ unsigned short field_a;

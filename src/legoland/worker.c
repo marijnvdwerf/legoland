@@ -683,8 +683,33 @@ LEGO_EXPORT void RenderWorkers(void) {
     }
 }
 
+struct RidePassenger {
+    /* 0x00 */ struct RidePassenger *next;
+    /* 0x04 */ int field_4;
+    /* 0x08 */ struct Worker *worker;
+    /* 0x0c */ short field_c;
+    /* 0x0e */ unsigned char pad_e[2];
+    /* 0x10 */ struct Person *person;
+};
+
 // FUNCTION: LEGOLAND 0x0049a0d0
-LEGO_EXPORT void PutWorkerOnRide(void) { STUB(); }
+LEGO_EXPORT void PutWorkerOnRide(struct Worker *worker, int *object) {
+    struct RidePassenger *passenger;
+
+    passenger = malloc(sizeof(struct RidePassenger));
+    if (passenger != 0) {
+        passenger->next = 0;
+        passenger->field_4 = 0;
+        passenger->worker = 0;
+        passenger->field_c = 0;
+        passenger->person = 0;
+        passenger->worker = worker;
+        passenger->person = worker->field_4;
+        worker->flags |= 0x20;
+        passenger->field_c = (short)object[1];
+        PutBlokeInList(*(struct BlokeList **)(*(char **)object + 0xc), (struct Bloke *)passenger);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0049a120
 int FUN_0049a120(void) {
