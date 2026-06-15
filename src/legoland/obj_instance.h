@@ -6,6 +6,9 @@ struct Ride;
 struct ObjClassNode;
 struct ObjInstance;
 struct ObjClassKey;
+struct ResFile;
+
+char *FUN_00489e60(struct ResFile *file, char *dest, int maxlen);
 
 int FUN_00489f00(const struct ObjClassKey *key);
 int FUN_00489f50(const struct ObjClassKey *key);
