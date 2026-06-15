@@ -103,8 +103,21 @@ def find_defs(path):
     tree-sitter split a pointer-returning definition into a stray `declaration`
     plus a `function_definition` whose declarator still carries the real name,
     so we read the name straight off each function_definition's declarator.
+
+    Robust to MSVC `__asm { ... }` blocks, which tree-sitter-c cannot parse and
+    which break the index two ways:
+      1. An __asm in a function body makes that whole definition parse as an
+         ERROR node — the `function_definition` never forms (e.g.
+         RenderingComplete in draw.c). We still recognise it: any
+         function_declarator immediately followed by `{` names a definition.
+      2. After error recovery the *following* top-level defs get mis-nested
+         under the preceding function's body (e.g. everything after the __asm in
+         man3d.c). C has no nested functions, so we descend through every node
+         and collect EVERY definition — never stopping at a body. Over-collection
+         is impossible: a nested definition is only ever an artifact of a real
+         top-level one.
     """
-    tree, _ = parse(path)
+    tree, src = parse(path)
     names = set()
 
     def walk(node):
@@ -112,7 +125,17 @@ def find_defs(path):
             name = _find_func_name(node.child_by_field_name("declarator"))
             if name:
                 names.add(name)
-            return  # don't descend into the body
+            # keep descending: parse recovery can nest later top-level defs here
+        elif node.type == "function_declarator":
+            # A declarator followed by `{` is a definition body — catches funcs
+            # whose body holds an __asm block (parsed as ERROR, not a definition).
+            if src[node.end_byte:node.end_byte + 64].lstrip()[:1] == b"{":
+                name = (node.child_by_field_name("declarator").text.decode()
+                        if node.child_by_field_name("declarator")
+                        and node.child_by_field_name("declarator").type == "identifier"
+                        else _find_func_name(node))
+                if name:
+                    names.add(name)
         for child in node.children:
             walk(child)
 
