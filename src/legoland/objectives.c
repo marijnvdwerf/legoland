@@ -889,7 +889,21 @@ int FUN_00469ed0(struct MapRectArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00469f20
-void FUN_00469f20(void) { STUB(); }
+int FUN_00469f20(struct MapRectArg *arg) {
+    int y;
+    int x;
+
+    y = arg->y0;
+    while (y <= arg->y1) {
+        x = arg->x0;
+        while (x <= arg->x1) {
+            GameMap[y][x].flags |= 0x40;
+            x++;
+        }
+        y++;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00469f70
 int FUN_00469f70(struct RewardArg *arg) {
