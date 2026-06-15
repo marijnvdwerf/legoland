@@ -1773,7 +1773,115 @@ LEGO_EXPORT struct WorkOrder *AddRepairOrderForObject(struct ObjClass *cls, int 
 }
 
 // FUNCTION: LEGOLAND 0x0049ba10
-LEGO_EXPORT void Garderner_Repair(void) { STUB(); }
+LEGO_EXPORT void Garderner_Repair(struct Worker *worker) {
+    char dir;
+    int result;
+    int cost;
+    struct WorkOrder *order;
+    struct MapElement *tile;
+    struct ObjClass *cls;
+    int dest[2];
+
+    switch (worker->var_60) {
+    case 0:
+        result = FUN_00482710(&worker->var_68, &worker->var_2c, dest);
+        if (result == 0) {
+            FUN_00499720(worker->var_50);
+            FUN_00499e60(worker->var_50);
+            worker->flags_c = 0x10;
+            worker->var_60 = 0;
+            worker->ticks = 0x10;
+            worker->state = 4;
+            return;
+        }
+        if (result == 1) {
+            worker->var_24 = dest[0];
+            worker->var_28 = dest[1];
+            dir = CalcMoveLine(worker->var_68, worker->var_6c, dest[0], dest[1], &worker->var_98);
+            worker->state = 0xc;
+            worker->var_73 = dir + 0x10;
+            NewDirForAction(worker, (worker->var_73 >> 5) + 3);
+            if ((worker->var_64 & 1) != 0) {
+                worker->var_60 = 6;
+                return;
+            }
+        } else if (result == 2) {
+            worker->var_24 = dest[0];
+            worker->var_28 = dest[1];
+            dir = CalcMoveLine(worker->var_68, worker->var_6c, dest[0], dest[1], &worker->var_98);
+            worker->state = 0xc;
+            worker->var_73 = dir + 0x10;
+            NewDirForAction(worker, (worker->var_73 >> 5) + 3);
+            worker->var_60 = ~worker->var_64 & 1 | 6;
+            return;
+        }
+        break;
+    case 6:
+        worker->ticks = 0x70;
+        worker->state = 4;
+        worker->var_60 = 0;
+        return;
+    case 7:
+        worker->flags |= 0x108;
+        BlokeSetAnim(worker, 1);
+        worker->var_60++;
+        worker->var_72 = *((unsigned char *)worker->var_50 + 0x2c);
+        return;
+    case 8:
+        if (PlayBlokeAnim(worker) != 0) {
+            BlokeWalkAnim((struct Bloke *)worker);
+            worker->flags &= 0xfeff;
+            worker->var_60++;
+            return;
+        }
+        break;
+    case 9:
+        order = worker->var_50;
+        *(unsigned char *)&worker->flags |= 8;
+        worker->var_72 = *((unsigned char *)order + 0x2c);
+        if (order->var_8 < 0 || (int)lpConfig->width <= order->var_8 || order->var_c < 0 ||
+            (int)lpConfig->height <= order->var_c) {
+            tile = 0;
+        } else {
+            tile = (struct MapElement *)((char *)GameMap[order->var_c] + order->var_8 * 0x14);
+        }
+        if ((tile->flags & 0x88) != 0) {
+            if (order->var_34 < (float)DAT_004ab3a8) {
+                cost = 0;
+            } else {
+                cost = FUN_00458930(order->var_34);
+            }
+            if (GetBrickCount() < cost) {
+                order->var_30 = 1;
+                return;
+            }
+            UseBricks(cost);
+            order->var_34 = (order->var_34 - (float)cost) + order->var_38;
+            if (order->var_8 < 0 || (int)lpConfig->width <= order->var_8 ||
+                (order->var_c < 0 || (int)lpConfig->height <= order->var_c)) {
+                tile = 0;
+            } else {
+                tile = (struct MapElement *)((char *)GameMap[order->var_c] + order->var_8 * 0x14);
+            }
+            DAT_00668610 |= 0x200;
+            cls = *(struct ObjClass **)((char *)tile->field_0 + 0xc);
+            FUN_0049b0d0((struct Worker *)tile, cls);
+            if (*((unsigned char *)cls + 0x2c) <= *((unsigned char *)tile + 0x11)) {
+                tile->flags &= 0xbfff;
+                *((unsigned char *)tile + 0x11) = *((unsigned char *)cls + 0x2c);
+                worker->var_60++;
+                return;
+            }
+        }
+        break;
+    case 10:
+        worker->flags &= 0xfff7;
+        FUN_00499e30(worker->var_50);
+        if (FUN_00499d00(worker) == 0) {
+            NewLongTermAction((struct Bloke *)worker, 0x10);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0049bd20
 LEGO_EXPORT void Mechanics_Repair(void) { STUB(); }
