@@ -51,6 +51,7 @@ unsigned char FUN_004754b0(struct IconNode *param_1, unsigned char flags);
 unsigned char FUN_00475080(unsigned int a, unsigned char flags);
 unsigned char FUN_00475120(unsigned int a, unsigned int flags, unsigned int c, unsigned int d);
 LEGO_EXPORT void DelObjectList(void);
+LEGO_EXPORT void MakeUpObjectList(int param_1, int param_2, int param_3, int param_4);
 LEGO_EXPORT unsigned int ObjectLinkedList(unsigned int *entry);
 void FUN_00476000(void);
 void FUN_00476050(void);

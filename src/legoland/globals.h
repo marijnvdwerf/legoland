@@ -643,6 +643,8 @@ extern struct KeyMapping DAT_004bad58[0x3b];
 extern unsigned int DAT_004bafa8[20];
 // 0x004baff8
 extern unsigned int DAT_004baff8;
+// 0x004baffc
+extern char DAT_004baffc[4][0x14];
 // 0x004bb094
 extern int DAT_004bb04c[18];
 extern unsigned int DAT_004bb094;

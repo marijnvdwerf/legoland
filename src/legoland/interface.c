@@ -41,7 +41,8 @@ struct ObjectClassInfo {
 struct BuildObject;
 
 struct LLDBElem {
-    unsigned char pad_0[0xc];
+    unsigned char pad_0[0x8];
+    /* 0x08 */ unsigned int flags;
     /* 0x0c */ struct BuildObject *obj;
 };
 
@@ -907,7 +908,66 @@ LEGO_EXPORT unsigned int TestMenu(unsigned int *entry) {
 }
 
 // FUNCTION: LEGOLAND 0x00475720
-LEGO_EXPORT unsigned int ObjectLinkedList(unsigned int *entry) { STUB(); }
+LEGO_EXPORT unsigned int ObjectLinkedList(unsigned int *entry) {
+    void *build_elem;
+    void *theme_elem;
+    void *param_elem;
+    void *menu_elem;
+    struct LLDBElem *elem;
+    struct BuildObject *obj;
+    char *menu_name;
+    int count;
+    int i;
+    int matched;
+
+    matched = 1;
+    DelObjectList();
+    if (LLIDB_FindElement("BUILD MENU", (unsigned int *)&build_elem, 0) != 0) {
+        exit(1);
+    }
+    if (LLIDB_FindElement("COMMON THEME", (unsigned int *)&theme_elem, 0) != 0) {
+        exit(1);
+    }
+    if (LLIDB_FindElement((const char *)entry, (unsigned int *)&param_elem, 0) != 0) {
+        exit(1);
+    }
+    count = LLIDB_GetCount();
+    menu_name = DAT_004baffc[0];
+    do {
+        if (LLIDB_FindElement(menu_name, (unsigned int *)&menu_elem, 0) != 0) {
+            exit(1);
+        }
+        for (i = 0; i < count; i++) {
+            LLIDB_GetElement(i, (struct Element **)&elem);
+            if ((elem->flags & 0x13) == 0x13) {
+                obj = elem->obj;
+                if (obj->field_58 == build_elem) {
+                    if ((obj->field_5c == param_elem && obj->field_60 == menu_elem) ||
+                        (obj->field_5c == theme_elem && DAT_004baff8 == 0 && obj->field_60 == menu_elem)) {
+                        FUN_004755c0(obj);
+                        matched++;
+                    }
+                }
+            }
+        }
+        menu_name += 0x14;
+    } while (menu_name < (char *)DAT_004bb04c);
+    for (i = 0; i < count; i++) {
+        LLIDB_GetElement(i, (struct Element **)&elem);
+        if ((elem->flags & 0x13) == 0x13) {
+            obj = elem->obj;
+            if (obj->field_5c == param_elem && obj->field_58 != build_elem && obj->field_58 != NULL) {
+                InsertChildIntoList(obj);
+            }
+        }
+    }
+    DAT_00668e64 = (unsigned char)DAT_004baff8;
+    if (matched == 0) {
+        return 0;
+    }
+    MakeUpObjectList(0xd2, 3, 0x21, 0x154);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004758c0
 LEGO_EXPORT void UpdateMenu(void) {
