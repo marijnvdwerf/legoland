@@ -36,7 +36,9 @@ struct ActionState {
 };
 
 struct OverTile {
-    unsigned char pad_0[0x68];
+    unsigned char pad_0[0x62];
+    unsigned short field_62;
+    unsigned char pad_64[0x68 - 0x64];
     unsigned int field_68;
     unsigned int field_6c;
 };
@@ -349,7 +351,21 @@ struct Point FUN_004831a0(unsigned int dir, short dist) {
 }
 
 // FUNCTION: LEGOLAND 0x004831d0
-LEGO_EXPORT void SetPathFlag(void) { STUB(); }
+LEGO_EXPORT void SetPathFlag(struct OverTile *obj) {
+    int x = obj->field_68;
+    if (x >= 0 && x < (int)(lpConfig->width * 0x100)) {
+        int y = obj->field_6c;
+        if (y >= 0 && y < (int)(lpConfig->height * 0x100)) {
+            short mapFlags = Get_MapFlags(x, y);
+            unsigned char rf = GetCurrentRFFlags(obj->field_68, obj->field_6c);
+            if ((rf & 1) != 0 || ((mapFlags & 0x10) != 0 && (rf & 2) == 0)) {
+                *(unsigned char *)&obj->field_62 |= 2;
+                return;
+            }
+        }
+    }
+    obj->field_62 &= 0xfffd;
+}
 
 // FUNCTION: LEGOLAND 0x00483240
 LEGO_EXPORT unsigned short DoPendingAction(struct PendingObject *obj) {
@@ -381,13 +397,54 @@ LEGO_EXPORT int NewDirForAction(struct ActionState *state, unsigned char dir) {
 LEGO_EXPORT void Random_Dir_From_Bits(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004834a0
-LEGO_EXPORT void HitPathEdge(void) { STUB(); }
+LEGO_EXPORT int HitPathEdge(struct OverTile *obj, int x, int y) {
+    if ((*(unsigned char *)&obj->field_62 & 2) != 0) {
+        if (x < 0 || x >= (int)(lpConfig->width * 0x100) || y < 0 ||
+            y >= (int)(lpConfig->height * 0x100)) {
+            return 1;
+        }
+        {
+            short mapFlags = Get_MapFlags(x, y);
+            unsigned char rf = GetCurrentRFFlags(x, y);
+            if ((rf & 1) != 0) {
+                return 0;
+            }
+            if ((mapFlags & 0x10) != 0 && (rf & 2) == 0) {
+                return 0;
+            }
+            return 1;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00483510
-LEGO_EXPORT void HitObstacle(void) { STUB(); }
+LEGO_EXPORT int HitObstacle(struct OverTile *obj, int x, int y) {
+    if (x >= 0 && x < (int)(lpConfig->width * 0x100) && y >= 0 && y < (int)(lpConfig->height * 0x100)) {
+        if ((GetCurrentRFFlags(obj->field_68, obj->field_6c) & 2) == 0 &&
+            (GetCurrentRFFlags(x, y) & 2) != 0) {
+            return 1;
+        }
+        return 0;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00483580
-void FUN_00483580(void) { STUB(); }
+int FUN_00483580(struct OverTile *obj, int x, int y) {
+    if (x >= 0 && x < (int)(lpConfig->width * 0x100) && y >= 0 && y < (int)(lpConfig->height * 0x100)) {
+        unsigned char rf1 = GetCurrentRFFlags(obj->field_68, obj->field_6c);
+        unsigned short mf1 = Get_MapFlags(obj->field_68, obj->field_6c);
+        int blocked1 = ((rf1 & 2) == 0 || (mf1 & 0x8800) != 0) ? 0 : 1;
+        unsigned char rf2 = GetCurrentRFFlags(x, y);
+        unsigned short mf2 = Get_MapFlags(x, y);
+        int blocked2 = ((rf2 & 2) == 0 || (mf2 & 0x8800) != 0) ? 0 : 1;
+        if (blocked1 || !blocked2) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00483650
 LEGO_EXPORT int OverNewTile(struct OverTile *tile, unsigned int x, unsigned int y) {
