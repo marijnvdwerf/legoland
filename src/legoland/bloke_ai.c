@@ -69,7 +69,7 @@ void FUN_0044ea50(void) {
     if (DAT_006661bc >= (int)FUN_0044ea40()) {
         return;
     }
-    bloke = MakeBloke(0);
+    bloke = MakeBloke();
     if (bloke != 0) {
         DAT_006661c8 = 0;
         bloke->field_72 = rand() & 0x7;

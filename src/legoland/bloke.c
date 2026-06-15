@@ -190,7 +190,15 @@ short FUN_00482df0(struct Bloke *bloke, int index, int mul) {
 }
 
 // FUNCTION: LEGOLAND 0x00482e50
-void FUN_00482e50(void) { STUB(); }
+void FUN_00482e50(void) {
+    int i;
+    DAT_0066b57c = malloc(lpConfig->field_1a * 0xac);
+    if (lpConfig->field_1a != 0) {
+        for (i = 0; i < (int)lpConfig->field_1a; i++) {
+            memset((char *)DAT_0066b57c + i * 0xac, 0, 0xac);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00482ec0
 void FUN_00482ec0(void) {
@@ -202,7 +210,31 @@ void FUN_00482ec0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00482ef0
-LEGO_EXPORT struct Bloke *NewBloke(void) { STUB(); }
+LEGO_EXPORT struct Bloke *NewBloke(void) {
+    struct Bloke *bloke = NULL;
+    int i = 0;
+    if (lpConfig->field_1a != 0) {
+        char *base = (char *)DAT_0066b57c;
+        unsigned char *slot = (unsigned char *)base + 0x62;
+        while ((*slot & 1) != 0) {
+            i++;
+            slot += 0xac;
+            if ((int)(unsigned int)lpConfig->field_1a <= i) {
+                return bloke;
+            }
+        }
+        bloke = (struct Bloke *)(base + i * 0xac);
+        if (bloke != NULL) {
+            memset(bloke, 0, 0xac);
+            bloke->flags = 1;
+            bloke->field_64 = 0;
+            bloke->next = FirstBloke;
+            FirstBloke = bloke;
+            Add3DBlokeToList(bloke, 1);
+        }
+    }
+    return bloke;
+}
 
 // FUNCTION: LEGOLAND 0x00482f70
 LEGO_EXPORT struct Bloke *NewBlokeWOList(void *param_2) {
@@ -217,7 +249,12 @@ LEGO_EXPORT struct Bloke *NewBlokeWOList(void *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00482fb0
-LEGO_EXPORT unsigned int GetBlokeNum(void) { STUB(); }
+LEGO_EXPORT int GetBlokeNum(struct Bloke *bloke) {
+    if (bloke == NULL) {
+        return -1;
+    }
+    return (int)((char *)bloke - (char *)DAT_0066b57c) / 0xac;
+}
 
 // FUNCTION: LEGOLAND 0x00482fe0
 LEGO_EXPORT struct Bloke *GetBlokePtr(int index) {
@@ -228,7 +265,29 @@ LEGO_EXPORT struct Bloke *GetBlokePtr(int index) {
 }
 
 // FUNCTION: LEGOLAND 0x00483010
-LEGO_EXPORT void DestroyBloke(struct Bloke *bloke) { STUB(); }
+LEGO_EXPORT void DestroyBloke(struct Bloke *bloke) {
+    struct BlokeSampleSource source;
+    struct Bloke **prev;
+    struct Bloke *current;
+
+    prev = (struct Bloke **)&FirstBloke;
+    for (current = FirstBloke; current != NULL && current != bloke; current = current->next) {
+        prev = &current->next;
+    }
+    if (*prev != NULL) {
+        *prev = bloke->next;
+    } else {
+        // STRING: LEGOLAND 0x004bdcb4
+        OutputDebugStringA("DestroyBloke: Badly linked list\n");
+    }
+    source.field_0 = 1;
+    source.field_4 = bloke;
+    KillAllSamplesFromSource(&source);
+    FUN_0043f840((struct Person *)bloke->prev);
+    FUN_0043f870((struct PosHeader *)bloke->prev);
+    bloke->flags &= 0xfffe;
+    bloke->next = NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00483090
 void FUN_00483090(void) {
@@ -239,10 +298,10 @@ void FUN_00483090(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004830c0
-LEGO_EXPORT struct Bloke *MakeBloke(int param_1) {
+LEGO_EXPORT struct Bloke *MakeBloke(void) {
     struct Bloke *bloke = NewBloke();
     if (bloke != NULL) {
-        ClearBlokeCounters(GetBlokeNum(), bloke);
+        ClearBlokeCounters(GetBlokeNum(bloke));
     }
     return bloke;
 }

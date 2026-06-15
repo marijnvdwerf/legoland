@@ -269,7 +269,7 @@ LEGO_EXPORT void FreeBlokeCounters(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00480e90
-LEGO_EXPORT void ClearBlokeCounters(unsigned int index, struct Bloke *bloke) {
+LEGO_EXPORT void ClearBlokeCounters(unsigned int index) {
     struct ObjectClass *cls;
 
     for (cls = ObjectClassList; cls != 0; cls = cls->next) {

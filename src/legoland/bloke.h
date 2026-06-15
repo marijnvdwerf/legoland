@@ -51,6 +51,15 @@ struct Bloke {
     unsigned char pad_98[0xac - 0x98];
 };
 
+struct BlokeSampleSource {
+    /* 0x00 */ unsigned int field_0;
+    /* 0x04 */ struct Bloke *field_4;
+    /* 0x08 */ unsigned int field_8;
+    /* 0x0c */ unsigned int field_c;
+};
+
+void KillAllSamplesFromSource(struct BlokeSampleSource *source);
+
 struct InstancePos;
 void FUN_00482b10(void);
 void FUN_00482b20(int force);
@@ -58,7 +67,10 @@ int FUN_00482b60(struct InstancePos *pos);
 void FUN_00482d60(unsigned int index, int value);
 void FUN_00482d70(void);
 void FUN_00483090(void);
-LEGO_EXPORT struct Bloke *MakeBloke(int param_1);
+LEGO_EXPORT struct Bloke *MakeBloke(void);
 LEGO_EXPORT struct Bloke *NewBlokeWOList(void *param_2);
+LEGO_EXPORT struct Bloke *NewBloke(void);
+LEGO_EXPORT int GetBlokeNum(struct Bloke *bloke);
+LEGO_EXPORT void DestroyBloke(struct Bloke *bloke);
 struct Worker;
 LEGO_EXPORT void DoLowLevelAI(struct Worker *worker);

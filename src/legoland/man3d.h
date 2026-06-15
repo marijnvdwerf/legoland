@@ -5,6 +5,10 @@
 struct Position;
 struct Person;
 struct Bloke;
+struct PosHeader;
+
+void FUN_0043f840(struct Person *person);
+void FUN_0043f870(struct PosHeader *param_1);
 
 LEGO_EXPORT struct Position *LoadPos(const char *path);
 LEGO_EXPORT void UnloadPos(struct Position *pos);

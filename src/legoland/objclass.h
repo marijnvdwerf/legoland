@@ -51,7 +51,7 @@ LEGO_EXPORT unsigned int BasicObjectDCalcCursor(unsigned int param_1, unsigned i
 LEGO_EXPORT void ClearObjectCounters(void);
 LEGO_EXPORT unsigned int ObjCount(struct ObjCountWrap *wrap);
 LEGO_EXPORT void FreeBlokeCounters(void);
-LEGO_EXPORT void ClearBlokeCounters(unsigned int index, struct Bloke *bloke);
+LEGO_EXPORT void ClearBlokeCounters(unsigned int index);
 LEGO_EXPORT void UnLoadObjectLibrary(void *library);
 LEGO_EXPORT void SetStandardCallbacks(struct CallbackTable *table);
 LEGO_EXPORT int LoadObjectLibrary(void *obj, const char *name);
