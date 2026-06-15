@@ -13,6 +13,7 @@
 #include "objclass.h"
 #include "saveload.h"
 #include "worker.h"
+#include "worker_mouse.h"
 
 struct BlokeList {
     unsigned char pad_0[0x2e];
@@ -761,7 +762,46 @@ int FUN_00450500(int *a, int *b) {
 void FUN_00450530(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00450990
-LEGO_EXPORT void ControlPeople(void) { STUB(); }
+LEGO_EXPORT void ControlPeople(void) {
+    struct Bloke *bloke;
+    struct Bloke *next;
+    int ticks;
+
+    FUN_0044ea50();
+    next = (struct Bloke *)FirstBloke;
+    while (1) {
+        bloke = next;
+        if (bloke == 0) {
+            return;
+        }
+        next = bloke->next;
+        *(unsigned int *)(DAT_00813b04 + 4) = bloke->field_81;
+        if (FUN_004700c0((unsigned int)bloke) != 0) {
+            // STRING: LEGOLAND 0x004b85a8
+            DBPrintf("Processing your bloke\n");
+        }
+        FUN_0044eb50(bloke);
+        if ((*(unsigned char *)((char *)bloke + 0x62) & 0x20) == 0) {
+            break;
+        }
+        if (bloke->field_e != 0) {
+            DoLowLevelAI((struct Worker *)bloke);
+        }
+    }
+    FUN_0044eae0(bloke);
+    ticks = bloke->field_5c;
+    bloke->field_5c = ticks + 1;
+    if ((ticks + 1 & 0xf) == 0) {
+        FUN_00482df0(bloke, 8, 1);
+        FUN_00450530(bloke);
+    }
+    if (bloke->field_e == 0) {
+        DoHighLevelAI(bloke);
+    }
+    if (bloke->field_e != 0) {
+        DoLowLevelAI((struct Worker *)bloke);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00450a40
 void FUN_00450a40(struct BlokeRideState *bloke) {

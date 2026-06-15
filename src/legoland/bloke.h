@@ -34,7 +34,7 @@ struct Bloke {
     unsigned char pad_36[0x54 - 0x36];
     unsigned int field_54;
     unsigned int field_58;
-    unsigned char pad_5c[0x60 - 0x5c];
+    unsigned int field_5c;
     unsigned char param_action;
     unsigned char pad_61[0x1];
     unsigned short flags;
@@ -84,6 +84,7 @@ void FUN_00482b20(int force);
 int FUN_00482b60(struct InstancePos *pos);
 struct Person;
 void FUN_00482c60(struct Person *person);
+short FUN_00482df0(struct Bloke *bloke, int index, int mul);
 void FUN_00482d60(unsigned int index, int value);
 void FUN_00482d70(void);
 void FUN_00483090(void);
