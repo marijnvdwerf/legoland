@@ -1014,6 +1014,10 @@ void FUN_0044fe80(struct Bloke *bloke) {
             bloke->field_2c = (*(int *)(result + 0xc) + *(unsigned char *)(obj + 4)) * 0x100;
             bloke->field_30 = (*(unsigned char *)(obj + 5) + *(int *)(result + 0x10)) * 0x100;
             bloke->param_action++;
+            if (obj != 0) {
+                return;
+            }
+            NewLongTermAction(bloke, 6);
             return;
         }
         break;
