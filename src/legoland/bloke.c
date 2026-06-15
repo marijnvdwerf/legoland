@@ -53,6 +53,27 @@ struct Walker {
     unsigned char field_75;
 };
 
+struct TileWalker {
+    unsigned char pad_0[0xe];
+    unsigned short field_e;
+    unsigned short field_10;
+    unsigned char pad_12[0x20 - 0x12];
+    unsigned int field_20;
+    unsigned char pad_24[0x62 - 0x24];
+    unsigned char field_62;
+    unsigned char pad_63[0x68 - 0x63];
+    int field_68;
+    int field_6c;
+    unsigned char pad_70[0x72 - 0x70];
+    unsigned char field_72;
+};
+
+struct TileCallback {
+    unsigned char pad_0[0x18];
+    unsigned char (*cb_18)(int x, int y);
+    void (*cb_1c)(struct Point p);
+};
+
 struct BlokeDist {
     unsigned char pad_0[0x24];
     int field_24;
@@ -375,10 +396,67 @@ LEGO_EXPORT unsigned short DoPendingAction(struct PendingObject *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00483260
-void FUN_00483260(void) { STUB(); }
+void FUN_00483260(struct TileWalker *walker) {
+    struct Point tile;
+    int x;
+    int y;
+    struct MapElement *elem;
+    struct TileCallback *cb;
+
+    walker->field_62 |= 8;
+    walker->field_10 = walker->field_e;
+    walker->field_e = 9;
+    walker->field_20 = 0;
+    tile = GetTileInDir(walker->field_68, walker->field_6c, walker->field_72);
+    x = tile.x >> 8;
+    y = tile.y >> 8;
+    if (x >= 0 && x < (int)lpConfig->width && y >= 0 && y < (int)lpConfig->height) {
+        elem = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
+    } else {
+        elem = NULL;
+    }
+    cb = (struct TileCallback *)TileSpriteInfo[elem->field_8].src;
+    if (cb->cb_1c != NULL) {
+        cb->cb_1c(tile);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00483300
-void FUN_00483300(void) { STUB(); }
+int FUN_00483300(struct TileWalker *walker, int x, int y) {
+    unsigned char result;
+    int tx;
+    int ty;
+    struct MapElement *elem;
+    struct TileCallback *cb;
+
+    if (OverNewTile((struct OverTile *)walker, x, y) == 0) {
+        return 0;
+    }
+    if (FUN_00483160(x, y) == 0) {
+        return 0;
+    }
+    if ((Get_RFFlags(x, y) & 3) != 3) {
+        return 0;
+    }
+    tx = x >> 8;
+    ty = y >> 8;
+    if (tx < 0 || tx >= (int)lpConfig->width || ty < 0 || ty >= (int)lpConfig->height) {
+        elem = NULL;
+    } else {
+        elem = (struct MapElement *)((char *)GameMap[ty] + tx * 0x14);
+    }
+    cb = (struct TileCallback *)TileSpriteInfo[elem->field_8].src;
+    if (cb->cb_18 != NULL) {
+        result = cb->cb_18(x, y);
+    } else {
+        result = 2;
+    }
+    if ((result & 3) == 3) {
+        FUN_00483260(walker);
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x004833d0
 LEGO_EXPORT int NewDirForAction(struct ActionState *state, unsigned char dir) {
@@ -394,7 +472,44 @@ LEGO_EXPORT int NewDirForAction(struct ActionState *state, unsigned char dir) {
 }
 
 // FUNCTION: LEGOLAND 0x00483400
-LEGO_EXPORT void Random_Dir_From_Bits(void) { STUB(); }
+LEGO_EXPORT unsigned int Random_Dir_From_Bits(unsigned int bits) {
+    unsigned char mask = (unsigned char)bits;
+    unsigned char count;
+    unsigned char remaining;
+    unsigned char bit;
+    int n;
+    unsigned int dir;
+
+    if (mask == 0) {
+        return 8;
+    }
+    count = 1;
+    remaining = (mask - 1) & mask;
+    if (remaining != 0) {
+        do {
+            count++;
+            remaining = remaining & (remaining - 1);
+        } while (remaining != 0);
+    }
+    n = Rand_Max((count & 0xff) - 1);
+    bit = 1;
+    if ((bits & 1) == 0) {
+        do {
+            bit = bit << 1;
+        } while ((mask & bit) == 0);
+    }
+    if (n != 0) {
+        do {
+            mask = mask & ~bit;
+            for (; (mask & bit) == 0; bit = bit << 1) {
+            }
+            n--;
+        } while (n != 0);
+    }
+    dir = Bit_To_Dir(bit);
+    DAT_0066b580[dir & 0xff]++;
+    return dir;
+}
 
 // FUNCTION: LEGOLAND 0x004834a0
 LEGO_EXPORT int HitPathEdge(struct OverTile *obj, int x, int y) {
@@ -568,7 +683,44 @@ void FUN_004845d0(void) { STUB(); }
 void FUN_00484630(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004846a0
-LEGO_EXPORT void GetTileInDir(void) { STUB(); }
+LEGO_EXPORT struct Point GetTileInDir(int x, int y, unsigned int dir) {
+    struct Point result;
+    switch (dir & 7) {
+    case 0:
+        y = y - 0x100;
+        break;
+    case 1:
+        result.x = x;
+        result.y = y - 0x100;
+        return result;
+    case 2:
+        result.x = x + 0x100;
+        result.y = y - 0x100;
+        return result;
+    case 3:
+        result.x = x + 0x100;
+        result.y = y;
+        return result;
+    case 4:
+        result.x = x + 0x100;
+        result.y = y + 0x100;
+        return result;
+    case 5:
+        result.x = x;
+        result.y = y + 0x100;
+        return result;
+    case 6:
+        y = y + 0x100;
+        break;
+    case 7:
+        result.x = x - 0x100;
+        result.y = y;
+        return result;
+    }
+    result.x = x - 0x100;
+    result.y = y;
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x00484790
 void FUN_00484790(void) { STUB(); }

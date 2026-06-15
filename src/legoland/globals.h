@@ -1997,6 +1997,8 @@ extern char DAT_0066b470[0x104];
 extern LEGO_EXPORT void *FirstBloke;
 // 0x0066b57c
 extern void *DAT_0066b57c;
+// 0x0066b580
+extern int DAT_0066b580[9];
 // 0x0066b5a4
 extern struct SortNode *DAT_0066b5a4;
 // 0x0066b5a8

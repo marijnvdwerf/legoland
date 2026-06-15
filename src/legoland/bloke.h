@@ -62,7 +62,10 @@ void KillAllSamplesFromSource(struct BlokeSampleSource *source);
 
 struct InstancePos;
 struct Point;
+struct OverTile;
 struct Point FUN_004831a0(unsigned int dir, short dist);
+LEGO_EXPORT struct Point GetTileInDir(int x, int y, unsigned int dir);
+LEGO_EXPORT int OverNewTile(struct OverTile *tile, unsigned int x, unsigned int y);
 void FUN_00482b10(void);
 void FUN_00482b20(int force);
 int FUN_00482b60(struct InstancePos *pos);
