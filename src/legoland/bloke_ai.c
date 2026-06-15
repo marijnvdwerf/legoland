@@ -8,6 +8,7 @@
 #include "legoland.h"
 #include "llidb.h"
 #include "man3d.h"
+#include "map_object.h"
 #include "math.h"
 #include "obj_instance.h"
 #include "objclass.h"
@@ -374,7 +375,155 @@ void FUN_0044ed00(char *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0044ed70
-void FUN_0044ed70(void) { STUB(); }
+void FUN_0044ed70(struct Bloke *bloke) {
+    int obj;
+    int iface;
+    char dir;
+    int result;
+    int tx;
+    int ty;
+    int out[2];
+    char msg[100];
+
+    switch (bloke->param_action) {
+    case 0:
+        *(unsigned char *)((char *)bloke + 0x62) |= 8;
+        bloke->field_82 = 0;
+        bloke->param_action = 1;
+        /* fallthrough */
+    case 1:
+        result = SuggestNextMove(&bloke->field_68, &DAT_004b8320, out);
+        switch (result) {
+        case 1:
+            bloke->field_24 = out[0];
+            bloke->field_28 = out[1];
+            dir = CalcMoveLine(bloke->field_68, bloke->field_6c, out[0], out[1], bloke->field_98);
+            bloke->field_e = 6;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            if (bloke->field_64 != 0) {
+                bloke->field_e = 4;
+                bloke->param_action = 2;
+                return;
+            }
+            bloke->param_action = 0;
+            return;
+        case 2:
+            bloke->field_24 = out[0];
+            bloke->field_28 = out[1];
+            dir = CalcMoveLine(bloke->field_68, bloke->field_6c, out[0], out[1], bloke->field_98);
+            bloke->field_e = 6;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            if (bloke->field_64 != 0) {
+                bloke->field_e = 4;
+                bloke->param_action = 2;
+                return;
+            }
+            bloke->param_action = 10;
+            return;
+        case -3:
+        case -1:
+        case 0:
+            bloke->field_e = 4;
+            bloke->field_82++;
+            bloke->param_action = 2;
+            if (bloke->field_82 == 8) {
+                bloke->param_action = 5;
+                return;
+            }
+            break;
+        case -2:
+            bloke->param_action = 5;
+            return;
+        }
+        break;
+    case 2:
+        *(unsigned char *)((char *)bloke + 0x62) |= 8;
+        bloke->param_action = 1;
+        return;
+    case 5:
+        *(unsigned char *)((char *)bloke + 0x62) |= 8;
+        // STRING: LEGOLAND 0x004b8434
+        sprintf(msg, "Stuck, Routing Point To Point...");
+        FUN_0044ed00(msg);
+        result = PTPSuggestNextMove(&bloke->field_68, &DAT_004b8320, out);
+        if (result == 0) {
+            bloke->field_e = 4;
+            bloke->param_action = 6;
+            return;
+        }
+        if (result == 1) {
+            bloke->field_24 = out[0];
+            bloke->field_28 = out[1];
+            dir = CalcMoveLine(bloke->field_68, bloke->field_6c, out[0], out[1], bloke->field_98);
+            bloke->field_e = 0xb;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            if ((bloke->field_64 & 1) != 0) {
+                bloke->param_action = 6;
+                return;
+            }
+        } else if (result == 2) {
+            bloke->field_24 = out[0];
+            bloke->field_28 = out[1];
+            dir = CalcMoveLine(bloke->field_68, bloke->field_6c, out[0], out[1], bloke->field_98);
+            bloke->field_e = 0xb;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            bloke->param_action = (-((bloke->field_64 & 1) != 0) & 0xfc) + 10;
+            return;
+        }
+        break;
+    case 6:
+        // STRING: LEGOLAND 0x004b8424
+        sprintf(msg, "Wandering...");
+        FUN_0044ed00(msg);
+        bloke->field_e = 4;
+        bloke->param_action = 5;
+        return;
+    case 10:
+        if (FUN_0044f4a0(bloke, *(int *)(bloke->field_14 + 0xc), 0) != 0) {
+            *(unsigned char *)((char *)bloke + 0x62) |= 8;
+            bloke->field_14 = DAT_006661c4;
+            bloke->param_action++;
+            PushLongTermAction(bloke);
+            NewLongTermAction(bloke, 5);
+            return;
+        }
+        break;
+    case 0xb:
+        obj = (int)GetFirstObjectMatching((struct RenderObjectVtable *)DAT_006661c4);
+        iface = *(int *)(DAT_006661c4 + 0xc);
+        bloke->field_24 = (*(unsigned char *)(obj + 4) + 6 + *(int *)(iface + 0x44)) * 0x100;
+        ty = (*(unsigned char *)(obj + 5) + 8 + *(int *)(iface + 0x40)) * 0x100;
+        bloke->field_28 = ty;
+        tx = bloke->field_24;
+        dir = CalcMoveLine(bloke->field_68, bloke->field_6c, tx, ty, bloke->field_98);
+        bloke->field_e = 7;
+        bloke->field_73 = dir + 0x10;
+        NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+        bloke->param_action++;
+        return;
+    case 0xc:
+        RateBlokeOnLeaving((int)bloke->field_7a);
+        tx = bloke->field_24 + DAT_004b8328;
+        bloke->field_24 = tx;
+        bloke->field_28 = bloke->field_28 + DAT_004b832c;
+        ty = bloke->field_28;
+        dir = CalcMoveLine(bloke->field_68, bloke->field_6c, tx, ty, bloke->field_98);
+        bloke->field_e = 7;
+        bloke->field_73 = dir + 0x10;
+        NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+        bloke->param_action++;
+        return;
+    case 0xd:
+        // STRING: LEGOLAND 0x004b840c
+        DBPrintf("Killing MiniFig: $%x\n", bloke);
+        DestroyBloke(bloke);
+        DAT_006661bc--;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0044f170
 void FUN_0044f170(struct Bloke *bloke) {

@@ -28,6 +28,7 @@ struct ObjClass;
 struct WorkOrder;
 LEGO_EXPORT struct WorkOrder *AddRepairOrderForObject(struct ObjClass *cls, int x, int y);
 LEGO_EXPORT void Print(int x, int y, const char *text, int font);
+LEGO_EXPORT void RateBlokeOnLeaving(int param_1);
 void RemoveInstanceFromList();
 void RestoreBaseMap();
 LEGO_EXPORT struct Point PlayfieldToMap(int a, int b);

@@ -511,6 +511,10 @@ extern int DAT_004b831c;
 extern int DAT_004b8320;
 // 0x004b8324
 extern int DAT_004b8324;
+// 0x004b8328
+extern int DAT_004b8328;
+// 0x004b832c
+extern int DAT_004b832c;
 // 0x004b8334
 extern int DAT_004b8334;
 // 0x004b8338
