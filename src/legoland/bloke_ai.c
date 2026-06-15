@@ -9,7 +9,9 @@
 #include "worker.h"
 
 struct BlokeList {
-    unsigned char pad_0[0xcc];
+    unsigned char pad_0[0x2e];
+    short field_2e;
+    unsigned char pad_30[0xcc - 0x30];
     struct Bloke *head;
 };
 
@@ -341,7 +343,7 @@ unsigned int FUN_0044f400(struct BlokeList *list, unsigned short *value) {
     int count;
 
     count = FUN_0044f3d0(list, value);
-    return count >= ((struct Bloke *)list)->field_2e;
+    return count >= list->field_2e;
 }
 
 // FUNCTION: LEGOLAND 0x0044f430
@@ -454,7 +456,46 @@ void FUN_00450330(struct BlokeRideState *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x004503a0
-void FUN_004503a0(void) { STUB(); }
+void FUN_004503a0(struct Bloke *bloke, int *box) {
+    int x0;
+    int y0;
+    int tx;
+    int ty;
+
+    x0 = bloke->field_2c;
+    tx = bloke->field_68 >> 8;
+    ty = bloke->field_6c >> 8;
+    y0 = bloke->field_30;
+    if (tx > box[2] + x0) {
+        if (ty < box[1] + y0) {
+            bloke->field_72 = 6;
+            return;
+        }
+        if (ty > box[3] + y0) {
+            bloke->field_72 = 0;
+            return;
+        }
+        bloke->field_72 = 7;
+        return;
+    }
+    if (tx < box[0] + x0) {
+        if (ty < box[1] + y0) {
+            bloke->field_72 = 4;
+            return;
+        }
+        if (ty > box[3] + y0) {
+            bloke->field_72 = 2;
+            return;
+        }
+        bloke->field_72 = 3;
+        return;
+    }
+    if (ty < box[1] + y0) {
+        bloke->field_72 = 5;
+        return;
+    }
+    bloke->field_72 = 1;
+}
 
 // FUNCTION: LEGOLAND 0x00450450
 void FUN_00450450(void) { STUB(); }
