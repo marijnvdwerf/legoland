@@ -1331,4 +1331,43 @@ LEGO_EXPORT void BNVPath_GetBINVScreenCoords(void) { STUB(); }
 LEGO_EXPORT void BNVPath_SetDFrame(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00485260
-int CheckForPeople() { STUB(); }
+int CheckForPeople(struct MapRect *rect) {
+    struct Bloke *current = FirstBloke;
+    int found = 0;
+    int x;
+    int y;
+
+    for (y = rect->y0; y <= rect->y1; y++) {
+        for (x = rect->x0; x <= rect->x1; x++) {
+            GameMap[y][x].flags &= 0xefff;
+        }
+    }
+    if (current != NULL) {
+        do {
+            if ((*(unsigned char *)&((struct TileWalker *)current)->field_62 & 0x20) == 0) {
+                int tx = ((struct TileWalker *)current)->field_68 >> 8;
+                int ty = ((struct TileWalker *)current)->field_6c >> 8;
+                if (tx >= 0 && tx < (int)lpConfig->width && ty >= 0 && ty < (int)lpConfig->height) {
+                    struct MapElement *elem = &GameMap[ty][tx];
+                    *((unsigned char *)&elem->flags + 1) |= 0x10;
+                    if (tx >= rect->x0 && tx <= rect->x1 && ty >= rect->y0 && ty <= rect->y1) {
+                        found = 1;
+                    }
+                }
+            }
+            current = current->next;
+        } while (current != NULL);
+        if (found != 0) {
+            return 1;
+        }
+    }
+    FUN_0049cf00(rect);
+    for (y = rect->y0; y <= rect->y1; y++) {
+        for (x = rect->x0; x <= rect->x1; x++) {
+            if ((*((unsigned char *)&GameMap[y][x].flags + 1) & 0x10) != 0) {
+                return -1;
+            }
+        }
+    }
+    return 0;
+}

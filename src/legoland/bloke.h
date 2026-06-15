@@ -79,3 +79,5 @@ LEGO_EXPORT int GetBlokeNum(struct Bloke *bloke);
 LEGO_EXPORT void DestroyBloke(struct Bloke *bloke);
 struct Worker;
 LEGO_EXPORT void DoLowLevelAI(struct Worker *worker);
+struct MapRect;
+void FUN_0049cf00();
