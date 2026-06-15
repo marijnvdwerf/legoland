@@ -1,6 +1,8 @@
 #include "bloke_ai.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include "bloke.h"
+#include "debug_alloc.h"
 #include "globals.h"
 #include "legoland.h"
 #include "llidb.h"
@@ -306,7 +308,25 @@ LEGO_EXPORT void PopLongTermAction(struct Bloke *bloke) {
 void FUN_0044ebf0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044ed00
-void FUN_0044ed00(void) { STUB(); }
+void FUN_0044ed00(char *param_1) {
+    char **slot;
+    int base;
+    int i;
+
+    i = 0;
+    base = DAT_006664ec;
+    slot = PTR_DAT_004b8348;
+    do {
+        *slot = &DAT_006661cc + ((base + i) & 7) * 100;
+        slot++;
+        i++;
+    } while ((int)slot < (int)PTR_Bloke_DoNothing_004b8368);
+    DAT_006664ec = base + 1;
+    // STRING: LEGOLAND 0x004b8404
+    sprintf(PTR_DAT_004b8348[7], "%c:%s", *(unsigned int *)(DAT_00813b04 + 4), param_1);
+    // STRING: LEGOLAND 0x004b83f0
+    DBPrintf("[Bloke %c] - %s\n", *(unsigned int *)(DAT_00813b04 + 4), param_1);
+}
 
 // FUNCTION: LEGOLAND 0x0044ed70
 void FUN_0044ed70(void) { STUB(); }

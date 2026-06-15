@@ -515,6 +515,8 @@ extern int DAT_004b8338;
 extern int DAT_004b8340;
 // 0x004b8344
 extern char DAT_004b8344;
+// 0x004b8348
+extern char *PTR_DAT_004b8348[8];
 // 0x004b8368
 extern void (*PTR_Bloke_DoNothing_004b8368[16])(void *);
 // 0x004b8710
@@ -1512,6 +1514,10 @@ extern unsigned int DAT_006661c0;
 extern unsigned int DAT_006661c4;
 // 0x006661c8
 extern int DAT_006661c8;
+// 0x006661cc
+extern char DAT_006661cc;
+// 0x006664ec
+extern int DAT_006664ec;
 // 0x006664f8
 extern unsigned int DAT_006664f8[768];
 // 0x006670f8
