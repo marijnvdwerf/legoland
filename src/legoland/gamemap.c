@@ -11,6 +11,7 @@
 #include "objclass.h"
 #include "pathfind.h"
 #include "sound_music.h"
+#include "tilemap.h"
 #include "timer.h"
 #include "worker.h"
 
