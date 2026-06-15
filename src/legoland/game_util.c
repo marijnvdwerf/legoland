@@ -785,25 +785,78 @@ int FUN_00479930(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x00479980
-void FUN_00479980(void) { STUB(); }
+int FUN_00479980(struct CommandArgs *arg, int argc) {
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
+            return 0;
+        }
+        FUN_0046c150(DAT_00669050, atoi((char *)arg->field_4));
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004799d0
-void FUN_004799d0(void) { STUB(); }
+int FUN_004799d0(struct CommandArgs *arg, int argc) {
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
+            return 0;
+        }
+        FUN_0046c180(DAT_00669050, atoi((char *)arg->field_4));
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00479a20
-void FUN_00479a20(void) { STUB(); }
+int FUN_00479a20(struct CommandArgs *arg, int argc) {
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
+            return 0;
+        }
+        FUN_0046c1b0(DAT_00669050, atoi((char *)arg->field_4));
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00479a70
-void FUN_00479a70(void) { STUB(); }
+int FUN_00479a70(struct CommandArgs *arg, int argc) {
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
+            return 0;
+        }
+        FUN_0046c1e0(DAT_00669050, atoi((char *)arg->field_4));
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00479ac0
-void FUN_00479ac0(void) { STUB(); }
+int FUN_00479ac0(struct CommandArgs *arg, int argc) {
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
+            return 0;
+        }
+        FUN_0046c210(DAT_00669050, atoi((char *)arg->field_4));
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00479b10
 void FUN_00479b10(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00479c40
-void FUN_00479c40(void) { STUB(); }
+int FUN_00479c40(struct CommandArgs *arg, int argc) {
+    struct Vec4 vec;
+    unsigned int v;
+
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 2, 5) == 0) {
+            return 0;
+        }
+        FUN_00478700((int *)&vec, (char **)arg, 1);
+        v = atoi(((char **)arg)[5]);
+        FUN_0046c240(DAT_00669050, &vec, v);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00479cb0
 int FUN_00479cb0(struct CommandArgs *arg, int argc) {
