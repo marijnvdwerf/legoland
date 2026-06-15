@@ -76,7 +76,29 @@ int FUN_00478870(unsigned int *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00478890
-void FUN_00478890(void) { STUB(); }
+int FUN_00478890(struct CommandArgs *arg, int argc) {
+    unsigned int n1;
+    unsigned int n2;
+
+    if (argc == 0) {
+        DAT_004bb5b0 = 1;
+        return 1;
+    }
+    if (argc == 1) {
+        n1 = atoi((char *)arg->field_4);
+        DAT_004bb5b0 = n1 <= DAT_0080ffc0;
+        return 1;
+    }
+    n1 = atoi((char *)arg->field_4);
+    n2 = atoi(arg->field_8);
+    if (n1 > n2) {
+        return 0;
+    }
+    if (DAT_0080ffc0 < n1 || (DAT_004bb5b0 = 1, DAT_0080ffc0 > n2)) {
+        DAT_004bb5b0 = 0;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00478930
 int FUN_00478930(unsigned int param_1, unsigned int param_2) {

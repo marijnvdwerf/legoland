@@ -2704,6 +2704,8 @@ extern unsigned int DAT_0080ff80;
 extern unsigned int DAT_0080ff84;
 // 0x0080ff88
 extern unsigned int DAT_0080ff88;
+// 0x0080ffc0
+extern unsigned int DAT_0080ffc0;
 // 0x0080ffc4
 extern int DAT_0080ffc4;
 // 0x0080ffcc
