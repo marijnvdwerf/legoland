@@ -78,6 +78,14 @@ struct PlaceObject {
     struct ObjClass *cls;
 };
 
+struct SweepInstance {
+    struct PlaceObject *object;
+    unsigned char tile_x;
+    unsigned char tile_y;
+    unsigned char pad_6[0xc - 0x6];
+    unsigned char flags_c;
+};
+
 // FUNCTION: LEGOLAND 0x00468810
 void FUN_00468810(char *name) {
     strncpy(DAT_0066869c, name, 0x80);
@@ -1175,7 +1183,83 @@ int FUN_00469c60(unsigned int handle) {
 }
 
 // FUNCTION: LEGOLAND 0x00469c80
-void FUN_00469c80(void) { STUB(); }
+int FUN_00469c80(struct MapRectArg *arg) {
+    struct Cursor saved;
+    struct Point point;
+    struct Sample *sample;
+    struct SweepInstance *current;
+    struct SweepInstance *next;
+    struct ObjClass *cls;
+    int phase;
+    int power;
+    int found;
+    unsigned int tile_x;
+    unsigned int tile_y;
+    int left;
+    int bottom;
+
+    sample = PlayInstanceOfSample(DAT_004b92fc, 1, 1, 0);
+    FUN_00496d10(sample);
+    AddSFX_Callback((struct CallbackEntry *)sample, 3000, (unsigned int (*)(struct CallbackEntry *))FUN_00469c60);
+    phase = 0;
+    do {
+        current = (struct SweepInstance *)GetFirstRenderObject();
+        while (current != NULL) {
+            FUN_004969d0();
+            next = current;
+            if (phase == 0) {
+                while ((next = (struct SweepInstance *)GetNextRenderObject((struct RenderObject *)current)) != NULL) {
+                    cls = next->object->cls;
+                    power = FindObjectsPower(cls);
+                    if (cls->field_58 == NULL || (cls->field_58[8] & 0x10) == 0 || (current = next, power > 0)) {
+                        break;
+                    }
+                }
+            } else if (phase == 1) {
+                do {
+                    next = (struct SweepInstance *)GetNextRenderObject((struct RenderObject *)current);
+                    if (next == NULL) {
+                        break;
+                    }
+                    power = FindObjectsPower(next->object->cls);
+                    current = next;
+                } while (power < 1);
+            } else if (phase == 2) {
+                next = (struct SweepInstance *)GetNextRenderObject((struct RenderObject *)current);
+            }
+            if (current->flags_c & 0x80) {
+                tile_x = current->tile_x;
+                QueryClass = current->object->cls;
+                QueryObj = *(unsigned short *)&current->tile_x;
+                tile_y = current->tile_y;
+                cls = (struct ObjClass *)QueryClass;
+                left = cls->field_40 + tile_y;
+                bottom = cls->field_48 + tile_y;
+                if (cls->field_3c + (int)tile_x <= arg->x1 && arg->x0 <= cls->field_44 + (int)tile_x &&
+                    left <= arg->y1 && arg->y0 <= bottom) {
+                    saved = QueryCursor;
+                    DAT_00811564 = tile_x;
+                    DAT_00811568 = tile_y;
+                    point.x = tile_x;
+                    point.y = tile_y;
+                    cls->method_94(cls->field_c4, &point);
+                    BuildCursorPtr(&QueryCursor, 0, 0);
+                    found = FUN_0045f4b0(&QueryCursor);
+                    if (found != 0) {
+                        FUN_0045d3d0((struct PathFootprint *)cls, &point.x);
+                        RemObjFromMap(cls, cls->field_c4, QueryObj, &QueryCursor);
+                    }
+                    QueryCursor = saved;
+                }
+            }
+            current = next;
+        }
+        phase++;
+    } while (phase <= 2);
+    CalculateMapRenderOrder();
+    PlayInstanceOfSample(DAT_004b92fc, 0, 1, 0);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00469ed0
 int FUN_00469ed0(struct MapRectArg *arg) {

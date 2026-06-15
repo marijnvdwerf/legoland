@@ -567,6 +567,8 @@ extern void *PTR_004b9338;
 extern void *DAT_004b92d8;
 // 0x004b92e4
 extern void *DAT_004b92e4;
+// 0x004b92fc
+extern void *DAT_004b92fc;
 // 0x004b9308
 extern void *DAT_004b9308;
 // 0x004b95f0
@@ -2722,6 +2724,10 @@ extern struct Sprite *SPRITE_TitleScreenBk;
 extern LEGO_EXPORT unsigned char NEWFLC_ID[20];
 // 0x00810160
 extern LEGO_EXPORT struct Cursor QueryCursor;
+// 0x00811564
+extern unsigned int DAT_00811564;
+// 0x00811568
+extern unsigned int DAT_00811568;
 // 0x008119a0
 extern LEGO_EXPORT unsigned int NEWFLC_CheckDuplicate;
 // 0x008119a4
