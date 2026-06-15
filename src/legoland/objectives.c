@@ -43,6 +43,13 @@ struct MapRectArg {
     int y1;
 };
 
+struct NerpsTarget {
+    unsigned char pad_0[0x10];
+    unsigned char flags_10;
+    unsigned char pad_11[0x40 - 0x11];
+    unsigned int field_40;
+};
+
 // FUNCTION: LEGOLAND 0x00468810
 void FUN_00468810(char *name) {
     strncpy(DAT_0066869c, name, 0x80);
@@ -330,7 +337,23 @@ int FUN_00468d10(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00468d30
-int FUN_00468d30(struct NerpsArg *object) { STUB(); }
+int FUN_00468d30(struct NerpsArg *object) {
+    struct ObjectiveEvent *event;
+    struct NerpsTarget *target;
+
+    target = (struct NerpsTarget *)object;
+    if (target->field_40 != 0 && DAT_007fe120[target->field_40] != 0) {
+        if (target->flags_10 & 4) {
+            event = FUN_00468cd0(0, 0);
+        } else {
+            event = FUN_00468cd0(0, 1);
+        }
+        event->field_40 = target->field_40;
+        FUN_00468c80(event);
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00468d80
 void FUN_00468d80(struct NerpsArg *object, unsigned int a, int b) {
@@ -381,10 +404,50 @@ void FUN_00468e00(struct NerpsArg *object, unsigned int a) {
 }
 
 // FUNCTION: LEGOLAND 0x00468e40
-void FUN_00468e40(struct NerpsArg *arg, unsigned int class_id, int count, int sum) { STUB(); }
+void FUN_00468e40(struct NerpsArg *arg, unsigned int class_id, int count, int sum) {
+    struct ObjectiveEvent *event;
+
+    if (FUN_00468d10() == 0) {
+        return;
+    }
+    if (FUN_00468d30(arg) != 0) {
+        return;
+    }
+    event = FUN_00468cd0(3, 1);
+    if (count < 0) {
+        count = 0;
+    }
+    if (sum < 0) {
+        sum = 0;
+    }
+    event->field_4 = class_id;
+    event->field_14 = count;
+    event->field_1c = sum;
+    FUN_00468c80(event);
+}
 
 // FUNCTION: LEGOLAND 0x00468ea0
-void FUN_00468ea0(struct NerpsArg *arg, unsigned int class_id, int count, int sum) { STUB(); }
+void FUN_00468ea0(struct NerpsArg *arg, unsigned int class_id, int count, int sum) {
+    struct ObjectiveEvent *event;
+
+    if (FUN_00468d10() == 0) {
+        return;
+    }
+    if (FUN_00468d30(arg) != 0) {
+        return;
+    }
+    event = FUN_00468cd0(4, 1);
+    if (count < 0) {
+        count = 0;
+    }
+    if (sum < 0) {
+        sum = 0;
+    }
+    event->field_4 = class_id;
+    event->field_14 = count;
+    event->field_1c = sum;
+    FUN_00468c80(event);
+}
 
 // FUNCTION: LEGOLAND 0x00468f00
 void FUN_00468f00(struct NerpsArg *object, int a) {
@@ -402,7 +465,20 @@ void FUN_00468f00(struct NerpsArg *object, int a) {
 }
 
 // FUNCTION: LEGOLAND 0x00468f40
-void FUN_00468f40(struct NerpsArg *arg, unsigned int class_id, int count) { STUB(); }
+void FUN_00468f40(struct NerpsArg *arg, unsigned int class_id, int count) {
+    struct ObjectiveEvent *event;
+
+    if (FUN_00468d10() == 0) {
+        return;
+    }
+    if (FUN_00468d30(arg) != 0) {
+        return;
+    }
+    event = FUN_00468cd0(6, 1);
+    event->field_1c = count;
+    event->field_4 = class_id;
+    FUN_00468c80(event);
+}
 
 // FUNCTION: LEGOLAND 0x00468f80
 void FUN_00468f80(struct NerpsArg *object, int a) {
