@@ -1385,7 +1385,15 @@ int FUN_0047a800(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x0047a860
-void FUN_0047a860(void) { STUB(); }
+int FUN_0047a860(struct CommandArgs *arg, int argc) {
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 4, 1) == 0) {
+            return 0;
+        }
+        FUN_0046b9f0(arg->field_4);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0047a8a0
 int FUN_0047a8a0(struct CommandArgs *arg, int argc) {
@@ -1399,7 +1407,27 @@ int FUN_0047a8a0(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x0047a8e0
-void FUN_0047a8e0(void) { STUB(); }
+int FUN_0047a8e0(struct CommandArgs *arg, int argc) {
+    int index;
+    unsigned int v;
+
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 5, 2) == 0) {
+            return 0;
+        }
+        index = FUN_004781b0((char *)arg->field_4, &DAT_004bb5f4, 0xc);
+        v = atoi(arg->field_8);
+        if (index == -1) {
+            return 0;
+        }
+        if (DAT_00669054 == 4) {
+            FUN_0046ba60(index, v);
+            return 1;
+        }
+        FUN_0046a040(index, v);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0047a960
 void FUN_0047a960(void) { STUB(); }
@@ -1449,7 +1477,27 @@ int FUN_0047ab00(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x0047ab80
-void FUN_0047ab80(void) { STUB(); }
+int FUN_0047ab80(struct CommandArgs *arg, int argc) {
+    int index;
+    unsigned int v;
+
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 5, 2) == 0) {
+            return 0;
+        }
+        index = FUN_004781b0((char *)arg->field_4, &DAT_004bb6bc, 6);
+        v = atoi(arg->field_8);
+        if (index == -1) {
+            return 0;
+        }
+        if (DAT_00669054 == 1) {
+            FUN_00462e70(index, v);
+            return 1;
+        }
+        FUN_0046bbe0(index, v);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0047ac00
 void FUN_0047ac00(void) { STUB(); }

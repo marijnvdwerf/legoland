@@ -666,6 +666,10 @@ extern unsigned int DAT_004bb5c4;
 extern unsigned int DAT_004bb5d8;
 // 0x004bb5e0
 extern unsigned int DAT_004bb5e0;
+// 0x004bb5f4
+extern unsigned int DAT_004bb5f4;
+// 0x004bb624
+extern unsigned int DAT_004bb624;
 // 0x004bb688
 extern unsigned int DAT_004bb688;
 // 0x004bb6bc

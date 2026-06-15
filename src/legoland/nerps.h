@@ -16,6 +16,8 @@ struct SortNode {
 struct StringHolder;
 struct Vec4;
 
+void FUN_0046a040(unsigned int param_1, unsigned int param_2);
+void FUN_0046a140(int index, unsigned int param_2, unsigned int param_3);
 void FUN_0046b240(unsigned int param_1);
 unsigned int FUN_0046b280(void);
 void FUN_0046b2d0(void);
@@ -34,11 +36,15 @@ void FUN_0046b900(struct Vec4 *param_1);
 void FUN_0046b940(struct Vec4 *param_1);
 void FUN_0046b980(struct Vec4 *param_1);
 void FUN_0046b9c0(unsigned int param_1);
+void FUN_0046b9f0(unsigned int param_1);
 void FUN_0046ba30(unsigned int param_1);
+void FUN_0046ba60(unsigned int param_1, unsigned int param_2);
+void FUN_0046ba90(unsigned int param_1, unsigned int param_2, unsigned int param_3);
 void FUN_0046bad0(unsigned int param_1, unsigned int param_2, unsigned int *param_3);
 void FUN_0046bb10(unsigned int param_1, unsigned int param_2);
 void FUN_0046bb80(unsigned int param_1, unsigned int param_2);
 void FUN_0046bbb0(unsigned int param_1, unsigned int param_2);
+void FUN_0046bbe0(unsigned int param_1, unsigned int param_2);
 void FUN_0046bc40(void);
 void FUN_0046bc60(void);
 void FUN_0046bc80(unsigned int param_1, unsigned int param_2);
