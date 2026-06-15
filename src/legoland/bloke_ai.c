@@ -3,10 +3,22 @@
 #include "bloke.h"
 #include "globals.h"
 #include "legoland.h"
+#include "llidb.h"
 
 struct BlokeList {
     unsigned char pad_0[0xcc];
     struct Bloke *head;
+};
+
+struct AttractionElement {
+    unsigned char pad_0[8];
+    unsigned int field_8;
+    struct AttractionInfo *field_c;
+};
+
+struct AttractionInfo {
+    unsigned char pad_0[0x20];
+    short field_20;
 };
 
 struct BlokeRideState {
@@ -29,7 +41,53 @@ LEGO_EXPORT void NewLongTermAction(struct Bloke *bloke, unsigned short action) {
 }
 
 // FUNCTION: LEGOLAND 0x0044e790
-void FUN_0044e790(void) { STUB(); }
+unsigned int FUN_0044e790(void) {
+    struct AttractionElement *element;
+    int count;
+    int start;
+    int index;
+    unsigned int roll;
+    int remaining;
+    short field;
+
+    count = LLIDB_GetCount();
+    index = rand() % count;
+    roll = rand();
+    remaining = roll & 0x1f;
+    start = index;
+    if (remaining-- == 0) {
+        return (unsigned int)element;
+    }
+    do {
+        while (1) {
+            while (1) {
+                LLIDB_GetElement(index, (struct Element **)&element);
+                if ((element->field_8 & 0x14) == 0x14) {
+                    break;
+                }
+                index++;
+                if (index >= count) {
+                    index = 0;
+                }
+                if (index == start) {
+                    return 0;
+                }
+            }
+            field = element->field_c->field_20;
+            if (field == 0 || field == 5) {
+                break;
+            }
+            if (remaining-- == 0) {
+                return (unsigned int)element;
+            }
+        }
+        index++;
+        if (index >= count) {
+            index = 0;
+        }
+    } while (index != start);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0044e830
 LEGO_EXPORT int IsFavouriteAttraction(struct Bloke *bloke, unsigned int attraction) {
