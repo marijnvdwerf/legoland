@@ -534,10 +534,77 @@ void FUN_00499e60(struct WorkOrder *order) {
 }
 
 // FUNCTION: LEGOLAND 0x00499eb0
-void FUN_00499eb0(void *order) { STUB(); }
+void FUN_00499eb0(struct WorkOrder *order) {
+    struct WorkOrder *cur;
+    struct WorkOrder *next;
+
+    if (DAT_0079a8c0 == 0) {
+        return;
+    }
+    cur = DAT_0079a8c0;
+    if (cur == order) {
+        DAT_0079a8c8--;
+        DAT_0079a8c0 = order->next;
+        if (DAT_0079a8c0 == 0) {
+            DAT_0079a8c4 = 0;
+        }
+        free(order->var_10);
+        free(order);
+        return;
+    }
+    while (next = cur->next, next != order) {
+        cur = next;
+        if (next == 0) {
+            return;
+        }
+    }
+    if (cur != 0) {
+        DAT_0079a8c8--;
+        cur->next = order->next;
+        if (order->next == 0) {
+            DAT_0079a8c4 = cur;
+        }
+        free(order->var_10);
+        free(order);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00499f40
-void FUN_00499f40(void) { STUB(); }
+void FUN_00499f40(struct WorkOrder *order) {
+    struct WorkOrder *scan;
+    struct WorkOrder *prev;
+    struct WorkOrder *head;
+    struct WorkOrder *onext;
+
+    scan = DAT_0079a8c0;
+    onext = order->next;
+    order->var_18 = 0;
+    if (onext != 0 && DAT_0079a8c0 != 0) {
+        head = onext;
+        if (DAT_0079a8c0 != order) {
+            do {
+                prev = scan;
+                head = DAT_0079a8c0;
+                if (prev == 0) {
+                    goto relink;
+                }
+                scan = prev->next;
+            } while (prev->next != order);
+            if (prev != 0) {
+                prev->next = onext;
+                head = DAT_0079a8c0;
+            }
+        }
+    relink:
+        DAT_0079a8c0 = head;
+        ((struct WorkOrder *)DAT_0079a8c4)->next = order;
+        DAT_0079a8c4 = order;
+        if (DAT_0079a8c0 == 0) {
+            DAT_0079a8c0 = order;
+        }
+        order->next = 0;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00499fb0
 void FUN_00499fb0(void) {
