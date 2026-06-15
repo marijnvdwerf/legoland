@@ -1130,4 +1130,72 @@ void FUN_004819a0(int *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00481b10
-void FUN_00481b10(struct BestNode *node) { STUB(); }
+void FUN_00481b10(struct BestNode *node) {
+    struct BestNode **slot;
+    struct BestNode *cur;
+    int i;
+
+    do {
+        FUN_00481810((int *)&node->x_min);
+        i = 0;
+        if (DAT_0066a45c[0] != 0) {
+            cur = DAT_0066a45c[0];
+            slot = (struct BestNode **)DAT_0066a45c;
+            do {
+                if (cur->x_min == node->x_min && (*slot)->x_max == node->x_max) {
+                    ((struct BestNode *)DAT_0066a45c[i])->y_max = node->y_max;
+                    goto matched;
+                }
+                cur = slot[1];
+                slot++;
+                i++;
+            } while (cur != 0);
+        }
+        i++;
+        cur = DAT_0066a45c[i];
+        slot = (struct BestNode **)&DAT_0066a45c[i];
+        if (cur != 0) {
+            do {
+                if (cur->x_min == node->x_min && (*slot)->x_max == node->x_max) {
+                    ((struct BestNode *)DAT_0066a45c[i])->y_min = node->y_min;
+                    goto matched;
+                }
+                cur = slot[1];
+                slot++;
+                i++;
+            } while (cur != 0);
+        }
+        i++;
+        cur = DAT_0066a45c[i];
+        slot = (struct BestNode **)&DAT_0066a45c[i];
+        if (cur != 0) {
+            do {
+                if (cur->y_min == node->y_min && (*slot)->y_max == node->y_max) {
+                    ((struct BestNode *)DAT_0066a45c[i])->x_max = node->x_max;
+                    goto matched;
+                }
+                cur = slot[1];
+                slot++;
+                i++;
+            } while (cur != 0);
+        }
+        i++;
+        cur = DAT_0066a45c[i];
+        slot = (struct BestNode **)&DAT_0066a45c[i];
+        if (cur == 0) {
+            return;
+        }
+        while (cur->y_min != node->y_min || (*slot)->y_max != node->y_max) {
+            cur = slot[1];
+            slot++;
+            i++;
+            if (cur == 0) {
+                return;
+            }
+        }
+        ((struct BestNode *)DAT_0066a45c[i])->x_min = node->x_min;
+    matched:
+        FUN_00481750(node);
+        node = DAT_0066a45c[i];
+    } while (1);
+}
