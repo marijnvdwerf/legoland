@@ -153,7 +153,7 @@ struct InfoNode {
     /* 0x0a */ unsigned char pad_a[0xc - 0xa];
     /* 0x0c */ int x;
     /* 0x10 */ int y;
-    /* 0x14 */ unsigned char pad_14[0x18 - 0x14];
+    /* 0x14 */ int sort_key;
     /* 0x18 */ unsigned char origin_x;
     /* 0x19 */ unsigned char origin_y;
     /* 0x1a */ unsigned char pad_1a[0x1c - 0x1a];
@@ -839,7 +839,36 @@ LEGO_EXPORT void CalculateRideCodes(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00481610
-LEGO_EXPORT int ShuffleObjKeys(int *param_1, void **param_2) { STUB(); }
+LEGO_EXPORT int ShuffleObjKeys(int *param_1, void **param_2) {
+    struct InfoNode **slot;
+    struct InfoNode *node;
+    struct InfoNode *next;
+
+    slot = (struct InfoNode **)&DAT_00669248;
+    node = DAT_00669248;
+    if (DAT_00669248 != (void *)DAT_0066924c) {
+        while (next = node, node != 0) {
+            node = next->next;
+            if ((unsigned int)node == DAT_0066924c) {
+                DAT_0066924c = (unsigned int)next;
+                param_1[0] = next->x << 8;
+                param_1[1] = next->y << 8;
+                *param_2 = (void *)next->classid;
+                return 1;
+            }
+            if ((int)node->sort_key < (int)next->sort_key) {
+                *slot = node;
+                next->next = node->next;
+                node->next = next;
+                slot = (struct InfoNode **)node;
+                node = next;
+            } else {
+                slot = (struct InfoNode **)next;
+            }
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00481690
 LEGO_EXPORT void ResetBestPtr(void) {
