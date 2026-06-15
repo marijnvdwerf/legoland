@@ -16,6 +16,7 @@
 #include "objectives.h"
 #include "sound_sfx.h"
 #include "title.h"
+#include "worker.h"
 
 struct CommandArgs {
     unsigned char pad_0[4];
@@ -344,7 +345,31 @@ int FUN_00478e90(int param_1, int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00478f00
-void FUN_00478f00(void) { STUB(); }
+int FUN_00478f00(struct CommandArgs *arg, int argc) {
+    int v1;
+    int v2;
+
+    if (DAT_004bb5b0 == 0) {
+        return 1;
+    }
+    if (FUN_004786c0((unsigned int)arg, argc, 5, 2) == 0) {
+        return 0;
+    }
+    v1 = atoi((char *)arg->field_4);
+    v2 = atoi(arg->field_8);
+    if (DAT_00669054 == 1) {
+        if (v1 >= 0) {
+            lpConfig->field_38 = v1 != 0;
+        }
+        if (v2 >= 0) {
+            lpConfig->field_34 = v2 != 0;
+            return 1;
+        }
+    } else {
+        FUN_0046bb10(v1, v2);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00478fa0
 void FUN_00478fa0(void) { STUB(); }
