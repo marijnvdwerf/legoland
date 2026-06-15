@@ -1181,10 +1181,36 @@ int FUN_0047a360(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x0047a3d0
-void FUN_0047a3d0(void) { STUB(); }
+int FUN_0047a3d0(struct CommandArgs *arg, int argc) {
+    int index;
+
+    if (DAT_004bb5b0 == 0) {
+        return 1;
+    }
+    if (FUN_004786c0((unsigned int)arg, argc, 2, 1) != 0) {
+        if (argc == 0) {
+            index = 0;
+        } else {
+            index = FUN_004781b0((char *)arg->field_4, &DAT_004bb5e0, 5);
+        }
+        if (index != -1) {
+            FUN_0046c4b0(DAT_00669050, index);
+            return 1;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0047a440
-void FUN_0047a440(void) { STUB(); }
+int FUN_0047a440(struct CommandArgs *arg, int argc) {
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 2, 0) == 0) {
+            return 0;
+        }
+        FUN_0046c510(DAT_00669050);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0047a480
 int FUN_0047a480(struct CommandArgs *arg, int argc) {
@@ -1228,10 +1254,49 @@ int FUN_0047a500(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x0047a550
-void FUN_0047a550(void) { STUB(); }
+int FUN_0047a550(struct CommandArgs *arg, int argc) {
+    int v;
+
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 4, 1) == 0) {
+            return 0;
+        }
+        v = atoi((char *)arg->field_4);
+        if (v > 0) {
+            FUN_0046b820(v);
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0047a5a0
-void FUN_0047a5a0(void) { STUB(); }
+int FUN_0047a5a0(struct CommandArgs *arg, int argc) {
+    unsigned int id;
+    unsigned int coords[2];
+    unsigned int v;
+
+    if (DAT_004bb5b0 == 0) {
+        return 1;
+    }
+    if (FUN_004786c0((unsigned int)arg, argc, 5, 3) == 0) {
+        return 0;
+    }
+    id = ElemID((const char *)arg->field_4);
+    FUN_00478770((int *)coords, (char **)arg, 2);
+    if (argc >= 4) {
+        v = atoi(((char **)arg)[4]);
+    } else {
+        v = 0;
+    }
+    if (id != 0) {
+        if (DAT_00669054 == 1) {
+            FUN_00469bd0(id, coords);
+            return 1;
+        }
+        FUN_0046b880(id, coords, v);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0047a650
 void FUN_0047a650(void) { STUB(); }

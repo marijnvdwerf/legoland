@@ -15,3 +15,4 @@ void FUN_00469900(struct NerpsArg *object, unsigned int a, unsigned int b);
 int FUN_0047a480();
 void FUN_0046be90(unsigned char param_1, unsigned int param_2);
 void FUN_0046c450(unsigned char param_1, unsigned int param_2);
+void FUN_0046c4b0(unsigned char param_1, unsigned int param_2);
