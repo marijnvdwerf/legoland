@@ -927,7 +927,22 @@ struct BestNode *FUN_00481790(struct InstancePos *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x004817d0
-void FUN_004817d0(void) { STUB(); }
+struct BestNode *FUN_004817d0(int *param_1) {
+    struct BestNode *node;
+
+    if (DAT_0066b44c == 0) {
+        return 0;
+    }
+    node = DAT_0066b44c;
+    do {
+        if (param_1[0] >> 8 >= (int)node->x_min && param_1[0] >> 8 <= (int)node->x_max &&
+            param_1[1] >> 8 >= (int)node->y_min && param_1[1] >> 8 <= (int)node->y_max) {
+            return node;
+        }
+        node = node->next;
+    } while (node != 0);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00481810
 void FUN_00481810(void) { STUB(); }
