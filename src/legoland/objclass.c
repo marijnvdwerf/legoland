@@ -116,6 +116,49 @@ struct ObjInstance {
     unsigned int field_10;
 };
 
+struct FootprintNode {
+    /* 0x00 */ int x_min;
+    /* 0x04 */ unsigned char pad_4[4];
+    /* 0x08 */ int x_max;
+    /* 0x0c */ unsigned char pad_c[4];
+    /* 0x10 */ struct FootprintNode *next;
+};
+
+struct ClassObjNode {
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ int field_c;
+    /* 0x10 */ struct ClassObjNode *next;
+};
+
+struct ObjClassInfo {
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ int field_c;
+    /* 0x10 */ int field_10;
+    /* 0x14 */ unsigned char pad_14[0x20 - 0x14];
+    /* 0x20 */ short type;
+    /* 0x22 */ unsigned char pad_22[0x24 - 0x22];
+    /* 0x24 */ char field_24;
+    /* 0x25 */ char field_25;
+    /* 0x26 */ unsigned char pad_26[0x3c - 0x26];
+    /* 0x3c */ int footprint_base;
+    /* 0x40 */ unsigned char pad_40[0x48 - 0x40];
+    /* 0x48 */ int field_48;
+    /* 0x4c */ struct ClassObjNode *objlist;
+};
+
+struct InfoNode {
+    /* 0x00 */ struct InfoNode *next;
+    /* 0x04 */ int classid;
+    /* 0x08 */ short coords;
+    /* 0x0a */ unsigned char pad_a[0xc - 0xa];
+    /* 0x0c */ int x;
+    /* 0x10 */ int y;
+    /* 0x14 */ unsigned char pad_14[0x18 - 0x14];
+    /* 0x18 */ unsigned char origin_x;
+    /* 0x19 */ unsigned char origin_y;
+    /* 0x1a */ unsigned char pad_1a[0x1c - 0x1a];
+};
+
 // FUNCTION: LEGOLAND 0x00480990
 LEGO_EXPORT struct ObjectClass *AddNewObjectClass(void) {
     struct ObjectClass *cls;
@@ -575,7 +618,110 @@ void FUN_00481170(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00481200
-LEGO_EXPORT void BuildObjInfoList(void) { STUB(); }
+LEGO_EXPORT void BuildObjInfoList(void) {
+    struct LegoConfig *config;
+    struct MapElement *cell;
+    struct MapElement *origin;
+    struct ObjClassInfo *cls;
+    struct InfoNode *node;
+    struct FootprintNode *fp;
+    struct ClassObjNode *obj;
+    unsigned char ox;
+    unsigned char oy;
+    short coords;
+    unsigned int x;
+    unsigned int y;
+    unsigned int ux;
+    unsigned int uy;
+    unsigned int width;
+    int offset;
+    int best;
+    int rng;
+
+    FUN_00481170();
+    y = 0;
+    config = lpConfig;
+    if (config->height == 0) {
+        return;
+    }
+    do {
+        x = 0;
+        width = config->width;
+        if (width != 0) {
+            offset = 0;
+            do {
+                if ((int)x < 0 || (int)x >= (int)width || (int)y < 0 || (int)y >= (int)config->height) {
+                    cell = 0;
+                } else {
+                    cell = (struct MapElement *)((char *)GameMap[y] + offset);
+                }
+                if ((cell->flags & 0x80) != 0) {
+                    ox = cell->field_4;
+                    oy = cell->field_5;
+                    coords = *(short *)&cell->field_4;
+                    uy = oy;
+                    ux = ox;
+                    if (ux < width && uy < config->height) {
+                        origin = &GameMap[uy][ux];
+                    } else {
+                        origin = 0;
+                    }
+                    cls = (struct ObjClassInfo *)*(int *)(origin->field_0 + 0xc);
+                    if (cls->type != 0 && cls->type != 2 && (*((unsigned char *)origin + 0xd) & 4) == 0) {
+                        node = DAT_00669248;
+                        while (node != 0) {
+                            if (node->classid == (int)cls) {
+                                rng = rand();
+                                rng = rng & 0x800000ff;
+                                if (rng < 0) {
+                                    rng = ((rng - 1) | 0xffffff00) + 1;
+                                }
+                                if (rng < 0x50) {
+                                    node->x = cls->field_c + ux;
+                                    node->y = cls->field_10 + uy;
+                                    *(unsigned char *)&node->origin_x = cls->field_24 + ox;
+                                    node->origin_y = cls->field_25 + oy;
+                                }
+                                goto marked;
+                            }
+                            node = node->next;
+                        }
+                        node = (struct InfoNode *)malloc(sizeof(struct InfoNode));
+                        node->next = DAT_00669248;
+                        DAT_00669248 = node;
+                        node->classid = (int)cls;
+                        node->coords = coords;
+                        node->x = cls->field_c + ux;
+                        node->y = cls->field_10 + uy;
+                        node->origin_x = cls->field_24 + ox;
+                        node->origin_y = cls->field_25 + oy;
+                    marked:
+                        *((unsigned char *)origin + 0xd) |= 4;
+                    }
+                    fp = (struct FootprintNode *)&cls->footprint_base;
+                    while ((int)x < (int)(fp->x_min + ux) || (int)(fp->x_max + ux) < (int)x) {
+                        fp = fp->next;
+                    }
+                    best = cls->field_48;
+                    x = fp->x_max + ux;
+                    for (obj = cls->objlist; obj != 0; obj = obj->next) {
+                        if (best < obj->field_c) {
+                            best = obj->field_c;
+                        }
+                    }
+                    config = lpConfig;
+                    if ((int)(y - uy) == best) {
+                        *(unsigned short *)((char *)origin + 0xc) &= 0xfbff;
+                        config = lpConfig;
+                    }
+                }
+                x++;
+                width = config->width;
+            } while ((int)x < (int)width);
+        }
+        y++;
+    } while ((int)y < (int)config->height);
+}
 
 // FUNCTION: LEGOLAND 0x00481410
 LEGO_EXPORT int CalculateViewRideCode(int param_1, struct ObjectClass *param_2, int param_3) {
