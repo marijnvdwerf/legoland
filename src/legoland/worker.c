@@ -56,6 +56,52 @@ struct RepairOrder {
     /* 0x24 */ float var_24;
 };
 
+struct BlokeSave {
+    /* 0x00 */ unsigned short field_0;
+    /* 0x02 */ unsigned short field_2;
+    /* 0x04 */ unsigned short field_4;
+    /* 0x06 */ unsigned char pad_6[0x10 - 0x06];
+    /* 0x10 */ unsigned int field_10;
+    /* 0x14 */ unsigned int field_14;
+    /* 0x18 */ unsigned int field_18;
+    /* 0x1c */ unsigned int field_1c;
+    /* 0x20 */ unsigned int field_20;
+    /* 0x24 */ unsigned int field_24;
+    /* 0x28 */ unsigned int field_28[10];
+    /* 0x50 */ unsigned int field_50;
+    /* 0x54 */ unsigned char field_54;
+    /* 0x55 */ unsigned char pad_55[1];
+    /* 0x56 */ unsigned short field_56;
+    /* 0x58 */ unsigned char field_58;
+    /* 0x59 */ unsigned char field_59;
+    /* 0x5a */ unsigned char field_5a;
+    /* 0x5b */ unsigned char pad_5b[1];
+    /* 0x5c */ unsigned int field_5c;
+    /* 0x60 */ unsigned int field_60;
+    /* 0x64 */ unsigned short field_64;
+    /* 0x66 */ unsigned char field_66;
+    /* 0x67 */ unsigned char field_67;
+    /* 0x68 */ unsigned char field_68;
+    /* 0x69 */ unsigned char field_69;
+    /* 0x6a */ unsigned char pad_6a[2];
+    /* 0x6c */ unsigned int field_6c[5];
+    /* 0x80 */ unsigned int field_80;
+    /* 0x84 */ unsigned int field_84;
+    /* 0x88 */ unsigned int field_88;
+    /* 0x8c */ unsigned int field_8c;
+    /* 0x90 */ unsigned int field_90;
+    /* 0x94 */ unsigned int field_94;
+    /* 0x98 */ unsigned int field_98;
+    /* 0x9c */ unsigned int field_9c;
+    /* 0xa0 */ unsigned int field_a0;
+    /* 0xa4 */ unsigned int field_a4;
+    /* 0xa8 */ unsigned int field_a8;
+    /* 0xac */ unsigned int field_ac;
+    /* 0xb0 */ unsigned int field_b0[9];
+    /* 0xd4 */ unsigned int field_d4;
+    /* 0xd8 */ unsigned int field_d8;
+};
+
 // FUNCTION: LEGOLAND 0x00499530
 LEGO_EXPORT void LoadWorkerInterfaceGFX(void) {
     // STRING: LEGOLAND 0x004b9bd0
@@ -2002,7 +2048,95 @@ LEGO_EXPORT void Mechanics_Repair(struct Worker *worker) {
 }
 
 // FUNCTION: LEGOLAND 0x0049c140
-void FUN_0049c140(void) { STUB(); }
+void FUN_0049c140(void) {
+    struct Worker *cur;
+    struct Worker *node;
+    struct BlokeList *list;
+    void *bnode;
+    int count;
+    struct BlokeSave rec;
+    char *person;
+
+    // STRING: LEGOLAND 0x004b89ac
+    list = (struct BlokeList *)*(int *)(ElemID("POTTING SHED") + 0xc);
+    count = 0;
+    node = GardenerList;
+    do {
+        do {
+            cur = node;
+            node = GardenerList;
+            if (cur == 0) {
+                for (; node != 0; node = node->next) {
+                    count++;
+                }
+                if (SaveGameWrite(&count, 4) != 0) {
+                    for (node = GardenerList; node != 0; node = node->next) {
+                        rec.field_0 = node->flags_c;
+                        rec.field_2 = node->state;
+                        rec.field_4 = node->field_10;
+                        rec.field_10 = node->flags_1c;
+                        rec.field_14 = node->field_20;
+                        rec.field_18 = node->var_24;
+                        rec.field_1c = node->var_28;
+                        rec.field_20 = node->var_2c;
+                        rec.field_24 = node->var_30;
+                        memcpy(rec.field_28, (char *)node + 0x34, 40);
+                        rec.field_50 = node->ticks;
+                        rec.field_54 = node->var_60;
+                        rec.field_56 = node->flags;
+                        rec.field_58 = node->var_64;
+                        rec.field_59 = node->var_7f;
+                        rec.field_5a = node->var_82;
+                        rec.field_5c = node->var_68;
+                        rec.field_60 = node->var_6c;
+                        rec.field_64 = node->var_70;
+                        rec.field_66 = node->var_72;
+                        rec.field_67 = node->var_73;
+                        rec.field_68 = node->var_74;
+                        rec.field_69 = node->var_75;
+                        memcpy(rec.field_6c, &node->var_98, 20);
+                        person = (char *)node->field_4;
+                        rec.field_80 = *(unsigned int *)(person + 8);
+                        rec.field_84 = *(unsigned int *)(person + 0x10);
+                        rec.field_88 = *(unsigned int *)(person + 0x14);
+                        rec.field_8c = *(unsigned int *)(person + 0x18);
+                        rec.field_90 = *(unsigned int *)(person + 0x1c);
+                        rec.field_94 = *(unsigned int *)(person + 0x20);
+                        rec.field_98 = *(unsigned int *)(person + 0x40);
+                        rec.field_9c = *(unsigned int *)(person + 0x44);
+                        rec.field_a0 = *(unsigned int *)(person + 0x48);
+                        rec.field_a4 = *(unsigned int *)(person + 0x4c);
+                        rec.field_a8 = *(unsigned int *)(person + 0x88);
+                        rec.field_ac = *(unsigned int *)(person + 0x54);
+                        memcpy(rec.field_b0, person + 0x58, 36);
+                        rec.field_d4 = node->field_a;
+                        rec.field_d8 = node->field_8;
+                        rec.field_28[7] = 0;
+                        if (SaveGameWrite(&rec, 0xdc) == 0) {
+                            return;
+                        }
+                    }
+                }
+                return;
+            }
+            node = cur->next;
+        } while (cur->flags_c != 5);
+        for (bnode = *(void **)((char *)list + 0xcc); bnode != 0; bnode = *(void **)bnode) {
+            if (*(struct Worker **)((char *)bnode + 8) == cur) {
+                RemoveBlokeFromList(list, (struct Bloke *)bnode);
+                break;
+            }
+        }
+        cur->flags &= 0xffd7;
+        if (cur->var_60 < 100) {
+            cur->var_68 = cur->var_24;
+            cur->var_6c = cur->var_28;
+            NewLongTermAction((struct Bloke *)cur, 0x10);
+        } else {
+            RemoveAGardener(cur);
+        }
+    } while (1);
+}
 
 // FUNCTION: LEGOLAND 0x0049c3c0
 void FUN_0049c3c0(void) { STUB(); }
