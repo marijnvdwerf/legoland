@@ -4,6 +4,7 @@
 
 #include "bloke.h"
 #include "bricks.h"
+#include "challenge.h"
 #include "draw.h"
 #include "game_util.h"
 #include "gamemain.h"
@@ -840,7 +841,34 @@ int FUN_00479ac0(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x00479b10
-void FUN_00479b10(void) { STUB(); }
+int FUN_00479b10(struct CommandArgs *arg, int argc) {
+    char buf[0x200];
+    int v;
+
+    buf[0] = DAT_004d8bb0[0];
+    memset(buf + 1, 0, sizeof(buf) - 1);
+    if (DAT_004bb5b0 == 0) {
+        return 1;
+    }
+    if (FUN_004786c0((unsigned int)arg, argc, 1, 0) == 0) {
+        return 0;
+    }
+    if (argc >= 1) {
+        v = atoi((char *)arg->field_4);
+    } else {
+        v = 0;
+    }
+    if (argc >= 2) {
+        strcpy(buf, arg->field_8);
+    }
+    // STRING: LEGOLAND 0x004bc0c0
+    strcat(buf, ";");
+    if (argc >= 3) {
+        strcat(buf, arg->field_c);
+    }
+    FUN_0044dc70(v, (unsigned int)buf);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00479c40
 int FUN_00479c40(struct CommandArgs *arg, int argc) {
