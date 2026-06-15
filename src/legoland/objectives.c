@@ -8,13 +8,16 @@
 #include "bricks.h"
 #include "challenge.h"
 #include "clipping.h"
+#include "controller.h"
 #include "debug_alloc.h"
 #include "draw.h"
+#include "gamemap.h"
 #include "help.h"
 #include "icon.h"
 #include "interface.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "math.h"
 #include "nerps.h"
 #include "objectives.h"
 #include "popupinfo.h"
@@ -22,8 +25,10 @@
 #include "sound_sfx.h"
 #include "stream.h"
 #include "string.h"
+#include "tilemap.h"
 #include "timer.h"
 #include "title.h"
+#include "worker.h"
 
 #pragma intrinsic(strcpy, strlen)
 
@@ -65,6 +70,11 @@ struct RewardObject {
     unsigned char pad_4[0x8 - 0x4];
     unsigned int flags;
     struct NewObjInfo *info;
+};
+
+struct PlaceObject {
+    unsigned char pad_0[0xc];
+    struct ObjClass *cls;
 };
 
 // FUNCTION: LEGOLAND 0x00468810
@@ -895,7 +905,22 @@ int FUN_00469bb0(struct ObjectiveEvent *event) {
 }
 
 // FUNCTION: LEGOLAND 0x00469bd0
-void FUN_00469bd0(unsigned int a, void *b) { STUB(); }
+void FUN_00469bd0(unsigned int a, void *b) {
+    struct PlaceObject *object;
+    struct ObjClass *cls;
+    struct Point centre;
+
+    object = (struct PlaceObject *)a;
+    cls = object->cls;
+    FUN_00457870(0);
+    GetTileCentre((struct Point *)b, &centre.x);
+    EditCursor.field_1404 = centre.x;
+    EditCursor.field_1408 = centre.y;
+    cls->method_90(a, &centre, 0x8f8);
+    FUN_0045d770(&EditCursor);
+    PutObjOnMap(object->cls, a, (struct Point *)&EditCursor.field_1404);
+    FUN_00457870(1);
+}
 
 // FUNCTION: LEGOLAND 0x00469c40
 int FUN_00469c40(struct ObjectiveEvent *event) {
