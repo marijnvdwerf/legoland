@@ -803,7 +803,34 @@ LEGO_EXPORT struct Worker *GenerateGardener(int *coords, int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0049a2d0
-LEGO_EXPORT void RemoveAGardener(struct Worker *worker) { STUB(); }
+LEGO_EXPORT void RemoveAGardener(struct Worker *worker) {
+    struct Worker *prev;
+    struct Worker *cur;
+    struct Worker *next;
+
+    prev = GardenerList;
+    if (GardenerList == 0) {
+        return;
+    }
+    if (GardenerList == worker) {
+        GardenerList = ((struct Worker *)GardenerList)->next;
+        free(prev);
+        DAT_0079a8bc--;
+        return;
+    }
+    next = ((struct Worker *)GardenerList)->next;
+    while (cur = next, cur != 0) {
+        if (cur == worker) {
+            prev->next = cur->next;
+            free(cur);
+            DAT_0079a8bc--;
+            return;
+        }
+        prev = cur;
+        next = cur->next;
+    }
+    DAT_00668610 |= 0x80;
+}
 
 // FUNCTION: LEGOLAND 0x0049a340
 LEGO_EXPORT struct Worker *GenerateMechanic(int *coords, int param_2) { STUB(); }
