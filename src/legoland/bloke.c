@@ -131,10 +131,29 @@ void FUN_00482c60(struct Person *person) {
 }
 
 // FUNCTION: LEGOLAND 0x00482cb0
-void FUN_00482cb0(void) { STUB(); }
+int FUN_00482cb0(struct Bloke *bloke) {
+    switch (bloke->action) {
+    case 3:
+        return 4;
+    case 0xb:
+    case 0xc:
+        return 1;
+    case 0xd:
+        return 5;
+    }
+    if (bloke->field_7a < DAT_0083292c) {
+        return 3;
+    }
+    return ((unsigned int)(bloke->field_7a >= DAT_00832934) - 1 & 8) + 2;
+}
 
 // FUNCTION: LEGOLAND 0x00482d30
-void FUN_00482d30(void) { STUB(); }
+int FUN_00482d30(struct Bloke *bloke) {
+    if (bloke->field_7a < DAT_0083292c) {
+        return 3;
+    }
+    return ((unsigned int)(bloke->field_7a >= DAT_00832934) - 1 & 8) + 2;
+}
 
 // FUNCTION: LEGOLAND 0x00482d60
 void FUN_00482d60(unsigned int index, int value) {
@@ -159,7 +178,16 @@ void FUN_00482d70(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00482df0
-void FUN_00482df0(void) { STUB(); }
+short FUN_00482df0(struct Bloke *bloke, int index, int mul) {
+    int value = (DAT_0083293c[index] * mul) / 100 + bloke->field_7a;
+    if (value < -30000) {
+        value = -30000;
+    } else if (value > 30000) {
+        value = 30000;
+    }
+    bloke->field_7a = (short)value;
+    return (short)value;
+}
 
 // FUNCTION: LEGOLAND 0x00482e50
 void FUN_00482e50(void) { STUB(); }
