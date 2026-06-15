@@ -1440,7 +1440,29 @@ void FUN_0049b270(int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b2c0
-LEGO_EXPORT void SetGardenerWorkOrderAtPostion(void) { STUB(); }
+LEGO_EXPORT int SetGardenerWorkOrderAtPostion(struct Worker *worker, int x, int y) {
+    struct WorkOrder *order;
+    struct Worker *holder;
+
+    order = GetGardenerWorkOrderAt(x, y);
+    if (order == 0) {
+        if (FUN_00499d00(worker) == 0) {
+            NewLongTermAction((struct Bloke *)worker, 0x10);
+            return 1;
+        }
+    } else {
+        if (order->var_18 != 0) {
+            holder = (struct Worker *)order->var_1c;
+            if ((order->var_20 != 1 || 0x6a < holder->var_60) &&
+                (order->var_20 != 2 || 8 < holder->var_60)) {
+                return 0;
+            }
+            NewLongTermAction((struct Bloke *)holder, 0x10);
+        }
+        FUN_00499ac0(worker, order);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0049b350
 void FUN_0049b350(void) { STUB(); }
