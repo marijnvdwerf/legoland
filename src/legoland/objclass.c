@@ -58,6 +58,8 @@ struct ObjCountWrap {
 struct CostInfo {
     unsigned char pad_0[0x26];
     short cost;
+    unsigned char pad_28[0x2c - 0x28];
+    unsigned char divisor;
 };
 
 struct EditObject {
@@ -328,7 +330,17 @@ LEGO_EXPORT int GetObjCost(struct CostInfo *info) {
 }
 
 // FUNCTION: LEGOLAND 0x00480db0
-LEGO_EXPORT unsigned int GetObjSalvageValue(unsigned int param_1, unsigned int param_2) { STUB(); }
+LEGO_EXPORT unsigned int GetObjSalvageValue(unsigned int param_1, unsigned int param_2) {
+    struct CostInfo *info;
+    int cost;
+
+    info = (struct CostInfo *)param_1;
+    if (info->divisor == 0) {
+        return GetObjCost(info);
+    }
+    cost = GetObjCost(info);
+    return (cost * (int)param_2) / (int)info->divisor;
+}
 
 // FUNCTION: LEGOLAND 0x00480de0
 LEGO_EXPORT unsigned int GetObjRepairCost(unsigned int param_1, unsigned int param_2) {
