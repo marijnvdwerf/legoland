@@ -72,7 +72,8 @@ struct TileWalker {
     unsigned int field_5c;
     unsigned char pad_60[0x62 - 0x60];
     unsigned short field_62;
-    unsigned char pad_64[0x68 - 0x64];
+    unsigned char field_64;
+    unsigned char pad_65[0x68 - 0x65];
     int field_68;
     int field_6c;
     unsigned char pad_70[0x72 - 0x70];
@@ -92,7 +93,10 @@ struct BlokeDist {
     unsigned char pad_0[0x24];
     int field_24;
     int field_28;
-    unsigned char pad_2c[0x98 - 0x2c];
+    unsigned char pad_2c[0x68 - 0x2c];
+    int field_68;
+    int field_6c;
+    unsigned char pad_70[0x98 - 0x70];
     int field_98;
     int field_9c;
 };
@@ -885,13 +889,106 @@ void FUN_00483e20(struct TileWalker *walker) {
 }
 
 // FUNCTION: LEGOLAND 0x00483ef0
-void FUN_00483ef0(void) { STUB(); }
+void FUN_00483ef0(struct TileWalker *walker) {
+    struct Point d = FUN_004831a0(walker->field_72, walker->field_7f);
+    int ny = d.y + walker->field_6c;
+    int nx = d.x + walker->field_68;
+    unsigned char rf;
+    int blocked;
+
+    if (FUN_00483300(walker, nx, ny) != 0) {
+        return;
+    }
+    FUN_004837a0((struct Walker *)walker, nx, ny);
+    if (CrossTileCentre(walker, nx, ny) != 0) {
+        *(unsigned char *)&walker->field_62 |= 4;
+        rf = GetCurrentRFFlags(walker->field_68, walker->field_6c);
+        blocked = 0;
+        if (walker->field_68 >= 0 && walker->field_68 < (int)(lpConfig->width * 0x100) &&
+            walker->field_6c >= 0 && walker->field_6c < (int)(lpConfig->height * 0x100)) {
+            short mapFlags = Get_MapFlags(walker->field_68, walker->field_6c);
+            unsigned char rf2 = GetCurrentRFFlags(walker->field_68, walker->field_6c);
+            if ((rf2 & 1) == 0 && ((mapFlags & 0x10) == 0 || (rf2 & 2) != 0)) {
+                blocked = 1;
+            }
+        } else {
+            blocked = 1;
+        }
+        if (blocked) {
+            unsigned short mapFlags = Get_MapFlags(walker->field_68, walker->field_6c);
+            if ((mapFlags & 0x10) == 0) {
+                walker->field_e = 0;
+                walker->field_64 |= 2;
+                return;
+            }
+        }
+        if ((rf & 0x24) != 0) {
+            walker->field_e = 0;
+            walker->field_64 |= 4;
+            return;
+        }
+        if ((rf & 8) != 0) {
+            int coords[2];
+            unsigned char dirs;
+            coords[0] = nx >> 8;
+            coords[1] = ny >> 8;
+            dirs = Get_Path_Directions(coords, 0, 0);
+            dirs = ExcludeIsolatedDiags(dirs);
+            dirs = dirs & ~Dir_To_Bit(walker->field_72 + 4);
+            NewDirForAction((struct ActionState *)walker, Bit_To_Dir(dirs));
+        }
+    }
+    FUN_00483680(walker, nx, ny);
+    walker->field_68 = nx;
+    walker->field_6c = ny;
+    FUN_00483830((struct Walker *)walker);
+}
 
 // FUNCTION: LEGOLAND 0x00484090
-void FUN_00484090(void) { STUB(); }
+void FUN_00484090(struct TileWalker *walker) {
+    struct Point d = FUN_004831a0(walker->field_72, walker->field_7f);
+    int ny = d.y + walker->field_6c;
+    int nx = d.x + walker->field_68;
+    unsigned char rf;
+
+    FUN_004837a0((struct Walker *)walker, nx, ny);
+    if (CrossTileCentre(walker, nx, ny) != 0) {
+        *(unsigned char *)&walker->field_62 |= 4;
+        rf = GetCurrentRFFlags(walker->field_68, walker->field_6c);
+        if (walker->field_68 >= 0 && walker->field_68 < (int)(lpConfig->width * 0x100) &&
+            walker->field_6c >= 0 && walker->field_6c < (int)(lpConfig->height * 0x100)) {
+            short mapFlags = Get_MapFlags(walker->field_68, walker->field_6c);
+            unsigned char rf2 = GetCurrentRFFlags(walker->field_68, walker->field_6c);
+            if ((rf2 & 1) != 0 || ((mapFlags & 0x10) != 0 && (rf2 & 2) == 0)) {
+                if ((rf & 0x24) != 0) {
+                    walker->field_e = 0;
+                    walker->field_64 |= 4;
+                    return;
+                }
+                if ((rf & 8) != 0) {
+                    walker->field_e = 0;
+                    return;
+                }
+                goto finalize;
+            }
+        }
+        walker->field_e = 0;
+        walker->field_64 |= 2;
+        return;
+    }
+finalize:
+    FUN_00483680(walker, nx, ny);
+    walker->field_68 = nx;
+    walker->field_6c = ny;
+    FUN_00483830((struct Walker *)walker);
+}
 
 // FUNCTION: LEGOLAND 0x004841a0
-void FUN_004841a0(void) { STUB(); }
+unsigned char FUN_004841a0(struct BlokeDist *bloke, int dist) {
+    int dx = bloke->field_24 - bloke->field_68;
+    int dy = bloke->field_28 - bloke->field_6c;
+    return dist * dist >= dy * dy + dx * dx;
+}
 
 // FUNCTION: LEGOLAND 0x004841e0
 unsigned char FUN_004841e0(struct BlokeDist *bloke) {
