@@ -73,7 +73,8 @@ struct DSCursorSource;
 // Full definitions needed by typed globals defined in globals.c.
 struct MapElement {
     /* 0x00 */ unsigned int field_0;
-    /* 0x04 */ unsigned short field_4;
+    /* 0x04 */ unsigned char field_4;
+    /* 0x05 */ unsigned char field_5;
     /* 0x06 */ unsigned short field_6;
     /* 0x08 */ unsigned short field_8;
     /* 0x0a */ unsigned short field_a;

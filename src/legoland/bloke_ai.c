@@ -315,8 +315,56 @@ void FUN_0044f170(struct Bloke *bloke) {
     bloke->field_e = 4;
 }
 
+struct MapObj {
+    unsigned char pad_0[0xc];
+    struct ClassOffset *field_c;
+};
+
+struct ClassOffset {
+    unsigned char pad_0[0xc];
+    int field_c;
+    int field_10;
+};
+
 // FUNCTION: LEGOLAND 0x0044f180
-void FUN_0044f180(void) { STUB(); }
+int FUN_0044f180(int *pos, struct ClassOffset *cls) {
+    struct MapElement *element;
+    int x;
+    int y;
+    int row;
+
+    x = pos[0] >> 8;
+    y = pos[1] >> 8;
+    row = y - 1;
+    if (x >= 0 && x < lpConfig->width && row >= 0 && row < lpConfig->height &&
+        (element = GameMap[row] + x) != 0 && (element->flags & 0x80) != 0 && element->field_0 != 0 &&
+        ((struct MapObj *)element->field_0)->field_c == cls && element->field_4 + cls->field_c == x &&
+        element->field_5 + cls->field_10 == y) {
+        return 1;
+    }
+    row = y + 1;
+    if (x >= 0 && x < lpConfig->width && row >= 0 && row < lpConfig->height &&
+        (element = GameMap[row] + x) != 0 && (element->flags & 0x80) != 0 && element->field_0 != 0 &&
+        ((struct MapObj *)element->field_0)->field_c == cls && element->field_4 + cls->field_c == x &&
+        element->field_5 + cls->field_10 == y) {
+        return 1;
+    }
+    row = x - 1;
+    if (row >= 0 && row < lpConfig->width && y >= 0 && y < lpConfig->height &&
+        (element = GameMap[y] + row) != 0 && (element->flags & 0x80) != 0 && element->field_0 != 0 &&
+        ((struct MapObj *)element->field_0)->field_c == cls && element->field_4 + cls->field_c == x &&
+        element->field_5 + cls->field_10 == y) {
+        return 1;
+    }
+    row = x + 1;
+    if (row >= 0 && row < lpConfig->width && y >= 0 && y < lpConfig->height &&
+        (element = GameMap[y] + row) != 0 && (element->flags & 0x80) != 0 && element->field_0 != 0 &&
+        ((struct MapObj *)element->field_0)->field_c == cls && element->field_4 + cls->field_c == x &&
+        element->field_5 + cls->field_10 == y) {
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0044f360
 int FUN_0044f360(unsigned int param_1, unsigned char *param_2) {
