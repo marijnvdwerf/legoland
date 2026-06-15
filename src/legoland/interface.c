@@ -3,6 +3,8 @@
 #include <string.h>
 #include "challenge.h"
 #include "controller.h"
+#include "debug.h"
+#include "debug_alloc.h"
 #include "draw.h"
 #include "globals.h"
 #include "icon.h"
@@ -13,8 +15,10 @@
 #include "popupinfo.h"
 #include "print_sprite.h"
 #include "profile_io.h"
+#include "saveload.h"
 #include "screens.h"
 #include "sound_music.h"
+#include "sound_sfx.h"
 #include "string.h"
 #include "timer.h"
 #include "title.h"
@@ -1672,7 +1676,7 @@ int FUN_00476680(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004766f0
-int FUN_004766f0(struct MovieHandle *handle, int param_2) {
+int FUN_004766f0(struct MovieHandle *handle, void *param_2, int param_3) {
     void *frame;
     int started;
     int frame_index;
@@ -1697,7 +1701,7 @@ int FUN_004766f0(struct MovieHandle *handle, int param_2) {
     prev = 0;
     if ((int)handle->field_0 > 0) {
         do {
-            if (param_2 != 0) {
+            if (param_3 != 0) {
                 if (ProcessSystemEvents() == 0) {
                     break;
                 }
@@ -1729,7 +1733,7 @@ int FUN_004766f0(struct MovieHandle *handle, int param_2) {
             FUN_00465850(frame);
             PopRenderingStatus();
             if (started == 0) {
-                if (param_2 != 0) {
+                if (param_3 != 0) {
                     FUN_00476bf0(handle);
                 }
                 started = FUN_00476680();
@@ -1747,7 +1751,7 @@ int FUN_004766f0(struct MovieHandle *handle, int param_2) {
             while (target == prev) {
                 target = (unsigned int)((FUN_00476680() - started) * handle->field_4) / 1000;
             }
-            if (param_2 != 0) {
+            if (param_3 != 0) {
                 FUN_00476d20(target, prev);
             }
             prev = target;
@@ -2079,7 +2083,71 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x004771f0
-void FUN_004771f0(const char *filename, unsigned int param_2, unsigned int param_3) { STUB(); }
+int FUN_004771f0(char *filename, unsigned int param_2, int param_3) {
+    int rect[4];
+    char path[0x80];
+    struct MovieHandle *handle;
+    int result;
+
+    rect[0] = 0;
+    rect[1] = 0;
+    rect[2] = 0x140;
+    rect[3] = 0xf0;
+    if (param_3 == 0) {
+        if (DAT_00668fb0 != 0) {
+            return 0;
+        }
+    } else {
+        DAT_00668fb0 = 0;
+    }
+    if (lpConfig->field_40 != 0) {
+        return 0;
+    }
+    FUN_00498920();
+    *(unsigned int *)path = DAT_004bb588;
+    DAT_006687b0 = 4;
+    path[4] = DAT_004bb58c;
+    strcpy(path + strlen(path), filename);
+    // STRING: LEGOLAND 0x004bb56c
+    FUN_0047f870("Attempting to open Movie %s", path);
+    handle = FUN_00476460(path);
+    if (handle == NULL) {
+        strcpy(path, DAT_00813b04);
+        strcpy(path + strlen(path), filename);
+        FUN_0047f870("Attempting to open Movie %s", path);
+        handle = FUN_00476460(path);
+    }
+    FUN_0047f850();
+    if (handle == NULL) {
+        return 1;
+    }
+    // STRING: LEGOLAND 0x004bb554
+    FUN_0047f870("Movie openned OK : %s ", path);
+    FUN_0047f850();
+    FUN_00492830();
+    FUN_00492d80();
+    PushRenderingStatusAndUnlockVideoSurface();
+    // STRING: LEGOLAND 0x004bb538
+    FUN_0047f870("Attempting to play movie ");
+    FUN_0047f850();
+    // STRING: LEGOLAND 0x004bb528
+    DBPrintf("Starting Movie");
+    result = FUN_004766f0(handle, rect, param_2);
+    // STRING: LEGOLAND 0x004bb518
+    DBPrintf("Stopping Movie");
+    // STRING: LEGOLAND 0x004bb508
+    FUN_0047f870("Stopping movie");
+    FUN_0047f850();
+    FUN_00476630(handle);
+    PopRenderingStatus();
+    do {
+        ProcessSystemEvents();
+        ReadGameButtons();
+    } while ((DAT_00813ad4 & 7) != 0);
+    FUN_00492850();
+    FUN_00492da0();
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x00477400
 int FUN_00477400(void) { STUB(); }

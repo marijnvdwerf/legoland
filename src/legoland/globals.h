@@ -665,6 +665,10 @@ extern unsigned int DAT_004bb18c[4];
 extern float DAT_004bb4dc;
 // 0x004bb4e0
 extern BITMAPINFOHEADER DAT_004bb4e0;
+// 0x004bb588
+extern unsigned int DAT_004bb588;
+// 0x004bb58c
+extern unsigned char DAT_004bb58c;
 // 0x004bb5ac
 extern unsigned int DAT_004bb5ac;
 // 0x004bb5b0

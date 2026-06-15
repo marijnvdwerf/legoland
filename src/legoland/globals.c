@@ -675,6 +675,12 @@ float DAT_004bb4dc;
 // GLOBAL: LEGOLAND 0x004bb4e0
 BITMAPINFOHEADER DAT_004bb4e0;
 
+// GLOBAL: LEGOLAND 0x004bb588
+unsigned int DAT_004bb588;
+
+// GLOBAL: LEGOLAND 0x004bb58c
+unsigned char DAT_004bb58c;
+
 // GLOBAL: LEGOLAND 0x004bb5ac
 unsigned int DAT_004bb5ac;
 
