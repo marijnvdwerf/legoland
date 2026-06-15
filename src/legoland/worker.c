@@ -1505,7 +1505,43 @@ struct MapElement *FUN_0049b350(struct Worker *worker, int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b430
-LEGO_EXPORT void SetMechanicsOrderAtPostion(void) { STUB(); }
+LEGO_EXPORT int SetMechanicsOrderAtPostion(struct Worker *worker, int x, int y) {
+    struct WorkOrder *order;
+    struct MapElement *target;
+    struct Worker *holder;
+    struct WorkOrder *repair;
+
+    order = GetMechanicWorkOrderAt(x, y);
+    if (order == 0) {
+        target = FUN_0049b350(worker, x, y);
+        if (target == 0) {
+            if (FUN_00499d30(worker) == 0) {
+                NewLongTermAction((struct Bloke *)worker, 0x11);
+                return 1;
+            }
+        } else {
+            repair = AddRepairOrderForObject(*(struct ObjClass **)((char *)target->field_0 + 0xc),
+                                             (char)*((unsigned char *)target + 4),
+                                             *((unsigned char *)target + 5));
+            if (repair != 0) {
+                *((unsigned char *)target + 0xd) |= 0x40;
+                FUN_00499b60(worker, repair);
+                return 1;
+            }
+        }
+    } else {
+        if (order->var_18 != 0) {
+            holder = (struct Worker *)order->var_1c;
+            if ((order->var_20 != 1 || 0x6a < holder->var_60) &&
+                (order->var_20 != 2 || 0x6a < holder->var_60)) {
+                return 0;
+            }
+            NewLongTermAction((struct Bloke *)holder, 0x11);
+        }
+        FUN_00499b60(worker, order);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0049b510
 LEGO_EXPORT void ClearAMechanicsWorkList(int value) {
@@ -1608,7 +1644,7 @@ LEGO_EXPORT void RemoveNoneWorkersRepairOrderAT(unsigned int x, unsigned int y) 
 LEGO_EXPORT int IterateNoneWorkersRepairOrders(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049b930
-LEGO_EXPORT int AddRepairOrderForObject(void) { STUB(); }
+LEGO_EXPORT struct WorkOrder *AddRepairOrderForObject(struct ObjClass *cls, char x, unsigned char y) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049ba10
 LEGO_EXPORT void Garderner_Repair(void) { STUB(); }
