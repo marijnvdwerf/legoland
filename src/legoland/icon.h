@@ -32,6 +32,7 @@ struct IconNode {
             /* 0x20 */ short field_20;
             /* 0x22 */ short field_22;
         };
+        unsigned char field_20b;
         void *field_20p;
     };
     /* 0x24 */ void *field_24;
