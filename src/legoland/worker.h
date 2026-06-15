@@ -62,7 +62,18 @@ LEGO_EXPORT void RemoveNoneWorkersRepairOrderAT(unsigned int x, unsigned int y);
 LEGO_EXPORT void RemoveRepairOrderAT(struct Worker *worker, unsigned int x, unsigned int y);
 /* FUN_0049b270 is still a STUB with an unverified signature; declared K&R. */
 void FUN_0049b270();
-void FUN_00499eb0(void *order);
+void FUN_00499eb0(struct WorkOrder *order);
 int FUN_0049a120(void);
 int FUN_0049a160(void);
 void FUN_0049cfc0(void);
+
+struct Worker;
+struct Bloke;
+struct ActionState;
+char CalcMoveLine();
+int NewDirForAction(struct ActionState *state, unsigned char dir);
+void BlokeSetAnim(struct Bloke *bloke, int anim);
+void BlokeSetFrame();
+int PlayBlokeAnim(struct Bloke *bloke);
+int FUN_00482710(int *a, int *b, int *out);
+unsigned int FUN_004735e0(unsigned int param);

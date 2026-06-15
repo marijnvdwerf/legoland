@@ -930,7 +930,101 @@ void FUN_0049a4d0(struct Worker *worker) {
 }
 
 // FUNCTION: LEGOLAND 0x0049a4e0
-LEGO_EXPORT void Gardener_Build(void) { STUB(); }
+LEGO_EXPORT void Gardener_Build(struct Worker *worker) {
+    char dir;
+    int result;
+    int dx;
+    int dy;
+    int dest[2];
+    int coords[2];
+    struct WorkOrder *order;
+
+    switch (worker->var_60) {
+    case 0:
+        worker->var_24 = worker->var_2c;
+        worker->var_28 = worker->var_30;
+        dir = CalcMoveLine(worker->var_68, worker->var_6c, worker->var_2c, worker->var_30,
+                           &worker->var_98);
+        worker->state = 0xc;
+        worker->var_73 = dir + 0x10;
+        NewDirForAction(worker, (worker->var_73 >> 5) + 3);
+        worker->var_60 = 0xb;
+        return;
+    case 0xb:
+        dy = worker->var_28 - worker->var_6c;
+        dx = worker->var_24 - worker->var_68;
+        worker->var_60 = (unsigned char)(((0x8fff < dy * dy + dx * dx) - 1U & 7) + 100);
+        return;
+    case 100:
+        result = FUN_00482710(&worker->var_68, &worker->var_2c, dest);
+        if (result == 0) {
+            FUN_00499e60(worker->var_50);
+            worker->flags_c = 0x10;
+            worker->var_60 = 100;
+            worker->ticks = 0x70;
+            worker->state = 4;
+            return;
+        }
+        if (result == 1) {
+            worker->var_24 = dest[0];
+            worker->var_28 = dest[1];
+            dir = CalcMoveLine(worker->var_68, worker->var_6c, dest[0], dest[1], &worker->var_98);
+            worker->state = 0xc;
+            worker->var_73 = dir + 0x10;
+            NewDirForAction(worker, (worker->var_73 >> 5) + 3);
+            if ((worker->var_64 & 1) != 0) {
+                worker->var_60 = 0x6a;
+                return;
+            }
+        } else if (result == 2) {
+            worker->var_24 = dest[0];
+            worker->var_28 = dest[1];
+            dir = CalcMoveLine(worker->var_68, worker->var_6c, dest[0], dest[1], &worker->var_98);
+            worker->state = 0xc;
+            worker->var_73 = dir + 0x10;
+            NewDirForAction(worker, (worker->var_73 >> 5) + 3);
+            worker->var_60 = ~worker->var_64 & 1 | 0x6a;
+            return;
+        }
+        break;
+    case 0x6a:
+        worker->ticks = 0x70;
+        worker->state = 4;
+        worker->var_60 = 100;
+        return;
+    case 0x6b:
+        *((unsigned char *)&worker->flags + 1) |= 1;
+        BlokeSetAnim(worker, 1);
+        BlokeSetFrame(worker, 0x28);
+        worker->var_60++;
+        return;
+    case 0x6c:
+        if (PlayBlokeAnim(worker) != 0) {
+            BlokeWalkAnim((struct Bloke *)worker);
+            worker->flags &= 0xfeff;
+            worker->var_60++;
+            return;
+        }
+        break;
+    case 0x6d:
+        order = worker->var_50;
+        worker->flags &= 0xfff7;
+        coords[0] = order->var_8;
+        coords[1] = order->var_c;
+        result = BuildObject(order->var_4, coords);
+        if (result == 0) {
+            FUN_00499e60(worker->var_50);
+            NewLongTermAction((struct Bloke *)worker, 0x10);
+            FUN_004735e0(1);
+        } else {
+            FUN_00499e30(worker->var_50);
+            if (FUN_00499d00(worker) == 0) {
+                NewLongTermAction((struct Bloke *)worker, 0x10);
+                return;
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0049a7f0
 LEGO_EXPORT void Mechanic_Build(void) { STUB(); }
