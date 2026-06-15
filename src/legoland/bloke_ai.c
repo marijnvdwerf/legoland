@@ -472,7 +472,14 @@ LEGO_EXPORT void DoHighLevelAI(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00450500
-void FUN_00450500(void) { STUB(); }
+int FUN_00450500(int *a, int *b) {
+    unsigned int sx;
+    unsigned int sy;
+
+    sx = (unsigned int)(a[0] - b[0]) >> 0x1f;
+    sy = (unsigned int)(a[1] - b[1]) >> 0x1f;
+    return (((a[1] - b[1]) ^ sy) - sy) + (((a[0] - b[0]) ^ sx) - sx) == 1;
+}
 
 // FUNCTION: LEGOLAND 0x00450530
 void FUN_00450530(void) { STUB(); }
