@@ -402,7 +402,34 @@ int FUN_00478fa0(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x00479060
-void FUN_00479060(void) { STUB(); }
+int FUN_00479060(struct CommandArgs *arg, int argc) {
+    int coords[2];
+    int count;
+
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 5, 2) == 0) {
+            return 0;
+        }
+        coords[0] = atoi((char *)arg->field_4);
+        coords[1] = atoi(arg->field_8);
+        if (argc < 3 || (count = atoi(arg->field_c)) < 1) {
+            count = 1;
+        }
+        if (DAT_00669054 == 1) {
+            int i = count;
+            if (i != 0) {
+                do {
+                    GenerateMechanic(coords, 0);
+                    i = i - 1;
+                } while (i != 0);
+                return 1;
+            }
+        } else {
+            FUN_0046bad0(0, count, (unsigned int *)coords);
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00479120
 void FUN_00479120(void) { STUB(); }
