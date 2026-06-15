@@ -1286,7 +1286,138 @@ int FUN_00450500(int *a, int *b) {
 }
 
 // FUNCTION: LEGOLAND 0x00450530
-void FUN_00450530(void) { STUB(); }
+void FUN_00450530(struct Bloke *bloke) {
+    int *element;
+    unsigned char counter;
+    char rate;
+    int obj;
+    int tile_y;
+    int tile_x;
+    int dist;
+    int local_38;
+    int local_34;
+    int local_30;
+    int local_2c;
+    int local_28;
+    int row;
+    int col;
+    int center_x;
+    int spot[2];
+    int origin[2];
+    int food[2];
+
+    local_28 = 0;
+    local_38 = 0;
+    local_2c = 0;
+    local_30 = 0;
+    local_34 = 0;
+    tile_y = bloke->field_6c >> 8;
+    tile_x = bloke->field_68 >> 8;
+    row = tile_y - 4;
+    origin[0] = tile_x;
+    center_x = tile_y;
+    if (row <= tile_y + 4) {
+        do {
+            col = tile_x - 4;
+            if (col <= tile_x + 4) {
+                do {
+                    if (col < 0 || lpConfig->width <= col || row < 0 || lpConfig->height <= row ||
+                        (element = (int *)(GameMap[row] + col)) == 0) {
+                        local_34++;
+                        goto next_col;
+                    }
+                    obj = *element;
+                    if (obj == 0) {
+                        goto empty;
+                    }
+                    if ((*(unsigned char *)((char *)element + 0xc) & 0x80) == 0) {
+                        if (obj == 0) {
+                        empty:
+                            dist = abs(tile_x - col) + abs(center_x - row);
+                            if (dist != 0) {
+                                local_38 += (int)(-0x14 / (__int64)dist);
+                            }
+                        }
+                    } else {
+                        obj = *(int *)(obj + 0xc);
+                        if ((int)abs(origin[0] - col) <= (int)*(short *)(obj + 0x2a) &&
+                            (int)abs(center_x - row) <= (int)*(short *)(obj + 0x2a)) {
+                            switch (*(short *)(obj + 0x20)) {
+                            case 1:
+                                counter = GetBlokeCounter((struct ObjectClass *)obj, GetBlokeNum(bloke));
+                                spot[0] = *(unsigned char *)((char *)element + 4) + *(int *)(obj + 0xc);
+                                local_28 += *(short *)(obj + 0x36) >> (counter & 0x1f);
+                                spot[1] = *(unsigned char *)((char *)element + 5) + *(int *)(obj + 0x10);
+                                if (FUN_00450500(spot, origin) != 0 && FUN_00450500(&col, spot) != 0 &&
+                                    Calc_Item_Attractiveness(obj, (unsigned int)bloke, 1) > 0x32 && bloke->action == 6) {
+                                    tile_y = spot[0];
+                                    dist = spot[1];
+                                    if (bloke->field_2c >> 8 != spot[0] || bloke->field_30 >> 8 != dist) {
+                                        bloke->field_2c = tile_y << 8;
+                                        bloke->field_30 = dist << 8;
+                                        bloke->param_action = 1;
+                                        bloke->field_e = 0;
+                                        bloke->field_14 = *(unsigned int *)(obj + 0xc4);
+                                    }
+                                }
+                                break;
+                            case 2:
+                                local_38 += *(short *)(obj + 0x36);
+                                break;
+                            case 3:
+                                counter = GetBlokeCounter((struct ObjectClass *)obj, GetBlokeNum(bloke));
+                                local_30 += *(short *)(obj + 0x36) >> (counter & 0x1f);
+                                if ((bloke->flags & 0x20) == 0 && bloke->field_14 != *(unsigned int *)(obj + 0xc4)) {
+                                    dist = GetBlokeCounter((struct ObjectClass *)obj, GetBlokeNum(bloke));
+                                    if ((float)(rand() % 100) < (float)(int)(0xf / (__int64)(dist + 1)) &&
+                                        bloke->field_e != 0xf && FUN_00458930(0.0f) < 2) {
+                                        bloke->field_14 = *(unsigned int *)(obj + 0xc4);
+                                        bloke->field_2c = *(unsigned char *)((char *)element + 4);
+                                        bloke->field_30 = *(unsigned char *)((char *)element + 5);
+                                        NewLongTermAction(bloke, 0xf);
+                                    }
+                                }
+                                break;
+                            case 4:
+                            case 5:
+                                counter = GetBlokeCounter((struct ObjectClass *)obj, GetBlokeNum(bloke));
+                                food[0] = *(unsigned char *)((char *)element + 4) + *(int *)(obj + 0xc);
+                                local_2c += *(short *)(obj + 0x36) >> (counter & 0x1f);
+                                food[1] = *(unsigned char *)((char *)element + 5) + *(int *)(obj + 0x10);
+                                if (FUN_00450500(origin, food) != 0 && FUN_00450500(&col, food) != 0 &&
+                                    Calc_Item_Attractiveness(obj, (unsigned int)bloke, 1) > 0x32 && bloke->action == 6) {
+                                    tile_y = food[0];
+                                    dist = food[1];
+                                    if (bloke->field_2c >> 8 != food[0] || bloke->field_30 >> 8 != dist) {
+                                        bloke->field_2c = tile_y << 8;
+                                        bloke->field_30 = dist << 8;
+                                        bloke->param_action = 1;
+                                        bloke->field_e = 0;
+                                        bloke->field_14 = *(unsigned int *)(obj + 0xc4);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                next_col:
+                    col++;
+                    origin[0] = center_x;
+                    tile_x = bloke->field_68 >> 8;
+                } while (col <= origin[0] + 4);
+            }
+            row++;
+        } while (row <= center_x + 4);
+    }
+    FUN_00482df0(bloke, 2, local_34);
+    FUN_00482df0(bloke, 3, local_38);
+    FUN_00482df0(bloke, 4, local_30);
+    FUN_00482df0(bloke, 5, local_2c);
+    FUN_00482df0(bloke, 6, local_28);
+    rate = FUN_0044eb10(bloke);
+    if (2 < rate) {
+        FUN_00482df0(bloke, 7, rate - 2);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00450990
 LEGO_EXPORT void ControlPeople(void) {
