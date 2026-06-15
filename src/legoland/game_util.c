@@ -490,7 +490,24 @@ int FUN_004791f0(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x00479270
-void FUN_00479270(void) { STUB(); }
+int FUN_00479270(struct CommandArgs *arg, int argc) {
+    unsigned int id;
+    unsigned int vals[2];
+
+    if (DAT_004bb5b0 == 0) {
+        return 1;
+    }
+    if (FUN_004786c0((unsigned int)arg, argc, 2, 3) == 0) {
+        return 0;
+    }
+    id = ElemID((const char *)arg->field_4);
+    vals[0] = atoi(arg->field_8);
+    vals[1] = atoi(arg->field_c);
+    if (id != 0) {
+        FUN_0046be00(DAT_00669050, id, vals);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00479300
 void FUN_00479300(void) { STUB(); }
