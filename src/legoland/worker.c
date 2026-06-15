@@ -462,7 +462,50 @@ int FUN_00499d30(void *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00499d60
-void FUN_00499d60(void *order) { STUB(); }
+void FUN_00499d60(struct WorkOrder *order) {
+    struct WorkOrder *cur;
+    struct WorkOrder *next;
+
+    cur = DAT_0079a8b0;
+    if (DAT_0079a8b0 == 0) {
+        return;
+    }
+    // STRING: LEGOLAND 0x004c0034
+    DBPrintf("unlinking gardener order %x at (%d, %d)\n", order, order->var_8, order->var_c);
+    if (DAT_0079a8b4 == order) {
+        // STRING: LEGOLAND 0x004c0014
+        DBPrintf("   Last in list,  Next = %x\n", order->next);
+    }
+    if (DAT_0079a8b0 == order) {
+        // STRING: LEGOLAND 0x004bfff4
+        DBPrintf("   First in list, Last = %x\n", DAT_0079a8b4);
+        DAT_0079a8b0 = order->next;
+        if (DAT_0079a8b0 == 0) {
+            DAT_0079a8b4 = 0;
+        }
+    } else {
+        do {
+            next = cur->next;
+            if (next == order) {
+                if (cur != 0) {
+                    cur->next = order->next;
+                    if (order->next == 0) {
+                        DAT_0079a8b4 = cur;
+                    }
+                    goto done;
+                }
+                break;
+            }
+            cur = next;
+        } while (next != 0);
+        // STRING: LEGOLAND 0x004bffa0
+        DBPrintf("    Work order not found (%x) at (%d,%d)", order->var_8, order->var_c);
+        return;
+    }
+done:
+    // STRING: LEGOLAND 0x004bffcc
+    DBPrintf("    Work orders START (%x), END (%x)\n", DAT_0079a8b0, DAT_0079a8b4);
+}
 
 // FUNCTION: LEGOLAND 0x00499e30
 void FUN_00499e30(struct WorkOrder *order) {
