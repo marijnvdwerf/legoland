@@ -974,7 +974,86 @@ struct BestNode *FUN_004817d0(int *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00481810
-void FUN_00481810(void) { STUB(); }
+void FUN_00481810(int *param_1) {
+    struct BestNode *found;
+    void **out;
+    int count;
+    struct InstancePos pos;
+
+    DAT_00669254 = 0;
+    count = 0;
+    pos.y = param_1[1] - 1;
+    pos.x = param_1[0];
+    if ((int)pos.x <= param_1[2]) {
+        out = DAT_0066a45c;
+        do {
+            found = FUN_00481790(&pos);
+            *out = found;
+            if (found != 0) {
+                pos.x = found->x_max;
+                count++;
+                out++;
+                DAT_00669254++;
+            }
+            pos.x++;
+        } while ((int)pos.x <= param_1[2]);
+    }
+    DAT_0066a45c[count] = 0;
+    pos.x = param_1[0];
+    count++;
+    pos.y = param_1[3] + 1;
+    if ((int)pos.x <= param_1[2]) {
+        out = &DAT_0066a45c[count];
+        do {
+            found = FUN_00481790(&pos);
+            *out = found;
+            if (found != 0) {
+                pos.x = found->x_max;
+                count++;
+                out++;
+                DAT_00669254++;
+            }
+            pos.x++;
+        } while ((int)pos.x <= param_1[2]);
+    }
+    DAT_0066a45c[count] = 0;
+    pos.y = param_1[1];
+    count++;
+    pos.x = param_1[0] - 1;
+    if ((int)pos.y <= param_1[3]) {
+        out = &DAT_0066a45c[count];
+        do {
+            found = FUN_00481790(&pos);
+            *out = found;
+            if (found != 0) {
+                pos.y = found->y_max;
+                count++;
+                out++;
+                DAT_00669254++;
+            }
+            pos.y++;
+        } while ((int)pos.y <= param_1[3]);
+    }
+    DAT_0066a45c[count] = 0;
+    count++;
+    pos.x = param_1[2] + 1;
+    pos.y = param_1[1];
+    if ((int)pos.y <= param_1[3]) {
+        out = &DAT_0066a45c[count];
+        do {
+            found = FUN_00481790(&pos);
+            *out = found;
+            if (found != 0) {
+                pos.y = found->y_max;
+                count++;
+                out++;
+                DAT_00669254++;
+            }
+            pos.y++;
+        } while ((int)pos.y <= param_1[3]);
+    }
+    DAT_0066a45c[count] = 0;
+}
 
 // FUNCTION: LEGOLAND 0x004819a0
 void FUN_004819a0(void) { STUB(); }

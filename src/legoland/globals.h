@@ -2007,8 +2007,12 @@ extern struct LibraryNode *DAT_00669244;
 extern void *DAT_00669248;
 // 0x0066924c
 extern unsigned int DAT_0066924c;
+// 0x00669254
+extern unsigned int DAT_00669254;
 // 0x00669258
 extern unsigned int DAT_00669258[1152];
+// 0x0066a45c
+extern void *DAT_0066a45c[1020];
 // 0x0066b44c
 extern void *DAT_0066b44c;
 // 0x0066b450
