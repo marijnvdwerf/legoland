@@ -13,7 +13,9 @@ struct ObjClass {
     /* 0x40 */ int field_40;
     /* 0x44 */ int field_44;
     /* 0x48 */ int field_48;
-    /* 0x4c */ unsigned char pad_4c[0x90 - 0x4c];
+    /* 0x4c */ unsigned char pad_4c[0x78 - 0x4c];
+    /* 0x78 */ char *name;
+    /* 0x7c */ unsigned char pad_7c[0x90 - 0x7c];
     /* 0x90 */ void (*method_90)(unsigned int object, struct Point *pos, int param_3);
     /* 0x94 */ void (*method_94)(unsigned int param_1, void *cursor);
     /* 0x98 */ void (*method_98)(unsigned int classid, struct Point *pos);

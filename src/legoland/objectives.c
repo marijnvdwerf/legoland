@@ -73,7 +73,8 @@ struct RewardObject {
 };
 
 struct PlaceObject {
-    unsigned char pad_0[0xc];
+    int field_0;
+    unsigned char pad_4[0xc - 0x4];
     struct ObjClass *cls;
 };
 
@@ -765,7 +766,246 @@ void FUN_004693b0(unsigned int type) {
 }
 
 // FUNCTION: LEGOLAND 0x00469400
-unsigned int FUN_00469400(void) { STUB(); }
+unsigned int FUN_00469400(void) {
+    const char *format;
+    int value;
+    unsigned int name;
+
+    GetGameTimer();
+    while (DAT_00668728 != NULL) {
+        switch (DAT_00668728->type) {
+        case 0:
+            FUN_00468bb0((char *)DAT_004b8bbc, DAT_007fe120[DAT_00668728->field_40]);
+            DAT_00668614 = DAT_00668728->field_40;
+            FUN_004693b0(DAT_00668728->type);
+            continue;
+        case 1:
+            value = DAT_00668728->field_1c;
+            name = (unsigned int)((struct PlaceObject *)DAT_00668728->field_4)->cls->name;
+            // STRING: LEGOLAND 0x004ba6bc
+            format = "You need to build %d more of object %s";
+            break;
+        case 2:
+            value = DAT_00668728->field_4;
+            if (DAT_00668728->field_1c == 0) {
+                if (value == 0) {
+                    // STRING: LEGOLAND 0x004ba648
+                    FUN_00468bb0("You need to connect all objects to a path");
+                } else {
+                    // STRING: LEGOLAND 0x004ba674
+                    FUN_00468bb0("You need to connect your %s to a path", ((struct PlaceObject *)value)->cls->name);
+                }
+            } else if (value == 0) {
+                // STRING: LEGOLAND 0x004ba5c8
+                FUN_00468bb0("You need to link the paths from all objects to the park entrance.");
+            } else {
+                // STRING: LEGOLAND 0x004ba60c
+                FUN_00468bb0("You need to link the path from your %s to the park entrance", ((struct PlaceObject *)value)->cls->name);
+            }
+            FUN_004693b0(DAT_00668728->type);
+            continue;
+        case 3:
+            value = DAT_00668728->field_14;
+            if (value == 0) {
+                name = *(unsigned int *)DAT_00668728->field_4;
+                value = DAT_00668728->field_1c;
+                // STRING: LEGOLAND 0x004ba558
+                format = "You need to build %d more attractions from the %s range";
+            } else {
+                name = *(unsigned int *)DAT_00668728->field_4;
+                // STRING: LEGOLAND 0x004ba590
+                format = "You need to build %d new attractions from the %s range";
+            }
+            break;
+        case 4:
+            value = DAT_00668728->field_14;
+            if (value == 0) {
+                name = *(unsigned int *)DAT_00668728->field_4;
+                value = DAT_00668728->field_1c;
+                // STRING: LEGOLAND 0x004ba4dc
+                format = "You need delete %d attractions from the %s range";
+            } else {
+                name = *(unsigned int *)DAT_00668728->field_4;
+                // STRING: LEGOLAND 0x004ba510
+                format = "You need to delete all instances of %d attractions from the %s range";
+            }
+            break;
+        case 5:
+            // STRING: LEGOLAND 0x004ba4b0
+            FUN_00468bb0("You need to remove %d items from the area", DAT_00668728->field_1c);
+            FUN_004693b0(DAT_00668728->type);
+            continue;
+        case 6:
+            value = DAT_00668728->field_1c;
+            name = (unsigned int)((struct PlaceObject *)DAT_00668728->field_4)->cls->name;
+            // STRING: LEGOLAND 0x004ba48c
+            format = "You need to delete %d of object %s";
+            break;
+        case 7:
+            // STRING: LEGOLAND 0x004ba45c
+            FUN_00468bb0("You need to attract %d more people to your park", DAT_00668728->field_1c);
+            FUN_004693b0(DAT_00668728->type);
+            continue;
+        case 8:
+            value = DAT_00668728->field_1c;
+            if (value < 1) {
+                // STRING: LEGOLAND 0x004ba3fc
+                FUN_00468bb0("You need %d fewer gardeners in your park", -value);
+                FUN_004693b0(DAT_00668728->type);
+            } else {
+                // STRING: LEGOLAND 0x004ba428
+                FUN_00468bb0("You need %d more gardeners to look after your park", value);
+                FUN_004693b0(DAT_00668728->type);
+            }
+            continue;
+        case 9:
+            value = DAT_00668728->field_1c;
+            if (value < 1) {
+                // STRING: LEGOLAND 0x004ba3a0
+                FUN_00468bb0("You need %d fewer mechanics in your park", -value);
+                FUN_004693b0(DAT_00668728->type);
+            } else {
+                // STRING: LEGOLAND 0x004ba3cc
+                FUN_00468bb0("You need %d more mechanics to help in the park", value);
+                FUN_004693b0(DAT_00668728->type);
+            }
+            continue;
+        case 0xa:
+            switch (DAT_00668728->field_1c) {
+            case 0:
+                // STRING: LEGOLAND 0x004ba370
+                FUN_00468bb0("You need to cover %d more squares with objects", DAT_00668728->field_14);
+                FUN_004693b0(DAT_00668728->type);
+                break;
+            case 1:
+                // STRING: LEGOLAND 0x004ba340
+                FUN_00468bb0("You need to cover %d more squares with rides", DAT_00668728->field_14);
+                FUN_004693b0(DAT_00668728->type);
+                break;
+            case 2:
+                // STRING: LEGOLAND 0x004ba2ac
+                FUN_00468bb0("You need to cover %d more squares with scenery", DAT_00668728->field_14);
+                FUN_004693b0(DAT_00668728->type);
+                break;
+            case 3:
+                // STRING: LEGOLAND 0x004ba26c
+                FUN_00468bb0("You need to cover %d more squares with stop 'n' wonder objects", DAT_00668728->field_14);
+                FUN_004693b0(DAT_00668728->type);
+                break;
+            case 4:
+                // STRING: LEGOLAND 0x004ba310
+                FUN_00468bb0("You need to cover %d more squares with shops", DAT_00668728->field_14);
+                FUN_004693b0(DAT_00668728->type);
+                break;
+            case 5:
+                // STRING: LEGOLAND 0x004ba2dc
+                FUN_00468bb0("You need to cover %d more squares with food outlets", DAT_00668728->field_14);
+                FUN_004693b0(DAT_00668728->type);
+                break;
+            default:
+                FUN_004693b0(DAT_00668728->type);
+                continue;
+            }
+            continue;
+        case 0xb:
+            // STRING: LEGOLAND 0x004ba234
+            FUN_00468bb0("You need to line %d%% more of your path with scenery", DAT_00668728->field_14);
+            FUN_004693b0(DAT_00668728->type);
+            continue;
+        case 0xc:
+            // STRING: LEGOLAND 0x004ba69c
+            FUN_00468bb0("You need to research object %s", ((struct PlaceObject *)DAT_00668728->field_4)->cls->name);
+            FUN_004693b0(DAT_00668728->type);
+            continue;
+        case 0xd:
+            // STRING: LEGOLAND 0x004ba210
+            FUN_00468bb0("You need to save up %d more coins.", DAT_00668728->field_1c);
+            FUN_004693b0(DAT_00668728->type);
+            continue;
+        case 0xe:
+            name = DAT_00668728->field_14;
+            value = DAT_00668728->field_1c;
+            // STRING: LEGOLAND 0x004ba1dc
+            format = "You need make %d people up to happiness level %d";
+            break;
+        case 0xf:
+            if (DAT_00668728->field_18 == 0) {
+                name = DAT_00668728->field_14;
+                value = DAT_00668728->field_1c;
+                // STRING: LEGOLAND 0x004ba15c
+                format = "You need to get %d more people with hunger level below %d";
+            } else {
+                name = DAT_00668728->field_14;
+                value = DAT_00668728->field_1c;
+                // STRING: LEGOLAND 0x004ba198
+                format = "You need to get %d fewer people with hunger levels greater than %d";
+            }
+            break;
+        case 0x10:
+            name = DAT_00668728->field_14;
+            value = DAT_00668728->field_1c;
+            // STRING: LEGOLAND 0x004ba110
+            format = "You need make repairs to %d objects to bring them to above %d%% of health";
+            break;
+        case 0x11:
+            value = DAT_00668728->field_1c;
+            name = (unsigned int)((struct PlaceObject *)DAT_00668728->field_4)->cls->name;
+            // STRING: LEGOLAND 0x004ba0e4
+            format = "You need to get %d more people on the %s";
+            break;
+        case 0x12:
+            value = DAT_00668728->field_14;
+            if (value == 0) {
+                value = DAT_00668728->field_1c;
+                name = (unsigned int)((struct PlaceObject *)DAT_00668728->field_4)->cls->name;
+                // STRING: LEGOLAND 0x004ba08c
+                format = "You need to add %d more parts to the %s";
+            } else {
+                name = (unsigned int)((struct PlaceObject *)DAT_00668728->field_4)->cls->name;
+                // STRING: LEGOLAND 0x004ba0b4
+                format = "You need to add %d different parts to the %s";
+            }
+            break;
+        case 0x13:
+            switch (DAT_00668728->field_18) {
+            case 0:
+                name = DAT_00668728->field_14;
+                value = DAT_00668728->field_1c;
+                // STRING: LEGOLAND 0x004ba050
+                format = "You need to improve the LEGOLAND zoning (from %d%% to %d%%)";
+                break;
+            case 1:
+                name = DAT_00668728->field_14;
+                value = DAT_00668728->field_1c;
+                // STRING: LEGOLAND 0x004ba010
+                format = "You need to improve the ADVENTURER zoning (from %d%% to %d%%)";
+                break;
+            case 2:
+                name = DAT_00668728->field_14;
+                value = DAT_00668728->field_1c;
+                // STRING: LEGOLAND 0x004b9fd4
+                format = "You need to  inprove the CASTLE zoning (from %d%% to %d%%)";
+                break;
+            case 3:
+                name = DAT_00668728->field_14;
+                value = DAT_00668728->field_1c;
+                // STRING: LEGOLAND 0x004b9f98
+                format = "You need to improve the WESTERN zoning (from %d%% to %d%%)";
+                break;
+            default:
+                FUN_004693b0(DAT_00668728->type);
+                continue;
+            }
+            break;
+        default:
+            FUN_004693b0(DAT_00668728->type);
+            continue;
+        }
+        FUN_00468bb0(format, value, name);
+        FUN_004693b0(DAT_00668728->type);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00469900
 void FUN_00469900(struct NerpsArg *object, unsigned int a, unsigned int b) {
