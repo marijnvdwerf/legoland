@@ -1179,7 +1179,7 @@ void FUN_00450330(struct BlokeRideState *bloke) {
         break;
     case 1:
         bloke->field_e = 0xd;
-        bloke->field_60 = 2;
+        bloke->field_60++;
         return;
     case 2:
         state = bloke->ride[2];
