@@ -531,10 +531,41 @@ int FUN_00479300(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x00479390
-void FUN_00479390(void) { STUB(); }
+int FUN_00479390(struct CommandArgs *arg, int argc) {
+    unsigned int id;
+
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
+            return 0;
+        }
+        id = ElemID((const char *)arg->field_4);
+        if (id != 0) {
+            FUN_0046be90(DAT_00669050, id);
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004793e0
-void FUN_004793e0(void) { STUB(); }
+int FUN_004793e0(struct CommandArgs *arg, int argc) {
+    unsigned int id;
+
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
+            return 0;
+        }
+        // STRING: LEGOLAND 0x004bc0bc
+        id = _stricmp((char *)arg->field_4, "ALL");
+        if (id != 0) {
+            id = ElemID((const char *)arg->field_4);
+            if (id == 0) {
+                return 0;
+            }
+        }
+        FUN_0046bec0(DAT_00669050, id);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00479450
 int FUN_00479450(struct CommandArgs *arg, int argc) {
@@ -562,10 +593,45 @@ int FUN_00479450(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x004794d0
-void FUN_004794d0(void) { STUB(); }
+int FUN_004794d0(struct CommandArgs *arg, int argc) {
+    struct Vec4 vec;
+    unsigned int v;
+
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 2, 4) == 0) {
+            return 0;
+        }
+        FUN_00478700((int *)&vec, (char **)arg, 1);
+        if (argc >= 5) {
+            v = atoi(((char **)arg)[5]);
+        } else {
+            v = 0;
+        }
+        FUN_0046bf30(DAT_00669050, &vec, v);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00479550
-void FUN_00479550(void) { STUB(); }
+int FUN_00479550(struct CommandArgs *arg, int argc) {
+    unsigned int id;
+    unsigned int v;
+
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 2, 2) == 0) {
+            return 0;
+        }
+        if (FUN_00478690((unsigned int)arg, argc, 2) == 0) {
+            return 0;
+        }
+        id = ElemID((const char *)arg->field_4);
+        v = atoi(arg->field_8);
+        if (id != 0) {
+            FUN_0046bf80(DAT_00669050, id, v);
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004795c0
 void FUN_004795c0(void) { STUB(); }

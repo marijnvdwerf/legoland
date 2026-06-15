@@ -13,3 +13,4 @@ unsigned int LoadObjectClass(struct GameObject *cls);
 void FUN_00469ab0(struct GameObject *object);
 void FUN_00469900(struct NerpsArg *object, unsigned int a, unsigned int b);
 int FUN_0047a480();
+void FUN_0046be90(unsigned char param_1, unsigned int param_2);
