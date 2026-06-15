@@ -2026,7 +2026,31 @@ void FUN_0049cd10(void) { STUB(); }
 void FUN_0049ce00(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049cf00
-void FUN_0049cf00(void) { STUB(); }
+void FUN_0049cf00(void) {
+    struct Worker *node;
+    struct LegoConfig *cfg;
+    int x;
+    int y;
+    struct MapElement *tile;
+
+    cfg = lpConfig;
+    for (node = MechanicList; node != 0; node = node->next) {
+        if (node->var_68 >= 0 && (x = node->var_68 >> 8, x < (int)cfg->width) &&
+            node->var_6c >= 0 && (y = node->var_6c >> 8, y < (int)cfg->height)) {
+            tile = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
+            *((unsigned char *)tile + 0xd) |= 0x10;
+            cfg = lpConfig;
+        }
+    }
+    for (node = GardenerList; node != 0; node = node->next) {
+        if (node->var_68 >= 0 && (x = node->var_68 >> 8, x < (int)cfg->width) &&
+            node->var_6c >= 0 && (y = node->var_6c >> 8, y < (int)cfg->height)) {
+            tile = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
+            *((unsigned char *)tile + 0xd) |= 0x10;
+            cfg = lpConfig;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0049cfc0
 void FUN_0049cfc0(void) {
