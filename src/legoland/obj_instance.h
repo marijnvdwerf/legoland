@@ -15,7 +15,8 @@ int FUN_00489f50(const struct ObjClassKey *key);
 int FUN_00489f90(const struct ObjClassKey *key);
 
 LEGO_EXPORT struct ObjInstance *GetInstanceOfClass(struct ObjClassNode *cls, const unsigned short *uid);
-LEGO_EXPORT int GetObjectUID(int *param_1, int param_2);
+struct ClassOffset;
+LEGO_EXPORT int GetObjectUID(int *param_1, struct ClassOffset *param_2);
 void FUN_00489ee0(void);
 void FUN_0048a040(void);
 LEGO_EXPORT void RemoveBlokeFromRide(void *ride, void *node);

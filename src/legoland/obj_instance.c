@@ -263,5 +263,54 @@ LEGO_EXPORT int GetAllBlokesOffRide(struct Ride *ride, unsigned short uid) {
     return 1;
 }
 
+struct MapObj {
+    unsigned char pad_0[0xc];
+    struct ClassOffset *field_c;
+};
+
+struct ClassOffset {
+    unsigned char pad_0[0xc];
+    int field_c;
+    int field_10;
+};
+
 // FUNCTION: LEGOLAND 0x0048a3e0
-LEGO_EXPORT int GetObjectUID(int *param_1, int param_2) { STUB(); }
+LEGO_EXPORT int GetObjectUID(int *param_1, struct ClassOffset *param_2) {
+    int x;
+    int y;
+    int row;
+    struct MapElement *element;
+
+    x = *param_1 >> 8;
+    y = param_1[1] >> 8;
+    row = y - 1;
+    if (x >= 0 && x < lpConfig->width && row >= 0 && row < lpConfig->height && (element = GameMap[row] + x) != 0) {
+        if ((element->flags & 0x80) != 0 && element->field_0 != 0 && ((struct MapObj *)element->field_0)->field_c == param_2 &&
+            element->field_4 + param_2->field_c == x && element->field_5 + param_2->field_10 == y) {
+            return (x & 0xffff0000) | *(unsigned short *)&element->field_4;
+        }
+        row = y + 1;
+        if (x < 0 || lpConfig->width <= x || row < 0 || lpConfig->height <= row) {
+            element = 0;
+        } else {
+            element = GameMap[row] + x;
+        }
+        if ((element->flags & 0x80) != 0 && element->field_0 != 0 && ((struct MapObj *)element->field_0)->field_c == param_2 &&
+            element->field_4 + param_2->field_c == x && element->field_5 + param_2->field_10 == y) {
+            return (x & 0xffff0000) | *(unsigned short *)&element->field_4;
+        }
+    }
+    row = x - 1;
+    if (row >= 0 && row < lpConfig->width && y >= 0 && y < lpConfig->height && (element = GameMap[y] + row) != 0 &&
+        (element->flags & 0x80) != 0 && element->field_0 != 0 && ((struct MapObj *)element->field_0)->field_c == param_2 &&
+        element->field_4 + param_2->field_c == x && element->field_5 + param_2->field_10 == y) {
+        return (x & 0xffff0000) | *(unsigned short *)&element->field_4;
+    }
+    row = x + 1;
+    if (row >= 0 && row < lpConfig->width && y >= 0 && y < lpConfig->height && (element = GameMap[y] + row) != 0 &&
+        (element->flags & 0x80) != 0 && element->field_0 != 0 && ((struct MapObj *)element->field_0)->field_c == param_2 &&
+        element->field_4 + param_2->field_c == x && element->field_5 + param_2->field_10 == y) {
+        return (x & 0xffff0000) | *(unsigned short *)&element->field_4;
+    }
+    return x & 0xffff0000;
+}
