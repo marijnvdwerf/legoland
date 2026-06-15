@@ -578,7 +578,26 @@ void FUN_00481170(void) {
 LEGO_EXPORT void BuildObjInfoList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00481410
-LEGO_EXPORT void CalculateViewRideCode(void) { STUB(); }
+LEGO_EXPORT int CalculateViewRideCode(int param_1, struct ObjectClass *param_2, int param_3) {
+    int value;
+
+    value = param_2->field_38;
+    if (value > param_1) {
+        value = (value - param_1) * 3;
+    } else {
+        value = (param_1 - value) * 3;
+    }
+    value -= 10;
+    if (value < 0) {
+        value = 0;
+    } else if (value > 100) {
+        value = 100;
+    }
+    if (param_3 != 0) {
+        return ((4 - (1 << param_3)) * 0x19 + param_2->field_36) - value;
+    }
+    return (param_2->field_36 - value) + 100;
+}
 
 // FUNCTION: LEGOLAND 0x00481480
 LEGO_EXPORT unsigned int CalculateRideCode(unsigned int param_1, struct RideStats *param_2, unsigned int param_3) {
