@@ -347,7 +347,23 @@ unsigned __int64 FUN_00499a70(struct WorkOrder *order) {
 }
 
 // FUNCTION: LEGOLAND 0x00499ac0
-void FUN_00499ac0(void *arg, void *order) { STUB(); }
+void FUN_00499ac0(struct Worker *worker, struct WorkOrder *order) {
+    worker->var_50 = order;
+    if (order->var_20 == 1) {
+        worker->var_2c = (order->var_10[2] + order->var_8 * 2 + order->var_10[0]) * 0x80;
+        worker->var_30 = (order->var_10[3] + order->var_c * 2 + order->var_10[1]) * 0x80;
+    } else {
+        worker->var_2c = (order->var_24 + order->var_8 + order->var_10[0]) * 0x100;
+        worker->var_30 = ((order->var_10[3] - order->var_28) + order->var_c) * 0x100;
+    }
+    order->var_1c = (int)worker;
+    order->var_18 = 1;
+    if (order->var_20 == 1) {
+        NewLongTermAction((struct Bloke *)worker, 0x12);
+        return;
+    }
+    NewLongTermAction((struct Bloke *)worker, 0x15);
+}
 
 // FUNCTION: LEGOLAND 0x00499b60
 void FUN_00499b60(void *arg, void *order) { STUB(); }
