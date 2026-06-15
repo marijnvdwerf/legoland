@@ -637,7 +637,32 @@ int FUN_00479550(struct CommandArgs *arg, int argc) {
 void FUN_004795c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00479640
-void FUN_00479640(void) { STUB(); }
+int FUN_00479640(struct CommandArgs *arg, int argc) {
+    unsigned int id;
+    int n;
+    unsigned int v;
+
+    if (DAT_004bb5b0 == 0) {
+        return 1;
+    }
+    if (FUN_004786c0((unsigned int)arg, argc, 2, 2) == 0) {
+        return 0;
+    }
+    id = ElemID((const char *)arg->field_4);
+    n = atoi(arg->field_8);
+    if (n == 0) {
+        n = 1;
+    }
+    if (argc >= 3) {
+        v = atoi(arg->field_c);
+    } else {
+        v = 0;
+    }
+    if (id != 0) {
+        FUN_0046bff0(DAT_00669050, id, n, v);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004796d0
 int FUN_004796d0(struct CommandArgs *arg, int argc) {
@@ -662,10 +687,37 @@ int FUN_004796d0(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x00479740
-void FUN_00479740(void) { STUB(); }
+int FUN_00479740(struct CommandArgs *arg, int argc) {
+    unsigned int id;
+    unsigned int v;
+
+    if (DAT_004bb5b0 == 0) {
+        return 1;
+    }
+    if (FUN_004786c0((unsigned int)arg, argc, 2, 2) == 0) {
+        return 0;
+    }
+    id = ElemID((const char *)arg->field_4);
+    v = atoi(arg->field_8);
+    if (id != 0) {
+        FUN_0046c060(DAT_00669050, id, v);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004797b0
-void FUN_004797b0(void) { STUB(); }
+int FUN_004797b0(struct CommandArgs *arg, int argc) {
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
+            return 0;
+        }
+        ElemID((const char *)arg->field_4);
+        if (argc >= 2) {
+            atoi(arg->field_8);
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00479800
 int FUN_00479800(struct CommandArgs *arg, int argc) {
@@ -699,7 +751,23 @@ int FUN_00479850(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x004798c0
-void FUN_004798c0(void) { STUB(); }
+int FUN_004798c0(struct CommandArgs *arg, int argc) {
+    unsigned int id;
+    unsigned int v;
+
+    if (DAT_004bb5b0 == 0) {
+        return 1;
+    }
+    if (FUN_004786c0((unsigned int)arg, argc, 2, 2) == 0) {
+        return 0;
+    }
+    id = ElemID((const char *)arg->field_4);
+    v = atoi(arg->field_8);
+    if (id != 0) {
+        FUN_0046c0f0(DAT_00669050, id, v);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00479930
 int FUN_00479930(struct CommandArgs *arg, int argc) {
