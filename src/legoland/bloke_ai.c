@@ -4,6 +4,7 @@
 #include "globals.h"
 #include "legoland.h"
 #include "llidb.h"
+#include "math.h"
 
 struct BlokeList {
     unsigned char pad_0[0xcc];
@@ -153,7 +154,34 @@ unsigned int FUN_0044e890(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0044e920
-LEGO_EXPORT void InitBlokeAI(struct Bloke *bloke) { STUB(); }
+LEGO_EXPORT void InitBlokeAI(struct Bloke *bloke) {
+    if (DAT_006661c0 == 0) {
+        DAT_006661c0 = ElemID("SHARK CAFE BROLLY");
+    }
+    if (DAT_006661c4 == 0) {
+        DAT_006661c4 = ElemID("ENTRANCE 1");
+    }
+    DAT_006661bc++;
+    bloke->field_7f = (unsigned char)Rand_Tween(12, 24);
+    bloke->field_78 = (unsigned short)Rand_Max(DAT_00832918);
+    bloke->field_7a = (short)Rand_Tween(10, 50);
+    bloke->field_7e = (unsigned char)Rand_Tween(0, 140) - 0x14;
+    bloke->field_80 = (unsigned char)Rand_Tween(5, 10);
+    bloke->field_7c = (unsigned short)Rand_Tween(0, DAT_004b8338);
+    bloke->field_14 = 0;
+    bloke->field_18 = 0;
+    bloke->field_81 = (unsigned char)DAT_004b8344;
+    DAT_004b8344++;
+    if (DAT_004b8344 > 'Z') {
+        DAT_004b8344 = 'A';
+    }
+    FUN_00482c60((struct Person *)bloke);
+    bloke->favourite_attraction_0 = FUN_0044e790();
+    bloke->favourite_attraction_1 = FUN_0044e790();
+    bloke->favourite_attraction_2 = FUN_0044e790();
+    bloke->favourite_food = FUN_0044e890();
+    NewLongTermAction(bloke, 2);
+}
 
 // FUNCTION: LEGOLAND 0x0044ea40
 unsigned int FUN_0044ea40(void) {

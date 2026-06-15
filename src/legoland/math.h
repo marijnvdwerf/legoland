@@ -19,5 +19,6 @@ void FUN_00480840(struct Point *src, struct Point *dst, int dir);
 void FUN_004808d0(int *src, int *dst, int dir);
 LEGO_EXPORT int GetRectArea(struct RectNode *list);
 LEGO_EXPORT unsigned int Rand_Max(unsigned int max_value);
+LEGO_EXPORT unsigned int Rand_Tween(unsigned int min_val, unsigned int max_val);
 struct Navigator;
 LEGO_EXPORT void NavigMoveLine(struct Navigator *nav, unsigned short a, struct Point *out);

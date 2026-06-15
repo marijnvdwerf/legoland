@@ -20,7 +20,9 @@ struct Bloke {
     unsigned short action;
     unsigned short field_e;
     unsigned short field_10;
-    unsigned char pad_12[0x1c - 0x12];
+    unsigned char pad_12[0x14 - 0x12];
+    unsigned int field_14;
+    unsigned int field_18;
     unsigned int field_1c;
     unsigned char pad_20[0x2e - 0x20];
     short field_2e;
@@ -41,9 +43,11 @@ struct Bloke {
     unsigned short field_78;
     short field_7a;
     unsigned short field_7c;
-    unsigned char pad_7e[0x80 - 0x7e];
+    unsigned char field_7e;
+    unsigned char field_7f;
     unsigned char field_80;
-    unsigned char pad_81[0x88 - 0x81];
+    unsigned char field_81;
+    unsigned char pad_82[0x88 - 0x82];
     unsigned int favourite_attraction_0;
     unsigned int favourite_attraction_1;
     unsigned int favourite_attraction_2;
@@ -69,6 +73,8 @@ LEGO_EXPORT int OverNewTile(struct OverTile *tile, unsigned int x, unsigned int 
 void FUN_00482b10(void);
 void FUN_00482b20(int force);
 int FUN_00482b60(struct InstancePos *pos);
+struct Person;
+void FUN_00482c60(struct Person *person);
 void FUN_00482d60(unsigned int index, int value);
 void FUN_00482d70(void);
 void FUN_00483090(void);

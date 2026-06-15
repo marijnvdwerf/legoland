@@ -508,10 +508,12 @@ extern int DAT_004b8320;
 extern int DAT_004b8324;
 // 0x004b8334
 extern int DAT_004b8334;
+// 0x004b8338
+extern int DAT_004b8338;
 // 0x004b8340
 extern int DAT_004b8340;
 // 0x004b8344
-extern int DAT_004b8344;
+extern char DAT_004b8344;
 // 0x004b8368
 extern void (*PTR_Bloke_DoNothing_004b8368[16])(void *);
 // 0x004b8710
@@ -1503,6 +1505,8 @@ extern struct IconNode *DAT_006660ac;
 extern char DAT_006660b0[256];
 // 0x006661bc
 extern int DAT_006661bc;
+// 0x006661c0
+extern unsigned int DAT_006661c0;
 // 0x006661c4
 extern unsigned int DAT_006661c4;
 // 0x006661c8
