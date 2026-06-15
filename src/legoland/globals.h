@@ -661,6 +661,8 @@ extern unsigned int DAT_004bb0a0;
 extern struct TrackElemPair DAT_004bb0a4[29];
 // 0x004bb18c
 extern unsigned int DAT_004bb18c[4];
+// 0x004bb4e0
+extern BITMAPINFOHEADER DAT_004bb4e0;
 // 0x004bb5ac
 extern unsigned int DAT_004bb5ac;
 // 0x004bb5b0
@@ -1995,6 +1997,8 @@ extern unsigned int DAT_00668f98;
 extern unsigned int DAT_00668fa4;
 // 0x00668fac
 extern unsigned int DAT_00668fac;
+// 0x00668fb0
+extern unsigned int DAT_00668fb0;
 // 0x00668fc0
 extern void *DAT_00668fc0;
 // 0x00668fc4

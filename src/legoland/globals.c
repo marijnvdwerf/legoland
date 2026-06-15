@@ -669,6 +669,9 @@ struct TrackElemPair DAT_004bb0a4[29];
 // GLOBAL: LEGOLAND 0x004bb18c
 unsigned int DAT_004bb18c[4];
 
+// GLOBAL: LEGOLAND 0x004bb4e0
+BITMAPINFOHEADER DAT_004bb4e0;
+
 // GLOBAL: LEGOLAND 0x004bb5ac
 unsigned int DAT_004bb5ac;
 
@@ -2692,6 +2695,9 @@ unsigned int DAT_00668fa4;
 
 // GLOBAL: LEGOLAND 0x00668fac
 unsigned int DAT_00668fac;
+
+// GLOBAL: LEGOLAND 0x00668fb0
+unsigned int DAT_00668fb0;
 
 // GLOBAL: LEGOLAND 0x00668fc0
 void *DAT_00668fc0;

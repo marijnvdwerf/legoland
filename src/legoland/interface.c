@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "challenge.h"
+#include "controller.h"
+#include "draw.h"
 #include "globals.h"
 #include "icon.h"
 #include "legoland.h"
@@ -16,6 +18,7 @@
 #include "string.h"
 #include "timer.h"
 #include "title.h"
+#include "wndenv.h"
 #include "worker_mouse.h"
 
 struct ProfileObj {
@@ -1646,7 +1649,7 @@ void FUN_00476630(struct MovieHandle *h) {
 }
 
 // FUNCTION: LEGOLAND 0x00476680
-void FUN_00476680(void) {
+int FUN_00476680(void) {
     LARGE_INTEGER freq;
     LARGE_INTEGER count;
     unsigned int state;
@@ -1662,26 +1665,114 @@ void FUN_00476680(void) {
     }
     if (state == 2) {
         QueryPerformanceCounter(&count);
-        FUN_00458930((float)count.QuadPart * DAT_007fdca8);
-        return;
+        return FUN_00458930((float)count.QuadPart * DAT_007fdca8);
     }
-    GetTickCount();
+    return GetTickCount();
 }
 
 // FUNCTION: LEGOLAND 0x004766f0
-void FUN_004766f0(void) { STUB(); }
+int FUN_004766f0(struct MovieHandle *handle, int param_2) {
+    void *frame;
+    int started;
+    int frame_index;
+    unsigned int target;
+    unsigned int prev;
+
+    started = 0;
+    frame_index = -1;
+    target = 0;
+    if (handle == NULL) {
+        return 0;
+    }
+    if (handle->video_stream == NULL) {
+        return 0;
+    }
+    FUN_00476910(handle);
+    DAT_004bb4e0.biBitCount = 0x10;
+    DAT_004bb4e0.biWidth = handle->field_8;
+    DAT_004bb4e0.biHeight = handle->field_c;
+    DAT_004bb4e0.biSizeImage = handle->field_c * handle->field_8 * 2;
+    handle->frame = AVIStreamGetFrameOpen(handle->video_stream, &DAT_004bb4e0);
+    prev = 0;
+    if ((int)handle->field_0 > 0) {
+        do {
+            if (param_2 != 0) {
+                if (ProcessSystemEvents() == 0) {
+                    break;
+                }
+                ReadGameButtons();
+                if ((DAT_00813ac4 & 1) != 0) {
+                    break;
+                }
+                if ((DAT_007fdda0[0x34] & 7) != 0) {
+                    DAT_00668fb0 = 1;
+                    break;
+                }
+                if ((DAT_007fdda0[0x39] & 0x80) != 0) {
+                    break;
+                }
+            } else {
+                ProcessSystemEvents();
+                if (((DAT_007fdda0[0x9d] | DAT_007fdda0[0x1d]) & 0x80) != 0 && (DAT_007fdda0[0x10] & 0x80) != 0) {
+                    break;
+                }
+            }
+            if (frame_index == -1) {
+                frame = AVIStreamGetFrame(handle->frame, target);
+            }
+            if (frame == NULL) {
+                handle->frame = NULL;
+                return 0;
+            }
+            PushRenderingStatusAndLockVideoSurface();
+            FUN_00465850(frame);
+            PopRenderingStatus();
+            if (started == 0) {
+                if (param_2 != 0) {
+                    FUN_00476bf0(handle);
+                }
+                started = FUN_00476680();
+            }
+            RenderingComplete();
+            frame_index = FUN_00476680();
+            if ((unsigned int)((frame_index - started) * handle->field_4) / 1000 == target) {
+                frame_index = target + 1;
+                if (frame_index < (int)handle->field_0) {
+                    frame = AVIStreamGetFrame(handle->frame, frame_index);
+                }
+            } else {
+                frame_index = -1;
+            }
+            while (target == prev) {
+                target = (unsigned int)((FUN_00476680() - started) * handle->field_4) / 1000;
+            }
+            if (param_2 != 0) {
+                FUN_00476d20(target, prev);
+            }
+            prev = target;
+        } while ((int)target < (int)handle->field_0);
+    }
+    FUN_00476c90();
+    do {
+        ProcessSystemEvents();
+        ReadGameButtons();
+    } while ((DAT_00813ac4 & 6) != 0);
+    AVIStreamGetFrameClose(handle->frame);
+    handle->frame = NULL;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00476910
-void FUN_00476910(void) { STUB(); }
+int FUN_00476910(struct MovieHandle *handle) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00476bf0
-void FUN_00476bf0(void) { STUB(); }
+void FUN_00476bf0(struct MovieHandle *handle) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00476c90
 void FUN_00476c90(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00476d20
-void FUN_00476d20(void) { STUB(); }
+void FUN_00476d20(unsigned int a, unsigned int b) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004771f0
 void FUN_004771f0(const char *filename, unsigned int param_2, unsigned int param_3) { STUB(); }

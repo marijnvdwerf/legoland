@@ -4,6 +4,7 @@
 
 struct CastleObj;
 struct IconNode;
+struct MovieHandle;
 
 struct InterfaceListNode {
     /* 0x00 */ struct InterfaceListNode *next;
@@ -64,6 +65,12 @@ void FUN_004760a0(void);
 void FUN_00476070(int mask, unsigned int value);
 void FUN_00476140(int index, int value);
 void FUN_00476180(void);
+void FUN_00465850(void *frame);
+int FUN_00476680(void);
+int FUN_00476910(struct MovieHandle *handle);
+void FUN_00476bf0(struct MovieHandle *handle);
+void FUN_00476c90(void);
+void FUN_00476d20(unsigned int a, unsigned int b);
 void FUN_004771f0(const char *filename, unsigned int param_2, unsigned int param_3);
 /* Both are STUBs with unverified signatures, called only from castle.c — the call
  * sites pass 4 args to FUN_004775b0 (and that 4-push form is what matches the
