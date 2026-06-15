@@ -1322,10 +1322,10 @@ void FUN_0049ac50(int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b0b0
-LEGO_EXPORT int RenderWorkerInterfaceGFX(void) {
+LEGO_EXPORT void RenderWorkerInterfaceGFX(void) {
     FUN_0049ac50(0);
     FUN_0049ac50(1);
-    return IterateNoneWorkersRepairOrders();
+    IterateNoneWorkersRepairOrders();
 }
 
 // FUNCTION: LEGOLAND 0x0049b0d0
@@ -1679,7 +1679,75 @@ LEGO_EXPORT void RemoveNoneWorkersRepairOrderAT(unsigned int x, unsigned int y) 
 }
 
 // FUNCTION: LEGOLAND 0x0049b750
-LEGO_EXPORT int IterateNoneWorkersRepairOrders(void) { STUB(); }
+LEGO_EXPORT void IterateNoneWorkersRepairOrders(void) {
+    struct RepairOrder *cur;
+    struct RepairOrder *order;
+    int iVar3;
+    int iVar4;
+    int iVar5;
+    int iVar6;
+    int iVar7;
+    struct MapElement *tile;
+    struct ObjClass *cls;
+    int point[2];
+    int bounds[4];
+    int local_4;
+    int cost;
+
+    cur = DAT_0079a8d4;
+    while (order = cur, order != 0) {
+        cur = order->next;
+        iVar3 = order->footprint[1] + order->var_1c;
+        iVar6 = order->footprint[0] + order->var_18;
+        iVar5 = order->footprint[2] + order->var_18;
+        point[1] = order->footprint[3] + order->var_1c;
+        point[0] = iVar6;
+        local_4 = point[1];
+        GetTileBounds((struct Point *)point, bounds);
+        iVar4 = bounds[0];
+        point[0] = iVar5;
+        point[1] = iVar3;
+        GetTileBounds((struct Point *)point, bounds);
+        iVar7 = bounds[2];
+        point[0] = iVar6;
+        point[1] = iVar3;
+        GetTileBounds((struct Point *)point, bounds);
+        iVar3 = bounds[1];
+        point[1] = local_4;
+        point[0] = iVar5;
+        GetTileBounds((struct Point *)point, bounds);
+        iVar7 = (iVar7 + iVar4) / 2;
+        iVar4 = (bounds[3] + iVar3) / 2;
+        if (order->var_20 < (float)DAT_004ab3a8) {
+            cost = 0;
+        } else {
+            cost = FUN_00458930(order->var_20);
+        }
+        if (GetBrickCount() < cost) {
+            LLSNextFrame(**(struct LLS ***)((char *)DAT_007fdeb0 + 8));
+            PrintSprite(DAT_007fdeb0, iVar7, iVar4, 0, 0);
+        } else {
+            UseBricks(cost);
+            order->var_20 = (order->var_20 - (float)cost) + order->var_24;
+            PrintSprite(DAT_007fe004, iVar7, iVar4, 0, 0);
+            iVar4 = order->var_18;
+            if (iVar4 < 0 || (int)lpConfig->width <= iVar4 || (iVar3 = order->var_1c, iVar3 < 0) ||
+                (int)lpConfig->height <= iVar3) {
+                tile = 0;
+            } else {
+                tile = (struct MapElement *)((char *)GameMap[iVar3] + iVar4 * 0x14);
+            }
+            DAT_00668610 |= 0x200;
+            cls = *(struct ObjClass **)((char *)tile->field_0 + 0xc);
+            FUN_0049b0d0((struct Worker *)tile, cls);
+            if (*((unsigned char *)cls + 0x2c) <= *((unsigned char *)tile + 0x11)) {
+                tile->flags &= 0xbfff;
+                *((unsigned char *)tile + 0x11) = *((unsigned char *)cls + 0x2c);
+                FUN_0049b6e0(order);
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0049b930
 LEGO_EXPORT struct WorkOrder *AddRepairOrderForObject(struct ObjClass *cls, char x, unsigned char y) { STUB(); }
