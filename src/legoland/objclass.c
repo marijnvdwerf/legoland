@@ -347,7 +347,7 @@ LEGO_EXPORT void CalculateRideCodes(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00481610
-LEGO_EXPORT void ShuffleObjKeys(void) { STUB(); }
+LEGO_EXPORT int ShuffleObjKeys(int *param_1, void **param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00481690
 LEGO_EXPORT void ResetBestPtr(void) {

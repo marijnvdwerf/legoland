@@ -12,6 +12,7 @@
 #include "math.h"
 #include "obj_instance.h"
 #include "objclass.h"
+#include "pathfind.h"
 #include "saveload.h"
 #include "worker.h"
 #include "worker_mouse.h"
@@ -718,7 +719,252 @@ int FUN_0044f4a0(struct Bloke *bloke, int objclass, int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x0044f610
-void FUN_0044f610(void) { STUB(); }
+void FUN_0044f610(struct Bloke *bloke) {
+    int key;
+    int rate;
+    int result;
+    int iface;
+    char dir;
+    int num;
+    int counter;
+    int rnd;
+    short sval;
+    int kind;
+    unsigned char uid[2];
+    int out[2];
+    char msg[100];
+    int *element;
+
+    *(unsigned int *)(DAT_00813b04 + 4) = bloke->field_81;
+    switch (bloke->param_action) {
+    case 0:
+        BuildObjInfoList();
+        CalculateRideCodes((unsigned int)bloke);
+        ResetBestPtr();
+        if (ShuffleObjKeys(&bloke->field_2c, (void **)&key) != 0) {
+            result = 1;
+            do {
+                if (bloke->field_18 == *(unsigned int *)(key + 0xc4)) {
+                    // STRING: LEGOLAND 0x004b858c
+                    sprintf(msg, "I've just been on the %s.", *(unsigned int *)(key + 0x78));
+                    FUN_0044ed00(msg);
+                } else {
+                    rate = Calc_Item_Attractiveness(key, (unsigned int)bloke, 0);
+                    if (10 < rate) {
+                        // STRING: LEGOLAND 0x004b8554
+                        sprintf(msg, "(%d) I'll go to the %s", Calc_Item_Attractiveness(key, (unsigned int)bloke, 0), *(unsigned int *)(key + 0x78));
+                        bloke->field_14 = *(unsigned int *)(key + 0xc4);
+                        FUN_0044ed00(msg);
+                        bloke->param_action = 1;
+                        bloke->field_82 = 0;
+                        if (result != 0) {
+                            return;
+                        }
+                        break;
+                    }
+                    // STRING: LEGOLAND 0x004b856c
+                    sprintf(msg, "The %s is not worth going on.");
+                    FUN_0044ed00(msg);
+                    num = GetBlokeNum(bloke);
+                    if (GetBlokeCounter((struct ObjectClass *)key, num) == 0) {
+                        num = GetBlokeNum(bloke);
+                        IncrementBlokeCounter((struct ObjectClass *)key, num);
+                    }
+                }
+                result = ShuffleObjKeys(&bloke->field_2c, (void **)&key);
+            } while (result != 0);
+            // STRING: LEGOLAND 0x004b8524
+            sprintf(msg, "I've been on everything and I want to go home.");
+            FUN_0044ed00(msg);
+            NewLongTermAction(bloke, 3);
+            return;
+        }
+        bloke->param_action = 2;
+        return;
+    case 1:
+        result = SuggestNextMove(&bloke->field_68, &bloke->field_2c, out);
+        switch (result) {
+        case 1:
+            bloke->field_24 = out[0];
+            bloke->field_28 = out[1];
+            dir = CalcMoveLine(bloke->field_68, bloke->field_6c, out[0], out[1], bloke->field_98);
+            bloke->field_e = 6;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            bloke->param_action = bloke->field_64 == 0;
+            return;
+        case 2:
+            bloke->field_24 = out[0];
+            bloke->field_28 = out[1];
+            dir = CalcMoveLine(bloke->field_68, bloke->field_6c, out[0], out[1], bloke->field_98);
+            bloke->field_e = 6;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            bloke->param_action = (-(bloke->field_64 != 0) & 0xf6) + 10;
+            return;
+        case -3:
+        case -1:
+        case 0:
+            result = FUN_0044f180((int *)&bloke->field_2c, *(int *)(bloke->field_14 + 0xc));
+            if (result != 0) {
+                iface = *(int *)(bloke->field_14 + 0xc);
+                num = (bloke->field_2c >> 8) - *(int *)(iface + 0xc);
+                counter = (bloke->field_30 >> 8) - *(int *)(iface + 0x10);
+                if (num < 0 || lpConfig->width <= num || counter < 0 || lpConfig->height <= counter) {
+                    element = 0;
+                } else {
+                    element = (int *)(GameMap[counter] + num);
+                }
+                element = (int *)GetNextObjectMatching((struct RenderObject *)element, (struct RenderObjectVtable *)bloke->field_14);
+                if (element == 0 && (element = (int *)GetFirstObjectMatching((struct RenderObjectVtable *)bloke->field_14)) == 0) {
+                    // STRING: LEGOLAND 0x004b8424
+                    sprintf(msg, "Wandering...");
+                    FUN_0044ed00(msg);
+                    bloke->field_e = 4;
+                    bloke->param_action++;
+                    return;
+                }
+                if (*(unsigned char *)((char *)element + 4) != num || *(unsigned char *)((char *)element + 5) != counter) {
+                    bloke->field_2c = (*(int *)(iface + 0xc) + *(unsigned char *)((char *)element + 4)) * 0x100 + 0x80;
+                    bloke->field_30 = (*(int *)(iface + 0x10) + *(unsigned char *)((char *)element + 5)) * 0x100 + 0x80;
+                    return;
+                }
+            }
+            bloke->field_e = 4;
+            return;
+        case -2:
+            bloke->field_e = 10;
+            return;
+        }
+        break;
+    case 2:
+    case 3:
+        // STRING: LEGOLAND 0x004b8424
+        sprintf(msg, "Wandering...");
+        FUN_0044ed00(msg);
+        bloke->field_e = 4;
+        bloke->param_action++;
+        return;
+    case 4:
+        bloke->param_action = 0;
+        return;
+    case 5:
+        // STRING: LEGOLAND 0x004b8434
+        sprintf(msg, "Stuck, Routing Point To Point...");
+        FUN_0044ed00(msg);
+        result = PTPSuggestNextMove(&bloke->field_68, &bloke->field_2c, out);
+        if (result == 0) {
+            bloke->field_e = 4;
+            bloke->param_action = 6;
+            return;
+        }
+        if (result == 1) {
+            bloke->field_24 = out[0];
+            bloke->field_28 = out[1];
+            dir = CalcMoveLine(bloke->field_68, bloke->field_6c, out[0], out[1], bloke->field_98);
+            bloke->field_e = 0xb;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            if ((bloke->field_64 & 1) != 0) {
+                bloke->param_action = 6;
+                return;
+            }
+        } else if (result == 2) {
+            bloke->field_24 = out[0];
+            bloke->field_28 = out[1];
+            dir = CalcMoveLine(bloke->field_68, bloke->field_6c, out[0], out[1], bloke->field_98);
+            bloke->field_e = 0xb;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            bloke->param_action = (-((bloke->field_64 & 1) != 0) & 0xfc) + 10;
+            return;
+        }
+        break;
+    case 6:
+        // STRING: LEGOLAND 0x004b8424
+        sprintf(msg, "Wandering...");
+        FUN_0044ed00(msg);
+        bloke->field_e = 4;
+        bloke->param_action = 5;
+        return;
+    case 10:
+        if (FUN_0044f180((int *)&bloke->field_68, *(int *)(bloke->field_14 + 0xc)) != 0) {
+            uid[0] = (unsigned char)GetObjectUID((int *)&bloke->field_68, *(int *)(bloke->field_14 + 0xc));
+            uid[1] = (unsigned char)(GetObjectUID((int *)&bloke->field_68, *(int *)(bloke->field_14 + 0xc)) >> 8);
+            if (FUN_0044f400((struct BlokeList *)*(int *)(bloke->field_14 + 0xc), (unsigned short *)uid) == 0) {
+                if (FUN_0044f360(*(int *)(bloke->field_14 + 0xc), uid) != 0) {
+                    if (uid[0] < lpConfig->width && uid[1] < lpConfig->height) {
+                        element = (int *)(GameMap[uid[1]] + uid[0]);
+                    } else {
+                        element = 0;
+                    }
+                    result = (int)GetInstanceOfClass((struct ObjClassNode *)*element, (const unsigned short *)uid);
+                    if ((*(unsigned char *)(result + 0xc) & 2) == 0) {
+                        // STRING: LEGOLAND 0x004b84bc
+                        sprintf(msg, "I'm going on the ride");
+                        FUN_0044ed00(msg);
+                        NewLongTermAction(bloke, 5);
+                        if ((*(unsigned int *)(bloke->field_14 + 0x1c) & 0x100000) == 0) {
+                            if (uid[0] < lpConfig->width && uid[1] < lpConfig->height) {
+                                element = (int *)(GameMap[uid[1]] + uid[0]);
+                            } else {
+                                element = 0;
+                            }
+                            GetInstanceOfClass((struct ObjClassNode *)*element, (const unsigned short *)uid);
+                            rnd = rand();
+                            if (FUN_0044f4a0(bloke, *(int *)(bloke->field_14 + 0xc), (rnd & 0x1ff) + 200) != 0) {
+                                return;
+                            }
+                        } else {
+                            if (FUN_0044f4a0(bloke, *(int *)(bloke->field_14 + 0xc), 0) != 0) {
+                                if (FUN_0044f400((struct BlokeList *)*(int *)(bloke->field_14 + 0xc), (unsigned short *)uid) == 0) {
+                                    return;
+                                }
+                                if (uid[0] < lpConfig->width && uid[1] < lpConfig->height) {
+                                    element = (int *)(GameMap[uid[1]] + uid[0]);
+                                } else {
+                                    element = 0;
+                                }
+                                result = (int)GetInstanceOfClass((struct ObjClassNode *)*element, (const unsigned short *)uid);
+                                *(unsigned short *)(result + 0xc) |= 2;
+                                return;
+                            }
+                        }
+                        // STRING: LEGOLAND 0x004b84a0
+                        sprintf(msg, "I can't get on the ride.");
+                        FUN_0044ed00(msg);
+                        FUN_00482df0(bloke, 0, *(short *)(*(int *)(bloke->field_14 + 0xc) + 0x3a));
+                        num = GetBlokeNum(bloke);
+                        if (GetBlokeCounter((struct ObjectClass *)*(int *)(bloke->field_14 + 0xc), num) == 0) {
+                            num = GetBlokeNum(bloke);
+                            IncrementBlokeCounter((struct ObjectClass *)*(int *)(bloke->field_14 + 0xc), num);
+                        }
+                        bloke->param_action = 2;
+                        return;
+                    }
+                    // STRING: LEGOLAND 0x004b84d4
+                    sprintf(msg, "I can't go on this ride. It's not working");
+                    FUN_0044ed00(msg);
+                    sval = *(short *)(*(int *)(bloke->field_14 + 0xc) + 0x3a);
+                    kind = 1;
+                } else {
+                    // STRING: LEGOLAND 0x004b8500
+                    sprintf(msg, "I can't go on this ride. It is full");
+                    FUN_0044ed00(msg);
+                    sval = *(short *)(*(int *)(bloke->field_14 + 0xc) + 0x3a);
+                    kind = 0;
+                }
+                FUN_00482df0(bloke, kind, sval);
+                num = GetBlokeNum(bloke);
+                if (GetBlokeCounter((struct ObjectClass *)*(int *)(bloke->field_14 + 0xc), num) == 0) {
+                    num = GetBlokeNum(bloke);
+                    IncrementBlokeCounter((struct ObjectClass *)*(int *)(bloke->field_14 + 0xc), num);
+                }
+            }
+        }
+        bloke->param_action = 2;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0044fe10
 void FUN_0044fe10(struct Bloke *bloke) {
