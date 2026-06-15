@@ -210,7 +210,9 @@ void FUN_0044ea50(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0044eab0
-int FUN_0044eab0(struct Bloke *bloke) { STUB(); }
+int FUN_0044eab0(struct Bloke *bloke) {
+    return (int)(short)bloke->field_78 - (int)bloke->field_7a / 2 > DAT_00832918 * 2;
+}
 
 // FUNCTION: LEGOLAND 0x0044eae0
 void FUN_0044eae0(struct Bloke *bloke) {
