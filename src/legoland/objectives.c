@@ -8,15 +8,20 @@
 #include "bricks.h"
 #include "challenge.h"
 #include "debug_alloc.h"
+#include "draw.h"
 #include "help.h"
 #include "icon.h"
 #include "interface.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "nerps.h"
 #include "objectives.h"
+#include "sound_music.h"
 #include "sound_sfx.h"
 #include "stream.h"
+#include "string.h"
 #include "timer.h"
+#include "title.h"
 
 #pragma intrinsic(strcpy, strlen)
 
@@ -31,8 +36,11 @@ struct ThemeData {
 };
 
 struct RewardArg {
-    unsigned char pad_0[0xc];
+    unsigned char pad_0[0x8];
+    const char *field_8;
     int reward_type;
+    unsigned char pad_10[0x1c - 0x10];
+    int field_1c;
 };
 
 struct MapRectArg {
@@ -911,10 +919,38 @@ int FUN_00469f70(struct RewardArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00469f80
-void FUN_00469f80(void) { STUB(); }
+int FUN_00469f80(struct RewardArg *arg) {
+    FUN_00499380();
+    SetPointer(0);
+    FUN_00496e60(1, 0xf);
+    FUN_004771f0(arg->field_8, 1, 1);
+    FUN_004993c0();
+    FUN_0046ce20();
+    FUN_0046b760();
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00469fc0
-void FUN_00469fc0(void) { STUB(); }
+int FUN_00469fc0(struct RewardArg *arg) {
+    int retries;
+
+    FUN_00490600(0);
+    if (FUN_004907a0(arg->field_8) != 0) {
+        DAT_008119b4 = 2;
+        DAT_00668e38 = 1;
+        DAT_0080ff84 = 0xffffffff;
+        DAT_0080ff88 = 7;
+        return 1;
+    }
+    retries = arg->field_1c;
+    arg->field_1c = retries + 1;
+    if (retries < 3) {
+        return 0;
+    }
+    // STRING: LEGOLAND 0x004ba7bc
+    DBPrintf("Giving up trying to load Interval %s\n", arg->field_8);
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0046a030
 int FUN_0046a030(struct RewardArg *arg) {
