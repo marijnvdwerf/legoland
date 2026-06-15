@@ -510,7 +510,25 @@ int FUN_00479270(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x00479300
-void FUN_00479300(void) { STUB(); }
+int FUN_00479300(struct CommandArgs *arg, int argc) {
+    unsigned int id;
+    unsigned int v;
+    struct Vec4 vec;
+
+    if (DAT_004bb5b0 == 0) {
+        return 1;
+    }
+    if (FUN_004786c0((unsigned int)arg, argc, 2, 6) == 0) {
+        return 0;
+    }
+    id = ElemID((const char *)arg->field_4);
+    v = atoi(arg->field_8);
+    FUN_00478700((int *)&vec, (char **)arg, 3);
+    if (id != 0) {
+        FUN_0046be40(DAT_00669050, id, v, &vec);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00479390
 void FUN_00479390(void) { STUB(); }
