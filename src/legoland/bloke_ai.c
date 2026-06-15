@@ -6,6 +6,7 @@
 #include "llidb.h"
 #include "man3d.h"
 #include "math.h"
+#include "objclass.h"
 #include "worker.h"
 
 struct BlokeList {
@@ -31,9 +32,12 @@ struct BlokeRideState {
     int *ride;
     unsigned char pad_8[0xe - 0x8];
     unsigned short field_e;
-    unsigned char pad_10[0x54 - 0x10];
+    unsigned char pad_10[0x14 - 0x10];
+    struct ClassNode *field_14;
+    unsigned char pad_18[0x54 - 0x18];
     unsigned int field_54;
-    unsigned char pad_58[0x60 - 0x58];
+    int field_58;
+    unsigned char pad_5c[0x60 - 0x5c];
     unsigned char field_60;
     unsigned char pad_61[0x1];
     unsigned short flags;
@@ -498,7 +502,31 @@ void FUN_004503a0(struct Bloke *bloke, int *box) {
 }
 
 // FUNCTION: LEGOLAND 0x00450450
-void FUN_00450450(void) { STUB(); }
+void FUN_00450450(struct BlokeRideState *bloke) {
+    int num;
+    int counter;
+
+    switch (bloke->field_60) {
+    case 0:
+        FUN_004503a0((struct Bloke *)bloke, (int *)((char *)bloke->field_14->iface + 0x3c));
+        bloke->field_58 = (rand() & 0x1f) + 10;
+        bloke->field_60++;
+        break;
+    case 1:
+        counter = bloke->field_58 - 1;
+        bloke->field_58 = counter;
+        if (counter < 0) {
+            bloke->field_60 = 2;
+            return;
+        }
+        break;
+    case 2:
+        num = GetBlokeNum((struct Bloke *)bloke);
+        IncrementBlokeCounter((struct ObjectClass *)bloke->field_14->iface, num);
+        NewLongTermAction((struct Bloke *)bloke, 6);
+        return;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004504d0
 LEGO_EXPORT void DoHighLevelAI(struct Bloke *bloke) {
