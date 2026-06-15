@@ -674,4 +674,29 @@ void FUN_00450a80(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00450b10
-void FUN_00450b10(void) { STUB(); }
+void FUN_00450b10(void) {
+    int *entry;
+    int count;
+    int i;
+
+    count = 0;
+    SaveGameRead(&count, 4);
+    i = 0;
+    if (0 < count) {
+        entry = (int *)&DAT_006664f8;
+        do {
+            SaveGameRead(entry, 0xc);
+            *entry = *(int *)(GeteListPtr(*entry) + 0xc);
+            i++;
+            entry += 3;
+        } while (i < count);
+        if (i >= 0x100) {
+            return;
+        }
+    }
+    entry = (int *)&DAT_006664f8[i * 3];
+    do {
+        *entry = 0;
+        entry += 3;
+    } while ((int)entry < (int)&DAT_006670f8);
+}
