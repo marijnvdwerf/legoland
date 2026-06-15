@@ -107,7 +107,18 @@ int FUN_00482b60(struct InstancePos *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x00482ba0
-LEGO_EXPORT void GetVisitorName(void) { STUB(); }
+LEGO_EXPORT char *GetVisitorName(struct Person *person) {
+    char *name;
+    if (person->field_4->field_84 == 0) {
+        name = PTR_s_Aaron_004bcecc[person->field_83];
+    } else {
+        name = PTR_s_Abbie_004bd018[person->field_83];
+    }
+    strcpy(DAT_0066b470, name);
+    strcat(DAT_0066b470, " ");
+    strcat(DAT_0066b470, PTR_s_Adams_004bd180[person->field_84]);
+    return DAT_0066b470;
+}
 
 // FUNCTION: LEGOLAND 0x00482c60
 void FUN_00482c60(struct Person *person) {

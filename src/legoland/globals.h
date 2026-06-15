@@ -647,6 +647,12 @@ extern unsigned int DAT_004bb6f8;
 extern const char *DAT_004bcba4[3];
 // 0x004bcbf4
 extern LEGO_EXPORT struct LegoConfig *lpConfig;
+// 0x004bcecc
+extern char *PTR_s_Aaron_004bcecc[0x53];
+// 0x004bd018
+extern char *PTR_s_Abbie_004bd018[0x5a];
+// 0x004bd180
+extern char *PTR_s_Adams_004bd180[0x6b];
 // 0x004bdd00
 extern unsigned int DAT_004bdd00;
 // 0x004bdd04
@@ -1983,6 +1989,8 @@ extern unsigned int DAT_0066b460;
 extern unsigned int DAT_0066b468;
 // 0x0066b46c
 extern unsigned int DAT_0066b46c;
+// 0x0066b470
+extern char DAT_0066b470[0x104];
 // 0x0066b574
 extern LEGO_EXPORT void *FirstBloke;
 // 0x0066b57c

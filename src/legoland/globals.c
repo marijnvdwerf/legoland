@@ -656,6 +656,15 @@ const char *DAT_004bcba4[3] = {
 // GLOBAL: LEGOLAND 0x004bcbf4
 LEGO_EXPORT struct LegoConfig *lpConfig;
 
+// GLOBAL: LEGOLAND 0x004bcecc
+char *PTR_s_Aaron_004bcecc[0x53];
+
+// GLOBAL: LEGOLAND 0x004bd018
+char *PTR_s_Abbie_004bd018[0x5a];
+
+// GLOBAL: LEGOLAND 0x004bd180
+char *PTR_s_Adams_004bd180[0x6b];
+
 // GLOBAL: LEGOLAND 0x004bdd00
 unsigned int DAT_004bdd00;
 
@@ -2675,6 +2684,9 @@ unsigned int DAT_0066b468;
 
 // GLOBAL: LEGOLAND 0x0066b46c
 unsigned int DAT_0066b46c;
+
+// GLOBAL: LEGOLAND 0x0066b470
+char DAT_0066b470[0x104];
 
 // GLOBAL: LEGOLAND 0x0066b574
 LEGO_EXPORT void *FirstBloke;
