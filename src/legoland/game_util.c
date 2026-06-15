@@ -16,11 +16,6 @@
 #include "sound_sfx.h"
 #include "title.h"
 
-struct GameObject {
-    unsigned char pad_0[8];
-    unsigned int flags;
-};
-
 struct CommandArgs {
     unsigned char pad_0[4];
     unsigned int field_4;
@@ -196,7 +191,20 @@ int FUN_00478ac0(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00478b20
-int FUN_00478b20(unsigned int arg) { STUB(); }
+int FUN_00478b20(unsigned int arg) {
+    struct GameObject *obj = (struct GameObject *)ElemID((const char *)arg);
+    if (obj == NULL) {
+        return 0;
+    }
+    if ((obj->flags & 4) == 0) {
+        if (LoadObjectClass(obj) == 0) {
+            return 0;
+        }
+        obj->flags |= 4;
+        FUN_00469ab0(obj);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00478b70
 int FUN_00478b70(unsigned int param_1, unsigned int param_2) {

@@ -1,3 +1,11 @@
 #pragma once
 
+struct GameObject {
+    /* 0x00 */ unsigned char pad_0[8];
+    /* 0x08 */ unsigned int flags;
+};
+
 unsigned int FUN_00478be0(unsigned int param_1, unsigned int param_2, unsigned int param_3);
+
+unsigned int LoadObjectClass(struct GameObject *cls);
+void FUN_00469ab0(struct GameObject *object);
