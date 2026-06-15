@@ -319,7 +319,26 @@ void FUN_0044f170(struct Bloke *bloke) {
 void FUN_0044f180(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044f360
-int FUN_0044f360() { STUB(); }
+int FUN_0044f360(unsigned int param_1, unsigned char *param_2) {
+    struct MapElement *element;
+    int x;
+    int y;
+
+    x = param_2[0];
+    y = param_2[1];
+    if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+        element = GameMap[y] + x;
+    } else {
+        element = 0;
+    }
+    if ((element->flags & 0x200) != 0) {
+        return 0;
+    }
+    if (DAT_0083298c != 0 && (element->flags & 0x100) != 0) {
+        return 0;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0044f3d0
 unsigned int FUN_0044f3d0(struct BlokeList *list, unsigned short *value) {
