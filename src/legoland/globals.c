@@ -192,7 +192,7 @@ unsigned char SpiderRide_SFX[8];
 void *DAT_004b4d90;
 
 // GLOBAL: LEGOLAND 0x004b4fa8
-unsigned char WATERWORKS_SFX[28];
+unsigned char WATERWORKS_SFX[0x24];
 
 // GLOBAL: LEGOLAND 0x004b5118
 int DAT_004b5118[0x10];

@@ -354,7 +354,7 @@ extern unsigned char SpiderRide_SFX[8];
 // 0x004b4d90
 extern void *DAT_004b4d90;
 // 0x004b4fa8
-extern unsigned char WATERWORKS_SFX[28];
+extern unsigned char WATERWORKS_SFX[0x24];
 // 0x004b5118
 extern int DAT_004b5118[0x10];
 // 0x004b5158

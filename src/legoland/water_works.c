@@ -119,7 +119,14 @@ void FUN_00417ac0(void) {
 void thunk_FUN_00417ac0(void) { FUN_00417ac0(); }
 
 // FUNCTION: LEGOLAND 0x00417af0
-void FUN_00417af0(void *arg, unsigned int a, unsigned int b) { STUB(); }
+void FUN_00417af0(unsigned char *src, int index, unsigned int looping) {
+    struct SampleParams params;
+
+    params.field_0 = 2;
+    params.field_8 = src[0];
+    params.field_c = src[1];
+    PlayInstanceOfSample(*(void **)(WATERWORKS_SFX + 8 + index * 0xc), looping, 1, &params);
+}
 
 // FUNCTION: LEGOLAND 0x00417b40
 void FUN_00417b40(unsigned char *src) {
