@@ -503,6 +503,10 @@ extern char *DAT_004b81d0;
 extern char *DAT_004b81d4;
 // 0x004b81d8
 extern char *DAT_004b81d8;
+// 0x004b8318
+extern int DAT_004b8318;
+// 0x004b831c
+extern int DAT_004b831c;
 // 0x004b8320
 extern int DAT_004b8320;
 // 0x004b8324

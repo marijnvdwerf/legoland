@@ -423,6 +423,12 @@ char *DAT_004b81d4 = ".\\graphics\\icons\\";
 // STRING: LEGOLAND 0x004b81f8
 char *DAT_004b81d8 = ".\\graphics\\models\\";
 
+// GLOBAL: LEGOLAND 0x004b8318
+int DAT_004b8318;
+
+// GLOBAL: LEGOLAND 0x004b831c
+int DAT_004b831c;
+
 // GLOBAL: LEGOLAND 0x004b8320
 int DAT_004b8320;
 

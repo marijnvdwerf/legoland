@@ -306,8 +306,50 @@ LEGO_EXPORT void PopLongTermAction(struct Bloke *bloke) {
     bloke->param_action = param;
 }
 
+struct RideOrigin {
+    unsigned char pad_0[0x44];
+    int field_44;
+    int field_48;
+};
+
 // FUNCTION: LEGOLAND 0x0044ebf0
-void FUN_0044ebf0(void) { STUB(); }
+void FUN_0044ebf0(struct Bloke *bloke) {
+    int obj;
+    struct RideOrigin *origin;
+    int ty;
+    char dir;
+
+    switch (bloke->param_action) {
+    case 0:
+        obj = (int)GetFirstObjectMatching((struct RenderObjectVtable *)DAT_006661c4);
+        origin = (struct RideOrigin *)*(int *)(DAT_006661c4 + 0xc);
+        *(unsigned char *)((char *)bloke + 0x62) |= 8;
+        bloke->field_24 = (*(unsigned char *)(obj + 4) + 6 + origin->field_44) * 0x100;
+        ty = ((*(unsigned char *)(obj + 5) - 5) + origin->field_48) * 0x100;
+        bloke->field_28 = ty;
+        bloke->field_68 = bloke->field_24 + DAT_004b8318;
+        bloke->field_6c = ty + DAT_004b831c;
+        dir = CalcMoveLine(bloke->field_68, bloke->field_6c, bloke->field_24, bloke->field_28, bloke->field_98);
+        bloke->field_e = 7;
+        bloke->field_72 = ((unsigned char)(dir + 0x10) >> 5) + 3;
+        bloke->param_action++;
+        break;
+    case 1:
+        bloke->field_14 = DAT_006661c4;
+        if (FUN_0044f4a0(bloke, *(int *)(DAT_006661c4 + 0xc), 0) != 0) {
+            bloke->param_action++;
+            PushLongTermAction(bloke);
+            NewLongTermAction(bloke, 5);
+            DAT_00668610 |= 0x40;
+            return;
+        }
+        break;
+    case 2:
+        bloke->flags &= 0xfff7;
+        NewLongTermAction(bloke, 6);
+        return;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0044ed00
 void FUN_0044ed00(char *param_1) {
