@@ -1465,7 +1465,44 @@ LEGO_EXPORT int SetGardenerWorkOrderAtPostion(struct Worker *worker, int x, int 
 }
 
 // FUNCTION: LEGOLAND 0x0049b350
-void FUN_0049b350(void) { STUB(); }
+struct MapElement *FUN_0049b350(struct Worker *worker, int x, int y) {
+    const int *entry;
+    struct MapElement *tile;
+    struct MapElement *target;
+    struct ObjClass *cls;
+    unsigned char size;
+    int tx;
+    int ty;
+
+    entry = &DAT_004bff28[1];
+    do {
+        tx = entry[-1] + x;
+        ty = entry[0] + y;
+        if (tx >= 0 && tx < (int)lpConfig->width && ty >= 0 && ty < (int)lpConfig->height &&
+            (tile = (struct MapElement *)((char *)GameMap[ty] + tx * 0x14), tile != 0) &&
+            (tile->flags & 0x88) != 0) {
+            unsigned char nx = *((unsigned char *)tile + 4);
+            unsigned char ny = *((unsigned char *)tile + 5);
+            if ((unsigned int)nx < (unsigned int)lpConfig->width &&
+                (unsigned int)ny < (unsigned int)lpConfig->height) {
+                target = (struct MapElement *)((char *)GameMap[ny] + nx * 0x14);
+            } else {
+                target = 0;
+            }
+            cls = *(struct ObjClass **)((char *)tile->field_0 + 0xc);
+            size = *((unsigned char *)cls + 0x2c);
+            if (size != 0 && *((unsigned char *)target + 0x11) < size &&
+                (cls->field_1c & 0x400000) != 0 && lpConfig->field_34 != 0 &&
+                (*((unsigned char *)target + 0xd) & 0x40) == 0) {
+                return target;
+            }
+        }
+        entry = entry + 2;
+        if (&DAT_004bff28[24] <= entry) {
+            return 0;
+        }
+    } while (1);
+}
 
 // FUNCTION: LEGOLAND 0x0049b430
 LEGO_EXPORT void SetMechanicsOrderAtPostion(void) { STUB(); }

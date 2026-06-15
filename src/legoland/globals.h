@@ -671,6 +671,8 @@ extern unsigned int DAT_004bf670;
 extern unsigned int DAT_004bf774;
 // 0x004bf778
 extern unsigned int DAT_004bf778;
+// 0x004bff28
+extern const int DAT_004bff28[24];
 // 0x004c10d4
 extern void *DAT_004c10d4;
 // 0x004c10dc

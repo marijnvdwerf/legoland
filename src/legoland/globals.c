@@ -692,6 +692,10 @@ unsigned int DAT_004bf774;
 // GLOBAL: LEGOLAND 0x004bf778
 unsigned int DAT_004bf778;
 
+// GLOBAL: LEGOLAND 0x004bff28
+const int DAT_004bff28[24] = {0,  1, 0,  -1, 1, 0,  -1, 0, 0,  2,  0, -2,
+                              2,  0, -2, 0,  1, 1,  1,  -1, -1, 1,  -1, -1};
+
 // GLOBAL: LEGOLAND 0x004c10d4
 void *DAT_004c10d4;
 
