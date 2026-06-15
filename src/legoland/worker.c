@@ -48,10 +48,12 @@ struct Rect {
 };
 
 struct RepairOrder {
-    struct RepairOrder *next;
-    unsigned char pad_4[20];
-    int var_18;
-    int var_1c;
+    /* 0x00 */ struct RepairOrder *next;
+    /* 0x04 */ int footprint[5];
+    /* 0x18 */ int var_18;
+    /* 0x1c */ int var_1c;
+    /* 0x20 */ float var_20;
+    /* 0x24 */ float var_24;
 };
 
 // FUNCTION: LEGOLAND 0x00499530
@@ -1623,10 +1625,46 @@ LEGO_EXPORT void RemoveMechanicsWorkOrderAt(unsigned int x, unsigned int y) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b690
-void FUN_0049b690(void) { STUB(); }
+void FUN_0049b690(struct Footprint *src, int *coords, float value) {
+    struct RepairOrder *order;
+    float scaled;
+
+    order = malloc(sizeof(struct RepairOrder));
+    order->next = DAT_0079a8d4;
+    scaled = FLOAT_004ab480 * value;
+    DAT_0079a8d4 = order;
+    *(struct Footprint *)order->footprint = *src;
+    order->var_18 = coords[0];
+    order->var_1c = coords[1];
+    order->var_20 = scaled;
+    order->var_24 = value;
+}
 
 // FUNCTION: LEGOLAND 0x0049b6e0
-void FUN_0049b6e0(void *order) { STUB(); }
+void FUN_0049b6e0(struct RepairOrder *order) {
+    struct RepairOrder *cur;
+    struct RepairOrder *prev;
+
+    if (DAT_0079a8d4 == order) {
+        DAT_0079a8d4 = order->next;
+        free(order);
+        return;
+    }
+    cur = ((struct RepairOrder *)DAT_0079a8d4)->next;
+    prev = DAT_0079a8d4;
+    while (cur != order) {
+        prev = prev->next;
+        if (prev == 0) {
+            goto done;
+        }
+        cur = prev->next;
+    }
+    if (prev != 0) {
+        prev->next = order->next;
+    }
+done:
+    free(order);
+}
 
 // FUNCTION: LEGOLAND 0x0049b720
 LEGO_EXPORT void RemoveNoneWorkersRepairOrderAT(unsigned int x, unsigned int y) {
