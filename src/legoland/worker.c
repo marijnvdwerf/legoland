@@ -13,7 +13,9 @@
 #include "man3d.h"
 #include "map_object.h"
 #include "objclass.h"
+#include "print_sprite.h"
 #include "sound_music.h"
+#include "tilemap.h"
 #include "worker.h"
 
 struct LegoConfig;
@@ -1174,7 +1176,148 @@ LEGO_EXPORT unsigned int WorkOrderBuildObject(struct EditObject *obj, int *coord
 }
 
 // FUNCTION: LEGOLAND 0x0049ac50
-int FUN_0049ac50(int param) { STUB(); }
+void FUN_0049ac50(int param_1) {
+    short sVar1;
+    short sVar2;
+    int *piVar3;
+    struct ObjClass *cls;
+    int *fp;
+    int iVar6;
+    int iVar7;
+    unsigned int uVar8;
+    unsigned int uVar9;
+    int iVar10;
+    unsigned int uVar11;
+    int iVar12;
+    int iVar13;
+    int iVar14;
+    int iVar15;
+    int iVar16;
+    struct Sprite *sprite;
+    int handle;
+    struct WorkOrder *node;
+    int local_48;
+    unsigned int local_44;
+    int point[2];
+    int bounds[4];
+    int local_c;
+    int local_4;
+
+    piVar3 = *(int **)((char *)DAT_0079abfc + 0xc);
+    if (param_1 == 0) {
+        local_44 = 0x40e040;
+        node = DAT_0079a8b0;
+    } else {
+        local_44 = 0xe04040;
+        node = DAT_0079a8c0;
+    }
+    for (; node != 0; node = node->next) {
+        cls = *(struct ObjClass **)((char *)node->var_4 + 0xc);
+        local_48 = 0;
+        if (0 < node->var_14) {
+            do {
+                fp = (int *)((char *)node->var_10 + local_48 * 0x14);
+                iVar13 = fp[0] + node->var_8;
+                iVar12 = fp[3] + node->var_c;
+                iVar16 = fp[2] + node->var_8;
+                iVar14 = fp[1] + node->var_c;
+                local_c = iVar14;
+                local_4 = iVar12;
+                for (point[1] = iVar14; point[0] = iVar13, point[1] <= iVar12; point[1]++) {
+                    for (; point[0] <= iVar16; point[0]++) {
+                        GetTileBounds((struct Point *)point, bounds);
+                        if (node->var_18 == 0) {
+                            uVar11 = 1;
+                            sprite = (struct Sprite *)TileSpriteArray[(DAT_00805f48 & 0xff) + *(int *)DAT_00801a6c];
+                        } else {
+                            sprite = (struct Sprite *)TileSpriteArray[(DAT_00805f48 & 0xff) + *(int *)DAT_00801a6c];
+                            uVar11 = local_44;
+                        }
+                        PrintSprite(sprite, bounds[0], bounds[1], uVar11, 0);
+                    }
+                }
+                if (local_48 == 0) {
+                    iVar15 = iVar14;
+                    if (iVar14 <= iVar12) {
+                        do {
+                            uVar11 = (unsigned int)(iVar14 != iVar12) << 2 |
+                                     (unsigned int)(iVar14 != iVar15);
+                            point[1] = iVar14;
+                            iVar12 = local_4;
+                            for (point[0] = iVar13; local_4 = iVar12, point[0] <= iVar16;
+                                 point[0]++) {
+                                uVar9 = ((unsigned int)(point[0] != iVar13) << 2 |
+                                         (unsigned int)(point[0] != iVar16))
+                                        << 1;
+                                GetTileBounds((struct Point *)point, bounds);
+                                if (node->var_18 == 0) {
+                                    uVar8 = 0x1f1f81;
+                                    sprite = (struct Sprite *)TileSpriteArray[(uVar9 | uVar11) + 3 + *piVar3];
+                                } else {
+                                    uVar8 = local_44 | 0x1f1f80;
+                                    sprite = (struct Sprite *)TileSpriteArray[(uVar9 | uVar11) + 3 + *piVar3];
+                                }
+                                PrintSprite(sprite, bounds[0], bounds[1], uVar8, 0);
+                                iVar15 = local_c;
+                                iVar12 = local_4;
+                            }
+                            iVar14 = point[1] + 1;
+                        } while (iVar14 <= iVar12);
+                    }
+                    handle = *(int *)((char *)cls + 0x68);
+                    sVar1 = *(short *)(handle + 0x14);
+                    sVar2 = *(short *)(handle + 0x16);
+                    point[0] = iVar13;
+                    point[1] = iVar12;
+                    GetTileBounds((struct Point *)point, bounds);
+                    iVar14 = bounds[0];
+                    point[0] = iVar16;
+                    point[1] = iVar15;
+                    GetTileBounds((struct Point *)point, bounds);
+                    iVar7 = bounds[2];
+                    iVar10 = sVar1;
+                    if (iVar10 * 2 < bounds[2] - iVar14) {
+                        point[0] = iVar13;
+                        point[1] = iVar15;
+                        GetTileBounds((struct Point *)point, bounds);
+                        iVar6 = bounds[1];
+                        point[0] = iVar16;
+                        point[1] = iVar12;
+                        GetTileBounds((struct Point *)point, bounds);
+                        PrintSprite(*(void **)((char *)cls + 0x68), ((iVar7 - iVar10) + iVar14) / 2,
+                                    ((bounds[3] - sVar2) + iVar6) / 2, 0, 0);
+                    }
+                    point[0] = iVar13;
+                    point[1] = iVar12;
+                    GetTileBounds((struct Point *)point, bounds);
+                    iVar14 = bounds[0];
+                    point[0] = iVar16;
+                    point[1] = iVar15;
+                    GetTileBounds((struct Point *)point, bounds);
+                    iVar7 = bounds[2];
+                    point[0] = iVar13;
+                    point[1] = iVar15;
+                    GetTileBounds((struct Point *)point, bounds);
+                    iVar13 = bounds[1];
+                    point[0] = iVar16;
+                    point[1] = iVar12;
+                    GetTileBounds((struct Point *)point, bounds);
+                    iVar14 = (iVar7 + iVar14) / 2 + 10;
+                    iVar12 = ((bounds[3] - *(short *)((char *)DAT_007fdeb0 + 0x16)) + iVar13) / 2;
+                    if (param_1 != 0) {
+                        if (node->var_30 == 0) {
+                            PrintSprite(DAT_007fe004, iVar14, iVar12, 0, 0);
+                        } else {
+                            LLSNextFrame(**(struct LLS ***)((char *)DAT_007fdeb0 + 8));
+                            PrintSprite(DAT_007fdeb0, iVar14, iVar12, 0, 0);
+                        }
+                    }
+                }
+                local_48++;
+            } while (local_48 < node->var_14);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0049b0b0
 LEGO_EXPORT int RenderWorkerInterfaceGFX(void) {
