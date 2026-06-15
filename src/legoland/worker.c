@@ -2312,7 +2312,87 @@ void FUN_0049c630(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0049c8b0
-void FUN_0049c8b0(void) { STUB(); }
+void FUN_0049c8b0(void) {
+    int count;
+    struct Worker *node;
+    struct Worker *prev;
+    char *person;
+    struct BlokeSave rec;
+
+    count = 0;
+    if (SaveGameRead(&count, 4) == 0) {
+        return;
+    }
+    MechanicList = 0;
+    DAT_0079a8cc = count;
+    prev = 0;
+    if (count == 0) {
+        return;
+    }
+    do {
+        count--;
+        if (prev == 0) {
+            node = malloc(0xac);
+            MechanicList = node;
+        } else {
+            node = malloc(0xac);
+            prev->next = node;
+        }
+        if (SaveGameRead(&rec, 0xdc) == 0) {
+            return;
+        }
+        node->flags_c = rec.field_0;
+        node->state = rec.field_2;
+        node->field_10 = rec.field_4;
+        node->flags_1c = rec.field_10;
+        node->field_20 = rec.field_14;
+        node->var_24 = rec.field_18;
+        node->var_28 = rec.field_1c;
+        node->var_2c = rec.field_20;
+        node->var_30 = rec.field_24;
+        memcpy((char *)node + 0x34, rec.field_28, 40);
+        node->ticks = rec.field_50;
+        node->var_60 = rec.field_54;
+        node->flags = rec.field_56;
+        node->var_64 = rec.field_58;
+        node->var_7f = rec.field_59;
+        node->var_82 = rec.field_5a;
+        node->var_68 = rec.field_5c;
+        node->var_6c = rec.field_60;
+        node->var_70 = rec.field_64;
+        node->var_72 = rec.field_66;
+        node->var_73 = rec.field_67;
+        node->var_74 = rec.field_68;
+        node->var_75 = rec.field_69;
+        memcpy(&node->var_98, rec.field_6c, 20);
+        person = malloc(0x94);
+        node->field_4 = (struct Person *)person;
+        FUN_0043f810((struct Person *)person);
+        *(struct Worker **)(person + 0xc) = node;
+        *(unsigned int *)(person + 8) = rec.field_80;
+        *(unsigned int *)(person + 0x10) = rec.field_84;
+        *(unsigned int *)(person + 0x14) = rec.field_88;
+        *(unsigned int *)(person + 0x18) = rec.field_8c;
+        *(unsigned int *)(person + 0x1c) = rec.field_90;
+        *(unsigned int *)(person + 0x20) = rec.field_94;
+        *(unsigned int *)(person + 0x40) = rec.field_98;
+        *(unsigned int *)(person + 0x44) = rec.field_9c;
+        *(unsigned int *)(person + 0x48) = rec.field_a0;
+        *(unsigned int *)(person + 0x4c) = rec.field_a4;
+        *(unsigned int *)(person + 0x88) = 0xffffffff;
+        *(unsigned int *)(person + 0x54) = rec.field_ac;
+        memcpy(person + 0x58, rec.field_b0, 36);
+        node->field_a = rec.field_d4;
+        node->field_8 = (unsigned char)rec.field_d8;
+        *(unsigned int *)(person + 0x2c) = 0;
+        *(unsigned int *)(person + 0x50) = 0;
+        BlokeSetAnim((struct Bloke *)node, rec.field_a8);
+        prev = node;
+    } while (count != 0);
+    if (node != 0) {
+        node->next = 0;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0049cb20
 void FUN_0049cb20(void) { STUB(); }
