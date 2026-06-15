@@ -665,6 +665,12 @@ char *PTR_s_Abbie_004bd018[0x5a];
 // GLOBAL: LEGOLAND 0x004bd180
 char *PTR_s_Adams_004bd180[0x6b];
 
+// GLOBAL: LEGOLAND 0x004bd32c
+short DAT_004bd32c[16] = {
+    -181, -181, 0,   -256, 181,  -181, 256,  0,
+    181,  181,  0,   256,  -181, 181,  -256, 0,
+};
+
 // GLOBAL: LEGOLAND 0x004bdd00
 unsigned int DAT_004bdd00;
 

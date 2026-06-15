@@ -6,8 +6,11 @@
 #include "debug_alloc.h"
 #include "globals.h"
 #include "man3d.h"
+#include "map_object.h"
+#include "math.h"
 #include "objclass.h"
 #include "pathfind.h"
+#include "tilemap.h"
 #include "timer.h"
 
 struct BestNode {
@@ -337,7 +340,13 @@ int FUN_00483160(int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x004831a0
-void FUN_004831a0(void) { STUB(); }
+struct Point FUN_004831a0(unsigned int dir, short dist) {
+    struct Point result;
+    int index = (dir & 0xff) * 2;
+    result.x = (int)DAT_004bd32c[index] * (int)dist >> 8;
+    result.y = (int)DAT_004bd32c[index + 1] * (int)dist >> 8;
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x004831d0
 LEGO_EXPORT void SetPathFlag(void) { STUB(); }
@@ -546,4 +555,4 @@ LEGO_EXPORT void BNVPath_GetBINVScreenCoords(void) { STUB(); }
 LEGO_EXPORT void BNVPath_SetDFrame(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00485260
-LEGO_EXPORT int CheckForPeople(void) { STUB(); }
+int CheckForPeople() { STUB(); }

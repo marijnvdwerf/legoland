@@ -61,6 +61,8 @@ struct BlokeSampleSource {
 void KillAllSamplesFromSource(struct BlokeSampleSource *source);
 
 struct InstancePos;
+struct Point;
+struct Point FUN_004831a0(unsigned int dir, short dist);
 void FUN_00482b10(void);
 void FUN_00482b20(int force);
 int FUN_00482b60(struct InstancePos *pos);
