@@ -68,6 +68,7 @@ LEGO_EXPORT void RenderIcons2(short param_1, short param_2, short param_3);
 LEGO_EXPORT unsigned char CheckFocussedIcon(void);
 LEGO_EXPORT void UpdateFocussedIconPtr(void);
 LEGO_EXPORT void RemoveIconGroup(unsigned short group);
+void FUN_0046d3a0(void);
 void FUN_0046d590(unsigned short val);
 int FUN_0046e920(struct IconNode *node);
 void FUN_0046d680(struct IconNode *node, struct Sprite *sprite);

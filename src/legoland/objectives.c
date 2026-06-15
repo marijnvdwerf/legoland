@@ -6,12 +6,16 @@
 #include "legoland.h"
 
 #include "bricks.h"
+#include "challenge.h"
 #include "debug_alloc.h"
+#include "help.h"
+#include "icon.h"
 #include "interface.h"
 #include "llidb.h"
 #include "map_object.h"
 #include "objectives.h"
 #include "sound_sfx.h"
+#include "stream.h"
 #include "timer.h"
 
 #pragma intrinsic(strcpy, strlen)
@@ -249,7 +253,27 @@ struct ObjectiveEvent *FUN_00468bb0(const char *format, ...) {
 }
 
 // FUNCTION: LEGOLAND 0x00468c00
-void FUN_00468c00(void) { STUB(); }
+void FUN_00468c00(void) {
+    struct ObjectiveEvent *event;
+    char *at;
+
+    event = DAT_00668724;
+    if (event != NULL) {
+        at = strchr((char *)event->field_8, 0x40);
+        if (at != NULL) {
+            *at = 0;
+            FUN_00498920();
+            FUN_00498630(at + 1);
+            FUN_00498b00();
+            FUN_0046d3a0();
+        }
+        if (DisplayAdvisorHelp((char *)event->field_8, event->type == 0, 0) != 0) {
+            FUN_00444070(5, 0);
+            DAT_00668724 = DAT_00668724->next;
+            FUN_00468940(event);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00468c80
 void FUN_00468c80(struct ObjectiveEvent *event) { STUB(); }

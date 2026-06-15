@@ -34,7 +34,7 @@ void FUN_0046ce20(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046ce60
-LEGO_EXPORT void DisplayAdvisorHelp(void) { STUB(); }
+LEGO_EXPORT int DisplayAdvisorHelp(char *param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0046cee0
 unsigned int FUN_0046cee0(void) {
