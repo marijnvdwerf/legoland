@@ -259,7 +259,24 @@ int FUN_00478c60(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x00478cd0
-void FUN_00478cd0(void) { STUB(); }
+int FUN_00478cd0(char **argv, int argc) {
+    int *out;
+
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)argv, argc, 5, 5) == 0) {
+            return 0;
+        }
+        if (DAT_00669054 == 1) {
+            out = &DAT_00832928;
+            do {
+                argv = argv + 1;
+                *out = atoi(*argv);
+                out = out + 1;
+            } while ((int)out < (int)DAT_0083293c);
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00478d30
 void FUN_00478d30(void) { STUB(); }
