@@ -2395,7 +2395,55 @@ void FUN_0049c8b0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0049cb20
-void FUN_0049cb20(void) { STUB(); }
+void FUN_0049cb20(void) {
+    int count;
+    int len;
+    struct WorkOrder *node;
+    struct WorkOrder buf;
+    struct Worker *idx;
+    struct Worker *scan;
+    char *name;
+
+    count = 0;
+    for (node = DAT_0079a8b0; node != 0; node = node->next) {
+        count++;
+    }
+    SaveGameWrite(&count, 4);
+    node = DAT_0079a8b0;
+    do {
+        if (node == 0) {
+            return;
+        }
+        buf = *node;
+        idx = (struct Worker *)buf.var_1c;
+        if (buf.var_18 != 0) {
+            idx = 0;
+            scan = GardenerList;
+            if (GardenerList == 0) {
+                buf.var_18 = 0;
+                idx = (struct Worker *)buf.var_1c;
+            } else {
+                while (scan != (struct Worker *)buf.var_1c) {
+                    scan = scan->next;
+                    idx = (struct Worker *)((char *)idx + 1);
+                    if (scan == 0) {
+                        buf.var_18 = 0;
+                        idx = (struct Worker *)buf.var_1c;
+                        break;
+                    }
+                }
+            }
+        }
+        buf.var_1c = (int)idx;
+        SaveGameWrite(&buf, 0x3c);
+        name = *(char **)buf.var_4;
+        len = strlen(name) + 1;
+        SaveGameWrite(&len, 4);
+        SaveGameWrite(*(char **)buf.var_4, len);
+        SaveGameWrite(buf.var_10, buf.var_14 * 0x14);
+        node = node->next;
+    } while (1);
+}
 
 // FUNCTION: LEGOLAND 0x0049cc10
 void FUN_0049cc10(void) { STUB(); }
