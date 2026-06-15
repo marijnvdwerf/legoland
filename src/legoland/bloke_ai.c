@@ -7,6 +7,7 @@
 #include "man3d.h"
 #include "math.h"
 #include "objclass.h"
+#include "saveload.h"
 #include "worker.h"
 
 struct BlokeList {
@@ -642,7 +643,35 @@ void FUN_00450a40(struct BlokeRideState *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00450a80
-void FUN_00450a80(void) { STUB(); }
+void FUN_00450a80(void) {
+    int *entry;
+    int count;
+    int record[3];
+    int handle;
+
+    count = 0;
+    entry = (int *)&DAT_006664f8;
+    do {
+        if (*entry != 0) {
+            count++;
+        }
+        entry += 3;
+    } while ((int)entry < (int)&DAT_006670f8);
+    SaveGameWrite(&count, 4);
+    entry = (int *)&DAT_006664f8;
+    do {
+        if (*entry != 0) {
+            record[0] = entry[0];
+            record[1] = entry[1];
+            record[2] = entry[2];
+            handle = *(int *)(*entry + 0xc4);
+            FindeIneList(&handle);
+            record[0] = handle;
+            SaveGameWrite(record, 0xc);
+        }
+        entry += 3;
+    } while ((int)entry < (int)&DAT_006670f8);
+}
 
 // FUNCTION: LEGOLAND 0x00450b10
 void FUN_00450b10(void) { STUB(); }

@@ -47,7 +47,7 @@ LEGO_EXPORT int EndMeasuredBlock(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d880
-LEGO_EXPORT void FindeIneList(void) { STUB(); }
+LEGO_EXPORT int FindeIneList(int *param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d8c0
 LEGO_EXPORT unsigned int GeteListPtr(int idx) {
