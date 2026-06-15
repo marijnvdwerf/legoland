@@ -5,6 +5,8 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include "bloke.h"
+#include "bloke_ai.h"
 #include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
@@ -17,8 +19,11 @@ struct ObjectClass {
     unsigned int field_8;
     unsigned char pad_c[0x1c - 0xc];
     unsigned int field_1c;
-    unsigned short flags;
-    unsigned char pad_22[0xc8 - 0x22];
+    short flags;
+    unsigned char pad_22[0x36 - 0x22];
+    short field_36;
+    short field_38;
+    unsigned char pad_3a[0xc8 - 0x3a];
     void *counters;
     unsigned char pad_cc[0xd0 - 0xcc];
 };
@@ -595,7 +600,69 @@ LEGO_EXPORT unsigned int CalculateRideCode(unsigned int param_1, struct RideStat
 }
 
 // FUNCTION: LEGOLAND 0x004814c0
-LEGO_EXPORT unsigned int Calc_Item_Attractiveness(unsigned int param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
+LEGO_EXPORT unsigned int Calc_Item_Attractiveness(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+    struct ObjectClass *item;
+    struct Bloke *bloke;
+    unsigned int fatigue;
+    unsigned char category;
+    int rating;
+    int blokenum;
+    int counter;
+
+    item = (struct ObjectClass *)param_1;
+    bloke = (struct Bloke *)param_2;
+    fatigue = bloke->field_7e;
+    category = FUN_0044eb10(bloke);
+    rating = item->field_38;
+    blokenum = GetBlokeNum(bloke);
+    counter = GetBlokeCounter(item, blokenum);
+    if ((int)fatigue < rating) {
+        rating -= fatigue;
+    } else {
+        rating = (fatigue - rating) * 2;
+    }
+    rating -= 10;
+    if (rating < 0) {
+        rating = 0;
+    }
+    if (counter == 0) {
+        rating = (item->field_36 - rating) + 100;
+    } else {
+        rating = ((4 - (1 << (counter & 0x1f))) * 0x19 + item->field_36) - rating;
+    }
+    switch (category) {
+    case 0:
+        if (item->flags == 5) {
+            return -100;
+        }
+        break;
+    case 1:
+        if (item->flags == 5 && param_3 == 0) {
+            return -100;
+        }
+        break;
+    case 2:
+        if (item->flags == 5) {
+            if (rating < 0x14) {
+                rating = 0x14;
+            }
+            if (param_3 != 0) {
+                return rating * 2;
+            }
+        }
+        break;
+    case 3:
+    case 4:
+        if (item->flags == 5) {
+            if (rating < 0x14) {
+                rating = 0x32;
+            }
+            return rating * ((-(int)(param_3 != 0) & 2) + 4);
+        }
+        rating = 0;
+    }
+    return rating;
+}
 
 // FUNCTION: LEGOLAND 0x004815e0
 LEGO_EXPORT void CalculateRideCodes(unsigned int param_1) {
