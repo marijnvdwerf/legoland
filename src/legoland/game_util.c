@@ -1299,16 +1299,74 @@ int FUN_0047a5a0(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x0047a650
-void FUN_0047a650(void) { STUB(); }
+int FUN_0047a650(struct CommandArgs *arg, int argc) {
+    struct Vec4 vec;
+
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 4, 4) == 0) {
+            return 0;
+        }
+        FUN_00478700((int *)&vec, (char **)arg, 1);
+        FUN_0046b8c0(&vec);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0047a6a0
-void FUN_0047a6a0(void) { STUB(); }
+int FUN_0047a6a0(struct CommandArgs *arg, int argc) {
+    struct Vec4 vec;
+
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 4, 4) == 0) {
+            return 0;
+        }
+        FUN_00478700((int *)&vec, (char **)arg, 1);
+        FUN_0046b900(&vec);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0047a6f0
-void FUN_0047a6f0(void) { STUB(); }
+int FUN_0047a6f0(struct CommandArgs *arg, int argc) {
+    int rect[4];
+    int x;
+    int y;
+
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 5, 4) == 0) {
+            return 0;
+        }
+        FUN_00478700(rect, (char **)arg, 1);
+        if (DAT_00669054 == 4) {
+            FUN_0046b940((struct Vec4 *)rect);
+            return 1;
+        }
+        for (y = rect[1]; y <= rect[3]; y++) {
+            if (rect[0] <= rect[2]) {
+                x = rect[0];
+                do {
+                    *(unsigned char *)&GameMap[y][x].flags |= 0x40;
+                    x++;
+                } while (x <= rect[2]);
+            }
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0047a7b0
-void FUN_0047a7b0(void) { STUB(); }
+int FUN_0047a7b0(struct CommandArgs *arg, int argc) {
+    struct Vec4 vec;
+
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 4, 4) == 0) {
+            return 0;
+        }
+        FUN_00478700((int *)&vec, (char **)arg, 1);
+        FUN_0046b980(&vec);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0047a800
 int FUN_0047a800(struct CommandArgs *arg, int argc) {
