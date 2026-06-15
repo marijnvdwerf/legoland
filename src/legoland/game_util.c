@@ -451,7 +451,17 @@ int FUN_00479120(struct CommandArgs *arg, int argc) {
 }
 
 // FUNCTION: LEGOLAND 0x004791a0
-void FUN_004791a0(void) { STUB(); }
+int FUN_004791a0(struct CommandArgs *arg, int argc) {
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 2, 1) == 0) {
+            return 0;
+        }
+        if (DAT_0066879c != 0) {
+            FUN_0046b650((const char *)arg->field_4, (struct StringHolder *)DAT_0066879c);
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004791f0
 int FUN_004791f0(struct CommandArgs *arg, int argc) {

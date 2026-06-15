@@ -13,11 +13,14 @@ struct SortNode {
     int val;
 };
 
+struct StringHolder;
+
 void FUN_0046b240(unsigned int param_1);
 unsigned int FUN_0046b280(void);
 void FUN_0046b2d0(void);
 struct NerpsListNode *FUN_0046b4f0(unsigned int param_1);
 void FUN_0046b590(struct SortNode *node);
+void FUN_0046b650(const char *src, struct StringHolder *holder);
 unsigned int FUN_0046b700(void);
 unsigned int FUN_0046b760(void);
 void FUN_0046b790(unsigned int param_1, unsigned int param_2);
