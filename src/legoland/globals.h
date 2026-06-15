@@ -280,6 +280,8 @@ extern float DAT_004ab4d8;
 extern float DAT_004ab518;
 // 0x004ab520
 extern float DAT_004ab520;
+// 0x004ab528
+extern float DAT_004ab528;
 // 0x004ab548
 extern double DAT_004ab548;
 // 0x004ab560 c_dfDIKeyboard, 0x004ab578 c_dfDIMouse — declared in <dinput.h>, defined in globals.c
@@ -1991,6 +1993,8 @@ extern struct InterfaceResearchNode *DAT_00668ed8;
 extern unsigned int DAT_00668f98;
 // 0x00668fa4
 extern unsigned int DAT_00668fa4;
+// 0x00668fac
+extern unsigned int DAT_00668fac;
 // 0x00668fc0
 extern void *DAT_00668fc0;
 // 0x00668fc4
@@ -2466,6 +2470,8 @@ extern unsigned int DAT_007fdb88;
 extern int DAT_007fdca0;
 // 0x007fdca4
 extern unsigned int DAT_007fdca4;
+// 0x007fdca8
+extern float DAT_007fdca8;
 // 0x007fdcc0
 extern struct Sprite *DAT_007fdcc0;
 // 0x007fdcc4

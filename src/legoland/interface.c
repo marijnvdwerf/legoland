@@ -1646,7 +1646,27 @@ void FUN_00476630(struct MovieHandle *h) {
 }
 
 // FUNCTION: LEGOLAND 0x00476680
-void FUN_00476680(void) { STUB(); }
+void FUN_00476680(void) {
+    LARGE_INTEGER freq;
+    LARGE_INTEGER count;
+    unsigned int state;
+
+    state = DAT_00668fac;
+    if (state == 0) {
+        if (QueryPerformanceFrequency(&freq) == 0) {
+            DAT_00668fac = state = 1;
+        } else {
+            DAT_00668fac = state = 2;
+            DAT_007fdca8 = DAT_004ab528 / (float)freq.QuadPart;
+        }
+    }
+    if (state == 2) {
+        QueryPerformanceCounter(&count);
+        FUN_00458930((float)count.QuadPart * DAT_007fdca8);
+        return;
+    }
+    GetTickCount();
+}
 
 // FUNCTION: LEGOLAND 0x004766f0
 void FUN_004766f0(void) { STUB(); }
