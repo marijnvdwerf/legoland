@@ -276,7 +276,33 @@ void FUN_00468c00(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00468c80
-void FUN_00468c80(struct ObjectiveEvent *event) { STUB(); }
+void FUN_00468c80(struct ObjectiveEvent *event) {
+    struct ObjectiveEvent *node;
+    struct ObjectiveEvent *prev;
+    int key;
+
+    node = DAT_00668728;
+    prev = NULL;
+    if (node != NULL) {
+        key = event->sort_key;
+        while (node->sort_key <= key) {
+            prev = node;
+            node = node->next;
+            if (node == NULL) {
+                break;
+            }
+        }
+        if (prev != NULL) {
+            event->next = prev->next;
+            prev->next = event;
+            DAT_0066872c[event->type] += 1;
+            return;
+        }
+    }
+    DAT_00668728 = event;
+    event->next = NULL;
+    DAT_0066872c[event->type] += 1;
+}
 
 // FUNCTION: LEGOLAND 0x00468cd0
 struct ObjectiveEvent *FUN_00468cd0(unsigned int type, int sort_key) {
