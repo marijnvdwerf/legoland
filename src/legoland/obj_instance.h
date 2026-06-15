@@ -8,9 +8,6 @@ struct ObjClassNode;
 struct ObjInstance;
 struct ObjClassKey;
 struct ResFile;
-struct Bloke;
-
-int IsFavouriteFood(struct Bloke *bloke, unsigned int food);
 
 char *FUN_00489e60(struct ResFile *file, char *dest, int maxlen);
 

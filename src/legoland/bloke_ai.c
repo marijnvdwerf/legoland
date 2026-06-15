@@ -125,7 +125,7 @@ LEGO_EXPORT int IsFavouriteAttraction(struct Bloke *bloke, unsigned int attracti
 }
 
 // FUNCTION: LEGOLAND 0x0044e870
-LEGO_EXPORT unsigned char IsFavouriteFood(struct Bloke *bloke, unsigned int food) {
+LEGO_EXPORT int IsFavouriteFood(struct Bloke *bloke, unsigned int food) {
     return bloke->favourite_food == food;
 }
 
