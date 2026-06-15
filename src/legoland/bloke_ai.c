@@ -453,7 +453,28 @@ void FUN_0044f4a0(void) { STUB(); }
 void FUN_0044f610(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044fe10
-void FUN_0044fe10(void) { STUB(); }
+void FUN_0044fe10(struct Bloke *bloke) {
+    int ty;
+    int tx;
+    char dir;
+
+    switch (bloke->param_action) {
+    case 0:
+        tx = DAT_0066b460 << 8;
+        ty = DAT_0066b464 << 8;
+        bloke->field_24 = tx;
+        bloke->field_28 = ty;
+        dir = CalcMoveLine(bloke->field_68, bloke->field_6c, tx, ty, bloke->field_98);
+        bloke->field_e = 0xf;
+        bloke->field_73 = dir + 0x10;
+        NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+        bloke->param_action++;
+        break;
+    case 1:
+        NewLongTermAction(bloke, 6);
+        return;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0044fe80
 void FUN_0044fe80(void) { STUB(); }

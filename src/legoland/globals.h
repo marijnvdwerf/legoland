@@ -2000,6 +2000,8 @@ extern void *DAT_0066b450;
 extern void *DAT_0066b458;
 // 0x0066b460
 extern unsigned int DAT_0066b460;
+// 0x0066b464
+extern unsigned int DAT_0066b464;
 // 0x0066b468
 extern unsigned int DAT_0066b468;
 // 0x0066b46c
