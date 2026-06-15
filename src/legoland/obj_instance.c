@@ -202,4 +202,4 @@ LEGO_EXPORT int GetAllBlokesOffRide(struct Ride *ride, unsigned short uid) {
 }
 
 // FUNCTION: LEGOLAND 0x0048a3e0
-LEGO_EXPORT void GetObjectUID(void) { STUB(); }
+LEGO_EXPORT int GetObjectUID(int *param_1, int param_2) { STUB(); }

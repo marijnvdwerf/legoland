@@ -3,11 +3,13 @@
 #include <stdlib.h>
 #include "bloke.h"
 #include "debug_alloc.h"
+#include "gamemap.h"
 #include "globals.h"
 #include "legoland.h"
 #include "llidb.h"
 #include "man3d.h"
 #include "math.h"
+#include "obj_instance.h"
 #include "objclass.h"
 #include "saveload.h"
 #include "worker.h"
@@ -467,7 +469,61 @@ LEGO_EXPORT void RemoveBlokeFromList(struct BlokeList *list, struct Bloke *bloke
 }
 
 // FUNCTION: LEGOLAND 0x0044f4a0
-void FUN_0044f4a0(void) { STUB(); }
+int FUN_0044f4a0(struct Bloke *bloke, int objclass, int param_3) {
+    int *node;
+    int obj;
+    unsigned short uid;
+    struct MapElement *element;
+    unsigned int x;
+    unsigned int y;
+
+    node = (int *)malloc(0x14);
+    if (node == 0) {
+        // STRING: LEGOLAND 0x004b8458
+        DBPrintf("Couldn't allocate BlokeOnRide for %s\n", *(unsigned int *)((char *)bloke + 0x78));
+        return 0;
+    }
+    obj = (int)GetFirstObjectMatching(*(struct RenderObjectVtable **)(objclass + 0xc4));
+    if (obj == 0) {
+        // STRING: LEGOLAND 0x004b8480
+        DBPrintf("Couldn't find instance of %s\n", *(unsigned int *)((char *)bloke + 0x78));
+        return 0;
+    }
+    x = *(unsigned char *)(obj + 4);
+    y = *(unsigned char *)(obj + 5);
+    FUN_00489f90((const struct ObjClassKey *)&x);
+    node[0] = 0;
+    node[1] = 0;
+    node[2] = 0;
+    node[3] = 0;
+    node[4] = 0;
+    node[2] = (int)bloke;
+    bloke->field_58 = param_3;
+    node[4] = *(int *)((char *)bloke + 4);
+    *(unsigned char *)&bloke->flags |= 0x20;
+    bloke->field_e = 0;
+    bloke->field_10 = 0;
+    bloke->field_35 = 0;
+    if (objclass == *(int *)(DAT_006661c4 + 0xc)) {
+        obj = (int)GetFirstObjectMatching((struct RenderObjectVtable *)DAT_006661c4);
+        *(unsigned char *)(node + 3) = *(unsigned char *)(obj + 4);
+        *((unsigned char *)node + 0xd) = *(unsigned char *)(obj + 5);
+    } else {
+        uid = (unsigned short)GetObjectUID((int *)((char *)bloke + 0x68), objclass);
+        *(unsigned short *)(node + 3) = uid;
+    }
+    x = *(unsigned char *)(node + 3);
+    y = *((unsigned char *)node + 0xd);
+    if (x < lpConfig->width && y < lpConfig->height) {
+        element = GameMap[y] + x;
+    } else {
+        element = 0;
+    }
+    *(unsigned char *)&element->flags |= 4;
+    PutBlokeInList((struct BlokeList *)objclass, (struct Bloke *)node);
+    DAT_00668610 |= 0x20;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0044f610
 void FUN_0044f610(void) { STUB(); }
