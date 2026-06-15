@@ -1726,6 +1726,8 @@ extern unsigned int DAT_00668200;
 extern unsigned int DAT_00668204;
 // 0x00668208
 extern struct Sprite *DAT_00668208;
+// 0x0066820c
+extern char DAT_0066820c[0x404];
 // 0x00668610
 extern unsigned int DAT_00668610;
 // 0x00668614

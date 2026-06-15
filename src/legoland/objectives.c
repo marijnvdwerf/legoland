@@ -1,3 +1,5 @@
+#include <stdarg.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
@@ -11,6 +13,8 @@
 #include "objectives.h"
 #include "sound_sfx.h"
 #include "timer.h"
+
+#pragma intrinsic(strlen)
 
 struct ThemeQueryArg {
     unsigned char pad_0[0xc];
@@ -146,7 +150,45 @@ void FUN_004689a0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004689f0
-unsigned int FUN_004689f0(char *param_1, char *param_2, int param_3) { STUB(); }
+unsigned int FUN_004689f0(char *param_1, char *param_2, int param_3) {
+    void *buffer;
+    unsigned int index;
+
+    if (param_3 != 0) {
+        if (param_1 != NULL) {
+            if (param_2 != NULL) {
+                buffer = malloc(strlen(param_1) + strlen(param_2) + 2);
+                DAT_007fe120[DAT_00668720] = (unsigned int)buffer;
+                if (buffer != NULL) {
+                    // STRING: LEGOLAND 0x004b9f90
+                    sprintf(buffer, "%s%c%s", param_1, 0x40, param_2);
+                    index = DAT_00668720;
+                    DAT_00668720 = DAT_00668720 + 1;
+                    return index;
+                }
+            } else {
+                buffer = malloc(strlen(param_1) + 1);
+                DAT_007fe120[DAT_00668720] = (unsigned int)buffer;
+                if (buffer != NULL) {
+                    sprintf(buffer, (char *)DAT_004b8bbc, param_1);
+                    index = DAT_00668720;
+                    DAT_00668720 = DAT_00668720 + 1;
+                    return index;
+                }
+            }
+        } else {
+            index = DAT_00668720;
+            DAT_007fe120[index] = 0;
+            DAT_00668720 = index + 1;
+            return index;
+        }
+    } else {
+        DAT_007fe120[DAT_00668720] = (unsigned int)param_1;
+    }
+    index = DAT_00668720;
+    DAT_00668720 = DAT_00668720 + 1;
+    return index;
+}
 
 // FUNCTION: LEGOLAND 0x00468b00
 void FUN_00468b00(struct ObjectiveEvent *event) {
