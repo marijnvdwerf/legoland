@@ -18,7 +18,8 @@ typedef int (*RideIntCallback)();
 typedef unsigned int *(*RidePtrCallback)();
 
 struct CallbackTable {
-    /* 0x00 */ unsigned char pad_0[0x8c];
+    /* 0x00 */ unsigned char pad_0[0x88];
+    /* 0x88 */ struct LibraryNode *library;
     /* 0x8c */ RideCallback cb_8c;
     /* 0x90 */ RideCallback cb_90;
     /* 0x94 */ RideCallback cb_94;
@@ -29,16 +30,24 @@ struct CallbackTable {
     /* 0xa8 */ RideCallback cb_a8;
     /* 0xac */ RideCallback cb_ac;
     /* 0xb0 */ RideCallback cb_b0;
-    /* 0xb4 */ unsigned char pad_b4[4];
+    /* 0xb4 */ RideCallback cb_b4;
     /* 0xb8 */ RideIntCallback cb_b8;
     /* 0xbc */ RideIntCallback cb_bc;
     /* 0xc0 */ RideIntCallback cb_c0;
+    /* 0xc4 */ void *context;
 };
 
 struct ClassNode {
     /* 0x00 */ char *name;
     /* 0x04 */ unsigned char pad_4[8];
     /* 0x0c */ struct CallbackTable *iface;
+};
+
+struct LibraryNode {
+    /* 0x00 */ struct LibraryNode *next;
+    /* 0x04 */ void *module;
+    /* 0x08 */ int refcount;
+    /* 0x0c */ void (*init)(void *context, int *out);
 };
 
 LEGO_EXPORT void IncrementObjectCount(struct ObjectCount *count);

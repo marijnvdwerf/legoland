@@ -1,3 +1,5 @@
+#include <windows.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
@@ -410,7 +412,85 @@ LEGO_EXPORT int GetBlokeCounter(struct ObjectClass *cls, int index) {
 }
 
 // FUNCTION: LEGOLAND 0x00480f00
-LEGO_EXPORT int LoadObjectLibrary(void *obj, const char *name) { STUB(); }
+LEGO_EXPORT int LoadObjectLibrary(void *object, const char *name) {
+    struct CallbackTable *obj;
+    struct LibraryNode *node;
+    struct LibraryNode *staging;
+    int results[14];
+    char fname[256];
+    char path[260];
+
+    obj = (struct CallbackTable *)object;
+    _splitpath(name, 0, 0, fname, 0);
+    NewObjectPtr = &DAT_007fd610;
+    // STRING: LEGOLAND 0x004bcea4
+    sprintf(path, ".\\dlls\\%s.dll", fname);
+    ((struct LibraryNode *)NewObjectPtr)->module = LoadLibraryExA(path, 0, 0);
+    if (((struct LibraryNode *)NewObjectPtr)->module == 0) {
+        return 0;
+    }
+    node = DAT_00669244;
+    while (node != 0) {
+        if (node->module == ((struct LibraryNode *)NewObjectPtr)->module) {
+            NewObjectPtr = node;
+            node->refcount++;
+            obj->library = node;
+            goto loaded;
+        }
+        node = node->next;
+    }
+    ((struct LibraryNode *)NewObjectPtr)->next = DAT_00669244;
+    ((struct LibraryNode *)NewObjectPtr)->refcount = 1;
+    staging = (struct LibraryNode *)malloc(sizeof(struct LibraryNode));
+    node = (struct LibraryNode *)NewObjectPtr;
+    DAT_00669244 = staging;
+    staging->next = node->next;
+    staging->module = node->module;
+    staging->refcount = node->refcount;
+    staging->init = node->init;
+    obj->library = DAT_00669244;
+    node = DAT_00669244;
+loaded:
+    memset(results, 0, sizeof(results));
+    node->init(obj->context, results);
+    if (results[0] != 0) {
+        obj->cb_8c = (RideCallback)results[0];
+    }
+    if (results[1] != 0) {
+        obj->cb_90 = (RideCallback)results[1];
+    }
+    if (results[2] != 0) {
+        obj->cb_94 = (RideCallback)results[2];
+    }
+    if (results[3] != 0) {
+        obj->cb_98 = (RideCallback)results[3];
+    }
+    if (results[4] != 0) {
+        obj->cb_9c = (RideCallback)results[4];
+    }
+    if (results[5] != 0) {
+        obj->cb_a0 = (RidePtrCallback)results[5];
+    }
+    if (results[6] != 0) {
+        obj->cb_a8 = (RideCallback)results[6];
+    }
+    if (results[8] != 0) {
+        obj->cb_ac = (RideCallback)results[8];
+    }
+    if (results[13] != 0) {
+        obj->cb_c0 = (RideIntCallback)results[13];
+    }
+    obj->cb_b4 = (RideCallback)results[10];
+    obj->cb_b8 = (RideIntCallback)results[11];
+    obj->cb_bc = (RideIntCallback)results[12];
+    if (results[9] != 0) {
+        obj->cb_b0 = (RideCallback)results[9];
+    }
+    if (results[7] != 0) {
+        ((void (*)(void *))results[7])(obj->context);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004810f0
 LEGO_EXPORT void UnLoadObjectLibrary(void *library) { STUB(); }

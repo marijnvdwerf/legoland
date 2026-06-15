@@ -2000,6 +2000,9 @@ extern int DAT_0066920c;
 extern void *DAT_00669210;
 // 0x00669240
 extern LEGO_EXPORT void *ObjectClassList;
+// 0x00669244
+struct LibraryNode;
+extern struct LibraryNode *DAT_00669244;
 // 0x00669248
 extern void *DAT_00669248;
 // 0x0066924c
@@ -2412,6 +2415,8 @@ extern struct ObjTableEntry DAT_007cb5e0;
 extern unsigned char DAT_007cb600[1];
 // 0x007fd600
 extern struct SortNode *DAT_007fd600;
+// 0x007fd610
+extern struct LibraryNode DAT_007fd610;
 // 0x007fd620
 extern LEGO_EXPORT void *NewObjectPtr;
 // 0x007fd624

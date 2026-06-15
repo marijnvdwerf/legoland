@@ -1,6 +1,7 @@
 #include "globals.h"
 #include <dinput.h> /* this TU defines the DInput data symbols (c_dfDI*, GUID_Sys*, DAT_00668d78) */
 #include "icon.h"
+#include "objclass.h"
 
 // GLOBAL: LEGOLAND 0x004ab38c
 float DAT_004ab38c;
@@ -2700,6 +2701,9 @@ void *DAT_00669210;
 // GLOBAL: LEGOLAND 0x00669240
 LEGO_EXPORT void *ObjectClassList;
 
+// GLOBAL: LEGOLAND 0x00669244
+struct LibraryNode *DAT_00669244;
+
 // GLOBAL: LEGOLAND 0x00669248
 void *DAT_00669248;
 
@@ -3317,6 +3321,9 @@ unsigned char DAT_007cb600[1];
 
 // GLOBAL: LEGOLAND 0x007fd600
 struct SortNode *DAT_007fd600;
+
+// GLOBAL: LEGOLAND 0x007fd610
+struct LibraryNode DAT_007fd610;
 
 // GLOBAL: LEGOLAND 0x007fd620
 LEGO_EXPORT void *NewObjectPtr;
