@@ -1251,7 +1251,7 @@ void FUN_00450450(struct BlokeRideState *bloke) {
         counter = bloke->field_58 - 1;
         bloke->field_58 = counter;
         if (counter < 0) {
-            bloke->field_60 = 2;
+            bloke->field_60++;
             return;
         }
         break;
