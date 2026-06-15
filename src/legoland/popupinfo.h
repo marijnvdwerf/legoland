@@ -2,6 +2,9 @@
 
 #include "legoland.h"
 
+struct NewObjInfo;
+
+void FUN_00471c10(struct NewObjInfo *param_1);
 LEGO_EXPORT int UnLoad_PopUpInfo(void);
 void FUN_004714e0(void);
 LEGO_EXPORT void ResetInfoStruct(void);

@@ -7,6 +7,7 @@
 
 #include "bricks.h"
 #include "challenge.h"
+#include "clipping.h"
 #include "debug_alloc.h"
 #include "draw.h"
 #include "help.h"
@@ -16,6 +17,7 @@
 #include "map_object.h"
 #include "nerps.h"
 #include "objectives.h"
+#include "popupinfo.h"
 #include "sound_music.h"
 #include "sound_sfx.h"
 #include "stream.h"
@@ -56,6 +58,13 @@ struct NerpsTarget {
     unsigned char flags_10;
     unsigned char pad_11[0x40 - 0x11];
     unsigned int field_40;
+};
+
+struct RewardObject {
+    unsigned int id;
+    unsigned char pad_4[0x8 - 0x4];
+    unsigned int flags;
+    struct NewObjInfo *info;
 };
 
 // FUNCTION: LEGOLAND 0x00468810
@@ -749,7 +758,31 @@ void FUN_004693b0(unsigned int type) {
 unsigned int FUN_00469400(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00469900
-void FUN_00469900(struct NerpsArg *object, unsigned int a, unsigned int b) { STUB(); }
+void FUN_00469900(struct NerpsArg *object, unsigned int a, unsigned int b) {
+    struct RewardObject *obj;
+    unsigned int flags;
+
+    obj = (struct RewardObject *)object;
+    if (obj == NULL) {
+        DAT_0066871c = 1;
+        return;
+    }
+    flags = obj->flags;
+    if ((flags & 1) != 0) {
+        if ((flags & 0x10002) == 2) {
+            // STRING: LEGOLAND 0x004ba6e4
+            DBPrintf("Not giving %d.. Already got it\n", obj->id);
+            DAT_0066871c = 1;
+            return;
+        }
+        obj->flags = (flags & 0xfffeffff) | 2;
+        FUN_0048a6e0((struct ClippedObject *)obj);
+        if (a != 0) {
+            FUN_00471c10(obj->info);
+        }
+    }
+    DAT_0066871c = 1;
+}
 
 // FUNCTION: LEGOLAND 0x00469980
 void FUN_00469980(struct ThemeQueryArg *arg) {
