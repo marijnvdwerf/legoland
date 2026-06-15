@@ -6,6 +6,7 @@
 #include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "math.h"
 #include "objclass.h"
 
 struct ObjectClass {
@@ -238,7 +239,43 @@ void FUN_00480b70(struct ObjClassNames *param) {
 }
 
 // FUNCTION: LEGOLAND 0x00480bb0
-LEGO_EXPORT unsigned int BasicObjectDCalcCursor(unsigned int param_1, unsigned int param_2) { STUB(); }
+LEGO_EXPORT void BasicObjectDCalcCursor(unsigned int param_1, struct Point *param_2) {
+    struct MapElement **map;
+    struct LegoConfig *config;
+    int x;
+    int y;
+    unsigned int buf[5];
+
+    map = GameMap;
+    config = lpConfig;
+    x = param_2->x;
+    if (x < 0 || x >= (int)config->width || (y = param_2->y) < 0 || y >= (int)config->height) {
+        *(unsigned short *)&buf[3] = 0x40;
+    } else {
+        memcpy(buf, &GameMap[y][x], 20);
+    }
+    memcpy(QueryCursor.field_1414, (char *)QueryClass + 0x3c, 20);
+    QueryCursor.field_1828 = 8;
+    if ((buf[3] & 0x8a0) != 0) {
+        QueryCursor.field_1828 = 9;
+        QueryCursor.field_1404 = ((unsigned char *)&QueryObj)[0];
+        QueryCursor.field_1408 = ((unsigned char *)&QueryObj)[1];
+    } else {
+        QueryCursor.field_1404 = param_2->x;
+        QueryCursor.field_1408 = param_2->y;
+    }
+    if ((int)QueryCursor.field_1404 < 0 || (int)QueryCursor.field_1404 >= (int)config->width ||
+        (int)QueryCursor.field_1408 < 0 || (int)QueryCursor.field_1408 >= (int)config->height) {
+        *(unsigned short *)&buf[3] = 0x40;
+    } else {
+        memcpy(buf, &map[QueryCursor.field_1408][QueryCursor.field_1404], 20);
+    }
+    if ((buf[3] & 0x40) != 0) {
+        FUN_0045f480(&QueryCursor, 1);
+        return;
+    }
+    FUN_0045f460(&QueryCursor);
+}
 
 // FUNCTION: LEGOLAND 0x00480cd0
 LEGO_EXPORT void SetStandardCallbacks(struct CallbackTable *table) {

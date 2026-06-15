@@ -47,7 +47,8 @@ LEGO_EXPORT unsigned int GetObjSalvageValue(unsigned int param_1, unsigned int p
 LEGO_EXPORT struct ObjInstance *CreateObjectInstance(unsigned int param_1, unsigned short *param_2);
 LEGO_EXPORT int GetObjCost(struct CostInfo *info);
 LEGO_EXPORT unsigned int GetObjRepairCost(unsigned int param_1, unsigned int param_2);
-LEGO_EXPORT unsigned int BasicObjectDCalcCursor(unsigned int param_1, unsigned int param_2);
+struct Point;
+LEGO_EXPORT void BasicObjectDCalcCursor(unsigned int param_1, struct Point *param_2);
 LEGO_EXPORT void ClearObjectCounters(void);
 LEGO_EXPORT unsigned int ObjCount(struct ObjCountWrap *wrap);
 LEGO_EXPORT void FreeBlokeCounters(void);
