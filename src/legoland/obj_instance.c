@@ -132,7 +132,20 @@ unsigned short FUN_00489fd0(const struct ObjClassKey *key) {
 }
 
 // FUNCTION: LEGOLAND 0x0048a010
-LEGO_EXPORT void AddInstanceToList(void) { STUB(); }
+LEGO_EXPORT void AddInstanceToList(struct InstanceNode *node) {
+    struct InstanceList *list;
+
+    list = node->list;
+    node->next = 0;
+    node->prev = 0;
+    if (list->next == 0) {
+        list->next = node;
+        return;
+    }
+    node->prev = list->next;
+    list->next->next = node;
+    node->list->next = node;
+}
 
 // FUNCTION: LEGOLAND 0x0048a040
 void FUN_0048a040(void) {
