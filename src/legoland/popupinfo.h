@@ -4,6 +4,7 @@
 
 struct NewObjInfo;
 
+LEGO_EXPORT void InitPopUpInfo(void);
 void FUN_00471c10(struct NewObjInfo *param_1);
 LEGO_EXPORT int UnLoad_PopUpInfo(void);
 void FUN_004714e0(void);

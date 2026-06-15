@@ -2596,6 +2596,9 @@ unsigned int DAT_00668e34;
 // GLOBAL: LEGOLAND 0x00668e38
 unsigned int DAT_00668e38;
 
+// GLOBAL: LEGOLAND 0x00668e3c
+void *DAT_00668e3c;
+
 // GLOBAL: LEGOLAND 0x00668e40
 struct InterfaceListNode *DAT_00668e40;
 

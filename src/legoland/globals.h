@@ -1932,6 +1932,8 @@ extern unsigned int DAT_00668e20[4];
 extern unsigned int DAT_00668e34;
 // 0x00668e38
 extern unsigned int DAT_00668e38;
+// 0x00668e3c
+extern void *DAT_00668e3c;
 // 0x00668e40
 extern struct InterfaceListNode *DAT_00668e40;
 // 0x00668e44

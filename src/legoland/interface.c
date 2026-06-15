@@ -1,6 +1,7 @@
 #include "interface.h"
 #include <stdlib.h>
 #include <string.h>
+#include "challenge.h"
 #include "globals.h"
 #include "icon.h"
 #include "legoland.h"
@@ -63,8 +64,15 @@ struct BuildObject {
     /* 0x58 */ void *field_58;
     /* 0x5c */ void *field_5c;
     /* 0x60 */ void *field_60;
-    unsigned char pad_64[0xc4 - 0x64];
+    unsigned char pad_64[0x7c - 0x64];
+    /* 0x7c */ char *field_7c;
+    unsigned char pad_80[0xc4 - 0x80];
     /* 0xc4 */ struct ObjectClassInfo *field_c4;
+};
+
+struct PathControlElem {
+    unsigned char pad_0[0xc];
+    /* 0x0c */ struct BuildObject *obj;
 };
 
 struct EventNode {
@@ -381,7 +389,153 @@ void FUN_00474990(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004749d0
-LEGO_EXPORT int InitGameInterface(int a) { STUB(); }
+LEGO_EXPORT int InitGameInterface(int a) {
+    struct PathControlElem *element;
+    struct BuildObject *obj;
+    struct IconNode *icon;
+    struct SpriteIcon *bar;
+
+    if (DAT_00668ebc == 0) {
+        DAT_00668ebc = 1;
+        // STRING: LEGOLAND 0x004b8a70
+        LLIDB_FindElement("PATH CONTROL", (unsigned int *)&element, 0);
+        obj = element->obj;
+        DAT_007fd624 = obj;
+        icon = InsertIcon((short)DAT_004bb04c[8], (short)DAT_004bb04c[9], 0x93, DAT_007fdd50);
+        icon->field_3c = 0xffffffff;
+        icon->field_38 = (unsigned int)obj->field_7c;
+        icon->field_18 = 1;
+        icon->field_1c = DAT_007fdcd0;
+        icon->field_20p = DAT_007fdd50;
+        icon->field_8 = obj;
+        icon->field_28 = (void *)RenderGBarSpriteIcon;
+        icon->field_2c = (void *)FUN_00474fc0;
+        icon->field_34 = (icon->field_34 & 0xfffffdff) | 0x300a;
+
+        icon = InsertIcon((short)DAT_004bb04c[10], (short)DAT_004bb04c[11], 0x93, DAT_007fdd54);
+        icon->field_3c = 0x5a;
+        icon->field_38 = (unsigned int)GetString(0x5a);
+        icon->field_34 |= 0x6002;
+        icon->field_2c = (void *)FUN_00475000;
+        icon->field_18 = 2;
+        icon->field_1c = DAT_007fdcd4;
+        icon->field_20p = DAT_007fdd54;
+
+        icon = InsertIcon((short)DAT_004bb04c[12], (short)DAT_004bb04c[13], 0x93, DAT_007fdd58);
+        icon->field_3c = 0x5b;
+        icon->field_38 = (unsigned int)GetString(0x5b);
+        icon->field_34 |= 0x6002;
+        icon->field_2c = (void *)FUN_00475040;
+        icon->field_18 = 3;
+        icon->field_1c = DAT_007fdcd8;
+        icon->field_20p = DAT_007fdd58;
+
+        icon = InsertIcon((short)DAT_004bb04c[14], (short)DAT_004bb04c[15], 0x93, DAT_007fdd5c);
+        icon->field_3c = 0x5c;
+        icon->field_38 = (unsigned int)GetString(0x5c);
+        icon->field_34 |= 0x6002;
+        icon->field_2c = (void *)FUN_00475080;
+        icon->field_18 = 4;
+        icon->field_1c = DAT_007fdcdc;
+        icon->field_20p = DAT_007fdd5c;
+
+        icon = InsertIcon((short)DAT_004bb04c[16], (short)DAT_004bb04c[17], 0x93, DAT_007fdd60);
+        icon->field_3c = 0x5d;
+        icon->field_38 = (unsigned int)GetString(0x5d);
+        icon->field_34 |= 0x6002;
+        icon->field_2c = (void *)FUN_00475120;
+        icon->field_20p = DAT_007fdd60;
+
+        icon = InsertIcon((short)DAT_004bb04c[0], (short)DAT_004bb04c[1], 0x9a, DAT_007fdd40);
+        icon->field_3c = 0x5e;
+        icon->field_38 = (unsigned int)GetString(0x5e);
+        icon->field_34 |= 0x6002;
+        icon->field_2c = (void *)FUN_004751a0;
+        DAT_007fdd70[0] = (struct InterfaceProfileObj *)icon;
+
+        icon = InsertIcon((short)DAT_004bb04c[2], (short)DAT_004bb04c[3], 0x9a, DAT_007fdd44);
+        DAT_00668e3c = icon;
+        icon->field_3c = 0x5f;
+        icon->field_38 = (unsigned int)GetString(0x5f);
+        icon->field_34 |= 0x6002;
+        icon->field_2c = (void *)FUN_004754b0;
+        DAT_007fdd70[1] = (struct InterfaceProfileObj *)icon;
+
+        icon = InsertIcon((short)DAT_004bb04c[4], (short)DAT_004bb04c[5], 0x9a, DAT_007fdd48);
+        icon->field_3c = 0x60;
+        icon->field_38 = (unsigned int)GetString(0x60);
+        icon->field_34 |= 0x6002;
+        icon->field_2c = (void *)FUN_004753a0;
+        DAT_007fdd70[2] = (struct InterfaceProfileObj *)icon;
+
+        icon = InsertIcon((short)DAT_004bb04c[6], (short)DAT_004bb04c[7], 0x9a, DAT_007fdd4c);
+        icon->field_3c = 0x61;
+        icon->field_38 = (unsigned int)GetString(0x61);
+        icon->field_34 |= 0x6002;
+        icon->field_2c = (void *)FUN_004752a0;
+        DAT_007fdd70[3] = (struct InterfaceProfileObj *)icon;
+
+        // STRING: LEGOLAND 0x004bb48c
+        bar = LoadSpriteIcon("Bar_Energy.lls", 4, 0x180, 6, 0x9a);
+        bar->field_28 = (void *)RenderEnergyBar;
+        bar->field_34 |= 0x400a;
+
+        // STRING: LEGOLAND 0x004bb47c
+        bar = LoadSpriteIcon("Bar_Coins.lls", 4, 0x1c, 6, 0x9a);
+        bar->field_28 = (void *)RenderMoneyBar;
+        bar->field_34 |= 0x400a;
+
+        icon = InsertIcon(0x19e, 0x179, 0x9a, DAT_00668e94);
+        icon->field_3c = 0x24e;
+        icon->field_38 = (unsigned int)GetString(0x24e);
+        icon->field_18p = DAT_00668e98;
+        icon->field_34 |= 0x600a;
+        icon->field_2c = (void *)FUN_00474f40;
+        icon->field_28 = (void *)FUN_0046e040;
+        DAT_00668e9c = icon;
+        icon->field_34 |= 0x400;
+        FUN_00491240((const char *)&DAT_0066861c);
+
+        icon = InsertIcon(0x20a, 0x17a, 0x93, DAT_00668ea0);
+        icon->field_20p = NULL;
+        icon->field_1c = NULL;
+        icon->field_3c = 0x24f;
+        icon->field_38 = (unsigned int)GetString(0x24f);
+        icon->field_2c = (void *)FUN_00474fa0;
+        icon->field_34 |= 0x4008;
+        icon->field_28 = (void *)FUN_00443e30;
+        DAT_00668eb8 = (unsigned int)icon;
+        if (a != 0 || FUN_0046b280() == 0) {
+            FUN_0046b240(0);
+            if (DAT_0080ffe5 == 2) {
+                FUN_004748a0((void *)0);
+            } else {
+                FUN_004748a0((void *)1);
+            }
+        } else {
+            FUN_0046b240(1);
+        }
+        InitPopUpInfo();
+    }
+    FUN_00474590();
+    DAT_007fe114 = 0;
+    DAT_007fe117 = 0;
+    DAT_007fe116 = 0;
+    DAT_007fe115 = 0;
+    ResetMoveAWorkerStruct();
+    DAT_007fdd80 = 2;
+    DAT_007fdd8c = 0x86;
+    lpConfig->field_20 = 0;
+    lpConfig->field_10 = 0x280;
+    DAT_007fdd84 = 1;
+    DAT_007fdd88 = 0;
+    DAT_004baff8 = 5;
+    FUN_0046fb40(0xd2);
+    FUN_00476180();
+    if (DAT_00810140 != 0) {
+        FUN_00474990();
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00474ed0
 void FUN_00474ed0(void) {

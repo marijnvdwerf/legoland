@@ -38,7 +38,16 @@ int FUN_00474920(void);
 int FUN_00474970(void);
 LEGO_EXPORT int InitGameInterface(int a);
 void FUN_00474ed0(void);
+unsigned char FUN_00474f40(void *context, unsigned int flags, const char *a, const char *b);
+unsigned char FUN_00474fa0(unsigned int a, unsigned char flags);
+unsigned char FUN_00474fc0(void *a, unsigned int flags);
 unsigned char FUN_00474f80(unsigned int a, unsigned int flags);
+unsigned char FUN_00475000(unsigned int a, unsigned int flags);
+unsigned char FUN_00475040(unsigned int a, unsigned int flags);
+unsigned char FUN_004751a0(struct IconNode *param_1, unsigned char flags);
+unsigned char FUN_004752a0(struct IconNode *param_1, unsigned char flags);
+unsigned char FUN_004753a0(struct IconNode *param_1, unsigned char flags);
+unsigned char FUN_004754b0(struct IconNode *param_1, unsigned char flags);
 unsigned char FUN_00475080(unsigned int a, unsigned char flags);
 unsigned char FUN_00475120(unsigned int a, unsigned int flags, unsigned int c, unsigned int d);
 LEGO_EXPORT void DelObjectList(void);
@@ -48,6 +57,7 @@ void FUN_00476050(void);
 void FUN_004760a0(void);
 void FUN_00476070(int mask, unsigned int value);
 void FUN_00476140(int index, int value);
+void FUN_00476180(void);
 void FUN_004771f0(const char *filename, unsigned int param_2, unsigned int param_3);
 /* Both are STUBs with unverified signatures, called only from castle.c — the call
  * sites pass 4 args to FUN_004775b0 (and that 4-push form is what matches the

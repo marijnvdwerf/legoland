@@ -94,5 +94,8 @@ LEGO_EXPORT int RenderBoxIcon(struct IconNode *node);
 LEGO_EXPORT int RenderScroll_Icons(struct IconNode *node);
 LEGO_EXPORT int RenderGBarSprite(struct IconNode *node);
 LEGO_EXPORT int RenderGBarSpriteIcon(struct IconNode *node);
+LEGO_EXPORT int RenderEnergyBar(struct IconNode *node);
+LEGO_EXPORT int RenderMoneyBar(struct IconNode *node);
+int FUN_0046e040(struct IconNode *node);
 LEGO_EXPORT struct IconNode *AddGBarIcons(unsigned int param_1, unsigned int param_2, int param_3, int param_4, int param_5, int param_6);
 unsigned char FUN_00470000(struct IconNode *node, unsigned char buttons);
