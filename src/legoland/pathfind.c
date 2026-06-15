@@ -115,7 +115,7 @@ void FUN_00481ee0(void) {
 void FUN_00481f00(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482050
-LEGO_EXPORT void SuggestNextMove(void) { STUB(); }
+LEGO_EXPORT int SuggestNextMove(int *param_1, int *param_2, int *param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004821c0
 void FUN_004821c0(void) {
@@ -178,7 +178,7 @@ void FUN_00482330(void) { STUB(); }
 void FUN_00482430(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004824d0
-LEGO_EXPORT void PTPSuggestNextMove(void) { STUB(); }
+LEGO_EXPORT int PTPSuggestNextMove(int *param_1, int *param_2, int *param_3) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482620
 void FUN_00482620(void) { STUB(); }

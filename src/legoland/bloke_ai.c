@@ -596,7 +596,135 @@ void FUN_0044fe10(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044fe80
-void FUN_0044fe80(void) { STUB(); }
+void FUN_0044fe80(struct Bloke *bloke) {
+    int obj;
+    struct MapElement *element;
+    unsigned short flags;
+    int result;
+    char dir;
+    int out[2];
+
+    switch (bloke->param_action) {
+    case 0:
+        obj = (int)GetFirstObjectMatching((struct RenderObjectVtable *)DAT_006661c0);
+        if (obj != 0) {
+            while (result = *(int *)(*(int *)obj + 0xc), (*(unsigned char *)(obj + 0xc) & 1) != 0) {
+                obj = (int)GetNextObjectMatching((struct RenderObject *)obj, (struct RenderObjectVtable *)DAT_006661c0);
+                if (obj == 0) {
+                    NewLongTermAction(bloke, 6);
+                    return;
+                }
+            }
+            bloke->field_46 = (short)*(int *)(obj + 4);
+            bloke->field_2c = (*(int *)(result + 0xc) + *(unsigned char *)(obj + 4)) * 0x100;
+            bloke->field_30 = (*(unsigned char *)(obj + 5) + *(int *)(result + 0x10)) * 0x100;
+            bloke->param_action++;
+            return;
+        }
+        break;
+    case 1:
+        result = SuggestNextMove(&bloke->field_68, &bloke->field_2c, out);
+        switch (result) {
+        case 1:
+            bloke->field_24 = out[0];
+            bloke->field_28 = out[1];
+            dir = CalcMoveLine(bloke->field_68, bloke->field_6c, out[0], out[1], bloke->field_98);
+            bloke->field_e = 6;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            if (bloke->field_64 == 0) {
+                bloke->param_action = 1;
+                return;
+            }
+            break;
+        case 2:
+            bloke->field_24 = out[0];
+            bloke->field_28 = out[1];
+            dir = CalcMoveLine(bloke->field_68, bloke->field_6c, out[0], out[1], bloke->field_98);
+            bloke->field_e = 6;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            if (bloke->field_64 == 0) {
+                bloke->param_action = 2;
+                return;
+            }
+            break;
+        case -3:
+        case -1:
+        case 0:
+            bloke->field_e = 4;
+            return;
+        case -2:
+            bloke->field_e = 10;
+            return;
+        default:
+            return;
+        }
+        break;
+    case 2:
+        if ((unsigned char)bloke->field_46 < lpConfig->width && *((unsigned char *)&bloke->field_46 + 1) < lpConfig->height) {
+            element = GameMap[*((unsigned char *)&bloke->field_46 + 1)] + (unsigned char)bloke->field_46;
+        } else {
+            element = 0;
+        }
+        if (*(int *)element == DAT_006661c0 && (flags = element->flags, (flags & 0x80) != 0)) {
+            if ((flags & 1) == 0) {
+                element->flags = flags | 1;
+                *(unsigned char *)((char *)bloke + 0x62) |= 8;
+                bloke->field_24 = bloke->field_2c - 0x80;
+                bloke->field_28 = bloke->field_30;
+                dir = CalcMoveLine(bloke->field_68, bloke->field_6c, bloke->field_24, bloke->field_30, bloke->field_98);
+                bloke->field_73 = dir + 0x10;
+                bloke->field_e = 7;
+                NewDirForAction((struct ActionState *)bloke, 7);
+                bloke->field_5c = 0;
+                bloke->param_action++;
+                return;
+            }
+            bloke->param_action = 0;
+            return;
+        }
+        break;
+    case 3:
+        if ((unsigned char)bloke->field_46 < lpConfig->width && *((unsigned char *)&bloke->field_46 + 1) < lpConfig->height) {
+            element = GameMap[*((unsigned char *)&bloke->field_46 + 1)] + (unsigned char)bloke->field_46;
+        } else {
+            element = 0;
+        }
+        if (*(int *)element == DAT_006661c0 && (element->flags & 0x80) != 0) {
+            if ((int)bloke->field_5c < 0x12d) {
+                return;
+            }
+            bloke->param_action++;
+            return;
+        }
+        break;
+    case 4:
+        if ((unsigned char)bloke->field_46 < lpConfig->width && *((unsigned char *)&bloke->field_46 + 1) < lpConfig->height) {
+            element = GameMap[*((unsigned char *)&bloke->field_46 + 1)] + (unsigned char)bloke->field_46;
+        } else {
+            element = 0;
+        }
+        if (*(int *)element == DAT_006661c0 && (element->flags & 0x80) != 0) {
+            element->flags &= 0xfffe;
+            bloke->field_24 = bloke->field_2c + 0x80;
+            bloke->field_28 = bloke->field_30;
+            dir = CalcMoveLine(bloke->field_68, bloke->field_6c, bloke->field_24, bloke->field_30, bloke->field_98);
+            bloke->field_e = 7;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            bloke->param_action++;
+            return;
+        }
+        break;
+    case 5:
+        bloke->flags &= 0xfff7;
+        break;
+    default:
+        return;
+    }
+    NewLongTermAction(bloke, 6);
+}
 
 // FUNCTION: LEGOLAND 0x00450250
 void FUN_00450250(struct BlokeRideState *bloke) {
