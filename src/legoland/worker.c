@@ -1750,7 +1750,27 @@ LEGO_EXPORT void IterateNoneWorkersRepairOrders(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0049b930
-LEGO_EXPORT struct WorkOrder *AddRepairOrderForObject(struct ObjClass *cls, char x, unsigned char y) { STUB(); }
+LEGO_EXPORT struct WorkOrder *AddRepairOrderForObject(struct ObjClass *cls, int x, int y) {
+    unsigned char level;
+    int cost;
+    struct MapElement *cell;
+
+    if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
+        cell = 0;
+    } else {
+        cell = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
+    }
+    level = *((unsigned char *)cell + 0x11);
+    cost = GetObjRepairCost((unsigned int)cls, level);
+    if ((cls->field_1c & 0x200000) != 0 && lpConfig->field_38 != 0) {
+        return FUN_00499780((struct EditObject *)cls->field_c4, &x, 2);
+    }
+    if ((cls->field_1c & 0x400000) != 0 && lpConfig->field_34 != 0) {
+        return FUN_00499830((struct EditObject *)cls->field_c4, &x, 2);
+    }
+    FUN_0049b690((struct Footprint *)&cls->field_3c, &x,
+                 (float)cost / (float)(int)(*((unsigned char *)cls + 0x2c) - level));
+}
 
 // FUNCTION: LEGOLAND 0x0049ba10
 LEGO_EXPORT void Garderner_Repair(void) { STUB(); }

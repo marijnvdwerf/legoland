@@ -26,7 +26,7 @@ void FUN_00462c00(struct OverlayParam *param);
 void FUN_00462c60(void);
 struct ObjClass;
 struct WorkOrder;
-LEGO_EXPORT struct WorkOrder *AddRepairOrderForObject(struct ObjClass *cls, char x, unsigned char y);
+LEGO_EXPORT struct WorkOrder *AddRepairOrderForObject(struct ObjClass *cls, int x, int y);
 LEGO_EXPORT void Print(int x, int y, const char *text, int font);
 void RemoveInstanceFromList();
 void RestoreBaseMap();
