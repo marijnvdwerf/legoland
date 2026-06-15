@@ -655,6 +655,8 @@ extern char *PTR_s_Abbie_004bd018[0x5a];
 extern char *PTR_s_Adams_004bd180[0x6b];
 // 0x004bd32c
 extern short DAT_004bd32c[16];
+// 0x004bd34c
+extern void (*PTR_FUN_004bd34c[16])(void *);
 // 0x004bdd00
 extern unsigned int DAT_004bdd00;
 // 0x004bdd04

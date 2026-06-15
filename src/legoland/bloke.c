@@ -103,6 +103,19 @@ struct BlokeDist {
     int field_9c;
 };
 
+struct SpinWalker {
+    unsigned char pad_0[0x3a];
+    short field_3a;
+    unsigned char pad_3c[0x44 - 0x3c];
+    short field_44;
+    short field_46;
+    unsigned char pad_48[0x70 - 0x48];
+    short field_70;
+    unsigned char field_72;
+    unsigned char field_73;
+    unsigned char field_74;
+};
+
 struct BNVPath {
     unsigned char pad_0[0x40];
     unsigned int field_40;
@@ -1087,13 +1100,61 @@ void FUN_00484470(struct TileWalker *walker) {
 }
 
 // FUNCTION: LEGOLAND 0x00484520
-void FUN_00484520(void) { STUB(); }
+void FUN_00484520(struct TileWalker *walker) {
+    struct Point target;
+    if (FUN_004841a0((struct BlokeDist *)walker, (unsigned int)walker->field_7f << 1) != 0) {
+        walker->field_e = 0;
+        return;
+    }
+    NavigMoveLine((struct Navigator *)&walker->field_98, walker->field_7f, &target);
+    if (FUN_004837a0((struct Walker *)walker, target.x, target.y) != 0) {
+        if (FUN_00483580((struct OverTile *)walker, target.x, target.y) != 0) {
+            walker->field_e = 0;
+            walker->field_64 |= 1;
+            return;
+        }
+    }
+    FUN_00483680(walker, target.x, target.y);
+    walker->field_68 = target.x;
+    walker->field_6c = target.y;
+    FUN_00483830((struct Walker *)walker);
+}
 
 // FUNCTION: LEGOLAND 0x004845d0
-void FUN_004845d0(void) { STUB(); }
+void FUN_004845d0(struct TileWalker *walker) {
+    struct Point target;
+    if (FUN_004841a0((struct BlokeDist *)walker, (unsigned int)walker->field_7f << 1) != 0) {
+        DoPendingAction((struct PendingObject *)walker);
+        return;
+    }
+    NavigMoveLine((struct Navigator *)&walker->field_98, walker->field_7f, &target);
+    walker->field_68 = target.x;
+    walker->field_6c = target.y;
+    FUN_00483830((struct Walker *)walker);
+}
 
 // FUNCTION: LEGOLAND 0x00484630
-void FUN_00484630(void) { STUB(); }
+void FUN_00484630(struct SpinWalker *walker) {
+    short value;
+    if (walker->field_70 == 0) {
+        walker->field_46 = walker->field_44;
+        value = walker->field_3a;
+        walker->field_3a = value - 1;
+        if (value == 0) {
+            DoPendingAction((struct PendingObject *)walker);
+            return;
+        }
+    }
+    value = walker->field_70 + walker->field_46;
+    walker->field_70 = value;
+    walker->field_46 = walker->field_46 - 1;
+    if (value == 0) {
+        walker->field_70 = 0;
+    }
+    walker->field_74 = 0;
+    walker->field_73 = (walker->field_72 + 1) & 7;
+    FUN_00483850((struct Walker *)walker);
+}
 
 // FUNCTION: LEGOLAND 0x004846a0
 LEGO_EXPORT struct Point GetTileInDir(int x, int y, unsigned int dir) {
@@ -1136,7 +1197,52 @@ LEGO_EXPORT struct Point GetTileInDir(int x, int y, unsigned int dir) {
 }
 
 // FUNCTION: LEGOLAND 0x00484790
-void FUN_00484790(void) { STUB(); }
+void FUN_00484790(struct TileWalker *walker) {
+    struct Point tile = GetTileInDir(walker->field_68, walker->field_6c, walker->field_72);
+    unsigned char rf = Get_RFFlags(tile.x, tile.y);
+    struct MapElement *elem;
+    struct TileCallback *cb;
+    unsigned char result;
+    int tx;
+    int ty;
+
+    if ((rf & 3) != 3) {
+        walker->field_62 &= 0xfff7;
+        DoPendingAction((struct PendingObject *)walker);
+    }
+    tx = tile.x >> 8;
+    ty = tile.y >> 8;
+    if (tx < 0 || tx >= (int)lpConfig->width || ty < 0 || ty >= (int)lpConfig->height) {
+        elem = NULL;
+    } else {
+        elem = (struct MapElement *)((char *)GameMap[ty] + tx * 0x14);
+    }
+    cb = (struct TileCallback *)TileSpriteInfo[elem->field_8].src;
+    if (cb->cb_18 == NULL) {
+        result = 2;
+    } else {
+        result = cb->cb_18(tile.x, tile.y);
+    }
+    if ((result & 3) != 0 && (result & 3) < 3) {
+        unsigned int ux = (unsigned int)tile.x >> 8;
+        unsigned int uy = (unsigned int)tile.y >> 8;
+        if (ux < lpConfig->width && uy < lpConfig->height) {
+            elem = (struct MapElement *)((char *)GameMap[uy] + ux * 0x14);
+        } else {
+            elem = NULL;
+        }
+        cb = (struct TileCallback *)TileSpriteInfo[elem->field_8].src;
+        if (cb->cb_1c != NULL) {
+            cb->cb_20(tile.x, tile.y);
+        }
+        walker->field_62 &= 0xfff7;
+        DoPendingAction((struct PendingObject *)walker);
+        PTR_FUN_004bd34c[walker->field_e](walker);
+        return;
+    }
+    walker->field_20 = walker->field_20 + 1;
+    FUN_00483890((struct Walker *)walker);
+}
 
 // FUNCTION: LEGOLAND 0x004848e0
 void FUN_004848e0(struct Walker *walker) {

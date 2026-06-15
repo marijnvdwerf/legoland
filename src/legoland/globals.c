@@ -671,6 +671,9 @@ short DAT_004bd32c[16] = {
     181,  181,  0,   256,  -181, 181,  -256, 0,
 };
 
+// GLOBAL: LEGOLAND 0x004bd34c
+void (*PTR_FUN_004bd34c[16])(void *);
+
 // GLOBAL: LEGOLAND 0x004bdd00
 unsigned int DAT_004bdd00;
 
