@@ -13,10 +13,12 @@
 
 struct WaterNode {
     struct WaterNode *next;
-    unsigned int field_4;
+    unsigned short key;
+    unsigned char pad_6[2];
     unsigned char field_8;
     unsigned char field_9;
-    unsigned char pad_a[6];
+    unsigned char field_a;
+    unsigned char pad_b[1];
 };
 
 struct FxSource {
@@ -147,7 +149,19 @@ void FUN_00417b80(struct WaterNode **head, struct WaterNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00417ba0
-void *FUN_00417ba0(void *list, unsigned short *key) { STUB(); }
+struct WaterNode *FUN_00417ba0(struct WaterNode *list, short *key) {
+    if (list != NULL) {
+        if ((short)list->key == *key) {
+            return list;
+        }
+        while ((list = list->next) != NULL) {
+            if ((short)list->key == *key) {
+                return list;
+            }
+        }
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00417bd0
 void FUN_00417bd0(void *list, void *node) { STUB(); }
@@ -229,11 +243,11 @@ void FUN_00417f40(void) {
 
     node = (struct WaterNode *)DAT_004cc02c;
     while (node != NULL) {
-        if (FUN_00417ec0(&node->field_4) != 0) {
+        if (FUN_00417ec0((unsigned char *)&node->key) != 0) {
             if (node->field_8 == 0) {
                 node->field_8 = 1;
                 node->field_9 = 0;
-                FUN_00417af0(&node->field_4, 0, 0);
+                FUN_00417af0((unsigned char *)&node->key, 0, 0);
             }
         }
         node = node->next;
@@ -304,11 +318,11 @@ void FUN_00418350(void) {
 
     node = (struct WaterNode *)DAT_004cc030;
     while (node != NULL) {
-        if (FUN_00417ec0(&node->field_4) != 0) {
+        if (FUN_00417ec0((unsigned char *)&node->key) != 0) {
             if (node->field_8 == 0) {
                 node->field_8 = 1;
                 node->field_9 = 0;
-                FUN_00417af0(&node->field_4, 0, 0);
+                FUN_00417af0((unsigned char *)&node->key, 0, 0);
             }
         }
         node = node->next;
@@ -402,7 +416,7 @@ void FUN_004187b0(void) {
 
     node = (struct WaterNode *)DAT_004cc034;
     while (node != NULL) {
-        if (FUN_00418710(&node->field_4, (unsigned int)DAT_004cbfdc + 0x3c) != 0) {
+        if (FUN_00418710((unsigned char *)&node->key, (unsigned int)DAT_004cbfdc + 0x3c) != 0) {
             if (node->field_8 == 0) {
                 node->field_8 = 1;
                 node->field_9 = 0;
