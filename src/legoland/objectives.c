@@ -14,7 +14,7 @@
 #include "sound_sfx.h"
 #include "timer.h"
 
-#pragma intrinsic(strlen)
+#pragma intrinsic(strcpy, strlen)
 
 struct ThemeQueryArg {
     unsigned char pad_0[0xc];
@@ -219,7 +219,19 @@ void FUN_00468b00(struct ObjectiveEvent *event) {
 }
 
 // FUNCTION: LEGOLAND 0x00468b40
-void FUN_00468b40(struct ObjectiveEvent *node, unsigned int param_2, unsigned int param_3) { STUB(); }
+void FUN_00468b40(struct ObjectiveEvent *node, unsigned int param_2, unsigned int param_3) {
+    char *buffer;
+
+    if (param_3 != 0) {
+        buffer = (char *)malloc(strlen((char *)param_2) + 1);
+        node->field_8 = (unsigned int)buffer;
+        strcpy(buffer, (char *)param_2);
+        node->flags_10 |= 0x20;
+    } else {
+        node->field_8 = param_2;
+        node->flags_10 &= 0xdf;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00468bb0
 void FUN_00468bb0(void *param_1, unsigned int param_2) { STUB(); }
