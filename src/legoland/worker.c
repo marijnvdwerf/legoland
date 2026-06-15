@@ -2446,7 +2446,49 @@ void FUN_0049cb20(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0049cc10
-void FUN_0049cc10(void) { STUB(); }
+void FUN_0049cc10(void) {
+    int count;
+    int len;
+    struct WorkOrder *node;
+    struct WorkOrder *prev;
+    struct Worker *worker;
+    void *fp;
+    int i;
+    char name[512];
+
+    DAT_0079a8b0 = 0;
+    SaveGameRead(&count, 4);
+    prev = 0;
+    DAT_0079a8b8 = count;
+    while (count != 0) {
+        count--;
+        if (prev == 0) {
+            node = malloc(0x3c);
+            DAT_0079a8b0 = node;
+        } else {
+            node = malloc(0x3c);
+            prev->next = node;
+        }
+        SaveGameRead(node, 0x3c);
+        SaveGameRead(&len, 4);
+        SaveGameRead(name, len);
+        name[len] = 0;
+        node->var_4 = (struct EditObject *)ElemID(name);
+        if (node->var_18 != 0) {
+            worker = GardenerList;
+            for (i = (int)node->var_1c; i != 0; i--) {
+                worker = worker->next;
+            }
+            node->var_1c = (int)worker;
+            worker->var_50 = node;
+        }
+        fp = malloc(node->var_14 * 0x14);
+        node->var_10 = fp;
+        SaveGameRead(fp, node->var_14 * 0x14);
+        prev = node;
+    }
+    DAT_0079a8b4 = prev;
+}
 
 // FUNCTION: LEGOLAND 0x0049cd10
 void FUN_0049cd10(void) { STUB(); }
