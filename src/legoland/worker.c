@@ -833,10 +833,79 @@ LEGO_EXPORT void RemoveAGardener(struct Worker *worker) {
 }
 
 // FUNCTION: LEGOLAND 0x0049a340
-LEGO_EXPORT struct Worker *GenerateMechanic(int *coords, int param_2) { STUB(); }
+LEGO_EXPORT struct Worker *GenerateMechanic(int *coords, int param_2) {
+    struct Worker *worker;
+    int x;
+    int y;
+    int *cell;
+
+    if (DAT_0079a8cc > 0xe) {
+        return 0;
+    }
+    worker = (struct Worker *)NewBlokeWOList((void *)3);
+    worker->var_70 = 0;
+    worker->var_72 = 0;
+    worker->var_74 = 0;
+    worker->var_75 = 1;
+    worker->var_7f = 0x18;
+    worker->next = MechanicList;
+    worker->var_46 = 1;
+    DAT_0079a8cc++;
+    MechanicList = worker;
+    if (param_2 != 0) {
+        x = coords[0];
+        if (x < 0 || x >= (int)lpConfig->width || (y = coords[1], y < 0) ||
+            y >= (int)lpConfig->height) {
+            cell = 0;
+        } else {
+            cell = (int *)((char *)GameMap[y] + x * 0x14);
+        }
+        PutWorkerOnRide(worker, cell);
+        x = coords[0] * 0x100 - 0x80;
+        worker->var_68 = x;
+        worker->var_24 = x;
+        y = coords[1];
+        worker->var_6c = y << 8;
+        worker->var_28 = y << 8;
+        NewLongTermAction((struct Bloke *)worker, 5);
+        return worker;
+    }
+    worker->var_68 = coords[0] << 8;
+    worker->var_6c = coords[1] << 8;
+    NewLongTermAction((struct Bloke *)worker, 0x11);
+    return worker;
+}
 
 // FUNCTION: LEGOLAND 0x0049a430
-LEGO_EXPORT void RemoveAMechanic(struct Worker *worker) { STUB(); }
+LEGO_EXPORT void RemoveAMechanic(struct Worker *worker) {
+    struct Worker *cur;
+    struct Worker *prev;
+    struct Worker *target;
+
+    if (MechanicList == 0) {
+        return;
+    }
+    if (MechanicList == worker) {
+        target = MechanicList;
+        MechanicList = ((struct Worker *)MechanicList)->next;
+    } else {
+        cur = ((struct Worker *)MechanicList)->next;
+        prev = MechanicList;
+        if (((struct Worker *)MechanicList)->next == 0) {
+            return;
+        }
+        while (target = cur, target != worker) {
+            cur = target->next;
+            prev = target;
+            if (target->next == 0) {
+                return;
+            }
+        }
+        prev->next = target->next;
+    }
+    free(target);
+    DAT_0079a8cc--;
+}
 
 // FUNCTION: LEGOLAND 0x0049a480
 LEGO_EXPORT void Gardener_Idle(struct Worker *worker) {
