@@ -1,6 +1,7 @@
 #include "globals.h"
 #include <dinput.h> /* this TU defines the DInput data symbols (c_dfDI*, GUID_Sys*, DAT_00668d78) */
 #include "icon.h"
+#include "interface.h"
 #include "objclass.h"
 
 // GLOBAL: LEGOLAND 0x004ab38c
@@ -658,6 +659,9 @@ unsigned int DAT_004bb09c;
 
 // GLOBAL: LEGOLAND 0x004bb0a0
 unsigned int DAT_004bb0a0;
+
+// GLOBAL: LEGOLAND 0x004bb0a4
+struct TrackElemPair DAT_004bb0a4[29];
 
 // GLOBAL: LEGOLAND 0x004bb18c
 unsigned int DAT_004bb18c[4];

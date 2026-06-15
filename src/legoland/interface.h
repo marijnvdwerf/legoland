@@ -11,6 +11,11 @@ struct InterfaceListNode {
     /* 0x08 */ int flag;
 };
 
+struct TrackElemPair {
+    /* 0x00 */ char *track_name;
+    /* 0x04 */ char *elem_name;
+};
+
 struct InterfaceResearchNode {
     /* 0x00 */ struct InterfaceResearchNode *next;
     /* 0x04 */ void *data;

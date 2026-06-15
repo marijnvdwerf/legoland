@@ -61,6 +61,7 @@ struct InterfaceIconNode;
 struct IconNode;
 struct InterfaceProfileObj;
 struct InterfaceListNode;
+struct TrackElemPair;
 struct InterfaceQueryNode;
 struct InterfaceEventNode;
 struct InterfaceResearchNode;
@@ -654,6 +655,8 @@ extern unsigned int DAT_004bb098;
 extern unsigned int DAT_004bb09c;
 // 0x004bb0a0
 extern unsigned int DAT_004bb0a0;
+// 0x004bb0a4
+extern struct TrackElemPair DAT_004bb0a4[29];
 // 0x004bb18c
 extern unsigned int DAT_004bb18c[4];
 // 0x004bb5ac

@@ -36,6 +36,7 @@ struct ObjectClassInfo {
     /* 0x00 */ char *name;
     /* 0x04 */ unsigned char pad_4[0x8 - 0x4];
     /* 0x08 */ unsigned int flags;
+    /* 0x0c */ struct EditObject *field_c;
 };
 
 struct BuildObject;
@@ -1239,7 +1240,38 @@ void FUN_00475f10(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00475f40
-void FUN_00475f40(void) { STUB(); }
+void FUN_00475f40(void) {
+    struct BuildObject *obj;
+    struct ObjectClassInfo *info;
+    struct ObjectClassInfo *match;
+    char **pair;
+
+    obj = (struct BuildObject *)DAT_008119b8;
+    match = NULL;
+    info = obj->field_c4;
+    if ((obj->field_1c & 0x2000000) != 0) {
+        match = info;
+    } else {
+        pair = &DAT_004bb0a4[0].elem_name;
+        do {
+            if (_stricmp(pair[-1], info->name) == 0) {
+                if (*pair != NULL) {
+                    match = (struct ObjectClassInfo *)ElemID(*pair);
+                } else {
+                    match = info;
+                }
+            }
+            pair += 2;
+        } while (pair < (char **)&DAT_004bb18c[1]);
+    }
+    if (match != NULL && (match->flags & 2) != 0) {
+        SetEditObject(match->field_c);
+        return;
+    }
+    EditMode = 0;
+    DAT_00667108 = 1;
+    GamePad = GamePad & 0xffffebff;
+}
 
 // FUNCTION: LEGOLAND 0x00475fe0
 void FUN_00475fe0(int index, unsigned int value) {
