@@ -37,6 +37,7 @@ LEGO_EXPORT int BuildObject(struct EditObject *editObj, int *coords);
 LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, unsigned int coords);
 LEGO_EXPORT void ObjectIsBuilding(struct ObjClass *obj, unsigned int coords);
 LEGO_EXPORT void PlayAppropriateBuildEffect(struct ObjClass *obj, int *coords);
+void FUN_0045e300(struct EditObject *editObj, struct Point *pos);
 void FUN_0045e4a0(struct EditObject *editObj, struct Point *pos);
 LEGO_EXPORT unsigned int AddBasicObject(struct EditObject *editObj, int *coords);
 LEGO_EXPORT void AddObjectToMap(struct EditObject *param_1, unsigned int param_2, int param_3);

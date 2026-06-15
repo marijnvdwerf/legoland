@@ -77,3 +77,8 @@ void BlokeSetFrame();
 int PlayBlokeAnim(struct Bloke *bloke);
 int FUN_00482710(int *a, int *b, int *out);
 unsigned int FUN_004735e0(unsigned int param);
+struct Cursor;
+void FUN_0045d770(struct Cursor *cursor);
+void *FUN_00499c40(int *point);
+void FUN_00499ac0(struct Worker *worker, struct WorkOrder *order);
+struct WorkOrder *FUN_00499780(struct EditObject *obj, int *coords, int mode);

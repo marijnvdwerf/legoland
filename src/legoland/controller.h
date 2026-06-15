@@ -5,7 +5,8 @@
 struct Point;
 
 struct ObjClass {
-    /* 0x00 */ unsigned char pad_0[0x20];
+    /* 0x00 */ unsigned char pad_0[0x1c];
+    /* 0x1c */ unsigned int field_1c;
     /* 0x20 */ short type;
     /* 0x22 */ unsigned char pad_22[0x3c - 0x22];
     /* 0x3c */ int field_3c;

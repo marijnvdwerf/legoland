@@ -13,6 +13,7 @@
 #include "man3d.h"
 #include "map_object.h"
 #include "objclass.h"
+#include "sound_music.h"
 #include "worker.h"
 
 struct LegoConfig;
@@ -193,7 +194,7 @@ void FUN_00499760(struct WorkOrder *order, float value) {
 }
 
 // FUNCTION: LEGOLAND 0x00499780
-struct WorkOrder *FUN_00499780(struct EditObject *obj, int *coords, int param_3, int mode) {
+struct WorkOrder *FUN_00499780(struct EditObject *obj, int *coords, int mode) {
     struct WorkOrder *order;
     struct ObjClass *cls;
     unsigned char modeb;
@@ -1132,7 +1133,45 @@ LEGO_EXPORT void Mechanic_Build(struct Worker *worker) {
 }
 
 // FUNCTION: LEGOLAND 0x0049ab30
-LEGO_EXPORT void WorkOrderBuildObject(void) { STUB(); }
+LEGO_EXPORT unsigned int WorkOrderBuildObject(struct EditObject *obj, int *coords) {
+    struct ObjClass *cls;
+    struct WorkOrder *order;
+    struct Worker *worker;
+    unsigned int result;
+    int config[4];
+
+    if (obj == (struct EditObject *)DAT_0080ff64 && DAT_0079a8d0 != 0) {
+        return 0;
+    }
+    cls = *(struct ObjClass **)((char *)obj + 0xc);
+    if ((cls->field_1c & 0x200000) == 0 || lpConfig->field_38 == 0) {
+        if (GetBrickCount() < GetObjCost((struct CostInfo *)cls)) {
+            FUN_004735e0(3);
+            return 0;
+        }
+        FUN_0045e300(obj, (struct Point *)coords);
+        FUN_0045d770(&EditCursor);
+        result = BuildObject(obj, coords);
+    } else {
+        order = FUN_00499780(obj, coords, 1);
+        result = (order != 0);
+        if (result == 0) {
+            return 0;
+        }
+        SetObjRectFlags(obj, (struct Point *)coords, 0x800);
+        worker = FUN_00499c40(coords);
+        if (worker != 0) {
+            FUN_00499ac0(worker, order);
+        }
+    }
+    if (result != 0 && DAT_00667cd8 == 0) {
+        config[2] = coords[0];
+        config[3] = coords[1];
+        config[0] = 2;
+        PlayInstanceOfSample(DAT_004b9248, 0, 1, config);
+    }
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x0049ac50
 int FUN_0049ac50(int param) { STUB(); }
