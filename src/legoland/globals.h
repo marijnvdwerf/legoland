@@ -1989,6 +1989,8 @@ extern unsigned int DAT_00668ec0;
 // 0x00668ed8
 extern struct InterfaceResearchNode *DAT_00668ed8;
 extern unsigned int DAT_00668f98;
+// 0x00668fa4
+extern unsigned int DAT_00668fa4;
 // 0x00668fc0
 extern void *DAT_00668fc0;
 // 0x00668fc4
