@@ -302,7 +302,34 @@ LEGO_EXPORT void RemoveBlokeFromRide(struct Ride *ride, struct RideNode *node) {
 LEGO_EXPORT void UpdateBlokesOnRide(void) {}
 
 // FUNCTION: LEGOLAND 0x0048a2e0
-LEGO_EXPORT void RemoveAllBlokesFromRide(unsigned int arg1, void *arg2) { STUB(); }
+LEGO_EXPORT void RemoveAllBlokesFromRide(struct Ride *ride, unsigned int param_2) {
+    int tx;
+    int ty;
+    struct RideNode *node;
+    struct RideNode *next;
+    struct Bloke *bloke;
+    struct BlokeSampleSource source;
+
+    tx = ride->field_c + ((unsigned char *)&param_2)[0];
+    ty = ride->field_10 + ((unsigned char *)&param_2)[1];
+    source.field_0 = 1;
+    next = ride->riders;
+    while (node = next, node != 0) {
+        next = node->next;
+        if ((short)node->uid == *(short *)&param_2) {
+            bloke = (struct Bloke *)node->rider;
+            *(int *)(*(int *)((char *)bloke + 4) + 0x2c) = 0;
+            bloke->field_68 = tx * 0x100;
+            bloke->field_6c = ty * 0x100;
+            *(short *)((char *)bloke + 0x70) = 0;
+            RemoveBlokeFromRide(ride, node);
+            BlokeWalkAnim(bloke);
+            bloke->flags &= 0xff7f;
+            source.field_4 = bloke;
+            KillAllSamplesFromSource(&source);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0048a390
 LEGO_EXPORT int GetAllBlokesOffRide(struct Ride *ride, unsigned short uid) {
