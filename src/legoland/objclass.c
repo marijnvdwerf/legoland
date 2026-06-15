@@ -528,7 +528,46 @@ LEGO_EXPORT void UnLoadObjectLibrary(void *object) {
 }
 
 // FUNCTION: LEGOLAND 0x00481170
-void FUN_00481170(void) { STUB(); }
+void FUN_00481170(void) {
+    struct LegoConfig *config;
+    struct MapElement *cell;
+    void *next;
+    int x;
+    int y;
+    int offset;
+    unsigned int width;
+
+    while (DAT_00669248 != 0) {
+        next = *(void **)DAT_00669248;
+        free(DAT_00669248);
+        DAT_00669248 = next;
+    }
+    config = lpConfig;
+    y = 0;
+    DAT_00669248 = 0;
+    if (config->height != 0) {
+        do {
+            x = 0;
+            width = config->width;
+            if (width != 0) {
+                offset = 0;
+                do {
+                    if (offset < 0 || x >= (int)width || y < 0 || y >= (int)lpConfig->height) {
+                        cell = 0;
+                    } else {
+                        cell = (struct MapElement *)((char *)GameMap[y] + offset);
+                    }
+                    cell->flags &= 0xfbff;
+                    x++;
+                    width = lpConfig->width;
+                    offset += 0x14;
+                } while (x < (int)width);
+            }
+            config = lpConfig;
+            y++;
+        } while (y < (int)config->height);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00481200
 LEGO_EXPORT void BuildObjInfoList(void) { STUB(); }
