@@ -1992,6 +1992,36 @@ extern unsigned int DAT_00668ebc;
 extern unsigned int DAT_00668ec0;
 // 0x00668ed8
 extern struct InterfaceResearchNode *DAT_00668ed8;
+// 0x00668ee0
+extern int DAT_00668ee0;
+// 0x00668ee8
+extern unsigned int DAT_00668ee8[0x15];
+// 0x00668f3c
+extern unsigned int DAT_00668f3c;
+// 0x00668f44
+extern int DAT_00668f44;
+// 0x00668f48
+extern void *DAT_00668f48;
+// 0x00668f4c
+extern unsigned int DAT_00668f4c;
+// 0x00668f50
+extern unsigned int DAT_00668f50;
+// 0x00668f54
+extern int DAT_00668f54;
+// 0x00668f5c
+extern void *DAT_00668f5c;
+// 0x00668f64
+extern unsigned int DAT_00668f64;
+// 0x00668f70
+extern WAVEFORMATEX DAT_00668f70;
+// 0x00668f84
+extern void *DAT_00668f84;
+// 0x00668f8c
+extern void *DAT_00668f8c;
+// 0x00668f90
+extern unsigned int DAT_00668f90;
+// 0x00668f9c
+extern int DAT_00668f9c;
 extern unsigned int DAT_00668f98;
 // 0x00668fa4
 extern unsigned int DAT_00668fa4;

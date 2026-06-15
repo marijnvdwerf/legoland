@@ -75,7 +75,8 @@ struct AviStreamInfo {
     /* 0x18 */ unsigned int rate;
     unsigned char pad_1c[0x20 - 0x1c];
     /* 0x20 */ unsigned int length;
-    unsigned char pad_24[0x34 - 0x24];
+    unsigned char pad_24[0x30 - 0x24];
+    /* 0x30 */ unsigned int sample_size;
     /* 0x34 */ int frame_left;
     /* 0x38 */ int frame_top;
     /* 0x3c */ int frame_right;
@@ -1763,7 +1764,87 @@ int FUN_004766f0(struct MovieHandle *handle, int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00476910
-int FUN_00476910(struct MovieHandle *handle) { STUB(); }
+int FUN_00476910(struct MovieHandle *handle) {
+    struct AviStreamInfo info;
+    WAVEFORMATEX *fmt;
+    unsigned int *p;
+    int fmt_size;
+    int i;
+
+    if (handle->audio_stream == NULL) {
+        return 0;
+    }
+    if (AVIStreamInfoA(handle->audio_stream, &info, 0x8c) != 0) {
+        return 0;
+    }
+    DAT_00668f64 = info.sample_size;
+    AVIStreamReadFormat(handle->audio_stream, 0, 0, &fmt_size);
+    fmt = (WAVEFORMATEX *)malloc(fmt_size);
+    if (fmt == NULL) {
+        return 0;
+    }
+    AVIStreamReadFormat(handle->audio_stream, 0, fmt, &fmt_size);
+    DAT_00668f70.wFormatTag = 1;
+    DAT_00668f70.nChannels = fmt->nChannels;
+    DAT_00668f70.nSamplesPerSec = fmt->nSamplesPerSec;
+    DAT_00668f70.nBlockAlign = fmt->nChannels << 1;
+    DAT_00668f70.nAvgBytesPerSec = (DAT_00668f70.nBlockAlign & 0xffff) * fmt->nSamplesPerSec;
+    DAT_00668f70.wBitsPerSample = 0x10;
+    DAT_00668f70.cbSize = 0;
+    if (fmt->wFormatTag != 2 && fmt->wFormatTag != 0x11) {
+        DAT_00668ee0 = 0;
+        DAT_00668f9c = 0;
+        DAT_00668f50 = DAT_00668fa4;
+        DAT_00668f3c = fmt->nAvgBytesPerSec / handle->field_4;
+        DAT_00668f90 = fmt->nSamplesPerSec / handle->field_4;
+        DAT_00668f4c = fmt->wBitsPerSample;
+        DAT_00668f84 = handle->audio_stream;
+        DAT_00668f48 = KLIBAUDIO_CreateAVISoundBuffer(fmt, DAT_00668f3c * DAT_00668fa4);
+        return 1;
+    }
+    DAT_00668ee0 = 1;
+    DAT_00668f70.wFormatTag = 1;
+    DAT_00668f70.nChannels = fmt->nChannels;
+    DAT_00668f70.nSamplesPerSec = fmt->nSamplesPerSec;
+    DAT_00668f70.nBlockAlign = fmt->nChannels << 1;
+    DAT_00668f70.nAvgBytesPerSec = (DAT_00668f70.nBlockAlign & 0xffff) * fmt->nSamplesPerSec;
+    DAT_00668f70.wBitsPerSample = 0x10;
+    DAT_00668f70.cbSize = 0;
+    DAT_00668f44 = acmStreamOpen(&DAT_00668f5c, 0, fmt, &DAT_00668f70, 0, 0, 0, 4);
+    if (DAT_00668f44 != 0) {
+        return 0;
+    }
+    DAT_00668f9c = 0;
+    DAT_00668f50 = DAT_00668fa4;
+    DAT_00668f3c = DAT_00668f70.nAvgBytesPerSec / handle->field_4;
+    DAT_00668f90 = DAT_00668f70.nSamplesPerSec / handle->field_4;
+    DAT_00668f4c = DAT_00668f70.wBitsPerSample;
+    DAT_00668f84 = handle->audio_stream;
+    DAT_00668f48 = KLIBAUDIO_CreateAVISoundBuffer(&DAT_00668f70, DAT_00668f3c * DAT_00668fa4);
+    p = DAT_00668ee8;
+    for (i = 0x15; i != 0; i--) {
+        *p = 0;
+        p++;
+    }
+    DAT_00668ee8[8] = DAT_00668f3c;
+    DAT_00668ee8[0] = 0x54;
+    acmStreamSize(DAT_00668f5c, DAT_00668f3c, &DAT_00668ee8[4], 1);
+    DAT_00668ee8[3] = (unsigned int)malloc(DAT_00668ee8[4]);
+    DAT_00668ee8[7] = (unsigned int)malloc(DAT_00668ee8[8] * 3);
+    DAT_00668f8c = (void *)DAT_00668ee8[7];
+    DAT_00668f54 = 0;
+    if (DAT_00668ee8[3] != 0 && DAT_00668ee8[7] != 0) {
+        return 1;
+    }
+    acmStreamClose(DAT_00668f5c, 0);
+    if (DAT_00668ee8[3] != 0) {
+        free((void *)DAT_00668ee8[3]);
+    }
+    if (DAT_00668ee8[7] != 0) {
+        free((void *)DAT_00668ee8[7]);
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00476bf0
 void FUN_00476bf0(struct MovieHandle *handle) { STUB(); }

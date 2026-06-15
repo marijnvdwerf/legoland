@@ -12,3 +12,7 @@ void *AVIStreamGetFrame(void *getframe, int position);
 void AVIStreamGetFrameClose(void *frame);
 void AVIStreamRelease(void *stream);
 void AVIFileExit(void);
+void AVIStreamReadFormat(void *stream, int pos, void *format, int *size);
+int __stdcall acmStreamOpen(void **stream, void *driver, void *src_format, void *dst_format, void *filter, unsigned int callback, unsigned int instance, unsigned int flags);
+void __stdcall acmStreamSize(void *stream, unsigned int input_size, unsigned int *output_size, unsigned int flags);
+void __stdcall acmStreamClose(void *stream, unsigned int flags);
