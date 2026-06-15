@@ -385,7 +385,47 @@ void FUN_0044fe10(void) { STUB(); }
 void FUN_0044fe80(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00450250
-void FUN_00450250(void) { STUB(); }
+void FUN_00450250(struct BlokeRideState *bloke) {
+    int state;
+
+    switch (bloke->field_60) {
+    case 0:
+        NewDirForAction((struct ActionState *)bloke, 4);
+        if (bloke->ride[2] == 1) {
+            *((unsigned char *)&bloke->flags + 1) |= 1;
+            BlokeSetAnim((struct Bloke *)bloke, 2);
+            BlokeSetFrame((struct Bloke *)bloke, 0);
+            bloke->field_60++;
+            return;
+        }
+        bloke->field_60 = 2;
+        return;
+    case 1:
+        if (PlayBlokeAnim((struct Bloke *)bloke) != 0) {
+            BlokeWalkAnim((struct Bloke *)bloke);
+            BlokeSetFrame((struct Bloke *)bloke, 0);
+            bloke->flags &= 0xfeff;
+            bloke->field_60++;
+            return;
+        }
+        break;
+    case 2:
+        bloke->field_e = 0xd;
+        bloke->field_60++;
+        return;
+    case 3:
+        state = bloke->ride[2];
+        switch (state) {
+        case 2:
+            NewLongTermAction((struct Bloke *)bloke, 0x10);
+            return;
+        case 3:
+            NewLongTermAction((struct Bloke *)bloke, 0x11);
+            return;
+        }
+        NewLongTermAction((struct Bloke *)bloke, 6);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00450330
 void FUN_00450330(struct BlokeRideState *bloke) {
