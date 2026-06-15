@@ -493,7 +493,39 @@ loaded:
 }
 
 // FUNCTION: LEGOLAND 0x004810f0
-LEGO_EXPORT void UnLoadObjectLibrary(void *library) { STUB(); }
+LEGO_EXPORT void UnLoadObjectLibrary(void *object) {
+    struct CallbackTable *obj;
+    struct LibraryNode *node;
+    struct LibraryNode *prev;
+
+    obj = (struct CallbackTable *)object;
+    if (obj->library->refcount == 0) {
+        return;
+    }
+    FreeLibrary(obj->library->module);
+    obj->library->refcount--;
+    node = obj->library;
+    if (node->refcount == 0) {
+        prev = DAT_00669244;
+        if (DAT_00669244 == node) {
+            DAT_00669244 = DAT_00669244->next;
+            free(prev);
+            return;
+        }
+        if (DAT_00669244 != 0) {
+            while (prev != 0) {
+                if (prev->next == node) {
+                    break;
+                }
+                prev = prev->next;
+            }
+            if (prev != 0) {
+                prev->next = prev->next->next;
+                free(obj->library);
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00481170
 void FUN_00481170(void) { STUB(); }
