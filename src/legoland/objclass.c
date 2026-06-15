@@ -123,8 +123,68 @@ LEGO_EXPORT struct ObjectClass *AddNewObjectClass(void) {
     return cls;
 }
 
+struct ObjClassAlias {
+    const char *name;
+    const char *aliases;
+};
+
+struct ElemView {
+    /* 0x00 */ char *name;
+    /* 0x04 */ unsigned char pad_4[4];
+    /* 0x08 */ unsigned int flags;
+};
+
+static const struct ObjClassAlias ObjClassAliasTable[] = {
+    // STRING: LEGOLAND 0x004b5c0c
+    {"CASTLE OBJ",
+     // STRING: LEGOLAND 0x004bce60
+     "CASTLE_DUMMY;ROLLER COASTER TRACK;SQUARE_TRACK;"},
+    // STRING: LEGOLAND 0x004b4bb4
+    {"LOG FLUME ENTRANCE",
+     // STRING: LEGOLAND 0x004bce4c
+     "LOG FLUME TRACK;"},
+    // STRING: LEGOLAND 0x004b80c0
+    {"JUNGLE CRUISE",
+     // STRING: LEGOLAND 0x004bce34
+     "JUNGLE CRUISE WATER;"},
+    // STRING: LEGOLAND 0x004b80b0
+    {"DRIVING SCHOOL",
+     // STRING: LEGOLAND 0x004bce0c
+     "DRIVING SCHOOL ROADS;ZEBRA CROSSING;"},
+    // STRING: LEGOLAND 0x004b536c
+    {"BOATING SCHOOL",
+     // STRING: LEGOLAND 0x004bcdf4
+     "BOATING SCHOOL WATER;"},
+};
+
 // FUNCTION: LEGOLAND 0x004809d0
-void FUN_004809d0(struct ObjectClass *cls) { STUB(); }
+void FUN_004809d0(struct ElemView *cls) {
+    const char *const *slot;
+    char *token;
+    char *semicolon;
+    struct ElemView *elem;
+    char buffer[256];
+
+    slot = &ObjClassAliasTable[0].aliases;
+    do {
+        if (_stricmp(cls->name, slot[-1]) == 0) {
+            strcpy(buffer, slot[0]);
+            token = buffer;
+            semicolon = strchr(buffer, ';');
+            while (semicolon != 0) {
+                *semicolon = '\0';
+                elem = (struct ElemView *)ElemID(token);
+                if (elem != 0 && (elem->flags & 4) == 0 && LLIDB_LoadData(elem) != 0) {
+                    elem->flags |= 4;
+                }
+                token = semicolon + 1;
+                *semicolon = ';';
+                semicolon = strchr(token, ';');
+            }
+        }
+        slot += 2;
+    } while (slot < &ObjClassAliasTable[5].aliases);
+}
 
 // FUNCTION: LEGOLAND 0x00480aa0
 void FUN_00480aa0(struct ObjClassNames *names, struct ObjectInfo *info) {
@@ -155,12 +215,12 @@ void FUN_00480aa0(struct ObjClassNames *names, struct ObjectInfo *info) {
 }
 
 // FUNCTION: LEGOLAND 0x00480b40
-LEGO_EXPORT unsigned int LoadObjectClass(struct ObjectClass *cls) {
+LEGO_EXPORT unsigned int LoadObjectClass(struct ElemView *cls) {
     unsigned int result;
 
-    result = (unsigned int)LLIDB_LoadData(cls); /* TODO: fold — LLIDB_LoadData handle as uint */
+    result = (unsigned int)LLIDB_LoadData(cls);
     if (result != 0) {
-        cls->field_8 |= 0x4;
+        cls->flags |= 0x4;
     }
     FUN_004809d0(cls);
     return result;
