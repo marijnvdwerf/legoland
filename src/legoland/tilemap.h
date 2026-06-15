@@ -20,3 +20,6 @@ void FUN_0045d260(struct Point *param);
 LEGO_EXPORT void RemovePathTile(int *param_1, unsigned short param_2);
 void FUN_0045d3d0(struct PathFootprint *param_1, int *param_2);
 LEGO_EXPORT unsigned char Bit_To_Dir(unsigned char bit);
+LEGO_EXPORT unsigned char Dir_To_Bit(unsigned char param);
+LEGO_EXPORT unsigned char Get_Path_Directions(int *param_1, char *param_2, char *param_3);
+LEGO_EXPORT unsigned char ExcludeIsolatedDiags(unsigned char param);

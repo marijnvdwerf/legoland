@@ -688,10 +688,65 @@ void FUN_004838e0(struct Walker *walker) {
 }
 
 // FUNCTION: LEGOLAND 0x00483920
-LEGO_EXPORT void DoRndWalkPathTileAction(void) { STUB(); }
+LEGO_EXPORT int DoRndWalkPathTileAction(struct TileWalker *walker) {
+    int coords[2];
+    unsigned char rf;
+    unsigned char dirs;
+
+    coords[0] = walker->field_68 >> 8;
+    coords[1] = walker->field_6c >> 8;
+    rf = GetCurrentRFFlags(walker->field_68, walker->field_6c);
+    if (walker->field_68 >= 0 && walker->field_68 < (int)(lpConfig->width * 0x100) &&
+        walker->field_6c >= 0 && walker->field_6c < (int)(lpConfig->height * 0x100)) {
+        short mapFlags = Get_MapFlags(walker->field_68, walker->field_6c);
+        unsigned char rf2 = GetCurrentRFFlags(walker->field_68, walker->field_6c);
+        if ((rf2 & 1) != 0 || ((mapFlags & 0x10) != 0 && (rf2 & 2) == 0)) {
+            if ((rf & 8) != 0) {
+                dirs = Get_Path_Directions(coords, 0, 0);
+                dirs = ExcludeIsolatedDiags(dirs);
+                dirs = dirs & ~Dir_To_Bit(walker->field_72 + 4);
+                *(unsigned char *)&walker->field_62 |= 4;
+                return NewDirForAction((struct ActionState *)walker, Bit_To_Dir(dirs));
+            }
+            if ((rf & 0x24) != 0) {
+                unsigned char b5;
+                unsigned char b4;
+                unsigned char b3;
+                dirs = Get_Path_Directions(coords, 0, 0);
+                dirs = ExcludeIsolatedDiags(dirs);
+                b5 = Dir_To_Bit(walker->field_72 + 5);
+                b4 = Dir_To_Bit(walker->field_72 + 4);
+                b3 = Dir_To_Bit(walker->field_72 + 3);
+                dirs = dirs & ~(b5 | b4 | b3);
+                *(unsigned char *)&walker->field_62 |= 4;
+                return NewDirForAction((struct ActionState *)walker, Random_Dir_From_Bits(dirs));
+            }
+            if ((rf & 0x10) != 0) {
+                unsigned char dir;
+                dirs = Get_Path_Directions(coords, 0, 0);
+                dirs = ExcludeIsolatedDiags(dirs);
+                *(unsigned char *)&walker->field_62 |= 4;
+                if (dirs == 0) {
+                    dir = rand() & 7;
+                } else {
+                    dir = Bit_To_Dir(dirs);
+                }
+                return NewDirForAction((struct ActionState *)walker, dir);
+            }
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00483b10
-LEGO_EXPORT void Handle_RndWalk_TileSpecifics(void) { STUB(); }
+LEGO_EXPORT int Handle_RndWalk_TileSpecifics(struct TileWalker *walker, unsigned int x, unsigned int y) {
+    if (FUN_004837a0((struct Walker *)walker, x, y) == 0) {
+        if (CrossTileCentre(walker, x, y) != 0 && (*(unsigned char *)&walker->field_62 & 4) == 0) {
+            return DoRndWalkPathTileAction(walker);
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00483b60
 void FUN_00483b60(void) { STUB(); }
