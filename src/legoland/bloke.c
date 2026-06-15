@@ -116,6 +116,19 @@ struct SpinWalker {
     unsigned char field_74;
 };
 
+struct OrientPerson {
+    unsigned char pad_0[0x58];
+    union { float m58; int i58; };
+    union { float m5c; int i5c; };
+    union { float m60; int i60; };
+    union { float m64; int i64; };
+    union { float m68; int i68; };
+    union { float m6c; int i6c; };
+    union { float m70; int i70; };
+    union { float m74; int i74; };
+    union { float m78; int i78; };
+};
+
 struct BNVPath {
     unsigned char pad_0[0x40];
     unsigned int field_40;
@@ -1256,11 +1269,46 @@ void FUN_004848e0(struct Walker *walker) {
 LEGO_EXPORT void Bloke_DoNothing(void) {
 }
 
+// GLOBAL: LEGOLAND 0x004bd34c
+void (*PTR_FUN_004bd34c[16])(void *) = {
+    (void (*)(void *))FUN_004838a0, (void (*)(void *))FUN_004838c0,
+    (void (*)(void *))FUN_00483ef0, (void (*)(void *))FUN_00484090,
+    (void (*)(void *))FUN_00483d10, (void (*)(void *))FUN_004838e0,
+    (void (*)(void *))FUN_00484220, (void (*)(void *))FUN_004845d0,
+    (void (*)(void *))FUN_00484630, (void (*)(void *))FUN_00484790,
+    (void (*)(void *))FUN_00483e20, (void (*)(void *))FUN_00484470,
+    (void (*)(void *))FUN_00484520, (void (*)(void *))FUN_004848e0,
+    (void (*)(void *))FUN_00483d90, (void (*)(void *))FUN_00484350,
+};
+
 // FUNCTION: LEGOLAND 0x00484920
-LEGO_EXPORT void DoLowLevelAI(struct Worker *worker) { STUB(); }
+LEGO_EXPORT void DoLowLevelAI(struct Worker *worker) {
+    SetPathFlag((struct OverTile *)worker);
+    PTR_FUN_004bd34c[((struct TileWalker *)worker)->field_e](worker);
+}
 
 // FUNCTION: LEGOLAND 0x00484950
-LEGO_EXPORT void ApplyObjectOrientationToPerson(void) { STUB(); }
+LEGO_EXPORT void ApplyObjectOrientationToPerson(struct OrientPerson *person, float *matrix) {
+    float scale = 65536.0f;
+    person->m58 = matrix[0];
+    person->m5c = matrix[6];
+    person->m60 = -matrix[3];
+    person->m64 = -matrix[2];
+    person->m68 = -matrix[8];
+    person->m6c = matrix[5];
+    person->m70 = -matrix[1];
+    person->m74 = -matrix[7];
+    person->m78 = matrix[4];
+    person->i58 = (int)(person->m58 * scale);
+    person->i64 = (int)(person->m64 * scale);
+    person->i70 = (int)(person->m70 * scale);
+    person->i5c = (int)(person->m5c * scale);
+    person->i68 = (int)(person->m68 * scale);
+    person->i74 = (int)(person->m74 * scale);
+    person->i60 = (int)(person->m60 * scale);
+    person->i6c = (int)(person->m6c * scale);
+    person->i78 = (int)(person->m78 * scale);
+}
 
 // FUNCTION: LEGOLAND 0x00484a70
 LEGO_EXPORT void SetBlokePositionFromBNV(void) { STUB(); }
