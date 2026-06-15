@@ -223,7 +223,24 @@ unsigned int FUN_00478bc0(unsigned int param_1, unsigned int param_2, unsigned i
 }
 
 // FUNCTION: LEGOLAND 0x00478be0
-unsigned int FUN_00478be0(unsigned int param_1, unsigned int param_2, unsigned int param_3) { STUB(); }
+unsigned int FUN_00478be0(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+    unsigned int name;
+
+    if (DAT_004bb5b0 == 0) {
+        return 1;
+    }
+    if (FUN_004786c0(param_1, param_2, 5, 1) == 0) {
+        return 0;
+    }
+    if (DAT_00669054 == 1) {
+        name = FUN_004787a0(param_1, param_2);
+        if (FUN_00478b20(name) != 0) {
+            FUN_00469900((struct NerpsArg *)ElemID((const char *)name), 0, 1);
+        }
+        return 1;
+    }
+    return FUN_0047a480(param_1, param_2, param_3);
+}
 
 // FUNCTION: LEGOLAND 0x00478c60
 void FUN_00478c60(void) { STUB(); }
