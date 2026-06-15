@@ -60,8 +60,8 @@ struct TileWalker {
     unsigned char pad_12[0x20 - 0x12];
     unsigned int field_20;
     unsigned char pad_24[0x62 - 0x24];
-    unsigned char field_62;
-    unsigned char pad_63[0x68 - 0x63];
+    unsigned short field_62;
+    unsigned char pad_64[0x68 - 0x64];
     int field_68;
     int field_6c;
     unsigned char pad_70[0x72 - 0x70];
@@ -72,6 +72,7 @@ struct TileCallback {
     unsigned char pad_0[0x18];
     unsigned char (*cb_18)(int x, int y);
     void (*cb_1c)(struct Point p);
+    void (*cb_20)(int x, int y);
 };
 
 struct BlokeDist {
@@ -403,7 +404,7 @@ void FUN_00483260(struct TileWalker *walker) {
     struct MapElement *elem;
     struct TileCallback *cb;
 
-    walker->field_62 |= 8;
+    *(unsigned char *)&walker->field_62 |= 8;
     walker->field_10 = walker->field_e;
     walker->field_e = 9;
     walker->field_20 = 0;
@@ -570,7 +571,43 @@ LEGO_EXPORT int OverNewTile(struct OverTile *tile, unsigned int x, unsigned int 
 }
 
 // FUNCTION: LEGOLAND 0x00483680
-void FUN_00483680(void) { STUB(); }
+void FUN_00483680(struct TileWalker *walker, unsigned int x, unsigned int y) {
+    struct MapElement *elem;
+    struct TileCallback *cb;
+    struct Point p;
+
+    if (OverNewTile((struct OverTile *)walker, x, y) == 0) {
+        return;
+    }
+    if ((Get_RFFlags(walker->field_68, walker->field_6c) & 3) == 3) {
+        int tx = walker->field_68 >> 8;
+        int ty = walker->field_6c >> 8;
+        if (tx >= 0 && tx < (int)lpConfig->width && ty >= 0 && ty < (int)lpConfig->height) {
+            elem = (struct MapElement *)((char *)GameMap[ty] + tx * 0x14);
+        } else {
+            elem = NULL;
+        }
+        cb = (struct TileCallback *)TileSpriteInfo[elem->field_8].src;
+        if (cb->cb_1c != NULL) {
+            cb->cb_20(walker->field_68, walker->field_6c);
+        }
+        walker->field_62 &= 0xfff7;
+    }
+    if ((Get_RFFlags(x, y) & 3) == 3) {
+        if ((x >> 8) < lpConfig->width && (y >> 8) < lpConfig->height) {
+            elem = (struct MapElement *)((char *)GameMap[y >> 8] + (x >> 8) * 0x14);
+        } else {
+            elem = NULL;
+        }
+        cb = (struct TileCallback *)TileSpriteInfo[elem->field_8].src;
+        if (cb->cb_1c != NULL) {
+            p.x = x;
+            p.y = y;
+            cb->cb_1c(p);
+        }
+        *(unsigned char *)&walker->field_62 |= 8;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004837a0
 int FUN_004837a0(struct Walker *walker, unsigned int x, unsigned int y) {
@@ -582,7 +619,23 @@ int FUN_004837a0(struct Walker *walker, unsigned int x, unsigned int y) {
 }
 
 // FUNCTION: LEGOLAND 0x004837d0
-LEGO_EXPORT void CrossTileCentre(void) { STUB(); }
+LEGO_EXPORT int CrossTileCentre(struct TileWalker *walker, unsigned int x, unsigned int y) {
+    unsigned int delta;
+    switch (walker->field_72) {
+    case 0:
+    case 1:
+    case 4:
+    case 5:
+        delta = walker->field_6c ^ y;
+        break;
+    default:
+        delta = walker->field_68 ^ x;
+    }
+    if ((delta & 0x80) != 0 && OverNewTile((struct OverTile *)walker, x, y) == 0) {
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00483830
 void FUN_00483830(struct Walker *walker) {
@@ -594,7 +647,14 @@ void FUN_00483830(struct Walker *walker) {
 }
 
 // FUNCTION: LEGOLAND 0x00483850
-void FUN_00483850(struct Walker *walker) { STUB(); }
+void FUN_00483850(struct Walker *walker) {
+    walker->field_75 = walker->field_75 - 1;
+    if (walker->field_75 == 0) {
+        walker->field_75 = 3;
+        walker->field_72 =
+            (((-(((walker->field_72 - walker->field_73) & 4) != 0) & 2) - 1) + walker->field_72) & 7;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00483890
 void FUN_00483890(struct Walker *walker) {
