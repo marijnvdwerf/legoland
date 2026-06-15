@@ -3,6 +3,7 @@
 #include "legoland.h"
 
 #include "bloke.h"
+#include "bricks.h"
 #include "draw.h"
 #include "game_util.h"
 #include "gamemain.h"
@@ -243,7 +244,19 @@ unsigned int FUN_00478be0(unsigned int param_1, unsigned int param_2, unsigned i
 }
 
 // FUNCTION: LEGOLAND 0x00478c60
-void FUN_00478c60(void) { STUB(); }
+int FUN_00478c60(struct CommandArgs *arg, int argc) {
+    if (DAT_004bb5b0 != 0) {
+        if (FUN_004786c0((unsigned int)arg, argc, 5, 1) == 0) {
+            return 0;
+        }
+        if (DAT_00669054 == 1) {
+            FUN_00457900(atoi((char *)arg->field_4));
+            return 1;
+        }
+        FUN_0046b850(atoi((char *)arg->field_4));
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00478cd0
 void FUN_00478cd0(void) { STUB(); }

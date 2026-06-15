@@ -22,6 +22,7 @@ unsigned int FUN_0046b700(void);
 unsigned int FUN_0046b760(void);
 void FUN_0046b790(unsigned int param_1, unsigned int param_2);
 void FUN_0046b7f0(unsigned int param_1);
+void FUN_0046b850(unsigned int param_1);
 void FUN_0046b9c0(unsigned int param_1);
 void FUN_0046ba30(unsigned int param_1);
 void FUN_0046bb80(unsigned int param_1, unsigned int param_2);
