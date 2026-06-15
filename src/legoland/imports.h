@@ -18,3 +18,7 @@ int AVIStreamLength(void *stream);
 int __stdcall acmStreamOpen(void **stream, void *driver, void *src_format, void *dst_format, void *filter, unsigned int callback, unsigned int instance, unsigned int flags);
 void __stdcall acmStreamSize(void *stream, unsigned int input_size, unsigned int *output_size, unsigned int flags);
 void __stdcall acmStreamClose(void *stream, unsigned int flags);
+void __stdcall acmStreamPrepareHeader(void *has, void *pash, unsigned int fdwPrepare);
+void __stdcall acmStreamConvert(void *has, void *pash, unsigned int fdwConvert);
+void __stdcall acmStreamUnprepareHeader(void *has, void *hdr, unsigned int flags);
+void AVIStreamRead(void *stream, int start, int samples, void *buffer, int buffer_size, int *bytes, int *samples_out);

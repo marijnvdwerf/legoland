@@ -1888,7 +1888,195 @@ int FUN_00476c90(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00476d20
-void FUN_00476d20(unsigned int a, unsigned int b) { STUB(); }
+int FUN_00476d20(unsigned int param_1, int param_2) {
+    unsigned int *dst;
+    unsigned int *src;
+    unsigned int *p;
+    unsigned int fill;
+    unsigned int chunk;
+    unsigned int rem;
+    int produced;
+    int play;
+    unsigned int loops;
+    int play_pos;
+    int bytes_out;
+
+    play = 0;
+    if (DAT_00668f9c == 0 || DAT_00668f84 == NULL) {
+        return 0;
+    }
+    if (param_1 == 0 && param_2 == 0) {
+        loops = 0xb;
+        DAT_00668f60 = 0;
+        DAT_00668fa0 = 0;
+    } else {
+        loops = param_1 - param_2;
+        if (loops < DAT_00668f50) {
+            if (loops == 0) {
+                return 1;
+            }
+        } else {
+            KLIBAUDIO_StopAVISoundBuffer(DAT_00668f48);
+            DAT_00668f60 = DAT_00668f90 * param_1;
+            DAT_00668fa0 = param_1 % DAT_00668f50;
+            play = 1;
+            loops = 0xb;
+            play_pos = DAT_00668f90 * DAT_00668fa0;
+        }
+    }
+    do {
+        dst = (unsigned int *)KLIBAUDIO_LockAVISoundBuffer(DAT_00668f48, DAT_00668f3c * DAT_00668fa0, DAT_00668f3c);
+        chunk = DAT_00668f3c;
+        if (DAT_00668f60 < DAT_00668f88 && (int)DAT_00668f60 >= 0) {
+            if (DAT_00668ee0 == 0) {
+                AVIStreamRead(DAT_00668f84, DAT_00668f60, DAT_00668f90, dst, DAT_00668f3c, (int *)&bytes_out, &param_2);
+            } else {
+                produced = 0;
+                if (DAT_00668fb4 == 0) {
+                    if (DAT_00668f3c != 0) {
+                        do {
+                            AVIStreamRead(DAT_00668f84, DAT_00668f60, 0x100, (void *)DAT_00668ee8[3], DAT_00668f3c >> 2, (int *)&bytes_out, &param_2);
+                            DAT_00668ee8[7] = (unsigned int)DAT_00668f8c + produced;
+                            acmStreamPrepareHeader(DAT_00668f5c, &DAT_00668ee8, 0);
+                            acmStreamConvert(DAT_00668f5c, &DAT_00668ee8, 0x10);
+                            acmStreamUnprepareHeader(DAT_00668f5c, &DAT_00668ee8, 0);
+                            produced = produced + DAT_00668ee8[9];
+                            DAT_00668fb4 = DAT_00668fb4 + DAT_00668ee8[9];
+                            DAT_00668f60 = DAT_00668f60 + 1;
+                        } while (DAT_00668fb4 < DAT_00668f3c);
+                    }
+                    src = (unsigned int *)(DAT_00668f54 + (int)DAT_00668f8c);
+                    for (chunk = DAT_00668f3c >> 2; chunk != 0; chunk--) {
+                        *dst = *src;
+                        src++;
+                        dst++;
+                    }
+                    for (chunk = DAT_00668f3c & 3; chunk != 0; chunk--) {
+                        *(unsigned char *)dst = *(unsigned char *)src;
+                        src = (unsigned int *)((char *)src + 1);
+                        dst = (unsigned int *)((char *)dst + 1);
+                    }
+                    DAT_00668f54 = DAT_00668f54 + DAT_00668f3c;
+                    DAT_00668fb4 = DAT_00668fb4 - DAT_00668f3c;
+                } else if (DAT_00668fb4 < DAT_00668f3c) {
+                    src = (unsigned int *)(DAT_00668f54 + (int)DAT_00668f8c);
+                    p = dst;
+                    for (chunk = DAT_00668fb4 >> 2; chunk != 0; chunk--) {
+                        *p = *src;
+                        src++;
+                        p++;
+                    }
+                    rem = DAT_00668fb4;
+                    for (chunk = rem & 3; chunk != 0; chunk--) {
+                        *(unsigned char *)p = *(unsigned char *)src;
+                        src = (unsigned int *)((char *)src + 1);
+                        p = (unsigned int *)((char *)p + 1);
+                    }
+                    DAT_00668fb4 = 0;
+                    rem = DAT_00668f3c - DAT_00668fb4;
+                    DAT_00668f54 = 0;
+                    if (DAT_00668f60 < DAT_00668f88) {
+                        if (DAT_00668f3c != 0) {
+                            do {
+                                AVIStreamRead(DAT_00668f84, DAT_00668f60, 0x100, (void *)DAT_00668ee8[3], DAT_00668f3c >> 2, (int *)&bytes_out, &param_2);
+                                DAT_00668ee8[7] = (unsigned int)DAT_00668f8c + produced;
+                                acmStreamPrepareHeader(DAT_00668f5c, &DAT_00668ee8, 0);
+                                acmStreamConvert(DAT_00668f5c, &DAT_00668ee8, 0x10);
+                                acmStreamUnprepareHeader(DAT_00668f5c, &DAT_00668ee8, 0);
+                                produced = produced + DAT_00668ee8[9];
+                                DAT_00668fb4 = DAT_00668fb4 + DAT_00668ee8[9];
+                                DAT_00668f60 = DAT_00668f60 + 1;
+                            } while (DAT_00668fb4 < DAT_00668f3c);
+                        }
+                        src = DAT_00668f8c;
+                        dst = (unsigned int *)((DAT_00668f3c - rem) + (char *)dst);
+                        for (chunk = rem >> 2; chunk != 0; chunk--) {
+                            *dst = *src;
+                            src++;
+                            dst++;
+                        }
+                        for (chunk = rem & 3; chunk != 0; chunk--) {
+                            *(unsigned char *)dst = *(unsigned char *)src;
+                            src = (unsigned int *)((char *)src + 1);
+                            dst = (unsigned int *)((char *)dst + 1);
+                        }
+                        DAT_00668f54 = DAT_00668f54 + rem;
+                        DAT_00668fb4 = DAT_00668fb4 - rem;
+                    } else if (DAT_00668f4c == 8) {
+                        dst = (unsigned int *)((DAT_00668f3c - rem) + (char *)dst);
+                        for (chunk = rem >> 2; chunk != 0; chunk--) {
+                            *dst = 0x80808080;
+                            dst++;
+                        }
+                        for (chunk = rem & 3; chunk != 0; chunk--) {
+                            *(unsigned char *)dst = 0x80;
+                            dst = (unsigned int *)((char *)dst + 1);
+                        }
+                    } else {
+                        dst = (unsigned int *)((DAT_00668f3c - rem) + (char *)dst);
+                        for (chunk = rem >> 2; chunk != 0; chunk--) {
+                            *dst = 0;
+                            dst++;
+                        }
+                        for (chunk = rem & 3; chunk != 0; chunk--) {
+                            *(unsigned char *)dst = 0;
+                            dst = (unsigned int *)((char *)dst + 1);
+                        }
+                    }
+                } else {
+                    src = (unsigned int *)(DAT_00668f54 + (int)DAT_00668f8c);
+                    for (chunk = DAT_00668f3c >> 2; chunk != 0; chunk--) {
+                        *dst = *src;
+                        src++;
+                        dst++;
+                    }
+                    for (chunk = DAT_00668f3c & 3; chunk != 0; chunk--) {
+                        *(unsigned char *)dst = *(unsigned char *)src;
+                        src = (unsigned int *)((char *)src + 1);
+                        dst = (unsigned int *)((char *)dst + 1);
+                    }
+                    DAT_00668fb4 = DAT_00668fb4 - DAT_00668f3c;
+                    if (DAT_00668fb4 == 0) {
+                        DAT_00668f54 = 0;
+                    } else {
+                        DAT_00668f54 = DAT_00668f54 + DAT_00668f3c;
+                    }
+                }
+            }
+        } else {
+            if (DAT_00668f4c == 8) {
+                fill = 0x80808080;
+            } else {
+                fill = 0;
+            }
+            for (chunk = DAT_00668f3c >> 2; chunk != 0; chunk--) {
+                *dst = fill;
+                dst++;
+            }
+            for (chunk = DAT_00668f3c & 3; chunk != 0; chunk--) {
+                *(char *)dst = (char)fill;
+                dst = (unsigned int *)((char *)dst + 1);
+            }
+            if (DAT_00668ee0 != 0) {
+                DAT_00668f60 = DAT_00668f60 + 1;
+            }
+        }
+        KLIBAUDIO_UnLockAVISoundBuffer(DAT_00668f48);
+        if (DAT_00668ee0 == 0) {
+            DAT_00668f60 = DAT_00668f60 + DAT_00668f90;
+        }
+        DAT_00668fa0 = DAT_00668fa0 + 1;
+        if (DAT_00668f50 <= DAT_00668fa0) {
+            DAT_00668fa0 = 0;
+        }
+        loops = loops - 1;
+    } while (loops != 0);
+    if (play != 0) {
+        KLIBAUDIO_PlayAVISoundBuffer(DAT_00668f48, play_pos);
+        KLIBAUDIO_SetAVIVolume(DAT_00668f48, FUN_00458930(DAT_004bb4dc));
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004771f0
 void FUN_004771f0(const char *filename, unsigned int param_2, unsigned int param_3) { STUB(); }

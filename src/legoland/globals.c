@@ -2744,6 +2744,9 @@ unsigned int DAT_00668f90;
 // GLOBAL: LEGOLAND 0x00668f9c
 int DAT_00668f9c;
 
+// GLOBAL: LEGOLAND 0x00668fa0
+unsigned int DAT_00668fa0;
+
 // GLOBAL: LEGOLAND 0x00668f98
 unsigned int DAT_00668f98;
 
@@ -2755,6 +2758,9 @@ unsigned int DAT_00668fac;
 
 // GLOBAL: LEGOLAND 0x00668fb0
 unsigned int DAT_00668fb0;
+
+// GLOBAL: LEGOLAND 0x00668fb4
+unsigned int DAT_00668fb4;
 
 // GLOBAL: LEGOLAND 0x00668fc0
 void *DAT_00668fc0;
