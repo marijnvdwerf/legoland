@@ -62,7 +62,21 @@ void FUN_00489ee0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00489f00
-void FUN_00489f00(void) { STUB(); }
+int FUN_00489f00(const struct ObjClassKey *key) {
+    int index;
+    struct ObjTableEntry *entry;
+
+    index = 0;
+    for (entry = DAT_007cb3e0; (int)entry < (int)&DAT_007cb5e0; entry++) {
+        if (entry->key == 0xffff) {
+            DAT_007cb3e0[index].key = (key->hi << 8) + key->lo;
+            DAT_007cb3e2[index].key = 0;
+            return 1;
+        }
+        index++;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00489f50
 int FUN_00489f50(const struct ObjClassKey *key) {

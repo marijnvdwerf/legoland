@@ -7,9 +7,7 @@ struct ObjClassNode;
 struct ObjInstance;
 struct ObjClassKey;
 
-/* FUN_00489f00 is still a STUB with an unverified signature; declared K&R so
- * callers don't force argument conversions that diverge from the original. */
-void FUN_00489f00();
+int FUN_00489f00(const struct ObjClassKey *key);
 int FUN_00489f50(const struct ObjClassKey *key);
 int FUN_00489f90(const struct ObjClassKey *key);
 
