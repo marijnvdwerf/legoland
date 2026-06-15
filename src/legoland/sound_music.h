@@ -6,6 +6,7 @@
 
 struct Sample;
 struct CallbackEntry;
+struct AVISoundBuffer;
 
 struct SampleParams {
     /* 0x00 */ int field_0;
@@ -28,3 +29,5 @@ LEGO_EXPORT int CountSamplesFromSource(struct SampleParams *source);
 LEGO_EXPORT LPDIRECTSOUNDBUFFER KLIBAUDIO_CreateAVISoundBuffer(LPWAVEFORMATEX format, unsigned int bytes);
 LEGO_EXPORT void KLIBAUDIO_PlayAVISoundBuffer(LPDIRECTSOUNDBUFFER buffer, unsigned int position);
 LEGO_EXPORT void KLIBAUDIO_SetAVIVolume();
+LEGO_EXPORT void KLIBAUDIO_StopAVISoundBuffer(struct AVISoundBuffer *buffer);
+LEGO_EXPORT int KLIBAUDIO_DestroyAVISoundBuffer(struct AVISoundBuffer *buffer);

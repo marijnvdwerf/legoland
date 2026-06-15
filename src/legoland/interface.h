@@ -69,7 +69,7 @@ void FUN_00465850(void *frame);
 int FUN_00476680(void);
 int FUN_00476910(struct MovieHandle *handle);
 int FUN_00476bf0(struct MovieHandle *handle);
-void FUN_00476c90(void);
+int FUN_00476c90(void);
 void FUN_00476d20(unsigned int a, unsigned int b);
 void FUN_004771f0(const char *filename, unsigned int param_2, unsigned int param_3);
 /* Both are STUBs with unverified signatures, called only from castle.c — the call

@@ -1867,7 +1867,25 @@ int FUN_00476bf0(struct MovieHandle *handle) {
 }
 
 // FUNCTION: LEGOLAND 0x00476c90
-void FUN_00476c90(void) { STUB(); }
+int FUN_00476c90(void) {
+    if (DAT_00668f9c != 0) {
+        DAT_00668f9c = 0;
+        KLIBAUDIO_StopAVISoundBuffer(DAT_00668f48);
+        if (DAT_00668ee0 != 0) {
+            if (DAT_00668ee8[3] != 0) {
+                free((void *)DAT_00668ee8[3]);
+                DAT_00668ee8[3] = 0;
+            }
+            if (DAT_00668f8c != NULL) {
+                free(DAT_00668f8c);
+                DAT_00668f8c = NULL;
+            }
+            acmStreamClose(DAT_00668f5c, 0);
+        }
+        return KLIBAUDIO_DestroyAVISoundBuffer(DAT_00668f48);
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00476d20
 void FUN_00476d20(unsigned int a, unsigned int b) { STUB(); }
