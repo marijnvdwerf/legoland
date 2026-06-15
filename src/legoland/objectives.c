@@ -556,7 +556,19 @@ void FUN_00469080(struct NerpsArg *object, int a) {
 }
 
 // FUNCTION: LEGOLAND 0x004690c0
-void FUN_004690c0(struct NerpsArg *arg, int count) { STUB(); }
+void FUN_004690c0(struct NerpsArg *arg, int count) {
+    struct ObjectiveEvent *event;
+
+    if (FUN_00468d10() == 0) {
+        return;
+    }
+    if (FUN_00468d30(arg) != 0) {
+        return;
+    }
+    event = FUN_00468cd0(0xd, 1);
+    event->field_1c = count;
+    FUN_00468c80(event);
+}
 
 // FUNCTION: LEGOLAND 0x00469100
 void FUN_00469100(struct NerpsArg *object, int a, unsigned int b) {
@@ -609,7 +621,20 @@ void FUN_00469190(struct NerpsArg *object, unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x004691e0
-void FUN_004691e0(struct NerpsArg *arg, int param_2, unsigned int param_3) { STUB(); }
+void FUN_004691e0(struct NerpsArg *arg, int param_2, unsigned int param_3) {
+    struct ObjectiveEvent *event;
+
+    if (FUN_00468d10() == 0) {
+        return;
+    }
+    if (FUN_00468d30(arg) != 0) {
+        return;
+    }
+    event = FUN_00468cd0(0x10, 1);
+    event->field_1c = param_2;
+    event->field_14 = param_3;
+    FUN_00468c80(event);
+}
 
 // FUNCTION: LEGOLAND 0x00469220
 void FUN_00469220(struct NerpsArg *object, unsigned int a, unsigned int b) {
@@ -628,7 +653,27 @@ void FUN_00469220(struct NerpsArg *object, unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x00469260
-void FUN_00469260(struct NerpsArg *arg, unsigned int class_id, int sum, int count) { STUB(); }
+void FUN_00469260(struct NerpsArg *arg, unsigned int class_id, int sum, int count) {
+    struct ObjectiveEvent *event;
+
+    if (FUN_00468d10() == 0) {
+        return;
+    }
+    if (FUN_00468d30(arg) != 0) {
+        return;
+    }
+    event = FUN_00468cd0(0x12, 1);
+    if (sum < 0) {
+        sum = 0;
+    }
+    if (count < 0) {
+        count = 0;
+    }
+    event->field_4 = class_id;
+    event->field_14 = count;
+    event->field_1c = sum;
+    FUN_00468c80(event);
+}
 
 // FUNCTION: LEGOLAND 0x00469310
 void FUN_00469310(struct NerpsArg *object, unsigned int a, int b) {
