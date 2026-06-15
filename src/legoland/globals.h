@@ -272,8 +272,14 @@ extern float FLOAT_004ab45c;
 extern float FLOAT_004ab480;
 // 0x004ab4c8
 extern double DAT_004ab4c8;
+// 0x004ab4d8
+extern float DAT_004ab4d8;
 // 0x004ab518
 extern float DAT_004ab518;
+// 0x004ab520
+extern float DAT_004ab520;
+// 0x004ab548
+extern double DAT_004ab548;
 // 0x004ab560 c_dfDIKeyboard, 0x004ab578 c_dfDIMouse — declared in <dinput.h>, defined in globals.c
 // 0x004ab5e0
 extern GUID DAT_004ab5e0;

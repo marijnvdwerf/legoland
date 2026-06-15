@@ -2,6 +2,7 @@
 #include <string.h>
 #include "legoland.h"
 
+#include "binv.h"
 #include "bloke.h"
 #include "debug_alloc.h"
 #include "globals.h"
@@ -130,8 +131,33 @@ struct OrientPerson {
 };
 
 struct BNVPath {
-    unsigned char pad_0[0x40];
-    unsigned int field_40;
+    /* 0x00 */ struct BinVFile *file;
+    /* 0x04 */ unsigned int field_4;
+    /* 0x08 */ char name[0x14];
+    /* 0x1c */ float field_1c;
+    /* 0x20 */ float field_20;
+    /* 0x24 */ float x;
+    /* 0x28 */ float y;
+    /* 0x2c */ unsigned char pad_2c[0x30 - 0x2c];
+    /* 0x30 */ float dx;
+    /* 0x34 */ float dy;
+    /* 0x38 */ unsigned char pad_38[0x3c - 0x38];
+    /* 0x3c */ float field_3c;
+    /* 0x40 */ unsigned int frame_index;
+    /* 0x44 */ unsigned int field_44;
+};
+
+struct BinVMatrix {
+    unsigned char pad_0[0x10];
+    float m10;
+    float m14;
+    float m18;
+    float m1c;
+    float m20;
+    float m24;
+    float m28;
+    float m2c;
+    float m30;
 };
 
 struct Person {
@@ -1314,18 +1340,49 @@ LEGO_EXPORT void ApplyObjectOrientationToPerson(struct OrientPerson *person, flo
 LEGO_EXPORT void SetBlokePositionFromBNV(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00484c20
-LEGO_EXPORT void NewBNVPath(void) { STUB(); }
+LEGO_EXPORT struct BNVPath *NewBNVPath(struct BinVFile *file, unsigned int param_2, char *name, float param_4, float param_5, int *coords) {
+    struct BNVPath *path = (struct BNVPath *)malloc(sizeof(struct BNVPath));
+    struct BinVFrame *frame;
+    struct BinVObject *object;
+    struct Vertex *vertex;
+    float scale = (float)(DAT_004ab4d8 / (param_4 - param_5));
+    path->file = file;
+    strcpy(path->name, name);
+    path->field_1c = scale;
+    path->frame_index = 0;
+    path->field_20 = param_5;
+    path->field_44 = 1;
+    path->x = (float)coords[0];
+    path->y = (float)coords[1];
+    frame = GetBinVFrame(file, 0);
+    object = GetObjectFromName(frame, name);
+    vertex = GetVertex(object, 0);
+    path->field_3c = (float)GetZSkew(file, object, vertex);
+    path->field_4 = param_2;
+    return path;
+}
 
 // FUNCTION: LEGOLAND 0x00484cd0
 LEGO_EXPORT void UpdateBlokeFromBNVPath(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00484ff0
 LEGO_EXPORT unsigned int BNVPath_GetDFrame(struct BNVPath *path) {
-    return path->field_40;
+    return path->frame_index;
 }
 
 // FUNCTION: LEGOLAND 0x00485000
-LEGO_EXPORT void BNVPath_GetBINVScreenCoords(void) { STUB(); }
+LEGO_EXPORT struct Point BNVPath_GetBINVScreenCoords(struct BNVPath *path, int frame) {
+    struct Point result;
+    struct BinVFrame *binFrame = GetBinVFrame(path->file, frame);
+    struct BinVObject *object = GetObjectFromName(binFrame, path->name);
+    int i;
+    for (i = 0; i < 8; i++) {
+        GetVertex(object, i);
+    }
+    result.x = FUN_00458930(0);
+    result.y = FUN_00458930(0);
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x004850b0
 LEGO_EXPORT void BNVPath_SetDFrame(void) { STUB(); }

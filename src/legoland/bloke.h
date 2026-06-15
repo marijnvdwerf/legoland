@@ -81,3 +81,8 @@ struct Worker;
 LEGO_EXPORT void DoLowLevelAI(struct Worker *worker);
 struct MapRect;
 void FUN_0049cf00();
+struct BinVFile;
+struct BinVObject;
+struct Vertex;
+double GetZSkew();
+int FUN_00458930(float x);
