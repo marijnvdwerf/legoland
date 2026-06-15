@@ -746,13 +746,67 @@ LEGO_EXPORT void RefundMechanic(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0049a1a0
-LEGO_EXPORT void GenerateGardener(void *object, int param_2) { STUB(); }
+LEGO_EXPORT struct Worker *GenerateGardener(int *coords, int param_2) {
+    struct Worker *worker;
+    int x;
+    int y;
+    int *cell;
+    unsigned short action;
+
+    if (DAT_0079a8bc >= 0xf) {
+        return 0;
+    }
+    // STRING: LEGOLAND 0x004c00c4
+    DBPrintf("Generating Gardener\n");
+    worker = (struct Worker *)NewBlokeWOList((void *)2);
+    cell = 0;
+    if (worker == 0) {
+        // STRING: LEGOLAND 0x004c0060
+        DBPrintf("   Failed to Generate Gardener\n");
+        return 0;
+    }
+    worker->var_70 = 0;
+    worker->var_72 = 0;
+    worker->var_74 = 0;
+    worker->var_75 = 1;
+    worker->var_7f = 0x18;
+    worker->next = GardenerList;
+    DAT_0079a8bc++;
+    GardenerList = worker;
+    if (param_2 == 0) {
+        // STRING: LEGOLAND 0x004c0080
+        DBPrintf("   Gardener Generated at (%d,%d)\n", coords[0], coords[1]);
+        action = 0x10;
+        worker->var_68 = coords[0] << 8;
+        worker->var_6c = coords[1] << 8;
+    } else {
+        x = coords[0];
+        if (-1 < x && x < (int)lpConfig->width && (y = coords[1], -1 < y) &&
+            y < (int)lpConfig->height) {
+            cell = (int *)((char *)GameMap[y] + x * 0x14);
+        }
+        // STRING: LEGOLAND 0x004c00a4
+        DBPrintf("   Gardener Generated in hut\n");
+        PutWorkerOnRide(worker, cell);
+        x = coords[0];
+        coords[0] = x - 2;
+        worker->var_68 = (x - 2) * 0x100;
+        worker->var_24 = (x - 2) * 0x100;
+        coords[1]++;
+        worker->var_6c = coords[1] << 8;
+        worker->var_28 = coords[1] << 8;
+        action = 5;
+    }
+    NewLongTermAction((struct Bloke *)worker, action);
+    DAT_00668610 |= 0x80;
+    return worker;
+}
 
 // FUNCTION: LEGOLAND 0x0049a2d0
 LEGO_EXPORT void RemoveAGardener(struct Worker *worker) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049a340
-LEGO_EXPORT void GenerateMechanic(void *object, int param_2) { STUB(); }
+LEGO_EXPORT struct Worker *GenerateMechanic(int *coords, int param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0049a430
 LEGO_EXPORT void RemoveAMechanic(struct Worker *worker) { STUB(); }

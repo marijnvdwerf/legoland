@@ -59,5 +59,6 @@ void FUN_00482d60(unsigned int index, int value);
 void FUN_00482d70(void);
 void FUN_00483090(void);
 LEGO_EXPORT struct Bloke *MakeBloke(int param_1);
+LEGO_EXPORT struct Bloke *NewBlokeWOList(void *param_2);
 struct Worker;
 LEGO_EXPORT void DoLowLevelAI(struct Worker *worker);
