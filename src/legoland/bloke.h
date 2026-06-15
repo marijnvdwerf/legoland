@@ -24,7 +24,10 @@ struct Bloke {
     unsigned int field_14;
     unsigned int field_18;
     unsigned int field_1c;
-    unsigned char pad_20[0x2e - 0x20];
+    unsigned char pad_20[0x24 - 0x20];
+    int field_24;
+    int field_28;
+    unsigned char pad_2c[0x2e - 0x2c];
     short field_2e;
     unsigned char pad_30[0x54 - 0x30];
     unsigned int field_54;
@@ -34,9 +37,12 @@ struct Bloke {
     unsigned char pad_61[0x1];
     unsigned short flags;
     unsigned char field_64;
-    unsigned char pad_65[0x72 - 0x65];
+    unsigned char pad_65[0x68 - 0x65];
+    int field_68;
+    int field_6c;
+    unsigned char pad_70[0x72 - 0x70];
     unsigned char field_72;
-    unsigned char pad_73[0x1];
+    unsigned char field_73;
     unsigned char field_74;
     unsigned char field_75;
     unsigned char pad_76[0x78 - 0x76];
@@ -47,12 +53,13 @@ struct Bloke {
     unsigned char field_7f;
     unsigned char field_80;
     unsigned char field_81;
-    unsigned char pad_82[0x88 - 0x82];
+    unsigned char field_82;
+    unsigned char pad_83[0x88 - 0x83];
     unsigned int favourite_attraction_0;
     unsigned int favourite_attraction_1;
     unsigned int favourite_attraction_2;
     unsigned int favourite_food;
-    unsigned char pad_98[0xac - 0x98];
+    unsigned char field_98[0xac - 0x98];
 };
 
 struct BlokeSampleSource {

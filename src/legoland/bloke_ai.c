@@ -4,7 +4,9 @@
 #include "globals.h"
 #include "legoland.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "math.h"
+#include "worker.h"
 
 struct BlokeList {
     unsigned char pad_0[0xcc];
@@ -25,10 +27,17 @@ struct AttractionInfo {
 struct BlokeRideState {
     unsigned char pad_0[0x4];
     int *ride;
-    unsigned char pad_8[0x54 - 0x8];
+    unsigned char pad_8[0xe - 0x8];
+    unsigned short field_e;
+    unsigned char pad_10[0x54 - 0x10];
     unsigned int field_54;
-    unsigned char pad_58[0x62 - 0x58];
+    unsigned char pad_58[0x60 - 0x58];
+    unsigned char field_60;
+    unsigned char pad_61[0x1];
     unsigned short flags;
+    unsigned char field_64;
+    unsigned char pad_65[0x73 - 0x65];
+    unsigned char field_73;
 };
 
 // FUNCTION: LEGOLAND 0x0044e760
@@ -379,7 +388,30 @@ void FUN_0044fe80(void) { STUB(); }
 void FUN_00450250(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00450330
-void FUN_00450330(void) { STUB(); }
+void FUN_00450330(struct BlokeRideState *bloke) {
+    int state;
+
+    switch (bloke->field_60) {
+    case 0:
+        NewDirForAction((struct ActionState *)bloke, 4);
+        bloke->field_60++;
+        break;
+    case 1:
+        bloke->field_e = 0xd;
+        bloke->field_60 = 2;
+        return;
+    case 2:
+        state = bloke->ride[2];
+        switch (state) {
+        case 2:
+            NewLongTermAction((struct Bloke *)bloke, 0x10);
+            return;
+        case 3:
+            NewLongTermAction((struct Bloke *)bloke, 0x11);
+            return;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004503a0
 void FUN_004503a0(void) { STUB(); }
