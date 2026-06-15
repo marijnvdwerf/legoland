@@ -3,6 +3,10 @@
 #include "globals.h"
 #include "legoland.h"
 #include "resource.h"
+#include "bloke.h"
+#include "bloke_ai.h"
+#include "objclass.h"
+#include "man3d.h"
 
 struct ObjClassKey {
     unsigned short hi;
@@ -46,8 +50,15 @@ struct RideNode {
 };
 
 struct Ride {
-    unsigned char pad_0[0xcc];
-    struct RideNode *riders;
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ int field_c;
+    /* 0x10 */ int field_10;
+    /* 0x14 */ unsigned char pad_14[0x20 - 0x14];
+    /* 0x20 */ short type;
+    /* 0x22 */ unsigned char pad_22[0xc4 - 0x22];
+    /* 0xc4 */ unsigned int field_c4;
+    /* 0xc8 */ unsigned char pad_c8[0xcc - 0xc8];
+    /* 0xcc */ struct RideNode *riders;
 };
 
 // FUNCTION: LEGOLAND 0x00489e60
@@ -237,7 +248,55 @@ LEGO_EXPORT struct ObjInstance *GetInstanceOfClass(struct ObjClassNode *cls, con
 LEGO_EXPORT void HandleRideAI(void) {}
 
 // FUNCTION: LEGOLAND 0x0048a100
-LEGO_EXPORT void RemoveBlokeFromRide(void *ride, void *node) { STUB(); }
+LEGO_EXPORT void RemoveBlokeFromRide(struct Ride *ride, struct RideNode *node) {
+    struct Bloke *bloke;
+    struct MapElement *element;
+    int counter;
+    int code;
+
+    bloke = (struct Bloke *)node->rider;
+    RemoveBlokeFromList((struct BlokeList *)ride, (struct Bloke *)node);
+    if (FUN_0044f3d0((struct BlokeList *)ride, &node->uid) == 0) {
+        int x = *(unsigned char *)&node->uid;
+        int y = *((unsigned char *)&node->uid + 1);
+        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+            element = GameMap[y] + x;
+        } else {
+            element = 0;
+        }
+        element->flags &= 0xfffb;
+    }
+    free(node);
+    bloke->flags &= 0xffdf;
+    if (ride->type == 5) {
+        if (IsFavouriteFood(bloke, ride->field_c4)) {
+            counter = GetBlokeCounter(*(struct ObjectClass **)(bloke->field_14 + 0xc), GetBlokeNum(bloke));
+            code = CalculateRideCode(bloke->field_7e, *(struct RideStats **)(bloke->field_14 + 0xc), counter);
+            FUN_00482df0(bloke, 9, code);
+            bloke->field_7c = 0;
+        } else {
+            counter = GetBlokeCounter(*(struct ObjectClass **)(bloke->field_14 + 0xc), GetBlokeNum(bloke));
+            code = CalculateRideCode(bloke->field_7e, *(struct RideStats **)(bloke->field_14 + 0xc), counter);
+            FUN_00482df0(bloke, 10, code);
+            bloke->field_7c = 0;
+        }
+    } else {
+        if (IsFavouriteAttraction(bloke, ride->field_c4)) {
+            counter = GetBlokeCounter(*(struct ObjectClass **)(bloke->field_14 + 0xc), GetBlokeNum(bloke));
+            code = CalculateRideCode(bloke->field_7e, *(struct RideStats **)(bloke->field_14 + 0xc), counter);
+            FUN_00482df0(bloke, 0xb, code);
+        } else {
+            counter = GetBlokeCounter(*(struct ObjectClass **)(bloke->field_14 + 0xc), GetBlokeNum(bloke));
+            code = CalculateRideCode(bloke->field_7e, *(struct RideStats **)(bloke->field_14 + 0xc), counter);
+            FUN_00482df0(bloke, 0xc, code);
+        }
+    }
+    counter = GetBlokeCounter(*(struct ObjectClass **)(bloke->field_14 + 0xc), GetBlokeNum(bloke));
+    bloke->field_78 = bloke->field_78 + (short)(counter * 0x32);
+    bloke->field_18 = bloke->field_14;
+    IncrementBlokeCounter(*(struct ObjectClass **)(bloke->field_14 + 0xc), GetBlokeNum(bloke));
+    NewLongTermAction(bloke, 0x17);
+}
 
 // FUNCTION: LEGOLAND 0x0048a2d0
 LEGO_EXPORT void UpdateBlokesOnRide(void) {}

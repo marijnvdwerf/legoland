@@ -67,6 +67,8 @@ LEGO_EXPORT void IncrementBlokeCounter(struct ObjectClass *cls, unsigned int ind
 LEGO_EXPORT int GetBlokeCounter(struct ObjectClass *cls, int index);
 LEGO_EXPORT void BuildObjInfoList(void);
 LEGO_EXPORT void CalculateRideCodes(unsigned int param_1);
+struct RideStats;
+LEGO_EXPORT unsigned int CalculateRideCode(unsigned int param_1, struct RideStats *param_2, unsigned int param_3);
 LEGO_EXPORT void ResetBestPtr(void);
 LEGO_EXPORT int ShuffleObjKeys(int *param_1, void **param_2);
 LEGO_EXPORT unsigned int Calc_Item_Attractiveness(unsigned int param_1, unsigned int param_2, unsigned int param_3);
