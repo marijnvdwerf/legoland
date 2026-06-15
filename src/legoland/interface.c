@@ -1139,7 +1139,70 @@ char FUN_00475c90(int param_1, unsigned char param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00475cd0
-LEGO_EXPORT void RAndDLinkedList(void) { STUB(); }
+LEGO_EXPORT int RAndDLinkedList(unsigned int *entry) {
+    struct LLDBElem *elem;
+    void *build_elem;
+    void *param_elem;
+    void *menu_elem;
+    void *theme_elem;
+    struct BuildObject *obj;
+    unsigned int flags;
+    int count;
+    int menu_index;
+    int i;
+
+    DelObjectList();
+    if (LLIDB_FindElement("BUILD MENU", (unsigned int *)&build_elem, 0) != 0) {
+        exit(1);
+    }
+    if (LLIDB_FindElement("COMMON THEME", (unsigned int *)&theme_elem, 0) != 0) {
+        exit(1);
+    }
+    if (LLIDB_FindElement((const char *)entry, (unsigned int *)&param_elem, 0) != 0) {
+        exit(1);
+    }
+    count = LLIDB_GetCount();
+    menu_index = 0;
+    do {
+        if (LLIDB_FindElement(DAT_004baffc[menu_index], (unsigned int *)&menu_elem, 0) != 0) {
+            exit(1);
+        }
+        for (i = 0; i < count; i++) {
+            LLIDB_GetElement(i, (struct Element **)&elem);
+            if ((elem->flags & 0x10011) == 0x10011) {
+                obj = elem->obj;
+                if (obj->field_58 == build_elem) {
+                    if (obj->field_5c == param_elem && obj->field_60 == menu_elem) {
+                        flags = obj->field_1c;
+                    } else if (obj->field_5c == theme_elem && DAT_004baff8 == 0 && menu_index == 0) {
+                        flags = obj->field_1c;
+                    } else {
+                        continue;
+                    }
+                    if ((flags & 0xc000000) == 0) {
+                        obj->field_1c = flags | 0x4000000;
+                    }
+                    FUN_004755c0(obj);
+                }
+            }
+        }
+        menu_index++;
+    } while (menu_index < 4);
+    for (i = 0; i < count; i++) {
+        LLIDB_GetElement(i, (struct Element **)&elem);
+        if ((elem->flags & 0x10011) == 0x10011) {
+            obj = elem->obj;
+            if (obj->field_58 != build_elem && obj->field_58 != NULL && obj->field_5c == param_elem) {
+                if ((obj->field_1c & 0xc000000) == 0) {
+                    obj->field_1c |= 0x4000000;
+                }
+                InsertChildIntoList(obj);
+            }
+        }
+    }
+    DAT_00668e64 = (unsigned char)DAT_004baff8 + 4;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00475e90
 LEGO_EXPORT void DisableSidePanelIcons(void) {
