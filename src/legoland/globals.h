@@ -661,6 +661,8 @@ extern unsigned int DAT_004bb0a0;
 extern struct TrackElemPair DAT_004bb0a4[29];
 // 0x004bb18c
 extern unsigned int DAT_004bb18c[4];
+// 0x004bb4dc
+extern float DAT_004bb4dc;
 // 0x004bb4e0
 extern BITMAPINFOHEADER DAT_004bb4e0;
 // 0x004bb5ac
@@ -2008,14 +2010,20 @@ extern unsigned int DAT_00668f4c;
 extern unsigned int DAT_00668f50;
 // 0x00668f54
 extern int DAT_00668f54;
+// 0x00668f58
+extern unsigned int DAT_00668f58;
 // 0x00668f5c
 extern void *DAT_00668f5c;
+// 0x00668f60
+extern unsigned int DAT_00668f60;
 // 0x00668f64
 extern unsigned int DAT_00668f64;
 // 0x00668f70
 extern WAVEFORMATEX DAT_00668f70;
 // 0x00668f84
 extern void *DAT_00668f84;
+// 0x00668f88
+extern unsigned int DAT_00668f88;
 // 0x00668f8c
 extern void *DAT_00668f8c;
 // 0x00668f90

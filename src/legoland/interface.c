@@ -1847,7 +1847,24 @@ int FUN_00476910(struct MovieHandle *handle) {
 }
 
 // FUNCTION: LEGOLAND 0x00476bf0
-void FUN_00476bf0(struct MovieHandle *handle) { STUB(); }
+int FUN_00476bf0(struct MovieHandle *handle) {
+    unsigned int start;
+    unsigned int len_start;
+
+    if (handle->audio_stream != NULL && DAT_00668f48 != NULL) {
+        start = AVIStreamStart(handle->audio_stream);
+        len_start = AVIStreamLength(handle->audio_stream) + AVIStreamStart(handle->audio_stream);
+        DAT_00668f58 = start;
+        DAT_00668f60 = start;
+        DAT_00668f88 = len_start;
+        DAT_00668f9c = 1;
+        FUN_00476d20(0, 0);
+        KLIBAUDIO_SetAVIVolume(DAT_00668f48, FUN_00458930(DAT_004bb4dc));
+        KLIBAUDIO_PlayAVISoundBuffer(DAT_00668f48, 0);
+        return 1;
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00476c90
 void FUN_00476c90(void) { STUB(); }

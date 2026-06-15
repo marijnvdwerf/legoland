@@ -26,3 +26,5 @@ LEGO_EXPORT void AddSFX_Callback(struct CallbackEntry *entry, unsigned int delay
 LEGO_EXPORT void AdjustPSampleFreq(struct Sample *sample, unsigned int param_2);
 LEGO_EXPORT int CountSamplesFromSource(struct SampleParams *source);
 LEGO_EXPORT LPDIRECTSOUNDBUFFER KLIBAUDIO_CreateAVISoundBuffer(LPWAVEFORMATEX format, unsigned int bytes);
+LEGO_EXPORT void KLIBAUDIO_PlayAVISoundBuffer(LPDIRECTSOUNDBUFFER buffer, unsigned int position);
+LEGO_EXPORT void KLIBAUDIO_SetAVIVolume();
