@@ -16,10 +16,7 @@
 #include "sound_music.h"
 #include "space_tower.h"
 
-struct SeatRider {
-    /* 0x00 */ unsigned char pad_0[8];
-    /* 0x08 */ struct Bloke *render;
-};
+struct SpaceTowerRideNode;
 
 struct SpaceTowerSeat {
     /* 0x00 */ unsigned int flags;
@@ -28,8 +25,8 @@ struct SpaceTowerSeat {
     /* 0x0c */ int state;
     /* 0x10 */ int field_10;
     /* 0x14 */ int field_14;
-    /* 0x18 */ struct SeatRider *field_18;
-    /* 0x1c */ struct SeatRider *field_1c;
+    /* 0x18 */ struct SpaceTowerRideNode *field_18;
+    /* 0x1c */ struct SpaceTowerRideNode *field_1c;
     /* 0x20 */ signed char delta;
     /* 0x21 */ unsigned char pad_21[3];
 };
@@ -73,7 +70,8 @@ struct SpaceTowerRideNode {
             unsigned char y;
         } coord;
     };
-    /* 0x10 */ unsigned char pad_10[2];
+    /* 0x0e */ unsigned char pad_e[2];
+    /* 0x10 */ struct Person *person;
 };
 
 struct SpaceTowerRide {
@@ -505,10 +503,10 @@ void FUN_0043aee0(struct RideObject *param_1, int param_2, unsigned int param_3)
     if ((param_1->seats[param_2].flags & 1) != 0) {
         FUN_0043ad00((unsigned char *)param_1, param_2);
         if (param_1->seats[param_2].field_18 != NULL) {
-            IP_RenderBlokeIn3DNow(param_1->seats[param_2].field_18->render);
+            IP_RenderBlokeIn3DNow(param_1->seats[param_2].field_18->bloke);
         }
         if (param_1->seats[param_2].field_1c != NULL) {
-            IP_RenderBlokeIn3DNow(param_1->seats[param_2].field_1c->render);
+            IP_RenderBlokeIn3DNow(param_1->seats[param_2].field_1c->bloke);
         }
         FUN_0043ad90(param_1, param_2, param_3);
     }
@@ -807,7 +805,67 @@ void SpaceTowerRide(struct ClassNode *name, struct CallbackTable *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0043b810
-void FUN_0043b810(struct RideObject *arg) { STUB(); }
+void FUN_0043b810(struct RideObject *param_1) {
+    struct SpaceTowerRideNode *node;
+    struct Bloke *bloke;
+    struct SpaceTowerSeat *seat;
+    unsigned char slot;
+    int idx;
+    int off_x;
+    int off_y;
+    int dat_x;
+    int dat_y;
+    union {
+        __int64 q;
+        struct {
+            int low;
+            int high;
+        } parts;
+    } coords;
+
+    node = ((struct SpaceTowerRide *)DAT_0062fd74)->list;
+    param_1->seats[0].field_18 = NULL;
+    param_1->seats[0].field_1c = NULL;
+    param_1->seats[1].field_18 = NULL;
+    param_1->seats[1].field_1c = NULL;
+    param_1->seats[2].field_18 = NULL;
+    param_1->seats[2].field_1c = NULL;
+    param_1->seats[3].field_18 = NULL;
+    param_1->seats[3].field_1c = NULL;
+    coords.q = GetScreenCoordsForObject((unsigned char *)param_1, DAT_0062fd74);
+    for (; node != NULL; node = node->next) {
+        if (node->id == param_1->var_0 && (node->bloke->flags & 0x80) != 0) {
+            bloke = node->bloke;
+            slot = bloke->field_36;
+            idx = (int)(unsigned int)slot >> 1;
+            if ((slot & 1) == 0) {
+                seat = &param_1->seats[idx];
+                seat->field_18 = node;
+            } else {
+                seat = &param_1->seats[idx];
+                seat->field_1c = node;
+            }
+            off_x = DAT_0062fd88[idx].x;
+            off_y = DAT_0062fd88[idx].y - seat->pos;
+            AdjustOffsetForViewMode((struct AdjustStruct *)&off_x);
+            off_x = off_x + coords.parts.low;
+            off_y = coords.parts.high + off_y;
+            if ((slot & 1) == 0) {
+                dat_x = DAT_004b7798[idx].field_0;
+                dat_y = DAT_004b7798[idx].field_4;
+            } else {
+                dat_x = DAT_004b7798[idx].field_8;
+                dat_y = DAT_004b7798[idx].field_c;
+            }
+            AdjustOffsetForViewMode((struct AdjustStruct *)&dat_x);
+            off_x = off_x + dat_x;
+            off_y = off_y + dat_y;
+            AdjustBlokePosition((struct BlokePos *)&off_x);
+            SetPersonPosition(node->person, off_x, off_y);
+            SetPersonDirection(node->person, DAT_004b7798[idx].field_10);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0043b990
 void FUN_0043b990(struct RideObject *esi) {

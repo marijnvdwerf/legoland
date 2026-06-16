@@ -86,6 +86,14 @@ struct LayerOffset {
     /* 0x04 */ int y;
 };
 
+struct SpaceTowerSeatData {
+    /* 0x00 */ int field_0;
+    /* 0x04 */ int field_4;
+    /* 0x08 */ int field_8;
+    /* 0x0c */ int field_c;
+    /* 0x10 */ int field_10;
+};
+
 struct MapElement {
     /* 0x00 */ unsigned int field_0;
     /* 0x04 */ unsigned char field_4;
@@ -494,6 +502,8 @@ extern unsigned char DAT_004b76b8[16];
 extern unsigned char DAT_004b7750[16];
 // 0x004b7758
 extern struct SpaceTowerLayout DAT_004b7758[8];
+// 0x004b7798
+extern struct SpaceTowerSeatData DAT_004b7798[4];
 // 0x004b79d0
 extern unsigned char DAT_004b79d0[0x18];
 // 0x004b7abc
