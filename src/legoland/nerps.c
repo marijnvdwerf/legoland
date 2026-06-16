@@ -864,13 +864,51 @@ unsigned int FUN_0046ae70(struct NerpsArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0046aec0
-void FUN_0046aec0(void) { STUB(); }
+unsigned int FUN_0046aec0(struct NerpsArg *arg) {
+    int current;
+    int target;
+
+    current = FUN_00499550();
+    target = arg->field_1c;
+    if (0 < target) {
+        if (target <= current) {
+            return 1;
+        }
+        FUN_00468fc0(arg, target - current);
+        return 0;
+    }
+    if (-target >= current) {
+        return 1;
+    }
+    FUN_00469000(arg, target + current);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046af10
-void FUN_0046af10(void) { STUB(); }
+unsigned int FUN_0046af10(struct NerpsArg *arg) {
+    int current;
+    int target;
+
+    current = FUN_00499560();
+    target = arg->field_1c;
+    if (0 < target) {
+        if (target <= current) {
+            return 1;
+        }
+        FUN_00469040(arg, target - current);
+        return 0;
+    }
+    return FUN_0046af39(target, current, arg);
+}
 
 // FUNCTION: LEGOLAND 0x0046af39
-void FUN_0046af39(void) { STUB(); }
+unsigned int FUN_0046af39(int target, int current, struct NerpsArg *arg) {
+    if (-target >= current) {
+        return 1;
+    }
+    FUN_00469080(arg, target + current);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046af60
 void FUN_0046af60(void) { STUB(); }

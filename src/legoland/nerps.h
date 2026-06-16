@@ -15,9 +15,11 @@ struct SortNode {
 
 struct StringHolder;
 struct Vec4;
+struct NerpsArg;
 
 void FUN_0046a040(unsigned int param_1, unsigned int param_2);
 void FUN_0046a140(int index, unsigned int param_2, unsigned int param_3);
+unsigned int FUN_0046af39(int target, int current, struct NerpsArg *arg);
 void FUN_0046b240(unsigned int param_1);
 unsigned int FUN_0046b280(void);
 void FUN_0046b2d0(void);

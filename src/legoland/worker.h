@@ -76,3 +76,5 @@ void FUN_00499ac0(struct Worker *worker, struct WorkOrder *order);
 struct WorkOrder *FUN_00499780(struct EditObject *obj, int *coords, int mode);
 struct ObjClass;
 LEGO_EXPORT struct WorkOrder *AddRepairOrderForObject(struct ObjClass *cls, int x, int y);
+int FUN_00499550(void);
+int FUN_00499560(void);
