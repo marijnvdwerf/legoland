@@ -3,11 +3,16 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include "bloke.h"
+#include "debug_alloc.h"
 #include "draw.h"
 #include "gamemap.h"
 #include "llidb.h"
 #include "man3d.h"
 #include "map_object.h"
+#include "math.h"
+#include "obj_instance.h"
+#include "render3d.h"
 #include "sound_music.h"
 #include "tilemap.h"
 
@@ -347,7 +352,85 @@ void FUN_00417f40(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00417f90
-void FUN_00417f90(void) { STUB(); }
+void FUN_00417f90(struct WaterArg *arg) {
+    struct WaterNode *node;
+    struct WaterRender *render;
+    struct RenderNode *rnode;
+    struct RenderNode *next;
+    unsigned char *bloke;
+    int lls;
+    int limit;
+    int rx;
+    int ry;
+
+    unsigned char bx;
+    unsigned char by;
+    char dir;
+
+    FUN_00417f40();
+    for (node = (struct WaterNode *)DAT_004cc02c; node != NULL; node = node->next) {
+        if (node->field_8 == 1) {
+            limit = 0;
+            node->field_9++;
+            lls = *(int *)(*(int *)((char *)DAT_004cc018 + 8) + node->field_a * 4);
+            if (lls != 0) {
+                lls = GetLLSForSprite((struct SpriteLLS *)lls);
+                if (lls != 0) {
+                    limit = *(short *)(lls + 0x10);
+                } else {
+                    // STRING: LEGOLAND 0x004b504c
+                    DBPrintf("Bad Sprite in Waterworks block\n");
+                }
+            } else {
+                // STRING: LEGOLAND 0x004b5034
+                DBPrintf("Bad Block Index (%d)\n", node->field_a);
+            }
+            if ((int)node->field_9 >= limit) {
+                node->field_8 = 0;
+                node->field_9 = 0;
+            }
+        } else {
+            lls = GetLLSForSprite(*(struct SpriteLLS **)(*(int *)((char *)DAT_004cc018 + 8) + node->field_a * 4));
+            if (lls == 0) {
+                DBPrintf("Bad Sprite in Waterworks block\n");
+            } else {
+                node->field_9 = 0;
+            }
+        }
+    }
+    render = (struct WaterRender *)arg->field_c;
+    rnode = render->nodes;
+    while (rnode != NULL) {
+        rx = *(int *)((char *)render + 0xc);
+        bloke = (unsigned char *)rnode->fn;
+        ry = *(int *)((char *)render + 0x10);
+        bx = *(unsigned char *)&rnode->id;
+        next = rnode->next;
+        by = *((unsigned char *)&rnode->id + 1);
+        ry = by + ry;
+        rx = bx + rx;
+        if (*(short *)(bloke + 0xe) == 0) {
+            switch (bloke[0x60]) {
+            case 0:
+                bloke[0x62] |= 8;
+                ry = ry * 0x100 + 0x80;
+                *(unsigned int *)(bloke + 0x24) = rx * 0x100 + -0x80;
+                *(int *)(bloke + 0x28) = ry;
+                dir = CalcMoveLine(*(int *)(bloke + 0x68), *(int *)(bloke + 0x6c), *(int *)(bloke + 0x24), ry, bloke + 0x98);
+                *(short *)(bloke + 0xe) = 7;
+                bloke[0x73] = dir + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke[0x60]++;
+                break;
+            case 1:
+                RemoveBlokeFromRide((struct Ride *)render, (struct RideNode *)rnode);
+                *(unsigned short *)(bloke + 0x62) &= 0xfff7;
+                break;
+            }
+        }
+        rnode = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00418110
 void FUN_00418110(void) { STUB(); }
