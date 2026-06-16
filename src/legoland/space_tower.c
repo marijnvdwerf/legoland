@@ -58,7 +58,46 @@ struct FadeParams {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0043a7a0
-void FUN_0043a7a0(void) { STUB(); }
+__int64 FUN_0043a7a0(int *param_1, int param_2, int param_3) {
+    int *node;
+    union {
+        __int64 q;
+        struct {
+            int low;
+            int high;
+        } parts;
+    } result;
+    int *cur;
+    int index;
+    int remaining;
+
+    result.parts.low = 0;
+    result.parts.high = 0;
+    index = 0;
+    if (param_2 + 1 > 0) {
+        param_1 = *(int **)((int)param_1 + 4);
+        do {
+            cur = (int *)*param_1;
+            if (index == param_2) {
+                remaining = param_3 + 1;
+            } else {
+                remaining = *cur;
+            }
+            if (remaining > 0) {
+                node = (int *)cur[1];
+                do {
+                    result.parts.low += node[2] + node[0] * 0x100;
+                    result.parts.high += node[1] * 0x100 + node[3];
+                    node += 4;
+                    remaining += -1;
+                } while (remaining != 0);
+            }
+            index += 1;
+            param_1 += 1;
+        } while (index < param_2 + 1);
+    }
+    return result.q;
+}
 
 // FUNCTION: LEGOLAND 0x0043a820
 void FUN_0043a820(void) { STUB(); }
