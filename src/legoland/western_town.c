@@ -3,18 +3,30 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include "bloke.h"
 #include "gamemap.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "money.h"
 #include "obj_instance.h"
+#include "print_sprite.h"
 #include "render3d.h"
+
+struct RideListElem {
+    struct RideListElem *next;
+    unsigned char pad_4[0x8 - 0x4];
+    struct Bloke *bloke;
+    unsigned short id;
+};
 
 struct Building {
     unsigned char pad_0[0x1c];
     unsigned int flags;
     unsigned char pad_20[0x64 - 0x20];
     void *layer;
+    unsigned char pad_68[0xcc - 0x68];
+    struct RideListElem *list;
 };
 
 struct MapObject {
@@ -278,7 +290,25 @@ void FUN_004388c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00438900
-void FUN_00438900(void) { STUB(); }
+void FUN_00438900(struct MapObject *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6) {
+    struct Building *ride = param_1->building;
+    struct RideListElem *elem = ride->list;
+    int count = 0;
+    union { __int64 q; int i[2]; } coords;
+    if (elem != NULL) {
+        do {
+            if (*param_4 == elem->id) {
+                RenderBlokeIn3D(elem->bloke);
+                count++;
+            }
+            elem = elem->next;
+        } while (elem != NULL);
+        if (count != 0) {
+            coords.q = GetScreenCoordsForObject((unsigned char *)param_4, ride);
+            PrintSprite(DAT_0081cb34, coords.i[0], coords.i[1], param_6, NULL);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00438960
 void FUN_00438960(void) { STUB(); }
