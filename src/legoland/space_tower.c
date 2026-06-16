@@ -62,7 +62,11 @@ struct SpaceTowerRideNode {
 };
 
 struct SpaceTowerRide {
-    /* 0x00 */ unsigned char pad_0[0xcc];
+    /* 0x00 */ unsigned char pad_0[0x1c];
+    /* 0x1c */ unsigned int flags;
+    /* 0x20 */ unsigned char pad_20[0x64 - 0x20];
+    /* 0x64 */ void *layers;
+    /* 0x68 */ unsigned char pad_68[0xcc - 0x68];
     /* 0xcc */ struct SpaceTowerRideNode *list;
 };
 
@@ -526,7 +530,36 @@ void FUN_0043af50(struct SpaceTowerCtx *param_1, unsigned int param_2, unsigned 
 }
 
 // FUNCTION: LEGOLAND 0x0043b2b0
-void FUN_0043b2b0(void) { STUB(); }
+void FUN_0043b2b0(struct SpaceTowerCtx *param_1) {
+    struct SpaceTowerRide *ride;
+
+    ride = param_1->ride;
+    DAT_0062fd74 = ride;
+    ride->flags = ride->flags | 0x420;
+    DAT_0062fd60 = ride->layers;
+    *(unsigned int *)((char *)DAT_0062fd60 + 0x10) = *(unsigned int *)((char *)DAT_0062fd60 + 0x10) | 0x2000;
+    HideLayer(DAT_0062fd60, 5);
+    StopLayerPlaying(DAT_0062fd60, 5);
+    LLSSetFrame(GetLLSForLayer(DAT_0062fd60, 5), 0);
+    HideLayer(DAT_0062fd60, 3);
+    StopLayerPlaying(DAT_0062fd60, 3);
+    LLSSetFrame(GetLLSForLayer(DAT_0062fd60, 3), 0);
+    *(__int64 *)&DAT_0062fd88[0] = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 6);
+    *(__int64 *)&DAT_0062fd88[1] = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 4);
+    *(__int64 *)&DAT_0062fd88[2] = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 0);
+    *(__int64 *)&DAT_0062fd88[3] = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 2);
+    DAT_0062fd64[0] = NULL;
+    // STRING: LEGOLAND 0x004b7880
+    DAT_0062fd64[1] = LoadSprite("SpaceTower Seat2 Matte.lls", 1);
+    // STRING: LEGOLAND 0x004b7864
+    DAT_0062fd64[2] = LoadSprite("SpaceTower Seat3 Matte.lls", 1);
+    DAT_0062fd64[3] = NULL;
+    // STRING: LEGOLAND 0x004b7850
+    DAT_0062fd80 = LoadSprite("Spacet Matte1.lls", 1);
+    // STRING: LEGOLAND 0x004b783c
+    DAT_0062fd7c = LoadSprite("Spacet Matte2.lls", 1);
+    Load_FXList(SPACE_TOWER_SFX, 1);
+}
 
 // FUNCTION: LEGOLAND 0x0043b420
 void FUN_0043b420(void) {
