@@ -122,7 +122,16 @@ void FUN_00437f60(struct EditObject *editObj, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00437f90
-void FUN_00437f90(void) { STUB(); }
+struct JailCell *FUN_00437f90(unsigned short *key) {
+    struct JailCell *cell = DAT_0062fd3c;
+    while (cell != NULL) {
+        if (cell->field_4 == *key) {
+            return cell;
+        }
+        cell = cell->next;
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00437fc0
 void FUN_00437fc0(struct JailCell *cell) { STUB(); }
