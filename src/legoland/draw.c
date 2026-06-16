@@ -302,7 +302,7 @@ LEGO_EXPORT void SoftPrint_Clear(void) { STUB(); }
 void FUN_00465240(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00465850
-void FUN_00465850(void) { STUB(); }
+void FUN_00465850(void *frame) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004659a0
 void FUN_004659a0(int param_1, int param_2, int param_3) {

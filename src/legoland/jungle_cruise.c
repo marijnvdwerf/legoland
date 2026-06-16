@@ -10,10 +10,13 @@
 #include "llidb.h"
 #include "man3d.h"
 #include "map_object.h"
+#include "math.h"
+#include "money.h"
 #include "obj_instance.h"
 #include "objclass.h"
 #include "print_sprite.h"
 #include "render3d.h"
+#include "screens.h"
 #include "tilemap.h"
 
 // FUNCTION: LEGOLAND 0x00432ac0

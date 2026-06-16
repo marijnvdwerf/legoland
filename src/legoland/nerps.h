@@ -59,6 +59,7 @@ void FUN_0046bda0(unsigned int *param_1);
 void FUN_0046bdd0(unsigned char param_1, unsigned int param_2, unsigned int param_3);
 void FUN_0046be00(unsigned char param_1, unsigned int param_2, unsigned int *param_3);
 void FUN_0046be40(unsigned char param_1, unsigned int param_2, unsigned int param_3, struct Vec4 *param_4);
+void FUN_0046be90(unsigned char param_1, unsigned int param_2);
 void FUN_0046bec0(unsigned char param_1, unsigned int param_2);
 void FUN_0046bef0(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4);
 void FUN_0046bf30(unsigned char param_1, struct Vec4 *param_2, unsigned int param_3);
@@ -86,7 +87,9 @@ void FUN_0046c390(unsigned char param_1, unsigned int param_2, unsigned int para
 void FUN_0046c3c0(unsigned char param_1, unsigned int param_2);
 void FUN_0046c3f0(unsigned char param_1, unsigned int param_2, unsigned int param_3);
 void FUN_0046c420(unsigned char param_1, unsigned int param_2, unsigned int param_3);
+void FUN_0046c450(unsigned char param_1, unsigned int param_2);
 void FUN_0046c480(unsigned char param_1, unsigned int param_2);
+void FUN_0046c4b0(unsigned char param_1, unsigned int param_2);
 void FUN_0046c510(unsigned int param_1);
 void FUN_0046c5c0(void);
 unsigned int FUN_0046cb20(void);

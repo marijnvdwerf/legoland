@@ -184,7 +184,7 @@ LEGO_EXPORT int PTPSuggestNextMove(int *param_1, int *param_2, int *param_3) { S
 void FUN_00482620(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482710
-void FUN_00482710(void) { STUB(); }
+int FUN_00482710(int *a, int *b, int *out) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482860
 unsigned int FUN_00482860(void) {

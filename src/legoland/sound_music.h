@@ -15,6 +15,15 @@ struct SampleParams {
     /* 0x0c */ int field_c;
 };
 
+struct SampleSource {
+    /* 0x00 */ unsigned int type;
+    /* 0x04 */ void *field_4;
+    /* 0x08 */ unsigned int field_8;
+    /* 0x0c */ unsigned int field_c;
+};
+
+LEGO_EXPORT void KillAllSamplesFromSource(struct SampleSource *source);
+
 LEGO_EXPORT struct Sample *PlayInstanceOfSample(void *def, unsigned int looping,
     unsigned int oneshot, void *config);
 LEGO_EXPORT void UnSourceAndFadeAllSamplesFromSource(void *source, int fade);

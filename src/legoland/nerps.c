@@ -1154,7 +1154,7 @@ void FUN_0046be40(unsigned char param_1, unsigned int param_2, unsigned int para
 }
 
 // FUNCTION: LEGOLAND 0x0046be90
-void FUN_0046be90(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
+void FUN_0046be90(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
     node = FUN_00468910(0x24, 1);
@@ -1453,7 +1453,7 @@ void FUN_0046c420(unsigned char param_1, unsigned int param_2, unsigned int para
 }
 
 // FUNCTION: LEGOLAND 0x0046c450
-void FUN_0046c450(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
+void FUN_0046c450(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
     node = FUN_00468910(0x41, 1);
@@ -1473,7 +1473,7 @@ void FUN_0046c480(unsigned char param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0046c4b0
-void FUN_0046c4b0(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
+void FUN_0046c4b0(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
     node = FUN_00468910(0x43, 1);

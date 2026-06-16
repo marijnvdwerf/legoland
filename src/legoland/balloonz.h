@@ -19,12 +19,6 @@ void FUN_0042a9b0(struct BalloonNode *param_1);
 void FUN_0042a9f0(void);
 int FUN_0042aa60(char param_1, char param_2);
 
-void SetBlokePositionFromBNV();
-double GetUnitDepth();
-char CalcMoveLine();
-void NewDirForAction();
-LEGO_EXPORT void *LoadBinV(const char *filename);
-
 void FUN_0042a7b0();
 void FUN_0042a950();
 void FUN_0042aa10();

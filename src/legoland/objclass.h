@@ -12,6 +12,9 @@ struct InstancePos;
 struct Bloke;
 struct ObjClassNames;
 struct ObjectInfo;
+struct ElemView;
+
+LEGO_EXPORT unsigned int LoadObjectClass(struct ElemView *cls);
 
 typedef void (*RideCallback)();
 typedef int (*RideIntCallback)();

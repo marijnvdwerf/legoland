@@ -12,9 +12,12 @@
 #include "llidb.h"
 #include "man3d.h"
 #include "map_object.h"
+#include "math.h"
 #include "objclass.h"
+#include "pathfind.h"
 #include "popupinfo.h"
 #include "print_sprite.h"
+#include "screens.h"
 #include "sound_music.h"
 #include "tilemap.h"
 #include "worker.h"
@@ -2588,7 +2591,7 @@ void FUN_0049ce00(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0049cf00
-void FUN_0049cf00(void) {
+void FUN_0049cf00(struct MapRect *rect) {
     struct Worker *node;
     struct LegoConfig *cfg;
     int x;

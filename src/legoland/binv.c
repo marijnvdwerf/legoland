@@ -138,7 +138,7 @@ LEGO_EXPORT struct Vertex *GetVertex(struct BinVObject *object, int index) {
 }
 
 // FUNCTION: LEGOLAND 0x0044de20
-LEGO_EXPORT void GetZSkew(void) { STUB(); }
+LEGO_EXPORT double GetZSkew(struct BinVFile *file, struct BinVObject *object, struct Vertex *vertex) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0044de50
-LEGO_EXPORT void GetUnitDepth(void) { STUB(); }
+LEGO_EXPORT double GetUnitDepth(unsigned int param_1, unsigned int param_2) { STUB(); }

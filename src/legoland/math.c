@@ -20,10 +20,10 @@ LEGO_EXPORT unsigned int Rand_Tween(unsigned int min_val, unsigned int max_val) 
 }
 
 // FUNCTION: LEGOLAND 0x004806e0
-LEGO_EXPORT void ArcTan256(void) { STUB(); }
+LEGO_EXPORT int ArcTan256(int dx, int dy) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00480740
-LEGO_EXPORT void CalcMoveLine(void) { STUB(); }
+LEGO_EXPORT char CalcMoveLine(int x1, int y1, int x2, int y2, void *out) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004807f0
 LEGO_EXPORT void NavigMoveLine(struct Navigator *nav, unsigned short a, struct Point *out) {

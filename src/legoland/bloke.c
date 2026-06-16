@@ -12,8 +12,11 @@
 #include "math.h"
 #include "objclass.h"
 #include "pathfind.h"
+#include "screens.h"
+#include "sound_music.h"
 #include "tilemap.h"
 #include "timer.h"
+#include "worker.h"
 
 struct BestNode {
     unsigned char pad_0[0x20];
@@ -394,7 +397,7 @@ LEGO_EXPORT struct Bloke *GetBlokePtr(int index) {
 
 // FUNCTION: LEGOLAND 0x00483010
 LEGO_EXPORT void DestroyBloke(struct Bloke *bloke) {
-    struct BlokeSampleSource source;
+    struct SampleSource source;
     struct Bloke **prev;
     struct Bloke *current;
 
@@ -408,7 +411,7 @@ LEGO_EXPORT void DestroyBloke(struct Bloke *bloke) {
         // STRING: LEGOLAND 0x004bdcb4
         OutputDebugStringA("DestroyBloke: Badly linked list\n");
     }
-    source.field_0 = 1;
+    source.type = 1;
     source.field_4 = bloke;
     KillAllSamplesFromSource(&source);
     FUN_0043f840((struct Person *)bloke->prev);

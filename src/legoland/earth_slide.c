@@ -2,6 +2,7 @@
 #include <string.h>
 #include "legoland.h"
 
+#include "bloke.h"
 #include "earth_slide.h"
 #include "gamemap.h"
 #include "globals.h"
@@ -9,6 +10,7 @@
 #include "llidb.h"
 #include "man3d.h"
 #include "map_object.h"
+#include "math.h"
 #include "obj_instance.h"
 #include "print_sprite.h"
 #include "render3d.h"

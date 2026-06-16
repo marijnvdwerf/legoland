@@ -47,7 +47,7 @@ struct Sample {
     unsigned char pad_4[0x8 - 0x4];
     unsigned int fade;
     unsigned int field_c;
-    unsigned int field_10;
+    void *field_10;
     unsigned int field_14;
     unsigned int field_18;
     unsigned short flags;

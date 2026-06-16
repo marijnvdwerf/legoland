@@ -85,13 +85,6 @@ struct AVIBufferDesc {
     /* 0x14 */ GUID guid3DAlgorithm;
 };
 
-struct SampleSource {
-    /* 0x00 */ unsigned int type;
-    /* 0x04 */ unsigned int field_4;
-    /* 0x08 */ unsigned int field_8;
-    /* 0x0c */ unsigned int field_c;
-};
-
 struct ObjectDesc {
     /* 0x000 */ unsigned int dwSize;
     /* 0x004 */ unsigned int dwValidData;
@@ -742,7 +735,7 @@ LEGO_EXPORT unsigned int UnSourcePlayableSample(struct Sample *sample) {
 }
 
 // FUNCTION: LEGOLAND 0x00496a30
-LEGO_EXPORT unsigned int SourcePlayableSampleToBloke(struct Sample *sample, unsigned int bloke) {
+LEGO_EXPORT unsigned int SourcePlayableSampleToBloke(struct Sample *sample, void *bloke) {
     if (DAT_007988c0 == 0) {
         return 0;
     }

@@ -7,6 +7,7 @@ struct InstancePos {
     unsigned int y;
 };
 
+int FUN_00482710(int *a, int *b, int *out);
 LEGO_EXPORT int SuggestNextMove(int *param_1, int *param_2, int *param_3);
 LEGO_EXPORT int PTPSuggestNextMove(int *param_1, int *param_2, int *param_3);
 LEGO_EXPORT void AddPathSquare(struct InstancePos *pos);

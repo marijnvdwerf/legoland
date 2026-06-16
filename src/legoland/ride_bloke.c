@@ -230,7 +230,7 @@ int *FUN_00401970(int *param_1, int param_2, int param_3) {
 void FUN_004019c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00401ae0
-void FUN_00401ae0(void) { STUB(); }
+int FUN_00401ae0(unsigned short id, int bloke) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00401c40
 unsigned int FUN_00401c40(unsigned short arg0) {

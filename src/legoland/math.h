@@ -15,6 +15,8 @@ struct RectNode {
     /* 0x10 */ struct RectNode *next;
 };
 
+LEGO_EXPORT int ArcTan256(int dx, int dy);
+LEGO_EXPORT char CalcMoveLine(int x1, int y1, int x2, int y2, void *out);
 void FUN_00480840(struct Point *src, struct Point *dst, int dir);
 void FUN_004808d0(int *src, int *dst, int dir);
 LEGO_EXPORT int GetRectArea(struct RectNode *list);

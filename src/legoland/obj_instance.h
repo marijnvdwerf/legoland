@@ -8,6 +8,10 @@ struct ObjClassNode;
 struct ObjInstance;
 struct ObjClassKey;
 struct ResFile;
+struct InstanceNode;
+
+LEGO_EXPORT void AddInstanceToList(struct InstanceNode *node);
+LEGO_EXPORT void RemoveInstanceFromList(struct InstanceNode *node);
 
 char *FUN_00489e60(struct ResFile *file, char *dest, int maxlen);
 

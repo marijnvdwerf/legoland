@@ -29,7 +29,7 @@ LEGO_EXPORT void KillMoneySFX(void) {
 LEGO_EXPORT void PlayMoneySFX(int a0, int a1, int a2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004539a0
-LEGO_EXPORT void StopMoneySFX(void) { STUB(); }
+LEGO_EXPORT void StopMoneySFX(unsigned char *param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004539e0
 LEGO_EXPORT void BuyItem(struct BuyItemArg *item, int a2, int a3) {

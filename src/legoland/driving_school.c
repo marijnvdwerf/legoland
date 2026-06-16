@@ -3,6 +3,7 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include "bloke.h"
 #include "bricks.h"
 #include "driving_school.h"
 #include "gamemap.h"

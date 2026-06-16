@@ -14,6 +14,7 @@
 #include "objclass.h"
 #include "pathfind.h"
 #include "saveload.h"
+#include "screens.h"
 #include "worker.h"
 #include "worker_mouse.h"
 

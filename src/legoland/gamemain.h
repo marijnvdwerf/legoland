@@ -3,6 +3,7 @@
 struct Point;
 
 void FUN_004779d0(struct Point *p);
+void FUN_00477bd0(int x, int y, int a, int b);
 int FUN_004781b0(const char *param_1, const void *param_2, int param_3);
 int FUN_004781f0(int param_1, const void *param_2, int param_3, int param_4);
 void FUN_004784c0(void);

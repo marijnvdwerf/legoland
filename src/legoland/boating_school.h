@@ -100,20 +100,6 @@ void FUN_0041b6f0(void *param_1, unsigned short param_2, struct Cursor *param_3)
 void FUN_0041a3d0(void *param_1, unsigned int param_2);
 void FUN_0041a530(int param_1, unsigned int param_2, int param_3);
 
-int Find3DPersonFromBloke();
-void SetPersonRotation();
-void RestoreBaseMap();
-int CheckForPeople();
-int GetBlokeNum();
-int GetBlokePtr();
-void BlokeSitAnim();
-void BlokeSetFrame();
-char CalcMoveLine();
-void NewDirForAction();
-int ArcTan256();
-int FUN_00458930(float x);
-void RenderCursor();
-
 void FUN_00419d10();
 void FUN_00419ef0();
 void FUN_0041a000();

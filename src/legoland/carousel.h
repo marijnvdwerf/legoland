@@ -57,16 +57,6 @@ void FUN_0042c210(struct CarouselNode *node);
 void FUN_0042c800(void);
 int FUN_0042cd20(struct CarouselListElem *elem, struct CarouselNode *node, signed char divisor);
 
-void SetBlokePositionFromBNV();
-void *NewBNVPath();
-double GetUnitDepth();
-int UpdateBlokeFromBNVPath();
-char CalcMoveLine();
-void NewDirForAction();
-void BlokeSetFrame();
-void UnAdjustBlokePosition();
-LEGO_EXPORT void *LoadBinV(const char *filename);
-
 void FUN_0042bcf0();
 void FUN_0042c280();
 void FUN_0042c3f0();

@@ -63,7 +63,7 @@ void FUN_004779a0(void) { STUB(); }
 void FUN_004779d0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00477bd0
-void FUN_00477bd0(void) { STUB(); }
+void FUN_00477bd0(int x, int y, int a, int b) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00478110
 void FUN_00478110(void) { STUB(); }

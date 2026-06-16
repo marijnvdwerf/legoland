@@ -7,6 +7,7 @@
 #include "bloke.h"
 #include "bloke_ai.h"
 #include "bricks.h"
+#include "build.h"
 #include "clipping.h"
 #include "controller.h"
 #include "draw.h"

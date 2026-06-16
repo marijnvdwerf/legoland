@@ -5,6 +5,7 @@
 
 #include <string.h>
 
+#include "bloke.h"
 #include "boating_school.h"
 #include "debug_alloc.h"
 #include "gamemap.h"
@@ -12,11 +13,12 @@
 #include "llidb.h"
 #include "man3d.h"
 #include "map_object.h"
+#include "math.h"
 #include "obj_instance.h"
 #include "objclass.h"
 #include "print_sprite.h"
 #include "render3d.h"
-#include "objclass.h"
+#include "screens.h"
 #include "sound_music.h"
 #include "sound_sfx.h"
 #include "tilemap.h"

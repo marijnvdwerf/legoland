@@ -65,7 +65,6 @@ void FUN_004760a0(void);
 void FUN_00476070(int mask, unsigned int value);
 void FUN_00476140(int index, int value);
 void FUN_00476180(void);
-void FUN_00465850(void *frame);
 int FUN_00476680(void);
 int FUN_00476910(struct MovieHandle *handle);
 int FUN_00476bf0(struct MovieHandle *handle);

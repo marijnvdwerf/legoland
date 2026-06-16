@@ -66,18 +66,19 @@ struct Bloke {
     unsigned char field_98[0xac - 0x98];
 };
 
-struct BlokeSampleSource {
-    /* 0x00 */ unsigned int field_0;
-    /* 0x04 */ struct Bloke *field_4;
-    /* 0x08 */ unsigned int field_8;
-    /* 0x0c */ unsigned int field_c;
-};
-
-void KillAllSamplesFromSource(struct BlokeSampleSource *source);
-
 struct InstancePos;
 struct Point;
 struct OverTile;
+struct ActionState;
+struct BNVPerson;
+struct BNVPath;
+struct BNVBloke;
+LEGO_EXPORT int NewDirForAction(struct ActionState *state, unsigned char dir);
+LEGO_EXPORT struct Bloke *GetBlokePtr(int index);
+int CheckForPeople(struct MapRect *rect);
+LEGO_EXPORT void SetBlokePositionFromBNV(struct BinVFile *file, struct BNVPerson *person, char *name, int frame, int param_5, int param_6, float *orient);
+LEGO_EXPORT struct BNVPath *NewBNVPath(struct BinVFile *file, unsigned int param_2, char *name, float param_4, float param_5, int *coords);
+LEGO_EXPORT int UpdateBlokeFromBNVPath(struct BNVBloke *bloke, struct BNVPath *path);
 struct Point FUN_004831a0(unsigned int dir, short dist);
 LEGO_EXPORT struct Point GetTileInDir(int x, int y, unsigned int dir);
 LEGO_EXPORT int OverNewTile(struct OverTile *tile, unsigned int x, unsigned int y);
@@ -98,9 +99,6 @@ LEGO_EXPORT void DestroyBloke(struct Bloke *bloke);
 struct Worker;
 LEGO_EXPORT void DoLowLevelAI(struct Worker *worker);
 struct MapRect;
-void FUN_0049cf00();
 struct BinVFile;
 struct BinVObject;
 struct Vertex;
-double GetZSkew();
-int FUN_00458930(float x);

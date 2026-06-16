@@ -7,6 +7,7 @@
 #include "bloke_ai.h"
 #include "objclass.h"
 #include "man3d.h"
+#include "sound_music.h"
 
 struct ObjClassKey {
     unsigned short hi;
@@ -308,11 +309,11 @@ LEGO_EXPORT void RemoveAllBlokesFromRide(struct Ride *ride, unsigned int param_2
     struct RideNode *node;
     struct RideNode *next;
     struct Bloke *bloke;
-    struct BlokeSampleSource source;
+    struct SampleSource source;
 
     tx = ride->field_c + ((unsigned char *)&param_2)[0];
     ty = ride->field_10 + ((unsigned char *)&param_2)[1];
-    source.field_0 = 1;
+    source.type = 1;
     next = ride->riders;
     while (node = next, node != 0) {
         next = node->next;

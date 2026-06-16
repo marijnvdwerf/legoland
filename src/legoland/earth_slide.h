@@ -56,11 +56,6 @@ unsigned int FUN_0042d3e0(struct EarthBlokeElem *param_1, struct EarthBlokeElem 
 struct EarthBlokeElem *FUN_0042d540(struct EarthBlokeElem *param_1, unsigned int param_2);
 void FUN_0042d5f0(void);
 
-char CalcMoveLine();
-void NewDirForAction();
-void BlokeSitAnim();
-void BlokeSetFrame();
-
 void FUN_0042d070();
 void FUN_0042d100();
 void FUN_0042d1f0();

@@ -12,6 +12,7 @@ void FUN_00413b50();
 void FUN_00413fa0();
 void FUN_00414020();
 void FUN_00414220();
+void FUN_00414440(void);
 void FUN_00414830();
 void FUN_00414880();
 void FUN_00414940();
