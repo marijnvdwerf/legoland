@@ -694,8 +694,39 @@ unsigned int FUN_0046abd0(struct NerpsArg *arg) {
     return 1;
 }
 
+struct ListLinkNode {
+    struct ListLinkNode *next;
+};
+
+struct BuildingWithList {
+    unsigned char pad_0[0xcc];
+    struct ListLinkNode *list;
+};
+
+struct BuildingHolder {
+    unsigned char pad_0[0xc];
+    struct BuildingWithList *building;
+};
+
 // FUNCTION: LEGOLAND 0x0046ac00
-void FUN_0046ac00(void) { STUB(); }
+unsigned int FUN_0046ac00(struct NerpsArg *arg) {
+    struct ListLinkNode *node;
+    int count;
+
+    count = 0;
+    node = ((struct BuildingHolder *)arg->field_4)->building->list;
+    if (node != NULL) {
+        do {
+            count++;
+            if ((int)arg->field_1c <= count) {
+                return 1;
+            }
+            node = node->next;
+        } while (node != NULL);
+    }
+    FUN_00469220(arg, arg->field_4, arg->field_1c - count);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046ac50
 void FUN_0046ac50(void) { STUB(); }
