@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include "globals.h"
 #include "legoland.h"
 
@@ -19,7 +20,14 @@ struct MapObject {
 
 struct JailCell {
     struct JailCell *next;
-    unsigned char pad_4[0x1c - 0x4];
+    unsigned short field_4;
+    unsigned char field_6;
+    unsigned char pad_7[0x8 - 0x7];
+    unsigned int field_8;
+    unsigned int field_c;
+    unsigned int field_10;
+    unsigned int field_14;
+    unsigned int field_18;
 };
 
 #include "image_sprite.h"
@@ -88,7 +96,21 @@ void FUN_00437c30(void) { STUB(); }
 void FUN_00437c90(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00437f10
-void FUN_00437f10(void) { STUB(); }
+void FUN_00437f10(unsigned short *param) {
+    struct JailCell *cell = malloc(sizeof(struct JailCell));
+    if (cell != NULL) {
+        memset(cell, 0, sizeof(struct JailCell));
+        cell->field_4 = *param;
+        cell->field_6 = 9;
+        cell->field_8 = 0;
+        cell->field_c = 0;
+        cell->field_10 = 0;
+        cell->field_14 = 0;
+        cell->field_18 = 0;
+        cell->next = DAT_0062fd3c;
+        DAT_0062fd3c = cell;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00437f60
 void FUN_00437f60(void) { STUB(); }
