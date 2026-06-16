@@ -6,6 +6,7 @@
 #include "gamemap.h"
 #include "globals.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "obj_instance.h"
 #include "print_sprite.h"
@@ -14,6 +15,11 @@
 #include "sound_music.h"
 #include "space_tower.h"
 
+struct SeatRider {
+    /* 0x00 */ unsigned char pad_0[8];
+    /* 0x08 */ struct Bloke *render;
+};
+
 struct SpaceTowerSeat {
     /* 0x00 */ unsigned int flags;
     /* 0x04 */ unsigned char pad_4[4];
@@ -21,7 +27,8 @@ struct SpaceTowerSeat {
     /* 0x0c */ int state;
     /* 0x10 */ int field_10;
     /* 0x14 */ int field_14;
-    /* 0x18 */ unsigned char pad_18[8];
+    /* 0x18 */ struct SeatRider *field_18;
+    /* 0x1c */ struct SeatRider *field_1c;
     /* 0x20 */ signed char delta;
     /* 0x21 */ unsigned char pad_21[3];
 };
@@ -421,7 +428,19 @@ void FUN_0043ae20(struct RideObject *param_1, int param_2, unsigned int param_3)
 }
 
 // FUNCTION: LEGOLAND 0x0043aee0
-void FUN_0043aee0(void) { STUB(); }
+void FUN_0043aee0(struct RideObject *param_1, int param_2, unsigned int param_3) {
+    FUN_0043ae20(param_1, param_2, param_3);
+    if ((param_1->seats[param_2].flags & 1) != 0) {
+        FUN_0043ad00((unsigned char *)param_1, param_2);
+        if (param_1->seats[param_2].field_18 != NULL) {
+            IP_RenderBlokeIn3DNow(param_1->seats[param_2].field_18->render);
+        }
+        if (param_1->seats[param_2].field_1c != NULL) {
+            IP_RenderBlokeIn3DNow(param_1->seats[param_2].field_1c->render);
+        }
+        FUN_0043ad90(param_1, param_2, param_3);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0043af50
 void FUN_0043af50(void) { STUB(); }
