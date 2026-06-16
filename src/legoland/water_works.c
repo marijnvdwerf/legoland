@@ -164,7 +164,30 @@ struct WaterNode *FUN_00417ba0(struct WaterNode *list, short *key) {
 }
 
 // FUNCTION: LEGOLAND 0x00417bd0
-void FUN_00417bd0(void *list, void *node) { STUB(); }
+void FUN_00417bd0(struct WaterNode **head, struct WaterNode *node) {
+    struct WaterNode *cur;
+    struct WaterNode *next;
+
+    cur = *head;
+    if (cur == node) {
+        *head = node->next;
+        return;
+    }
+    next = cur->next;
+    while (1) {
+        if (next == node) {
+            if (cur != NULL) {
+                cur->next = node->next;
+            }
+            return;
+        }
+        if (next == NULL) {
+            return;
+        }
+        cur = next;
+        next = cur->next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00417c00
 unsigned int FUN_00417c00(struct WaterArg *arg) {
@@ -193,13 +216,13 @@ unsigned int FUN_00417c90(void) {
 void FUN_00417cb0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00417cf0
-void FUN_00417cf0(void *node) {
+void FUN_00417cf0(struct WaterNode *node) {
     FUN_00417bd0(&DAT_004cc02c, node);
     free(node);
 }
 
 // FUNCTION: LEGOLAND 0x00417d10
-void *FUN_00417d10(unsigned short *key) {
+struct WaterNode *FUN_00417d10(unsigned short *key) {
     return FUN_00417ba0(DAT_004cc02c, key);
 }
 
@@ -283,13 +306,13 @@ void FUN_00418230(void) { STUB(); }
 void FUN_00418260(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004182a0
-void FUN_004182a0(void *node) {
+void FUN_004182a0(struct WaterNode *node) {
     FUN_00417bd0(&DAT_004cc030, node);
     free(node);
 }
 
 // FUNCTION: LEGOLAND 0x004182c0
-void *FUN_004182c0(unsigned short *key) {
+struct WaterNode *FUN_004182c0(unsigned short *key) {
     return FUN_00417ba0(DAT_004cc030, key);
 }
 
@@ -340,7 +363,7 @@ void FUN_004184e0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00418510
 void FUN_00418510(unsigned int a, unsigned int b, unsigned int c) {
-    void *node;
+    struct WaterNode *node;
 
     StandardRemoveObject(a, b, c);
     node = FUN_004182c0((unsigned short *)&b);
@@ -378,13 +401,13 @@ void FUN_004185c0(void) { STUB(); }
 void FUN_00418630(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00418670
-void FUN_00418670(void *node) {
+void FUN_00418670(struct WaterNode *node) {
     FUN_00417bd0(&DAT_004cc034, node);
     free(node);
 }
 
 // FUNCTION: LEGOLAND 0x00418690
-void *FUN_00418690(unsigned short *key) {
+struct WaterNode *FUN_00418690(unsigned short *key) {
     return FUN_00417ba0(DAT_004cc034, key);
 }
 

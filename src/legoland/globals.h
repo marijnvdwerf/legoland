@@ -30,6 +30,7 @@ struct ObjectiveEvent;
 struct MapElement;
 struct WaterContext;
 struct WaterSub;
+struct WaterNode;
 struct EateryFX;
 struct BrollyData;
 struct BrollyNode;
@@ -1045,11 +1046,11 @@ extern struct WaterContext *DAT_004cc024;
 // 0x004cc028
 extern unsigned int DAT_004cc028;
 // 0x004cc02c
-extern void *DAT_004cc02c;
+extern struct WaterNode *DAT_004cc02c;
 // 0x004cc030
-extern void *DAT_004cc030;
+extern struct WaterNode *DAT_004cc030;
 // 0x004cc034
-extern void *DAT_004cc034;
+extern struct WaterNode *DAT_004cc034;
 // 0x004cc03c
 extern struct BoatRide *DAT_004cc03c;
 // 0x004cc048

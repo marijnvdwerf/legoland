@@ -1251,13 +1251,13 @@ struct WaterContext *DAT_004cc024;
 unsigned int DAT_004cc028;
 
 // GLOBAL: LEGOLAND 0x004cc02c
-void *DAT_004cc02c;
+struct WaterNode *DAT_004cc02c;
 
 // GLOBAL: LEGOLAND 0x004cc030
-void *DAT_004cc030;
+struct WaterNode *DAT_004cc030;
 
 // GLOBAL: LEGOLAND 0x004cc034
-void *DAT_004cc034;
+struct WaterNode *DAT_004cc034;
 // 0x007fffc4, 0x007fffd4, 0x008003f0 are EditCursor fields (field_1404,
 // field_1414[5], field_1830) — see struct Cursor in gamemap.h.
 
