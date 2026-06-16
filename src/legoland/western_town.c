@@ -506,7 +506,150 @@ void FUN_00438cc0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00438d00
-void FUN_00438d00(void) { STUB(); }
+void FUN_00438d00(struct MapObject *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6) {
+    struct Building *ride = param_1->building;
+    struct RideListElem *elem = ride->list;
+    char count = 0;
+    int array[10];
+    int *p;
+    int n;
+    unsigned short id;
+    union { __int64 q; int i[2]; } coords;
+
+    {
+        int *fill = array;
+        int z;
+        array[0] = 0;
+        for (z = 9; fill = fill + 1, z != 0; z--) {
+            *fill = 0;
+        }
+    }
+    if (elem != NULL) {
+        id = *param_4;
+        do {
+            if (id == elem->id) {
+                array[(int)count] = (int)elem->bloke;
+                count++;
+            }
+            elem = elem->next;
+        } while (elem != NULL);
+        if (count != 0) {
+            coords.q = GetScreenCoordsForObject((unsigned char *)param_4, ride);
+            if (0 < count) {
+                p = array;
+                n = count;
+                do {
+                    if (*(char *)(*p + 0x60) == 4) {
+                        IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                    }
+                    p = p + 1;
+                    n = n - 1;
+                } while (n != 0);
+                if (0 < count) {
+                    p = array;
+                    n = count;
+                    do {
+                        if (*(char *)(*p + 0x60) == 5) {
+                            IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                        }
+                        p = p + 1;
+                        n = n - 1;
+                    } while (n != 0);
+                    if (0 < count) {
+                        p = array;
+                        n = count;
+                        do {
+                            if (*(char *)(*p + 0x60) == 6) {
+                                IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                            }
+                            p = p + 1;
+                            n = n - 1;
+                        } while (n != 0);
+                    }
+                }
+            }
+            PrintSprite(DAT_0081cb04, coords.i[0], coords.i[1], param_6, NULL);
+            if (0 < count) {
+                p = array;
+                n = count;
+                do {
+                    if (*(char *)(*p + 0x60) == 2) {
+                        IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                    }
+                    p = p + 1;
+                    n = n - 1;
+                } while (n != 0);
+                if (0 < count) {
+                    p = array;
+                    n = count;
+                    do {
+                        if (*(char *)(*p + 0x60) == 3) {
+                            IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                        }
+                        p = p + 1;
+                        n = n - 1;
+                    } while (n != 0);
+                    if (0 < count) {
+                        p = array;
+                        n = count;
+                        do {
+                            if (*(char *)(*p + 0x60) == 7) {
+                                IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                            }
+                            p = p + 1;
+                            n = n - 1;
+                        } while (n != 0);
+                        if (0 < count) {
+                            p = array;
+                            n = count;
+                            do {
+                                if (*(char *)(*p + 0x60) == 8) {
+                                    IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                                }
+                                p = p + 1;
+                                n = n - 1;
+                            } while (n != 0);
+                        }
+                    }
+                }
+            }
+            PrintSprite(DAT_0081cb00, coords.i[0], coords.i[1], param_6, NULL);
+            if (0 < count) {
+                p = array;
+                n = count;
+                do {
+                    if (*(char *)(*p + 0x60) == 0) {
+                        IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                    }
+                    p = p + 1;
+                    n = n - 1;
+                } while (n != 0);
+                if (0 < count) {
+                    p = array;
+                    n = count;
+                    do {
+                        if (*(char *)(*p + 0x60) == 1) {
+                            IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                        }
+                        p = p + 1;
+                        n = n - 1;
+                    } while (n != 0);
+                    if (0 < count) {
+                        p = array;
+                        n = count;
+                        do {
+                            if (*(char *)(*p + 0x60) == 9) {
+                                IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                            }
+                            p = p + 1;
+                            n = n - 1;
+                        } while (n != 0);
+                    }
+                }
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00438f10
 void FUN_00438f10(void) { STUB(); }
