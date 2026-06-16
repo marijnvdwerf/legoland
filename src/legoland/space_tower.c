@@ -735,7 +735,59 @@ LEGO_EXPORT int SpaceTower_Save(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043b6a0
-LEGO_EXPORT void SpaceTower_Load(void) { STUB(); }
+LEGO_EXPORT int SpaceTower_Load(void) {
+    int *field;
+    int *cursor;
+    int count;
+    unsigned int i;
+    char *node;
+    char *prev;
+    int local_4;
+
+    prev = NULL;
+    count = SaveGameRead(&local_4, 4);
+    while (1) {
+        if (count == 0) {
+            return 0;
+        }
+        if (local_4 == 0) {
+            break;
+        }
+        node = (char *)malloc(0xb4);
+        count = SaveGameRead(node, 0xb4);
+        if (count == 0) {
+            return 0;
+        }
+        *(char **)(node + 8) = NULL;
+        if (prev != NULL) {
+            *(char **)(prev + 8) = node;
+        } else {
+            DAT_0062fda8 = (struct RideObject *)node;
+        }
+        i = 0;
+        do {
+            if ((i & 1) != 0) {
+                field = (int *)(node + ((int)i >> 1) * 0x24 + 0x30);
+            } else {
+                field = (int *)(node + ((int)i >> 1) * 0x24 + 0x2c);
+            }
+            count = *field;
+            cursor = *(int **)((char *)DAT_0062fd74 + 0xcc);
+            if (count != 0) {
+                while (count = count + -1, count != 0) {
+                    cursor = (int *)*cursor;
+                }
+                *field = (int)cursor;
+            } else {
+                *field = 0;
+            }
+            i = i + 1;
+        } while ((int)i < 8);
+        count = SaveGameRead(&local_4, 4);
+        prev = node;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0043b780
 void SpaceTowerRide(struct ClassNode *name, struct CallbackTable *obj) {
