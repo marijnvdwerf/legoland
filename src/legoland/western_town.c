@@ -134,7 +134,24 @@ struct JailCell *FUN_00437f90(unsigned short *key) {
 }
 
 // FUNCTION: LEGOLAND 0x00437fc0
-void FUN_00437fc0(struct JailCell *cell) { STUB(); }
+void FUN_00437fc0(struct JailCell *cell) {
+    struct JailCell *prev = DAT_0062fd3c;
+    if (prev == cell) {
+        DAT_0062fd3c = cell->next;
+        free(cell);
+        return;
+    }
+    if (prev->next != cell) {
+        prev = prev->next;
+        while (prev != NULL && prev->next != cell) {
+            prev = prev->next;
+        }
+    }
+    if (prev != NULL) {
+        prev->next = cell->next;
+    }
+    free(cell);
+}
 
 // FUNCTION: LEGOLAND 0x00438000
 void FUN_00438000(void) {
