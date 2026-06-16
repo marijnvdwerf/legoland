@@ -313,7 +313,21 @@ int FUN_00417e70(struct WaterPoint *list, struct WaterRect *rect) {
 }
 
 // FUNCTION: LEGOLAND 0x00417ec0
-unsigned int FUN_00417ec0(void *arg) { STUB(); }
+unsigned int FUN_00417ec0(unsigned char *point) {
+    struct WaterRect rect;
+
+    rect.x0 = point[0];
+    rect.x1 = point[0];
+    rect.y0 = point[1];
+    rect.y1 = point[1];
+    if (FUN_00417e70(FirstBloke, &rect) != 0) {
+        return 1;
+    }
+    if (FUN_00417e70(GardenerList, &rect) != 0) {
+        return 1;
+    }
+    return FUN_00417e70(MechanicList, &rect) != 0;
+}
 
 // FUNCTION: LEGOLAND 0x00417f40
 void FUN_00417f40(void) {
