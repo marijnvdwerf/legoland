@@ -4,6 +4,7 @@
 #include "legoland.h"
 
 #include "bricks.h"
+#include "challenge.h"
 #include "debug_alloc.h"
 #include "draw.h"
 #include "gamemap.h"
@@ -14,6 +15,7 @@
 #include "nerps.h"
 #include "objclass.h"
 #include "objectives.h"
+#include "popupinfo.h"
 #include "saveload.h"
 #include "screens.h"
 #include "timer.h"
@@ -71,7 +73,44 @@ struct EventList {
 };
 
 // FUNCTION: LEGOLAND 0x0046a040
-void FUN_0046a040(unsigned int param_1, unsigned int param_2) { STUB(); }
+void FUN_0046a040(unsigned int param_1, unsigned int param_2) {
+    switch (param_1) {
+    case 0:
+        DAT_00832984 = param_2;
+        break;
+    case 1:
+        DAT_00832980 = param_2;
+        break;
+    case 3:
+        DAT_00832988 = param_2;
+        break;
+    case 4:
+        DAT_0083298c = param_2;
+        break;
+    case 5:
+        DAT_00832990 = param_2;
+        break;
+    case 6:
+        DAT_00832978 = param_2;
+        FUN_0044db40();
+        break;
+    case 7:
+        lpConfig->field_3c = param_2;
+        break;
+    case 8:
+        lpConfig->field_2c = param_2;
+        break;
+    case 9:
+        DAT_00832974 = param_2;
+        break;
+    case 10:
+        DAT_00832994 = param_2;
+        break;
+    case 0xb:
+        DAT_00832ba8 = param_2;
+    }
+    PopInfoSizeMayChange();
+}
 
 // FUNCTION: LEGOLAND 0x0046a120
 unsigned int FUN_0046a120(struct NerpsArg *arg) {

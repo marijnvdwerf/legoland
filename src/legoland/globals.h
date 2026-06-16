@@ -131,7 +131,7 @@ struct LegoConfig {
     /* 0x24 */ unsigned short field_24;
     /* 0x26 */ unsigned char pad_26[2];
     /* 0x28 */ unsigned int field_28;
-    /* 0x2c */ unsigned char pad_2c[4];
+    /* 0x2c */ unsigned int field_2c;
     /* 0x30 */ unsigned int field_30;
     /* 0x34 */ unsigned int field_34;
     /* 0x38 */ unsigned int field_38;
@@ -3453,6 +3453,8 @@ extern int DAT_0083297c;
 extern unsigned int DAT_00832980;
 // 0x00832984
 extern unsigned int DAT_00832984;
+// 0x00832988
+extern unsigned int DAT_00832988;
 // 0x0083298c
 extern unsigned int DAT_0083298c;
 // 0x00832990
