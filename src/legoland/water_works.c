@@ -760,7 +760,43 @@ void FUN_004187b0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004187f0
-void FUN_004187f0(void) { STUB(); }
+void FUN_004187f0(void) {
+    struct WaterNode *node;
+    int lls;
+    int limit;
+    struct AdjustOffset offset;
+    int y;
+    union {
+        __int64 q;
+        int i[2];
+    } sc;
+
+    FUN_004187b0();
+    for (node = DAT_004cc034; node != NULL; node = node->next) {
+        if (node->field_8 == 1) {
+            limit = 0;
+            lls = GetLLSForSprite((struct SpriteLLS *)DAT_004cc020);
+            if (lls != 0) {
+                limit = *(short *)(lls + 0x10);
+            }
+            node->field_9++;
+            if ((int)node->field_9 >= limit) {
+                node->field_8 = 0;
+                node->field_9 = 0;
+            }
+            if (node->field_8 == 1) {
+                offset.x = -0x75;
+                offset.y = 0x8a;
+                AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
+                sc.q = GetScreenCoordsForObject((unsigned char *)&node->key, DAT_004cbfdc);
+                SetOverrideFrame(node->field_9);
+                y = sc.i[1] + offset.y;
+                SortSprite(DAT_004cc020, sc.i[0] + offset.x, y, y + 0x20, 0, 0);
+                ClearOverrideFrame();
+            }
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004188d0
 void FUN_004188d0(void) { STUB(); }
