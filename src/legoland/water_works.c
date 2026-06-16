@@ -822,10 +822,31 @@ void FUN_00418910(unsigned int a, unsigned int b, unsigned int c) {
 }
 
 // FUNCTION: LEGOLAND 0x00418950
-void FUN_00418950(void) { STUB(); }
+void FUN_00418950(struct WaterArg *arg, unsigned int a, unsigned int b) {
+    struct WaterContext *context;
+
+    context = arg->field_c;
+    *(struct Footprint *)EditCursor.field_1414 = *(struct Footprint *)&context->field_3c;
+    ScreenToMapRef(a, &EditCursor.field_1404, b);
+    EditCursor.field_1830 = 0;
+    ValidateCursor(&EditCursor, (unsigned int)context);
+    if (FUN_00417c90() != 0) {
+        return;
+    }
+    FUN_0045f480(&EditCursor, 0xc);
+    FUN_0045f4d0(&EditCursor);
+}
 
 // FUNCTION: LEGOLAND 0x004189c0
-void FUN_004189c0(void) { STUB(); }
+void FUN_004189c0(struct EditObject *editObj, int *coords) {
+    struct SampleParams params;
+
+    AddBasicObject(editObj, coords);
+    params.field_8 = coords[0];
+    params.field_0 = 2;
+    params.field_c = coords[1];
+    PlayInstanceOfSample(*(void **)(WATERWORKS_SFX + 0x20), 1, 1, &params);
+}
 
 // FUNCTION: LEGOLAND 0x00418a10
 void FUN_00418a10(unsigned int a, unsigned int b, unsigned int c) {
