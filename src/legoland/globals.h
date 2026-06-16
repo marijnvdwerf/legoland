@@ -504,6 +504,8 @@ extern unsigned char DAT_004b7750[16];
 extern struct SpaceTowerLayout DAT_004b7758[8];
 // 0x004b7798
 extern struct SpaceTowerSeatData DAT_004b7798[4];
+// 0x004b77e8
+extern struct LayerOffset DAT_004b77e8[8];
 // 0x004b79d0
 extern unsigned char DAT_004b79d0[0x18];
 // 0x004b7abc

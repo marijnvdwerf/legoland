@@ -80,7 +80,12 @@ struct SpaceTowerRide {
     /* 0x10 */ int field_10;
     /* 0x14 */ unsigned char pad_14[0x1c - 0x14];
     /* 0x1c */ unsigned int flags;
-    /* 0x20 */ unsigned char pad_20[0x64 - 0x20];
+    /* 0x20 */ unsigned char pad_20[0x24 - 0x20];
+    /* 0x24 */ char field_24;
+    /* 0x25 */ char field_25;
+    /* 0x26 */ unsigned char pad_26[0x2e - 0x26];
+    /* 0x2e */ short field_2e;
+    /* 0x30 */ unsigned char pad_30[0x64 - 0x30];
     /* 0x64 */ void *layers;
     /* 0x68 */ unsigned char pad_68[0xcc - 0x68];
     /* 0xcc */ struct SpaceTowerRideNode *list;
@@ -927,4 +932,117 @@ void FUN_0043baa0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043bac0
-void FUN_0043bac0(void) { STUB(); }
+void FUN_0043bac0(struct SpaceTowerCtx *param_1) {
+    struct SpaceTowerRide *ride;
+    struct SpaceTowerRideNode *node;
+    struct SpaceTowerRideNode *next;
+    struct Bloke *bloke;
+    struct RideObject *obj;
+    unsigned int x;
+    unsigned char y;
+    int ride_x;
+    int ride_y;
+    int target_x;
+    int target_y;
+    char dir;
+    unsigned char seat;
+
+    ride = param_1->ride;
+    FUN_0043baa0();
+    node = ride->list;
+    do {
+        if (node == NULL) {
+            return;
+        }
+        next = node->next;
+        bloke = node->bloke;
+        obj = FUN_0043ac40(&node->id);
+        if (obj == NULL) {
+            return;
+        }
+        x = node->coord.x;
+        ride_x = ride->field_c;
+        ride_y = ride->field_10;
+        y = node->coord.y;
+        if (bloke->field_e == 0) {
+            switch (bloke->param_action) {
+            case 0:
+                obj->var_4 = obj->var_4 + '\x01';
+                obj->var_b0 = 200;
+                FUN_0043ac70(node, &node->id);
+                bloke->flags = bloke->flags | 8;
+                ride_x = (ride_x + x) * 0x100;
+                target_y = (ride_y + (unsigned int)y + 1) * 0x100;
+                bloke->field_28 = target_y;
+                bloke->field_24 = ride_x;
+                dir = CalcMoveLine(bloke->field_68, bloke->field_6c, ride_x, target_y, bloke->field_98);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->param_action = bloke->param_action + '\x01';
+                break;
+            case 1:
+                node->bloke->field_4a = 0;
+                node->bloke->field_38 = 0;
+                bloke->param_action = bloke->param_action + '\x01';
+                break;
+            case 2:
+            case 7:
+                FUN_0043a8c0(node);
+                break;
+            case 3:
+                seat = bloke->field_36;
+                bloke->field_24 = (DAT_004b77e8[seat].x + x) * 0x100;
+                target_y = (DAT_004b77e8[seat].y + (unsigned int)node->coord.y) * 0x100;
+                bloke->field_28 = target_y;
+                dir = CalcMoveLine(bloke->field_68, bloke->field_6c, bloke->field_24, target_y, bloke->field_98);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + '\x10';
+                dir = (char)DAT_004b7798[seat >> 1].field_10;
+                NewDirForAction((struct ActionState *)bloke, dir);
+                bloke->param_action = bloke->param_action + '\x01';
+                break;
+            case 4:
+                bloke->flags = bloke->flags | 0x80;
+                BlokeSitAnim(bloke);
+                BlokeSetFrame(bloke, 0);
+                bloke->field_58 = 0;
+                bloke->param_action = bloke->param_action + '\x01';
+                obj->var_2 = obj->var_2 + '\x01';
+                FUN_0043a9b0(obj);
+                if ((short)(char)obj->var_2 == ride->field_2e) {
+                    FUN_0043aa90(obj);
+                }
+                break;
+            case 6:
+                node->bloke->field_4c = 0xffff;
+                obj->flags_a4[bloke->field_36] = 0;
+                bloke->flags = bloke->flags & 0xff7f;
+                BlokeWalkAnim(bloke);
+                BlokeSetFrame(bloke, 0);
+                bloke->param_action = bloke->param_action + '\x01';
+                break;
+            case 8:
+                bloke->field_24 = ((int)ride->field_24 + x) * 0x100 + 0x80;
+                target_y = ((int)ride->field_25 + (unsigned int)y) * 0x100 + 0x80;
+                bloke->field_28 = target_y;
+                dir = CalcMoveLine(bloke->field_68, bloke->field_6c, bloke->field_24, target_y, bloke->field_98);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                dir = ((unsigned char)(dir + 0x10) >> 5) + 3;
+                NewDirForAction((struct ActionState *)bloke, dir);
+                bloke->param_action = bloke->param_action + '\x01';
+                break;
+            case 9:
+                RemoveBlokeFromRide((struct Ride *)ride, (struct RideNode *)node);
+                bloke->flags = bloke->flags & 0xfff7;
+                obj->var_3 = obj->var_3 + -1;
+                if (obj->var_3 == '\0') {
+                    obj->var_2 = 0;
+                    Ride_ClearFlagToNotLetAnyoneOn(obj);
+                }
+            }
+        }
+        node = next;
+    } while (1);
+}

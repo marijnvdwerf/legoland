@@ -386,6 +386,9 @@ struct SpaceTowerLayout DAT_004b7758[8];
 // GLOBAL: LEGOLAND 0x004b7798
 struct SpaceTowerSeatData DAT_004b7798[4];
 
+// GLOBAL: LEGOLAND 0x004b77e8
+struct LayerOffset DAT_004b77e8[8];
+
 // GLOBAL: LEGOLAND 0x004b79d0
 unsigned char DAT_004b79d0[0x18];
 
