@@ -374,6 +374,12 @@ const unsigned char SPACE_TOWER_SFX[15] = {0};
 // GLOBAL: LEGOLAND 0x004b7620
 void *DAT_004b7620;
 
+// GLOBAL: LEGOLAND 0x004b76b8
+unsigned char DAT_004b76b8[16];
+
+// GLOBAL: LEGOLAND 0x004b7750
+unsigned char DAT_004b7750[16];
+
 // GLOBAL: LEGOLAND 0x004b7758
 struct SpaceTowerLayout DAT_004b7758[8];
 

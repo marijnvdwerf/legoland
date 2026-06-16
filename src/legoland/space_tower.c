@@ -61,6 +61,16 @@ struct SpaceTowerRideNode {
     /* 0x10 */ unsigned char pad_10[2];
 };
 
+struct SpaceTowerRide {
+    /* 0x00 */ unsigned char pad_0[0xcc];
+    /* 0xcc */ struct SpaceTowerRideNode *list;
+};
+
+struct SpaceTowerCtx {
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ struct SpaceTowerRide *ride;
+};
+
 struct ListNode {
     unsigned char pad_0[8];
     struct ListNode *next;
@@ -443,7 +453,77 @@ void FUN_0043aee0(struct RideObject *param_1, int param_2, unsigned int param_3)
 }
 
 // FUNCTION: LEGOLAND 0x0043af50
-void FUN_0043af50(void) { STUB(); }
+void FUN_0043af50(struct SpaceTowerCtx *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6) {
+    struct SpaceTowerRide *ride;
+    struct SpaceTowerRideNode *node;
+    struct RideObject *obj;
+    struct Bloke *bloke;
+    int coord_x;
+    int coord_y;
+    union {
+        __int64 q;
+        struct {
+            int low;
+            int high;
+        } parts;
+    } coords;
+    struct LayerOffset local_8;
+    struct LayerOffset local_10;
+
+    ride = param_1->ride;
+    node = ride->list;
+    obj = FUN_0043ac40(param_4);
+    if (obj != NULL) {
+        coords.q = GetScreenCoordsForObject((unsigned char *)param_4, ride);
+        coord_x = coords.parts.low;
+        coord_y = coords.parts.high;
+        *(__int64 *)&local_8 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 1);
+        AdjustOffsetForViewMode((struct AdjustStruct *)&local_8);
+        if (node == NULL) {
+            FUN_0043aee0(obj, 1, param_6);
+            FUN_0043aee0(obj, 2, param_6);
+            PrintSprite(DAT_0062fd7c, local_8.x + coord_x, local_8.y + coord_y, param_6, 0);
+            FUN_0043aee0(obj, 0, param_6);
+            FUN_0043aee0(obj, 3, param_6);
+        } else {
+            do {
+                if (node->id == *param_4) {
+                    bloke = node->bloke;
+                    if ((bloke->flags & 0x80) == 0 &&
+                        DAT_004b7758[bloke->field_50].field_4 == &DAT_004b7750) {
+                        IP_RenderBlokeIn3DNow(bloke);
+                    }
+                }
+                node = node->next;
+            } while (node != NULL);
+            FUN_0043aee0(obj, 1, param_6);
+            FUN_0043aee0(obj, 2, param_6);
+            PrintSprite(DAT_0062fd7c, local_8.x + coord_x, local_8.y + coord_y, param_6, 0);
+            FUN_0043aee0(obj, 0, param_6);
+            FUN_0043aee0(obj, 3, param_6);
+            node = ride->list;
+            while (node != NULL) {
+                if (node->id == *param_4) {
+                    bloke = node->bloke;
+                    if ((bloke->flags & 0x80) == 0 &&
+                        DAT_004b7758[bloke->field_50].field_4 == &DAT_004b76b8) {
+                        IP_RenderBlokeIn3DNow(bloke);
+                    }
+                }
+                node = node->next;
+            }
+            PrintSprite(DAT_0062fd80, local_8.x + coord_x, local_8.y + coord_y, param_6, 0);
+        }
+        LLSSetFrame(GetLLSForLayer(DAT_0062fd60, 5), (int)obj->var_ad);
+        *(__int64 *)&local_10 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 5);
+        AdjustOffsetForViewMode((struct AdjustStruct *)&local_10);
+        PrintSprite(GetSpriteForLayer((struct LayerContainer *)DAT_0062fd60, 5), local_10.x + coord_x, local_10.y + coord_y, param_6, 0);
+        LLSSetFrame(GetLLSForLayer(DAT_0062fd60, 3), (int)obj->var_ac);
+        *(__int64 *)&local_10 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 3);
+        AdjustOffsetForViewMode((struct AdjustStruct *)&local_10);
+        PrintSprite(GetSpriteForLayer((struct LayerContainer *)DAT_0062fd60, 3), local_10.x + coord_x, local_10.y + coord_y, param_6, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0043b2b0
 void FUN_0043b2b0(void) { STUB(); }
