@@ -54,6 +54,8 @@ int FUN_00468d10(void);
 int FUN_00468d30(struct NerpsArg *arg);
 void FUN_00468d80(struct NerpsArg *object, unsigned int a, int b);
 void FUN_00468dc0(struct NerpsArg *object, unsigned int a);
+void FUN_00468e00(struct NerpsArg *object, unsigned int a);
+void FUN_00468f00(struct NerpsArg *object, int a);
 void FUN_00468e40(struct NerpsArg *arg, unsigned int class_id, int count, int sum);
 void FUN_00468ea0(struct NerpsArg *arg, unsigned int class_id, int count, int sum);
 void FUN_00468f40(struct NerpsArg *arg, unsigned int class_id, int count);

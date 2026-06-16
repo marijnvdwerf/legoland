@@ -483,7 +483,46 @@ unsigned int FUN_0046a900(struct NerpsArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0046a960
-void FUN_0046a960(void) { STUB(); }
+unsigned int FUN_0046a960(struct NerpsArg *arg) {
+    struct MapElement *tile;
+    int count;
+    int total;
+    unsigned int x;
+    unsigned int y;
+    int xb;
+
+    total = 0;
+    y = arg->field_2c;
+    count = 0;
+    if ((int)y <= arg->field_34) {
+        do {
+            x = arg->field_28;
+            if ((int)x <= arg->field_30) {
+                xb = x * 0x14;
+                do {
+                    if (xb < 0 || (int)(unsigned int)lpConfig->width <= (int)x || (int)y < 0 ||
+                        (int)(unsigned int)lpConfig->height <= (int)y) {
+                        tile = NULL;
+                    } else {
+                        tile = (struct MapElement *)((char *)GameMap[y] + xb);
+                    }
+                    if ((tile->flags & 0x80) != 0 && tile->field_4 == x && tile->field_5 == y) {
+                        count++;
+                    }
+                    x++;
+                    xb += 0x14;
+                    total = count;
+                } while ((int)x <= arg->field_30);
+            }
+            y++;
+        } while ((int)y <= arg->field_34);
+    }
+    if (total <= (int)arg->field_14) {
+        return 1;
+    }
+    FUN_00468f00(arg, total - arg->field_14);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046aa30
 unsigned int FUN_0046aa30(struct NerpsArg *arg) {
