@@ -32,6 +32,7 @@ struct NerpsArg {
     unsigned int field_18;
     unsigned int field_1c;
     unsigned int field_20;
+    unsigned int field_24;
 };
 
 struct ObjectClass {
@@ -273,7 +274,19 @@ unsigned int FUN_0046a390(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046a3b0
-void FUN_0046a3b0(void) { STUB(); }
+unsigned int FUN_0046a3b0(struct NerpsArg *arg) {
+    int dimX;
+    int dimY;
+    int v24;
+    int v20;
+
+    v24 = arg->field_24;
+    v20 = arg->field_20;
+    GetTileDimensions(&dimX, &dimY);
+    ScrollX = (((v20 - v24) * dimX >> 9) - (lpConfig->field_10 >> 1)) * 0x100;
+    ScrollY = (((v20 + v24) * dimY >> 9) - (lpConfig->field_12 >> 1)) * 0x100;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0046a420
 unsigned int FUN_0046a420(struct NerpsArg *arg) {
