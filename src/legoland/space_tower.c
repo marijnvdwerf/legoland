@@ -12,8 +12,8 @@
 #include "space_tower.h"
 
 struct SpaceTowerSeat {
-    /* 0x00 */ unsigned char flags;
-    /* 0x01 */ unsigned char pad_1[7];
+    /* 0x00 */ unsigned int flags;
+    /* 0x04 */ unsigned char pad_4[4];
     /* 0x08 */ int pos;
     /* 0x0c */ int state;
     /* 0x10 */ int field_10;
@@ -31,11 +31,8 @@ struct RideObject {
     /* 0x05 */ unsigned char pad_5[7];
     /* 0x0c */ unsigned int var_c;
     /* 0x10 */ unsigned int var_10;
-    /* 0x14 */ struct SpaceTowerSeat seat0;
-    /* 0x38 */ struct SpaceTowerSeat seat1;
-    /* 0x5c */ struct SpaceTowerSeat seat2;
-    /* 0x80 */ struct SpaceTowerSeat seat3;
-    /* 0xa4 */ unsigned char pad_a4[8];
+    /* 0x14 */ struct SpaceTowerSeat seats[4];
+    /* 0xa4 */ unsigned char flags_a4[8];
     /* 0xac */ unsigned char var_ac;
     /* 0xad */ unsigned char var_ad;
     /* 0xae */ unsigned char pad_ae[2];
@@ -145,7 +142,30 @@ void FUN_0043a940(struct SpaceTowerSeat *seat) {
 }
 
 // FUNCTION: LEGOLAND 0x0043a9b0
-void FUN_0043a9b0(struct RideObject *arg) { STUB(); }
+void FUN_0043a9b0(struct RideObject *arg) {
+    struct SpaceTowerSeat *seat;
+    int i;
+
+    i = 4;
+    seat = arg->seats;
+    do {
+        i = i + -1;
+        seat->flags = seat->flags & 0xfffffffe;
+        seat->state = 0;
+        seat = seat + 1;
+    } while (i != 0);
+    i = 0;
+    do {
+        if (arg->flags_a4[i] != '\0') {
+            arg->seats[i >> 1].flags = arg->seats[i >> 1].flags | 1;
+            arg->seats[i >> 1].state = 2;
+            arg->seats[i >> 1].field_14 = 0;
+            arg->seats[i >> 1].pos = 0;
+        }
+        i = i + 1;
+    } while (i < 8);
+    return;
+}
 
 // FUNCTION: LEGOLAND 0x0043aa10
 void FUN_0043aa10(unsigned char *arg) {
@@ -349,11 +369,11 @@ void FUN_0043b990(struct RideObject *esi) {
         esi->var_ac = 0;
     }
     if (esi->var_c & 1) {
-        FUN_0043a940(&esi->seat0);
-        FUN_0043a940(&esi->seat1);
-        FUN_0043a940(&esi->seat2);
-        FUN_0043a940(&esi->seat3);
-        if (esi->seat0.state == 0 && esi->seat1.state == 0 && esi->seat2.state == 0 && esi->seat3.state == 0) {
+        FUN_0043a940(&esi->seats[0]);
+        FUN_0043a940(&esi->seats[1]);
+        FUN_0043a940(&esi->seats[2]);
+        FUN_0043a940(&esi->seats[3]);
+        if (esi->seats[0].state == 0 && esi->seats[1].state == 0 && esi->seats[2].state == 0 && esi->seats[3].state == 0) {
             if (GetAllBlokesOffRide((struct Ride *)DAT_0062fd74, esi->var_0) == 0) {
                 return;
             }
