@@ -11,36 +11,37 @@
 #include "sound_music.h"
 #include "space_tower.h"
 
+struct SpaceTowerSeat {
+    /* 0x00 */ unsigned char flags;
+    /* 0x01 */ unsigned char pad_1[7];
+    /* 0x08 */ int pos;
+    /* 0x0c */ int state;
+    /* 0x10 */ int field_10;
+    /* 0x14 */ int field_14;
+    /* 0x18 */ unsigned char pad_18[8];
+    /* 0x20 */ signed char delta;
+    /* 0x21 */ unsigned char pad_21[3];
+};
+
 struct RideObject {
-    unsigned short var_0;
-    unsigned char var_2;
-    unsigned char var_3;
-    unsigned char var_4;
-    unsigned char pad_5[7];
-    unsigned int var_c;
-    unsigned int var_10;
-    void *var_14;
-    unsigned char pad_18[8];
-    unsigned int var_20;
-    unsigned char pad_24[20];
-    void *var_38;
-    unsigned char pad_3c[8];
-    unsigned int var_44;
-    unsigned char pad_48[20];
-    void *var_5c;
-    unsigned char pad_60[8];
-    unsigned int var_68;
-    unsigned char pad_6c[20];
-    void *var_80;
-    unsigned char pad_84[8];
-    unsigned int var_8c;
-    unsigned char pad_90[28];
-    unsigned char var_ac;
-    unsigned char var_ad;
-    unsigned char pad_ae[2];
-    unsigned int var_b0;
-    unsigned char pad_b4[24];
-    unsigned int var_cc;
+    /* 0x00 */ unsigned short var_0;
+    /* 0x02 */ unsigned char var_2;
+    /* 0x03 */ unsigned char var_3;
+    /* 0x04 */ unsigned char var_4;
+    /* 0x05 */ unsigned char pad_5[7];
+    /* 0x0c */ unsigned int var_c;
+    /* 0x10 */ unsigned int var_10;
+    /* 0x14 */ struct SpaceTowerSeat seat0;
+    /* 0x38 */ struct SpaceTowerSeat seat1;
+    /* 0x5c */ struct SpaceTowerSeat seat2;
+    /* 0x80 */ struct SpaceTowerSeat seat3;
+    /* 0xa4 */ unsigned char pad_a4[8];
+    /* 0xac */ unsigned char var_ac;
+    /* 0xad */ unsigned char var_ad;
+    /* 0xae */ unsigned char pad_ae[2];
+    /* 0xb0 */ unsigned int var_b0;
+    /* 0xb4 */ unsigned char pad_b4[24];
+    /* 0xcc */ unsigned int var_cc;
 };
 
 struct ListNode {
@@ -106,7 +107,42 @@ void FUN_0043a820(void) { STUB(); }
 void FUN_0043a8c0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043a940
-void FUN_0043a940(void *arg) { STUB(); }
+void FUN_0043a940(struct SpaceTowerSeat *seat) {
+    int pos;
+
+    if ((seat->flags & 1) != 0) {
+        switch (seat->state) {
+        case 1:
+            if (seat->field_10 == 0) {
+                seat->field_10 = -1;
+                return;
+            }
+            seat->state = 2;
+            break;
+        case 2:
+            if (seat->field_14 == 0) {
+                pos = seat->pos + seat->delta;
+                seat->pos = pos;
+                if (200 < pos) {
+                    seat->pos = 200;
+                    seat->field_14 = 1;
+                    return;
+                }
+            } else {
+                pos = seat->pos - 2;
+                seat->pos = pos;
+                if (pos < 0) {
+                    seat->pos = 0;
+                    seat->field_14 = 0;
+                    seat->state = 0;
+                    return;
+                }
+            }
+            break;
+        }
+    }
+    return;
+}
 
 // FUNCTION: LEGOLAND 0x0043a9b0
 void FUN_0043a9b0(struct RideObject *arg) { STUB(); }
@@ -313,11 +349,11 @@ void FUN_0043b990(struct RideObject *esi) {
         esi->var_ac = 0;
     }
     if (esi->var_c & 1) {
-        FUN_0043a940(&esi->var_14);
-        FUN_0043a940(&esi->var_38);
-        FUN_0043a940(&esi->var_5c);
-        FUN_0043a940(&esi->var_80);
-        if (esi->var_20 == 0 && esi->var_44 == 0 && esi->var_68 == 0 && esi->var_8c == 0) {
+        FUN_0043a940(&esi->seat0);
+        FUN_0043a940(&esi->seat1);
+        FUN_0043a940(&esi->seat2);
+        FUN_0043a940(&esi->seat3);
+        if (esi->seat0.state == 0 && esi->seat1.state == 0 && esi->seat2.state == 0 && esi->seat3.state == 0) {
             if (GetAllBlokesOffRide((struct Ride *)DAT_0062fd74, esi->var_0) == 0) {
                 return;
             }
