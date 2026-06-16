@@ -486,10 +486,29 @@ int FUN_004181e0(struct EditObject *editObj, unsigned char *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x00418230
-void FUN_00418230(void) { STUB(); }
+void FUN_00418230(unsigned int a, unsigned int b, unsigned int c) {
+    struct WaterNode *node;
+
+    StandardRemoveObject(a, b, c);
+    node = FUN_00417d10((unsigned short *)&b);
+    if (node != NULL) {
+        FUN_00417cf0(node);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00418260
-void FUN_00418260(void) { STUB(); }
+void FUN_00418260(unsigned short key) {
+    struct WaterNode *node;
+
+    node = (struct WaterNode *)malloc(sizeof(struct WaterNode));
+    if (node != NULL) {
+        ((unsigned int *)node)[0] = 0;
+        ((unsigned int *)node)[1] = 0;
+        ((unsigned int *)node)[2] = 0;
+        node->key = key;
+        FUN_00417b80(&DAT_004cc030, node);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004182a0
 void FUN_004182a0(struct WaterNode *node) {
