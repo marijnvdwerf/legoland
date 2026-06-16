@@ -398,7 +398,147 @@ void FUN_00438110(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00438150
-void FUN_00438150(void) { STUB(); }
+void FUN_00438150(struct MapObject *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6) {
+    struct Building *ride = param_1->building;
+    struct RideListElem *elem = ride->list;
+    struct JailCell *cell;
+    char count = 0;
+    int array[10];
+    int *p;
+    int n;
+    unsigned short id;
+    union { __int64 q; int i[2]; } coords;
+    union { __int64 q; int i[2]; } offset;
+
+    {
+        int *fill = array;
+        int z;
+        array[0] = 0;
+        for (z = 9; fill = fill + 1, z != 0; z--) {
+            *fill = 0;
+        }
+    }
+    coords.q = GetScreenCoordsForObject((unsigned char *)param_4, ride);
+    cell = FUN_00437f90(param_4);
+    if (cell == NULL) {
+        return;
+    }
+    if (elem != NULL) {
+        id = *param_4;
+        do {
+            if (id == elem->id) {
+                array[(int)count] = (int)elem->bloke;
+                count++;
+            }
+            elem = elem->next;
+        } while (elem != NULL);
+        if (count != 0) {
+            if (0 < count) {
+                p = array;
+                n = count;
+                do {
+                    if (*(char *)(*p + 0x60) == 2) {
+                        IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                    }
+                    p = p + 1;
+                    n = n - 1;
+                } while (n != 0);
+            }
+            if (0 < count) {
+                p = array;
+                n = count;
+                do {
+                    if (*(char *)(*p + 0x60) == 3) {
+                        IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                    }
+                    p = p + 1;
+                    n = n - 1;
+                } while (n != 0);
+            }
+            LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_0062fd40, 1), (char)cell->field_6);
+            offset.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd40, 1);
+            AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
+            PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_0062fd40, 1), coords.i[0] + offset.i[0], coords.i[1] + offset.i[1], param_6, NULL);
+            if (0 < count) {
+                p = array;
+                n = count;
+                do {
+                    if (*(char *)(*p + 0x60) == 1) {
+                        IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                    }
+                    p = p + 1;
+                    n = n - 1;
+                } while (n != 0);
+                if (0 < count) {
+                    p = array;
+                    n = count;
+                    do {
+                        if (*(char *)(*p + 0x60) == 4) {
+                            IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                        }
+                        p = p + 1;
+                        n = n - 1;
+                    } while (n != 0);
+                    if (0 < count) {
+                        p = array;
+                        n = count;
+                        do {
+                            if (*(char *)(*p + 0x60) == 8) {
+                                IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                            }
+                            p = p + 1;
+                            n = n - 1;
+                        } while (n != 0);
+                    }
+                }
+            }
+            offset.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd40, 0);
+            AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
+            PrintSprite(DAT_0081cb0c, coords.i[0] + offset.i[0], coords.i[1] + offset.i[1], param_6, NULL);
+            if (count < 1) {
+                return;
+            }
+            p = array;
+            n = count;
+            do {
+                if (*(char *)(*p + 0x60) == 0) {
+                    IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                }
+                p = p + 1;
+                n = n - 1;
+            } while (n != 0);
+            if (count < 1) {
+                return;
+            }
+            p = array;
+            n = count;
+            do {
+                if (*(char *)(*p + 0x60) == 7) {
+                    IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                }
+                p = p + 1;
+                n = n - 1;
+            } while (n != 0);
+            if (count < 1) {
+                return;
+            }
+            n = count;
+            p = array;
+            do {
+                if (*(char *)(*p + 0x60) == 10) {
+                    IP_RenderBlokeIn3DNow((struct Bloke *)*p);
+                }
+                p = p + 1;
+                n = n - 1;
+            } while (n != 0);
+            return;
+        }
+    }
+    LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_0062fd40, 1), (char)cell->field_6);
+    offset.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd40, 1);
+    AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
+    PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_0062fd40, 1), coords.i[0] + offset.i[0], coords.i[1] + offset.i[1], param_6, NULL);
+}
 
 // FUNCTION: LEGOLAND 0x00438430
 void FUN_00438430(void) { STUB(); }
