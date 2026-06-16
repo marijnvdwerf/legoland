@@ -433,7 +433,23 @@ void FUN_00417f90(struct WaterArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00418110
-void FUN_00418110(void) { STUB(); }
+unsigned int *FUN_00418110(unsigned int *arg1, unsigned short arg2) {
+    struct WaterNode *node;
+    int idx;
+
+    node = FUN_00417d10(&arg2);
+    if (node != NULL) {
+        idx = node->field_a * 4;
+        DAT_004cbffc = arg2;
+        DAT_004cbff0 = *(int *)(*(int *)((char *)DAT_004cc018 + 8) + idx);
+        DAT_004cbff4 = *(int *)(*(int *)((char *)DAT_004cc018 + 0xc) + idx) >> 1;
+        DAT_004cc000 = 0;
+        DAT_004cbff8 = *(int *)(*(int *)((char *)DAT_004cc018 + 0x10) + idx) >> 1;
+        *(unsigned int *)(DAT_004cbff0 + 0x10) |= 0x2000;
+        SetOverrideFrame(node->field_9);
+    }
+    return &DAT_004cbff0;
+}
 
 // FUNCTION: LEGOLAND 0x004181a0
 void FUN_004181a0(struct WaterArg *arg, int a, int b, unsigned short *key) {
