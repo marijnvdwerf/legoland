@@ -8,6 +8,7 @@
 #include "llidb.h"
 #include "man3d.h"
 #include "map_object.h"
+#include "math.h"
 #include "obj_instance.h"
 #include "print_sprite.h"
 #include "render3d.h"
@@ -65,13 +66,21 @@ struct SpaceTowerRideNode {
     /* 0x00 */ struct SpaceTowerRideNode *next;
     /* 0x04 */ unsigned char pad_4[4];
     /* 0x08 */ struct Bloke *bloke;
-    /* 0x0c */ unsigned short id;
-    /* 0x0e */ unsigned char coord[2];
+    /* 0x0c */ union {
+        unsigned short id;
+        struct {
+            unsigned char x;
+            unsigned char y;
+        } coord;
+    };
     /* 0x10 */ unsigned char pad_10[2];
 };
 
 struct SpaceTowerRide {
-    /* 0x00 */ unsigned char pad_0[0x1c];
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ int field_c;
+    /* 0x10 */ int field_10;
+    /* 0x14 */ unsigned char pad_14[0x1c - 0x14];
     /* 0x1c */ unsigned int flags;
     /* 0x20 */ unsigned char pad_20[0x64 - 0x20];
     /* 0x64 */ void *layers;
@@ -141,7 +150,23 @@ __int64 FUN_0043a7a0(int *param_1, int param_2, int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x0043a820
-void FUN_0043a820(struct AnimEntry *param_1, struct SpaceTowerRideNode *param_2) { STUB(); }
+void FUN_0043a820(struct AnimEntry *param_1, struct SpaceTowerRideNode *param_2) {
+    struct Bloke *bloke;
+    struct SpaceTowerRide *ride;
+    __int64 base;
+    char dir;
+
+    bloke = param_2->bloke;
+    base = FUN_0043a7a0((int *)DAT_004b7758[bloke->field_50].field_4, bloke->field_4a, bloke->field_38);
+    ride = (struct SpaceTowerRide *)DAT_0062fd74;
+    bloke->field_24 = (int)base + (param_2->coord.x + ride->field_c) * 0x100;
+    bloke->field_28 = (int)(base >> 0x20) + (param_2->coord.y + ride->field_10) * 0x100;
+    dir = CalcMoveLine(bloke->field_68, bloke->field_6c, bloke->field_24, bloke->field_28, bloke->field_98);
+    bloke->field_e = 7;
+    bloke->field_73 = dir + 0x10;
+    NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+    param_2->bloke->field_38 = param_2->bloke->field_38 + 1;
+}
 
 // FUNCTION: LEGOLAND 0x0043a8c0
 void FUN_0043a8c0(struct SpaceTowerRideNode *param_1) {
