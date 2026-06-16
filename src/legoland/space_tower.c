@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <string.h>
 #include "legoland.h"
 
@@ -28,7 +29,8 @@ struct RideObject {
     /* 0x02 */ unsigned char var_2;
     /* 0x03 */ unsigned char var_3;
     /* 0x04 */ unsigned char var_4;
-    /* 0x05 */ unsigned char pad_5[7];
+    /* 0x05 */ unsigned char pad_5[3];
+    /* 0x08 */ struct RideObject *next;
     /* 0x0c */ unsigned int var_c;
     /* 0x10 */ unsigned int var_10;
     /* 0x14 */ struct SpaceTowerSeat seats[4];
@@ -197,10 +199,50 @@ void FUN_0043aa90(struct RideObject *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0043aac0
-void FUN_0043aac0(struct RideObject *arg) { STUB(); }
+void FUN_0043aac0(struct RideObject *arg) {
+    int r;
+
+    arg->var_c = arg->var_c & 0xffffbffe;
+    arg->seats[0].flags = arg->seats[0].flags & 0xfffffffe;
+    arg->seats[1].flags = arg->seats[1].flags & 0xfffffffe;
+    arg->seats[0].pos = 0;
+    arg->seats[1].pos = 0;
+    arg->seats[2].pos = 0;
+    arg->seats[3].pos = 0;
+    arg->seats[2].flags = arg->seats[2].flags & 0xfffffffe;
+    arg->seats[3].flags = arg->seats[3].flags & 0xfffffffe;
+    r = rand();
+    arg->seats[0].delta = (char)(r % 3) + '\a';
+    r = rand();
+    arg->seats[1].delta = (char)(r % 3) + '\a';
+    r = rand();
+    arg->seats[2].delta = (char)(r % 3) + '\a';
+    r = rand();
+    arg->var_4 = 0;
+    arg->var_2 = 0;
+    arg->seats[3].delta = (char)(r % 3) + '\a';
+    FUN_0043aa50((unsigned char *)arg);
+}
 
 // FUNCTION: LEGOLAND 0x0043ab70
-void FUN_0043ab70(void) { STUB(); }
+void FUN_0043ab70(unsigned short *param_1) {
+    struct RideObject *node;
+    unsigned int *fill;
+    int i;
+
+    node = (struct RideObject *)malloc(0xb4);
+    if (node != NULL) {
+        fill = (unsigned int *)node;
+        for (i = 0x2d; i != 0; i = i + -1) {
+            *fill = 0;
+            fill = fill + 1;
+        }
+        node->var_0 = *param_1;
+        node->next = DAT_0062fda8;
+        DAT_0062fda8 = node;
+        FUN_0043aac0(node);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0043abc0
 void FUN_0043abc0(unsigned int arg) { STUB(); }
