@@ -667,7 +667,20 @@ unsigned int *FUN_00418540(unsigned int *arg1, unsigned short arg2) {
 }
 
 // FUNCTION: LEGOLAND 0x004185c0
-void FUN_004185c0(void) { STUB(); }
+void FUN_004185c0(struct WaterArg *arg, unsigned int a, unsigned int b) {
+    struct WaterContext *context;
+
+    context = arg->field_c;
+    ScreenToMapRef(a, &EditCursor.field_1404, b);
+    *(struct Footprint *)EditCursor.field_1414 = *(struct Footprint *)&context->field_3c;
+    EditCursor.field_1830 = 0;
+    ValidateCursor(&EditCursor, (unsigned int)context);
+    if (FUN_00417c90() != 0) {
+        return;
+    }
+    FUN_0045f480(&EditCursor, 0xc);
+    FUN_0045f4d0(&EditCursor);
+}
 
 // FUNCTION: LEGOLAND 0x00418630
 void FUN_00418630(void) { STUB(); }
