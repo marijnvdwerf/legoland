@@ -32,9 +32,12 @@ struct Bloke {
     unsigned char pad_34[0x35 - 0x34];
     unsigned char field_35;
     unsigned char field_36;
-    unsigned char pad_37[0x46 - 0x37];
+    unsigned char pad_37[0x38 - 0x37];
+    short field_38;
+    unsigned char pad_3a[0x46 - 0x3a];
     unsigned short field_46;
-    unsigned char pad_48[0x4c - 0x48];
+    unsigned char pad_48[0x4a - 0x48];
+    short field_4a;
     unsigned short field_4c;
     unsigned char pad_4e[0x50 - 0x4e];
     int field_50;

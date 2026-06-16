@@ -52,6 +52,15 @@ struct RideObject {
     /* 0xcc */ unsigned int var_cc;
 };
 
+struct AnimEntry {
+    /* 0x00 */ int count;
+};
+
+struct AnimLayout {
+    /* 0x00 */ int count;
+    /* 0x04 */ struct AnimEntry **entries;
+};
+
 struct SpaceTowerRideNode {
     /* 0x00 */ struct SpaceTowerRideNode *next;
     /* 0x04 */ unsigned char pad_4[4];
@@ -132,10 +141,34 @@ __int64 FUN_0043a7a0(int *param_1, int param_2, int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x0043a820
-void FUN_0043a820(void) { STUB(); }
+void FUN_0043a820(struct AnimEntry *param_1, struct SpaceTowerRideNode *param_2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043a8c0
-void FUN_0043a8c0(void) { STUB(); }
+void FUN_0043a8c0(struct SpaceTowerRideNode *param_1) {
+    struct Bloke *bloke;
+    struct AnimLayout *layout;
+    struct AnimEntry *entry;
+
+    bloke = param_1->bloke;
+    layout = (struct AnimLayout *)DAT_004b7758[bloke->field_50].field_4;
+    entry = layout->entries[bloke->field_4a];
+    if ((int)bloke->field_4a >= layout->count) {
+        bloke->param_action = bloke->param_action + '\x01';
+        return;
+    }
+    if ((int)bloke->field_38 >= entry->count) {
+        bloke->field_38 = 0;
+        param_1->bloke->field_4a = param_1->bloke->field_4a + 1;
+        bloke = param_1->bloke;
+        if (bloke->field_4a == (short)bloke->field_4c || (int)bloke->field_4a == layout->count) {
+            bloke->param_action = bloke->param_action + '\x01';
+            return;
+        }
+    }
+    if ((int)bloke->field_38 != entry->count) {
+        FUN_0043a820(entry, param_1);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0043a940
 void FUN_0043a940(struct SpaceTowerSeat *seat) {
