@@ -12,6 +12,7 @@
 #include "map_object.h"
 #include "math.h"
 #include "obj_instance.h"
+#include "print_sprite.h"
 #include "render3d.h"
 #include "sound_music.h"
 #include "tilemap.h"
@@ -100,8 +101,15 @@ struct RenderNode {
 };
 
 struct WaterRender {
-    unsigned char pad_0[0xcc];
-    struct RenderNode *nodes;
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ void *field_c;
+    /* 0x10 */ unsigned char pad_10[0xcc - 0x10];
+    /* 0xcc */ struct RenderNode *nodes;
+};
+
+struct AdjustOffset {
+    int x;
+    int y;
 };
 
 struct WaterListNode {
@@ -594,7 +602,26 @@ void FUN_004183a0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00418450
-void FUN_00418450(void) { STUB(); }
+void FUN_00418450(struct WaterRender *render, unsigned int p2, unsigned int p3, unsigned char *coords, unsigned int p5, unsigned int p6) {
+    struct WaterNode *node;
+    void *ctx;
+    struct AdjustOffset offset;
+    union {
+        __int64 q;
+        int i[2];
+    } sc;
+
+    ctx = render->field_c;
+    node = FUN_004182c0((unsigned short *)coords);
+    if (node != NULL && node->field_8 == 2) {
+        offset.x = -8;
+        offset.y = 0x14;
+        AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
+        sc.q = GetScreenCoordsForObject(coords, ctx);
+        LLSSetFrame((struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cc014), node->field_9);
+        PrintSprite(DAT_004cc014, sc.i[0] + offset.x, sc.i[1] + offset.y, p6, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004184e0
 void FUN_004184e0(void) { STUB(); }
