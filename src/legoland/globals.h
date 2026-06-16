@@ -1035,8 +1035,12 @@ extern unsigned int DAT_004cbff8;
 extern unsigned short DAT_004cbffc;
 // 0x004cc000
 extern unsigned int DAT_004cc000;
+// 0x004cc008
+extern struct WaterContext *DAT_004cc008;
 // 0x004cc014
 extern struct Sprite *DAT_004cc014;
+// 0x004cc018
+extern void *DAT_004cc018;
 // 0x004cc01c
 extern unsigned int DAT_004cc01c;
 // 0x004cc020

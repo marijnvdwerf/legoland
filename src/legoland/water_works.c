@@ -29,10 +29,17 @@ struct FxSource {
 };
 
 struct WaterContext {
-    unsigned char pad_0[0x1c];
-    unsigned int field_1c;
-    unsigned char pad_20[0x64 - 0x20];
-    struct WaterSub *field_64;
+    /* 0x00 */ unsigned char pad_0[0x14];
+    /* 0x14 */ unsigned int field_14;
+    /* 0x18 */ unsigned int field_18;
+    /* 0x1c */ unsigned int field_1c;
+    /* 0x20 */ unsigned char pad_20[0x3c - 0x20];
+    /* 0x3c */ unsigned int field_3c;
+    /* 0x40 */ unsigned int field_40;
+    /* 0x44 */ unsigned int field_44;
+    /* 0x48 */ unsigned int field_48;
+    /* 0x4c */ unsigned char pad_4c[0x64 - 0x4c];
+    /* 0x64 */ struct WaterSub *field_64;
 };
 
 struct WaterSub {
@@ -246,7 +253,23 @@ struct WaterNode *FUN_00417d10(unsigned short *key) {
 }
 
 // FUNCTION: LEGOLAND 0x00417d30
-void FUN_00417d30(void) { STUB(); }
+void FUN_00417d30(struct WaterArg *arg) {
+    FUN_00417a90();
+    DAT_004cc008 = arg->field_c;
+    DAT_004cc008->field_1c |= 0x420;
+    DAT_004cc008->field_3c = 0;
+    DAT_004cc008->field_44 = 0;
+    DAT_004cc008->field_40 = 0;
+    DAT_004cc008->field_48 = 0;
+    DAT_004cc008->field_14 = 0;
+    DAT_004cc008->field_18 = 0;
+    // STRING: LEGOLAND 0x004b501c
+    if (LLIDB_FindElement("WATER WORKS IMAGE LIST", &DAT_004cbfe8, 0) == 0) {
+        DAT_004cc018 = LLIDB_LoadData((void *)DAT_004cbfe8);
+    }
+    // STRING: LEGOLAND 0x004b500c
+    DAT_004cbfd8 = LoadSprite("topwater.lls", 1);
+}
 
 // FUNCTION: LEGOLAND 0x00417dd0
 void FUN_00417dd0(void) { STUB(); }
