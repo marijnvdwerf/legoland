@@ -815,13 +815,6 @@ LEGO_EXPORT void RenderItems_New(void) {
     DAT_00655a4c = 0;
 }
 
-struct RenderItemNode {
-    int key;
-    unsigned char pad_4[4];
-    struct RenderItemNode *next;
-    struct RenderItemNode *prev;
-};
-
 // FUNCTION: LEGOLAND 0x00442eb0
 LEGO_EXPORT void RenderItem_Link(struct RenderItemNode **head, struct RenderItemNode *node, int key) {
     struct RenderItemNode *cur;

@@ -2,6 +2,18 @@
 
 struct Queue;
 
+struct PathPair {
+    /* 0x00 */ int a;
+    /* 0x04 */ int b;
+};
+
+struct PathTable {
+    /* 0x00 */ int count;
+    /* 0x04 */ struct PathPair *pairs;
+};
+
+int FUN_00412100(struct PathTable *param_1);
+
 struct RideQueueEntry {
     /* 0x00 */ struct RideQueueEntry *next;
     /* 0x04 */ struct RideQueueEntry *field_4;

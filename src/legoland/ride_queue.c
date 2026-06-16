@@ -132,7 +132,7 @@ void FUN_004120a0(struct Queue *queue, unsigned int param_2, unsigned int param_
 }
 
 // FUNCTION: LEGOLAND 0x00412100
-void FUN_00412100(void) { STUB(); }
+int FUN_00412100(struct PathTable *param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00412290
 void FUN_00412290(void *param_1) {

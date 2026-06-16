@@ -53,6 +53,7 @@ struct CatapultNode;
 struct Position;
 struct RinData;
 struct CopterNode;
+struct RenderItemNode;
 struct GoldNode;
 struct CarouselNode;
 struct CarouselRide;
@@ -788,13 +789,35 @@ extern struct CatapultNode *DAT_004c1118;
 // 0x004c1120
 extern struct Sprite *DAT_004c1120;
 // 0x004c1124
-extern int DAT_004c1124[6];
+extern int DAT_004c1124[5];
+// 0x004c1138
+extern void *DAT_004c1138;
 // 0x004c113c
 extern struct Sprite *DAT_004c113c[10];
 // 0x004c1164
-extern struct Sprite *DAT_004c1164;
+extern struct RenderItemNode **DAT_004c1164;
+// 0x004c1168
+extern struct RenderItemNode **DAT_004c1168;
+// 0x004c1188
+extern struct RenderItemNode **DAT_004c1188;
+// 0x004c1190
+extern struct RenderItemNode **DAT_004c1190;
+// 0x004c1194
+extern struct RenderItemNode **DAT_004c1194;
 // 0x004c1198
 extern void *DAT_004c1198;
+// 0x004c119c
+extern struct RenderItemNode *DAT_004c119c;
+// 0x004c11a0
+extern struct RenderItemNode *DAT_004c11a0;
+// 0x004c11a4
+extern struct RenderItemNode *DAT_004c11a4;
+// 0x004c11a8
+extern struct RenderItemNode *DAT_004c11a8;
+// 0x004c11ac
+extern struct RenderItemNode *DAT_004c11ac;
+// 0x004c11b0
+extern struct RenderItemNode *DAT_004c11b0;
 // 0x004c11b4
 extern struct CopterNode *DAT_004c11b4;
 // 0x004c11bc

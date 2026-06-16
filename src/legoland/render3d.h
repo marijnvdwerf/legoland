@@ -19,6 +19,13 @@ struct BlokePos {
     unsigned int field_4;
 };
 
+struct RenderItemNode {
+    /* 0x00 */ int key;
+    /* 0x04 */ unsigned char pad_4[4];
+    /* 0x08 */ struct RenderItemNode *next;
+    /* 0x0c */ struct RenderItemNode *prev;
+};
+
 LEGO_EXPORT void Put3DBlokesOnRide(struct ViewportEntry *param_1, unsigned char *param_2, int param_3, int *param_4);
 LEGO_EXPORT void Put3DBlokesOnRide2(struct RideObject *ride, struct RideObject *obj);
 LEGO_EXPORT void RenderBlokesNotInSeats(unsigned int a1, unsigned int a2);

@@ -13,29 +13,6 @@
 #include "sound_music.h"
 #include "sound_sfx.h"
 
-struct CopterLayer {
-    /* 0x00 */ unsigned int flags;
-    /* 0x04 */ unsigned char field_4;
-    /* 0x05 */ unsigned char pad_5[0x13];
-    /* 0x18 */ struct Sprite *field_18;
-    /* 0x1c */ unsigned char field_1c;
-    /* 0x1d */ unsigned char field_1d;
-    /* 0x1e */ unsigned char pad_1e[2];
-};
-
-struct CopterNode {
-    /* 0x00 */ unsigned short field_0;
-    /* 0x02 */ unsigned char field_2;
-    /* 0x03 */ unsigned char field_3;
-    /* 0x04 */ struct CopterNode *next;
-    /* 0x08 */ unsigned int field_8;
-    /* 0x0c */ int field_c;
-    /* 0x10 */ unsigned char field_10;
-    /* 0x11 */ unsigned char pad_11[3];
-    /* 0x14 */ int field_14;
-    /* 0x18 */ struct CopterLayer layer[6];
-};
-
 struct CopterSource {
     unsigned short field_0;
 };
@@ -50,13 +27,57 @@ struct CopterSub {
     int field_50;
 };
 
+struct CopterModel {
+    unsigned char pad_0[0x10];
+    unsigned int field_10;
+};
+
+struct CopterRide {
+    unsigned char pad_0[0x1c];
+    unsigned int field_1c;
+    unsigned char pad_20[0x64 - 0x20];
+    struct CopterModel *field_64;
+};
+
+struct CopterEditObject {
+    unsigned char pad_0[0xc];
+    struct CopterRide *field_c;
+};
+
 #include "image_sprite.h"
+
+// GLOBAL: LEGOLAND 0x004b4198
+static struct PathPair Copters_PathPairs0[6] = {{0, -1}, {1, 0}, {1, 0}, {1, 0}, {-1, -1}, {-1, -1}};
+// GLOBAL: LEGOLAND 0x004b41c8
+struct PathTable DAT_004b41c8 = {6, Copters_PathPairs0};
+// GLOBAL: LEGOLAND 0x004b41d0
+static struct PathPair Copters_PathPairs1[7] = {{0, -1}, {-1, 0}, {0, -1}, {0, -4}, {-3, -1}, {1, 0}, {1, 0}};
+// GLOBAL: LEGOLAND 0x004b4208
+struct PathTable DAT_004b4208 = {7, Copters_PathPairs1};
+// GLOBAL: LEGOLAND 0x004b4210
+static struct PathPair Copters_PathPairs2[6] = {{0, -1}, {-1, -1}, {2, -4}, {2, -2}, {-2, 0}, {0, -1}};
+// GLOBAL: LEGOLAND 0x004b4240
+struct PathTable DAT_004b4240 = {6, Copters_PathPairs2};
+// GLOBAL: LEGOLAND 0x004b4248
+static struct PathPair Copters_PathPairs3[5] = {{0, -1}, {4, -1}, {0, -1}, {-1, -1}, {-1, -2}};
+// GLOBAL: LEGOLAND 0x004b4270
+struct PathTable DAT_004b4270 = {5, Copters_PathPairs3};
+// GLOBAL: LEGOLAND 0x004b4278
+static struct PathPair Copters_PathPairs4[4] = {{0, -1}, {-1, -1}, {0, -1}, {0, -1}};
+// GLOBAL: LEGOLAND 0x004b4298
+struct PathTable DAT_004b4298 = {4, Copters_PathPairs4};
+
+// GLOBAL: LEGOLAND 0x004b4170
+static const char *Copters_LLSNames[10] = {
+    "mcop_gs.lls",  "mcop_b2s.lls", "mcop_rs.lls", "mcop_b1s.lls", "mcop_ys.lls",
+    "mcop_b1m.lls", "mcop_gm.lls",  "mcop_rm.lls", "mcop_ym.lls",  "mcop_b2m.lls",
+};
 
 // FUNCTION: LEGOLAND 0x00403c40
 void FUN_00403c40(struct CopterSource *src) {
-    struct CopterNode *node = (struct CopterNode *)malloc(0xd8);
+    struct CopterNode *node = (struct CopterNode *)malloc(sizeof(struct CopterNode));
     if (node != NULL) {
-        memset(node, 0, 0xd8);
+        memset(node, 0, sizeof(struct CopterNode));
         node->field_0 = src->field_0;
         node->next = DAT_004c11b4;
         DAT_004c11b4 = node;
@@ -155,7 +176,34 @@ void FUN_00403d60(struct CopterItem *item) {
 }
 
 // FUNCTION: LEGOLAND 0x00403d90
-void FUN_00403d90(void) { STUB(); }
+void FUN_00403d90(struct CopterEditObject *param_1) {
+    struct CopterRide *ride;
+    int i;
+
+    ride = param_1->field_c;
+    DAT_004c1198 = ride;
+    ride->field_1c |= 0x420;
+    DAT_004c1138 = ((struct CopterRide *)DAT_004c1198)->field_64;
+    ((struct CopterModel *)DAT_004c1138)->field_10 |= 0x2000;
+    for (i = 0; i < 10; i++) {
+        DAT_004c113c[i] = LoadSprite(Copters_LLSNames[i], 1);
+    }
+    // STRING: LEGOLAND 0x004b43d0
+    DAT_00830f98 = LoadPos("3ddata\\copters.pos");
+    DAT_004c1124[0] = FUN_00412100(&DAT_004b41c8);
+    DAT_004c1124[2] = FUN_00412100(&DAT_004b4208);
+    DAT_004c1124[1] = FUN_00412100(&DAT_004b4240);
+    DAT_004c1124[3] = FUN_00412100(&DAT_004b4270);
+    DAT_004c1124[4] = FUN_00412100(&DAT_004b4298);
+    DAT_004c1194 = &DAT_004c119c;
+    DAT_004c1190 = &DAT_004c11a0;
+    DAT_004c1164 = &DAT_004c11a4;
+    DAT_004c1168 = &DAT_004c11a8;
+    DAT_004c1188 = &DAT_004c11ac;
+    // STRING: LEGOLAND 0x004b43bc
+    DAT_004c1120 = LoadSprite("cop_base Matte.lls", 1);
+    Load_FXList(Helicopter_SFX, 4);
+}
 
 // FUNCTION: LEGOLAND 0x00403e90
 void FUN_00403e90(struct CopterNode *node) { STUB(); }

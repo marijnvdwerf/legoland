@@ -834,16 +834,49 @@ struct CatapultNode *DAT_004c1118;
 struct Sprite *DAT_004c1120;
 
 // GLOBAL: LEGOLAND 0x004c1124
-int DAT_004c1124[6];
+int DAT_004c1124[5];
+
+// GLOBAL: LEGOLAND 0x004c1138
+void *DAT_004c1138;
 
 // GLOBAL: LEGOLAND 0x004c113c
 struct Sprite *DAT_004c113c[10];
 
 // GLOBAL: LEGOLAND 0x004c1164
-struct Sprite *DAT_004c1164;
+struct RenderItemNode **DAT_004c1164;
+
+// GLOBAL: LEGOLAND 0x004c1168
+struct RenderItemNode **DAT_004c1168;
+
+// GLOBAL: LEGOLAND 0x004c1188
+struct RenderItemNode **DAT_004c1188;
+
+// GLOBAL: LEGOLAND 0x004c1190
+struct RenderItemNode **DAT_004c1190;
+
+// GLOBAL: LEGOLAND 0x004c1194
+struct RenderItemNode **DAT_004c1194;
 
 // GLOBAL: LEGOLAND 0x004c1198
 void *DAT_004c1198;
+
+// GLOBAL: LEGOLAND 0x004c119c
+struct RenderItemNode *DAT_004c119c;
+
+// GLOBAL: LEGOLAND 0x004c11a0
+struct RenderItemNode *DAT_004c11a0;
+
+// GLOBAL: LEGOLAND 0x004c11a4
+struct RenderItemNode *DAT_004c11a4;
+
+// GLOBAL: LEGOLAND 0x004c11a8
+struct RenderItemNode *DAT_004c11a8;
+
+// GLOBAL: LEGOLAND 0x004c11ac
+struct RenderItemNode *DAT_004c11ac;
+
+// GLOBAL: LEGOLAND 0x004c11b0
+struct RenderItemNode *DAT_004c11b0;
 
 // GLOBAL: LEGOLAND 0x004c11b4
 struct CopterNode *DAT_004c11b4;
