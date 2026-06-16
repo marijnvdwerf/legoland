@@ -16,6 +16,10 @@ struct SortNode {
 struct StringHolder;
 struct Vec4;
 struct NerpsArg;
+struct WrapperNode;
+struct Ctx6b0;
+struct AppendArgC;
+struct AppendArg10;
 
 void FUN_0046a040(unsigned int param_1, unsigned int param_2);
 void FUN_0046a140(int index, unsigned int param_2, unsigned int param_3);
@@ -24,7 +28,12 @@ void FUN_0046b240(unsigned int param_1);
 unsigned int FUN_0046b280(void);
 void FUN_0046b2d0(void);
 struct NerpsListNode *FUN_0046b4f0(unsigned int param_1);
+void FUN_0046b520(struct WrapperNode *node);
+int FUN_0046b5d0(struct SortNode *node);
 void FUN_0046b590(struct SortNode *node);
+void FUN_0046b6b0(struct Ctx6b0 *ctx, unsigned int param_2);
+void FUN_0046c540(struct AppendArgC *arg);
+void FUN_0046c580(struct AppendArg10 *arg);
 void FUN_0046b650(const char *src, struct StringHolder *holder);
 unsigned int FUN_0046b700(void);
 unsigned int FUN_0046b760(void);

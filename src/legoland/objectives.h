@@ -2,6 +2,7 @@
 
 struct NerpsArg;
 struct RewardArg;
+struct MapRectArg;
 
 struct Vec4 {
     unsigned int x;
@@ -77,6 +78,18 @@ void FUN_00469390(struct NerpsArg *object);
 unsigned int FUN_00469400(void);
 void FUN_00469bd0(unsigned int a, void *b);
 int FUN_00469c40(struct ObjectiveEvent *event);
+int FUN_00469b20(struct ObjectiveEvent *event);
+int FUN_00469b50(struct ObjectiveEvent *event);
+int FUN_00469b70(struct ObjectiveEvent *event);
+int FUN_00469b90(struct ObjectiveEvent *event);
+int FUN_00469bb0(struct ObjectiveEvent *event);
+int FUN_00469c80(struct MapRectArg *arg);
+int FUN_00469ed0(struct MapRectArg *arg);
+int FUN_00469f20(struct MapRectArg *arg);
+int FUN_00469f70(struct RewardArg *arg);
+int FUN_00469f80(struct RewardArg *arg);
+int FUN_00469fc0(struct RewardArg *arg);
+int FUN_0046a030(struct RewardArg *arg);
 void FUN_00469ab0(struct NerpsArg *object);
 int FUN_00469ae0(struct RewardArg *arg);
 int FUN_00469b00(struct RewardArg *arg);

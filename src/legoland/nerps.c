@@ -1119,8 +1119,158 @@ void FUN_0046b290(void) {
     }
 }
 
+typedef int (*EventHandler)(struct ObjectiveEvent *);
+
+// GLOBAL: LEGOLAND 0x004b9d44
+EventHandler DAT_004b9d44[68] = {
+    NULL, NULL,
+    (EventHandler)FUN_00469b20, (EventHandler)FUN_00469b50, (EventHandler)FUN_00469b70,
+    (EventHandler)FUN_00469b90, (EventHandler)FUN_00469bb0, (EventHandler)FUN_00469c40,
+    (EventHandler)FUN_00469c80, (EventHandler)FUN_00469ed0, (EventHandler)FUN_00469f20,
+    (EventHandler)FUN_00469f70, (EventHandler)FUN_00469f80, (EventHandler)FUN_00469fc0,
+    (EventHandler)FUN_0046a030, (EventHandler)FUN_0046a120, (EventHandler)FUN_0046a190,
+    (EventHandler)FUN_0046a1f0, (EventHandler)FUN_0046a230, (EventHandler)FUN_0046a300,
+    (EventHandler)FUN_0046a330, (EventHandler)FUN_0046a350, (EventHandler)FUN_0046a370,
+    (EventHandler)FUN_0046a3b0, (EventHandler)FUN_0046a170, (EventHandler)FUN_0046a420,
+    (EventHandler)FUN_0046a440, (EventHandler)FUN_0046a460, (EventHandler)FUN_0046a480,
+    (EventHandler)FUN_0046a4a0, (EventHandler)FUN_0046a4c0, (EventHandler)FUN_0046a4e0,
+    (EventHandler)FUN_0046a390, (EventHandler)FUN_0046a4f0, (EventHandler)FUN_0046a540,
+    (EventHandler)FUN_0046a5b0, (EventHandler)FUN_0046a690, (EventHandler)FUN_0046a750,
+    (EventHandler)FUN_0046a900, (EventHandler)FUN_0046a960, (EventHandler)FUN_0046aa30,
+    (EventHandler)FUN_0046aa70, (EventHandler)FUN_0046aae0, (EventHandler)FUN_0046ab70,
+    (EventHandler)FUN_0046abc0, (EventHandler)FUN_0046abd0, (EventHandler)FUN_0046ac50,
+    (EventHandler)FUN_0046ac00, (EventHandler)FUN_0046ad00, (EventHandler)FUN_0046ad30,
+    (EventHandler)FUN_0046ad60, (EventHandler)FUN_0046ad90, (EventHandler)FUN_0046adc0,
+    (EventHandler)FUN_0046adf0, (EventHandler)FUN_0046ae20, (EventHandler)FUN_0046ae30,
+    (EventHandler)FUN_0046ae40, (EventHandler)FUN_0046ae70, (EventHandler)FUN_0046aec0,
+    (EventHandler)FUN_0046af10, (EventHandler)FUN_0046af60, (EventHandler)FUN_0046afe0,
+    (EventHandler)FUN_0046b080, (EventHandler)FUN_0046b0b0, (EventHandler)FUN_0046b0c0,
+    (EventHandler)FUN_0046b100, (EventHandler)FUN_0046b130, (EventHandler)FUN_0046b180,
+};
+
 // FUNCTION: LEGOLAND 0x0046b2d0
-void FUN_0046b2d0(void) { STUB(); }
+void FUN_0046b2d0(void) {
+    struct ObjectiveEvent *node;
+    struct ObjectiveEvent *next;
+    struct ObjectiveEvent *cur;
+    struct ObjectiveEvent *prev;
+    int active;
+    int done;
+    unsigned char flags;
+    int result;
+
+    node = DAT_00668784;
+    done = 0;
+    FUN_00471bf0();
+    if (FUN_0046b280() != 0) {
+        return;
+    }
+    do {
+        active = 0;
+        if ((DAT_00668610 & 0x10) != 0) {
+            FUN_00482b20(1);
+        }
+        DAT_00668794 = GetGameTimer();
+        next = (struct ObjectiveEvent *)(unsigned int)done;
+        prev = NULL;
+        if (node != (struct ObjectiveEvent *)(unsigned int)done) {
+            do {
+                cur = node;
+                next = cur->next;
+                if (DAT_004b9d44[cur->type] != NULL) {
+                    result = FUN_0046b200((struct TimedEvent *)cur);
+                    if (result == 0) {
+                        if ((cur->flags_10 & 0x80) == 0) {
+                            active++;
+                        }
+                    } else {
+                        cur->field_40 = DAT_00668794;
+                        result = DAT_004b9d44[cur->type](cur);
+                        flags = cur->flags_10;
+                        if (result == 0) {
+                            if ((flags & 4) != 0) {
+                                cur->flags_10 = flags | 0x80;
+                            } else {
+                                active++;
+                                cur->flags_10 = flags & 0x7f;
+                            }
+                        } else if ((flags & 7) == 0) {
+                            if (prev == NULL) {
+                                DAT_00668784 = cur->next;
+                                FUN_00468940(cur);
+                                cur = prev;
+                            } else {
+                                prev->next = cur->next;
+                                FUN_00468940(cur);
+                                cur = prev;
+                            }
+                        } else {
+                            cur->flags_10 = flags | 0x80;
+                        }
+                    }
+                }
+                node = next;
+                prev = cur;
+            } while (next != NULL);
+        }
+        if (DAT_0066871c != (unsigned int)next) {
+            UpdateMenu();
+            DAT_0066871c = (unsigned int)next;
+            FUN_00471d40();
+        }
+        if (DAT_00668788 != (unsigned int)next) {
+            DAT_00668788 = (unsigned int)next;
+            FUN_0046b290();
+        }
+        if (DAT_00668790 != (unsigned int)next && (DAT_00668790 = (unsigned int)next, active != (int)next)) {
+            FUN_0046b6b0((struct Ctx6b0 *)DAT_0066879c, 1);
+            FUN_00468d00();
+        }
+        if (DAT_00668798 != next && active == (int)next) {
+            FUN_0046ce20();
+            active = 0;
+            node = DAT_00668784;
+            while (cur = node, prev = (struct ObjectiveEvent *)(unsigned int)active, cur != next) {
+                node = cur->next;
+                active = (int)cur;
+                if ((cur->flags_10 & 6) == 0) {
+                    active = (int)node;
+                    if (prev != next) {
+                        prev->next = node;
+                        active = (int)DAT_00668784;
+                    }
+                    DAT_00668784 = (struct ObjectiveEvent *)(unsigned int)active;
+                    FUN_00468940(cur);
+                    active = (int)prev;
+                }
+            }
+            if (DAT_0066879c != (unsigned int)next) {
+                FUN_0046c580((struct AppendArg10 *)DAT_0066879c);
+                FUN_0046b5d0((struct SortNode *)DAT_0066879c);
+                FUN_0046b520((struct WrapperNode *)DAT_0066879c);
+                done = 1;
+            }
+            DAT_0066879c = (unsigned int)DAT_00668798;
+            if (DAT_00668798 != next) {
+                DAT_00668790 = 1;
+                FUN_0046c540((struct AppendArgC *)DAT_00668798);
+                FUN_00468d00();
+            }
+        }
+        node = DAT_00668784;
+        DAT_00668610 = 0xffffffff;
+        if (done == (int)next) {
+            DAT_00668610 = 0x100;
+            return;
+        }
+        FUN_00471bf0();
+        result = FUN_0046b280();
+        done = (int)next;
+        if (result != 0) {
+            return;
+        }
+    } while (1);
+}
 
 // FUNCTION: LEGOLAND 0x0046b4f0
 struct NerpsListNode *FUN_0046b4f0(unsigned int param_1) {
