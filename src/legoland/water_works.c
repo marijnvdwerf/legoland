@@ -683,7 +683,18 @@ void FUN_004185c0(struct WaterArg *arg, unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x00418630
-void FUN_00418630(void) { STUB(); }
+void FUN_00418630(unsigned short key) {
+    struct WaterNode *node;
+
+    node = (struct WaterNode *)malloc(sizeof(struct WaterNode));
+    if (node != NULL) {
+        ((unsigned int *)node)[0] = 0;
+        ((unsigned int *)node)[1] = 0;
+        ((unsigned int *)node)[2] = 0;
+        node->key = key;
+        FUN_00417b80(&DAT_004cc034, node);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00418670
 void FUN_00418670(struct WaterNode *node) {
@@ -716,7 +727,21 @@ void FUN_004186f0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00418710
-unsigned int FUN_00418710(void *arg1, unsigned int arg2) { STUB(); }
+unsigned int FUN_00418710(unsigned char *coords, int *base) {
+    struct WaterRect rect;
+
+    rect.x0 = coords[0] + base[0];
+    rect.x1 = rect.x0 + 3;
+    rect.y0 = coords[1] + base[3];
+    rect.y1 = rect.y0 + 3;
+    if (FUN_00417e70(FirstBloke, &rect) != 0) {
+        return 1;
+    }
+    if (FUN_00417e70(GardenerList, &rect) != 0) {
+        return 1;
+    }
+    return FUN_00417e70(MechanicList, &rect) != 0;
+}
 
 // FUNCTION: LEGOLAND 0x004187b0
 void FUN_004187b0(void) {
@@ -724,7 +749,7 @@ void FUN_004187b0(void) {
 
     node = (struct WaterNode *)DAT_004cc034;
     while (node != NULL) {
-        if (FUN_00418710((unsigned char *)&node->key, (unsigned int)DAT_004cbfdc + 0x3c) != 0) {
+        if (FUN_00418710((unsigned char *)&node->key, (int *)&DAT_004cbfdc->field_3c) != 0) {
             if (node->field_8 == 0) {
                 node->field_8 = 1;
                 node->field_9 = 0;
