@@ -18,6 +18,7 @@ char *FUN_00489e60(struct ResFile *file, char *dest, int maxlen);
 int FUN_00489f00(const struct ObjClassKey *key);
 int FUN_00489f50(const struct ObjClassKey *key);
 int FUN_00489f90(const struct ObjClassKey *key);
+unsigned short FUN_00489fd0(const struct ObjClassKey *key);
 
 LEGO_EXPORT struct ObjInstance *GetInstanceOfClass(struct ObjClassNode *cls, const unsigned short *uid);
 struct ClassOffset;

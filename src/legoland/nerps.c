@@ -14,6 +14,7 @@
 #include "llidb.h"
 #include "map_object.h"
 #include "nerps.h"
+#include "obj_instance.h"
 #include "objclass.h"
 #include "objectives.h"
 #include "popupinfo.h"
@@ -728,8 +729,43 @@ unsigned int FUN_0046ac00(struct NerpsArg *arg) {
     return 0;
 }
 
+struct ClassListNode {
+    struct ClassListNode *next;
+    unsigned char pad_4[0x8 - 0x4];
+    struct CallbackTable *iface;
+};
+
 // FUNCTION: LEGOLAND 0x0046ac50
-void FUN_0046ac50(void) { STUB(); }
+unsigned int FUN_0046ac50(struct NerpsArg *arg) {
+    struct ClassListNode *node;
+    struct RenderObj *robj;
+    int count;
+    unsigned int value;
+    unsigned int x;
+    unsigned int y;
+
+    count = 0;
+    node = (struct ClassListNode *)((struct TileGroupHolder *)arg->field_4)->group->list;
+    while (1) {
+        if (node == NULL) {
+            FUN_00469220(arg, arg->field_4, arg->field_1c - count);
+            return 0;
+        }
+        if (_stricmp(*(char **)node->iface->context, *(char **)arg->field_4) == 0 &&
+            (robj = (struct RenderObj *)GetFirstObjectMatching((struct RenderObjectVtable *)node->iface->context)) != NULL) {
+            x = robj->field_4;
+            y = robj->field_5;
+            value = FUN_00489fd0((const struct ObjClassKey *)&x) & 0xffff;
+            if ((int)value >= (int)arg->field_1c) {
+                return 1;
+            }
+            if ((int)value > count) {
+                count = value;
+            }
+        }
+        node = node->next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046ad00
 unsigned int FUN_0046ad00(struct NerpsArg *arg) {
