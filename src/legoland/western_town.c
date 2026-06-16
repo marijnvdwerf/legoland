@@ -768,7 +768,163 @@ void FUN_00438150(struct MapObject *param_1, unsigned int param_2, unsigned int 
 }
 
 // FUNCTION: LEGOLAND 0x00438430
-void FUN_00438430(void) { STUB(); }
+void FUN_00438430(struct MapObject *param_1) {
+    struct Building *ride = param_1->building;
+    struct RideListElem *node = ride->list;
+    struct RideListElem *next;
+    struct JailCell *cell;
+    struct JailCell *jc;
+    struct Bloke *bloke;
+    unsigned char *pos;
+    int x;
+    int y;
+    char move;
+    unsigned int r;
+    unsigned char field_6;
+    int field_8;
+    unsigned int field_c;
+    int field_10;
+    unsigned int field_14;
+    int field_18;
+
+    while (1) {
+        jc = DAT_0062fd3c;
+        if (node == NULL) {
+            for (; jc != NULL; jc = jc->next) {
+                field_14 = jc->field_14;
+                field_6 = jc->field_6;
+                field_8 = jc->field_8;
+                field_c = jc->field_c;
+                field_10 = jc->field_10;
+                field_18 = jc->field_18;
+                if (field_14 != 0) {
+                    field_6 = field_6 - 1;
+                    if (field_6 == 0) {
+                        field_18 = 1;
+                        field_14 = 0;
+                    }
+                }
+                if (field_c != 0) {
+                    field_6 = field_6 + 1;
+                    if (field_6 == 9) {
+                        field_10 = 1;
+                        field_c = 0;
+                    }
+                }
+                jc->field_6 = field_6;
+                jc->field_8 = jc->field_8;
+                jc->field_c = field_c;
+                jc->field_10 = field_10;
+                jc->field_14 = field_14;
+                jc->field_18 = field_18;
+            }
+            return;
+        }
+        next = node->next;
+        bloke = node->bloke;
+        pos = (unsigned char *)&node->id;
+        cell = FUN_00437f90((unsigned short *)pos);
+        if (cell == NULL) {
+            break;
+        }
+        field_6 = cell->field_6;
+        field_8 = cell->field_8;
+        field_c = cell->field_c;
+        field_10 = cell->field_10;
+        field_14 = cell->field_14;
+        field_18 = cell->field_18;
+        x = ride->x + pos[0];
+        y = pos[1] + ride->y;
+        if (bloke->field_e == 0) {
+            switch (bloke->param_action) {
+            case 0:
+                *(unsigned char *)((char *)bloke + 0x62) |= 8;
+                if (field_8 == 0) {
+                    field_8 = 1;
+                    bloke->field_24 = (x - 2) * 0x100;
+                    bloke->field_28 = y * 0x100 - 0x100;
+                } else {
+                    bloke->field_72 = 7;
+                    bloke->field_24 = x * 0x100 - 0x80;
+                    bloke->field_28 = y * 0x100;
+                }
+                move = CalcMoveLine(bloke->field_68, bloke->field_6c, bloke->field_24, bloke->field_28, &bloke->field_98);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->param_action++;
+                bloke->field_58 = rand() % 100;
+                break;
+            case 1:
+                field_14 = 1;
+                bloke->param_action++;
+                bloke->field_72 = 3;
+                break;
+            case 2:
+                if (field_18 != 0) {
+                    y = bloke->field_58 - 1;
+                    bloke->field_58 = y;
+                    if (y == 0) {
+                        field_c = 1;
+                        field_18 = 0;
+                        bloke->param_action++;
+                    } else if (y % 10 == 0) {
+                        r = rand() & 0x80000001;
+                        if ((int)r < 0) {
+                            r = ((r - 1) | 0xfffffffe) + 1;
+                        }
+                        bloke->field_72 = (-(r != 0) & 2) + 2;
+                    }
+                }
+                break;
+            case 3:
+                if (field_10 != 0) {
+                    bloke->param_action++;
+                }
+                break;
+            case 4:
+                y = y * 0x100 - 0x80;
+                x = x * 0x100 - 0x100;
+                bloke->field_28 = y;
+                bloke->field_24 = x;
+                move = CalcMoveLine(bloke->field_68, bloke->field_6c, x, y, &bloke->field_98);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->param_action = 8;
+                field_8 = 0;
+                break;
+            case 7:
+                y = bloke->field_58 - 1;
+                bloke->field_58 = y;
+                if (y == 0) {
+                    bloke->param_action++;
+                }
+                break;
+            case 8:
+                bloke->field_24 = x * 0x100 + 0x80;
+                y = y * 0x100 + 0x80;
+                bloke->field_28 = y;
+                move = CalcMoveLine(bloke->field_68, bloke->field_6c, bloke->field_24, y, &bloke->field_98);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->param_action = 10;
+                break;
+            case 10:
+                RemoveBlokeFromRide((struct Ride *)ride, (struct RideNode *)node);
+                bloke->flags &= 0xfff7;
+            }
+        }
+        cell->field_6 = field_6;
+        cell->field_8 = field_8;
+        cell->field_c = field_c;
+        cell->field_10 = field_10;
+        cell->field_14 = field_14;
+        cell->field_18 = field_18;
+        node = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00438780
 LEGO_EXPORT unsigned int SaveJailCells(void) {
