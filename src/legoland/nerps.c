@@ -951,23 +951,23 @@ unsigned int FUN_0046af60(struct NerpsArg *arg) {
 unsigned int FUN_0046afe0(struct NerpsArg *arg) {
     struct RenderObj *robj;
     int count;
-    unsigned char denom;
-    unsigned int pct;
+    int denom;
+    int pct;
 
     count = 0;
     for (robj = (struct RenderObj *)GetFirstRenderObject(); robj != NULL;
          robj = (struct RenderObj *)GetNextRenderObject((struct RenderObject *)robj)) {
         if (robj->field_11 != 0) {
             denom = robj->field_0->group->field_2c;
-            if (denom == 0) {
-                pct = 100;
+            if (denom != 0) {
+                pct = robj->field_11 * 100 / denom;
             } else {
-                pct = ((unsigned int)robj->field_11 * 100) / denom;
+                pct = 100;
             }
             if (arg->field_14 == 0x19 && (robj->field_c & 4) != 0) {
                 pct = 100;
             }
-            if ((int)pct < (int)arg->field_14) {
+            if (pct < (int)arg->field_14) {
                 count++;
             }
         }
