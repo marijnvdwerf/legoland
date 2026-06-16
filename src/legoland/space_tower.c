@@ -8,6 +8,7 @@
 #include "llidb.h"
 #include "map_object.h"
 #include "obj_instance.h"
+#include "print_sprite.h"
 #include "render3d.h"
 #include "objclass.h"
 #include "sound_music.h"
@@ -375,10 +376,49 @@ int FUN_0043ad00(unsigned char *param_1, int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0043ad90
-void FUN_0043ad90(void) { STUB(); }
+void FUN_0043ad90(struct RideObject *param_1, int param_2, unsigned int param_3) {
+    __int64 coords;
+    int off_x;
+    int off_y;
+
+    coords = GetScreenCoordsForObject((unsigned char *)param_1, DAT_0062fd74);
+    if (DAT_0062fd64[param_2] != NULL) {
+        off_x = DAT_0062fd88[param_2].x;
+        off_y = DAT_0062fd88[param_2].y - param_1->seats[param_2].pos;
+        AdjustOffsetForViewMode((struct AdjustStruct *)&off_x);
+        PrintSprite(DAT_0062fd64[param_2], off_x + (int)coords, off_y + (int)(coords >> 0x20), param_3, 0);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0043ae20
-void FUN_0043ae20(void) { STUB(); }
+void FUN_0043ae20(struct RideObject *param_1, int param_2, unsigned int param_3) {
+    __int64 coords;
+    int off_x;
+    int off_y;
+    int sprite_id;
+
+    coords = GetScreenCoordsForObject((unsigned char *)param_1, DAT_0062fd74);
+    off_x = DAT_0062fd88[param_2].x;
+    off_y = DAT_0062fd88[param_2].y - param_1->seats[param_2].pos;
+    AdjustOffsetForViewMode((struct AdjustStruct *)&off_x);
+    switch (param_2) {
+    case 0:
+        sprite_id = 6;
+        break;
+    case 1:
+        sprite_id = 4;
+        break;
+    case 2:
+        sprite_id = 0;
+        break;
+    case 3:
+        sprite_id = 2;
+        break;
+    default:
+        sprite_id = off_y;
+    }
+    PrintSprite(GetSpriteForLayer((struct LayerContainer *)DAT_0062fd60, sprite_id), off_x + (int)coords, (int)(coords >> 0x20) + off_y, param_3, 0);
+}
 
 // FUNCTION: LEGOLAND 0x0043aee0
 void FUN_0043aee0(void) { STUB(); }
@@ -425,8 +465,8 @@ void *FUN_0043b4e0(int param_1, unsigned short param_2) {
 void FUN_0043b570(void) {
     KillSprite(DAT_0062fd80);
     KillSprite(DAT_0062fd7c);
-    KillSprite(DAT_0062fd68);
-    KillSprite(DAT_0062fd6c);
+    KillSprite(DAT_0062fd64[1]);
+    KillSprite(DAT_0062fd64[2]);
     FUN_0043ac20();
     Kill_FXList(SPACE_TOWER_SFX, 1);
     ((struct RideObject *)DAT_0062fd74)->var_cc = 0;

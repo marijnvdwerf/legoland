@@ -81,6 +81,11 @@ struct SpaceTowerLayout {
     /* 0x04 */ void *field_4;
 };
 
+struct LayerOffset {
+    /* 0x00 */ int x;
+    /* 0x04 */ int y;
+};
+
 struct MapElement {
     /* 0x00 */ unsigned int field_0;
     /* 0x04 */ unsigned char field_4;
@@ -1332,16 +1337,16 @@ extern unsigned int DAT_0062fd50;
 extern unsigned short DAT_0062fd54;
 // 0x0062fd60
 extern void *DAT_0062fd60;
-// 0x0062fd68
-extern struct Sprite *DAT_0062fd68;
-// 0x0062fd6c
-extern struct Sprite *DAT_0062fd6c;
+// 0x0062fd64
+extern struct Sprite *DAT_0062fd64[4];
 // 0x0062fd74
 extern void *DAT_0062fd74;
 // 0x0062fd7c
 extern struct Sprite *DAT_0062fd7c;
 // 0x0062fd80
 extern struct Sprite *DAT_0062fd80;
+// 0x0062fd88
+extern struct LayerOffset DAT_0062fd88[4];
 // 0x0062fda8
 extern struct RideObject *DAT_0062fda8;
 // 0x0062fdb0
