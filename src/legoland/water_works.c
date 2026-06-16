@@ -197,7 +197,15 @@ unsigned int FUN_00417c00(struct WaterArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00417c20
-void FUN_00417c20(void) { STUB(); }
+void FUN_00417c20(struct EditObject *editObj, int *coords) {
+    struct SampleParams params;
+
+    AddBasicObject(editObj, coords);
+    params.field_8 = coords[0];
+    params.field_0 = 2;
+    params.field_c = coords[1];
+    PlayInstanceOfSample(*(void **)(WATERWORKS_SFX + 0x14), 1, 1, &params);
+}
 
 // FUNCTION: LEGOLAND 0x00417c70
 void FUN_00417c70(unsigned int a, unsigned int b, unsigned int c) {
