@@ -537,10 +537,29 @@ void FUN_0043b420(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043b460
-void FUN_0043b460(void) { STUB(); }
+void FUN_0043b460(struct EditObject *param_1, unsigned int param_2, struct Cursor *param_3) {
+    struct RideObject *node;
+
+    node = FUN_0043ac40((unsigned short *)&param_2);
+    if (node != NULL) {
+        FUN_0043abc0(node);
+    }
+    StandardRemoveObject(param_1, param_2, param_3);
+    RemoveAllBlokesFromRide(*(struct Ride **)((char *)param_1 + 0xc), param_2);
+    FUN_0043aa50((unsigned char *)&param_2);
+}
 
 // FUNCTION: LEGOLAND 0x0043b4b0
-void FUN_0043b4b0(void) { STUB(); }
+void FUN_0043b4b0(struct EditObject *param_1, unsigned char *param_2) {
+    unsigned char *src = param_2;
+    unsigned char b0 = param_2[0];
+    unsigned char b4 = param_2[4];
+
+    *(unsigned char *)&param_2 = b0;
+    *((unsigned char *)&param_2 + 1) = b4;
+    AddBasicObject(param_1, (int *)src);
+    FUN_0043ab70((unsigned short *)&param_2);
+}
 
 // FUNCTION: LEGOLAND 0x0043b4e0
 void *FUN_0043b4e0(int param_1, unsigned short param_2) {
