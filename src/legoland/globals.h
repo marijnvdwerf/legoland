@@ -1344,7 +1344,7 @@ extern struct JunglePath *DAT_0062fd34;
 // 0x0062fd3c
 extern struct JailCell *DAT_0062fd3c;
 // 0x0062fd40
-extern int DAT_0062fd40;
+extern void *DAT_0062fd40;
 // 0x0062fd48
 extern unsigned int DAT_0062fd48;
 // 0x0062fd4c

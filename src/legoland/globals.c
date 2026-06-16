@@ -1677,7 +1677,7 @@ struct JunglePath *DAT_0062fd34;
 struct JailCell *DAT_0062fd3c;
 
 // GLOBAL: LEGOLAND 0x0062fd40
-int DAT_0062fd40;
+void *DAT_0062fd40;
 
 // GLOBAL: LEGOLAND 0x0062fd48
 unsigned int DAT_0062fd48;

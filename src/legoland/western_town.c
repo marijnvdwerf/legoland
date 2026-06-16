@@ -8,10 +8,13 @@
 #include "map_object.h"
 #include "money.h"
 #include "obj_instance.h"
+#include "render3d.h"
 
 struct Building {
     unsigned char pad_0[0x1c];
     unsigned int flags;
+    unsigned char pad_20[0x64 - 0x20];
+    void *layer;
 };
 
 struct MapObject {
@@ -172,7 +175,18 @@ void FUN_00438020(struct MapObject *editObj, unsigned int coords, struct Cursor 
 }
 
 // FUNCTION: LEGOLAND 0x00438070
-void FUN_00438070(void) { STUB(); }
+void FUN_00438070(struct MapObject *obj) {
+    struct Building *building = obj->building;
+    DAT_0081cb10 = building;
+    building->flags |= 0x420;
+    DAT_0062fd40 = DAT_0081cb10->layer;
+    DAT_0081cb10->flags |= 0x2000;
+    // STRING: LEGOLAND 0x004b74d0
+    DAT_0081cb0c = LoadSprite("JailCellMask.LLS", 1);
+    HideLayer(DAT_0062fd40, 1);
+    StopLayerPlaying((unsigned int)DAT_0062fd40, 1);
+    LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_0062fd40, 1), 9);
+}
 
 // FUNCTION: LEGOLAND 0x004380f0
 void FUN_004380f0(void) {
