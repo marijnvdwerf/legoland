@@ -1676,6 +1676,9 @@ struct JunglePath *DAT_0062fd34;
 // GLOBAL: LEGOLAND 0x0062fd3c
 struct JailCell *DAT_0062fd3c;
 
+// GLOBAL: LEGOLAND 0x0062fd40
+int DAT_0062fd40;
+
 // GLOBAL: LEGOLAND 0x0062fd48
 unsigned int DAT_0062fd48;
 
@@ -4272,6 +4275,9 @@ struct Sprite *DAT_0081cb08;
 
 // GLOBAL: LEGOLAND 0x0081cb0c
 struct Sprite *DAT_0081cb0c;
+
+// GLOBAL: LEGOLAND 0x0081cb10
+struct Building *DAT_0081cb10;
 
 // GLOBAL: LEGOLAND 0x0081cb14
 struct Building *DAT_0081cb14;

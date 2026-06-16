@@ -1343,6 +1343,8 @@ extern struct JunglePath *DAT_0062fd30;
 extern struct JunglePath *DAT_0062fd34;
 // 0x0062fd3c
 extern struct JailCell *DAT_0062fd3c;
+// 0x0062fd40
+extern int DAT_0062fd40;
 // 0x0062fd48
 extern unsigned int DAT_0062fd48;
 // 0x0062fd4c
@@ -3069,6 +3071,8 @@ extern struct Sprite *DAT_0081cb04;
 extern struct Sprite *DAT_0081cb08;
 // 0x0081cb0c
 extern struct Sprite *DAT_0081cb0c;
+// 0x0081cb10
+extern struct Building *DAT_0081cb10;
 // 0x0081cb14
 extern struct Building *DAT_0081cb14;
 // 0x0081cb18

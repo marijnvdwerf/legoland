@@ -119,7 +119,12 @@ void FUN_004380f0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00438110
-void FUN_00438110(void) { STUB(); }
+void FUN_00438110(void) {
+    EditMode = 1;
+    DAT_008119b8 = DAT_0081cb10;
+    DefaultCursor(&EditCursor);
+    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+}
 
 // FUNCTION: LEGOLAND 0x00438150
 void FUN_00438150(void) { STUB(); }
@@ -189,7 +194,12 @@ void FUN_004388a0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004388c0
-void FUN_004388c0(void) { STUB(); }
+void FUN_004388c0(void) {
+    EditMode = 1;
+    DAT_008119b8 = DAT_0081cb2c;
+    DefaultCursor(&EditCursor);
+    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+}
 
 // FUNCTION: LEGOLAND 0x00438900
 void FUN_00438900(void) { STUB(); }
