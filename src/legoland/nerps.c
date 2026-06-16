@@ -195,7 +195,9 @@ struct TileGroup {
     unsigned char pad_0[0x4];
     struct TileNode *list;
     int count;
-    unsigned char pad_c[0x2c - 0xc];
+    int field_c;
+    int field_10;
+    unsigned char pad_14[0x2c - 0x14];
     unsigned char field_2c;
 };
 
@@ -417,7 +419,29 @@ unsigned int FUN_0046a5b0(struct NerpsArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0046a690
-void FUN_0046a690(void) { STUB(); }
+unsigned int FUN_0046a690(struct NerpsArg *arg) {
+    struct TileGroup *group;
+    struct TileNode *node;
+    int x;
+    int y;
+
+    group = ((struct TileGroupHolder *)arg->field_4)->group;
+    node = group->list;
+    if (node != NULL) {
+        do {
+            x = node->x + group->field_c;
+            y = node->y + group->field_10;
+            if (x < 0 || x >= (int)(unsigned int)lpConfig->width || y < 0 ||
+                y >= (int)(unsigned int)lpConfig->height ||
+                (struct MapElement *)((char *)GameMap[y] + x * 0x14) == NULL) {
+                FUN_00468dc0(arg, arg->field_4);
+                return 0;
+            }
+            node = node->next;
+        } while (node != NULL);
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0046a730
 unsigned int FUN_0046a730(struct NerpsArg *arg) {
