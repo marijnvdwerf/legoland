@@ -465,7 +465,25 @@ void FUN_004181a0(struct WaterArg *arg, int a, int b, unsigned short *key) {
 }
 
 // FUNCTION: LEGOLAND 0x004181e0
-void FUN_004181e0(void) { STUB(); }
+int FUN_004181e0(struct EditObject *editObj, unsigned char *coords) {
+    unsigned short key;
+    struct WaterNode *node;
+    int rnd;
+    int result;
+
+    *(unsigned char *)&key = coords[0];
+    *((unsigned char *)&key + 1) = coords[4];
+    AddBasicObject(editObj, (int *)coords);
+    FUN_00417cb0(key);
+    node = FUN_00417d10(&key);
+    result = 0;
+    if (node != NULL) {
+        rnd = rand();
+        node->field_a = (char)(rnd % *(int *)((char *)DAT_004cc018 + 4));
+        result = rnd / *(int *)((char *)DAT_004cc018 + 4);
+    }
+    return result;
+}
 
 // FUNCTION: LEGOLAND 0x00418230
 void FUN_00418230(void) { STUB(); }
