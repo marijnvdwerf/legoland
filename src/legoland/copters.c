@@ -9,6 +9,7 @@
 #include "man3d.h"
 #include "map_object.h"
 #include "objclass.h"
+#include "render3d.h"
 #include "ride_queue.h"
 #include "sound_music.h"
 #include "sound_sfx.h"
@@ -206,7 +207,83 @@ void FUN_00403d90(struct CopterEditObject *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00403e90
-void FUN_00403e90(struct CopterNode *node) { STUB(); }
+void FUN_00403e90(struct CopterNode *node) {
+    unsigned int handle;
+    struct LLS *lls;
+    char frame;
+
+    node->layer[1].field_8 = 10;
+    node->layer[1].field_c = 3;
+    node->layer[1].field_10 = 2;
+    node->layer[1].field_14 = 7;
+    node->layer[1].flags = 0;
+    handle = GetSpriteForLayer((struct LayerContainer *)DAT_004c1138, 3);
+    if (handle != 0) {
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)handle);
+        if (lls != NULL) {
+            frame = (char)lls->frame_count;
+            node->layer[1].field_1c = frame;
+            node->layer[1].field_4 = frame - 1;
+        }
+    }
+    node->layer[0].field_8 = 2;
+    node->layer[0].field_c = 1;
+    node->layer[0].field_10 = 0;
+    node->layer[0].field_14 = 6;
+    node->layer[0].flags = 0;
+    handle = GetSpriteForLayer((struct LayerContainer *)DAT_004c1138, 1);
+    if (handle != 0) {
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)handle);
+        if (lls != NULL) {
+            frame = (char)lls->frame_count;
+            node->layer[0].field_1c = frame;
+            node->layer[0].field_4 = frame - 1;
+        }
+    }
+    node->layer[2].field_c = 0xb;
+    node->layer[2].field_8 = 4;
+    node->layer[2].field_10 = 4;
+    node->layer[2].field_14 = 8;
+    node->layer[2].flags = 0;
+    handle = GetSpriteForLayer((struct LayerContainer *)DAT_004c1138, 0xb);
+    if (handle != 0) {
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)handle);
+        if (lls != NULL) {
+            frame = (char)lls->frame_count;
+            node->layer[2].field_1c = frame;
+            node->layer[2].field_4 = frame - 1;
+        }
+    }
+    node->layer[3].field_c = 6;
+    node->layer[3].field_8 = 5;
+    node->layer[3].field_10 = 3;
+    node->layer[3].field_14 = 5;
+    node->layer[3].flags = 0;
+    handle = GetSpriteForLayer((struct LayerContainer *)DAT_004c1138, 6);
+    if (handle != 0) {
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)handle);
+        if (lls != NULL) {
+            frame = (char)lls->frame_count;
+            node->layer[3].field_1c = frame;
+            node->layer[3].field_4 = frame - 1;
+        }
+    }
+    node->layer[4].field_8 = 8;
+    node->layer[4].field_c = 7;
+    node->layer[4].field_10 = 1;
+    node->layer[4].field_14 = 9;
+    node->layer[4].flags = 0;
+    handle = GetSpriteForLayer((struct LayerContainer *)DAT_004c1138, 7);
+    if (handle != 0) {
+        lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)handle);
+        if (lls != NULL) {
+            frame = (char)lls->frame_count;
+            node->layer[4].field_1c = frame;
+            node->layer[4].field_4 = frame - 1;
+        }
+    }
+    FUN_004049a0(node, 1);
+}
 
 // FUNCTION: LEGOLAND 0x00404040
 void FUN_00404040(void) {
@@ -284,7 +361,7 @@ unsigned int FUN_004048a0(unsigned int param) {
 void FUN_004048b0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004049a0
-void FUN_004049a0(void) { STUB(); }
+void FUN_004049a0(struct CopterNode *node, int param) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00404a90
 void FUN_00404a90(struct CopterNode *node) { STUB(); }
