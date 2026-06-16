@@ -454,6 +454,10 @@ struct RenderObj {
     struct TileGroupHolder *field_0;
     unsigned char field_4;
     unsigned char field_5;
+    unsigned char pad_6[0xc - 0x6];
+    unsigned char field_c;
+    unsigned char pad_d[0x11 - 0xd];
+    unsigned char field_11;
 };
 
 // FUNCTION: LEGOLAND 0x0046a750
@@ -911,10 +915,69 @@ unsigned int FUN_0046af39(int target, int current, struct NerpsArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0046af60
-void FUN_0046af60(void) { STUB(); }
+unsigned int FUN_0046af60(struct NerpsArg *arg) {
+    struct Bloke *bloke;
+    int count;
+    int target;
+
+    count = 0;
+    if (FirstBloke != NULL) {
+        bloke = FirstBloke;
+        do {
+            if (arg->field_18 != 0) {
+                if ((int)(unsigned int)bloke->field_7c >= (int)arg->field_14) {
+                    count++;
+                }
+            } else if ((int)(unsigned int)bloke->field_7c <= (int)arg->field_14) {
+                count++;
+            }
+            bloke = bloke->next;
+        } while (bloke != NULL);
+    }
+    target = arg->field_1c;
+    if (arg->field_18 != 0) {
+        if (count > target) {
+            FUN_00469140(arg, count - target, arg->field_14);
+            return 0;
+        }
+    } else if (count < target) {
+        FUN_00469190(arg, target - count, arg->field_14);
+        return 0;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0046afe0
-unsigned int FUN_0046afe0(struct NerpsArg *arg) { STUB(); }
+unsigned int FUN_0046afe0(struct NerpsArg *arg) {
+    struct RenderObj *robj;
+    int count;
+    unsigned char denom;
+    unsigned int pct;
+
+    count = 0;
+    for (robj = (struct RenderObj *)GetFirstRenderObject(); robj != NULL;
+         robj = (struct RenderObj *)GetNextRenderObject((struct RenderObject *)robj)) {
+        if (robj->field_11 != 0) {
+            denom = robj->field_0->group->field_2c;
+            if (denom == 0) {
+                pct = 100;
+            } else {
+                pct = ((unsigned int)robj->field_11 * 100) / denom;
+            }
+            if (arg->field_14 == 0x19 && (robj->field_c & 4) != 0) {
+                pct = 100;
+            }
+            if ((int)pct < (int)arg->field_14) {
+                count++;
+            }
+        }
+    }
+    if (count <= (int)arg->field_1c) {
+        return 1;
+    }
+    FUN_004691e0(arg, count - arg->field_1c, arg->field_14);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046b080
 unsigned int FUN_0046b080(struct NerpsArg *arg) {

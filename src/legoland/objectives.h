@@ -65,6 +65,8 @@ void FUN_00469000(struct NerpsArg *object, int a);
 void FUN_00469040(struct NerpsArg *object, unsigned int a);
 void FUN_00469080(struct NerpsArg *object, int a);
 void FUN_004690c0(struct NerpsArg *arg, int count);
+void FUN_00469140(struct NerpsArg *object, unsigned int a, unsigned int b);
+void FUN_00469190(struct NerpsArg *object, unsigned int a, unsigned int b);
 void FUN_00469100(struct NerpsArg *object, int a, unsigned int b);
 void FUN_004691e0(struct NerpsArg *arg, int param_2, unsigned int param_3);
 void FUN_00469220(struct NerpsArg *object, unsigned int a, unsigned int b);
