@@ -12,6 +12,7 @@
 #include "map_object.h"
 #include "math.h"
 #include "obj_instance.h"
+#include "objclass.h"
 #include "print_sprite.h"
 #include "render3d.h"
 #include "sound_music.h"
@@ -798,6 +799,9 @@ void FUN_004187f0(void) {
     }
 }
 
+// FUNCTION: LEGOLAND 0x004188c0
+void FUN_004188c0(void) {}
+
 // FUNCTION: LEGOLAND 0x004188d0
 void FUN_004188d0(struct EditObject *editObj, unsigned char *coords) {
     unsigned short key;
@@ -970,4 +974,58 @@ LEGO_EXPORT int Load_ElephantF(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00418c80
-void FUN_00418c80(void) { STUB(); }
+void FUN_00418c80(struct ClassNode *name, struct CallbackTable *ci) {
+    // STRING: LEGOLAND 0x004b50f4
+    if (_stricmp("WATER WORKS ENTRANCE", name->name) == 0) {
+        ci->cb_a4 = FUN_00417c00;
+        ci->cb_ac = thunk_FUN_00417ac0;
+        ci->cb_98 = FUN_00417c20;
+        ci->cb_9c = FUN_00417c70;
+        return;
+    }
+    // STRING: LEGOLAND 0x004b50dc
+    if (_stricmp("WATER WORKS WATER BLOCK", name->name) == 0) {
+        ci->cb_a4 = FUN_00417d30;
+        ci->cb_98 = FUN_004181e0;
+        ci->cb_9c = FUN_00418230;
+        ci->cb_a8 = FUN_00417f90;
+        ci->cb_ac = FUN_00417e40;
+        ci->cb_a0 = FUN_00418110;
+        ci->cb_b0 = FUN_004181a0;
+        ci->cb_90 = FUN_00417dd0;
+        ci->cb_bc = Save_WaterBlock;
+        ci->cb_b8 = Load_WaterBlock;
+        return;
+    }
+    // STRING: LEGOLAND 0x004b50c8
+    if (_stricmp("WATER WORKS SHOWER", name->name) == 0) {
+        ci->cb_a4 = FUN_004182e0;
+        ci->cb_98 = FUN_004184e0;
+        ci->cb_9c = FUN_00418510;
+        ci->cb_ac = FUN_00418330;
+        ci->cb_a0 = FUN_00418540;
+        ci->cb_b0 = FUN_00418450;
+        ci->cb_a8 = FUN_004183a0;
+        ci->cb_90 = FUN_004185c0;
+        return;
+    }
+    // STRING: LEGOLAND 0x004b50a8
+    if (_stricmp("WATER WORKS ELEPHANT FOUNTAIN", name->name) == 0) {
+        ci->cb_a4 = FUN_004186b0;
+        ci->cb_98 = FUN_004188d0;
+        ci->cb_9c = FUN_00418910;
+        ci->cb_ac = FUN_004186f0;
+        ci->cb_b0 = FUN_004188c0;
+        ci->cb_a8 = FUN_004187f0;
+        ci->cb_90 = FUN_00418950;
+        ci->cb_bc = Save_ElephantF;
+        ci->cb_b8 = Load_ElephantF;
+        return;
+    }
+    // STRING: LEGOLAND 0x004b5088
+    if (_stricmp("WATER WORKS CROCODILE FOUNTAIN", name->name) == 0) {
+        ci->cb_90 = FUN_00418a30;
+        ci->cb_98 = FUN_004189c0;
+        ci->cb_9c = FUN_00418a10;
+    }
+}
