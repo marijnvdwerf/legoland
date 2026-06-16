@@ -113,7 +113,13 @@ void FUN_00437f10(unsigned short *param) {
 }
 
 // FUNCTION: LEGOLAND 0x00437f60
-void FUN_00437f60(void) { STUB(); }
+void FUN_00437f60(struct EditObject *editObj, int *coords) {
+    unsigned char key[2];
+    key[0] = (unsigned char)coords[0];
+    key[1] = (unsigned char)coords[1];
+    AddBasicObject(editObj, coords);
+    FUN_00437f10((unsigned short *)key);
+}
 
 // FUNCTION: LEGOLAND 0x00437f90
 void FUN_00437f90(void) { STUB(); }
