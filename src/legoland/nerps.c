@@ -118,8 +118,29 @@ unsigned int FUN_0046a120(struct NerpsArg *arg) {
     return 1;
 }
 
+// GLOBAL: LEGOLAND 0x004b7e38
+void (*PTR_FUN_004b7e38[25])(unsigned int, unsigned int) = {
+    (void (*)(unsigned int, unsigned int))FUN_004443b0, (void (*)(unsigned int, unsigned int))FUN_004443e0,
+    (void (*)(unsigned int, unsigned int))FUN_00444410, FUN_00444440,
+    FUN_00444470, FUN_004444b0,
+    FUN_004444f0, FUN_00444530,
+    FUN_00444570, FUN_004445b0,
+    FUN_004445f0, FUN_00444630,
+    FUN_00444670, FUN_004446b0,
+    FUN_004446f0, FUN_00444730,
+    FUN_00444770, FUN_004447b0,
+    FUN_004447f0, FUN_00444830,
+    FUN_00444870, FUN_004448b0,
+    FUN_004448f0, FUN_00444930,
+    FUN_00444970,
+};
+
 // FUNCTION: LEGOLAND 0x0046a140
-void FUN_0046a140(int index, unsigned int param_2, unsigned int param_3) { STUB(); }
+void FUN_0046a140(int index, unsigned int param_2, unsigned int param_3) {
+    if (index >= 0 && index < 0x19) {
+        PTR_FUN_004b7e38[index](param_3, param_2);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046a170
 unsigned int FUN_0046a170(struct NerpsArg *arg) {
