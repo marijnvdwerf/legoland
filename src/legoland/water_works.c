@@ -799,10 +799,27 @@ void FUN_004187f0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004188d0
-void FUN_004188d0(void) { STUB(); }
+void FUN_004188d0(struct EditObject *editObj, unsigned char *coords) {
+    unsigned short key;
+
+    *(unsigned char *)&key = coords[0];
+    *((unsigned char *)&key + 1) = coords[4];
+    AddBasicObject(editObj, (int *)coords);
+    FUN_00418630(key);
+    FUN_00417af0((unsigned char *)&key, 2, 1);
+}
 
 // FUNCTION: LEGOLAND 0x00418910
-void FUN_00418910(void) { STUB(); }
+void FUN_00418910(unsigned int a, unsigned int b, unsigned int c) {
+    struct WaterNode *node;
+
+    StandardRemoveObject(a, b, c);
+    node = FUN_00418690((unsigned short *)&b);
+    if (node != NULL) {
+        FUN_00418670(node);
+    }
+    FUN_00417b40((unsigned char *)&b);
+}
 
 // FUNCTION: LEGOLAND 0x00418950
 void FUN_00418950(void) { STUB(); }
