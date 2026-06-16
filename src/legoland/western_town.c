@@ -7,6 +7,7 @@
 #include "llidb.h"
 #include "map_object.h"
 #include "money.h"
+#include "obj_instance.h"
 
 struct Building {
     unsigned char pad_0[0x1c];
@@ -161,7 +162,14 @@ void FUN_00438000(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00438020
-void FUN_00438020(void) { STUB(); }
+void FUN_00438020(struct MapObject *editObj, unsigned int coords, struct Cursor *cursor) {
+    struct JailCell *cell = FUN_00437f90((unsigned short *)&coords);
+    if (cell != NULL) {
+        FUN_00437fc0(cell);
+    }
+    StandardRemoveObject((struct EditObject *)editObj, coords, cursor);
+    RemoveAllBlokesFromRide((struct Ride *)editObj->building, coords);
+}
 
 // FUNCTION: LEGOLAND 0x00438070
 void FUN_00438070(void) { STUB(); }
