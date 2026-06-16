@@ -2,6 +2,7 @@
 #include <string.h>
 #include "legoland.h"
 
+#include "bloke.h"
 #include "gamemap.h"
 #include "globals.h"
 #include "llidb.h"
@@ -41,6 +42,15 @@ struct RideObject {
     /* 0xb0 */ unsigned int var_b0;
     /* 0xb4 */ unsigned char pad_b4[24];
     /* 0xcc */ unsigned int var_cc;
+};
+
+struct SpaceTowerRideNode {
+    /* 0x00 */ struct SpaceTowerRideNode *next;
+    /* 0x04 */ unsigned char pad_4[4];
+    /* 0x08 */ struct Bloke *bloke;
+    /* 0x0c */ unsigned short id;
+    /* 0x0e */ unsigned char coord[2];
+    /* 0x10 */ unsigned char pad_10[2];
 };
 
 struct ListNode {
@@ -300,13 +310,69 @@ struct RideObject *FUN_0043ac40(unsigned short *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0043ac70
-void FUN_0043ac70(void) { STUB(); }
+void FUN_0043ac70(struct SpaceTowerRideNode *param_1, unsigned short *param_2) {
+    struct RideObject *ride;
+    unsigned int slot;
+
+    ride = FUN_0043ac40(param_2);
+    if (ride != NULL) {
+        slot = FUN_0043acb0(param_1, ride);
+        param_1->bloke->field_50 = slot;
+        param_1->bloke->field_4c = DAT_004b7758[slot].field_0;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0043acb0
-void FUN_0043acb0(void) { STUB(); }
+unsigned int FUN_0043acb0(struct SpaceTowerRideNode *param_1, struct RideObject *param_2) {
+    char slot_used;
+    unsigned int slot;
+
+    slot = rand();
+    slot = slot & 0x80000007;
+    if ((int)slot < 0) {
+        slot = (slot - 1 | 0xfffffff8) + 1;
+    }
+    slot_used = param_2->flags_a4[slot];
+    while (slot_used != '\0') {
+        slot = slot + 1;
+        if ((int)slot >= 8) {
+            slot = 0;
+        }
+        slot_used = param_2->flags_a4[slot];
+    }
+    param_2->flags_a4[slot] = 1;
+    param_1->bloke->field_36 = (char)slot;
+    return slot;
+}
 
 // FUNCTION: LEGOLAND 0x0043ad00
-void FUN_0043ad00(void) { STUB(); }
+int FUN_0043ad00(unsigned char *param_1, int param_2) {
+    short y_scroll;
+    unsigned int x;
+    unsigned int y;
+    int dim;
+    int width;
+    int height;
+
+    y = param_1[1];
+    x = param_1[0];
+    switch (param_2) {
+    case 0:
+    case 3:
+        x = x + 2;
+        y = y + 2;
+        break;
+    case 1:
+    case 2:
+        x = x - 2;
+        y = y - 2;
+    }
+    GetTileDimensions(&width, &height);
+    dim = (y * 0x100 + x * 0x100) * height;
+    Get_XScroll();
+    y_scroll = (short)Get_YScroll();
+    return ((unsigned int)lpConfig->field_22 - (int)y_scroll) + (dim >> 9);
+}
 
 // FUNCTION: LEGOLAND 0x0043ad90
 void FUN_0043ad90(void) { STUB(); }
