@@ -1095,7 +1095,29 @@ unsigned int FUN_0046b280(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046b290
-void FUN_0046b290(void) { STUB(); }
+void FUN_0046b290(void) {
+    struct ObjectiveEvent *node;
+    struct ObjectiveEvent *prev;
+    struct ObjectiveEvent *cur;
+    struct ObjectiveEvent *newprev;
+
+    prev = NULL;
+    node = DAT_00668784;
+    while (cur = node, newprev = prev, cur != NULL) {
+        node = cur->next;
+        prev = cur;
+        if ((cur->flags_10 & 8) != 0) {
+            prev = node;
+            if (newprev != NULL) {
+                newprev->next = node;
+                prev = DAT_00668784;
+            }
+            DAT_00668784 = prev;
+            FUN_00468940(cur);
+            prev = newprev;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0046b2d0
 void FUN_0046b2d0(void) { STUB(); }
