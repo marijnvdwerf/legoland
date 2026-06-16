@@ -33,6 +33,10 @@ struct NerpsArg {
     unsigned int field_1c;
     unsigned int field_20;
     unsigned int field_24;
+    unsigned int field_28;
+    unsigned int field_2c;
+    int field_30;
+    int field_34;
 };
 
 struct ObjectClass {
@@ -368,7 +372,49 @@ unsigned int FUN_0046a540(struct NerpsArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0046a5b0
-void FUN_0046a5b0(void) { STUB(); }
+unsigned int FUN_0046a5b0(struct NerpsArg *arg) {
+    struct MapElement *tile;
+    int count;
+    int total;
+    unsigned int x;
+    unsigned int y;
+    int xb;
+    struct MapElement **map;
+
+    y = arg->field_2c;
+    count = 0;
+    total = 0;
+    map = GameMap;
+    if ((int)y <= arg->field_34) {
+        do {
+            x = arg->field_28;
+            if ((int)x <= arg->field_30) {
+                xb = x * 0x14;
+                do {
+                    if (xb < 0 || (int)(unsigned int)lpConfig->width <= (int)x || (int)y < 0 ||
+                        (int)(unsigned int)lpConfig->height <= (int)y) {
+                        tile = NULL;
+                    } else {
+                        tile = (struct MapElement *)((char *)map[y] + xb);
+                    }
+                    if ((tile->flags & 0x80) != 0 && tile->field_0 == arg->field_4 &&
+                        tile->field_4 == x && tile->field_5 == y) {
+                        count++;
+                    }
+                    x++;
+                    xb += 0x14;
+                } while ((int)x <= arg->field_30);
+            }
+            y++;
+            total = count;
+        } while ((int)y <= arg->field_34);
+    }
+    if (total < (int)arg->field_1c) {
+        FUN_00468d80(arg, arg->field_4, arg->field_1c - total);
+        return 0;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0046a690
 void FUN_0046a690(void) { STUB(); }
