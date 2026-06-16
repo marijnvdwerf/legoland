@@ -245,17 +245,59 @@ void FUN_0043ab70(unsigned short *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0043abc0
-void FUN_0043abc0(unsigned int arg) { STUB(); }
+void FUN_0043abc0(struct RideObject *arg) {
+    struct RideObject *cur;
+    struct RideObject *next;
+
+    if (DAT_0062fda8 == arg) {
+        DAT_0062fda8 = arg->next;
+        free(arg);
+        return;
+    }
+    next = DAT_0062fda8->next;
+    cur = DAT_0062fda8;
+    while (next != arg) {
+        cur = cur->next;
+        if (cur == NULL) {
+            goto done;
+        }
+        next = cur->next;
+    }
+    if (cur != NULL) {
+        cur->next = arg->next;
+    }
+done:
+    free(arg);
+}
 
 // FUNCTION: LEGOLAND 0x0043ac20
 void FUN_0043ac20(void) {
     while (DAT_0062fda8 != NULL) {
-        FUN_0043abc0((unsigned int)DAT_0062fda8);
+        FUN_0043abc0(DAT_0062fda8);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0043ac40
-void FUN_0043ac40(void) { STUB(); }
+struct RideObject *FUN_0043ac40(unsigned short *param_1) {
+    struct RideObject *node;
+
+    node = DAT_0062fda8;
+    if (node != NULL) {
+        if (node->var_0 == *param_1) {
+            return node;
+        }
+        while (1) {
+            node = node->next;
+            if (node == NULL) {
+                break;
+            }
+            if (node->var_0 == *param_1) {
+                return node;
+            }
+        }
+    }
+    return node;
+}
 
 // FUNCTION: LEGOLAND 0x0043ac70
 void FUN_0043ac70(void) { STUB(); }

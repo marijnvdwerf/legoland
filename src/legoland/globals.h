@@ -72,6 +72,7 @@ struct InfoObjData;
 struct Element;
 struct SortNode;
 struct DSCursorSource;
+struct RideObject;
 
 // Full definitions needed by typed globals defined in globals.c.
 struct MapElement {
@@ -1334,7 +1335,7 @@ extern struct Sprite *DAT_0062fd7c;
 // 0x0062fd80
 extern struct Sprite *DAT_0062fd80;
 // 0x0062fda8
-extern void *DAT_0062fda8;
+extern struct RideObject *DAT_0062fda8;
 // 0x0062fdb0
 extern unsigned int DAT_0062fdb0;
 // 0x0062fdb4
