@@ -12,13 +12,13 @@
 #include "tilemap.h"
 
 struct WaterNode {
-    struct WaterNode *next;
-    unsigned short key;
-    unsigned char pad_6[2];
-    unsigned char field_8;
-    unsigned char field_9;
-    unsigned char field_a;
-    unsigned char pad_b[1];
+    /* 0x00 */ struct WaterNode *next;
+    /* 0x04 */ unsigned short key;
+    /* 0x06 */ unsigned char pad_6[2];
+    /* 0x08 */ unsigned char field_8;
+    /* 0x09 */ unsigned char field_9;
+    /* 0x0a */ unsigned char field_a;
+    /* 0x0b */ unsigned char pad_b[1];
 };
 
 struct FxSource {
@@ -221,7 +221,18 @@ unsigned int FUN_00417c90(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00417cb0
-void FUN_00417cb0(void) { STUB(); }
+void FUN_00417cb0(unsigned short key) {
+    struct WaterNode *node;
+
+    node = (struct WaterNode *)malloc(sizeof(struct WaterNode));
+    if (node != NULL) {
+        ((unsigned int *)node)[0] = 0;
+        ((unsigned int *)node)[1] = 0;
+        ((unsigned int *)node)[2] = 0;
+        node->key = key;
+        FUN_00417b80(&DAT_004cc02c, node);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00417cf0
 void FUN_00417cf0(struct WaterNode *node) {
