@@ -272,7 +272,20 @@ void FUN_00417d30(struct WaterArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00417dd0
-void FUN_00417dd0(void) { STUB(); }
+void FUN_00417dd0(struct WaterArg *arg, unsigned int a, unsigned int b) {
+    struct WaterContext *context;
+
+    context = arg->field_c;
+    *(struct Footprint *)EditCursor.field_1414 = *(struct Footprint *)&context->field_3c;
+    EditCursor.field_1830 = 0;
+    ScreenToMapRef(a, &EditCursor.field_1404, b);
+    ValidateCursor(&EditCursor, (unsigned int)context);
+    if (FUN_00417c90() != 0) {
+        return;
+    }
+    FUN_0045f480(&EditCursor, 0xc);
+    FUN_0045f4d0(&EditCursor);
+}
 
 // FUNCTION: LEGOLAND 0x00417e40
 void FUN_00417e40(void) {
