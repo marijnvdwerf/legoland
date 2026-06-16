@@ -624,7 +624,14 @@ void FUN_00418450(struct WaterRender *render, unsigned int p2, unsigned int p3, 
 }
 
 // FUNCTION: LEGOLAND 0x004184e0
-void FUN_004184e0(void) { STUB(); }
+void FUN_004184e0(struct EditObject *editObj, unsigned char *coords) {
+    unsigned short key;
+
+    *(unsigned char *)&key = coords[0];
+    *((unsigned char *)&key + 1) = coords[4];
+    AddBasicObject(editObj, (int *)coords);
+    FUN_00418260(key);
+}
 
 // FUNCTION: LEGOLAND 0x00418510
 void FUN_00418510(unsigned int a, unsigned int b, unsigned int c) {
