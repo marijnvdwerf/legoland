@@ -271,7 +271,25 @@ void FUN_00437bf0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00437c30
-void FUN_00437c30(void) { STUB(); }
+void FUN_00437c30(struct MapObject *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6) {
+    struct Building *ride = param_1->building;
+    struct RideListElem *elem = ride->list;
+    int count = 0;
+    union { __int64 q; int i[2]; } coords;
+    if (elem != NULL) {
+        do {
+            if (*param_4 == elem->id) {
+                RenderBlokeIn3D(elem->bloke);
+                count++;
+            }
+            elem = elem->next;
+        } while (elem != NULL);
+        if (count != 0) {
+            coords.q = GetScreenCoordsForObject((unsigned char *)param_4, ride);
+            PrintSprite(DAT_0081cb38, coords.i[0], coords.i[1], param_6, NULL);
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00437c90
 void FUN_00437c90(void) { STUB(); }
