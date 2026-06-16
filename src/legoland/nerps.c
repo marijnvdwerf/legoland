@@ -3,6 +3,7 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include "bloke.h"
 #include "bricks.h"
 #include "challenge.h"
 #include "debug_alloc.h"
@@ -46,12 +47,6 @@ struct ObjectClass {
     unsigned char pad_c[0x58 - 0xc];
     unsigned int class_id_58;
     unsigned int class_id_5c;
-};
-
-struct Bloke {
-    struct Bloke *next;
-    unsigned char pad_4[0x7a - 0x4];
-    short field_7a;
 };
 
 struct LoopArg {
@@ -454,8 +449,76 @@ unsigned int FUN_0046a730(struct NerpsArg *arg) {
     return 0;
 }
 
+struct RenderObj {
+    struct TileGroupHolder *field_0;
+    unsigned char field_4;
+    unsigned char field_5;
+};
+
 // FUNCTION: LEGOLAND 0x0046a750
-void FUN_0046a750(void) { STUB(); }
+unsigned int FUN_0046a750(struct NerpsArg *arg) {
+    struct RenderObj *robj;
+    struct TileGroup *group;
+    struct TileNode *node;
+    int total;
+    int blocked;
+    int x;
+    int y;
+
+    total = 0;
+    blocked = 0;
+    if (arg->field_4 != 0) {
+        group = ((struct TileGroupHolder *)arg->field_4)->group;
+        node = group->list;
+        if (node == NULL) {
+            return 1;
+        }
+        do {
+            x = group->field_c + node->x;
+            y = group->field_10 + node->y;
+            if (x < 0 || x >= (int)(unsigned int)lpConfig->width || y < 0 ||
+                y >= (int)(unsigned int)lpConfig->height ||
+                (struct MapElement *)((char *)GameMap[y] + x * 0x14) == NULL) {
+                total++;
+                blocked++;
+            } else if (FUN_00482b60((struct InstancePos *)&x) == 0) {
+                total++;
+            }
+            node = node->next;
+        } while (node != NULL);
+    } else {
+        robj = (struct RenderObj *)GetFirstRenderObject();
+        blocked = 0;
+        if (robj == NULL) {
+            return 1;
+        }
+        do {
+            group = robj->field_0->group;
+            if (FUN_0046a730((struct NerpsArg *)group) != 0) {
+                x = group->field_c + robj->field_4;
+                y = group->field_10 + robj->field_5;
+                if (x < 0 || x >= (int)(unsigned int)lpConfig->width || y < 0 ||
+                    y >= (int)(unsigned int)lpConfig->height ||
+                    (struct MapElement *)((char *)GameMap[y] + x * 0x14) == NULL) {
+                    total++;
+                    blocked++;
+                } else if (FUN_00482b60((struct InstancePos *)&x) == 0) {
+                    total++;
+                }
+            }
+            robj = (struct RenderObj *)GetNextRenderObject((struct RenderObject *)robj);
+        } while (robj != NULL);
+    }
+    if (blocked == 0) {
+        if (total == 0) {
+            return 1;
+        }
+        FUN_00468e00(arg, arg->field_4);
+        return 0;
+    }
+    FUN_00468dc0(arg, arg->field_4);
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0046a900
 unsigned int FUN_0046a900(struct NerpsArg *arg) {
