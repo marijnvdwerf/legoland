@@ -179,8 +179,62 @@ unsigned int FUN_0046a1f0(struct NerpsArg *arg) {
     return 1;
 }
 
+struct TileNode {
+    struct TileNode *next;
+    unsigned char pad_4[0xe - 0x4];
+    unsigned char x;
+    unsigned char y;
+};
+
+struct TileGroup {
+    unsigned char pad_0[0x4];
+    struct TileNode *list;
+    int count;
+    unsigned char pad_c[0x2c - 0xc];
+    unsigned char field_2c;
+};
+
+struct TileGroupHolder {
+    unsigned char pad_0[0xc];
+    struct TileGroup *group;
+};
+
 // FUNCTION: LEGOLAND 0x0046a230
-void FUN_0046a230(void) { STUB(); }
+unsigned int FUN_0046a230(struct NerpsArg *arg) {
+    struct TileGroup *group;
+    struct TileNode *node;
+    struct MapElement *tile;
+    int value;
+    int limit;
+    unsigned char threshold;
+    int x;
+    int y;
+
+    group = ((struct TileGroupHolder *)arg->field_4)->group;
+    node = group->list;
+    value = (unsigned int)group->field_2c * arg->field_14;
+    limit = arg->field_1c;
+    threshold = (char)(value / 100);
+    if (group->count < limit || limit == 0) {
+        limit = group->count;
+    }
+    for (; node != NULL && limit != 0; limit--) {
+        x = node->x;
+        y = node->y;
+        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+            tile = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
+        } else {
+            tile = NULL;
+        }
+        if (tile->field_11 > threshold) {
+            tile->field_11 = threshold;
+            FUN_00463460(tile, &x);
+            DAT_00668610 |= 0x200;
+        }
+        node = node->next;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0046a300
 unsigned int FUN_0046a300(struct NerpsArg *arg) {
