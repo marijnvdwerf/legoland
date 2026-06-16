@@ -98,7 +98,26 @@ void FUN_00403ce0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00403d00
-void FUN_00403d00(void) { STUB(); }
+struct CopterNode *FUN_00403d00(struct CopterSource *src) {
+    struct CopterNode *node;
+
+    if (DAT_004c11b4 != NULL) {
+        node = DAT_004c11b4;
+        if (DAT_004c11b4->field_0 == src->field_0) {
+            return DAT_004c11b4;
+        }
+        while (1) {
+            node = node->next;
+            if (node == NULL) {
+                break;
+            }
+            if (node->field_0 == src->field_0) {
+                return node;
+            }
+        }
+    }
+    return NULL;
+}
 
 // FUNCTION: LEGOLAND 0x00403d30
 int FUN_00403d30(struct CopterItem *item) {
