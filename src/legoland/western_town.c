@@ -5,9 +5,11 @@
 
 #include "bloke.h"
 #include "gamemap.h"
+#include "jungle_cruise.h"
 #include "llidb.h"
 #include "man3d.h"
 #include "map_object.h"
+#include "math.h"
 #include "money.h"
 #include "obj_instance.h"
 #include "print_sprite.h"
@@ -17,11 +19,20 @@ struct RideListElem {
     struct RideListElem *next;
     unsigned char pad_4[0x8 - 0x4];
     struct Bloke *bloke;
-    unsigned short id;
+    union {
+        unsigned short id;
+        struct {
+            unsigned char x;
+            unsigned char y;
+        } pos;
+    };
 };
 
 struct Building {
-    unsigned char pad_0[0x1c];
+    unsigned char pad_0[0xc];
+    int x;
+    int y;
+    unsigned char pad_14[0x1c - 0x14];
     unsigned int flags;
     unsigned char pad_20[0x64 - 0x20];
     void *layer;
@@ -292,7 +303,101 @@ void FUN_00437c30(struct MapObject *param_1, unsigned int param_2, unsigned int 
 }
 
 // FUNCTION: LEGOLAND 0x00437c90
-void FUN_00437c90(void) { STUB(); }
+void FUN_00437c90(struct MapObject *param_1) {
+    struct Building *ride = param_1->building;
+    struct RideListElem *node = ride->list;
+    struct RideListElem *next;
+    struct Bloke *bloke;
+    unsigned char *pos;
+    int x;
+    int y;
+    char move;
+    int v24;
+    int v6c;
+    int v68;
+
+    while (node != NULL) {
+        next = node->next;
+        bloke = node->bloke;
+        pos = (unsigned char *)&node->pos;
+        x = pos[0] + ride->x;
+        y = pos[1] + ride->y;
+        if (bloke->field_e == 0) {
+            switch (bloke->param_action) {
+            case 0:
+                *(unsigned char *)((char *)bloke + 0x62) |= 8;
+                bloke->field_24 = x * 0x100 - 0x100;
+                y = y * 0x100 + 0x80;
+                bloke->field_28 = y;
+                v24 = bloke->field_24;
+                v6c = bloke->field_6c;
+                v68 = bloke->field_68;
+                goto calc;
+            case 1:
+                x = (x - 3) * 0x100;
+                goto calc2;
+            case 2:
+                bloke->field_24 = (x - 3) * 0x100;
+                move = (char)(rand() % 3);
+                if (move != 0) {
+                    bloke->field_28 = (move + y) * 0x100;
+                } else {
+                    bloke->field_28 = y * 0x100 + 0x80;
+                }
+                move = CalcMoveLine(bloke->field_68, bloke->field_6c, bloke->field_24, bloke->field_28, &bloke->field_98);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->field_72 = 8;
+                bloke->param_action++;
+                break;
+            case 3:
+                FUN_00437570((struct JungleScore *)node, (unsigned int)param_1, (unsigned int)&node->pos, 1);
+                break;
+            case 4:
+                bloke->field_24 = (x - 3) * 0x100;
+                y = y * 0x100 + 0x80;
+                bloke->field_28 = y;
+                move = CalcMoveLine(bloke->field_68, bloke->field_6c, bloke->field_24, y, &bloke->field_98);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 5:
+                x = (x - 1) * 0x100;
+            calc2:
+                y = y * 0x100 + 0x80;
+                bloke->field_24 = x;
+                bloke->field_28 = y;
+                v24 = bloke->field_24;
+                v6c = bloke->field_6c;
+                v68 = bloke->field_68;
+            calc:
+                move = CalcMoveLine(v68, v6c, v24, y, &bloke->field_98);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 6:
+                bloke->field_24 = x * 0x100;
+                bloke->field_28 = y * 0x100;
+                move = CalcMoveLine(bloke->field_68, bloke->field_6c, x * 0x100, y * 0x100, &bloke->field_98);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->param_action++;
+                break;
+            case 7:
+                RemoveBlokeFromRide((struct Ride *)ride, (struct RideNode *)node);
+                bloke->flags &= 0xfff7;
+                break;
+            }
+        }
+        node = next;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00437f10
 void FUN_00437f10(unsigned short *param) {
