@@ -13,11 +13,27 @@
 #include "sound_music.h"
 #include "sound_sfx.h"
 
+struct CopterLayer {
+    /* 0x00 */ unsigned int flags;
+    /* 0x04 */ unsigned char field_4;
+    /* 0x05 */ unsigned char pad_5[0x13];
+    /* 0x18 */ struct Sprite *field_18;
+    /* 0x1c */ unsigned char field_1c;
+    /* 0x1d */ unsigned char field_1d;
+    /* 0x1e */ unsigned char pad_1e[2];
+};
+
 struct CopterNode {
-    unsigned short field_0;
-    unsigned char pad_2[2];
-    struct CopterNode *next;
-    unsigned char pad_8[0xd8 - 0x8];
+    /* 0x00 */ unsigned short field_0;
+    /* 0x02 */ unsigned char field_2;
+    /* 0x03 */ unsigned char field_3;
+    /* 0x04 */ struct CopterNode *next;
+    /* 0x08 */ unsigned int field_8;
+    /* 0x0c */ int field_c;
+    /* 0x10 */ unsigned char field_10;
+    /* 0x11 */ unsigned char pad_11[3];
+    /* 0x14 */ int field_14;
+    /* 0x18 */ struct CopterLayer layer[6];
 };
 
 struct CopterSource {
@@ -49,7 +65,30 @@ void FUN_00403c40(struct CopterSource *src) {
 }
 
 // FUNCTION: LEGOLAND 0x00403c80
-void FUN_00403c80(struct CopterNode *node) { STUB(); }
+void FUN_00403c80(struct CopterNode *node) {
+    struct CopterNode *prev;
+    struct CopterNode *cur;
+
+    if (DAT_004c11b4 == node) {
+        DAT_004c11b4 = node->next;
+        free(node);
+        return;
+    }
+    cur = DAT_004c11b4->next;
+    prev = DAT_004c11b4;
+    while (cur != node) {
+        prev = prev->next;
+        if (prev == NULL) {
+            goto done;
+        }
+        cur = prev->next;
+    }
+    if (prev != NULL) {
+        prev->next = node->next;
+    }
+done:;
+    free(node);
+}
 
 // FUNCTION: LEGOLAND 0x00403ce0
 void FUN_00403ce0(void) {
