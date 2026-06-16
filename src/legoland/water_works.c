@@ -558,7 +558,40 @@ void FUN_00418350(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004183a0
-void FUN_004183a0(void) { STUB(); }
+void FUN_004183a0(void) {
+    struct WaterNode *node;
+    int lls;
+    int limit;
+
+    FUN_00418350();
+    for (node = DAT_004cc030; node != NULL; node = node->next) {
+        if (node->field_8 == 1 && (unsigned char)(node->field_9 += 1) >= 0xb) {
+            node->field_8 = 2;
+            node->field_9 = 0;
+        }
+        if (node->field_8 == 2) {
+            limit = 0;
+            node->field_9++;
+            lls = GetLLSForSprite((struct SpriteLLS *)DAT_004cc014);
+            if (lls != 0) {
+                limit = *(short *)(lls + 0x10);
+            }
+            if ((int)node->field_9 >= limit) {
+                if (FUN_00417ec0((unsigned char *)&node->key) != 0) {
+                    node->field_8 = 2;
+                    node->field_9 = 0xb;
+                } else {
+                    node->field_8 = 3;
+                    node->field_9 = 0x24;
+                }
+            }
+        }
+        if (node->field_8 == 3 && (unsigned char)(node->field_9 += 1) >= 0x2c) {
+            node->field_8 = 0;
+            node->field_9 = 0;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00418450
 void FUN_00418450(void) { STUB(); }
