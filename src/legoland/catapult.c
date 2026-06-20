@@ -6,6 +6,7 @@
 #include "globals.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "obj_instance.h"
 #include "render3d.h"
 #include "objclass.h"
 #include "sound_music.h"
@@ -101,8 +102,6 @@ struct CatapultRemoveEdit {
     unsigned char pad_0[0xc];
     unsigned int ride;
 };
-
-void RemoveAllBlokesFromRide(unsigned int ride, unsigned int param_2);
 
 #include "image_sprite.h"
 
@@ -280,7 +279,7 @@ void FUN_004039a0(struct CatapultRemoveEdit *edit, unsigned int key, void *curso
     struct CatapultRideNode *node;
 
     StandardRemoveObject((struct EditObject *)edit, key, (struct Cursor *)cursor);
-    RemoveAllBlokesFromRide(edit->ride, key);
+    RemoveAllBlokesFromRide((struct Ride *)edit->ride, key);
     node = FUN_004031b0((const unsigned short *)&key);
     if (node != NULL) {
         FUN_00403130((struct CatapultNode *)node);

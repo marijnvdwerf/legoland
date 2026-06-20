@@ -11,7 +11,9 @@
 #include "clipping.h"
 #include "draw.h"
 #include "globals.h"
+#include "icon.h"
 #include "input.h"
+#include "profile.h"
 #include "profile_io.h"
 #include "savegame_ui.h"
 #include "text.h"
@@ -19,9 +21,6 @@
 #include "title.h"
 
 #pragma intrinsic(memset, memcpy, strcpy, strlen)
-
-void RemoveIconGroup(unsigned short group);
-void CloseFontEndCheckBox(void);
 
 struct ProfileSprite {
     unsigned char pad_0[0xc];

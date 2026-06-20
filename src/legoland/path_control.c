@@ -1,14 +1,12 @@
 #include "path_control.h"
 #include "globals.h"
 #include "legoland.h"
+#include "map_object.h"
 #include "tilemap.h"
 
 struct PathSpriteHeader {
     unsigned short id;
 };
-
-struct EditObject;
-unsigned int AddBasicObject(struct EditObject *editObj, int *coords);
 
 // FUNCTION: LEGOLAND 0x0045dbe0
 LEGO_EXPORT void AddBasicPath(struct EditObject *editObj, int *coords) {
