@@ -16,7 +16,11 @@ struct BuyItemArg {
 };
 
 // FUNCTION: LEGOLAND 0x00453900
-LEGO_EXPORT void LoadMoneySFX(void) { STUB(); }
+LEGO_EXPORT void LoadMoneySFX(void) {
+    if (DAT_00667120++ == 0) {
+        Load_FXList(MONEY_SFX, 2);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00453930
 LEGO_EXPORT void KillMoneySFX(void) {
