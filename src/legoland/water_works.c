@@ -17,6 +17,7 @@
 #include "render3d.h"
 #include "sound_music.h"
 #include "tilemap.h"
+#include "water_works.h"
 
 struct WaterNode {
     /* 0x00 */ struct WaterNode *next;

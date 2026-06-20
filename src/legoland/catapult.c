@@ -2,6 +2,7 @@
 #include <string.h>
 #include "legoland.h"
 
+#include "catapult.h"
 #include "gamemap.h"
 #include "globals.h"
 #include "llidb.h"

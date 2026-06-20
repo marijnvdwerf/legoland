@@ -1,6 +1,7 @@
 #include <string.h>
 #include "legoland.h"
 
+#include "fort.h"
 #include "gamemap.h"
 #include "globals.h"
 #include "map_object.h"

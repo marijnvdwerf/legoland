@@ -9,6 +9,7 @@
 #include "obj_instance.h"
 #include "objclass.h"
 #include "path_control.h"
+#include "shops.h"
 #include "tilemap.h"
 #include "western_town.h"
 

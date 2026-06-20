@@ -6,6 +6,7 @@
 #include "map_object.h"
 #include "obj_instance.h"
 #include "objclass.h"
+#include "temple.h"
 
 struct TempleObject {
     unsigned char pad_0[12];

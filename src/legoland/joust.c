@@ -5,6 +5,7 @@
 
 #include "binv.h"
 #include "gamemap.h"
+#include "joust.h"
 #include "llidb.h"
 #include "map_object.h"
 #include "objclass.h"

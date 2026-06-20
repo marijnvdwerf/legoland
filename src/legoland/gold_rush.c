@@ -4,6 +4,7 @@
 
 #include "gamemap.h"
 #include "globals.h"
+#include "gold_rush.h"
 #include "llidb.h"
 #include "map_object.h"
 #include "render3d.h"

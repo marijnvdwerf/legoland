@@ -9,6 +9,7 @@
 #include "map_object.h"
 #include "render3d.h"
 #include "objclass.h"
+#include "temple_slide.h"
 
 struct TempleRide {
     unsigned char pad_0[4];
