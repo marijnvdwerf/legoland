@@ -1,3 +1,4 @@
+#include <string.h>
 #include <windows.h>
 #include "legoland.h"
 
@@ -8,6 +9,16 @@ struct ClippedObject {
     unsigned char pad_0[8];
     unsigned char flags;
 };
+
+struct ClipEntry {
+    char *name;
+    unsigned char pad_4[4];
+    unsigned int value;
+    unsigned char pad_c[4];
+};
+
+// GLOBAL: LEGOLAND 0x004bdebc
+struct ClipEntry DAT_004BDEBC[16];
 
 struct ObjectClassNode {
     struct ObjectClassNode *next;
@@ -99,7 +110,18 @@ void FUN_0048a790(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048a800
-void FUN_0048a800(void) { STUB(); }
+void FUN_0048a800(void) {
+    struct ClipEntry *entry;
+
+    if (strlen(DAT_004BDEBC->name) == 0)
+        return;
+
+    entry = DAT_004BDEBC;
+    do {
+        entry->value = 0;
+        entry++;
+    } while (strlen(entry->name) != 0);
+}
 
 // FUNCTION: LEGOLAND 0x0048a840
 unsigned int FUN_0048a840(unsigned int arg, struct ClipQueryResult **out) { STUB(); }
