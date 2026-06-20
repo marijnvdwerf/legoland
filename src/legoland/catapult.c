@@ -97,6 +97,13 @@ struct CatapultKey {
     unsigned char field_1;
 };
 
+struct CatapultRemoveEdit {
+    unsigned char pad_0[0xc];
+    unsigned int ride;
+};
+
+void RemoveAllBlokesFromRide(unsigned int ride, unsigned int param_2);
+
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x004030f0
@@ -269,7 +276,16 @@ void FUN_00403970(struct EditObject *edit2, struct CatapultEdit *edit) {
 }
 
 // FUNCTION: LEGOLAND 0x004039a0
-void FUN_004039a0(void) { STUB(); }
+void FUN_004039a0(struct CatapultRemoveEdit *edit, unsigned int key, void *cursor, unsigned int param_4) {
+    struct CatapultRideNode *node;
+
+    StandardRemoveObject((struct EditObject *)edit, key, (struct Cursor *)cursor);
+    RemoveAllBlokesFromRide(edit->ride, key);
+    node = FUN_004031b0((const unsigned short *)&key);
+    if (node != NULL) {
+        FUN_00403130((struct CatapultNode *)node);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004039e0
 unsigned int *FUN_004039e0(struct CatapultLayer *arg1, unsigned short arg2) {
