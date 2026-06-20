@@ -71,6 +71,14 @@ LEGO_EXPORT void InitFreePlayLists(void);
 LEGO_EXPORT unsigned int FreePlayObjectList(int a, int b, int c, int d, int e);
 void FUN_0048b6c0(void);
 
+void FUN_00466360(int a, int b);
+void FUN_00498920(void);
+struct Sample *PlayInstanceOfSample(void *def, unsigned int looping, unsigned int oneshot, void *config);
+LEGO_EXPORT void CleanUpFreePlay(void);
+void KillTitleScreenSprites(void);
+int InitGameInterface(int a);
+void FUN_00474880(void);
+
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0048a8a0
@@ -211,7 +219,28 @@ void FUN_0048abb0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048ac60
-unsigned char FUN_0048ac60(unsigned int p1, unsigned int p2) { STUB(); }
+unsigned char FUN_0048ac60(unsigned int param_1, unsigned int param_2) {
+    if (DAT_0079864c != 0 && (DAT_0079864c->field_34 & 0x400) != 0) {
+        return 0;
+    }
+
+    if (DAT_004bef9c != 0 && (param_2 & 0x2) != 0) {
+        DAT_0080ffe5 = 2;
+        FUN_00466360(0x127, 0x170);
+        FUN_00498920();
+        DAT_006687b0 = 0x4;
+        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
+        FUN_0048abb0();
+        CleanUpFreePlay();
+        KillTitleScreenSprites();
+        RemoveIconGroup(0x7);
+        DAT_008119b4 = 0x3;
+        InitGameInterface(0x1);
+        FUN_00474880();
+        DAT_0080ffe5 = 2;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0048ad00
 LEGO_EXPORT void InitFreePlayLists(void) { STUB(); }
