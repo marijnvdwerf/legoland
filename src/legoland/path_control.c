@@ -7,11 +7,36 @@ struct PathSpriteHeader {
     unsigned short id;
 };
 
+struct EditObject;
+unsigned int AddBasicObject(struct EditObject *editObj, int *coords);
+
 // FUNCTION: LEGOLAND 0x0045dbe0
-LEGO_EXPORT void AddBasicPath(void) { STUB(); }
+LEGO_EXPORT void AddBasicPath(struct EditObject *editObj, int *coords) {
+    struct MapElement *cell;
+
+    if (coords[0] < 0 || coords[0] >= (int)lpConfig->width)
+        return;
+    if (coords[1] < 0 || coords[1] >= (int)lpConfig->height)
+        return;
+
+    cell = &GameMap[coords[1]][coords[0]];
+    if (cell == NULL)
+        return;
+    if (cell->flags & 0x8e8)
+        return;
+
+    AddBasicObject(editObj, coords);
+    AddPathTile((struct Point *)coords, ((struct PathSpriteHeader *)PathSprite)->id);
+}
 
 // FUNCTION: LEGOLAND 0x0045dc50
-LEGO_EXPORT void AddRollerCoasterPath(int *coords) { STUB(); }
+LEGO_EXPORT void AddRollerCoasterPath(int *coords) {
+    struct MapElement *cell;
+
+    cell = &GameMap[coords[1]][coords[0]];
+    cell->field_8 = ((struct PathSpriteHeader *)PathSprite)->id;
+    AddPathTile((struct Point *)coords, ((struct PathSpriteHeader *)PathSprite)->id);
+}
 
 // FUNCTION: LEGOLAND 0x0045dc90
 LEGO_EXPORT void RemoveBasicPath(void) { STUB(); }
