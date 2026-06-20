@@ -1,3 +1,4 @@
+#include <string.h>
 #include "globals.h"
 #include "legoland.h"
 
@@ -6,8 +7,10 @@
 #include "math.h"
 #include "money.h"
 #include "obj_instance.h"
+#include "objclass.h"
 #include "path_control.h"
 #include "tilemap.h"
+#include "western_town.h"
 
 struct Building {
     unsigned char pad_0[0x1c];
@@ -258,4 +261,108 @@ void FUN_0043a3d0(struct RideObject *obj, void *param_2, void *param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x0043a400
-void FUN_0043a400(void) { STUB(); }
+void FUN_0043a400(struct ClassNode *name, struct CallbackTable *ci) {
+    // STRING: LEGOLAND 0x004b75fc
+    if (_stricmp("GENERAL STORE", name->name) == 0) {
+        ci->cb_a4 = FUN_004375d0;
+        ci->cb_ac = FUN_00437610;
+        ci->cb_8c = FUN_00437630;
+        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a8 = FUN_004378e0;
+        ci->cb_9c = FUN_0043a3d0;
+        ci->cb_b0 = FUN_00437670;
+        return;
+    }
+    // STRING: LEGOLAND 0x004b75f4
+    if (_stricmp("SHERIFF", name->name) == 0) {
+        ci->cb_a4 = FUN_00437ba0;
+        ci->cb_ac = FUN_00437bd0;
+        ci->cb_8c = FUN_00437bf0;
+        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a8 = FUN_00437c90;
+        ci->cb_9c = FUN_0043a3d0;
+        ci->cb_b0 = FUN_00437c30;
+        return;
+    }
+    // STRING: LEGOLAND 0x004b75e8
+    if (_stricmp("JAIL CELL", name->name) == 0) {
+        ci->cb_a4 = FUN_00438070;
+        ci->cb_ac = FUN_004380f0;
+        ci->cb_8c = FUN_00438110;
+        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a8 = FUN_00438430;
+        ci->cb_98 = FUN_00437f60;
+        ci->cb_9c = FUN_00438020;
+        ci->cb_b0 = FUN_00438150;
+        ci->cb_b8 = LoadJailCells;
+        ci->cb_bc = SaveJailCells;
+        return;
+    }
+    // STRING: LEGOLAND 0x004b75e0
+    if (_stricmp("BANK", name->name) == 0) {
+        ci->cb_a4 = FUN_00438870;
+        ci->cb_ac = FUN_004388a0;
+        ci->cb_8c = FUN_004388c0;
+        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a8 = FUN_00438960;
+        ci->cb_9c = FUN_0043a3d0;
+        ci->cb_b0 = FUN_00438900;
+        return;
+    }
+    // STRING: LEGOLAND 0x004b75d8
+    if (_stricmp("SALOON", name->name) == 0) {
+        ci->cb_a4 = FUN_00438c60;
+        ci->cb_ac = FUN_00438ca0;
+        ci->cb_8c = FUN_00438cc0;
+        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a8 = FUN_00438f10;
+        ci->cb_9c = FUN_0043a3d0;
+        ci->cb_b0 = FUN_00438d00;
+        return;
+    }
+    // STRING: LEGOLAND 0x004b75c4
+    if (_stricmp("EXPLORERS INSTITUTE", name->name) == 0) {
+        ci->cb_a4 = FUN_0043a0f0;
+        ci->cb_ac = FUN_0043a120;
+        ci->cb_8c = FUN_0043a140;
+        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a8 = FUN_0043a1e0;
+        ci->cb_9c = FUN_0043a3d0;
+        ci->cb_b0 = FUN_0043a180;
+        return;
+    }
+    // STRING: LEGOLAND 0x004b75b8
+    if (_stricmp("LEGO SHOP 1", name->name) == 0) {
+        ci->cb_a4 = FUN_00439200;
+        ci->cb_98 = FUN_00439320;
+        ci->cb_9c = FUN_00439350;
+        ci->cb_ac = FUN_004393e0;
+        ci->cb_8c = FUN_004393a0;
+        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a8 = FUN_00439460;
+        ci->cb_b0 = FUN_00439400;
+        return;
+    }
+    // STRING: LEGOLAND 0x004b75ac
+    if (_stricmp("LEGO SHOP 2", name->name) == 0) {
+        ci->cb_a4 = FUN_004396d0;
+        ci->cb_ac = FUN_00439700;
+        ci->cb_8c = FUN_00439720;
+        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a8 = FUN_00439950;
+        ci->cb_9c = FUN_0043a3d0;
+        ci->cb_b0 = FUN_00439760;
+        return;
+    }
+    // STRING: LEGOLAND 0x004b759c
+    if (_stricmp("LEGO MEDIA SHOP", name->name) == 0) {
+        ci->cb_a4 = FUN_00439c20;
+        ci->cb_98 = FUN_00439c60;
+        ci->cb_9c = FUN_00439c90;
+        ci->cb_ac = FUN_00439ce0;
+        ci->cb_8c = FUN_00439d00;
+        ci->cb_a0 = FUN_0043a390;
+        ci->cb_a8 = FUN_00439ef0;
+        ci->cb_b0 = FUN_00439d40;
+    }
+}
