@@ -349,7 +349,22 @@ void FUN_00404600(void) { STUB(); }
 void FUN_00404630(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00404860
-void FUN_00404860(void) { STUB(); }
+void FUN_00404860(struct CopterNode *node, int index) {
+    struct CopterLayer *layer = (struct CopterLayer *)((char *)node + (index << 5) + 0x18);
+
+    if (layer->flags & 1) {
+        layer->field_4 = layer->field_4 + 1;
+        if (layer->field_4 < layer->field_1c) {
+            return;
+        }
+        layer->field_4 = 0;
+        layer->field_1d = layer->field_1d - 1;
+        if (layer->field_1d >= 0) {
+            return;
+        }
+        layer->flags &= 0xfffffffe;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004048a0
 unsigned int FUN_004048a0(unsigned int param) {
