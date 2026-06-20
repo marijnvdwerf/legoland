@@ -2142,6 +2142,8 @@ extern unsigned int DAT_006691a4;
 extern struct Element **DAT_006691a8;
 // 0x006691b0
 extern int DAT_006691b0;
+// 0x006691b4
+extern int DAT_006691b4;
 // 0x006691bc
 extern int DAT_006691bc[16];
 // 0x006691fc
@@ -2605,6 +2607,10 @@ extern void *DAT_007fd634;
 extern unsigned int DAT_007fd638;
 // 0x007fd640
 extern struct ResVolume *DAT_007fd640[4];
+// 0x007fd660
+extern unsigned int DAT_007fd660[329];
+// 0x007fdb84
+extern int DAT_007fdb84;
 // 0x007fdb88
 extern unsigned int DAT_007fdb88;
 // 0x007fdca0

@@ -1,10 +1,15 @@
 #include "legoland.h"
 
 #include <io.h>
+#include <stdlib.h>
 #include "globals.h"
 #include "llidb.h"
+#include "map_object.h"
+#include "pathfind.h"
 #include "saveload.h"
 #include "timer.h"
+
+void FUN_00463680(void);
 
 // FUNCTION: LEGOLAND 0x0047d790
 LEGO_EXPORT int BeginMeasuredBlock(void) {
@@ -64,7 +69,30 @@ LEGO_EXPORT int SaveGame(char *filename) { STUB(); }
 LEGO_EXPORT void LoadGame(char *path) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047f760
-LEGO_EXPORT void UnloadSaveGameMap(void) { STUB(); }
+LEGO_EXPORT void UnloadSaveGameMap(void) {
+    int i;
+
+    if (DAT_00669200 != 0) {
+        for (i = 0; i < DAT_006691b4; i++) {
+            LLIDB_UnLoadData(DAT_00669200[i]);
+        }
+        free(DAT_00669200);
+        DAT_00669200 = 0;
+    }
+
+    for (i = 0; i < DAT_007fdb84; i++) {
+        LLIDB_UnLoadData(DAT_007fd660[i]);
+    }
+
+    FUN_00463680();
+    LLIDB_UnLoadData((unsigned int)DAT_00801410);
+    if (DAT_00801404 != 0) {
+        LLIDB_UnLoadData((unsigned int)DAT_00801404);
+    }
+    ClearOverlays();
+    FUN_004828f0();
+    DAT_00667d50 = 0;
+}
 
 // FUNCTION: LEGOLAND 0x0047f810
 void FUN_0047f810(void) {

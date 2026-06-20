@@ -2876,6 +2876,9 @@ struct Element **DAT_006691a8;
 // GLOBAL: LEGOLAND 0x006691b0
 int DAT_006691b0;
 
+// GLOBAL: LEGOLAND 0x006691b4
+int DAT_006691b4;
+
 // GLOBAL: LEGOLAND 0x006691bc
 int DAT_006691bc[16];
 
@@ -3568,6 +3571,12 @@ unsigned int DAT_007fd638;
 
 // GLOBAL: LEGOLAND 0x007fd640
 struct ResVolume *DAT_007fd640[4];
+
+// GLOBAL: LEGOLAND 0x007fd660
+unsigned int DAT_007fd660[329];
+
+// GLOBAL: LEGOLAND 0x007fdb84
+int DAT_007fdb84;
 
 // GLOBAL: LEGOLAND 0x007fdb88
 unsigned int DAT_007fdb88;
