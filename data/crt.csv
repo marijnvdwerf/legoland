@@ -336,7 +336,7 @@ address,symbol,type
 0x004aa93f,_copy_environ,function
 0x004aa9a6,__mbschr,function
 0x004aaa19,__mbsdup,function
-0x004aab90,__stricmp,function
+0x004aab90,__strcmpi,function
 0x004aac20,__memicmp,function
 0x004aacbd,__tell,function
 0x004aacce,__filelength,function
