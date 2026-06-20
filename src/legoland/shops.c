@@ -3,12 +3,23 @@
 
 #include "gamemap.h"
 #include "map_object.h"
+#include "math.h"
 #include "money.h"
 #include "obj_instance.h"
+#include "path_control.h"
+#include "tilemap.h"
 
 struct Building {
     unsigned char pad_0[0x1c];
     unsigned int flags;
+};
+
+struct PathArea {
+    unsigned char pad_0[0x3c];
+    int x0;
+    int y0;
+    int x1;
+    int y1;
 };
 
 struct MapObject {
@@ -43,10 +54,54 @@ void FUN_00439200(struct MapObject *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00439230
-void FUN_00439230(unsigned int param_1, void *param_2) { STUB(); }
+void FUN_00439230(struct PathArea *area, struct Point *origin) {
+    int xend = area->x1 + origin->x;
+    int x = area->x0 + origin->x;
+    int y = area->y0 + origin->y;
+    int yend = area->y1 + origin->y;
+
+    if (x > xend)
+        return;
+
+    do {
+        if (y <= yend) {
+            struct Point coord;
+            do {
+                coord.x = x;
+                coord.y = y;
+                AddPathTileGFX(&coord, *(unsigned short *)PathSprite);
+                y++;
+            } while (y <= yend);
+        }
+        y = area->y0 + origin->y;
+        x++;
+    } while (x <= xend);
+}
 
 // FUNCTION: LEGOLAND 0x004392b0
-void FUN_004392b0(void) { STUB(); }
+void FUN_004392b0(struct PathArea *area, struct Point *origin) {
+    int xend = area->x1 + origin->x;
+    int x = area->x0 + origin->x;
+    int y = area->y0 + origin->y;
+    int yend = area->y1 + origin->y;
+
+    if (x > xend)
+        return;
+
+    do {
+        if (y <= yend) {
+            int coord[2];
+            do {
+                coord[0] = x;
+                coord[1] = y;
+                RemoveRollerCoasterPath(coord);
+                y++;
+            } while (y <= yend);
+        }
+        y = area->y0 + origin->y;
+        x++;
+    } while (x <= xend);
+}
 
 // FUNCTION: LEGOLAND 0x00439320
 void FUN_00439320(struct MapObject *obj, void *param_2) {
@@ -59,7 +114,12 @@ void FUN_00439320(struct MapObject *obj, void *param_2) {
 void FUN_00439350(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004393a0
-void FUN_004393a0(void) { STUB(); }
+void FUN_004393a0(void) {
+    EditMode = 1;
+    DAT_008119b8 = DAT_0081cb3c;
+    DefaultCursor(&EditCursor);
+    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+}
 
 // FUNCTION: LEGOLAND 0x004393e0
 void FUN_004393e0(void) {
