@@ -44,6 +44,25 @@ struct CatapultInner {
     unsigned int field_10;
 };
 
+struct CatapultSub {
+    unsigned char pad_0[0x3a];
+    unsigned short field_3a;
+    unsigned char pad_3c[0x58 - 0x3c];
+    int field_58;
+};
+
+struct CatapultEntry {
+    unsigned char pad_0[8];
+    struct CatapultSub *sub;
+};
+
+struct CatapultRideNode {
+    unsigned char pad_0[0x10];
+    struct CatapultEntry *slots[4];
+    unsigned char pad_20[8];
+    unsigned int flags[4];
+};
+
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x004030f0
@@ -68,7 +87,7 @@ void FUN_00403190(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004031b0
-void FUN_004031b0(void) { STUB(); }
+struct CatapultRideNode *FUN_004031b0(const unsigned short *key) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004031e0
 void FUN_004031e0(struct CatapultLayer *param1) {
@@ -175,7 +194,23 @@ void FUN_004036b0(void) { STUB(); }
 void FUN_004036f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004037d0
-void FUN_004037d0(void) { STUB(); }
+void FUN_004037d0(const unsigned short *key, struct CatapultEntry *entry) {
+    struct CatapultRideNode *node = FUN_004031b0(key);
+    int i;
+
+    if (node == NULL) {
+        return;
+    }
+
+    for (i = 0; i < 4; i++) {
+        if (node->slots[i] == entry) {
+            node->flags[i] = 1;
+        }
+    }
+
+    entry->sub->field_58 = (rand() & 0x1f) + 3;
+    entry->sub->field_3a = 3;
+}
 
 // FUNCTION: LEGOLAND 0x00403820
 void FUN_00403820(void) { STUB(); }
