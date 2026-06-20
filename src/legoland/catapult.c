@@ -127,7 +127,24 @@ void FUN_00403480(struct CatapultItem *item) {
 }
 
 // FUNCTION: LEGOLAND 0x004034c0
-void FUN_004034c0(void) { STUB(); }
+void FUN_004034c0(unsigned char *data, unsigned int index) {
+    struct SampleParams params;
+    void **samples = (void **)(Catapult_SFX + 8);
+
+    if (data[index + 0x20] != 0) {
+        return;
+    }
+
+    data[index + 0x20] = 1;
+    data[index + 0x24] = 0;
+    params.field_0 = 2;
+    params.field_8 = data[0];
+    params.field_c = data[1];
+    {
+        int r = rand() % 3;
+        PlayInstanceOfSample(samples[r * 3], 0, 1, &params);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00403530
 void FUN_00403530(void) { STUB(); }
