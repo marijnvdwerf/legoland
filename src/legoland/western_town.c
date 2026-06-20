@@ -14,6 +14,7 @@
 #include "obj_instance.h"
 #include "print_sprite.h"
 #include "render3d.h"
+#include "western_town.h"
 
 struct RideListElem {
     struct RideListElem *next;
