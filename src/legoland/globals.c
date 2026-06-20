@@ -185,6 +185,9 @@ unsigned int DAT_004b4bf0[5];
 // GLOBAL: LEGOLAND 0x004b4cb8
 unsigned char SAFARI_SFX[8];
 
+// GLOBAL: LEGOLAND 0x004b4cc0
+void *DAT_004b4cc0;
+
 // GLOBAL: LEGOLAND 0x004b4d88
 unsigned char SpiderRide_SFX[8];
 

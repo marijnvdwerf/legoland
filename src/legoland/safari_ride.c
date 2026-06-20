@@ -60,8 +60,33 @@ void FUN_00414a60(void) {
 // FUNCTION: LEGOLAND 0x00414a80
 void FUN_00414a80(void) { STUB(); }
 
+struct SafariSample {
+    unsigned char field_0;
+    unsigned char field_1;
+    unsigned char pad_2[2];
+    unsigned int field_4;
+    unsigned int field_8;
+    unsigned int field_c;
+    unsigned char pad_10[4];
+    unsigned int field_14;
+    unsigned char pad_18[4];
+    unsigned int field_1c;
+};
+
 // FUNCTION: LEGOLAND 0x00414ab0
-void FUN_00414ab0(void) { STUB(); }
+void FUN_00414ab0(struct SafariSample *a1) {
+    struct SampleSource src;
+
+    src.type = 2;
+    a1->field_8 = a1->field_4;
+    a1->field_14 = (a1->field_14 & 0xFFFFBFFF) | 1;
+    a1->field_4 = 0;
+    a1->field_c = 0;
+    a1->field_1c = 0;
+    src.field_8 = a1->field_0;
+    src.field_c = a1->field_1;
+    PlayInstanceOfSample(DAT_004b4cc0, 1, 1, &src);
+}
 
 // FUNCTION: LEGOLAND 0x00414b10
 void FUN_00414b10(struct SafariNode *node) { STUB(); }

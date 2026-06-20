@@ -373,6 +373,8 @@ extern unsigned char DAT_004b4bd0[0x14];
 extern unsigned int DAT_004b4bf0[5];
 // 0x004b4cb8
 extern unsigned char SAFARI_SFX[8];
+// 0x004b4cc0
+extern void *DAT_004b4cc0;
 // 0x004b4d88
 extern unsigned char SpiderRide_SFX[8];
 // 0x004b4d90
