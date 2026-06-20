@@ -1,5 +1,7 @@
 #include "globals.h"
 #include "legoland.h"
+
+#include "entrance.h"
 #include "money.h"
 #include "sound_music.h"
 

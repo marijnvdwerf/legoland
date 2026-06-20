@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "globals.h"
 #include "map_object.h"
+#include "potting_shed.h"
 
 struct PSCarInner {
     unsigned char pad_0[0x10];

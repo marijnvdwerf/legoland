@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "globals.h"
 #include "map_object.h"
+#include "mechanics_hut.h"
 
 struct HutObject {
     unsigned char pad_0[0x1c];

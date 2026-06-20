@@ -2,6 +2,7 @@
 #include "legoland.h"
 
 #include <string.h>
+#include "cdcheck.h"
 #include "debug.h"
 #include "globals.h"
 #include "saveload.h"

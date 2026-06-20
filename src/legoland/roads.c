@@ -10,6 +10,7 @@
 #include "objclass.h"
 #include "pumps.h"
 #include "ride_queue.h"
+#include "roads.h"
 #include "tilemap.h"
 
 struct RoadQueueEntry {

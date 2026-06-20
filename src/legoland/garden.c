@@ -1,6 +1,7 @@
 #include "legoland.h"
 
 #include "gamemap.h"
+#include "garden.h"
 #include "globals.h"
 #include "llidb.h"
 #include "map_object.h"
