@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <string.h>
 #include "legoland.h"
 
@@ -10,7 +11,8 @@
 #include "sound_music.h"
 
 struct CatapultNode {
-    unsigned int field_0;
+    unsigned short field_0;
+    unsigned char pad_2[2];
     struct CatapultNode *next;
 };
 
@@ -43,7 +45,15 @@ struct CatapultInner {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x004030f0
-void FUN_004030f0(void) { STUB(); }
+struct CatapultNode *FUN_004030f0(const unsigned short *arg) {
+    struct CatapultNode *node = (struct CatapultNode *)malloc(0x3c);
+    if (node != NULL) {
+        memset(node, 0, 0x3c);
+        node->field_0 = *arg;
+        node->next = DAT_004c1118;
+        DAT_004c1118 = node;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00403130
 void FUN_00403130(struct CatapultNode *node) { STUB(); }
