@@ -70,6 +70,29 @@ struct CopterFXList {
     /* 0x14 */ void *field_14;
 };
 
+struct CopterChainNode {
+    /* 0x00 */ struct CopterChainNode *next;
+};
+
+struct CopterChainRide {
+    /* 0x00 */ unsigned char pad_0[0xcc];
+    /* 0xcc */ struct CopterChainNode *chain;
+};
+
+// One saved layer record (stride 0x20); field_0 holds a 1-based chain index.
+struct CopterSaveLayer {
+    /* 0x00 */ int field_0;
+    /* 0x04 */ unsigned char pad_4[0x20 - 4];
+};
+
+// Save-record view of CopterNode used by Copters_Load.
+struct CopterLoadNode {
+    /* 0x00 */ unsigned char pad_0[4];
+    /* 0x04 */ struct CopterLoadNode *next;
+    /* 0x08 */ unsigned char pad_8[0x30 - 8];
+    /* 0x30 */ struct CopterSaveLayer slots[6];
+};
+
 #include "image_sprite.h"
 
 // GLOBAL: LEGOLAND 0x004b4198
@@ -544,7 +567,51 @@ LEGO_EXPORT int Copters_Save(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00405050
-LEGO_EXPORT void Copters_Load(void) { STUB(); }
+LEGO_EXPORT int Copters_Load(void) {
+    int count;
+    struct CopterLoadNode *prev = NULL;
+    struct CopterLoadNode *node;
+    struct CopterChainNode *chain;
+    int n;
+    int i;
+
+    if (!SaveGameRead(&count, 4)) {
+        return 0;
+    }
+
+    while (count != 0) {
+        node = (struct CopterLoadNode *)malloc(0xd8);
+        if (!SaveGameRead(node, 0xd8)) {
+            return 0;
+        }
+        node->next = NULL;
+        if (prev != NULL) {
+            prev->next = node;
+        } else {
+            DAT_004c11b4 = (struct CopterNode *)node;
+        }
+        prev = node;
+
+        for (i = 6; i != 0; i--) {
+            n = node->slots[6 - i].field_0;
+            chain = ((struct CopterChainRide *)DAT_004c1198)->chain;
+            if (n != 0) {
+                while (--n != 0) {
+                    chain = chain->next;
+                }
+                node->slots[6 - i].field_0 = (int)chain;
+            } else {
+                node->slots[6 - i].field_0 = 0;
+            }
+        }
+
+        if (!SaveGameRead(&count, 4)) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00405110
 void FUN_00405110(struct ClassNode *name, struct CallbackTable *interfaces) {
