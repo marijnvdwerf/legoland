@@ -149,8 +149,21 @@ void FUN_00414f40(struct SafariEditObj *obj, struct SafariKey key, unsigned int 
     UnSourceAndFadeAllSamplesFromSource(&src, 0xffffff38);
 }
 
+struct SafariBasicObject {
+    unsigned char field_0;
+    unsigned char pad_1[3];
+    unsigned char field_4;
+};
+
 // FUNCTION: LEGOLAND 0x00414fc0
-void FUN_00414fc0(void) { STUB(); }
+void FUN_00414fc0(unsigned int uid, struct SafariBasicObject *a1) {
+    unsigned short local;
+
+    *(unsigned char *)&local = a1->field_0;
+    *((unsigned char *)&local + 1) = a1->field_4;
+    AddBasicObject((struct EditObject *)uid, (int *)a1);
+    FUN_004149c0((struct SafariNode *)&local);
+}
 
 // FUNCTION: LEGOLAND 0x00414ff0
 unsigned int *FUN_00414ff0(struct SafariRoot *p1, unsigned short arg2) {
