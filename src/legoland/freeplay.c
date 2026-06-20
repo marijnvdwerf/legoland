@@ -20,13 +20,43 @@ struct PanelNode {
     void *buffer2;
 };
 
+struct GameListNode {
+    struct GameListNode *next;
+    unsigned char pad_4[0x14];
+    unsigned char field_18;
+    unsigned char pad_19[3];
+    unsigned int field_1c;
+};
+
+struct NerpsArg;
+
+void FUN_004663f0(void);
+int FUN_00478b20(unsigned int arg);
+void FUN_00469900(struct NerpsArg *object, unsigned int a, unsigned int b);
+
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0048a8a0
 LEGO_EXPORT void InitFreePlayScreen(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048ab60
-void FUN_0048ab60(void) { STUB(); }
+void FUN_0048ab60(void) {
+    struct GameListNode *node;
+
+    node = (struct GameListNode *)DAT_006687c8;
+    if (node == 0) {
+        return;
+    }
+    do {
+        FUN_004663f0();
+        if (node->field_18 == 1) {
+            if (FUN_00478b20(node->field_1c) != 0) {
+                FUN_00469900((struct NerpsArg *)ElemID((const char *)node->field_1c), 0, 1);
+            }
+        }
+        node = node->next;
+    } while (node != 0);
+}
 
 // FUNCTION: LEGOLAND 0x0048abb0
 void FUN_0048abb0(void) { STUB(); }
