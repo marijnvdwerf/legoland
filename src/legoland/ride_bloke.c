@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "legoland.h"
 
 #include "draw.h"
@@ -9,10 +11,22 @@
 #include "print_sprite.h"
 #include "ride_bloke.h"
 #include "ride_queue.h"
+#include "sound_music.h"
 
 struct CountNode {
     struct CountNode *next;
     unsigned short var_4;
+};
+
+struct RideFX {
+    unsigned char pad_0[0x60];
+    unsigned char refcount;
+};
+
+struct RideBloke {
+    struct RideBloke *next;
+    unsigned char pad_4[0xcc - 0x4];
+    struct RideFX *fx;
 };
 
 struct SPHandlers {
@@ -248,7 +262,30 @@ unsigned int FUN_00401c40(unsigned short arg0) {
 }
 
 // FUNCTION: LEGOLAND 0x00401c60
-void FUN_00401c60(void *node) { STUB(); }
+void FUN_00401c60(struct RideBloke *b) {
+    struct SampleSource ss;
+    struct RideBloke *next;
+    struct RideBloke *cur;
+
+    if (b != 0) {
+        next = b->next;
+        ss.type = 1;
+        b->fx->refcount++;
+        ss.field_4 = b->fx;
+        KillAllSamplesFromSource(&ss);
+        free(b);
+
+        if (b == (struct RideBloke *)DAT_004c10d4) {
+            DAT_004c10d4 = next;
+        } else {
+            cur = (struct RideBloke *)DAT_004c10d4;
+            while (cur->next != b) {
+                cur = cur->next;
+            }
+            cur->next = next;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00401cd0
 void FUN_00401cd0(struct TimerStruct *p) {
