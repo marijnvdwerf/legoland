@@ -57,8 +57,16 @@ void FUN_00414a60(void) {
     }
 }
 
+struct SafariKey {
+    unsigned char g;
+    unsigned char h;
+    unsigned short id;
+};
+
+void *FUN_00414a80(struct SafariKey *key);
+
 // FUNCTION: LEGOLAND 0x00414a80
-void FUN_00414a80(void) { STUB(); }
+void *FUN_00414a80(struct SafariKey *key) { STUB(); }
 
 struct SafariSample {
     unsigned char field_0;
@@ -116,8 +124,30 @@ void FUN_00414f00(void) {
     SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
 }
 
+struct SafariEditObj {
+    unsigned char pad_0[0xc];
+    unsigned int field_c;
+};
+
+void RemoveAllBlokesFromRide(unsigned int uid, unsigned int key);
+
 // FUNCTION: LEGOLAND 0x00414f40
-void FUN_00414f40(void) { STUB(); }
+void FUN_00414f40(struct SafariEditObj *obj, struct SafariKey key, unsigned int coords, unsigned int cursor) {
+    void *node = FUN_00414a80(&key);
+    struct SampleSource src;
+
+    if (node == 0) {
+        return;
+    }
+    FUN_00414a00((struct SafariNode *)node);
+    StandardRemoveObject((struct EditObject *)obj, *(unsigned int *)&key, (struct Cursor *)coords);
+    RemoveAllBlokesFromRide(obj->field_c, *(unsigned int *)&key);
+
+    src.type = 2;
+    src.field_8 = key.g;
+    src.field_c = key.h;
+    UnSourceAndFadeAllSamplesFromSource(&src, 0xffffff38);
+}
 
 // FUNCTION: LEGOLAND 0x00414fc0
 void FUN_00414fc0(void) { STUB(); }
