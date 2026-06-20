@@ -47,6 +47,29 @@ struct CopterEditObject {
     struct CopterRide *field_c;
 };
 
+// Same object as CopterNode, viewed with the two id bytes split apart.
+struct CopterSfxNode {
+    /* 0x00 */ unsigned char field_0;
+    /* 0x01 */ unsigned char field_1;
+    /* 0x02 */ unsigned char field_2;
+    /* 0x03 */ unsigned char field_3;
+    /* 0x04 */ struct CopterNode *next;
+    /* 0x08 */ unsigned int field_8;
+    /* 0x0c */ int field_c;
+    /* 0x10 */ unsigned char field_10;
+    /* 0x11 */ unsigned char pad_11[3];
+    /* 0x14 */ int field_14;
+    /* 0x18 */ struct CopterLayer layer[6];
+};
+
+// SFX list table (Helicopter_SFX); Load_FXList fills the sample-def slots.
+struct CopterFXList {
+    /* 0x00 */ unsigned char pad_0[8];
+    /* 0x08 */ void *field_8;
+    /* 0x0c */ unsigned char pad_c[0x14 - 0xc];
+    /* 0x14 */ void *field_14;
+};
+
 #include "image_sprite.h"
 
 // GLOBAL: LEGOLAND 0x004b4198
@@ -375,7 +398,7 @@ void FUN_00404630(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00404860
 void FUN_00404860(struct CopterNode *node, int index) {
-    struct CopterLayer *layer = (struct CopterLayer *)((char *)node + (index << 5) + 0x18);
+    struct CopterLayer *layer = &node->layer[index];
 
     if (layer->flags & 1) {
         layer->field_4 = layer->field_4 + 1;
@@ -398,7 +421,42 @@ unsigned int FUN_004048a0(unsigned int param) {
 }
 
 // FUNCTION: LEGOLAND 0x004048b0
-void FUN_004048b0(void) { STUB(); }
+void FUN_004048b0(struct CopterSfxNode *node) {
+    struct CopterFXList *fx = (struct CopterFXList *)Helicopter_SFX;
+    struct SampleParams params;
+    struct Sample *sample;
+
+    if (node->layer[1].field_18 != 0) node->layer[1].flags |= 1;
+    if (node->layer[0].field_18 != 0) node->layer[0].flags |= 1;
+    if (node->layer[2].field_18 != 0) node->layer[2].flags |= 1;
+    if (node->layer[3].field_18 != 0) node->layer[3].flags |= 1;
+    if (node->layer[4].field_18 != 0) node->layer[4].flags |= 1;
+
+    node->field_3 = node->field_2;
+    node->field_2 = 0;
+    node->field_8 = (node->field_8 & ~0x4000u) | 1;
+    node->field_c = 2;
+    node->layer[1].field_1d = 3;
+    node->layer[0].field_1d = 3;
+    node->layer[2].field_1d = 3;
+    node->layer[3].field_1d = 3;
+    node->layer[4].field_1d = 3;
+    node->layer[1].field_4 = 0;
+    node->layer[0].field_4 = 0;
+    node->layer[2].field_4 = 0;
+    node->layer[3].field_4 = 0;
+    node->layer[4].field_4 = 0;
+
+    params.field_8 = node->field_0;
+    params.field_c = node->field_1;
+    params.field_0 = 2;
+
+    PlayInstanceOfSample(fx->field_8, 0, 1, &params);
+    sample = PlayInstanceOfSample(fx->field_14, 1, 1, &params);
+    PauseSingleSample(sample);
+    AddSFX_Callback((struct CallbackEntry *)sample, 0xb54,
+        (unsigned int (*)(struct CallbackEntry *))FUN_004048a0);
+}
 
 // FUNCTION: LEGOLAND 0x004049a0
 void FUN_004049a0(struct CopterNode *node, int param) { STUB(); }
