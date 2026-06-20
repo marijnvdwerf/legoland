@@ -36,10 +36,48 @@ LEGO_EXPORT void NavigMoveLine(struct Navigator *nav, unsigned short a, struct P
 }
 
 // FUNCTION: LEGOLAND 0x00480840
-void FUN_00480840(void) { STUB(); }
+void FUN_00480840(struct Point *src, struct Point *dst, int dir) {
+    switch (dir) {
+    case 1:
+        dst->x = src->x;
+        dst->y = src->y - 2;
+        break;
+    case 3:
+        dst->x = src->x + 2;
+        dst->y = src->y;
+        break;
+    case 5:
+        dst->x = src->x;
+        dst->y = src->y + 2;
+        break;
+    case 7:
+        dst->x = src->x - 2;
+        dst->y = src->y;
+        break;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004808d0
-void FUN_004808d0(void) { STUB(); }
+void FUN_004808d0(int *src, int *dst, int dir) {
+    switch (dir) {
+    case 1:
+        dst[0] = src[0];
+        dst[1] = src[1] - 4;
+        break;
+    case 3:
+        dst[0] = src[0] + 4;
+        dst[1] = src[1];
+        break;
+    case 5:
+        dst[0] = src[0];
+        dst[1] = src[1] + 4;
+        break;
+    case 7:
+        dst[0] = src[0] - 4;
+        dst[1] = src[1];
+        break;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00480960
 LEGO_EXPORT int GetRectArea(struct RectNode *list) {
