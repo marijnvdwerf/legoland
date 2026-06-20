@@ -68,9 +68,6 @@ struct NeighborResult {
     struct RoadQueueEntry *field_18;
 };
 
-void FUN_00412680(int x, int y, int param_3, int param_4);
-void FUN_00411b20(struct PumpNode *node);
-
 // FUNCTION: LEGOLAND 0x004132a0
 void FUN_004132a0(unsigned short param_1, int param_2, int param_3, unsigned int param_4, unsigned int param_5) {
     struct RoadQueueEntry *entry = malloc(0x20);

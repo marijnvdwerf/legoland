@@ -239,4 +239,4 @@ struct RideQueueEntry *FUN_00412650(unsigned short param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00412680
-void FUN_00412680(void) { STUB(); }
+void FUN_00412680(int x, int y, int param_3, int param_4) { STUB(); }

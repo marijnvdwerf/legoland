@@ -9,8 +9,6 @@
 #include "saveload.h"
 #include "timer.h"
 
-void FUN_00463680(void);
-
 // FUNCTION: LEGOLAND 0x0047d790
 LEGO_EXPORT int BeginMeasuredBlock(void) {
     int pos;

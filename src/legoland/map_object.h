@@ -72,4 +72,5 @@ void FUN_00462e70(unsigned int index, unsigned int value);
 void FUN_00462e90(void);
 void FUN_00463460(struct MapElement *tile, int *coords);
 void FUN_00463560(void);
+void FUN_00463680(void);
 int FUN_004636c0(void);
