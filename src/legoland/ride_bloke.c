@@ -29,6 +29,17 @@ struct RideBloke {
     struct RideFX *fx;
 };
 
+struct DrivingBloke {
+    struct DrivingBloke *next;
+    unsigned char pad_4[0x18 - 0x4];
+    int px;
+    int py;
+    unsigned char pad_20[0xbe - 0x20];
+    unsigned short field_be;
+    unsigned short field_c0;
+    unsigned char field_c2;
+};
+
 struct SPHandlers {
     unsigned char pad_0[0x18];
     unsigned int (*get_rf_flags)(int x, int y);
@@ -424,7 +435,35 @@ void FUN_00402550(struct BlokeSprite *arg) {
 void FUN_004025d0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00402780
-void FUN_00402780(void) { STUB(); }
+void FUN_00402780(struct DrivingBloke *b) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00402c10
-void FUN_00402c10(void) { STUB(); }
+void FUN_00402c10(void) {
+    struct DrivingBloke *cur = (struct DrivingBloke *)DAT_004c10d4;
+    struct DrivingBloke *next;
+    struct TileInfo *tile;
+
+    while (cur != 0) {
+        next = cur->next;
+
+        if (cur->field_be != 0) {
+            cur->field_be--;
+        }
+        if (cur->field_c0 != 0) {
+            cur->field_c0--;
+        }
+
+        tile = (struct TileInfo *)FUN_004125f0(cur->px, cur->py);
+
+        if ((tile == 0 && cur->field_c2 == 0) || cur->field_be == 0) {
+            FUN_00401c60((struct RideBloke *)cur);
+            if (tile != 0) {
+                tile->var_1c--;
+            }
+        } else {
+            FUN_00402780(cur);
+        }
+
+        cur = next;
+    }
+}
