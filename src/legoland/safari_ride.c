@@ -7,6 +7,7 @@
 #include "gamemap.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "obj_instance.h"
 #include "safari_ride.h"
 #include "sound_music.h"
 
@@ -62,8 +63,6 @@ struct SafariKey {
     unsigned char h;
     unsigned short id;
 };
-
-void *FUN_00414a80(struct SafariKey *key);
 
 // FUNCTION: LEGOLAND 0x00414a80
 void *FUN_00414a80(struct SafariKey *key) { STUB(); }
@@ -129,8 +128,6 @@ struct SafariEditObj {
     unsigned int field_c;
 };
 
-void RemoveAllBlokesFromRide(unsigned int uid, unsigned int key);
-
 // FUNCTION: LEGOLAND 0x00414f40
 void FUN_00414f40(struct SafariEditObj *obj, struct SafariKey key, unsigned int coords, unsigned int cursor) {
     void *node = FUN_00414a80(&key);
@@ -141,7 +138,7 @@ void FUN_00414f40(struct SafariEditObj *obj, struct SafariKey key, unsigned int 
     }
     FUN_00414a00((struct SafariNode *)node);
     StandardRemoveObject((struct EditObject *)obj, *(unsigned int *)&key, (struct Cursor *)coords);
-    RemoveAllBlokesFromRide(obj->field_c, *(unsigned int *)&key);
+    RemoveAllBlokesFromRide((struct Ride *)obj->field_c, *(unsigned int *)&key);
 
     src.type = 2;
     src.field_8 = key.g;
@@ -177,7 +174,21 @@ unsigned int *FUN_00414ff0(struct SafariRoot *p1, unsigned short arg2) {
 }
 
 // FUNCTION: LEGOLAND 0x00415030
-void FUN_00415030(void) { STUB(); }
+void FUN_00415030(struct ClassNode *name, struct CallbackTable *interfaces) {
+    // STRING: LEGOLAND 0x004b4d74
+    if (_stricmp("SAFARI RIDE", name->name) == 0) {
+        interfaces->cb_a4 = FUN_00414d90;
+        interfaces->cb_ac = FUN_00414ea0;
+        interfaces->cb_8c = FUN_00414f00;
+        interfaces->cb_a8 = FUN_00415220;
+        interfaces->cb_b0 = FUN_00414b80;
+        interfaces->cb_9c = FUN_00414f40;
+        interfaces->cb_98 = FUN_00414fc0;
+        interfaces->cb_a0 = FUN_00414ff0;
+        interfaces->cb_bc = SaveSafariRide;
+        interfaces->cb_b8 = LoadSafariRide;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004150c0
 void FUN_004150c0(struct SafariNode *node) { STUB(); }
