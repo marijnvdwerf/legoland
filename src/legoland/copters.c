@@ -34,7 +34,9 @@ struct CopterModel {
 };
 
 struct CopterRide {
-    unsigned char pad_0[0x1c];
+    unsigned char pad_0[0x14];
+    int field_14;
+    int field_18;
     unsigned int field_1c;
     unsigned char pad_20[0x64 - 0x20];
     struct CopterModel *field_64;
@@ -337,7 +339,30 @@ void FUN_00404450(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00404490
-unsigned int *FUN_00404490(void) { STUB(); }
+unsigned int *FUN_00404490(struct CopterEditObject *editobj, unsigned short uid) {
+    struct CopterRide *ride = editobj->field_c;
+
+    DAT_004c1170 = (int)ride->field_64;
+    DAT_004c1174 = ride->field_14;
+    DAT_004c1178 = ride->field_18;
+    DAT_004c117c = uid;
+    ride->field_64->field_10 |= 0x2000;
+
+    if (FUN_00403d00((struct CopterSource *)&uid) != 0) {
+        HideLayer(DAT_004c1138, 1);
+        HideLayer(DAT_004c1138, 2);
+        HideLayer(DAT_004c1138, 3);
+        HideLayer(DAT_004c1138, 0xa);
+        HideLayer(DAT_004c1138, 6);
+        HideLayer(DAT_004c1138, 5);
+        HideLayer(DAT_004c1138, 7);
+        HideLayer(DAT_004c1138, 8);
+        HideLayer(DAT_004c1138, 0xb);
+        HideLayer(DAT_004c1138, 4);
+    }
+
+    return (unsigned int *)&DAT_004c1170;
+}
 
 // FUNCTION: LEGOLAND 0x00404580
 void FUN_00404580(void) { STUB(); }

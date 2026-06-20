@@ -798,6 +798,14 @@ extern struct Sprite *DAT_004c113c[10];
 extern struct RenderItemNode **DAT_004c1164;
 // 0x004c1168
 extern struct RenderItemNode **DAT_004c1168;
+// 0x004c1170
+extern int DAT_004c1170;
+// 0x004c1174
+extern int DAT_004c1174;
+// 0x004c1178
+extern int DAT_004c1178;
+// 0x004c117c
+extern unsigned short DAT_004c117c;
 // 0x004c1188
 extern struct RenderItemNode **DAT_004c1188;
 // 0x004c1190
