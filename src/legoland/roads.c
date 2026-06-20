@@ -17,6 +17,13 @@ struct RoadQueueEntry {
     unsigned char pad_4[0x4];
     unsigned short field_8;
     unsigned char pad_a[0x2];
+    int x;
+    int y;
+    unsigned char field_14;
+    unsigned char pad_15[0x7];
+    unsigned char field_1c;
+    unsigned char field_1d;
+    unsigned char pad_1e[0x2];
 };
 
 struct RoadTile {
@@ -51,8 +58,53 @@ struct RoadPlaceArg {
     unsigned int field_4;
 };
 
+struct NeighborResult {
+    struct RoadQueueEntry *field_0;
+    unsigned char pad_4[4];
+    struct RoadQueueEntry *field_8;
+    unsigned char pad_c[4];
+    struct RoadQueueEntry *field_10;
+    unsigned char pad_14[4];
+    struct RoadQueueEntry *field_18;
+};
+
+void FUN_00412680(int x, int y, int param_3, int param_4);
+
 // FUNCTION: LEGOLAND 0x004132a0
-void FUN_004132a0(unsigned short param_1, int param_2, int param_3, unsigned int param_4, unsigned int param_5) { STUB(); }
+void FUN_004132a0(unsigned short param_1, int param_2, int param_3, unsigned int param_4, unsigned int param_5) {
+    struct RoadQueueEntry *entry = malloc(0x20);
+
+    entry->field_8 = param_1;
+    entry->x = param_2;
+    entry->y = param_3;
+    entry->field_14 = (unsigned char)param_4;
+    entry->next = (struct RoadQueueEntry *)DAT_004cbeac;
+    entry->field_1c = 0;
+    entry->field_1d = 0;
+    DAT_004cbeac = (struct RideQueueEntry *)entry;
+
+    FUN_00412680(param_2, param_3, param_4, param_5);
+
+    Set_UserFlags(param_2 << 8, param_3 << 8, 0);
+    Set_UserFlags((param_2 + 1) << 8, param_3 << 8, 0);
+    Set_UserFlags((param_2 + 2) << 8, param_3 << 8, 0);
+    Set_UserFlags((param_2 + 3) << 8, param_3 << 8, 0);
+
+    Set_UserFlags(param_2 << 8, (param_3 + 1) << 8, 0);
+    Set_UserFlags((param_2 + 1) << 8, (param_3 + 1) << 8, 0);
+    Set_UserFlags((param_2 + 2) << 8, (param_3 + 1) << 8, 0);
+    Set_UserFlags((param_2 + 3) << 8, (param_3 + 1) << 8, 0);
+
+    Set_UserFlags(param_2 << 8, (param_3 + 2) << 8, 0);
+    Set_UserFlags((param_2 + 1) << 8, (param_3 + 2) << 8, 0);
+    Set_UserFlags((param_2 + 2) << 8, (param_3 + 2) << 8, 0);
+    Set_UserFlags((param_2 + 3) << 8, (param_3 + 2) << 8, 0);
+
+    Set_UserFlags(param_2 << 8, (param_3 + 3) << 8, 0);
+    Set_UserFlags((param_2 + 1) << 8, (param_3 + 3) << 8, 0);
+    Set_UserFlags((param_2 + 2) << 8, (param_3 + 3) << 8, 0);
+    Set_UserFlags((param_2 + 3) << 8, (param_3 + 3) << 8, 0);
+}
 
 // FUNCTION: LEGOLAND 0x004133e0
 void FUN_004133e0(int param_1, int param_2) { STUB(); }
@@ -61,13 +113,62 @@ void FUN_004133e0(int param_1, int param_2) { STUB(); }
 void FUN_00413450(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004134f0
-void FUN_004134f0(void) { STUB(); }
+struct RoadTile *FUN_004134f0(int arg1, int arg2, struct RoadTile *tile) {
+    if (tile != NULL) {
+        if ((tile->flags & 0xf) != 6) {
+            return tile;
+        }
+        if (tile->x + 4 == arg1) {
+            if (tile->y == arg2) {
+                return tile;
+            }
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00413520
 void FUN_00413520(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004135d0
-void FUN_004135d0(void) { STUB(); }
+int FUN_004135d0(int x, int y, struct NeighborResult *out) {
+    struct RoadQueueEntry *e;
+    int count = 0;
+
+    e = (struct RoadQueueEntry *)FUN_004125a0(x, y - 4);
+    if (e != NULL) {
+        count = 1;
+    }
+    if (out != NULL) {
+        out->field_0 = e;
+    }
+
+    e = (struct RoadQueueEntry *)FUN_004125a0(x + 4, y);
+    if (e != NULL) {
+        count++;
+    }
+    if (out != NULL) {
+        out->field_8 = e;
+    }
+
+    e = (struct RoadQueueEntry *)FUN_004125a0(x, y + 4);
+    if (e != NULL) {
+        count++;
+    }
+    if (out != NULL) {
+        out->field_10 = e;
+    }
+
+    e = (struct RoadQueueEntry *)FUN_004125a0(x - 4, y);
+    if (e != NULL) {
+        count++;
+    }
+    if (out != NULL) {
+        out->field_18 = e;
+    }
+
+    return count;
+}
 
 // FUNCTION: LEGOLAND 0x00413650
 void FUN_00413650(short param_1, int param_2, int param_3) { STUB(); }
