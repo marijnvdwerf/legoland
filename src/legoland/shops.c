@@ -3,12 +3,15 @@
 #include "legoland.h"
 
 #include "gamemap.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "math.h"
 #include "money.h"
 #include "obj_instance.h"
 #include "objclass.h"
 #include "path_control.h"
+#include "print_sprite.h"
+#include "render3d.h"
 #include "shops.h"
 #include "tilemap.h"
 #include "western_town.h"
@@ -43,6 +46,38 @@ struct RideBuilding {
 struct RideObject {
     unsigned char pad_0[0xc];
     struct RideBuilding *building;
+};
+
+struct ShopRemoveObject {
+    unsigned char pad_0[0xc];
+    void *ride;
+};
+
+struct ShopCoords2 {
+    unsigned char x;
+    unsigned char y;
+};
+
+struct BlokeNode {
+    struct BlokeNode *next;
+    unsigned char pad_4[4];
+    struct Bloke *bloke;
+    unsigned short uid;
+};
+
+struct ShopBuilding {
+    unsigned char pad_0[0xcc];
+    struct BlokeNode *blokes;
+};
+
+struct ShopObject {
+    unsigned char pad_0[0xc];
+    struct ShopBuilding *building;
+};
+
+struct Coords {
+    int x;
+    int y;
 };
 
 #include "image_sprite.h"
@@ -115,7 +150,17 @@ void FUN_00439320(struct MapObject *obj, void *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00439350
-void FUN_00439350(void) { STUB(); }
+void FUN_00439350(struct ShopRemoveObject *obj, struct ShopCoords2 coords, void *cursor) {
+    void *ride = obj->ride;
+    struct Point local;
+
+    StandardRemoveObject((struct EditObject *)obj, *(unsigned int *)&coords, (struct Cursor *)cursor);
+    RemoveAllBlokesFromRide((struct Ride *)ride, *(unsigned int *)&coords);
+
+    local.x = coords.x & 0xff;
+    local.y = coords.y & 0xff;
+    FUN_004392b0((struct PathArea *)ride, &local);
+}
 
 // FUNCTION: LEGOLAND 0x004393a0
 void FUN_004393a0(void) {
@@ -134,7 +179,25 @@ void FUN_004393e0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00439400
-void FUN_00439400(void) { STUB(); }
+void FUN_00439400(struct ShopObject *obj, unsigned int param2, unsigned int param3, unsigned short *ride, unsigned int param5, unsigned int param1) {
+    struct ShopBuilding *building = obj->building;
+    struct BlokeNode *node = building->blokes;
+    int count = 0;
+
+    while (node != 0) {
+        if (*ride == node->uid) {
+            RenderBlokeIn3D(node->bloke);
+            count++;
+        }
+        node = node->next;
+    }
+
+    if (count != 0) {
+        __int64 q = GetScreenCoordsForObject((unsigned char *)ride, building);
+        struct Coords *coords = (struct Coords *)&q;
+        PrintSprite(DAT_0081cb18, coords->x, coords->y, param1, (int *)node);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00439460
 void FUN_00439460(void) { STUB(); }
@@ -191,7 +254,17 @@ void FUN_00439c60(struct MapObject *obj, void *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00439c90
-void FUN_00439c90(void) { STUB(); }
+void FUN_00439c90(struct ShopRemoveObject *obj, struct ShopCoords2 coords, void *cursor) {
+    void *ride = obj->ride;
+    struct Point local;
+
+    StandardRemoveObject((struct EditObject *)obj, *(unsigned int *)&coords, (struct Cursor *)cursor);
+    RemoveAllBlokesFromRide((struct Ride *)ride, *(unsigned int *)&coords);
+
+    local.x = coords.x & 0xff;
+    local.y = coords.y & 0xff;
+    FUN_004392b0((struct PathArea *)ride, &local);
+}
 
 // FUNCTION: LEGOLAND 0x00439ce0
 void FUN_00439ce0(void) {
@@ -239,7 +312,25 @@ void FUN_0043a140(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043a180
-void FUN_0043a180(void) { STUB(); }
+void FUN_0043a180(struct ShopObject *obj, unsigned int param2, unsigned int param3, unsigned short *ride, unsigned int param5, unsigned int param1) {
+    struct ShopBuilding *building = obj->building;
+    struct BlokeNode *node = building->blokes;
+    int count = 0;
+
+    while (node != 0) {
+        if (*ride == node->uid) {
+            RenderBlokeIn3D(node->bloke);
+            count++;
+        }
+        node = node->next;
+    }
+
+    if (count != 0) {
+        __int64 q = GetScreenCoordsForObject((unsigned char *)ride, building);
+        struct Coords *coords = (struct Coords *)&q;
+        PrintSprite(DAT_0081cb28, coords->x, coords->y, param1, (int *)node);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0043a1e0
 void FUN_0043a1e0(void) { STUB(); }
