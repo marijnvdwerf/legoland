@@ -257,7 +257,19 @@ unsigned char FUN_0048db10(int param1, unsigned char flags) {
 }
 
 // FUNCTION: LEGOLAND 0x0048db50
-LEGO_EXPORT struct Sprite *GetSavePanelBK(signed char slot) { STUB(); }
+LEGO_EXPORT struct Sprite *GetSavePanelBK(signed char slot) {
+    switch (slot) {
+    case 1: return DAT_00798708;
+    case 2: return DAT_0079870c;
+    case 3: return DAT_00798710;
+    case 4: return DAT_00798714;
+    case 5: return DAT_00798718;
+    case 6: return DAT_0079871c;
+    case 7: return DAT_00798720;
+    case 8: return DAT_00798724;
+    default: return 0;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0048dbc0
 LEGO_EXPORT void KillSaveScreenSprites(void) {
