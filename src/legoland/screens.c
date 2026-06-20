@@ -275,7 +275,7 @@ int FUN_00458c00(void) {
         FUN_00492830();
         if (DAT_00667c80 != 0) {
             DeletePlayableSamples(0);
-            sprintf(path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffa0.field_43, DAT_0080ffa0.field_44 & 0xff);
+            sprintf(path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffe3, DAT_0080ffa0.field_44 & 0xff);
             FUN_00466360(0, 0);
             LoadGame(path);
             DAT_00667c80 = 0;

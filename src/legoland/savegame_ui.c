@@ -32,8 +32,167 @@ struct SaveNode {
     unsigned char slot;
 };
 
+struct SaveScreenIcon {
+    unsigned char pad_0[0x18];
+    void *field_18;
+    unsigned char field_1c;
+    unsigned char pad_1d[0x20 - 0x1d];
+    unsigned char field_20;
+    unsigned char pad_21[0x2c - 0x21];
+    void *field_2c;
+    unsigned char pad_30[0x34 - 0x30];
+    unsigned int field_34;
+    unsigned int field_38;
+    unsigned int field_3c;
+};
+
+struct SaveScreenNode {
+    struct SaveScreenNode *next;
+    char name[0x24];
+    unsigned char field_28;
+    unsigned char pad_29[0x114 - 0x29];
+    int has_header;
+    unsigned char slot;
+};
+
+LEGO_EXPORT struct Sprite *GetSavePanelBK(signed char slot);
+char *GetString(int id);
+LEGO_EXPORT unsigned char LoadSavedGamesList(unsigned char profile);
+void FUN_0048d470(void);
+unsigned char FUN_0048db10(int param1, unsigned char flags);
+void FUN_0048f5a0(void);
+void FUN_0048da50(void);
+unsigned char FUN_0048d970(unsigned int a1, unsigned char flags);
+void FUN_0048cc30(void);
+struct SaveIcon;
+unsigned char FUN_0048e4a0(struct SaveIcon *icon, unsigned int flags, unsigned int a3, unsigned int a4);
+unsigned char FUN_0048e4f0(struct SaveIcon *icon, unsigned int a2, unsigned int a3, unsigned int a4);
+
 // FUNCTION: LEGOLAND 0x0048d4b0
-LEGO_EXPORT void InitSavedGameScreen(void) { STUB(); }
+LEGO_EXPORT void InitSavedGameScreen(void) {
+    struct SaveScreenIcon *icon;
+    struct SaveScreenNode *node;
+
+    // STRING: LEGOLAND 0x004bf2a0
+    SPRITE_TitleScreenBk = LoadSprite("Saved_Game_Screen.lls", 0);
+    DAT_0080ffe4 = 0;
+    // STRING: LEGOLAND 0x004bf28c
+    DAT_00798704 = LoadSprite("RegSaveSlotOn.lls", 4);
+    // STRING: LEGOLAND 0x004bf278
+    DAT_00798708 = LoadSprite("RegSaveOff_1.lls", 4);
+    // STRING: LEGOLAND 0x004bf264
+    DAT_0079870c = LoadSprite("RegSaveOff_2.lls", 4);
+    // STRING: LEGOLAND 0x004bf250
+    DAT_00798710 = LoadSprite("RegSaveOff_3.lls", 4);
+    // STRING: LEGOLAND 0x004bf23c
+    DAT_00798714 = LoadSprite("RegSaveOff_4.lls", 4);
+    // STRING: LEGOLAND 0x004bf228
+    DAT_00798718 = LoadSprite("RegSaveOff_5.lls", 4);
+    // STRING: LEGOLAND 0x004bf214
+    DAT_0079871c = LoadSprite("RegSaveOff_6.lls", 4);
+    // STRING: LEGOLAND 0x004bf200
+    DAT_00798720 = LoadSprite("RegSaveOff_7.lls", 4);
+    // STRING: LEGOLAND 0x004bf1ec
+    DAT_00798724 = LoadSprite("RegSaveOff_8.lls", 4);
+    // STRING: LEGOLAND 0x004bf1d8
+    DAT_00798728 = LoadSprite("SaveType_Normal.lls", 4);
+    // STRING: LEGOLAND 0x004bf1c4
+    DAT_0079872c = LoadSprite("SaveType_Free.lls", 4);
+    // STRING: LEGOLAND 0x004bf1b4
+    DAT_0079868c = LoadSprite("RegDeleteON.lls", 4);
+    // STRING: LEGOLAND 0x004bf104
+    DAT_00798690 = LoadSprite("RegDelete.lls", 4);
+    // STRING: LEGOLAND 0x004bf19c
+    DAT_007986b8 = LoadSprite("RegSaveDouble_PopUp.lls", 4);
+    // STRING: LEGOLAND 0x004bf188
+    DAT_00798730 = LoadSprite("RegCornerMask.lls", 4);
+
+    // STRING: LEGOLAND 0x004bf170
+    icon = (struct SaveScreenIcon *)LoadSpriteIcon("GoBack_on_SavedGame.lls", 4, 0x1c2, 0x13, 7);
+    icon->field_34 |= 0x6002;
+    if (DAT_007cb324) {
+        icon->field_2c = (void *)FUN_0048fb80;
+        icon->field_3c = 0x26;
+        icon->field_38 = GetString(0x26);
+    } else {
+        icon->field_2c = (void *)FUN_0048db10;
+        icon->field_3c = 0x28;
+        icon->field_38 = GetString(0x28);
+    }
+    DAT_006687c0 = (unsigned int)icon->field_2c;
+
+    if (!DAT_007cb328) {
+        // STRING: LEGOLAND 0x004bf15c
+        DAT_007986e0 = (unsigned int)LoadSpriteIcon("Accept_On_Save.lls", 4, 0x1dc, 0x142, 7);
+        ((struct SaveScreenIcon *)DAT_007986e0)->field_34 |= 0x2000;
+        ((struct SaveScreenIcon *)DAT_007986e0)->field_34 |= 0x4002;
+        ((struct SaveScreenIcon *)DAT_007986e0)->field_34 |= 0x400;
+        if (DAT_007cb310) {
+            ((struct SaveScreenIcon *)DAT_007986e0)->field_2c = (void *)FUN_0048f5a0;
+            ((struct SaveScreenIcon *)DAT_007986e0)->field_3c = 0x29;
+            ((struct SaveScreenIcon *)DAT_007986e0)->field_38 = GetString(0x29);
+        } else {
+            ((struct SaveScreenIcon *)DAT_007986e0)->field_2c = (void *)FUN_0048da50;
+            ((struct SaveScreenIcon *)DAT_007986e0)->field_3c = 0x2a;
+            ((struct SaveScreenIcon *)DAT_007986e0)->field_38 = GetString(0x2a);
+        }
+    } else {
+        // STRING: LEGOLAND 0x004bf15c
+        DAT_007986e0 = (unsigned int)LoadSpriteIcon("Accept_On_Save.lls", 4, 0x1dc, 0x142, 7);
+        ((struct SaveScreenIcon *)DAT_007986e0)->field_3c = 0x2b;
+        ((struct SaveScreenIcon *)DAT_007986e0)->field_38 = GetString(0x2b);
+        ((struct SaveScreenIcon *)DAT_007986e0)->field_34 |= 0x2000;
+        ((struct SaveScreenIcon *)DAT_007986e0)->field_34 |= 0x4002;
+        ((struct SaveScreenIcon *)DAT_007986e0)->field_34 |= 0x400;
+        ((struct SaveScreenIcon *)DAT_007986e0)->field_2c = (void *)FUN_0048d970;
+    }
+    DAT_006687bc = (unsigned int)((struct SaveScreenIcon *)DAT_007986e0)->field_2c;
+
+    FUN_0048d470();
+    DeleteSavedGameList();
+    LoadSavedGamesList(DAT_0080ffe3);
+
+    node = (struct SaveScreenNode *)DAT_00798734;
+    if (node) {
+        do {
+            if (node->has_header) {
+                icon = (struct SaveScreenIcon *)InsertIcon(0x51, (short)(node->slot * 38 + 0x6f), 7, GetSavePanelBK(node->slot));
+                icon->field_2c = (void *)FUN_0048e4a0;
+                icon->field_34 |= 0x4002;
+                icon->field_18 = node->name;
+                icon->field_1c = node->slot;
+                if (node->field_28 == 1) {
+                    icon->field_20 |= 3;
+                    icon->field_3c = 0x2c;
+                    icon->field_38 = GetString(0x2c);
+                } else {
+                    icon->field_20 |= 5;
+                    icon->field_3c = 0x2d;
+                    icon->field_38 = GetString(0x2d);
+                }
+            } else {
+                icon = (struct SaveScreenIcon *)InsertIcon(0x51, (short)(node->slot * 38 + 0x6f), 7, GetSavePanelBK(node->slot));
+                icon->field_3c = 0x2e;
+                icon->field_38 = GetString(0x2e);
+                icon->field_34 |= 0x6002;
+                icon->field_2c = (void *)FUN_0048e4f0;
+                // STRING: LEGOLAND 0x004befa0
+                icon->field_18 = "EMPTY";
+                icon->field_1c = node->slot;
+                icon->field_20 |= 1;
+            }
+            node = node->next;
+        } while (node);
+    }
+
+    DAT_007cb360 = (unsigned int)InsertIcon(0, 0, 7, DAT_00798690);
+    ((struct SaveScreenIcon *)DAT_007cb360)->field_3c = 5;
+    ((struct SaveScreenIcon *)DAT_007cb360)->field_38 = GetString(5);
+    ((struct SaveScreenIcon *)DAT_007cb360)->field_34 |= 0x2000;
+    ((struct SaveScreenIcon *)DAT_007cb360)->field_34 |= 0x4002;
+    ((struct SaveScreenIcon *)DAT_007cb360)->field_34 |= 0x400;
+    ((struct SaveScreenIcon *)DAT_007cb360)->field_2c = (void *)FUN_0048cc30;
+}
 
 // FUNCTION: LEGOLAND 0x0048d8f0
 LEGO_EXPORT int LoadDateIntoTempProfile(int a1, int a2) {
@@ -65,8 +224,8 @@ unsigned char FUN_0048d970(unsigned int a1, unsigned char flags) {
         FUN_00498920();
         DAT_006687b0 = 4;
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        if (LoadDateIntoTempProfile(DAT_0080ffa0.field_43, DAT_0080ffa0.field_44 & 0xff) != 0) {
-            DAT_0080ffa0.field_45 = DAT_007cad60.field_24;
+        if (LoadDateIntoTempProfile(DAT_0080ffe3, DAT_0080ffa0.field_44 & 0xff) != 0) {
+            DAT_0080ffe5 = DAT_007cad60.field_24;
             DAT_0080ffa0.field_20 = DAT_007cad60.field_20;
             DAT_0080ffa0.field_24 = DAT_007cad60.field_28;
             DAT_0080ffa0.field_28 = DAT_007cad60.field_2c;
@@ -98,7 +257,7 @@ unsigned char FUN_0048db10(int param1, unsigned char flags) {
 }
 
 // FUNCTION: LEGOLAND 0x0048db50
-LEGO_EXPORT void GetSavePanelBK(void) { STUB(); }
+LEGO_EXPORT struct Sprite *GetSavePanelBK(signed char slot) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048dbc0
 LEGO_EXPORT void KillSaveScreenSprites(void) {
@@ -241,21 +400,37 @@ void FUN_0048e420(void) {
 
 // FUNCTION: LEGOLAND 0x0048e450
 unsigned char FUN_0048e450(unsigned int a1, unsigned int a2) {
-    if ((a2 & 2) != 0 && DAT_0080ffa0.field_44 != 0) {
+    if ((a2 & 2) != 0 && DAT_0080ffe4 != 0) {
         CloseFontEndCheckBox();
         DAT_007986e4 = 0;
-        RemoveSaveGame(DAT_0080ffa0.field_44);
+        RemoveSaveGame(DAT_0080ffe4);
         DAT_0080ff84 = 0xffffffffu;
-        DAT_0080ffa0.field_44 = 0;
+        DAT_0080ffe4 = 0;
     }
     return 1;
 }
 
+struct SaveIcon {
+    unsigned char pad_0[0x1c];
+    unsigned char field_1c;
+};
+
+unsigned char FUN_0048e4f0(struct SaveIcon *icon, unsigned int a2, unsigned int a3, unsigned int a4);
+
 // FUNCTION: LEGOLAND 0x0048e4a0
-void FUN_0048e4a0(void) { STUB(); }
+unsigned char FUN_0048e4a0(struct SaveIcon *icon, unsigned int flags, unsigned int a3, unsigned int a4) {
+    if (DAT_004bef9c != 0 && (flags & 2)) {
+        if (DAT_007cb328 != 0) {
+            DAT_0080ffe4 = icon->field_1c;
+        } else {
+            return FUN_0048e4f0(icon, flags, a3, a4);
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0048e4f0
-void FUN_0048e4f0(void) { STUB(); }
+unsigned char FUN_0048e4f0(struct SaveIcon *icon, unsigned int a2, unsigned int a3, unsigned int a4) { STUB(); }
 
 struct EditSprite {
     unsigned char pad_0[0xc];
@@ -345,8 +520,25 @@ LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite) {
 // FUNCTION: LEGOLAND 0x0048e720
 void FUN_0048e720(void) { STUB(); }
 
+void FUN_0048d490(void);
+
 // FUNCTION: LEGOLAND 0x0048e810
-void FUN_0048e810(void) { STUB(); }
+unsigned char FUN_0048e810(struct IconNode *icon, unsigned char flags) {
+    FUN_0048e420();
+    if (icon == 0) {
+        icon = (struct IconNode *)DAT_007986dc;
+    }
+    FUN_0046d680(icon, DAT_00798680);
+    if (flags & 2) {
+        DAT_0080ffe4 = 0;
+        RemoveIconGroup(7);
+        InitSavedGameScreen();
+        DAT_00798700 = 0;
+        DAT_004bef9c = 1;
+        FUN_0048d490();
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0048e870
 LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void) {
@@ -354,26 +546,26 @@ LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void) {
     char save_path[256];
     void *file;
 
-    sprintf(save_path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffa0.field_43, DAT_0080ffa0.field_44 & 0xff);
+    sprintf(save_path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffe3, DAT_0080ffe4 & 0xff);
     FUN_00466360(0, 0);
     FUN_0047f810();
     if (SaveGame(save_path) == 0) {
         // STRING: LEGOLAND 0x004bf360
         FUN_00453ce0("Failed to save game %s", save_path);
-        DAT_0080ffa0.field_44 = 0;
+        DAT_0080ffe4 = 0;
         _rmdir(save_path);
         FUN_004663c0();
         return 0xff;
     }
     FUN_004663c0();
 
-    DAT_007cad60.field_24 = DAT_0080ffa0.field_45;
+    DAT_007cad60.field_24 = DAT_0080ffe5;
     DAT_007cad60.field_20 = DAT_0080ffa0.field_20;
     DAT_007cad60.field_28 = DAT_0080ffa0.field_24;
     DAT_007cad60.field_2c = DAT_0080ffa0.field_28;
     DAT_007cad60.field_30 = DAT_0080ffa0.field_2c;
 
-    sprintf(header_path, "profiles\\%dsave%d.sh", DAT_0080ffa0.field_43, DAT_0080ffa0.field_44 & 0xff);
+    sprintf(header_path, "profiles\\%dsave%d.sh", DAT_0080ffe3, DAT_0080ffe4 & 0xff);
     if (!Goto_ProfileDir()) {
         // STRING: LEGOLAND 0x004bf33c
         FUN_00453ce0("Failed to move to profile folder");
@@ -410,14 +602,14 @@ LEGO_EXPORT void RemoveSaveGame(unsigned char slot) {
     }
 
     // STRING: LEGOLAND 0x004b9164
-    sprintf(path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffa0.field_43, slot);
+    sprintf(path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffe3, slot);
     if (_rmdir(path) != 0) {
         // STRING: LEGOLAND 0x004bf3b0
         DBPrintf("Failed to delete saved game %s\n", path);
     }
 
     // STRING: LEGOLAND 0x004bf3a0
-    sprintf(path, "%s\\%dsave%d.sh", "profiles", DAT_0080ffa0.field_43, slot);
+    sprintf(path, "%s\\%dsave%d.sh", "profiles", DAT_0080ffe3, slot);
     if (_rmdir(path) != 0) {
         // STRING: LEGOLAND 0x004bf378
         DBPrintf("Failed to delete saved game Header %s\n", path);

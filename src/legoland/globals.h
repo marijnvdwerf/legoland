@@ -2341,6 +2341,8 @@ extern unsigned int DAT_007986f0;
 extern unsigned int DAT_007986f4;
 // 0x007986f8
 extern unsigned int DAT_007986f8;
+// 0x00798700
+extern unsigned int DAT_00798700;
 // 0x00798704
 extern struct Sprite *DAT_00798704;
 // 0x00798708
@@ -2890,8 +2892,14 @@ extern unsigned int DAT_0080ffc0;
 extern int DAT_0080ffc4;
 // 0x0080ffcc
 extern int DAT_0080ffcc;
+// 0x0080ffe3
+extern unsigned char DAT_0080ffe3;
+// 0x0080ffe4
+extern unsigned char DAT_0080ffe4;
 // 0x0080ffe5
 extern unsigned char DAT_0080ffe5;
+// 0x0080ffe6
+extern unsigned char DAT_0080ffe6[0xca];
 // 0x0080ffa0
 extern struct ScreenState DAT_0080ffa0;
 // 0x008100c0

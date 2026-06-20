@@ -61,7 +61,7 @@ unsigned char FUN_0048efd0(unsigned int param_1, unsigned int param_2) {
         FUN_00498920();
         DAT_006687b0 = 4;
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        if (DAT_0080ffa0.field_44 != 0) {
+        if (DAT_0080ffe4 != 0) {
             UpDateCurrentSaveSlotInfo();
         }
         DAT_00668e38 = 0;

@@ -3173,6 +3173,9 @@ unsigned int DAT_007986f4;
 // GLOBAL: LEGOLAND 0x007986f8
 unsigned int DAT_007986f8;
 
+// GLOBAL: LEGOLAND 0x00798700
+unsigned int DAT_00798700;
+
 // GLOBAL: LEGOLAND 0x00798704
 struct Sprite *DAT_00798704;
 
@@ -4000,8 +4003,17 @@ int DAT_0080ffc4;
 // GLOBAL: LEGOLAND 0x0080ffcc
 int DAT_0080ffcc;
 
+// GLOBAL: LEGOLAND 0x0080ffe3
+unsigned char DAT_0080ffe3;
+
+// GLOBAL: LEGOLAND 0x0080ffe4
+unsigned char DAT_0080ffe4;
+
 // GLOBAL: LEGOLAND 0x0080ffe5
 unsigned char DAT_0080ffe5;
+
+// GLOBAL: LEGOLAND 0x0080ffe6
+unsigned char DAT_0080ffe6[0xca];
 
 // GLOBAL: LEGOLAND 0x0080ffa0
 struct ScreenState DAT_0080ffa0;

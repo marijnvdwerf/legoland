@@ -20,6 +20,9 @@
 
 #pragma intrinsic(memset, memcpy, strcpy, strlen)
 
+void RemoveIconGroup(unsigned short group);
+void CloseFontEndCheckBox(void);
+
 struct ProfileSprite {
     unsigned char pad_0[0xc];
     short field_c;
@@ -170,18 +173,18 @@ LEGO_EXPORT char UpDateCurrentSaveSlotInfo(void) {
     void *stream;
 
     memset(&temp, 0, 0x110);
-    if (LoadDateIntoTempProfile(DAT_0080ffa0.field_43, DAT_0080ffa0.field_44 & 0xff) == 0) {
+    if (LoadDateIntoTempProfile(DAT_0080ffe3, DAT_0080ffe4 & 0xff) == 0) {
         return -1;
     }
     strcpy((char *)&temp, (char *)&DAT_007cad60);
     temp.field_28 = DAT_0080ffa0.field_24;
     temp.field_2c = DAT_0080ffa0.field_28;
     temp.field_30 = DAT_0080ffa0.field_2c;
-    temp.field_24 = DAT_0080ffa0.field_45;
+    temp.field_24 = DAT_0080ffe5;
     if (Goto_ProfileDir() == 0) {
         return -1;
     }
-    sprintf(path, "profiles\\%dsave%d.sh", DAT_0080ffa0.field_43, DAT_0080ffa0.field_44 & 0xff);
+    sprintf(path, "profiles\\%dsave%d.sh", DAT_0080ffe3, DAT_0080ffe4 & 0xff);
     stream = fopen(path, "w+");
     if (stream == 0) {
         printf("\ncannot open output file");
@@ -209,12 +212,12 @@ LEGO_EXPORT char UpDateCurrentProfile(void) {
     temp.field_3c = *(int *)&DAT_0080ffa0.field_34[8];
     temp.field_40 = *(short *)&DAT_0080ffa0.field_34[12];
     temp.field_42 = DAT_0080ffa0.field_34[14];
-    memcpy(temp.field_43, DAT_0080ffa0.gap_46, 200);
+    memcpy(temp.field_43, DAT_0080ffe6, 200);
     *(int *)&temp.field_10b = *(int *)&DAT_0080ffa0.field_30[0];
     if (Goto_ProfileDir() == 0) {
         return -1;
     }
-    sprintf(path, "profiles\\Profile%d.txt", DAT_0080ffa0.field_43);
+    sprintf(path, "profiles\\Profile%d.txt", DAT_0080ffe3);
     stream = fopen(path, "w+");
     if (stream == 0) {
         printf("\ncannot open output file");
@@ -267,7 +270,7 @@ LEGO_EXPORT char SaveProfileToDisk(void) {
     if (Goto_ProfileDir() == 0) {
         return -1;
     }
-    sprintf(path, "profiles\\Profile%d.txt", DAT_0080ffa0.field_43);
+    sprintf(path, "profiles\\Profile%d.txt", DAT_0080ffe3);
     stream = fopen(path, "w+");
     if (stream == 0) {
         printf("\ncannot open output file");
@@ -504,7 +507,16 @@ unsigned char FUN_00491f90(struct RideState *state, unsigned char flags) {
 }
 
 // FUNCTION: LEGOLAND 0x004920a0
-void FUN_004920a0(void) { STUB(); }
+char FUN_004920a0(unsigned int param1, unsigned char flags) {
+    if ((flags & 0x2) != 0 && (void *)ScanForProfiles != 0) {
+        RemoveIconGroup(0x15);
+        CloseFontEndCheckBox();
+        DAT_0080ff84 = 0xffffffff;
+        DAT_007986e8 = 0;
+        DAT_0080ffe3 = 0;
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004920e0
 struct ProfileObj *FUN_004920e0(void) {
