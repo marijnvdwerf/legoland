@@ -77,8 +77,8 @@ int FUN_004771f0(char *filename, unsigned int param_2, int param_3);
  * with unspecified params (K&R) so callers don't get a forced-prototype mismatch
  * (C4020 / int-conversion) and codegen is preserved. Set real signatures when
  * these get decompiled. */
-void *FUN_004775b0();
-void FUN_004775d0();
+void *FUN_004775b0(unsigned int size);
+void FUN_004775d0(void *param);
 LEGO_EXPORT void DisableSidePanelIcons(void);
 LEGO_EXPORT void EnableSidePanelIcons(void);
 LEGO_EXPORT void ListChildrenBar(void *node, int group, short x, short y);

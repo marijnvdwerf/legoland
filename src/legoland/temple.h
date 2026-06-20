@@ -2,4 +2,7 @@
 
 #include "legoland.h"
 
-void FUN_00416e50();
+struct CallbackTable;
+struct ClassNode;
+
+void FUN_00416e50(struct ClassNode *str, struct CallbackTable *obj);

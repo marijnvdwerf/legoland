@@ -1,5 +1,8 @@
 #pragma once
 
+struct CallbackTable;
+struct ClassNode;
+
 struct BarrelNode {
     struct BarrelNode *next;
     unsigned short field_4;
@@ -18,4 +21,4 @@ struct BarrelNode {
 void FUN_0043c2f0(struct BarrelNode *node);
 void FUN_0043c950(void);
 
-void FUN_0043c760();
+void FUN_0043c760(struct ClassNode *str, struct CallbackTable *ride);

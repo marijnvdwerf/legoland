@@ -2,6 +2,8 @@
 
 #include "legoland.h"
 
+struct BalloonRideObj;
+
 struct Bloke;
 
 /* Balloonz ride passenger node (one 0x20 allocation), head at DAT_00616060.
@@ -19,12 +21,12 @@ void FUN_0042a9b0(struct BalloonNode *param_1);
 void FUN_0042a9f0(void);
 int FUN_0042aa60(char param_1, char param_2);
 
-void FUN_0042a7b0();
-void FUN_0042a950();
-void FUN_0042aa10();
-void FUN_0042aa90();
+void FUN_0042a7b0(struct BalloonRideObj *param_1);
+void FUN_0042a950(unsigned int param_1, unsigned char *param_2);
+void FUN_0042aa10(struct BalloonRideObj *param_1, unsigned int param_2, unsigned int param_3);
+void FUN_0042aa90(struct BalloonRideObj *param_1);
 unsigned int * FUN_0042b2a0(struct BalloonRideObj *arg1, unsigned short arg2);
-void FUN_0042b2e0();
+void FUN_0042b2e0(struct BalloonRideObj *param_1, void *param_2, void *param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6);
 void FUN_0042b9d0();
 void FUN_0042ba40();
 unsigned int FUN_0042ba80(void);

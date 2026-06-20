@@ -56,12 +56,12 @@ unsigned int FUN_0042d3e0(struct EarthBlokeElem *param_1, struct EarthBlokeElem 
 struct EarthBlokeElem *FUN_0042d540(struct EarthBlokeElem *param_1, unsigned int param_2);
 void FUN_0042d5f0(void);
 
-void FUN_0042d070();
-void FUN_0042d100();
-void FUN_0042d1f0();
+void FUN_0042d070(struct EarthRideObj *param_1, unsigned int param_2, unsigned int param_3, unsigned char *param_4, unsigned int param_5, unsigned int param_6);
+void FUN_0042d100(struct EarthRideObj *param_1);
+void FUN_0042d1f0(struct EarthRideObj *arg1);
 void FUN_0042d230();
-void FUN_0042d270();
-void FUN_0042d2c0();
+void FUN_0042d270(struct EarthRideObj *param_1, unsigned int param_2, unsigned int param_3);
+void FUN_0042d2c0(unsigned int param_1, unsigned char *param_2);
 int FUN_0042d2f0(void);
 int FUN_0042d400(void);
-void FUN_0042d610();
+void FUN_0042d610(struct EarthRideObj *param_1);

@@ -1,5 +1,7 @@
 #pragma once
 
+struct PumpSource;
+
 struct PumpNode {
     unsigned char pad_0[2];
     unsigned short var_2;
@@ -13,7 +15,7 @@ void FUN_00411b20(struct PumpNode *node);
 void FUN_00411ba0(unsigned short param_1);
 void FUN_00411bd0(void);
 
-void FUN_00411a10();
+void FUN_00411a10(struct PumpSource *param_1);
 void FUN_00411a20();
 void FUN_00411bf0();
 void FUN_00411c70();
