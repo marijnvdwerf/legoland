@@ -17,7 +17,9 @@ struct CatapultNode {
 };
 
 struct CatapultItem {
-    unsigned char pad_0[8];
+    unsigned char field_0;
+    unsigned char field_1;
+    unsigned char pad_2[6];
     unsigned int field_8;
     unsigned char pad_c[1];
     signed char field_d;
@@ -98,7 +100,20 @@ void FUN_00403250(void) {
 void FUN_00403270(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00403430
-void FUN_00403430(void) { STUB(); }
+void FUN_00403430(struct CatapultItem *node) {
+    struct SampleParams params;
+
+    if (node->field_8 != 0) {
+        return;
+    }
+
+    node->field_8 = 1;
+    node->field_d = 0;
+    params.field_0 = 2;
+    params.field_8 = node->field_0;
+    params.field_c = node->field_1;
+    PlayInstanceOfSample(*(void **)(Catapult_SFX + 0x2c), 0, 1, &params);
+}
 
 // FUNCTION: LEGOLAND 0x00403480
 void FUN_00403480(struct CatapultItem *item) {
