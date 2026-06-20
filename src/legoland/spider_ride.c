@@ -4,7 +4,9 @@
 #include "legoland.h"
 
 #include "binv.h"
+#include "gamemap.h"
 #include "llidb.h"
+#include "map_object.h"
 #include "objclass.h"
 #include "sound_music.h"
 #include "spider_ride.h"
@@ -35,6 +37,21 @@ struct CarNode {
     /* 0x18 */ unsigned int field_18;
     /* 0x1c */ unsigned char pad_1c[0x48];
     /* 0x64 */ struct CarNode *next;
+};
+
+struct SlotBloke {
+    unsigned char pad_0[0x36];
+    unsigned char field_36;
+};
+
+struct SlotOwner {
+    unsigned char pad_0[8];
+    struct SlotBloke *field_8;
+};
+
+struct SlotArray {
+    unsigned char pad_0[0x1c];
+    unsigned char slots[1];
 };
 
 #include "image_sprite.h"
@@ -127,7 +144,12 @@ void FUN_00415fd0(struct CarNode *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00416060
-void FUN_00416060(void) { STUB(); }
+void FUN_00416060(void) {
+    EditMode = 1;
+    DAT_008119b8 = (void *)DAT_004cbf20;
+    DefaultCursor(&EditCursor);
+    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+}
 
 // FUNCTION: LEGOLAND 0x004160a0
 void FUN_004160a0(void) { STUB(); }
@@ -180,7 +202,23 @@ void FUN_00416310(void) {
 void FUN_00416330(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00416830
-void FUN_00416830(void) { STUB(); }
+int FUN_00416830(struct SlotOwner *owner, struct SlotArray *arr, signed char count) {
+    int n = count;
+    int i = rand() % n;
+
+    if (arr->slots[i] != 0) {
+        do {
+            i++;
+            if (i >= n) {
+                i = 0;
+            }
+        } while (arr->slots[i] != 0);
+    }
+
+    arr->slots[i] = 1;
+    owner->field_8->field_36 = (unsigned char)(i + 1);
+    return i + 1;
+}
 
 // FUNCTION: LEGOLAND 0x00416880
 LEGO_EXPORT int SaveSpider(void) {
