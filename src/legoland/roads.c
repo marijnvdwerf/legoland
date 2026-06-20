@@ -69,6 +69,7 @@ struct NeighborResult {
 };
 
 void FUN_00412680(int x, int y, int param_3, int param_4);
+void FUN_00411b20(struct PumpNode *node);
 
 // FUNCTION: LEGOLAND 0x004132a0
 void FUN_004132a0(unsigned short param_1, int param_2, int param_3, unsigned int param_4, unsigned int param_5) {
@@ -107,7 +108,35 @@ void FUN_004132a0(unsigned short param_1, int param_2, int param_3, unsigned int
 }
 
 // FUNCTION: LEGOLAND 0x004133e0
-void FUN_004133e0(int param_1, int param_2) { STUB(); }
+void FUN_004133e0(int param_1, int param_2) {
+    struct RoadQueueEntry *entry = (struct RoadQueueEntry *)FUN_004125a0(param_1, param_2);
+    struct PumpNode *pump;
+    struct RoadQueueEntry *next;
+    struct RoadQueueEntry *cur;
+
+    if (entry == NULL) {
+        return;
+    }
+
+    next = entry->next;
+    pump = FUN_00411aa0(entry->x - 1, entry->y + 1);
+    if (pump != NULL) {
+        FUN_00411b20(pump);
+    }
+
+    free(entry);
+
+    if (entry == (struct RoadQueueEntry *)DAT_004cbeac) {
+        DAT_004cbeac = (struct RideQueueEntry *)next;
+        return;
+    }
+
+    cur = (struct RoadQueueEntry *)DAT_004cbeac;
+    while (cur->next != entry) {
+        cur = cur->next;
+    }
+    cur->next = next;
+}
 
 // FUNCTION: LEGOLAND 0x00413450
 void FUN_00413450(void) { STUB(); }
