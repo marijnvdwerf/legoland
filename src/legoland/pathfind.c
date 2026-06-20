@@ -36,8 +36,8 @@ struct PathBox {
 struct DirNode {
     struct DirNode *next;
     unsigned char pad_4[4];
-    unsigned int x;
-    unsigned int y;
+    int x;
+    int y;
 };
 
 struct ObjData {
@@ -150,7 +150,7 @@ void FUN_004821e0(void) {
     struct DirNode *node;
     struct DirNode *next;
 
-    node = (struct DirNode *)DAT_0066b450;
+    node = DAT_0066b450;
     while (node != NULL) {
         next = node->next;
         free(node);
@@ -164,7 +164,7 @@ void FUN_00482210(void) {
     struct DirNode *node;
     struct DirNode *next;
 
-    node = (struct DirNode *)DAT_0066b458;
+    node = DAT_0066b458;
     while (node != NULL) {
         next = node->next;
         free(node);
@@ -174,7 +174,7 @@ void FUN_00482210(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00482240
-void FUN_00482240(void) { STUB(); }
+void FUN_00482240(int x, int y, struct DirNode *parent) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482300
 struct DirNode *FUN_00482300(unsigned int x, unsigned int y) {
@@ -194,16 +194,124 @@ struct DirNode *FUN_00482300(unsigned int x, unsigned int y) {
 void FUN_00482330(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482430
-void FUN_00482430(void) { STUB(); }
+int FUN_00482430(void) { STUB(); return 0; }
 
 // FUNCTION: LEGOLAND 0x004824d0
-LEGO_EXPORT int PTPSuggestNextMove(int *param_1, int *param_2, int *param_3) { STUB(); }
+LEGO_EXPORT int PTPSuggestNextMove(int *param_1, int *param_2, int *param_3) {
+    int start_x;
+    int start_y;
+    int goal_x;
+    int goal_y;
+    int wave;
+    struct DirNode *node;
+
+    start_x = param_1[0] >> 8;
+    start_y = param_1[1] >> 8;
+    goal_x = param_2[0] >> 8;
+    goal_y = param_2[1] >> 8;
+
+    FUN_004821e0();
+    FUN_00482210();
+    FUN_004821c0();
+
+    DAT_00669250 = 0;
+    DAT_0066b454 = 0;
+    FUN_00482240(start_x, start_y, 0);
+
+    wave = DAT_00669250;
+    while (wave != 0) {
+        node = DAT_0066b450;
+        DAT_00669250 = 0;
+        while (wave != 0) {
+            wave--;
+            if (node->x == goal_x && node->y == goal_y) {
+                DAT_0066b454 = node;
+                if (FUN_00482430()) {
+                    param_3[0] = param_2[0];
+                    param_3[1] = param_2[1];
+                    FUN_004821e0();
+                    FUN_00482210();
+                    return 2;
+                }
+                param_3[0] = (DAT_0066b458->x << 8) + 0x80;
+                param_3[1] = (DAT_0066b458->y << 8) + 0x80;
+                FUN_004821e0();
+                FUN_00482210();
+                return 1;
+            }
+            FUN_00482240(node->x, node->y - 1, node);
+            FUN_00482240(node->x + 1, node->y, node);
+            FUN_00482240(node->x, node->y + 1, node);
+            FUN_00482240(node->x - 1, node->y, node);
+            node = node->next;
+        }
+        wave = DAT_00669250;
+    }
+
+    FUN_004821e0();
+    FUN_00482210();
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00482620
-void FUN_00482620(void) { STUB(); }
+void FUN_00482620(int x, int y, struct DirNode *parent) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482710
-int FUN_00482710(int *a, int *b, int *out) { STUB(); }
+int FUN_00482710(int *a, int *b, int *out) {
+    int start_x;
+    int start_y;
+    int goal_x;
+    int goal_y;
+    int wave;
+    struct DirNode *node;
+
+    start_x = a[0] >> 8;
+    start_y = a[1] >> 8;
+    goal_x = b[0] >> 8;
+    goal_y = b[1] >> 8;
+
+    FUN_004821e0();
+    FUN_00482210();
+    FUN_004821c0();
+
+    DAT_00669250 = 0;
+    DAT_0066b454 = 0;
+    FUN_00482620(start_x, start_y, 0);
+
+    wave = DAT_00669250;
+    while (wave != 0) {
+        node = DAT_0066b450;
+        DAT_00669250 = 0;
+        while (wave != 0) {
+            wave--;
+            if (node->x == goal_x && node->y == goal_y) {
+                DAT_0066b454 = node;
+                if (FUN_00482430()) {
+                    out[0] = b[0];
+                    out[1] = b[1];
+                    FUN_004821e0();
+                    FUN_00482210();
+                    return 2;
+                }
+                out[0] = (DAT_0066b458->x << 8) + 0x80;
+                out[1] = (DAT_0066b458->y << 8) + 0x80;
+                FUN_004821e0();
+                FUN_00482210();
+                return 1;
+            }
+            FUN_00482620(node->x, node->y - 1, node);
+            FUN_00482620(node->x + 1, node->y, node);
+            FUN_00482620(node->x, node->y + 1, node);
+            FUN_00482620(node->x - 1, node->y, node);
+            node = node->next;
+        }
+        wave = DAT_00669250;
+    }
+
+    FUN_004821e0();
+    FUN_00482210();
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00482860
 unsigned int FUN_00482860(void) {
