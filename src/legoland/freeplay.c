@@ -59,10 +59,34 @@ unsigned int FUN_0048aef0(unsigned int arg1, struct ElemRecord *arg2) {
 }
 
 // FUNCTION: LEGOLAND 0x0048af40
-void FUN_0048af40(void) { STUB(); }
+void FUN_0048af40(unsigned int param) {
+    struct ClipQueryResult *node;
+
+    node = 0;
+    DAT_007cb3a0 += FUN_0048a840(param, &node);
+    if (node != 0) {
+        node->field_c = 1;
+    }
+
+    if (DAT_00798650++ == 0) {
+        DAT_0079864c->field_34 &= ~0x400u;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0048afa0
-void FUN_0048afa0(void) { STUB(); }
+void FUN_0048afa0(unsigned int param) {
+    struct ClipQueryResult *node;
+
+    node = 0;
+    DAT_007cb3a0 -= FUN_0048a840(param, &node);
+    if (node != 0) {
+        node->field_c = 0;
+    }
+
+    if (--DAT_00798650 == 0) {
+        DAT_0079864c->field_34 |= 0x400;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0048b000
 void FUN_0048b000(void) { STUB(); }
