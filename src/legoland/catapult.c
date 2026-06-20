@@ -63,6 +63,23 @@ struct CatapultRideNode {
     unsigned int flags[4];
 };
 
+struct ChainNode {
+    struct ChainNode *next;
+};
+
+struct CatapultRide {
+    unsigned char pad_0[0xcc];
+    struct ChainNode *chain;
+};
+
+struct CatapultLoadNode {
+    unsigned int field_0;
+    struct CatapultLoadNode *next;
+    unsigned char pad_8[8];
+    struct ChainNode *slots[4];
+    unsigned char pad_20[0x3c - 0x20];
+};
+
 struct CatapultEdit {
     unsigned char field_0;
     unsigned char pad_1[3];
@@ -312,7 +329,52 @@ LEGO_EXPORT int Catapult_Save(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00403af0
-LEGO_EXPORT void Catapult_Load(void) { STUB(); }
+LEGO_EXPORT int Catapult_Load(void) {
+    unsigned int header;
+    struct CatapultLoadNode *prev = NULL;
+    struct CatapultLoadNode *node;
+    struct ChainNode *chain;
+    unsigned int count;
+    int i;
+
+    if (SaveGameRead(&header, 4) == 0) {
+        return 0;
+    }
+
+    while (header != 0) {
+        node = (struct CatapultLoadNode *)malloc(0x3c);
+        if (SaveGameRead(node, 0x3c) == 0) {
+            return 0;
+        }
+
+        node->next = NULL;
+        if (prev != NULL) {
+            prev->next = node;
+        } else {
+            DAT_004c1118 = (struct CatapultNode *)node;
+        }
+        prev = node;
+
+        for (i = 0; i < 4; i++) {
+            count = (unsigned int)node->slots[i];
+            chain = ((struct CatapultRide *)DAT_004c10f4)->chain;
+            if (count != 0) {
+                while (--count != 0) {
+                    chain = chain->next;
+                }
+                node->slots[i] = chain;
+            } else {
+                node->slots[i] = NULL;
+            }
+        }
+
+        if (SaveGameRead(&header, 4) == 0) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00403bb0
 void FUN_00403bb0(struct ClassNode *name, struct CallbackTable *ci) {
