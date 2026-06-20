@@ -842,6 +842,8 @@ extern struct Sprite *DAT_004c11cc;
 extern unsigned int DAT_004c11dc;
 // 0x004c11e4
 extern struct Sprite *DAT_004c11e4;
+// 0x004c11e8
+extern void *DAT_004c11e8;
 // 0x004c11f0
 extern void *DAT_004c11f0;
 // 0x004c11f4

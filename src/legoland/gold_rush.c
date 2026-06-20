@@ -37,15 +37,46 @@ struct GoldRandItem {
 };
 
 struct GoldNode {
-    unsigned char pad_0[0xc];
+    unsigned short key;
+    unsigned char pad_2[0xa];
     struct GoldNode *next;
     unsigned char pad_10[0x1c];
 };
 
+struct GoldObj {
+    unsigned char pad_0[0xc];
+    struct GoldInner *inner;
+};
+
+struct GoldInner {
+    unsigned char pad_0[0x1c];
+    unsigned int flags;
+    unsigned char pad_20[0x44];
+    struct GoldLayer *layer;
+};
+
+struct GoldLayer {
+    unsigned char pad_0[0x10];
+    unsigned int flags;
+};
+
 #include "image_sprite.h"
 
+// GLOBAL: LEGOLAND 0x004b45e0
+static struct PathPair Gold_PathPairs[5] = {{-2, 0}, {0, -6}, {-6, 0}, {0, 1}, {3, 0}};
+// GLOBAL: LEGOLAND 0x004b4608
+struct PathTable DAT_004b4608 = {5, Gold_PathPairs};
+
 // FUNCTION: LEGOLAND 0x00406920
-void FUN_00406920(void) { STUB(); }
+void FUN_00406920(struct GoldNode *src) {
+    struct GoldNode *node = (struct GoldNode *)malloc(0x2c);
+    if (node != NULL) {
+        memset(node, 0, 0x2c);
+        node->key = src->key;
+        node->next = DAT_004c1204;
+        DAT_004c1204 = node;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00406960
 void FUN_00406960(struct GoldNode *node) { STUB(); }
@@ -61,7 +92,27 @@ void FUN_004069c0(void) {
 void *FUN_004069e0(void *param) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00406a10
-void FUN_00406a10(void) { STUB(); }
+void FUN_00406a10(struct GoldObj *obj) {
+    struct GoldInner *inner = obj->inner;
+    DAT_004c11f0 = inner;
+    if (inner != NULL) {
+        inner->flags |= 0x20;
+        if (((struct GoldInner *)DAT_004c11f0)->layer != NULL) {
+            ((struct GoldInner *)DAT_004c11f0)->layer->flags |= 0x2000;
+            DAT_004c11e8 = ((struct GoldInner *)DAT_004c11f0)->layer;
+        }
+    }
+
+    DAT_004c11e4 = (struct Sprite *)FUN_00412100(&DAT_004b4608);
+    // STRING: LEGOLAND 0x004b465c
+    DAT_004c11f8 = LoadSprite("goldwashmatte1.lls", 1);
+    // STRING: LEGOLAND 0x004b464c
+    DAT_004c11fc = LoadSprite("goldwash.lls", 1);
+    // STRING: LEGOLAND 0x004b4638
+    DAT_004c1200 = LoadSprite("goldwashmatte2.lls", 1);
+    // STRING: LEGOLAND 0x004b4628
+    DAT_004c11f4 = LoadSprite("goldmask.lls", 1);
+}
 
 // FUNCTION: LEGOLAND 0x00406ab0
 void FUN_00406ab0(void) {
