@@ -44,6 +44,12 @@ struct CatapultInner {
     unsigned int field_10;
 };
 
+// SFX list table (Catapult_SFX); Load_FXList fills the sample-def slots.
+struct CatapultFX {
+    /* 0x00 */ unsigned char pad_0[8];
+    /* 0x08 */ void *field_8[(0x70 - 8) / 4];
+};
+
 struct CatapultSub {
     unsigned char pad_0[0x3a];
     unsigned short field_3a;
@@ -159,7 +165,7 @@ void FUN_00403430(struct CatapultItem *node) {
     params.field_0 = 2;
     params.field_8 = node->field_0;
     params.field_c = node->field_1;
-    PlayInstanceOfSample(*(void **)(Catapult_SFX + 0x2c), 0, 1, &params);
+    PlayInstanceOfSample(((struct CatapultFX *)Catapult_SFX)->field_8[9], 0, 1, &params);
 }
 
 // FUNCTION: LEGOLAND 0x00403480
@@ -176,7 +182,7 @@ void FUN_00403480(struct CatapultItem *item) {
 // FUNCTION: LEGOLAND 0x004034c0
 void FUN_004034c0(unsigned char *data, unsigned int index) {
     struct SampleParams params;
-    void **samples = (void **)(Catapult_SFX + 8);
+    struct CatapultFX *fx = (struct CatapultFX *)Catapult_SFX;
 
     if (data[index + 0x20] != 0) {
         return;
@@ -189,7 +195,7 @@ void FUN_004034c0(unsigned char *data, unsigned int index) {
     params.field_c = data[1];
     {
         int r = rand() % 3;
-        PlayInstanceOfSample(samples[r * 3], 0, 1, &params);
+        PlayInstanceOfSample(fx->field_8[r * 3], 0, 1, &params);
     }
 }
 
