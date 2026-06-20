@@ -1,9 +1,12 @@
+#include <stdlib.h>
 #include <string.h>
 #include "legoland.h"
 
 #include "binv.h"
+#include "gamemap.h"
 #include "globals.h"
 #include "llidb.h"
+#include "map_object.h"
 #include "render3d.h"
 #include "objclass.h"
 
@@ -36,6 +39,40 @@ struct SaveNode {
     unsigned char pad_0[8];
     struct SaveNode *var_8;
     unsigned char pad_c[0x14];
+};
+
+struct BlokeRender {
+    unsigned char pad_0[0x2c];
+    unsigned int field_2c;
+    unsigned int field_30;
+};
+
+struct BNVPath {
+    unsigned int field_0;
+    unsigned int field_4;
+};
+
+struct BlokeData {
+    unsigned char pad_0[0x54];
+    struct BNVPath *path;
+};
+
+struct RideNode {
+    struct RideNode *next;
+    unsigned char pad_4[0x8 - 0x4];
+    struct BlokeData *bloke;
+    unsigned char pad_c[0x10 - 0xc];
+    struct BlokeRender *render;
+};
+
+struct Ride {
+    unsigned char pad_0[0xcc];
+    struct RideNode *blokes;
+};
+
+struct SlideObject {
+    unsigned char pad_0[0xc];
+    struct Ride *ride;
 };
 
 #include "image_sprite.h"
@@ -77,7 +114,12 @@ void FUN_00417200(struct TempleRide *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00417240
-void FUN_00417240(void) { STUB(); }
+void FUN_00417240(void) {
+    EditMode = 1;
+    DAT_008119b8 = (void *)DAT_004cbf80;
+    DefaultCursor(&EditCursor);
+    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+}
 
 // FUNCTION: LEGOLAND 0x00417280
 void FUN_00417280(void) { STUB(); }
@@ -152,7 +194,54 @@ LEGO_EXPORT int SaveTempleSlide(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00417930
-LEGO_EXPORT void LoadTempleSlide(void) { STUB(); }
+LEGO_EXPORT int LoadTempleSlide(struct SlideObject *obj) {
+    struct Ride *ride = obj->ride;
+    struct SaveNode *last = NULL;
+    struct RideNode *node;
+    unsigned int marker;
+
+    if (!SaveGameRead(&marker, 4)) {
+        return 0;
+    }
+
+    while (marker != 0) {
+        struct SaveNode *save = (struct SaveNode *)malloc(0x20);
+        if (!SaveGameRead(save, 0x20)) {
+            return 0;
+        }
+        save->var_8 = NULL;
+        if (last != NULL) {
+            last->var_8 = save;
+        } else {
+            DAT_004cbfd4 = save;
+        }
+        last = save;
+        if (!SaveGameRead(&marker, 4)) {
+            return 0;
+        }
+    }
+
+    for (node = ride->blokes; node != NULL; node = node->next) {
+        struct BlokeRender *render = node->render;
+        struct BlokeData *bloke;
+        struct BNVPath *path;
+
+        if (render->field_30 != 0) {
+            render->field_2c = DAT_004cbfcc[render->field_30];
+        } else {
+            render->field_2c = 0;
+            node->render->field_30 = 0;
+        }
+
+        bloke = node->bloke;
+        path = bloke->path;
+        if (path != NULL) {
+            path->field_0 = DAT_004cbfb8[path->field_4];
+        }
+    }
+
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00417a00
 LEGO_EXPORT void TempleSlide_GetInterfaces(struct ClassNode *ctx, struct CallbackTable *interfaces) {
