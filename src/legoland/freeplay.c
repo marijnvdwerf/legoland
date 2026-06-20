@@ -29,11 +29,24 @@ struct GameListNode {
     unsigned int field_1c;
 };
 
+// LLIDB element fields read by InitFreePlayScreen (real Element is opaque).
+struct FreePlayElement {
+    unsigned char pad_0[8];
+    unsigned int flags;
+    unsigned char pad_c[4];
+    unsigned int counter;
+};
+
 struct NerpsArg;
 
 void FUN_004663f0(void);
 int FUN_00478b20(unsigned int arg);
 void FUN_00469900(struct NerpsArg *object, unsigned int a, unsigned int b);
+
+void FUN_0047c6a0(struct FreePlayElement *obj);
+int RenderFreePlayBar(struct IconNode *node);
+void FUN_0048a790(void);
+unsigned char FUN_0048fb80(unsigned int p1, unsigned int p2, unsigned int p3, unsigned int p4);
 
 unsigned int FUN_00499380(void);
 void FUN_00499410(void);
@@ -52,10 +65,103 @@ void FUN_00458bb0(unsigned int param_1);
 void FUN_004993c0(void);
 void UpdateSoundVols(void);
 
+char *GetString(int n);
+unsigned char FUN_0048ac60(unsigned int p1, unsigned int p2);
+LEGO_EXPORT void InitFreePlayLists(void);
+LEGO_EXPORT unsigned int FreePlayObjectList(int a, int b, int c, int d, int e);
+void FUN_0048b6c0(void);
+
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0048a8a0
-LEGO_EXPORT void InitFreePlayScreen(void) { STUB(); }
+LEGO_EXPORT void InitFreePlayScreen(void) {
+    struct SpriteIcon *icon;
+    struct SpriteIcon *bar;
+    struct FreePlayElement *elem;
+    unsigned int path_idx;
+    unsigned int count;
+    unsigned int i;
+
+    DAT_00668e38 = 0;
+    FUN_0048b6c0();
+    DAT_007cb3a0 = 0;
+    DAT_00798650 = 0;
+
+    // STRING: LEGOLAND 0x004beb34
+    SPRITE_TitleScreenBk = LoadSprite("FreePlayScreenBK.lls", 0);
+    // STRING: LEGOLAND 0x004beb24
+    DAT_007cb3b4 = LoadSprite("FP_Down1.lls", 4);
+    // STRING: LEGOLAND 0x004beb14
+    DAT_007cb3ac = LoadSprite("FP_Down2.lls", 4);
+    // STRING: LEGOLAND 0x004beb04
+    DAT_007cb3b0 = LoadSprite("FP_Down3.lls", 4);
+    // STRING: LEGOLAND 0x004beaf4
+    DAT_007cb3a8 = LoadSprite("FP_Down4.lls", 4);
+    // STRING: LEGOLAND 0x004beae8
+    DAT_007cb3c4 = LoadSprite("FP_Up1.lls", 4);
+    // STRING: LEGOLAND 0x004beadc
+    DAT_007cb3c0 = LoadSprite("FP_Up2.lls", 4);
+    // STRING: LEGOLAND 0x004bead0
+    DAT_007cb3cc = LoadSprite("FP_Up3.lls", 4);
+    // STRING: LEGOLAND 0x004beac4
+    DAT_007cb3c8 = LoadSprite("FP_Up4.lls", 4);
+    // STRING: LEGOLAND 0x004beab0
+    DAT_007cb398 = LoadSprite("FreePlay_Tick.lls", 4);
+    // STRING: LEGOLAND 0x004beaa0
+    DAT_007cb3d4 = LoadSprite("FP_Cover.lls", 4);
+
+    // STRING: LEGOLAND 0x004bea88
+    icon = LoadSpriteIcon("GoBack_on_FreePlay.lls", 4, 0xd, 0x137, 7);
+    icon->field_3c = 0x26;
+    icon->field_38 = GetString(0x26);
+    icon->field_34 |= 0x6002;
+    icon->event_handler = (unsigned char (*)(unsigned int, unsigned int))FUN_0048fb80;
+    DAT_006687c0 = (unsigned int)FUN_0048fb80;
+
+    // STRING: LEGOLAND 0x004bea70
+    icon = LoadSpriteIcon("Accept_On_FreePlay.lls", 4, 0x1e4, 0x14b, 7);
+    icon->field_3c = 0x32;
+    icon->field_38 = GetString(0x32);
+    icon->field_34 |= 0x6002;
+    icon->event_handler = FUN_0048ac60;
+    DAT_006687bc = (unsigned int)FUN_0048ac60;
+    icon->field_34 |= 0x400;
+    DAT_0079864c = icon;
+
+    // STRING: LEGOLAND 0x004bea60
+    bar = LoadSpriteIcon("Bar_Rides.lls", 4, 0xd1, 0x156, 7);
+    bar->field_28 = (void *)RenderFreePlayBar;
+    bar->field_34 |= 0x400a;
+
+    count = LLIDB_GetCount();
+    // STRING: LEGOLAND 0x004b8a70
+    LLIDB_FindElement("PATH CONTROL", &path_idx, 0);
+
+    for (i = 0; (int)i < (int)count; i++) {
+        LLIDB_GetElement(i, (struct Element **)&elem);
+        if ((elem->flags & 0x10) == 0) continue;
+        if ((elem->flags & 0x1) == 0) continue;
+        if (path_idx == (unsigned int)elem) continue;
+        if (elem->counter == 0) continue;
+        elem->counter--;
+        if (elem->counter != 0) continue;
+        if ((elem->flags & 0x1) == 0) continue;
+        elem->flags &= 0xfffcfff0;
+        if ((elem->flags & 0xfff0) == 0x10 || (elem->flags & 0xfff0) == 0x1010) {
+            FUN_0047c6a0(elem);
+        }
+    }
+
+    LLIDB_ClearOnLevel();
+    InitFreePlayLists();
+
+    FreePlayObjectList(0xc8, 0x2a, 0x41, 0xec, 0xc8);
+    FreePlayObjectList(0x1f4, 0xbb, 0x41, 0xec, 0x1f4);
+    FreePlayObjectList(0x190, 0x14c, 0x41, 0xec, 0x190);
+    FreePlayObjectList(0x12c, 0x1dd, 0x41, 0xec, 0x12c);
+
+    FUN_0048a790();
+}
 
 // FUNCTION: LEGOLAND 0x0048ab60
 void FUN_0048ab60(void) {
@@ -105,7 +211,7 @@ void FUN_0048abb0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048ac60
-void FUN_0048ac60(void) { STUB(); }
+unsigned char FUN_0048ac60(unsigned int p1, unsigned int p2) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048ad00
 LEGO_EXPORT void InitFreePlayLists(void) { STUB(); }
@@ -168,7 +274,7 @@ void FUN_0048b000(void) { STUB(); }
 LEGO_EXPORT void Add2FreePlayPanelLists(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048b2a0
-LEGO_EXPORT void FreePlayObjectList(void) { STUB(); }
+LEGO_EXPORT unsigned int FreePlayObjectList(int a, int b, int c, int d, int e) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048b4a0
 void FUN_0048b4a0(int arg) {
