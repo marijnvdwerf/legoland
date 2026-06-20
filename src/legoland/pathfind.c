@@ -40,6 +40,25 @@ struct DirNode {
     unsigned int y;
 };
 
+struct ObjData {
+    unsigned char pad_0[0x3c];
+    int field_3c;
+    int field_40;
+    unsigned char pad_44[4];
+    int field_48;
+};
+
+struct ElemInfo {
+    unsigned char pad_0[0xc];
+    struct ObjData *obj;
+};
+
+struct MatchResult {
+    unsigned char pad_0[4];
+    unsigned char field_4;
+    unsigned char field_5;
+};
+
 // FUNCTION: LEGOLAND 0x00481c50
 LEGO_EXPORT void AddPathSquare(struct InstancePos *pos) {
     struct BestNode *node;
@@ -225,7 +244,33 @@ unsigned int FUN_00482860(void) {
 void FUN_004828f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482920
-void FUN_00482920(void) { STUB(); }
+int FUN_00482920(void) {
+    unsigned int count;
+    struct BestNode *node;
+
+    FUN_004828f0();
+
+    if (SaveGameRead(&count, 4) == 0) {
+        return 0;
+    }
+
+    while (count-- != 0) {
+        node = malloc(0x24);
+        node->next = DAT_0066b44c;
+        DAT_0066b44c = node;
+        if (SaveGameRead(&node->x_min, 0x14) == 0) {
+            return 0;
+        }
+        if (SaveGameRead(&node->field_1c, 4) == 0) {
+            return 0;
+        }
+        if (SaveGameRead(&node->field_20, 4) == 0) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x004829c0
 void FUN_004829c0(struct BestNode *node) { STUB(); }
@@ -256,7 +301,26 @@ void FUN_00482a80(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00482a90
-void FUN_00482a90(void) { STUB(); }
+void FUN_00482a90(void) {
+    struct MatchResult *match;
+    struct ObjData *obj;
+
+    if (DAT_0066b460 != 0) {
+        return;
+    }
+
+    if (DAT_006661c4 == 0) {
+        // STRING: LEGOLAND 0x004b83d0
+        DAT_006661c4 = ElemID("ENTRANCE 1");
+    }
+
+    match = (struct MatchResult *)GetFirstObjectMatching(
+        (struct RenderObjectVtable *)DAT_006661c4);
+    obj = ((struct ElemInfo *)DAT_006661c4)->obj;
+
+    DAT_0066b460 = match->field_4 + obj->field_3c - 1;
+    DAT_0066b464 = ((obj->field_48 + obj->field_40) / 2) + match->field_5;
+}
 
 // FUNCTION: LEGOLAND 0x00482b00
 unsigned int *FUN_00482b00(void) {
