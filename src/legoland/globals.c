@@ -3476,8 +3476,14 @@ unsigned int DAT_007cb394;
 // GLOBAL: LEGOLAND 0x007cb398
 struct Sprite *DAT_007cb398;
 
+// GLOBAL: LEGOLAND 0x007cb39c
+struct PanelNode *DAT_007cb39c;
+
 // GLOBAL: LEGOLAND 0x007cb3a0
 unsigned int DAT_007cb3a0;
+
+// GLOBAL: LEGOLAND 0x007cb3a4
+struct PanelNode *DAT_007cb3a4;
 
 // GLOBAL: LEGOLAND 0x007cb3a8
 struct Sprite *DAT_007cb3a8;
@@ -3491,6 +3497,9 @@ struct Sprite *DAT_007cb3b0;
 // GLOBAL: LEGOLAND 0x007cb3b4
 struct Sprite *DAT_007cb3b4;
 
+// GLOBAL: LEGOLAND 0x007cb3b8
+struct PanelNode *DAT_007cb3b8;
+
 // GLOBAL: LEGOLAND 0x007cb3c0
 struct Sprite *DAT_007cb3c0;
 
@@ -3502,6 +3511,9 @@ struct Sprite *DAT_007cb3c8;
 
 // GLOBAL: LEGOLAND 0x007cb3cc
 struct Sprite *DAT_007cb3cc;
+
+// GLOBAL: LEGOLAND 0x007cb3d0
+struct PanelNode *DAT_007cb3d0;
 
 // GLOBAL: LEGOLAND 0x007cb3d4
 struct Sprite *DAT_007cb3d4;

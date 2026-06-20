@@ -65,6 +65,7 @@ struct InterfaceProfileObj;
 struct InterfaceListNode;
 struct MoviePool;
 struct TrackElemPair;
+struct PanelNode;
 struct InterfaceQueryNode;
 struct InterfaceEventNode;
 struct InterfaceResearchNode;
@@ -1674,6 +1675,8 @@ extern unsigned int DAT_00667c60;
 extern const char *DAT_00667c40;
 // 0x00667c48
 extern unsigned int DAT_00667c48;
+// 0x00667c4c
+extern int DAT_00667c4c;
 extern unsigned int DAT_00667c64;
 extern unsigned int DAT_00667c78;
 // 0x00667c7c
@@ -2541,8 +2544,12 @@ extern unsigned int DAT_007cb360;
 extern unsigned int DAT_007cb394;
 // 0x007cb398
 extern struct Sprite *DAT_007cb398;
+// 0x007cb39c
+extern struct PanelNode *DAT_007cb39c;
 // 0x007cb3a0
 extern unsigned int DAT_007cb3a0;
+// 0x007cb3a4
+extern struct PanelNode *DAT_007cb3a4;
 // 0x007cb3a8
 extern struct Sprite *DAT_007cb3a8;
 // 0x007cb3ac
@@ -2551,6 +2558,8 @@ extern struct Sprite *DAT_007cb3ac;
 extern struct Sprite *DAT_007cb3b0;
 // 0x007cb3b4
 extern struct Sprite *DAT_007cb3b4;
+// 0x007cb3b8
+extern struct PanelNode *DAT_007cb3b8;
 // 0x007cb3c0
 extern struct Sprite *DAT_007cb3c0;
 // 0x007cb3c4
@@ -2559,6 +2568,8 @@ extern struct Sprite *DAT_007cb3c4;
 extern struct Sprite *DAT_007cb3c8;
 // 0x007cb3cc
 extern struct Sprite *DAT_007cb3cc;
+// 0x007cb3d0
+extern struct PanelNode *DAT_007cb3d0;
 // 0x007cb3d4
 extern struct Sprite *DAT_007cb3d4;
 // 0x007cb3e0

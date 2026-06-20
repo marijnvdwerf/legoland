@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "globals.h"
 #include "legoland.h"
 
@@ -9,6 +11,13 @@
 struct ElemRecord {
     unsigned char pad_0[8];
     unsigned char flags;
+};
+
+struct PanelNode {
+    struct PanelNode *next;
+    void *buffer1;
+    unsigned char pad_8[8];
+    void *buffer2;
 };
 
 #include "image_sprite.h"
@@ -65,7 +74,43 @@ LEGO_EXPORT void Add2FreePlayPanelLists(void) { STUB(); }
 LEGO_EXPORT void FreePlayObjectList(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048b4a0
-void FUN_0048b4a0(int arg) { STUB(); }
+void FUN_0048b4a0(int arg) {
+    struct PanelNode **head;
+    struct PanelNode *cur;
+    struct PanelNode *next;
+
+    RemoveIconGroup((unsigned short)(arg + 6));
+
+    if (arg == 0xc8) {
+        cur = DAT_007cb3d0;
+        head = &DAT_007cb3d0;
+    } else if (arg == 0x12c) {
+        cur = DAT_007cb39c;
+        head = &DAT_007cb39c;
+    } else if (arg == 0x190) {
+        cur = DAT_007cb3b8;
+        head = &DAT_007cb3b8;
+    } else if (arg == 0x1f4) {
+        cur = DAT_007cb3a4;
+        head = &DAT_007cb3a4;
+    } else {
+        return;
+    }
+
+    if (cur == 0) {
+        return;
+    }
+    if (cur->next != 0) {
+        do {
+            next = cur->next;
+            free(cur->buffer1);
+            free(cur->buffer2);
+            free(cur);
+            cur = next;
+        } while (next != 0);
+    }
+    *head = 0;
+}
 
 // FUNCTION: LEGOLAND 0x0048b540
 LEGO_EXPORT void CleanUpFreePlay(void) {
