@@ -27,7 +27,7 @@ Usage:
   uv run --no-project tools/needsdecl.py          # both checks, tree-wide
   uv run --no-project tools/needsdecl.py <tu>     # details for one TU
 """
-import sys, glob, pathlib
+import sys, glob, pathlib, re
 import tree_sitter_c as tsc
 from tree_sitter import Language, Parser
 
@@ -193,6 +193,30 @@ def run_check2(def_index):
     return out
 
 
+def includes_own_header(cpath):
+    """Tri-state: does <tu>.c #include "<tu>.h"?
+
+    Returns True/False when the header exists, or None when there is no
+    accompanying header to include. A .c must include its own header so the
+    compiler checks every definition against its declared prototype (the
+    contract) — a header whose .c does not include it can silently drift.
+    """
+    stem = pathlib.Path(cpath).stem
+    if not pathlib.Path(f"{SRC}/{stem}.h").exists():
+        return None
+    pat = re.compile(rf'^\s*#\s*include\s*"{re.escape(stem)}\.h"', re.M)
+    return bool(pat.search(pathlib.Path(cpath).read_text(errors="replace")))
+
+
+def run_check3():
+    """Returns list of stems whose .c has a header but does NOT include it."""
+    missing = []
+    for path in sorted(glob.glob(f"{SRC}/*.c")):
+        if includes_own_header(path) is False:
+            missing.append(pathlib.Path(path).stem)
+    return missing
+
+
 def main():
     if len(sys.argv) == 2:
         tu = sys.argv[1].replace(".c", "").replace(".h", "")
@@ -208,6 +232,15 @@ def main():
             else:
                 for name, line, text in predecls:
                     print(f"  {tu}.c:{line:<4} {text}")
+
+        print(f"\n=== {tu}: .c includes its own header (check 3) ===")
+        inc = includes_own_header(cpath) if pathlib.Path(cpath).exists() else None
+        if inc is None:
+            print(f"  (no {tu}.h)")
+        elif inc:
+            print(f"  {tu}.c includes \"{tu}.h\"")
+        else:
+            print(f"  {tu}.c does NOT #include \"{tu}.h\"")
 
         print(f"\n=== {tu}: header / TU function-decl match (check 2) ===")
         hpath = f"{SRC}/{tu}.h"
@@ -256,27 +289,39 @@ def main():
 
     if not (no_tu_rows or mis_rows or orphan_rows):
         print("All headers match their TU.")
-        return
+    else:
+        if no_tu_rows:
+            print("\n  header has no accompanying .c:")
+            for stem, line, name, owner in no_tu_rows:
+                where = f"defined in {owner}.c" if owner else "defined nowhere"
+                print(f"    {stem}.h:{line:<4} declares {name} — {where}")
+        if mis_rows:
+            print("\n  declared in the wrong TU's header:")
+            for stem, line, name, owner in sorted(mis_rows):
+                print(f"    {stem}.h:{line:<4} declares {name} — "
+                      f"defined in {owner}.c (belongs in {owner}.h)")
+        if orphan_rows:
+            print("\n  defined nowhere (orphan decl):")
+            for stem, line, name in sorted(orphan_rows):
+                print(f"    {stem}.h:{line:<4} declares {name} — defined nowhere")
 
-    if no_tu_rows:
-        print("\n  header has no accompanying .c:")
-        for stem, line, name, owner in no_tu_rows:
-            where = f"defined in {owner}.c" if owner else "defined nowhere"
-            print(f"    {stem}.h:{line:<4} declares {name} — {where}")
-    if mis_rows:
-        print("\n  declared in the wrong TU's header:")
-        for stem, line, name, owner in sorted(mis_rows):
-            print(f"    {stem}.h:{line:<4} declares {name} — "
-                  f"defined in {owner}.c (belongs in {owner}.h)")
-    if orphan_rows:
-        print("\n  defined nowhere (orphan decl):")
-        for stem, line, name in sorted(orphan_rows):
-            print(f"    {stem}.h:{line:<4} declares {name} — defined nowhere")
+        total = len(no_tu_rows) + len(mis_rows) + len(orphan_rows)
+        print(f"\n{total} header/TU violations "
+              f"({len(mis_rows)} mislocated, {len(orphan_rows)} orphan, "
+              f"{len(no_tu_rows)} in a .c-less header)")
 
-    total = len(no_tu_rows) + len(mis_rows) + len(orphan_rows)
-    print(f"\n{total} header/TU violations "
-          f"({len(mis_rows)} mislocated, {len(orphan_rows)} orphan, "
-          f"{len(no_tu_rows)} in a .c-less header)")
+    report_check3()
+
+
+def report_check3():
+    print("\n=== check 3: every TU .c includes its own header ===")
+    missing = run_check3()
+    if not missing:
+        print("All TUs include their header.")
+    else:
+        for stem in missing:
+            print(f"  {stem + '.c':28} does not #include \"{stem}.h\"")
+        print(f"\n{len(missing)} TUs do not include their own header")
 
 
 if __name__ == "__main__":
