@@ -17,6 +17,7 @@
 #include "saveload.h"
 #include "screens.h"
 #include "sound_music.h"
+#include "string.h"
 #include "timer.h"
 #include "title.h"
 
@@ -54,19 +55,6 @@ struct SaveScreenNode {
     int has_header;
     unsigned char slot;
 };
-
-LEGO_EXPORT struct Sprite *GetSavePanelBK(signed char slot);
-char *GetString(int id);
-LEGO_EXPORT unsigned char LoadSavedGamesList(unsigned char profile);
-void FUN_0048d470(void);
-unsigned char FUN_0048db10(int param1, unsigned char flags);
-void FUN_0048f5a0(void);
-void FUN_0048da50(void);
-unsigned char FUN_0048d970(unsigned int a1, unsigned char flags);
-void FUN_0048cc30(void);
-struct SaveIcon;
-unsigned char FUN_0048e4a0(struct SaveIcon *icon, unsigned int flags, unsigned int a3, unsigned int a4);
-unsigned char FUN_0048e4f0(struct SaveIcon *icon, unsigned int a2, unsigned int a3, unsigned int a4);
 
 // FUNCTION: LEGOLAND 0x0048d4b0
 LEGO_EXPORT void InitSavedGameScreen(void) {
@@ -427,8 +415,6 @@ struct SaveIcon {
     unsigned char field_1c;
 };
 
-unsigned char FUN_0048e4f0(struct SaveIcon *icon, unsigned int a2, unsigned int a3, unsigned int a4);
-
 // FUNCTION: LEGOLAND 0x0048e4a0
 unsigned char FUN_0048e4a0(struct SaveIcon *icon, unsigned int flags, unsigned int a3, unsigned int a4) {
     if (DAT_004bef9c != 0 && (flags & 2)) {
@@ -531,8 +517,6 @@ LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite) {
 
 // FUNCTION: LEGOLAND 0x0048e720
 void FUN_0048e720(void) { STUB(); }
-
-void FUN_0048d490(void);
 
 // FUNCTION: LEGOLAND 0x0048e810
 unsigned char FUN_0048e810(struct IconNode *icon, unsigned char flags) {
