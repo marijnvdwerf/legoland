@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "globals.h"
@@ -34,6 +35,23 @@ void FUN_004663f0(void);
 int FUN_00478b20(unsigned int arg);
 void FUN_00469900(struct NerpsArg *object, unsigned int a, unsigned int b);
 
+unsigned int FUN_00499380(void);
+void FUN_00499410(void);
+void FUN_0047f810(void);
+void ResetMapAI(void);
+int FUN_0047afb0(int param_1);
+void FUN_00457870(int param_1);
+void AllocBlokeCounters(unsigned int size);
+void FUN_00458940(void);
+void FUN_00489ee0(void);
+void UpdateMenu(void);
+void FUN_004663c0(void);
+void FUN_00490600(unsigned int param_1);
+unsigned int FUN_004911c0(const char *a, const char *b);
+void FUN_00458bb0(unsigned int param_1);
+void FUN_004993c0(void);
+void UpdateSoundVols(void);
+
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0048a8a0
@@ -59,7 +77,32 @@ void FUN_0048ab60(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0048abb0
-void FUN_0048abb0(void) { STUB(); }
+void FUN_0048abb0(void) {
+    char buf[0x34];
+
+    QueryClass = 0;
+    // STRING: LEGOLAND 0x004beb4c
+    sprintf(buf, "FreePlayTest.txt");
+    FUN_00499380();
+    FUN_00499410();
+    FUN_0047f810();
+    DAT_0079a8d0 = 0;
+    ResetMapAI();
+    DAT_00667c4c = FUN_0047afb0((int)buf);
+    FUN_00457870(0);
+    FUN_0048ab60();
+    AllocBlokeCounters(lpConfig->field_1a);
+    FUN_00458940();
+    DAT_00832ba0 = 0;
+    FUN_00489ee0();
+    UpdateMenu();
+    FUN_004663c0();
+    FUN_00490600(1);
+    FUN_004911c0((const char *)&DAT_0066861c, 0);
+    FUN_00458bb0(1);
+    FUN_004993c0();
+    UpdateSoundVols();
+}
 
 // FUNCTION: LEGOLAND 0x0048ac60
 void FUN_0048ac60(void) { STUB(); }
