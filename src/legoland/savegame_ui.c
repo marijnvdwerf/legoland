@@ -227,7 +227,11 @@ LEGO_EXPORT unsigned char LoadSavedGamesList(unsigned char profile) {
 LEGO_EXPORT void InitNewSaveGamePOPUP(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048e3d0
-void FUN_0048e3d0(void) { STUB(); }
+void FUN_0048e3d0(const char *name) {
+    strcpy((char *)&DAT_007cad60, name);
+    DAT_007cad60.field_1e = (unsigned char)strlen(name);
+    DAT_007986f0 = 1;
+}
 
 // FUNCTION: LEGOLAND 0x0048e420
 void FUN_0048e420(void) {
@@ -423,10 +427,14 @@ LEGO_EXPORT void RemoveSaveGame(unsigned char slot) {
 }
 
 // FUNCTION: LEGOLAND 0x0048eac0
-void FUN_0048eac0(void) { STUB(); }
+int FUN_0048eac0(int param) {
+    return (100 * (param - 124)) / 241;
+}
 
 // FUNCTION: LEGOLAND 0x0048eaf0
-void FUN_0048eaf0(void) { STUB(); }
+int FUN_0048eaf0(int param) {
+    return (241 * param) / 100 + 124;
+}
 
 // FUNCTION: LEGOLAND 0x0048eb20
 void FUN_0048eb20(void) {

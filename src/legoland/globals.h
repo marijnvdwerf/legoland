@@ -2329,6 +2329,8 @@ extern unsigned int DAT_007986e0;
 extern unsigned int DAT_007986e4;
 // 0x007986e8
 extern unsigned int DAT_007986e8;
+// 0x007986f0
+extern unsigned int DAT_007986f0;
 // 0x007986f4
 extern unsigned int DAT_007986f4;
 // 0x007986f8
