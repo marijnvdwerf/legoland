@@ -43,6 +43,8 @@ struct LLIDBHead;
 
 LEGO_EXPORT void LLS555To565(struct LLSImage *param_1);
 
+void FUN_0047c6a0(struct LLIDBHead *head);
+
 LEGO_EXPORT void LLIDB_FreeILFTable(struct ILFTable *table);
 
 LEGO_EXPORT unsigned int LLIDB_GetCount(void);

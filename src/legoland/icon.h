@@ -78,6 +78,7 @@ LEGO_EXPORT struct SpriteIcon *LoadSpriteIcon(const char *filename, unsigned int
 void FUN_0046dac0(void);
 void FUN_0046db40(void);
 int FUN_0046df60(int param);
+LEGO_EXPORT int RenderFreePlayBar(struct IconNode *node);
 LEGO_EXPORT void RenderHelpIcons(void);
 void FUN_0046fb40(unsigned int group);
 LEGO_EXPORT void MoveIcons(unsigned short mask, unsigned short id, short dx, short dy);

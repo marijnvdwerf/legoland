@@ -4,10 +4,26 @@
 #include "globals.h"
 #include "legoland.h"
 
+#include "bricks.h"
 #include "clipping.h"
+#include "draw.h"
 #include "freeplay.h"
+#include "game_util.h"
 #include "icon.h"
+#include "interface.h"
 #include "llidb.h"
+#include "map_object.h"
+#include "obj_instance.h"
+#include "objclass.h"
+#include "objectives.h"
+#include "options.h"
+#include "saveload.h"
+#include "screens.h"
+#include "sound_music.h"
+#include "sound_sfx.h"
+#include "stream.h"
+#include "string.h"
+#include "title.h"
 
 struct ElemRecord {
     unsigned char pad_0[8];
@@ -36,48 +52,6 @@ struct FreePlayElement {
     unsigned char pad_c[4];
     unsigned int counter;
 };
-
-struct NerpsArg;
-
-void FUN_004663f0(void);
-int FUN_00478b20(unsigned int arg);
-void FUN_00469900(struct NerpsArg *object, unsigned int a, unsigned int b);
-
-void FUN_0047c6a0(struct FreePlayElement *obj);
-int RenderFreePlayBar(struct IconNode *node);
-void FUN_0048a790(void);
-unsigned char FUN_0048fb80(unsigned int p1, unsigned int p2, unsigned int p3, unsigned int p4);
-
-unsigned int FUN_00499380(void);
-void FUN_00499410(void);
-void FUN_0047f810(void);
-void ResetMapAI(void);
-int FUN_0047afb0(int param_1);
-void FUN_00457870(int param_1);
-void AllocBlokeCounters(unsigned int size);
-void FUN_00458940(void);
-void FUN_00489ee0(void);
-void UpdateMenu(void);
-void FUN_004663c0(void);
-void FUN_00490600(unsigned int param_1);
-unsigned int FUN_004911c0(const char *a, const char *b);
-void FUN_00458bb0(unsigned int param_1);
-void FUN_004993c0(void);
-void UpdateSoundVols(void);
-
-char *GetString(int n);
-unsigned char FUN_0048ac60(unsigned int p1, unsigned int p2);
-LEGO_EXPORT void InitFreePlayLists(void);
-LEGO_EXPORT unsigned int FreePlayObjectList(int a, int b, int c, int d, int e);
-void FUN_0048b6c0(void);
-
-void FUN_00466360(int a, int b);
-void FUN_00498920(void);
-struct Sample *PlayInstanceOfSample(void *def, unsigned int looping, unsigned int oneshot, void *config);
-LEGO_EXPORT void CleanUpFreePlay(void);
-void KillTitleScreenSprites(void);
-int InitGameInterface(int a);
-void FUN_00474880(void);
 
 #include "image_sprite.h"
 
@@ -156,7 +130,7 @@ LEGO_EXPORT void InitFreePlayScreen(void) {
         if ((elem->flags & 0x1) == 0) continue;
         elem->flags &= 0xfffcfff0;
         if ((elem->flags & 0xfff0) == 0x10 || (elem->flags & 0xfff0) == 0x1010) {
-            FUN_0047c6a0(elem);
+            FUN_0047c6a0((struct LLIDBHead *)elem);
         }
     }
 

@@ -65,6 +65,7 @@ LEGO_EXPORT void SetMapTile(int x, int y, unsigned short value);
 LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1);
 struct OverlayParam;
 LEGO_EXPORT void AddOvSav(struct OverlayParam *param);
+LEGO_EXPORT void ResetMapAI(void);
 unsigned int FUN_004629e0(void);
 LEGO_EXPORT void ClearOverlays(void);
 void FUN_00462e50(unsigned int index, unsigned int value);

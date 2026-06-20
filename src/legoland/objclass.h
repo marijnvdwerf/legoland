@@ -85,3 +85,4 @@ LEGO_EXPORT void SetEditObject(struct EditObject *obj);
 struct BestNode *FUN_00481730(void);
 struct BestNode *FUN_00481790(struct InstancePos *pos);
 void FUN_00481b10(struct BestNode *node);
+LEGO_EXPORT void AllocBlokeCounters(unsigned int size);
