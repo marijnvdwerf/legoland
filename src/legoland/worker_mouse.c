@@ -1,8 +1,10 @@
 #include "worker_mouse.h"
 #include "globals.h"
+#include "icon.h"
 #include "legoland.h"
 #include "man3d.h"
 #include "render3d.h"
+#include "string.h"
 #include "tilemap.h"
 
 struct WorkerInner {
@@ -92,7 +94,58 @@ LEGO_EXPORT void ResetMoveAWorkerStruct(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00470950
-void FUN_00470950(void) { STUB(); }
+void FUN_00470950(void *a, void *b) {
+    unsigned int temp_val, temp_val2;
+
+    if (!DAT_00668938) {
+        // STRING: LEGOLAND 0x004baa70
+        DAT_00668938 = LoadSprite("PU_OK.lls", 4);
+    }
+    if (!DAT_00668934) {
+        // STRING: LEGOLAND 0x004baa64
+        DAT_00668934 = LoadSprite("PU_OKON.lls", 4);
+    }
+    if (!DAT_0066893c) {
+        // STRING: LEGOLAND 0x004baa54
+        DAT_0066893c = LoadSprite("CB_Close.lls", 4);
+    }
+    if (!DAT_00668940) {
+        // STRING: LEGOLAND 0x004baa44
+        DAT_00668940 = LoadSprite("CB_CloseON.lls", 4);
+    }
+    if (!DAT_00668904) {
+        // STRING: LEGOLAND 0x004baa34
+        DAT_00668904 = LoadSprite("CB_BGleft.lls", 4);
+    }
+    if (!DAT_00668908) {
+        // STRING: LEGOLAND 0x004baa24
+        DAT_00668908 = LoadSprite("CB_BGCentre.lls", 4);
+    }
+    if (!DAT_0066890c) {
+        // STRING: LEGOLAND 0x004baa14
+        DAT_0066890c = LoadSprite("CB_BGRight.lls", 4);
+    }
+
+    DAT_007fdea8 = InsertIcon(0, 0, 0x2c3, DAT_00668938);
+    DAT_007fdea8->string_id = 0x74;
+    DAT_007fdea8->string = GetString(0x74);
+    DAT_007fdea8->flags |= 0x2000;
+    DAT_007fdea8->flags |= 0x4002;
+    temp_val = DAT_007fdea8->flags;
+    temp_val2 = temp_val | 0x400;
+    DAT_007fdea8->flags = temp_val2;
+    DAT_007fdea8->field_2c = a;
+
+    DAT_007fe000 = InsertIcon(0, 0, 0x2c3, DAT_0066893c);
+    DAT_007fe000->string_id = 0x75;
+    DAT_007fe000->string = GetString(0x75);
+    DAT_007fe000->flags |= 0x2000;
+    DAT_007fe000->flags |= 0x4002;
+    temp_val = DAT_007fe000->flags;
+    temp_val2 = temp_val | 0x400;
+    DAT_007fe000->flags = temp_val2;
+    DAT_007fe000->field_2c = b;
+}
 
 // FUNCTION: LEGOLAND 0x00470b00
 void FUN_00470b00(void) {

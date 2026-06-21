@@ -10,8 +10,14 @@ struct IconNode {
     /* 0x00 */ struct IconNode *next;
     /* 0x04 */ struct Sprite *sprite;
     /* 0x08 */ void *field_8;
-    /* 0x0c */ short field_c;
-    /* 0x0e */ short field_e;
+    /* 0x0c */ union {
+        short field_c;
+        short x;
+    };
+    /* 0x0e */ union {
+        short field_e;
+        short y;
+    };
     /* 0x10 */ short field_10;
     /* 0x12 */ short field_12;
     /* 0x14 */ unsigned short field_14;
@@ -37,11 +43,23 @@ struct IconNode {
     };
     /* 0x24 */ void *field_24;
     /* 0x28 */ void *field_28;
-    /* 0x2c */ void *field_2c;
+    /* 0x2c */ union {
+        void *field_2c;
+        void (*handler)(void);
+    };
     /* 0x30 */ void *field_30;
-    /* 0x34 */ unsigned int field_34;
-    /* 0x38 */ unsigned int field_38;
-    /* 0x3c */ unsigned int field_3c;
+    /* 0x34 */ union {
+        unsigned int field_34;
+        unsigned int flags;
+    };
+    /* 0x38 */ union {
+        unsigned int field_38;
+        char *string;
+    };
+    /* 0x3c */ union {
+        unsigned int field_3c;
+        unsigned int string_id;
+    };
 };
 
 struct SpriteIcon {

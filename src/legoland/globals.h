@@ -71,7 +71,6 @@ struct PanelNode;
 struct InterfaceQueryNode;
 struct InterfaceEventNode;
 struct InterfaceResearchNode;
-struct InfoIcon;
 struct InfoObjData;
 struct Element;
 struct SortNode;
@@ -2693,9 +2692,9 @@ extern unsigned char DAT_007fdd8c;
 // 0x007fdda0
 extern unsigned char DAT_007fdda0[256];
 // 0x007fdea4
-extern struct InfoIcon *DAT_007fdea4;
+extern struct IconNode *DAT_007fdea4;
 // 0x007fdea8
-extern struct InfoIcon *DAT_007fdea8;
+extern struct IconNode *DAT_007fdea8;
 // 0x007fdeac
 extern struct Sprite *DAT_007fdeac;
 // 0x007fdeb0
@@ -2753,31 +2752,31 @@ extern unsigned int DAT_007fdfb8;
 // 0x007fdfbc
 extern unsigned int DAT_007fdfbc;
 // 0x007fdfc0
-extern struct InfoIcon *DAT_007fdfc0;
+extern struct IconNode *DAT_007fdfc0;
 // 0x007fdfc4
-extern struct InfoIcon *DAT_007fdfc4;
+extern struct IconNode *DAT_007fdfc4;
 // 0x007fdfc8
 extern struct Sprite *DAT_007fdfc8;
 // 0x007fdfcc
-extern struct InfoIcon *DAT_007fdfcc;
+extern struct IconNode *DAT_007fdfcc;
 // 0x007fdfd0
 extern struct Sprite *DAT_007fdfd0;
 // 0x007fdfd8
-extern struct InfoIcon *DAT_007fdfd8;
+extern struct IconNode *DAT_007fdfd8;
 // 0x007fdfdc
-extern struct InfoIcon *DAT_007fdfdc;
+extern struct IconNode *DAT_007fdfdc;
 // 0x007fdfe0
-extern struct InfoIcon *DAT_007fdfe0;
+extern struct IconNode *DAT_007fdfe0;
 // 0x007fdfe4
 extern struct Sprite *DAT_007fdfe4;
 // 0x007fdfe8
-extern struct InfoIcon *DAT_007fdfe8;
+extern struct IconNode *DAT_007fdfe8;
 // 0x007fdff0
 extern void *DAT_007fdff0;
 // 0x007fdffc
 extern unsigned int DAT_007fdffc;
 // 0x007fe000
-extern struct InfoIcon *DAT_007fe000;
+extern struct IconNode *DAT_007fe000;
 // 0x007fe004
 extern struct Sprite *DAT_007fe004;
 // 0x007fe008

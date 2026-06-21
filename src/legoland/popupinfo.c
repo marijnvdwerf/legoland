@@ -14,20 +14,6 @@
 
 struct Sprite;
 
-struct InfoIcon {
-    /* 0x00 */ unsigned char pad_0[0xc];
-    /* 0x0c */ short x;
-    /* 0x0e */ short y;
-    /* 0x10 */ short field_10;
-    /* 0x12 */ short field_12;
-    /* 0x14 */ unsigned char pad_14[0x2c - 0x14];
-    /* 0x2c */ void (*handler)(void);
-    /* 0x30 */ unsigned char pad_30[0x4];
-    /* 0x34 */ unsigned int flags;
-    /* 0x38 */ char *string;
-    /* 0x3c */ unsigned int string_id;
-};
-
 struct InfoObjData {
     /* 0x00 */ unsigned char pad_0[0x4];
     /* 0x04 */ unsigned int field_4;
@@ -159,42 +145,42 @@ LEGO_EXPORT void InitPopUpInfo(void) {
         // STRING: LEGOLAND 0x004baa90
         DAT_007fdeac = LoadSprite("i_full.lls", 0);
     }
-    DAT_007fdfe0 = (struct InfoIcon *)InsertIcon(0, 0, 0x2c3, DAT_00668948);
+    DAT_007fdfe0 = InsertIcon(0, 0, 0x2c3, DAT_00668948);
     DAT_007fdfe0->string_id = 0x6e;
     DAT_007fdfe0->string = GetString(0x6e);
     DAT_007fdfe0->flags |= 0x2000;
     DAT_007fdfe0->flags |= 0x4002;
     DAT_007fdfe0->flags |= 0x400;
     DAT_007fdfe0->handler = FUN_004733f0;
-    DAT_007fdea4 = (struct InfoIcon *)InsertIcon(0, 0, 0x2c3, DAT_00668950);
+    DAT_007fdea4 = InsertIcon(0, 0, 0x2c3, DAT_00668950);
     DAT_007fdea4->string_id = 0x6f;
     DAT_007fdea4->string = GetString(0x6f);
     DAT_007fdea4->flags |= 0x2000;
     DAT_007fdea4->flags |= 0x4002;
     DAT_007fdea4->flags |= 0x400;
     DAT_007fdea4->handler = FUN_00473460;
-    DAT_007fdfdc = (struct InfoIcon *)InsertIcon(0, 0, 0x2c3, DAT_00668918);
+    DAT_007fdfdc = InsertIcon(0, 0, 0x2c3, DAT_00668918);
     DAT_007fdfdc->string_id = 0x70;
     DAT_007fdfdc->string = GetString(0x70);
     DAT_007fdfdc->flags |= 0x2000;
     DAT_007fdfdc->flags |= 0x4002;
     DAT_007fdfdc->flags |= 0x400;
     DAT_007fdfdc->handler = FUN_004731a0;
-    DAT_007fdfc0 = (struct InfoIcon *)InsertIcon(0, 0, 0x2c3, DAT_00668920);
+    DAT_007fdfc0 = InsertIcon(0, 0, 0x2c3, DAT_00668920);
     DAT_007fdfc0->string_id = 0x73;
     DAT_007fdfc0->string = GetString(0x73);
     DAT_007fdfc0->flags |= 0x2000;
     DAT_007fdfc0->flags |= 0x4002;
     DAT_007fdfc0->flags |= 0x400;
     DAT_007fdfc0->handler = FUN_004730f0;
-    DAT_007fdfc4 = (struct InfoIcon *)InsertIcon(0, 0, 0x2c3, DAT_00668928);
+    DAT_007fdfc4 = InsertIcon(0, 0, 0x2c3, DAT_00668928);
     DAT_007fdfc4->string_id = 0x88e;
     DAT_007fdfc4->string = GetString(0x88e);
     DAT_007fdfc4->flags |= 0x2000;
     DAT_007fdfc4->flags |= 0x4002;
     DAT_007fdfc4->flags |= 0x400;
     DAT_007fdfc4->handler = FUN_00473360;
-    DAT_007fdfe8 = (struct InfoIcon *)InsertIcon(0, 0, 0x2c3, DAT_00668930);
+    DAT_007fdfe8 = InsertIcon(0, 0, 0x2c3, DAT_00668930);
     DAT_007fdfe8->string_id = 0x88f;
     DAT_007fdfe8->string = GetString(0x88f);
     DAT_007fdfe8->flags |= 0x2000;
@@ -202,9 +188,9 @@ LEGO_EXPORT void InitPopUpInfo(void) {
     DAT_007fdfe8->flags |= 0x400;
     DAT_007fdfe8->handler = FUN_004733b0;
     // STRING: LEGOLAND 0x004baa7c
-    DAT_007fdfd8 = (struct InfoIcon *)LoadSpriteIcon("PU_CornerMask.lls", 4, 0, 0, 0x2c3);
+    DAT_007fdfd8 = (struct IconNode *)LoadSpriteIcon("PU_CornerMask.lls", 4, 0, 0, 0x2c3);
     DAT_007fdfd8->flags |= 0x400;
-    DAT_007fdfcc = (struct InfoIcon *)InsertIcon(0, 0, 0x2c3, DAT_00668918);
+    DAT_007fdfcc = InsertIcon(0, 0, 0x2c3, DAT_00668918);
     DAT_007fdfcc->string_id = 0xa1;
     DAT_007fdfcc->string = GetString(0xa1);
     DAT_007fdfcc->flags |= 0x2000;
