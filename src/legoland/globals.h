@@ -1683,6 +1683,8 @@ extern struct Sprite *DAT_00667c2c;
 extern unsigned int DAT_00667c30;
 // 0x00667c34
 extern struct Sprite *DAT_00667c34;
+// 0x00667c3c
+extern int DAT_00667c3c;
 // 0x00667c54
 extern LEGO_EXPORT unsigned short QueryObj;
 // 0x00667c58
