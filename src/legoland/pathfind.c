@@ -35,7 +35,14 @@ struct PathBox {
 
 struct DirNode {
     struct DirNode *next;
-    unsigned char pad_4[4];
+    void *parent;
+    int x;
+    int y;
+};
+
+struct PathLink {
+    unsigned char pad_0[4];
+    struct PathLink *prev;
     int x;
     int y;
 };
@@ -174,7 +181,43 @@ void FUN_00482210(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00482240
-void FUN_00482240(int x, int y, struct DirNode *parent) { STUB(); }
+void FUN_00482240(int x, int y, struct DirNode *parent) {
+    struct MapElement *tile;
+    struct DirNode *node;
+    int word_index;
+    unsigned int bit;
+
+    if (x < 0 || x >= lpConfig->width) {
+        return;
+    }
+    if (y < 0 || y >= lpConfig->height) {
+        return;
+    }
+
+    tile = &GameMap[y][x];
+    if (tile->field_10 & 0x2) {
+        return;
+    }
+
+    word_index = (x >> 5) + y * 6;
+    bit = 1u << (x & 0x1f);
+    if (bit & DAT_00669258[word_index]) {
+        return;
+    }
+
+    node = malloc(16);
+    if (node == 0) {
+        return;
+    }
+
+    node->next = DAT_0066b450;
+    DAT_0066b450 = node;
+    node->parent = parent;
+    node->x = x;
+    node->y = y;
+    DAT_00669250++;
+    DAT_00669258[word_index] |= bit;
+}
 
 // FUNCTION: LEGOLAND 0x00482300
 struct DirNode *FUN_00482300(unsigned int x, unsigned int y) {
@@ -191,10 +234,52 @@ struct DirNode *FUN_00482300(unsigned int x, unsigned int y) {
 }
 
 // FUNCTION: LEGOLAND 0x00482330
-void FUN_00482330(void) { STUB(); }
+int FUN_00482330(struct PathLink *a, struct PathLink *b, struct PathLink *c, struct PathLink *d) { STUB(); return 0; }
 
 // FUNCTION: LEGOLAND 0x00482430
-int FUN_00482430(void) { STUB(); return 0; }
+int FUN_00482430(void) {
+    struct PathLink *cur;
+    struct PathLink *prev;
+    struct PathLink *p2;
+    struct PathLink *p3;
+    struct PathLink *p4;
+    int dir;
+
+    cur = (struct PathLink *)DAT_0066b454;
+    p3 = 0;
+    p2 = 0;
+    p4 = 0;
+    if (cur == 0) {
+        return 0;
+    }
+
+    prev = cur->prev;
+    if (prev != 0) {
+        do {
+            p4 = p3;
+            p3 = p2;
+            p2 = cur;
+            cur = prev;
+            prev = cur->prev;
+        } while (prev != 0);
+    }
+
+    dir = FUN_00482330(cur, p2, p3, p4);
+    switch (dir) {
+    case 0:
+        if (p2 != 0) {
+            FUN_00482300(p2->x, p2->y);
+        }
+        return p4 == 0;
+    case 1:
+        FUN_00482300(p3->x, p3->y);
+        return p4 == 0;
+    case 2:
+        FUN_00482300(p4->x, p4->y);
+        break;
+    }
+    return p4 == 0;
+}
 
 // FUNCTION: LEGOLAND 0x004824d0
 LEGO_EXPORT int PTPSuggestNextMove(int *param_1, int *param_2, int *param_3) {
@@ -254,7 +339,41 @@ LEGO_EXPORT int PTPSuggestNextMove(int *param_1, int *param_2, int *param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00482620
-void FUN_00482620(int x, int y, struct DirNode *parent) { STUB(); }
+void FUN_00482620(int x, int y, struct DirNode *parent) {
+    struct MapElement *tile;
+    struct DirNode *node;
+    int word_index;
+    unsigned int bit;
+
+    if (x < 0 || x >= lpConfig->width) {
+        return;
+    }
+    if (y < 0 || y >= lpConfig->height) {
+        return;
+    }
+
+    tile = &GameMap[y][x];
+    if (tile->field_10 & 0x2) {
+        if (!(((unsigned char *)&tile->flags)[1] & 0x8)) {
+            return;
+        }
+    }
+
+    word_index = (x >> 5) + y * 6;
+    bit = 1u << (x & 0x1f);
+    if (bit & DAT_00669258[word_index]) {
+        return;
+    }
+
+    node = malloc(16);
+    node->next = DAT_0066b450;
+    DAT_0066b450 = node;
+    node->parent = parent;
+    node->x = x;
+    node->y = y;
+    DAT_00669250++;
+    DAT_00669258[word_index] |= bit;
+}
 
 // FUNCTION: LEGOLAND 0x00482710
 int FUN_00482710(int *a, int *b, int *out) {
