@@ -233,7 +233,32 @@ unsigned char FUN_0048d970(unsigned int a1, unsigned char flags) {
 }
 
 // FUNCTION: LEGOLAND 0x0048da50
-void FUN_0048da50(void) { STUB(); }
+unsigned char FUN_0048da50(unsigned int a1, unsigned int flags, unsigned int a3, unsigned int a4) {
+    if (DAT_004bef9c == 0) {
+        int r = FUN_0048e720(0, flags, a3, a4);
+        if (DAT_0080ff84 != 0xffffffff) {
+            return r;
+        }
+        DAT_00668e38 = 0;
+        RemoveIconGroup(7);
+    } else {
+        if (!(flags & 2) || DAT_0080ffe4 == 0) {
+            return 1;
+        }
+        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
+        FUN_00498920();
+        DAT_006687b0 = 4;
+        StoreNewSaveGameToDisk();
+        DAT_00668e38 = 0;
+        RemoveIconGroup(7);
+    }
+    KillTitleScreenSprites();
+    DAT_008119b4 = 3;
+    FUN_00474880();
+    FUN_004993c0();
+    DAT_004bef9c = 1;
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x0048db10
 unsigned char FUN_0048db10(int param1, unsigned char flags) {
@@ -516,7 +541,7 @@ LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x0048e720
-void FUN_0048e720(void) { STUB(); }
+int FUN_0048e720(unsigned int a1, unsigned int a2, unsigned int a3, unsigned int a4) { STUB(); return 0; }
 
 // FUNCTION: LEGOLAND 0x0048e810
 unsigned char FUN_0048e810(struct IconNode *icon, unsigned char flags) {
