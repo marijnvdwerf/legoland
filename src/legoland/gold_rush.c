@@ -6,6 +6,7 @@
 #include "globals.h"
 #include "gold_rush.h"
 #include "llidb.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "render3d.h"
 #include "objclass.h"
@@ -35,6 +36,23 @@ struct GoldRandSub {
 struct GoldRandItem {
     unsigned char pad_0[8];
     struct GoldRandSub *field_8;
+};
+
+struct GoldBloke {
+    unsigned char pad_0[0x58];
+    int counter;
+    unsigned char pad_5c[4];
+    unsigned char var_60;
+    unsigned char pad_61;
+    unsigned short var_62;
+    unsigned char pad_64[0xe];
+    unsigned char var_72;
+};
+
+struct GoldBlokeRef {
+    unsigned char pad_0[8];
+    struct GoldBloke *bloke;
+    unsigned char field_c;
 };
 
 struct GoldNode {
@@ -210,7 +228,22 @@ void FUN_00407230(struct GoldRandItem *param) {
 }
 
 // FUNCTION: LEGOLAND 0x00407250
-void FUN_00407250(void) { STUB(); }
+void FUN_00407250(struct GoldBlokeRef *ref) {
+    struct GoldBloke *b = ref->bloke;
+
+    b->var_62 |= 0x100;
+    BlokePanWithPan((struct Bloke *)b);
+    BlokeAnimNextFrame((struct Bloke *)b);
+    b->var_72 = 1;
+    b->counter = b->counter - 1;
+    if (b->counter <= 0) {
+        b->var_62 &= 0xfeff;
+        BlokeWalkWithPan((struct Bloke *)b);
+        FUN_00406f00((struct GoldItem *)ref);
+        FUN_00406f30(&ref->field_c);
+        b->var_60++;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004072b0
 void FUN_004072b0(void) { STUB(); }
