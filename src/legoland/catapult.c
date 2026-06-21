@@ -12,10 +12,18 @@
 #include "objclass.h"
 #include "sound_music.h"
 
+struct CatapultEntry;
+
 struct CatapultNode {
     unsigned short field_0;
     unsigned char pad_2[2];
     struct CatapultNode *next;
+    void *field_8;
+    signed char mode;
+    unsigned char pad_d[3];
+    struct CatapultEntry *slots[4];
+    unsigned char pad_20[8];
+    unsigned int flags[4];
 };
 
 struct CatapultItem {
@@ -54,9 +62,13 @@ struct CatapultFX {
 
 struct CatapultSub {
     unsigned char pad_0[0x3a];
-    unsigned short field_3a;
+    short field_3a;
     unsigned char pad_3c[0x58 - 0x3c];
     int field_58;
+    unsigned char pad_5c[0x60 - 0x5c];
+    unsigned char field_60;
+    unsigned char pad_61[0x72 - 0x61];
+    unsigned char field_72;
 };
 
 struct CatapultEntry {
@@ -207,7 +219,7 @@ void FUN_004034c0(unsigned char *data, unsigned int index) {
 }
 
 // FUNCTION: LEGOLAND 0x00403530
-void FUN_00403530(void) { STUB(); }
+void FUN_00403530(struct CatapultNode *node, unsigned int index) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00403580
 void FUN_00403580(void *arg, unsigned int index) {
@@ -217,7 +229,53 @@ void FUN_00403580(void *arg, unsigned int index) {
 }
 
 // FUNCTION: LEGOLAND 0x004035a0
-void FUN_004035a0(struct CatapultNode *node) { STUB(); }
+void FUN_004035a0(struct CatapultNode *node) {
+    int i;
+    struct CatapultEntry *entry;
+
+    node->mode = node->mode + 1;
+    if (node->mode >= 0x10) {
+        node->mode = 0;
+    }
+
+    for (i = 0; i < 4; i++) {
+        struct CatapultEntry **pentry = &node->slots[i];
+        entry = *pentry;
+        if (entry == NULL) {
+            continue;
+        }
+        if ((((unsigned char *)pentry)[0x18] & 1) == 0) {
+            continue;
+        }
+
+        entry->sub->field_72 = 7;
+        entry->sub->field_58 = entry->sub->field_58 - 1;
+        if (entry->sub->field_58 > 0) {
+            continue;
+        }
+
+        entry->sub->field_58 = rand() % 0x14 + 0x32;
+        entry->sub->field_3a = entry->sub->field_3a - 1;
+        if ((rand() % 0x64) <= 0x2d) {
+            FUN_004034c0((unsigned char *)node, i);
+            if (node->field_8 == NULL) {
+                FUN_00403430((struct CatapultItem *)node);
+            }
+        }
+        entry->sub->field_3a = entry->sub->field_3a - 1;
+        if (entry->sub->field_3a > 0) {
+            continue;
+        }
+        entry->sub->field_60 = entry->sub->field_60 + 1;
+        FUN_00403580(node, i);
+    }
+
+    FUN_00403480((struct CatapultItem *)node);
+
+    for (i = 0; i < 4; i++) {
+        FUN_00403530(node, i);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00403690
 void FUN_00403690(void) {
