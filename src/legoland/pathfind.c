@@ -349,7 +349,15 @@ unsigned int FUN_00482860(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004828f0
-void FUN_004828f0(void) { STUB(); }
+void FUN_004828f0(void) {
+    struct BestNode *next;
+    while (DAT_0066b44c != 0) {
+        next = ((struct BestNode *)DAT_0066b44c)->next;
+        free(DAT_0066b44c);
+        DAT_0066b44c = next;
+    }
+    FUN_00482a80();
+}
 
 // FUNCTION: LEGOLAND 0x00482920
 int FUN_00482920(void) {
