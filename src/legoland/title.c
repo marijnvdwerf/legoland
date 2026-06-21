@@ -569,14 +569,14 @@ void FUN_00490a60(unsigned int param_1) {
 void FUN_00490aa0(void) {
     if ((int)DAT_004bf670 <= 1) {
         DAT_004bf670 = 1;
-        DAT_007cb2e0->field_34 = DAT_007cb2e0->field_34 | 0x400;
+        DAT_007cb2e0->flags = DAT_007cb2e0->flags | 0x400;
     } else {
-        DAT_007cb2e0->field_34 = DAT_007cb2e0->field_34 & 0xfffffbff;
+        DAT_007cb2e0->flags = DAT_007cb2e0->flags & 0xfffffbff;
     }
     if ((int)(DAT_004bf670 + 0xe) > (int)DAT_0079887c) {
-        DAT_007cb2e4->field_34 |= 0x400;
+        DAT_007cb2e4->flags |= 0x400;
     } else {
-        DAT_007cb2e4->field_34 &= 0xfffffbff;
+        DAT_007cb2e4->flags &= 0xfffffbff;
     }
     FUN_00490a20((int)DAT_004bf670 / 0xe);
 }
@@ -585,7 +585,7 @@ void FUN_00490aa0(void) {
 unsigned char FUN_00490b20(unsigned int param_1, unsigned int param_2) {
     FUN_0046d680(DAT_007cb2e4, DAT_0081c034);
     if ((param_2 & 2) != 0) {
-        if ((DAT_007cb2e4->field_34 & 0x400) != 0) {
+        if ((DAT_007cb2e4->flags & 0x400) != 0) {
             return FUN_00490970(0, param_2, 0, 0);
         }
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
@@ -659,57 +659,57 @@ void FUN_00490c70(void) {
     DAT_006687c0 = FUN_00490970;
 
     icon = InsertIcon(0x1b9, 0x50, 7, DAT_007caf80);
-    icon->field_3c = 0x2d0;
-    icon->field_38 = GetString(0x2d0);
-    icon->field_2c = FUN_00490be0;
-    icon->field_34 |= 0x6002;
+    icon->string_id = 0x2d0;
+    icon->string = GetString(0x2d0);
+    icon->handler = (void *)FUN_00490be0;
+    icon->flags |= 0x6002;
     DAT_007cb1c0 = icon;
     if (DAT_00798880 == 0) {
-        icon->field_34 |= 0x400;
+        icon->flags |= 0x400;
     }
 
     DAT_00798888 = 0;
     DAT_00798884 = 0xffffffff;
     DAT_007cb2e4 = InsertIcon(0x1b9, 0x1ae, 7, DAT_0081c02c);
-    DAT_007cb2e4->field_3c = 0x88e;
-    DAT_007cb2e4->field_38 = GetString(0x88e);
-    DAT_007cb2e4->field_34 |= 0x2000;
-    DAT_007cb2e4->field_34 |= 0x4002;
-    DAT_007cb2e4->field_2c = FUN_00490b20;
+    DAT_007cb2e4->string_id = 0x88e;
+    DAT_007cb2e4->string = GetString(0x88e);
+    DAT_007cb2e4->flags |= 0x2000;
+    DAT_007cb2e4->flags |= 0x4002;
+    DAT_007cb2e4->handler = (void *)FUN_00490b20;
     DAT_006687bc = FUN_00490b20;
 
     DAT_007cb2e0 = InsertIcon(6, 0x1ae, 7, DAT_0081c080);
-    DAT_007cb2e0->field_3c = 0x88f;
-    DAT_007cb2e0->field_38 = GetString(0x88f);
-    DAT_007cb2e0->field_34 |= 0x2000;
-    DAT_007cb2e0->field_34 |= 0x4002;
-    DAT_007cb2e0->field_2c = FUN_00490b90;
+    DAT_007cb2e0->string_id = 0x88f;
+    DAT_007cb2e0->string = GetString(0x88f);
+    DAT_007cb2e0->flags |= 0x2000;
+    DAT_007cb2e0->flags |= 0x4002;
+    DAT_007cb2e0->handler = (void *)FUN_00490b90;
     DAT_004bf670 = 1;
     FUN_00490aa0();
 }
 
 // FUNCTION: LEGOLAND 0x00490ea0
 void FUN_00490ea0(void) {
-    if ((int)DAT_00813a44 < DAT_007cb2e4->field_c ||
-        (int)DAT_00813a44 > DAT_007cb2e4->field_10 + DAT_007cb2e4->field_c ||
-        (int)DAT_00813a48 < DAT_007cb2e4->field_e ||
-        (int)DAT_00813a48 > DAT_007cb2e4->field_12 + DAT_007cb2e4->field_e) {
+    if ((int)DAT_00813a44 < DAT_007cb2e4->x ||
+        (int)DAT_00813a44 > DAT_007cb2e4->field_10 + DAT_007cb2e4->x ||
+        (int)DAT_00813a48 < DAT_007cb2e4->y ||
+        (int)DAT_00813a48 > DAT_007cb2e4->field_12 + DAT_007cb2e4->y) {
         if (GetBlink() != 0) {
             FUN_0046d680(DAT_007cb2e4, DAT_0081c02c);
         } else {
             FUN_0046d680(DAT_007cb2e4, DAT_0081c034);
         }
     }
-    if ((int)DAT_00813a44 < DAT_007cb2e0->field_c ||
-        (int)DAT_00813a44 > DAT_007cb2e0->field_10 + DAT_007cb2e0->field_c ||
-        (int)DAT_00813a48 < DAT_007cb2e0->field_e ||
-        (int)DAT_00813a48 > DAT_007cb2e0->field_12 + DAT_007cb2e0->field_e) {
+    if ((int)DAT_00813a44 < DAT_007cb2e0->x ||
+        (int)DAT_00813a44 > DAT_007cb2e0->field_10 + DAT_007cb2e0->x ||
+        (int)DAT_00813a48 < DAT_007cb2e0->y ||
+        (int)DAT_00813a48 > DAT_007cb2e0->field_12 + DAT_007cb2e0->y) {
         FUN_0046d680(DAT_007cb2e0, DAT_0081c080);
     }
-    if ((int)DAT_00813a44 < DAT_007cb1c0->field_c ||
-        (int)DAT_00813a44 > DAT_007cb1c0->field_10 + DAT_007cb1c0->field_c ||
-        (int)DAT_00813a48 < DAT_007cb1c0->field_e ||
-        (int)DAT_00813a48 > DAT_007cb1c0->field_12 + DAT_007cb1c0->field_e) {
+    if ((int)DAT_00813a44 < DAT_007cb1c0->x ||
+        (int)DAT_00813a44 > DAT_007cb1c0->field_10 + DAT_007cb1c0->x ||
+        (int)DAT_00813a48 < DAT_007cb1c0->y ||
+        (int)DAT_00813a48 > DAT_007cb1c0->field_12 + DAT_007cb1c0->y) {
         FUN_0046d680(DAT_007cb1c0, DAT_007caf80);
     }
 }

@@ -447,77 +447,77 @@ LEGO_EXPORT int InitGameInterface(int a) {
         obj = element->obj;
         DAT_007fd624 = obj;
         icon = InsertIcon((short)DAT_004bb04c[8], (short)DAT_004bb04c[9], 0x93, DAT_007fdd50);
-        icon->field_3c = 0xffffffff;
-        icon->field_38 = (unsigned int)obj->field_7c;
+        icon->string_id = 0xffffffff;
+        icon->string = (char *)obj->field_7c;
         icon->field_18 = 1;
         icon->field_1c = DAT_007fdcd0;
         icon->field_20p = DAT_007fdd50;
         icon->field_8 = obj;
         icon->field_28 = (void *)RenderGBarSpriteIcon;
-        icon->field_2c = (void *)FUN_00474fc0;
-        icon->field_34 = (icon->field_34 & 0xfffffdff) | 0x300a;
+        icon->handler = (void *)FUN_00474fc0;
+        icon->flags = (icon->flags & 0xfffffdff) | 0x300a;
 
         icon = InsertIcon((short)DAT_004bb04c[10], (short)DAT_004bb04c[11], 0x93, DAT_007fdd54);
-        icon->field_3c = 0x5a;
-        icon->field_38 = (unsigned int)GetString(0x5a);
-        icon->field_34 |= 0x6002;
-        icon->field_2c = (void *)FUN_00475000;
+        icon->string_id = 0x5a;
+        icon->string = GetString(0x5a);
+        icon->flags |= 0x6002;
+        icon->handler = (void *)FUN_00475000;
         icon->field_18 = 2;
         icon->field_1c = DAT_007fdcd4;
         icon->field_20p = DAT_007fdd54;
 
         icon = InsertIcon((short)DAT_004bb04c[12], (short)DAT_004bb04c[13], 0x93, DAT_007fdd58);
-        icon->field_3c = 0x5b;
-        icon->field_38 = (unsigned int)GetString(0x5b);
-        icon->field_34 |= 0x6002;
-        icon->field_2c = (void *)FUN_00475040;
+        icon->string_id = 0x5b;
+        icon->string = GetString(0x5b);
+        icon->flags |= 0x6002;
+        icon->handler = (void *)FUN_00475040;
         icon->field_18 = 3;
         icon->field_1c = DAT_007fdcd8;
         icon->field_20p = DAT_007fdd58;
 
         icon = InsertIcon((short)DAT_004bb04c[14], (short)DAT_004bb04c[15], 0x93, DAT_007fdd5c);
-        icon->field_3c = 0x5c;
-        icon->field_38 = (unsigned int)GetString(0x5c);
-        icon->field_34 |= 0x6002;
-        icon->field_2c = (void *)FUN_00475080;
+        icon->string_id = 0x5c;
+        icon->string = GetString(0x5c);
+        icon->flags |= 0x6002;
+        icon->handler = (void *)FUN_00475080;
         icon->field_18 = 4;
         icon->field_1c = DAT_007fdcdc;
         icon->field_20p = DAT_007fdd5c;
 
         icon = InsertIcon((short)DAT_004bb04c[16], (short)DAT_004bb04c[17], 0x93, DAT_007fdd60);
-        icon->field_3c = 0x5d;
-        icon->field_38 = (unsigned int)GetString(0x5d);
-        icon->field_34 |= 0x6002;
-        icon->field_2c = (void *)FUN_00475120;
+        icon->string_id = 0x5d;
+        icon->string = GetString(0x5d);
+        icon->flags |= 0x6002;
+        icon->handler = (void *)FUN_00475120;
         icon->field_20p = DAT_007fdd60;
 
         icon = InsertIcon((short)DAT_004bb04c[0], (short)DAT_004bb04c[1], 0x9a, DAT_007fdd40);
-        icon->field_3c = 0x5e;
-        icon->field_38 = (unsigned int)GetString(0x5e);
-        icon->field_34 |= 0x6002;
-        icon->field_2c = (void *)FUN_004751a0;
+        icon->string_id = 0x5e;
+        icon->string = GetString(0x5e);
+        icon->flags |= 0x6002;
+        icon->handler = (void *)FUN_004751a0;
         DAT_007fdd70[0] = (struct InterfaceProfileObj *)icon;
 
         icon = InsertIcon((short)DAT_004bb04c[2], (short)DAT_004bb04c[3], 0x9a, DAT_007fdd44);
         DAT_00668e3c = icon;
-        icon->field_3c = 0x5f;
-        icon->field_38 = (unsigned int)GetString(0x5f);
-        icon->field_34 |= 0x6002;
-        icon->field_2c = (void *)FUN_004754b0;
+        icon->string_id = 0x5f;
+        icon->string = GetString(0x5f);
+        icon->flags |= 0x6002;
+        icon->handler = (void *)FUN_004754b0;
         DAT_007fdd70[1] = (struct InterfaceProfileObj *)icon;
 
         icon = InsertIcon((short)DAT_004bb04c[4], (short)DAT_004bb04c[5], 0x9a, DAT_007fdd48);
-        icon->field_3c = 0x60;
-        icon->field_38 = (unsigned int)GetString(0x60);
-        icon->field_34 |= 0x6002;
-        icon->field_2c = (void *)FUN_004753a0;
+        icon->string_id = 0x60;
+        icon->string = GetString(0x60);
+        icon->flags |= 0x6002;
+        icon->handler = (void *)FUN_004753a0;
         DAT_007fdd70[2] = (struct InterfaceProfileObj *)icon;
 
         icon = InsertIcon((short)DAT_004bb04c[6], (short)DAT_004bb04c[7], 0x9a, DAT_007fdd4c);
-        icon->field_3c = 0x61;
-        icon->field_38 = (unsigned int)GetString(0x61);
-        icon->field_34 |= 0x6002;
-        icon->field_2c = (void *)FUN_004752a0;
+        icon->string_id = 0x61;
+        icon->string = GetString(0x61);
+        icon->flags |= 0x6002;
+        icon->handler = (void *)FUN_004752a0;
         DAT_007fdd70[3] = (struct InterfaceProfileObj *)icon;
 
         // STRING: LEGOLAND 0x004bb48c
@@ -531,23 +531,23 @@ LEGO_EXPORT int InitGameInterface(int a) {
         bar->field_34 |= 0x400a;
 
         icon = InsertIcon(0x19e, 0x179, 0x9a, DAT_00668e94);
-        icon->field_3c = 0x24e;
-        icon->field_38 = (unsigned int)GetString(0x24e);
+        icon->string_id = 0x24e;
+        icon->string = GetString(0x24e);
         icon->field_18p = DAT_00668e98;
-        icon->field_34 |= 0x600a;
-        icon->field_2c = (void *)FUN_00474f40;
+        icon->flags |= 0x600a;
+        icon->handler = (void *)FUN_00474f40;
         icon->field_28 = (void *)FUN_0046e040;
         DAT_00668e9c = icon;
-        icon->field_34 |= 0x400;
+        icon->flags |= 0x400;
         FUN_00491240((const char *)&DAT_0066861c);
 
         icon = InsertIcon(0x20a, 0x17a, 0x93, DAT_00668ea0);
         icon->field_20p = NULL;
         icon->field_1c = NULL;
-        icon->field_3c = 0x24f;
-        icon->field_38 = (unsigned int)GetString(0x24f);
-        icon->field_2c = (void *)FUN_00474fa0;
-        icon->field_34 |= 0x4008;
+        icon->string_id = 0x24f;
+        icon->string = GetString(0x24f);
+        icon->handler = (void *)FUN_00474fa0;
+        icon->flags |= 0x4008;
         icon->field_28 = (void *)FUN_00443e30;
         DAT_00668eb8 = (unsigned int)icon;
         if (a != 0 || FUN_0046b280() == 0) {
@@ -1064,14 +1064,14 @@ LEGO_EXPORT int MakeUpObjectList(int param_1, int param_2, int param_3, int para
     }
     icon = SetupInterfacePanelIcons((unsigned int)panel, panel_arg, param_3, 1, param_4, param_1);
     panel->icon = icon;
-    x = icon->field_c;
+    x = icon->x;
     panel->field_1c = x;
     panel->field_c = x;
-    y = icon->field_e;
+    y = icon->y;
     panel->field_20 = y;
     panel->field_10 = y;
-    panel->field_24 = icon->field_10 + icon->field_c;
-    panel->field_28 = icon->field_12 + icon->field_e;
+    panel->field_24 = icon->field_10 + icon->x;
+    panel->field_28 = icon->field_12 + icon->y;
     panel->field_4 = 1;
     panel->group = (short)param_1;
     SetNewGroup_Callbacks(0, (void *)RenderBuildObjectIcon, (void *)FUN_00470000);
@@ -1117,15 +1117,15 @@ finish:
     AddFullScreenIcon((void *)(param_2 + 6));
     panel->field_14 = x;
     panel->field_18 = y;
-    if (y < panel->icon->field_12 + panel->icon->field_e) {
+    if (y < panel->icon->field_12 + panel->icon->y) {
         icon = FindIcon((unsigned short)(param_2 + 4));
         if (icon != NULL) {
-            icon->field_e = (short)param_4 - 0x1e + (short)param_3;
-            icon->field_34 |= 0x400;
+            icon->y = (short)param_4 - 0x1e + (short)param_3;
+            icon->flags |= 0x400;
         }
         icon = FindIcon((unsigned short)(param_2 + 3));
         if (icon != NULL) {
-            icon->field_34 |= 0x400;
+            icon->flags |= 0x400;
         }
         DAT_007fdd84 = 0;
         DAT_00668e44[DAT_00668e64 & 0xff] = 0;
@@ -1255,7 +1255,7 @@ LEGO_EXPORT void DisableSidePanelIcons(void) {
     node = (struct IconNode *)DAT_006687c8;
     while (node != NULL) {
         if (node->field_14 == 0xd2 || node->field_14 == 0xd5 || node->field_14 == 0xd6 || node->field_14 == 0xd7) {
-            node->field_34 |= 0x400;
+            node->flags |= 0x400;
         }
         node = node->next;
     }
@@ -1268,7 +1268,7 @@ LEGO_EXPORT void EnableSidePanelIcons(void) {
     node = (struct IconNode *)DAT_006687c8;
     while (node != NULL) {
         if (node->field_14 == 0xd2 || node->field_14 == 0xd5 || node->field_14 == 0xd6 || node->field_14 == 0xd7) {
-            node->field_34 &= 0xfffffbff;
+            node->flags &= 0xfffffbff;
         }
         node = node->next;
     }

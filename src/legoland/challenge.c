@@ -1259,14 +1259,14 @@ unsigned char FUN_00444ef0(unsigned int param_1, unsigned int param_2) {
     if (icon == NULL) {
         return 1;
     }
-    if (((icon->field_34 == 0) & 0x400) != 0) {
+    if (((icon->flags == 0) & 0x400) != 0) {
         FUN_0046d680(icon, DAT_0081c034);
         icon = DAT_006660a8;
     }
     if ((param_2 & 2) == 0) {
         return 1;
     }
-    if ((icon->field_34 & 0x400) != 0) {
+    if ((icon->flags & 0x400) != 0) {
         return (unsigned char)FUN_00444eb0(0, param_2, 0, 0);
     }
     DAT_0081c07c = 1;
@@ -1362,9 +1362,9 @@ void FUN_00445100(void) {
 
     a = DAT_006660a8;
     x = DAT_00813a44;
-    if (x >= a->field_c && x <= a->field_10 + a->field_c) {
+    if (x >= a->x && x <= a->field_10 + a->x) {
         y = DAT_00813a48;
-        if (y >= a->field_e && y <= a->field_12 + a->field_e) {
+        if (y >= a->y && y <= a->field_12 + a->y) {
             goto skip;
         }
     }
@@ -1373,8 +1373,8 @@ skip:
     x = DAT_00813a44;
     y = DAT_00813a48;
     b = DAT_006660ac;
-    if (x < b->field_c || x > b->field_10 + b->field_c ||
-        y < b->field_e || y > b->field_12 + b->field_e) {
+    if (x < b->x || x > b->field_10 + b->x ||
+        y < b->y || y > b->field_12 + b->y) {
         FUN_0046d680(b, DAT_0081c080);
     }
 }
@@ -1397,18 +1397,18 @@ void FUN_00445190(void) {
     icon->event_handler = (unsigned char (*)(unsigned int, unsigned int))FUN_00444eb0;
     DAT_006687c0 = (unsigned int)FUN_00444eb0;
     DAT_006660a8 = InsertIcon(0x1b9, 0x1ae, 1, DAT_0081c02c);
-    DAT_006660a8->field_3c = 0xdc;
-    DAT_006660a8->field_38 = (unsigned int)GetString(0xdc);
-    DAT_006660a8->field_34 |= 0x2000;
-    DAT_006660a8->field_34 |= 0x4002;
-    DAT_006660a8->field_2c = (void *)FUN_00444ef0;
+    DAT_006660a8->string_id = 0xdc;
+    DAT_006660a8->string = GetString(0xdc);
+    DAT_006660a8->flags |= 0x2000;
+    DAT_006660a8->flags |= 0x4002;
+    DAT_006660a8->handler = (void *)FUN_00444ef0;
     DAT_006687bc = (unsigned int)FUN_00444ef0;
     DAT_006660ac = InsertIcon(6, 0x1ae, 1, DAT_0081c080);
-    DAT_006660ac->field_3c = 0xdd;
-    DAT_006660ac->field_38 = (unsigned int)GetString(0xdd);
-    DAT_006660ac->field_34 |= 0x2000;
-    DAT_006660ac->field_34 |= 0x4002;
-    DAT_006660ac->field_2c = (void *)FUN_00444f90;
+    DAT_006660ac->string_id = 0xdd;
+    DAT_006660ac->string = GetString(0xdd);
+    DAT_006660ac->flags |= 0x2000;
+    DAT_006660ac->flags |= 0x4002;
+    DAT_006660ac->handler = (void *)FUN_00444f90;
     FUN_00445310();
     DAT_0081c038 = 1;
 }
@@ -1416,18 +1416,18 @@ void FUN_00445190(void) {
 // FUNCTION: LEGOLAND 0x00445310
 void FUN_00445310(void) {
     if (DAT_006660a0 <= 1 || DAT_006660a4 >= DAT_006660a0 - 1) {
-        DAT_006660a8->field_2c = 0;
-        DAT_006660a8->field_34 |= 0x400;
+        DAT_006660a8->handler = 0;
+        DAT_006660a8->flags |= 0x400;
     } else {
-        DAT_006660a8->field_2c = (void *)FUN_00444ef0;
-        DAT_006660a8->field_34 &= 0xfffffbff;
+        DAT_006660a8->handler = (void *)FUN_00444ef0;
+        DAT_006660a8->flags &= 0xfffffbff;
     }
     if (DAT_006660a4 != 0) {
-        DAT_006660ac->field_2c = (void *)FUN_00444f90;
-        DAT_006660ac->field_34 &= 0xfffffbff;
+        DAT_006660ac->handler = (void *)FUN_00444f90;
+        DAT_006660ac->flags &= 0xfffffbff;
     } else {
-        DAT_006660ac->field_2c = 0;
-        DAT_006660ac->field_34 |= 0x400;
+        DAT_006660ac->handler = 0;
+        DAT_006660ac->flags |= 0x400;
     }
 }
 

@@ -151,42 +151,42 @@ LEGO_EXPORT void InitPopUpInfo(void) {
     DAT_007fdfe0->flags |= 0x2000;
     DAT_007fdfe0->flags |= 0x4002;
     DAT_007fdfe0->flags |= 0x400;
-    DAT_007fdfe0->handler = FUN_004733f0;
+    DAT_007fdfe0->handler = (void *)FUN_004733f0;
     DAT_007fdea4 = InsertIcon(0, 0, 0x2c3, DAT_00668950);
     DAT_007fdea4->string_id = 0x6f;
     DAT_007fdea4->string = GetString(0x6f);
     DAT_007fdea4->flags |= 0x2000;
     DAT_007fdea4->flags |= 0x4002;
     DAT_007fdea4->flags |= 0x400;
-    DAT_007fdea4->handler = FUN_00473460;
+    DAT_007fdea4->handler = (void *)FUN_00473460;
     DAT_007fdfdc = InsertIcon(0, 0, 0x2c3, DAT_00668918);
     DAT_007fdfdc->string_id = 0x70;
     DAT_007fdfdc->string = GetString(0x70);
     DAT_007fdfdc->flags |= 0x2000;
     DAT_007fdfdc->flags |= 0x4002;
     DAT_007fdfdc->flags |= 0x400;
-    DAT_007fdfdc->handler = FUN_004731a0;
+    DAT_007fdfdc->handler = (void *)FUN_004731a0;
     DAT_007fdfc0 = InsertIcon(0, 0, 0x2c3, DAT_00668920);
     DAT_007fdfc0->string_id = 0x73;
     DAT_007fdfc0->string = GetString(0x73);
     DAT_007fdfc0->flags |= 0x2000;
     DAT_007fdfc0->flags |= 0x4002;
     DAT_007fdfc0->flags |= 0x400;
-    DAT_007fdfc0->handler = FUN_004730f0;
+    DAT_007fdfc0->handler = (void *)FUN_004730f0;
     DAT_007fdfc4 = InsertIcon(0, 0, 0x2c3, DAT_00668928);
     DAT_007fdfc4->string_id = 0x88e;
     DAT_007fdfc4->string = GetString(0x88e);
     DAT_007fdfc4->flags |= 0x2000;
     DAT_007fdfc4->flags |= 0x4002;
     DAT_007fdfc4->flags |= 0x400;
-    DAT_007fdfc4->handler = FUN_00473360;
+    DAT_007fdfc4->handler = (void *)FUN_00473360;
     DAT_007fdfe8 = InsertIcon(0, 0, 0x2c3, DAT_00668930);
     DAT_007fdfe8->string_id = 0x88f;
     DAT_007fdfe8->string = GetString(0x88f);
     DAT_007fdfe8->flags |= 0x2000;
     DAT_007fdfe8->flags |= 0x4002;
     DAT_007fdfe8->flags |= 0x400;
-    DAT_007fdfe8->handler = FUN_004733b0;
+    DAT_007fdfe8->handler = (void *)FUN_004733b0;
     // STRING: LEGOLAND 0x004baa7c
     DAT_007fdfd8 = (struct IconNode *)LoadSpriteIcon("PU_CornerMask.lls", 4, 0, 0, 0x2c3);
     DAT_007fdfd8->flags |= 0x400;
@@ -196,7 +196,7 @@ LEGO_EXPORT void InitPopUpInfo(void) {
     DAT_007fdfcc->flags |= 0x2000;
     DAT_007fdfcc->flags |= 0x4002;
     DAT_007fdfcc->flags |= 0x400;
-    DAT_007fdfcc->handler = FUN_004734d0;
+    DAT_007fdfcc->handler = (void *)FUN_004734d0;
     FUN_00470950(FUN_004731e0, FUN_00473310);
 }
 
@@ -341,11 +341,11 @@ void FUN_00471470(void) {
 
 // FUNCTION: LEGOLAND 0x004714a0
 void FUN_004714a0(void) {
-    DAT_007fdfdc->handler = FUN_004731a0;
-    DAT_007fdfc0->handler = FUN_004730f0;
-    DAT_007fdfe0->handler = FUN_004733f0;
-    DAT_007fdea4->handler = FUN_00473460;
-    DAT_007fdfcc->handler = FUN_004734d0;
+    DAT_007fdfdc->handler = (void *)FUN_004731a0;
+    DAT_007fdfc0->handler = (void *)FUN_004730f0;
+    DAT_007fdfe0->handler = (void *)FUN_004733f0;
+    DAT_007fdea4->handler = (void *)FUN_00473460;
+    DAT_007fdfcc->handler = (void *)FUN_004734d0;
 }
 
 // FUNCTION: LEGOLAND 0x004714e0

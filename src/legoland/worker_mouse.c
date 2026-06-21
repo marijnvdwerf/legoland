@@ -134,7 +134,7 @@ void FUN_00470950(void *a, void *b) {
     temp_val = DAT_007fdea8->flags;
     temp_val2 = temp_val | 0x400;
     DAT_007fdea8->flags = temp_val2;
-    DAT_007fdea8->field_2c = a;
+    DAT_007fdea8->handler = a;
 
     DAT_007fe000 = InsertIcon(0, 0, 0x2c3, DAT_0066893c);
     DAT_007fe000->string_id = 0x75;
@@ -144,7 +144,7 @@ void FUN_00470950(void *a, void *b) {
     temp_val = DAT_007fe000->flags;
     temp_val2 = temp_val | 0x400;
     DAT_007fe000->flags = temp_val2;
-    DAT_007fe000->field_2c = b;
+    DAT_007fe000->handler = b;
 }
 
 // FUNCTION: LEGOLAND 0x00470b00
