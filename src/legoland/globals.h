@@ -1445,6 +1445,14 @@ extern unsigned int DAT_0062fe14;
 extern unsigned int DAT_0062fe18;
 // 0x0062fe1c
 extern unsigned short DAT_0062fe1c;
+// 0x0062fe30
+extern unsigned int DAT_0062fe30;
+// 0x0062fe34
+extern unsigned int DAT_0062fe34;
+// 0x0062fe38
+extern unsigned int DAT_0062fe38;
+// 0x0062fe3c
+extern unsigned short DAT_0062fe3c;
 // 0x0062fe48
 extern unsigned int DAT_0062fe48;
 // 0x0062fe4c

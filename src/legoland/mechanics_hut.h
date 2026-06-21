@@ -9,4 +9,4 @@ void FUN_0043d2f0();
 void FUN_0043d580();
 void FUN_0043d730();
 void FUN_0043d740();
-unsigned int *FUN_0043d780();
+unsigned int *FUN_0043d780(void *ptr, unsigned short arg2);
