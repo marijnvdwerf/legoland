@@ -8,6 +8,8 @@
 #include "llidb.h"
 #include "man3d.h"
 #include "map_object.h"
+#include "obj_instance.h"
+#include "path_control.h"
 #include "render3d.h"
 #include "objclass.h"
 #include "ride_queue.h"
@@ -53,6 +55,17 @@ struct GoldBlokeRef {
     unsigned char pad_0[8];
     struct GoldBloke *bloke;
     unsigned char field_c;
+};
+
+struct GoldRide {
+    unsigned char pad_0[0xc];
+    int field_c;
+    int field_10;
+};
+
+struct GoldEditObject {
+    unsigned char pad_0[0xc];
+    struct GoldRide *ride;
 };
 
 struct GoldNode {
@@ -260,7 +273,34 @@ void FUN_004075b0(void) {
 void FUN_004075f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004076e0
-void FUN_004076e0(void) { STUB(); }
+void FUN_004076e0(struct GoldEditObject *editObj, unsigned int coords, struct Cursor *cursor) {
+    int p[2];
+    struct GoldRide *ride = editObj->ride;
+    void *found = FUN_004069e0(&coords);
+
+    if (found != NULL) {
+        FUN_00406960((struct GoldNode *)found);
+    }
+
+    StandardRemoveObject((struct EditObject *)editObj, coords, cursor);
+    RemoveAllBlokesFromRide((struct Ride *)ride, coords);
+
+    p[0] = ((unsigned char *)&coords)[0] + ride->field_c - 1;
+    p[1] = ((unsigned char *)&coords)[1] + ride->field_10;
+    RemoveRollerCoasterPath(p);
+
+    p[0] = ((unsigned char *)&coords)[0] + ride->field_c - 2;
+    p[1] = ((unsigned char *)&coords)[1] + ride->field_10;
+    RemoveRollerCoasterPath(p);
+
+    p[0] = ((unsigned char *)&coords)[0] + ride->field_c - 2;
+    p[1] = ((unsigned char *)&coords)[1] + ride->field_10 - 1;
+    RemoveRollerCoasterPath(p);
+
+    p[0] = ((unsigned char *)&coords)[0] + ride->field_c - 2;
+    p[1] = ((unsigned char *)&coords)[1] + ride->field_10 - 2;
+    RemoveRollerCoasterPath(p);
+}
 
 // FUNCTION: LEGOLAND 0x00407800
 LEGO_EXPORT int SaveGoldWash(void) {
