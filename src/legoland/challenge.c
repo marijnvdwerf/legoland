@@ -1381,7 +1381,7 @@ skip:
 
 // FUNCTION: LEGOLAND 0x00445190
 void FUN_00445190(void) {
-    struct SpriteIcon *icon;
+    struct IconNode *icon;
 
     DAT_0081c02c = LoadSprite("NextPage.lls", 4);
     DAT_0081c034 = LoadSprite("NextPageLit.lls", 4);
@@ -1391,24 +1391,24 @@ void FUN_00445190(void) {
     SPRITE_TitleScreenBk = LoadSprite("AppraisalBK.lls", 0);
     // STRING: LEGOLAND 0x004b8138
     icon = LoadSpriteIcon("GoBack_on_Report.lls", 4, 0x1fb, 0x161, 1);
-    icon->field_3c = 0xde;
-    icon->field_38 = GetString(0xde);
-    icon->field_34 |= 0x6002;
-    icon->event_handler = (unsigned char (*)(unsigned int, unsigned int))FUN_00444eb0;
+    icon->string_id = 0xde;
+    icon->string = GetString(0xde);
+    icon->flags |= 0x6002;
+    icon->event_handler = (void *)FUN_00444eb0;
     DAT_006687c0 = (unsigned int)FUN_00444eb0;
     DAT_006660a8 = InsertIcon(0x1b9, 0x1ae, 1, DAT_0081c02c);
     DAT_006660a8->string_id = 0xdc;
     DAT_006660a8->string = GetString(0xdc);
     DAT_006660a8->flags |= 0x2000;
     DAT_006660a8->flags |= 0x4002;
-    DAT_006660a8->handler = (void *)FUN_00444ef0;
+    DAT_006660a8->event_handler = (void *)FUN_00444ef0;
     DAT_006687bc = (unsigned int)FUN_00444ef0;
     DAT_006660ac = InsertIcon(6, 0x1ae, 1, DAT_0081c080);
     DAT_006660ac->string_id = 0xdd;
     DAT_006660ac->string = GetString(0xdd);
     DAT_006660ac->flags |= 0x2000;
     DAT_006660ac->flags |= 0x4002;
-    DAT_006660ac->handler = (void *)FUN_00444f90;
+    DAT_006660ac->event_handler = (void *)FUN_00444f90;
     FUN_00445310();
     DAT_0081c038 = 1;
 }
@@ -1416,17 +1416,17 @@ void FUN_00445190(void) {
 // FUNCTION: LEGOLAND 0x00445310
 void FUN_00445310(void) {
     if (DAT_006660a0 <= 1 || DAT_006660a4 >= DAT_006660a0 - 1) {
-        DAT_006660a8->handler = 0;
+        DAT_006660a8->event_handler = 0;
         DAT_006660a8->flags |= 0x400;
     } else {
-        DAT_006660a8->handler = (void *)FUN_00444ef0;
+        DAT_006660a8->event_handler = (void *)FUN_00444ef0;
         DAT_006660a8->flags &= 0xfffffbff;
     }
     if (DAT_006660a4 != 0) {
-        DAT_006660ac->handler = (void *)FUN_00444f90;
+        DAT_006660ac->event_handler = (void *)FUN_00444f90;
         DAT_006660ac->flags &= 0xfffffbff;
     } else {
-        DAT_006660ac->handler = 0;
+        DAT_006660ac->event_handler = 0;
         DAT_006660ac->flags |= 0x400;
     }
 }

@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# Find all C-style casts in the codebase using ast-grep (tree-sitter).
+#
+# Usage:
+#   ./tools/find-casts                    # all interesting casts
+#   ./tools/find-casts --summary          # counts per file
+#   ./tools/find-casts --all              # include boring casts too
+#   ./tools/find-casts --type struct      # only casts containing "struct"
+#   ./tools/find-casts --type 'void \*'   # only (void *) casts
+#   ./tools/find-casts src/legoland/icon.c  # specific file(s)
+
+set -euo pipefail
+
+SUMMARY=0
+FILTER=1
+TYPE_FILTER=""
+PATHS=(src/legoland/)
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --summary) SUMMARY=1; shift ;;
+        --all) FILTER=0; shift ;;
+        --type) TYPE_FILTER="$2"; shift 2 ;;
+        --help|-h)
+            sed -n '2,/^$/s/^# \?//p' "$0"
+            exit 0
+            ;;
+        *)
+            PATHS=("$@")
+            break
+            ;;
+    esac
+done
+
+# Run ast-grep to find all cast_expression nodes
+all_casts=$(sg --kind cast_expression -l c "${PATHS[@]}" 2>/dev/null || true)
+
+if [[ "$FILTER" -eq 1 ]]; then
+    # Filter out unavoidable / uninteresting casts
+    filtered=$(echo "$all_casts" | grep -v -E \
+        -e '^\s*$' \
+        -e '\(\s*void\s*\*\s*\)\s*(malloc|calloc|realloc)\b' \
+        -e '\(\s*struct [A-Za-z_]+ \*\s*\)\s*malloc\b' \
+        -e '\(float\)' \
+        -e '\(double\)' \
+        -e '\(void\)' \
+        -e '\(char\)[^*]' \
+        -e '\(short\)[^*]' \
+        -e '\(int\)[^*]' \
+        -e '\(long\)[^*]' \
+        -e '\(unsigned int\)[^*]' \
+        -e '\(unsigned short\)[^*]' \
+        -e '\(unsigned char\)[^*]' \
+        -e '\(unsigned long\)[^*]' \
+        -e '\(signed int\)[^*]' \
+        || true)
+else
+    filtered=$(echo "$all_casts" | grep -v '^\s*$' || true)
+fi
+
+# Apply type filter if specified
+if [[ -n "$TYPE_FILTER" ]]; then
+    filtered=$(echo "$filtered" | grep -E "\($TYPE_FILTER" || true)
+fi
+
+if [[ "$SUMMARY" -eq 1 ]]; then
+    echo "$filtered" \
+        | sed 's/:.*//' \
+        | sort \
+        | uniq -c \
+        | sort -rn
+    echo
+    total=$(echo "$filtered" | grep -c . || true)
+    echo "Total: $total casts"
+else
+    echo "$filtered"
+fi

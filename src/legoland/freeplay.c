@@ -57,8 +57,8 @@ struct FreePlayElement {
 
 // FUNCTION: LEGOLAND 0x0048a8a0
 LEGO_EXPORT void InitFreePlayScreen(void) {
-    struct SpriteIcon *icon;
-    struct SpriteIcon *bar;
+    struct IconNode *icon;
+    struct IconNode *bar;
     struct FreePlayElement *elem;
     unsigned int path_idx;
     unsigned int count;
@@ -94,26 +94,26 @@ LEGO_EXPORT void InitFreePlayScreen(void) {
 
     // STRING: LEGOLAND 0x004bea88
     icon = LoadSpriteIcon("GoBack_on_FreePlay.lls", 4, 0xd, 0x137, 7);
-    icon->field_3c = 0x26;
-    icon->field_38 = GetString(0x26);
-    icon->field_34 |= 0x6002;
-    icon->event_handler = (unsigned char (*)(unsigned int, unsigned int))FUN_0048fb80;
+    icon->string_id = 0x26;
+    icon->string = GetString(0x26);
+    icon->flags |= 0x6002;
+    icon->event_handler = (void *)FUN_0048fb80;
     DAT_006687c0 = (unsigned int)FUN_0048fb80;
 
     // STRING: LEGOLAND 0x004bea70
     icon = LoadSpriteIcon("Accept_On_FreePlay.lls", 4, 0x1e4, 0x14b, 7);
-    icon->field_3c = 0x32;
-    icon->field_38 = GetString(0x32);
-    icon->field_34 |= 0x6002;
-    icon->event_handler = FUN_0048ac60;
+    icon->string_id = 0x32;
+    icon->string = GetString(0x32);
+    icon->flags |= 0x6002;
+    icon->event_handler = (void *)FUN_0048ac60;
     DAT_006687bc = (unsigned int)FUN_0048ac60;
-    icon->field_34 |= 0x400;
+    icon->flags |= 0x400;
     DAT_0079864c = icon;
 
     // STRING: LEGOLAND 0x004bea60
     bar = LoadSpriteIcon("Bar_Rides.lls", 4, 0xd1, 0x156, 7);
     bar->field_28 = (void *)RenderFreePlayBar;
-    bar->field_34 |= 0x400a;
+    bar->flags |= 0x400a;
 
     count = LLIDB_GetCount();
     // STRING: LEGOLAND 0x004b8a70
@@ -194,7 +194,7 @@ void FUN_0048abb0(void) {
 
 // FUNCTION: LEGOLAND 0x0048ac60
 unsigned char FUN_0048ac60(unsigned int param_1, unsigned int param_2) {
-    if (DAT_0079864c != 0 && (DAT_0079864c->field_34 & 0x400) != 0) {
+    if (DAT_0079864c != 0 && (DAT_0079864c->flags & 0x400) != 0) {
         return 0;
     }
 
@@ -251,7 +251,7 @@ void FUN_0048af40(unsigned int param) {
     }
 
     if (DAT_00798650++ == 0) {
-        DAT_0079864c->field_34 &= ~0x400u;
+        DAT_0079864c->flags &= ~0x400u;
     }
 }
 
@@ -266,7 +266,7 @@ void FUN_0048afa0(unsigned int param) {
     }
 
     if (--DAT_00798650 == 0) {
-        DAT_0079864c->field_34 |= 0x400;
+        DAT_0079864c->flags |= 0x400;
     }
 }
 

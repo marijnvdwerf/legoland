@@ -62,7 +62,6 @@ struct EarthNode;
 struct JoustNode;
 struct InterfaceIconNode;
 struct IconNode;
-struct SpriteIcon;
 struct InterfaceProfileObj;
 struct InterfaceListNode;
 struct MoviePool;
@@ -2282,7 +2281,7 @@ extern unsigned int DAT_0079863c;
 // 0x00798648
 extern unsigned int DAT_00798648;
 // 0x0079864c
-extern struct SpriteIcon *DAT_0079864c;
+extern struct IconNode *DAT_0079864c;
 // 0x00798650
 extern unsigned int DAT_00798650;
 // 0x00798660

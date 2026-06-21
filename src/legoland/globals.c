@@ -3084,7 +3084,7 @@ unsigned int DAT_0079863c;
 unsigned int DAT_00798648;
 
 // GLOBAL: LEGOLAND 0x0079864c
-struct SpriteIcon *DAT_0079864c;
+struct IconNode *DAT_0079864c;
 
 // GLOBAL: LEGOLAND 0x00798650
 unsigned int DAT_00798650;

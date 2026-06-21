@@ -33,7 +33,7 @@ struct PopUp {
 
 // FUNCTION: LEGOLAND 0x0048fc40
 LEGO_EXPORT void InitTitleScreen(void) {
-    struct SpriteIcon *icon;
+    struct IconNode *icon;
 
     FUN_00474ed0();
     // STRING: LEGOLAND 0x004bf574
@@ -41,57 +41,57 @@ LEGO_EXPORT void InitTitleScreen(void) {
 
     // STRING: LEGOLAND 0x004bf560
     icon = LoadSpriteIcon("New_on_Title.lls", 4, 0xca, 0x138, 7);
-    icon->field_3c = 7;
-    icon->field_38 = GetString(7);
-    icon->field_34 |= 0x6002;
+    icon->string_id = 7;
+    icon->string = GetString(7);
+    icon->flags |= 0x6002;
     icon->event_handler = FUN_0048feb0;
     if (FUN_0048fc30() == 0) {
         // STRING: LEGOLAND 0x004bf548
-        icon->field_18 = LoadSprite("Dark_New_On_Title.lls", 4);
+        icon->alt_sprite = LoadSprite("Dark_New_On_Title.lls", 4);
         icon->field_28 = (void *)FUN_0046e920;
-        icon->field_34 |= 8;
+        icon->flags |= 8;
     } else {
-        icon->field_18 = NULL;
+        icon->alt_sprite = NULL;
     }
     DAT_006687bc = FUN_0048feb0;
 
     // STRING: LEGOLAND 0x004bf534
     icon = LoadSpriteIcon("Free_on_Title.lls", 4, 0x9a, 8, 7);
-    icon->field_3c = 8;
-    icon->field_38 = GetString(8);
-    icon->field_34 |= 0x6002;
+    icon->string_id = 8;
+    icon->string = GetString(8);
+    icon->flags |= 0x6002;
     icon->event_handler = FUN_0048ff20;
     if (FUN_0048fc30() == 0) {
-        icon->field_34 |= 0x400;
+        icon->flags |= 0x400;
     }
 
     // STRING: LEGOLAND 0x004bf520
     icon = LoadSpriteIcon("Reg_on_Title.lls", 4, 0x18, 0x71, 7);
-    icon->field_3c = 10;
-    icon->field_38 = GetString(10);
-    icon->field_34 |= 0x6002;
+    icon->string_id = 10;
+    icon->string = GetString(10);
+    icon->flags |= 0x6002;
     icon->event_handler = FUN_0048ff70;
 
     // STRING: LEGOLAND 0x004bf50c
     icon = LoadSpriteIcon("Exit_On_Title.lls", 4, 0x1e1, 0x13, 7);
-    icon->field_3c = 1000;
-    icon->field_38 = GetString(1000);
-    icon->field_34 |= 0x6002;
+    icon->string_id = 1000;
+    icon->string = GetString(1000);
+    icon->flags |= 0x6002;
     icon->event_handler = FUN_0048f0a0;
     DAT_006687c0 = FUN_0048f0a0;
 
     // STRING: LEGOLAND 0x004bf4f8
     icon = LoadSpriteIcon("Load_on_Title.lls", 4, 0x19, 0x118, 7);
-    icon->field_3c = 9;
-    icon->field_38 = GetString(9);
-    icon->field_34 |= 0x6002;
+    icon->string_id = 9;
+    icon->string = GetString(9);
+    icon->flags |= 0x6002;
     icon->event_handler = FUN_0048fe20;
 
     // STRING: LEGOLAND 0x004bf4e0
     icon = LoadSpriteIcon("MovieOn_On_Title.lls", 4, 0x10e, 0xa1, 7);
-    icon->field_3c = 0x2bf;
-    icon->field_38 = GetString(0x2bf);
-    icon->field_34 |= 0x6002;
+    icon->string_id = 0x2bf;
+    icon->string = GetString(0x2bf);
+    icon->flags |= 0x6002;
     icon->event_handler = FUN_0048ffe0;
     DAT_0080ff80 = 0x898;
 }
@@ -211,39 +211,39 @@ unsigned char FUN_00490110(unsigned int param_1, unsigned char param_2) {
 
 // FUNCTION: LEGOLAND 0x00490150
 void FUN_00490150(void) {
-    struct SpriteIcon *icon;
+    struct IconNode *icon;
 
     // STRING: LEGOLAND 0x004bf5f4
     SPRITE_TitleScreenBk = LoadSprite("AdvertScreen.lls", 0);
 
     // STRING: LEGOLAND 0x004bf5dc
     icon = LoadSpriteIcon("GoBack_On_Advert.lls", 4, 0x13, 0x14b, 7);
-    icon->field_3c = 0x26;
-    icon->field_38 = GetString(0x26);
-    icon->field_34 |= 0x6002;
+    icon->string_id = 0x26;
+    icon->string = GetString(0x26);
+    icon->flags |= 0x6002;
     icon->event_handler = FUN_00490050;
     DAT_006687c0 = FUN_00490050;
     DAT_006687bc = 0;
 
     // STRING: LEGOLAND 0x004bf5cc
     icon = LoadSpriteIcon("California.lls", 4, 0x1c, 0x24, 7);
-    icon->field_3c = 700;
-    icon->field_38 = GetString(700);
-    icon->field_34 |= 0x6002;
+    icon->string_id = 700;
+    icon->string = GetString(700);
+    icon->flags |= 0x6002;
     icon->event_handler = FUN_00490110;
 
     // STRING: LEGOLAND 0x004bf5c0
     icon = LoadSpriteIcon("Windsor.lls", 4, 0xea, 0x24, 7);
-    icon->field_3c = 0x2bd;
-    icon->field_38 = GetString(0x2bd);
-    icon->field_34 |= 0x6002;
+    icon->string_id = 0x2bd;
+    icon->string = GetString(0x2bd);
+    icon->flags |= 0x6002;
     icon->event_handler = FUN_004900d0;
 
     // STRING: LEGOLAND 0x004bf5b4
     icon = LoadSpriteIcon("billund.lls", 4, 0x1b8, 0x24, 7);
-    icon->field_3c = 0x2be;
-    icon->field_38 = GetString(0x2be);
-    icon->field_34 |= 0x6002;
+    icon->string_id = 0x2be;
+    icon->string = GetString(0x2be);
+    icon->flags |= 0x6002;
     icon->event_handler = FUN_00490090;
 }
 
@@ -284,7 +284,7 @@ unsigned char FUN_00490300(unsigned int param_1, unsigned int param_2) {
 
 // FUNCTION: LEGOLAND 0x00490350
 unsigned int FUN_00490350(void) {
-    struct SpriteIcon *icon;
+    struct IconNode *icon;
     struct Sprite *result;
 
     // STRING: LEGOLAND 0x004bf654
@@ -293,16 +293,16 @@ unsigned int FUN_00490350(void) {
 
     // STRING: LEGOLAND 0x004bf638
     icon = LoadSpriteIcon("GoBack_On_Certificate.lls", 4, 12, 14, 7);
-    icon->field_3c = 0x26;
-    icon->field_38 = GetString(0x26);
-    icon->field_34 |= 0x6002;
+    icon->string_id = 0x26;
+    icon->string = GetString(0x26);
+    icon->flags |= 0x6002;
     icon->event_handler = FUN_004902c0;
 
     // STRING: LEGOLAND 0x004bf61c
     icon = LoadSpriteIcon("Print_On_Certificate.lls", 4, 0x207, 14, 7);
-    icon->field_3c = 0x23d;
-    icon->field_38 = GetString(0x23d);
-    icon->field_34 |= 0x6002;
+    icon->string_id = 0x23d;
+    icon->string = GetString(0x23d);
+    icon->flags |= 0x6002;
     icon->event_handler = FUN_00490300;
 
     // STRING: LEGOLAND 0x004bf60c
@@ -625,7 +625,7 @@ unsigned char FUN_00490be0(struct IconNode *param_1, unsigned int param_2) {
 
 // FUNCTION: LEGOLAND 0x00490c70
 void FUN_00490c70(void) {
-    struct SpriteIcon *accept;
+    struct IconNode *accept;
     struct IconNode *icon;
 
     FUN_00499380();
@@ -648,20 +648,20 @@ void FUN_00490c70(void) {
     // STRING: LEGOLAND 0x004bf694
     accept = LoadSpriteIcon("Accept_On_Report.lls", 4, 0x20a, 0x16c, 7);
     if (DAT_00798878 != 0) {
-        accept->field_3c = 0x244;
-        accept->field_38 = GetString(0x244);
+        accept->string_id = 0x244;
+        accept->string = GetString(0x244);
     } else {
-        accept->field_3c = 0x245;
-        accept->field_38 = GetString(0x245);
+        accept->string_id = 0x245;
+        accept->string = GetString(0x245);
     }
-    accept->field_34 |= 0x6002;
+    accept->flags |= 0x6002;
     accept->event_handler = FUN_00490970;
     DAT_006687c0 = FUN_00490970;
 
     icon = InsertIcon(0x1b9, 0x50, 7, DAT_007caf80);
     icon->string_id = 0x2d0;
     icon->string = GetString(0x2d0);
-    icon->handler = (void *)FUN_00490be0;
+    icon->event_handler = (void *)FUN_00490be0;
     icon->flags |= 0x6002;
     DAT_007cb1c0 = icon;
     if (DAT_00798880 == 0) {
@@ -675,7 +675,7 @@ void FUN_00490c70(void) {
     DAT_007cb2e4->string = GetString(0x88e);
     DAT_007cb2e4->flags |= 0x2000;
     DAT_007cb2e4->flags |= 0x4002;
-    DAT_007cb2e4->handler = (void *)FUN_00490b20;
+    DAT_007cb2e4->event_handler = (void *)FUN_00490b20;
     DAT_006687bc = FUN_00490b20;
 
     DAT_007cb2e0 = InsertIcon(6, 0x1ae, 7, DAT_0081c080);
@@ -683,7 +683,7 @@ void FUN_00490c70(void) {
     DAT_007cb2e0->string = GetString(0x88f);
     DAT_007cb2e0->flags |= 0x2000;
     DAT_007cb2e0->flags |= 0x4002;
-    DAT_007cb2e0->handler = (void *)FUN_00490b90;
+    DAT_007cb2e0->event_handler = (void *)FUN_00490b90;
     DAT_004bf670 = 1;
     FUN_00490aa0();
 }
@@ -827,14 +827,14 @@ unsigned int FUN_00491240(const char *param_1) {
 
 // FUNCTION: LEGOLAND 0x00491290
 LEGO_EXPORT void InitNewProfilePoPUp(struct Profile *profile) {
-    struct SpriteIcon *icon = (struct SpriteIcon *)profile;
-    struct SpriteIcon *popup;
+    struct IconNode *icon = (struct IconNode *)profile;
+    struct IconNode *popup;
 
     // STRING: LEGOLAND 0x004bf6e4
     popup = LoadSpriteIcon("Reg_NewProfileBK.lls", 4, icon->x, icon->y - 0x1b, 0x15);
-    popup->field_3c = 0x50;
-    popup->field_38 = GetString(0x50);
-    popup->field_34 |= 0x2000;
+    popup->string_id = 0x50;
+    popup->string = GetString(0x50);
+    popup->flags |= 0x2000;
     EnterNewProfileCheckBoxIcons(popup);
     ResetTempProfile();
 }
