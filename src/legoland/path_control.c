@@ -1,11 +1,23 @@
 #include "path_control.h"
 #include "globals.h"
 #include "legoland.h"
+#include "bricks.h"
 #include "map_object.h"
+#include "objclass.h"
 #include "tilemap.h"
 
 struct PathSpriteHeader {
     unsigned short id;
+};
+
+struct PathEditObject {
+    unsigned char pad_0[0xc];
+    unsigned int field_c;
+};
+
+struct PathCursor {
+    unsigned char pad_0[0x1404];
+    int coords[2];
 };
 
 // FUNCTION: LEGOLAND 0x0045dbe0
@@ -37,7 +49,11 @@ LEGO_EXPORT void AddRollerCoasterPath(int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045dc90
-LEGO_EXPORT void RemoveBasicPath(void) { STUB(); }
+LEGO_EXPORT void RemoveBasicPath(struct PathEditObject *editObj, int dummy, struct PathCursor *cursor) {
+    unsigned int obj_val = editObj->field_c;
+    AddBricks(GetObjSalvageValue(obj_val, 0));
+    RemovePathTile(cursor->coords, ((struct PathSpriteHeader *)PathSprite)->id);
+}
 
 // FUNCTION: LEGOLAND 0x0045dcd0
 LEGO_EXPORT void RemoveRollerCoasterPath(int *coords) {
