@@ -4,7 +4,7 @@
 # ///
 """Show per-TU progress table: matched / unmatched / stub counts.
 
-    uv run tools/progress.py
+uv run tools/progress.py
 """
 
 from __future__ import annotations
@@ -39,12 +39,15 @@ def main():
     addr_to_tu = parse_annotations(target.source_paths[0])
 
     tu_stats: dict[str, dict[str, int]] = {}
+    tu_min_addr: dict[str, int] = {}
     for diff in cmp.compare_all():
         entry = addr_to_tu.get(diff.orig_addr)
         if entry is None:
             continue
         tu, marker_type = entry
         stats = tu_stats.setdefault(tu, {"matched": 0, "unmatched": 0, "stub": 0})
+        if tu not in tu_min_addr or diff.orig_addr < tu_min_addr[tu]:
+            tu_min_addr[tu] = diff.orig_addr
         if marker_type == MarkerType.STUB:
             stats["stub"] += 1
         elif diff.effective_ratio == 1.0:
@@ -71,7 +74,7 @@ def main():
     print(sep)
 
     total_m = total_u = total_s = 0
-    for tu in sorted(tu_stats):
+    for tu in sorted(tu_stats, key=lambda t: tu_min_addr.get(t, 0)):
         s = tu_stats[tu]
         game_total = s["matched"] + s["unmatched"]
         pct = s["matched"] / game_total * 100 if game_total else 0
