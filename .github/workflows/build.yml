@@ -49,5 +49,20 @@ jobs:
       - name: Build
         run: cmake --build build
 
+      - name: Configure reccmp paths
+        run: |
+          cat > reccmp-user.yml << 'YAML'
+          targets:
+            LEGOLAND:
+              path: external/legoland.exe
+          YAML
+          cat > reccmp-build.yml << 'YAML'
+          project: .
+          targets:
+            LEGOLAND:
+              path: build/legoland.exe
+              pdb: build/legoland.pdb
+          YAML
+
       - name: Verify
         run: ./tools/verify --silent
