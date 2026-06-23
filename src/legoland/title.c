@@ -316,44 +316,40 @@ unsigned int FUN_00490350(void) {
 // FUNCTION: LEGOLAND 0x00490410
 void FUN_00490410(void) {
     RECT rc;
-    int hit[3];
-
-    hit[0] = 0;
-    hit[2] = 0;
-    hit[0] = 1;
+    int hit[3] = {1};
     if (DAT_00798770 != 0) {
-        rc.left = 0;
         rc.top = 0x102;
-        rc.right = 0x280;
         rc.bottom = 0x130;
+        rc.left = 0;
+        rc.right = 0x280;
         NewPrintCent((char *)&DAT_0080ffa0, 0, rc, 0);
         if (DAT_0079876c != 0) {
             PrintSprite(DAT_00798764, 0xc6, 0x28, 0, hit);
-            rc.left = 0xc6;
             rc.top = 0x2d;
-            rc.right = (short)DAT_00798764->width + 0xc6;
             rc.bottom = 0x43;
+            rc.left = 0xc6;
+            rc.right = (short)DAT_00798764->width + 0xc6;
             NewPrintCent(GetString(0x23a), 1, rc, 1);
             DAT_0079876c = DAT_0079876c + -1;
             if (DAT_0079876c == 0) {
                 FUN_00498920();
                 DAT_006687b0 = 4;
-                DAT_00798768 = (-(unsigned int)(FUN_00451e20() != 0) & 0x118) - 0x8c;
+                DAT_00798768 = FUN_00451e20() ? 0x8c : -0x8c;
             }
         } else if (0 < DAT_00798768) {
             PrintSprite(DAT_00798764, 0xc6, 0x28, 0, hit);
-            rc.left = 0xc6;
             rc.top = 0x2d;
-            rc.right = (short)DAT_00798764->width + 0xc6;
             rc.bottom = 0x43;
+            rc.left = 0xc6;
+            rc.right = (short)DAT_00798764->width + 0xc6;
             NewPrintCent(GetString(0x23b), 1, rc, 1);
             DAT_00798768 = DAT_00798768 + -1;
         } else if (DAT_00798768 < 0) {
             PrintSprite(DAT_00798764, 0xc6, 0x28, 0, hit);
-            rc.left = 0xc6;
             rc.top = 0x2d;
-            rc.right = (short)DAT_00798764->width + 0xc6;
             rc.bottom = 0x43;
+            rc.left = 0xc6;
+            rc.right = (short)DAT_00798764->width + 0xc6;
             NewPrintCent(GetString(0x23c), 1, rc, 1);
             DAT_00798768 = DAT_00798768 + 1;
         }
@@ -382,7 +378,6 @@ unsigned int FUN_00490680(char *param_1, void **param_2, unsigned int param_3) {
     int size;
     char *buffer;
     int pos;
-    char c;
     int count;
 
     file = RES_OpenFile(param_1);
@@ -405,16 +400,14 @@ unsigned int FUN_00490680(char *param_1, void **param_2, unsigned int param_3) {
     while (count < (int)param_3 && pos < size) {
         *param_2 = buffer + pos;
         do {
-            c = buffer[pos];
-            pos = pos + 1;
-        } while (c != '\r' && pos < size);
-        if (size <= pos) {
-            pos = pos + 1;
+        } while (buffer[pos++] != '\r' && pos < size);
+        if (pos >= size) {
+            pos++;
         }
-        buffer[pos + -1] = 0;
-        pos = pos + 1;
-        count = count + 1;
-        param_2 = param_2 + 1;
+        buffer[pos - 1] = 0;
+        pos++;
+        count++;
+        param_2++;
     }
     RES_CloseFile(file);
     return (unsigned int)count;
@@ -690,7 +683,9 @@ void FUN_00490c70(void) {
 
 // FUNCTION: LEGOLAND 0x00490ea0
 void FUN_00490ea0(void) {
-    if ((int)DAT_00813a44 < DAT_007cb2e4->x ||
+    unsigned int _y = DAT_00813a48;
+    unsigned int _x = DAT_00813a44;
+    if ((int)_x < DAT_007cb2e4->x ||
         (int)DAT_00813a44 > DAT_007cb2e4->field_10 + DAT_007cb2e4->x ||
         (int)DAT_00813a48 < DAT_007cb2e4->y ||
         (int)DAT_00813a48 > DAT_007cb2e4->field_12 + DAT_007cb2e4->y) {
