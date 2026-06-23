@@ -12,7 +12,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 TC = ROOT / "toolchain"
-WIBO = str(TC / "wibo")
+WIBO = os.environ.get("WIBO") or "wibo"
 CL = str(TC / "msvc6" / "Bin" / "CL.EXE")
 BIN = TC / "msvc6" / "Bin"
 DLLS = TC / "dlls"

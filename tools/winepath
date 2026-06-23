@@ -1,8 +1,7 @@
 #!/bin/sh
 # reccmp calls `winepath` to translate between unix and Windows paths recorded in
-# the PDB. We compile with wibo, which uses a Z:=root convention (Z:\Users\...),
-# so winepath must match that — NOT the CrossOver bottle's drive mappings. Pure
-# string transform, no wine.
+# the PDB. wibo uses a Z:=root convention (Z:\Users\...), so this shim matches
+# that mapping. Pure string transform.
 if [ "$1" = "-w" ]; then
     # unix -> windows:  /Users/x/y.c  ->  Z:\Users\x\y.c
     printf 'Z:%s\n' "$(printf '%s' "$2" | sed 's#/#\\#g')"

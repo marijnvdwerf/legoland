@@ -4,5 +4,5 @@
 # Usage: tools/verify [extra reccmp args, e.g. --html report.html -v 0x4015c0]
 set -e
 cd "$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
-export PATH="$PWD/tools:$PATH"   # wine + winepath shims for reccmp's cvdump (PDB reader)
+export PATH="$PWD/tools:$PATH"   # wine/winepath shims: reccmp expects wine for cvdump, we redirect to wibo
 exec uv run reccmp-reccmp --target LEGOLAND "$@"

@@ -7,9 +7,8 @@ per-function by `reccmp`. We do **not** reproduce the binary's layout — reccmp
 ## Toolchain
 
 - Everything is downloaded by `uv run setup.py` into `toolchain/` (gitignored): MSVC6 (`toolchain/msvc6`),
-  `wibo` (`toolchain/wibo`), msvcrt DLLs (`toolchain/dlls`). Do not commit `toolchain/`.
-- Compile runs through `wibo` (`/O2 /Z7`). **Linking runs through CrossOver wine** (`tools/wine`,
-  bottle from `CX_BOTTLE`) — wibo 1.1.0 can't build a PE import section (missing `GetTempFileNameW`).
+  msvcrt DLLs (`toolchain/dlls`). Do not commit `toolchain/`.
+- `wibo` must be on `PATH`. Both compile and link run through it (`/O2 /Z7`).
 - System import libs (`kernel32`, `ddraw`, …) are committed in `libs/` (not downloadable); the link
   wrapper adds them automatically and LINK pulls only what's referenced.
 
@@ -21,9 +20,8 @@ cmake --preset msvc6 && cmake --build build   # -> build/legoland.exe + PDB
 ./tools/verify -v 0x004015c0                   # asm diff for one function
 ```
 
-`tools/verify` wraps `reccmp --paths`. reccmp's `cvdump.exe` (PDB reader) runs via
-CrossOver wine (`tools/wine`, bottle from `CX_BOTTLE`); `tools/winepath` is a
-`Z:`-root transform matching wibo's PDB paths.
+`tools/verify` wraps `reccmp --target LEGOLAND`. reccmp's `cvdump.exe` (PDB reader) runs
+through wibo via `tools/wine`; `tools/winepath` maps wibo's `Z:`-root PDB paths.
 
 When you decompile a function: replace its `void name(void) { STUB(); }` body with
 real C and the correct signature, rebuild, and run `./tools/verify -v <addr>` to

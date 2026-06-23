@@ -2,9 +2,7 @@
 build/
 
 # Downloaded toolchain (populated by `uv run setup.py`) — never committed
-# (also covers toolchain/wibo-src, the wibo build-from-source clone tree)
 toolchain/
-toolchain/wibo-src/
 
 # Python / uv
 .venv/
@@ -21,5 +19,5 @@ reccmp-build.yml
 # loop/agent local state
 .claude/
 
-# stray wine/cvdump temp files written into cwd
+# stray cvdump temp files written into cwd
 /a[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]??

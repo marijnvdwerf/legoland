@@ -7,14 +7,14 @@ original binary with [`reccmp`](https://github.com/isledecomp/reccmp). Addresses
 normalized away, so the recompiled binary does **not** need to reproduce the original's layout — a
 function "matches" when its compiled bytes equal the original's.
 
-This repo is **self-contained**: the MSVC6 compiler, the [`wibo`](https://github.com/decompals/wibo)
-loader, and its support DLLs are downloaded by `setup.py` into a gitignored `toolchain/`. No
-proprietary binaries are committed.
+This repo is **self-contained**: the MSVC6 compiler and its support DLLs are downloaded by `setup.py`
+into a gitignored `toolchain/`. The [`wibo`](https://github.com/decompals/wibo) PE loader
+must be installed and on `PATH`. No proprietary binaries are committed.
 
 ## Quick start
 
 ```sh
-uv run setup.py          # download MSVC6 + wibo + DLLs into toolchain/
+uv run setup.py          # download MSVC6 + DLLs into toolchain/
 cmake --preset msvc6     # configure (uses cmake/msvc6-toolchain.cmake)
 cmake --build build      # build legoland.exe + PDB (all 99 TUs)
 ./tools/verify           # per-function match % vs the original
@@ -22,10 +22,8 @@ cmake --build build      # build legoland.exe + PDB (all 99 TUs)
 ./tools/verify -v 0x004015c0             # asm diff for one function
 ```
 
-`tools/verify` runs `reccmp`, whose bundled `cvdump.exe` (PDB reader) is executed
-through **CrossOver wine** in a bottle (set via `CX_BOTTLE`, default
-`Visual C++ 6.0 SP6`) — see `tools/wine`. Everything else (compile + link) runs
-through `wibo`, no wine.
+`tools/verify` runs `reccmp`, whose bundled `cvdump.exe` (PDB reader) is also
+executed through `wibo` (via the `tools/wine` shim).
 
 ## Layout
 

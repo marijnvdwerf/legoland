@@ -4,9 +4,9 @@
 # ///
 """Download the self-contained build toolchain into ./toolchain (gitignored).
 
-Pulls the original MSVC6 compiler, the `wibo` PE loader, and wibo's msvcrt
-support DLLs. URLs are pinned here on purpose — we deliberately do NOT read
-decompme's values.yaml at runtime.
+Pulls the original MSVC6 compiler and wibo's msvcrt support DLLs. URLs are
+pinned here on purpose — we deliberately do NOT read decompme's values.yaml
+at runtime.  wibo must be installed separately and on PATH.
 
     uv run setup.py            # download anything missing
     uv run setup.py --force    # re-download everything
@@ -15,8 +15,6 @@ decompme's values.yaml at runtime.
 from __future__ import annotations
 
 import argparse
-import os
-import platform
 import shutil
 import subprocess
 import sys
@@ -33,14 +31,6 @@ TOOLCHAIN = ROOT / "toolchain"
 MSVC6_URL = "https://github.com/OmniBlade/decomp.me/releases/download/msvcwin9x/msvc6.0.tar.gz"
 MSVCRT_DLLS_URL = "https://files.decomp.dev/msvcrt_20251015.zip"
 
-# --- wibo: built from source so our kernel32 patch (string-literal compile support) is applied. ---
-WIBO_REPO = "https://github.com/decompals/wibo"
-WIBO_TAG = "1.1.0"
-WIBO_PATCH = ROOT / "tools" / "wibo.patch"
-WIBO_BUILD_DIR = TOOLCHAIN / "wibo-src"  # gitignored clone/build tree
-# cmake preset (configure + build) and resulting binary path within WIBO_BUILD_DIR, per platform.
-WIBO_PRESET = {"Darwin": "release-macos", "Linux": "release"}
-WIBO_BUILT = {"Darwin": "build/release/wibo", "Linux": "build/release/wibo"}
 
 
 def download(url: str, dest: Path) -> None:
@@ -113,45 +103,14 @@ def run(cmd: list[str], cwd: Path | None = None) -> None:
     subprocess.run(cmd, cwd=cwd, check=True)
 
 
-def step_wibo(force: bool) -> None:
-    """Build wibo from source at WIBO_TAG with tools/wibo.patch applied.
-
-    The patch adds kernel32 lstrcpynA/lstrcpynW (so the MSVC6 cl.exe can compile
-    string literals) plus GetTempFileNameW. We build instead of downloading the
-    release asset because that prebuilt binary lacks these imports.
-    """
-    dest = TOOLCHAIN / "wibo"
-    if dest.exists() and not force:
-        print("wibo: present, skipping")
-        return
-
-    system = platform.system()
-    preset = WIBO_PRESET.get(system)
-    built = WIBO_BUILT.get(system)
-    if preset is None or built is None:
-        sys.exit(f"wibo: no build preset for platform {system!r}")
-    for tool in ("git", "cmake", "ninja"):
-        if shutil.which(tool) is None:
-            sys.exit(f"wibo: required build tool {tool!r} not found on PATH")
-
-    # Fresh clone every build so the patch applies cleanly and is reproducible.
-    if WIBO_BUILD_DIR.exists():
-        shutil.rmtree(WIBO_BUILD_DIR)
-    print(f"wibo: cloning {WIBO_REPO} @ {WIBO_TAG}")
-    run(["git", "clone", "--quiet", "--depth", "1", "--branch", WIBO_TAG, WIBO_REPO, str(WIBO_BUILD_DIR)])
-
-    print(f"wibo: applying {WIBO_PATCH.relative_to(ROOT)}")
-    run(["git", "apply", str(WIBO_PATCH)], cwd=WIBO_BUILD_DIR)
-
-    print(f"wibo: building (preset {preset})")
-    run(["cmake", "--preset", preset], cwd=WIBO_BUILD_DIR)
-    run(["cmake", "--build", "--preset", preset], cwd=WIBO_BUILD_DIR)
-
-    binary = WIBO_BUILD_DIR / built
-    if not binary.exists():
-        sys.exit(f"wibo: build finished but binary missing at {binary}")
-    shutil.copy2(binary, dest)
-    dest.chmod(0o755)
+def check_wibo() -> None:
+    """Verify wibo is on PATH."""
+    wibo = shutil.which("wibo")
+    if wibo is None:
+        sys.exit("wibo: not found on PATH")
+    result = subprocess.run([wibo, "--version"], capture_output=True, text=True)
+    version_str = result.stdout.strip().split()[1] if result.stdout.strip() else "unknown"
+    print(f"wibo: {version_str} ({wibo})")
 
 
 def write_clangd() -> None:
@@ -177,9 +136,9 @@ def main() -> None:
     args = ap.parse_args()
 
     TOOLCHAIN.mkdir(exist_ok=True)
+    check_wibo()
     step_msvc6(args.force)
     step_dlls(args.force)
-    step_wibo(args.force)
     write_clangd()
 
     print("\nToolchain ready under ./toolchain")
@@ -187,8 +146,6 @@ def main() -> None:
         p = TOOLCHAIN / sub
         n = sum(1 for _ in p.rglob("*")) if p.exists() else 0
         print(f"  {sub:8} {n} files")
-    wibo = TOOLCHAIN / "wibo"
-    print(f"  wibo     {'ok' if wibo.exists() and os.access(wibo, os.X_OK) else 'MISSING'}")
 
 
 if __name__ == "__main__":

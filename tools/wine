@@ -1,10 +1,4 @@
 #!/bin/sh
-# reccmp shells out to a bare `wine` to run its bundled cvdump.exe (PDB reader).
-# wibo can't run that cvdump build (it imports advapi32!EventRegister), so route
-# through CrossOver's wine inside a bottle. Put this directory on PATH before
-# invoking reccmp. Override the bottle or loader via env if needed.
-: "${CX_BOTTLE:=Visual C++ 6.0 SP6}"
-export CX_BOTTLE
-WINE="${LEGOLAND_WINE:-$HOME/Applications/CrossOver.app/Contents/SharedSupport/CrossOver/bin/wine}"
-[ -x "$WINE" ] || WINE="/Applications/CrossOver.app/Contents/SharedSupport/CrossOver/bin/wine"
-exec "$WINE" "$@"
+# reccmp expects `wine` on PATH to run its bundled cvdump.exe (PDB reader).
+# This shim redirects to wibo.
+exec wibo "$@"
