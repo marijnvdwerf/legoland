@@ -4,7 +4,9 @@
 # that mapping. Pure string transform.
 if [ "$1" = "-w" ]; then
     # unix -> windows:  /Users/x/y.c  ->  Z:\Users\x\y.c
-    printf 'Z:%s\n' "$(printf '%s' "$2" | sed 's#/#\\#g')"
+    # Resolve relative paths to absolute first so wibo can find them.
+    case "$2" in /*) p="$2" ;; *) p="$PWD/$2" ;; esac
+    printf 'Z:%s\n' "$(printf '%s' "$p" | sed 's#/#\\#g')"
 else
     # windows -> unix:  Z:\Users\x\y.c  ->  /Users/x/y.c
     printf '%s\n' "$(printf '%s' "$1" | sed 's#^[A-Za-z]:##; s#\\#/#g')"

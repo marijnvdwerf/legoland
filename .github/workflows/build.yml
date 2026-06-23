@@ -66,3 +66,14 @@ jobs:
 
       - name: Verify
         run: ./tools/verify --silent
+
+      - name: Generate progress report
+        run: |
+          export PATH="$PWD/tools:$PATH"
+          uv run tools/report.py -o report.json
+
+      - name: Upload progress report
+        uses: actions/upload-artifact@v4
+        with:
+          name: LEGOLAND_report
+          path: report.json

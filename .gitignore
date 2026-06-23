@@ -21,3 +21,4 @@ reccmp-build.yml
 
 # stray cvdump temp files written into cwd
 /a[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]??
+report.json
