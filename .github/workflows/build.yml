@@ -1,0 +1,53 @@
+name: build
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build + verify (MSVC6 via wibo)
+    runs-on: ubuntu-latest
+
+    env:
+      WIBO_REPO: marijnvdwerf/wibo
+      DEBIAN_FRONTEND: noninteractive
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install wibo
+        run: |
+          gh release download --repo "$WIBO_REPO" --pattern 'wibo-x86_64' --dir /tmp
+          install -m 755 /tmp/wibo-x86_64 /usr/local/bin/wibo
+          wibo --version
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Cache toolchain
+        uses: actions/cache@v4
+        with:
+          path: toolchain
+          key: toolchain-${{ runner.os }}-${{ hashFiles('setup.py') }}
+
+      - name: Download toolchain
+        run: uv run setup.py
+
+      - name: Configure
+        run: cmake --preset msvc6
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Verify
+        run: ./tools/verify --silent
