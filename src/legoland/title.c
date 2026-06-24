@@ -684,8 +684,8 @@ void FUN_00490c70(void) {
 
 // FUNCTION: LEGOLAND 0x00490ea0
 void FUN_00490ea0(void) {
-    unsigned int _y = DAT_00813a44.y;
     unsigned int _x = DAT_00813a44.x;
+    unsigned int _y = DAT_00813a44.y;
     if ((int)_x < DAT_007cb2e4->x ||
         (int)DAT_00813a44.x > DAT_007cb2e4->field_10 + DAT_007cb2e4->x ||
         (int)DAT_00813a44.y < DAT_007cb2e4->y ||

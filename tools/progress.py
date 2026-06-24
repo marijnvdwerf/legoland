@@ -24,10 +24,23 @@ def parse_annotations(source_dir: Path) -> dict[int, tuple[str, MarkerType]]:
     addr_to_tu: dict[int, tuple[str, MarkerType]] = {}
     for src in sorted(source_dir.glob("*.c")):
         with open(src) as f:
-            for line in f:
-                m = match_marker(line)
-                if m and m.module == "LEGOLAND":
-                    addr_to_tu[m.offset] = (src.stem, m.type)
+            lines = f.readlines()
+        for i, line in enumerate(lines):
+            m = match_marker(line)
+            if m and m.module == "LEGOLAND":
+                marker_type = m.type
+                # For FUNCTION markers, check whether the body is just STUB().
+                # Scan the next few lines for STUB() before the closing brace.
+                if marker_type == MarkerType.FUNCTION:
+                    for j in range(i + 1, min(i + 6, len(lines))):
+                        body_line = lines[j]
+                        if "STUB()" in body_line:
+                            marker_type = MarkerType.STUB
+                            break
+                        # Stop scanning if we hit the closing brace or another marker
+                        if body_line.strip() == "}" or match_marker(body_line):
+                            break
+                addr_to_tu[m.offset] = (src.stem, marker_type)
     return addr_to_tu
 
 
@@ -76,9 +89,9 @@ def main():
     total_m = total_u = total_s = 0
     for tu in sorted(tu_stats, key=lambda t: tu_min_addr.get(t, 0)):
         s = tu_stats[tu]
-        game_total = s["matched"] + s["unmatched"]
+        game_total = s["matched"] + s["unmatched"] + s["stub"]
         pct = s["matched"] / game_total * 100 if game_total else 0
-        mark = "✓" if s["unmatched"] == 0 and game_total > 0 else " "
+        mark = "✓" if s["unmatched"] == 0 and s["stub"] == 0 and game_total > 0 else " "
         print(
             f"{mark:2s} {tu:<{w_tu}}  {s['matched']:>{w_m}}  {s['unmatched']:>{w_u}}  {s['stub']:>{w_s}}  {pct:>{w_pct}.1f}%"
         )
@@ -87,7 +100,7 @@ def main():
         total_s += s["stub"]
 
     print(sep)
-    game_total = total_m + total_u
+    game_total = total_m + total_u + total_s
     pct = total_m / game_total * 100 if game_total else 0
     print(
         f"{'':2s} {'TOTAL':<{w_tu}}  {total_m:>{w_m}}  {total_u:>{w_u}}  {total_s:>{w_s}}  {pct:>{w_pct}.1f}%"
