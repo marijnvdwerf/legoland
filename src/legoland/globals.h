@@ -1209,6 +1209,14 @@ extern unsigned int DAT_006103a8;
 extern unsigned int DAT_00610a04;
 // 0x00610a08
 extern unsigned int DAT_00610a08;
+// 0x00610a20 — sqrtf lookup table (64 entries: {intercept, slope} pairs)
+extern float sqrtf_table[128];
+// 0x00610c40 — invsqrtf lookup table (64 entries: {intercept, slope} pairs)
+extern float invsqrtf_table[128];
+// 0x00610e44 — invsqrtf exponent scale table (256 entries)
+extern float invsqrtf_exp_table[256];
+// 0x00611244 — sqrtf exponent scale table (256 entries)
+extern float sqrtf_exp_table[256];
 // 0x00611648
 extern unsigned int DAT_00611648;
 // 0x00611650
@@ -3325,6 +3333,10 @@ extern float DAT_008299d4;
 extern unsigned int DAT_008299fc;
 // 0x00829a3c
 extern struct ListLink DAT_00829a3c;
+// 0x00829a58
+extern void (*DAT_00829a58)(void);
+// 0x00829a5c
+extern void (*DAT_00829a5c)(void);
 // 0x00829a60
 extern float DAT_00829a60;
 // 0x00829a80

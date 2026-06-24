@@ -2545,22 +2545,84 @@ void FUN_004267b0(void) { STUB(); }
 void FUN_00426850(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00426960
-void FUN_00426960(void) { STUB(); }
+float lego_sqrtf(float x) {
+    __asm {
+        fld x
+        call dword ptr [DAT_00829a5c]
+        fstp x
+    }
+    return x;
+}
 
 // FUNCTION: LEGOLAND 0x00426980
-void FUN_00426980(void) { STUB(); }
+__declspec(naked) void HASM_lego_sqrtf(void) {
+    __asm {
+        fstp dword ptr [esp - 10h]
+        mov dword ptr [esp - 8], ebx
+        mov dword ptr [esp - 0Ch], edx
+        mov edx, dword ptr [esp - 10h]
+        mov ebx, 007FFFFFh
+        mov dword ptr [esp - 4], eax
+        mov eax, edx
+        shr eax, 11h
+        and ebx, edx
+        and eax, 3Fh
+        or  ebx, 3F800000h
+        mov dword ptr [esp - 10h], ebx
+        mov ebx, dword ptr [esp - 8]
+        fld dword ptr [esp - 10h]
+        fmul dword ptr [eax*8 + sqrtf_table + 4]
+        shr edx, 17h
+        fadd dword ptr [eax*8 + sqrtf_table]
+        mov eax, dword ptr [esp - 4]
+        fmul dword ptr [edx*4 + sqrtf_exp_table]
+        mov edx, dword ptr [esp - 0Ch]
+        ret
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004269e0
-void FUN_004269e0(void) { STUB(); }
+void lego_sqrtf_init(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00426a90
-void FUN_00426a90(void) { STUB(); }
+float lego_invsqrtf(float x) {
+    __asm {
+        fld x
+        call dword ptr [DAT_00829a58]
+        fstp x
+    }
+    return x;
+}
 
 // FUNCTION: LEGOLAND 0x00426ab0
-void FUN_00426ab0(void) { STUB(); }
+__declspec(naked) void HASM_lego_invsqrtf(void) {
+    __asm {
+        fstp dword ptr [esp - 10h]
+        mov dword ptr [esp - 8], ebx
+        mov dword ptr [esp - 0Ch], edx
+        mov edx, dword ptr [esp - 10h]
+        mov ebx, 007FFFFFh
+        mov dword ptr [esp - 4], eax
+        mov eax, edx
+        shr eax, 11h
+        and ebx, edx
+        and eax, 3Fh
+        or  ebx, 3F800000h
+        mov dword ptr [esp - 10h], ebx
+        mov ebx, dword ptr [esp - 8]
+        fld dword ptr [esp - 10h]
+        fmul dword ptr [eax*8 + invsqrtf_table + 4]
+        shr edx, 17h
+        fadd dword ptr [eax*8 + invsqrtf_table]
+        mov eax, dword ptr [esp - 4]
+        fmul dword ptr [edx*4 + invsqrtf_exp_table]
+        mov edx, dword ptr [esp - 0Ch]
+        ret
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00426b10
-void FUN_00426b10(void) { STUB(); }
+void lego_invsqrtf_init(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00426ba0
 void FUN_00426ba0(unsigned int *param_1, unsigned int param_2) {

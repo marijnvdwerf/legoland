@@ -1472,6 +1472,18 @@ unsigned int DAT_00610a04;
 // GLOBAL: LEGOLAND 0x00610a08
 unsigned int DAT_00610a08;
 
+// GLOBAL: LEGOLAND 0x00610a20
+float sqrtf_table[128];
+
+// GLOBAL: LEGOLAND 0x00610c40
+float invsqrtf_table[128];
+
+// GLOBAL: LEGOLAND 0x00610e44
+float invsqrtf_exp_table[256];
+
+// GLOBAL: LEGOLAND 0x00611244
+float sqrtf_exp_table[256];
+
 // GLOBAL: LEGOLAND 0x00611648
 unsigned int DAT_00611648;
 
@@ -4651,6 +4663,12 @@ unsigned int DAT_008299fc;
 
 // GLOBAL: LEGOLAND 0x00829a3c
 struct ListLink DAT_00829a3c;
+
+// GLOBAL: LEGOLAND 0x00829a58
+void (*DAT_00829a58)(void);
+
+// GLOBAL: LEGOLAND 0x00829a5c
+void (*DAT_00829a5c)(void);
 
 // GLOBAL: LEGOLAND 0x00829a60
 float DAT_00829a60;
