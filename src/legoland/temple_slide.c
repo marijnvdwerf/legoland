@@ -7,8 +7,8 @@
 #include "globals.h"
 #include "llidb.h"
 #include "map_object.h"
-#include "render3d.h"
 #include "objclass.h"
+#include "render3d.h"
 #include "temple_slide.h"
 
 struct TempleRide {
@@ -116,10 +116,10 @@ void FUN_00417200(struct TempleRide *arg) {
 
 // FUNCTION: LEGOLAND 0x00417240
 void FUN_00417240(void) {
-    EditMode = 1;
-    DAT_008119b8 = (void *)DAT_004cbf80;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = (void *)DAT_004cbf80;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x00417280

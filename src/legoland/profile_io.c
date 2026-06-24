@@ -510,7 +510,7 @@ char FUN_004920a0(unsigned int param1, unsigned char flags) {
     if ((flags & 0x2) != 0 && (void *)ScanForProfiles != 0) {
         RemoveIconGroup(0x15);
         CloseFontEndCheckBox();
-        DAT_0080ff84 = 0xffffffff;
+        DAT_0080ff80.unk4 = 0xffffffff;
         DAT_007986e8 = 0;
         DAT_0080ffe3 = 0;
     }

@@ -243,7 +243,7 @@ LEGO_EXPORT void UpdateControllerFromKeyboardData(struct CtrlBuffer *buffer) {
     } else if (_memicmp("::DIE", &DAT_00668d94[0xf], 5) == 0) {
         _exit(1);
     }
-    if (DAT_008119b4 == 3) {
+    if (EditMode.unk4 == 3) {
         if (_memicmp(":ILIKETOTRAVEL", &DAT_00668d94[4], 0xe) == 0) {
             if (DAT_00668d94[0x12] == '1') {
                 if (DAT_00668d94[0x13] != '0') {

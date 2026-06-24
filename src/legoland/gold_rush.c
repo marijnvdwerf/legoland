@@ -9,9 +9,9 @@
 #include "man3d.h"
 #include "map_object.h"
 #include "obj_instance.h"
+#include "objclass.h"
 #include "path_control.h"
 #include "render3d.h"
-#include "objclass.h"
 #include "ride_queue.h"
 
 struct GoldArray {
@@ -263,10 +263,10 @@ void FUN_004072b0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004075b0
 void FUN_004075b0(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_004c11f0;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_004c11f0;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((unsigned char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((unsigned char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x004075f0

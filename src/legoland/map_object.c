@@ -851,8 +851,8 @@ LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, unsigned int coords) {
                 EditCursor.field_1410 = saved_1410;
                 return;
             }
-            if (DAT_008119b8 != 0) {
-                ((struct MapObject *)DAT_008119b8)->method_90(((struct ObjClass *)DAT_008119b8)->field_c4, &DAT_00813a44, 0x8f8);
+            if (EditMode.unk8 != 0) {
+                ((struct MapObject *)EditMode.unk8)->method_90(((struct ObjClass *)EditMode.unk8)->field_c4, &DAT_00813a44, 0x8f8);
             }
             return;
         }
@@ -1595,17 +1595,17 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
     if ((cursor->field_1828 & 0x400) == 0) {
         return;
     }
-    editing = (struct ObjBox *)DAT_008119b8;
+    editing = (struct ObjBox *)EditMode.unk8;
     if (FUN_0045e620(editing) == 0) {
         return;
     }
-    if (EditMode != 1) {
+    if (EditMode.unk0 != 1) {
         return;
     }
-    tilept[0] = ((struct ObjBox *)DAT_008119b8)->field_c + cursor->field_1404;
-    tilept[1] = ((struct ObjBox *)DAT_008119b8)->field_10 + cursor->field_1408;
+    tilept[0] = ((struct ObjBox *)EditMode.unk8)->field_c + cursor->field_1404;
+    tilept[1] = ((struct ObjBox *)EditMode.unk8)->field_10 + cursor->field_1408;
     GetTileBounds((struct Point *)tilept, screen);
-    code = FUN_0045e6b0((struct ObjBox *)DAT_008119b8);
+    code = FUN_0045e6b0((struct ObjBox *)EditMode.unk8);
     switch (code) {
     case 1:
         sprite = DAT_00667c8c;
@@ -1624,11 +1624,11 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
     }
     PrintSprite(sprite, screen[0], screen[1], 0, 0);
 after_first:
-    if ((cursor->field_1828 & 0x800) != 0 && FUN_0045e690((struct ObjInfo *)DAT_008119b8) != 0) {
-        tilept[0] = ((signed char *)DAT_008119b8)[0x24] + cursor->field_1404;
-        tilept[1] = ((signed char *)DAT_008119b8)[0x25] + cursor->field_1408;
+    if ((cursor->field_1828 & 0x800) != 0 && FUN_0045e690((struct ObjInfo *)EditMode.unk8) != 0) {
+        tilept[0] = ((signed char *)EditMode.unk8)[0x24] + cursor->field_1404;
+        tilept[1] = ((signed char *)EditMode.unk8)[0x25] + cursor->field_1408;
         GetTileBounds((struct Point *)tilept, screen);
-        code = FUN_0045e710((struct ObjBox *)DAT_008119b8);
+        code = FUN_0045e710((struct ObjBox *)EditMode.unk8);
         switch (code) {
         case 0x10:
             PrintSprite(DAT_00667c8c, screen[0], screen[1], 0, 0);
@@ -1886,23 +1886,23 @@ void FUN_004608c0(int *param_1, int *param_2) {
                     draw_x = ov->field_14 - dx;
                     draw_y = ov->field_18 - dy;
                     FUN_00485f00((struct Sprite *)*(int *)(*(int *)((int)DAT_00667cb0 + 8) + ((frame + 2) & 0xff) * 4),
-                                 draw_x + DAT_004b9218, draw_y + DAT_004b921c);
+                        draw_x + DAT_004b9218, draw_y + DAT_004b921c);
                     k = (ov->field_10 + 4) & 0xff;
                     if (k < *(int *)((int)DAT_00667cb0 + 4)) {
                         sprite = *(int *)(*(int *)((int)DAT_00667cb0 + 8) + k * 4);
                         SortSprite((struct Sprite *)sprite, draw_x + DAT_00805f40, draw_y + DAT_00805f44,
-                                   *(short *)(sprite + 0x16) + draw_y + DAT_00805f44, 0, 0);
+                            *(short *)(sprite + 0x16) + draw_y + DAT_00805f44, 0, 0);
                     }
                 } else if ((frame & 0xff) == 1) {
                     draw_x = ov->field_14 - dx;
                     draw_y = ov->field_18 - dy;
                     FUN_00485f00((struct Sprite *)*(int *)(*(int *)((int)DAT_00667cb0 + 8) + ((frame + 2) & 0xff) * 4),
-                                 draw_x + DAT_004b9210, draw_y + DAT_004b9214);
+                        draw_x + DAT_004b9210, draw_y + DAT_004b9214);
                     k = (ov->field_10 + 4) & 0xff;
                     if (k < *(int *)((int)DAT_00667cb0 + 4)) {
                         sprite = *(int *)(*(int *)((int)DAT_00667cb0 + 8) + k * 4);
                         SortSprite((struct Sprite *)sprite, draw_x + DAT_00801a60, draw_y + DAT_00801a64,
-                                   *(short *)(sprite + 0x16) + draw_y + DAT_00801a64, 0, 0);
+                            *(short *)(sprite + 0x16) + draw_y + DAT_00801a64, 0, 0);
                     }
                 }
             }
@@ -2147,22 +2147,22 @@ LEGO_EXPORT void ProcessScrolling(unsigned int a, unsigned int b) {
 
 // FUNCTION: LEGOLAND 0x004614f0
 LEGO_EXPORT void MouseScrollMap(void) {
-    if ((int)DAT_00813a44 < (int)(unsigned int)lpConfig->field_4) {
+    if ((int)DAT_00813a44.x < (int)(unsigned int)lpConfig->field_4) {
         if (-(int)(unsigned int)lpConfig->field_c < ScrollSpeedX) {
             ScrollSpeedX = ScrollSpeedX - lpConfig->field_8;
         }
-    } else if ((int)((unsigned int)lpConfig->field_0 - (unsigned int)lpConfig->field_4) < (int)DAT_00813a44) {
+    } else if ((int)((unsigned int)lpConfig->field_0 - (unsigned int)lpConfig->field_4) < (int)DAT_00813a44.x) {
         if (ScrollSpeedX < (int)(unsigned int)lpConfig->field_c) {
             ScrollSpeedX = ScrollSpeedX + lpConfig->field_8;
         }
     } else {
         ScrollSpeedX = 0;
     }
-    if ((int)DAT_00813a48 < (int)(unsigned int)lpConfig->field_6) {
+    if ((int)DAT_00813a44.y < (int)(unsigned int)lpConfig->field_6) {
         if (-(int)(unsigned int)lpConfig->field_e < ScrollSpeedY) {
             ScrollSpeedY = ScrollSpeedY - lpConfig->field_a;
         }
-    } else if ((int)((unsigned int)lpConfig->field_2 - (unsigned int)lpConfig->field_6) < (int)DAT_00813a48) {
+    } else if ((int)((unsigned int)lpConfig->field_2 - (unsigned int)lpConfig->field_6) < (int)DAT_00813a44.y) {
         if (ScrollSpeedY < (int)(unsigned int)lpConfig->field_e) {
             ScrollSpeedY = ScrollSpeedY + lpConfig->field_a;
         }
@@ -2509,7 +2509,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
                             *(unsigned short *)((int)GameMap[cury] + 10 + curx * 0x14) =
                                 **(short **)(tilemap + 4 + idx * 8) + (unsigned short)*((unsigned char *)stream + phase);
                             SetMapTile(curx, cury,
-                                       **(short **)(tilemap + 4 + idx * 8) + (unsigned short)*((unsigned char *)stream + phase));
+                                **(short **)(tilemap + 4 + idx * 8) + (unsigned short)*((unsigned char *)stream + phase));
                             prev = carry;
                         } else {
                             *(unsigned short *)((int)GameMap[cury] + 10 + curx * 0x14) = (unsigned short)DAT_00667ca4;
@@ -3200,7 +3200,7 @@ void FUN_004632b0(void) {
         }
         // STRING: LEGOLAND 0x004b9c6c
         sprintf(buf, "[%s x %d]: Cap %d  x %d%% = %.2f (Capped %d) = %.2f", *names, p[-6], p[-4], p[-1],
-                (double)((float)prod * DAT_004ab518), *p, (double)((float)capped * DAT_004ab518));
+            (double)((float)prod * DAT_004ab518), *p, (double)((float)capped * DAT_004ab518));
         Print(SPRITE_ClipRect.right, y + SPRITE_ClipRect.top, buf, 2);
         y = y + 0x14;
         total = total + capped;
@@ -3209,7 +3209,7 @@ void FUN_004632b0(void) {
     } while (y < 0x8c);
     // STRING: LEGOLAND 0x004b9c40
     sprintf(buf, "Tot Capacity = %.2f (limit %d - %d) = %d", (double)((float)total * DAT_004ab518),
-            DAT_00832924, DAT_00832920, DAT_0083291c);
+        DAT_00832924, DAT_00832920, DAT_0083291c);
     Print(SPRITE_ClipRect.right, SPRITE_ClipRect.top + 0x96, buf, 2);
 }
 

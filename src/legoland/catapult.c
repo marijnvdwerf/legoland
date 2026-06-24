@@ -8,8 +8,8 @@
 #include "llidb.h"
 #include "map_object.h"
 #include "obj_instance.h"
-#include "render3d.h"
 #include "objclass.h"
+#include "render3d.h"
 #include "sound_music.h"
 
 struct CatapultEntry;
@@ -316,11 +316,11 @@ void FUN_00403820(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00403930
 void FUN_00403930(void) {
-    DAT_008119b8 = DAT_004c10f4;
-    EditMode = 1;
-    DAT_008119b8 = DAT_004c10f4;
+    EditMode.unk8 = DAT_004c10f4;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_004c10f4;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((unsigned char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((unsigned char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x00403970

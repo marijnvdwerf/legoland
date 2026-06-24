@@ -279,8 +279,8 @@ void FUN_00413a80(void) {
 
 // FUNCTION: LEGOLAND 0x00413ad0
 void FUN_00413ad0(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0082c684;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0082c684;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(&DAT_004b4bf0);
     EditCursor.field_1828 |= 8;
@@ -337,8 +337,8 @@ void FUN_00414440(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00414830
 void FUN_00414830(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0082c678;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0082c678;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(&DAT_004b4bf0);
     EditCursor.field_1828 |= 8;

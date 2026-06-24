@@ -121,18 +121,30 @@ unsigned int FUN_0046a120(struct NerpsArg *arg) {
 
 // GLOBAL: LEGOLAND 0x004b7e38
 void (*PTR_FUN_004b7e38[25])(unsigned int, unsigned int) = {
-    (void (*)(unsigned int, unsigned int))FUN_004443b0, (void (*)(unsigned int, unsigned int))FUN_004443e0,
-    (void (*)(unsigned int, unsigned int))FUN_00444410, FUN_00444440,
-    FUN_00444470, FUN_004444b0,
-    FUN_004444f0, FUN_00444530,
-    FUN_00444570, FUN_004445b0,
-    FUN_004445f0, FUN_00444630,
-    FUN_00444670, FUN_004446b0,
-    FUN_004446f0, FUN_00444730,
-    FUN_00444770, FUN_004447b0,
-    FUN_004447f0, FUN_00444830,
-    FUN_00444870, FUN_004448b0,
-    FUN_004448f0, FUN_00444930,
+    (void (*)(unsigned int, unsigned int))FUN_004443b0,
+    (void (*)(unsigned int, unsigned int))FUN_004443e0,
+    (void (*)(unsigned int, unsigned int))FUN_00444410,
+    FUN_00444440,
+    FUN_00444470,
+    FUN_004444b0,
+    FUN_004444f0,
+    FUN_00444530,
+    FUN_00444570,
+    FUN_004445b0,
+    FUN_004445f0,
+    FUN_00444630,
+    FUN_00444670,
+    FUN_004446b0,
+    FUN_004446f0,
+    FUN_00444730,
+    FUN_00444770,
+    FUN_004447b0,
+    FUN_004447f0,
+    FUN_00444830,
+    FUN_00444870,
+    FUN_004448b0,
+    FUN_004448f0,
+    FUN_00444930,
     FUN_00444970,
 };
 
@@ -956,7 +968,7 @@ unsigned int FUN_0046afe0(struct NerpsArg *arg) {
 
     count = 0;
     for (robj = (struct RenderObj *)GetFirstRenderObject(); robj != NULL;
-         robj = (struct RenderObj *)GetNextRenderObject((struct RenderObject *)robj)) {
+        robj = (struct RenderObj *)GetNextRenderObject((struct RenderObject *)robj)) {
         if (robj->field_11 != 0) {
             denom = robj->field_0->group->field_2c;
             if (denom != 0) {
@@ -1034,10 +1046,10 @@ unsigned int FUN_0046b130(struct NerpsArg *arg) {
 // FUNCTION: LEGOLAND 0x0046b180
 unsigned int FUN_0046b180(struct NerpsArg *arg) {
     if (arg->field_1c == 3) {
-        if (EditMode == 1 && DAT_008119b8 == DAT_007fd624) {
+        if (EditMode.unk0 == 1 && EditMode.unk8 == DAT_007fd624) {
             return 1;
         }
-    } else if (EditMode == arg->field_1c) {
+    } else if (EditMode.unk0 == arg->field_1c) {
         return 1;
     }
     if (FUN_00468d10() == 0) {
@@ -1123,29 +1135,74 @@ typedef int (*EventHandler)(struct ObjectiveEvent *);
 
 // GLOBAL: LEGOLAND 0x004b9d44
 EventHandler DAT_004b9d44[68] = {
-    NULL, NULL,
-    (EventHandler)FUN_00469b20, (EventHandler)FUN_00469b50, (EventHandler)FUN_00469b70,
-    (EventHandler)FUN_00469b90, (EventHandler)FUN_00469bb0, (EventHandler)FUN_00469c40,
-    (EventHandler)FUN_00469c80, (EventHandler)FUN_00469ed0, (EventHandler)FUN_00469f20,
-    (EventHandler)FUN_00469f70, (EventHandler)FUN_00469f80, (EventHandler)FUN_00469fc0,
-    (EventHandler)FUN_0046a030, (EventHandler)FUN_0046a120, (EventHandler)FUN_0046a190,
-    (EventHandler)FUN_0046a1f0, (EventHandler)FUN_0046a230, (EventHandler)FUN_0046a300,
-    (EventHandler)FUN_0046a330, (EventHandler)FUN_0046a350, (EventHandler)FUN_0046a370,
-    (EventHandler)FUN_0046a3b0, (EventHandler)FUN_0046a170, (EventHandler)FUN_0046a420,
-    (EventHandler)FUN_0046a440, (EventHandler)FUN_0046a460, (EventHandler)FUN_0046a480,
-    (EventHandler)FUN_0046a4a0, (EventHandler)FUN_0046a4c0, (EventHandler)FUN_0046a4e0,
-    (EventHandler)FUN_0046a390, (EventHandler)FUN_0046a4f0, (EventHandler)FUN_0046a540,
-    (EventHandler)FUN_0046a5b0, (EventHandler)FUN_0046a690, (EventHandler)FUN_0046a750,
-    (EventHandler)FUN_0046a900, (EventHandler)FUN_0046a960, (EventHandler)FUN_0046aa30,
-    (EventHandler)FUN_0046aa70, (EventHandler)FUN_0046aae0, (EventHandler)FUN_0046ab70,
-    (EventHandler)FUN_0046abc0, (EventHandler)FUN_0046abd0, (EventHandler)FUN_0046ac50,
-    (EventHandler)FUN_0046ac00, (EventHandler)FUN_0046ad00, (EventHandler)FUN_0046ad30,
-    (EventHandler)FUN_0046ad60, (EventHandler)FUN_0046ad90, (EventHandler)FUN_0046adc0,
-    (EventHandler)FUN_0046adf0, (EventHandler)FUN_0046ae20, (EventHandler)FUN_0046ae30,
-    (EventHandler)FUN_0046ae40, (EventHandler)FUN_0046ae70, (EventHandler)FUN_0046aec0,
-    (EventHandler)FUN_0046af10, (EventHandler)FUN_0046af60, (EventHandler)FUN_0046afe0,
-    (EventHandler)FUN_0046b080, (EventHandler)FUN_0046b0b0, (EventHandler)FUN_0046b0c0,
-    (EventHandler)FUN_0046b100, (EventHandler)FUN_0046b130, (EventHandler)FUN_0046b180,
+    NULL,
+    NULL,
+    (EventHandler)FUN_00469b20,
+    (EventHandler)FUN_00469b50,
+    (EventHandler)FUN_00469b70,
+    (EventHandler)FUN_00469b90,
+    (EventHandler)FUN_00469bb0,
+    (EventHandler)FUN_00469c40,
+    (EventHandler)FUN_00469c80,
+    (EventHandler)FUN_00469ed0,
+    (EventHandler)FUN_00469f20,
+    (EventHandler)FUN_00469f70,
+    (EventHandler)FUN_00469f80,
+    (EventHandler)FUN_00469fc0,
+    (EventHandler)FUN_0046a030,
+    (EventHandler)FUN_0046a120,
+    (EventHandler)FUN_0046a190,
+    (EventHandler)FUN_0046a1f0,
+    (EventHandler)FUN_0046a230,
+    (EventHandler)FUN_0046a300,
+    (EventHandler)FUN_0046a330,
+    (EventHandler)FUN_0046a350,
+    (EventHandler)FUN_0046a370,
+    (EventHandler)FUN_0046a3b0,
+    (EventHandler)FUN_0046a170,
+    (EventHandler)FUN_0046a420,
+    (EventHandler)FUN_0046a440,
+    (EventHandler)FUN_0046a460,
+    (EventHandler)FUN_0046a480,
+    (EventHandler)FUN_0046a4a0,
+    (EventHandler)FUN_0046a4c0,
+    (EventHandler)FUN_0046a4e0,
+    (EventHandler)FUN_0046a390,
+    (EventHandler)FUN_0046a4f0,
+    (EventHandler)FUN_0046a540,
+    (EventHandler)FUN_0046a5b0,
+    (EventHandler)FUN_0046a690,
+    (EventHandler)FUN_0046a750,
+    (EventHandler)FUN_0046a900,
+    (EventHandler)FUN_0046a960,
+    (EventHandler)FUN_0046aa30,
+    (EventHandler)FUN_0046aa70,
+    (EventHandler)FUN_0046aae0,
+    (EventHandler)FUN_0046ab70,
+    (EventHandler)FUN_0046abc0,
+    (EventHandler)FUN_0046abd0,
+    (EventHandler)FUN_0046ac50,
+    (EventHandler)FUN_0046ac00,
+    (EventHandler)FUN_0046ad00,
+    (EventHandler)FUN_0046ad30,
+    (EventHandler)FUN_0046ad60,
+    (EventHandler)FUN_0046ad90,
+    (EventHandler)FUN_0046adc0,
+    (EventHandler)FUN_0046adf0,
+    (EventHandler)FUN_0046ae20,
+    (EventHandler)FUN_0046ae30,
+    (EventHandler)FUN_0046ae40,
+    (EventHandler)FUN_0046ae70,
+    (EventHandler)FUN_0046aec0,
+    (EventHandler)FUN_0046af10,
+    (EventHandler)FUN_0046af60,
+    (EventHandler)FUN_0046afe0,
+    (EventHandler)FUN_0046b080,
+    (EventHandler)FUN_0046b0b0,
+    (EventHandler)FUN_0046b0c0,
+    (EventHandler)FUN_0046b100,
+    (EventHandler)FUN_0046b130,
+    (EventHandler)FUN_0046b180,
 };
 
 // FUNCTION: LEGOLAND 0x0046b2d0

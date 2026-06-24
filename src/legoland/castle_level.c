@@ -27,10 +27,10 @@ void FUN_00402dc0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00402ff0
 void FUN_00402ff0(void) {
-    DAT_008119b8 = DAT_004c10dc;
-    EditMode = 1;
+    EditMode.unk8 = DAT_004c10dc;
+    EditMode.unk0 = 1;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(&((struct EditCursorData *)DAT_008119b8)->field_3c);
+    SetEditCursorFootPrint(&((struct EditCursorData *)EditMode.unk8)->field_3c);
 }
 
 // FUNCTION: LEGOLAND 0x00403030

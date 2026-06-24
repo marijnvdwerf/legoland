@@ -8,6 +8,7 @@
 #include "icon.h"
 #include "interface.h"
 #include "legoland.h"
+#include "math.h"
 #include "nerps.h"
 #include "options.h"
 #include "sound_music.h"
@@ -93,7 +94,7 @@ LEGO_EXPORT void InitTitleScreen(void) {
     icon->string = GetString(0x2bf);
     icon->flags |= 0x6002;
     icon->event_handler = FUN_0048ffe0;
-    DAT_0080ff80 = 0x898;
+    DAT_0080ff80.unk0 = 0x898;
 }
 
 // FUNCTION: LEGOLAND 0x0048fe20
@@ -102,7 +103,7 @@ unsigned char FUN_0048fe20(unsigned int param_1, unsigned char param_2) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         DAT_007cb328 = 1;
         DAT_007cb324 = 1;
-        DAT_0080ff88 = 4;
+        DAT_0080ff80.unk8 = 4;
     }
     return 1;
 }
@@ -116,8 +117,8 @@ unsigned char FUN_0048feb0(unsigned int param_1, unsigned int param_2) {
         DAT_0080ffe5 = 1;
         RemoveIconGroup(7);
         KillTitleScreenSprites();
-        DAT_008119b4 = 2;
-        DAT_0080ff88 = 6;
+        EditMode.unk4 = 2;
+        DAT_0080ff80.unk8 = 6;
         DAT_00832ba0 = 0;
     }
     return 1;
@@ -129,7 +130,7 @@ unsigned char FUN_0048ff20(unsigned int param_1, unsigned int param_2) {
         FUN_00498920();
         DAT_006687b0 = 4;
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_0080ff88 = 3;
+        DAT_0080ff80.unk8 = 3;
         return 2;
     }
     return 1;
@@ -139,7 +140,7 @@ unsigned char FUN_0048ff20(unsigned int param_1, unsigned int param_2) {
 unsigned char FUN_0048ff70(unsigned int param_1, unsigned int param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_0080ff88 = 0;
+        DAT_0080ff80.unk8 = 0;
     }
     return 1;
 }
@@ -158,9 +159,9 @@ unsigned char FUN_0048ffe0(unsigned int param_1, unsigned int param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         FUN_0048f9f0(DAT_007cb30c, DAT_007cb300, DAT_007cb2f0);
-        DAT_008119b4 = 2;
-        DAT_0080ff84 = 0xffffffff;
-        DAT_0080ff88 = 9;
+        EditMode.unk4 = 2;
+        DAT_0080ff80.unk4 = 0xffffffff;
+        DAT_0080ff80.unk8 = 9;
         DAT_00668e38 = 1;
     }
     return 1;
@@ -265,7 +266,7 @@ unsigned char FUN_004902c0(unsigned int param_1, unsigned int param_2) {
     if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         FUN_00490270();
-        DAT_0080ff88 = 1;
+        DAT_0080ff80.unk8 = 1;
         DAT_00798770 = 0;
     }
     return 1;
@@ -514,7 +515,7 @@ unsigned char FUN_00490970(unsigned int param_1, unsigned char param_2, unsigned
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         DAT_00668e38 = 0;
         FUN_004908b0();
-        DAT_008119b4 = 3;
+        EditMode.unk4 = 3;
         FUN_00474880();
         FUN_00490850();
         FUN_00490880();
@@ -683,28 +684,28 @@ void FUN_00490c70(void) {
 
 // FUNCTION: LEGOLAND 0x00490ea0
 void FUN_00490ea0(void) {
-    unsigned int _y = DAT_00813a48;
-    unsigned int _x = DAT_00813a44;
+    unsigned int _y = DAT_00813a44.y;
+    unsigned int _x = DAT_00813a44.x;
     if ((int)_x < DAT_007cb2e4->x ||
-        (int)DAT_00813a44 > DAT_007cb2e4->field_10 + DAT_007cb2e4->x ||
-        (int)DAT_00813a48 < DAT_007cb2e4->y ||
-        (int)DAT_00813a48 > DAT_007cb2e4->field_12 + DAT_007cb2e4->y) {
+        (int)DAT_00813a44.x > DAT_007cb2e4->field_10 + DAT_007cb2e4->x ||
+        (int)DAT_00813a44.y < DAT_007cb2e4->y ||
+        (int)DAT_00813a44.y > DAT_007cb2e4->field_12 + DAT_007cb2e4->y) {
         if (GetBlink() != 0) {
             FUN_0046d680(DAT_007cb2e4, DAT_0081c02c);
         } else {
             FUN_0046d680(DAT_007cb2e4, DAT_0081c034);
         }
     }
-    if ((int)DAT_00813a44 < DAT_007cb2e0->x ||
-        (int)DAT_00813a44 > DAT_007cb2e0->field_10 + DAT_007cb2e0->x ||
-        (int)DAT_00813a48 < DAT_007cb2e0->y ||
-        (int)DAT_00813a48 > DAT_007cb2e0->field_12 + DAT_007cb2e0->y) {
+    if ((int)DAT_00813a44.x < DAT_007cb2e0->x ||
+        (int)DAT_00813a44.x > DAT_007cb2e0->field_10 + DAT_007cb2e0->x ||
+        (int)DAT_00813a44.y < DAT_007cb2e0->y ||
+        (int)DAT_00813a44.y > DAT_007cb2e0->field_12 + DAT_007cb2e0->y) {
         FUN_0046d680(DAT_007cb2e0, DAT_0081c080);
     }
-    if ((int)DAT_00813a44 < DAT_007cb1c0->x ||
-        (int)DAT_00813a44 > DAT_007cb1c0->field_10 + DAT_007cb1c0->x ||
-        (int)DAT_00813a48 < DAT_007cb1c0->y ||
-        (int)DAT_00813a48 > DAT_007cb1c0->field_12 + DAT_007cb1c0->y) {
+    if ((int)DAT_00813a44.x < DAT_007cb1c0->x ||
+        (int)DAT_00813a44.x > DAT_007cb1c0->field_10 + DAT_007cb1c0->x ||
+        (int)DAT_00813a44.y < DAT_007cb1c0->y ||
+        (int)DAT_00813a44.y > DAT_007cb1c0->field_12 + DAT_007cb1c0->y) {
         FUN_0046d680(DAT_007cb1c0, DAT_007caf80);
     }
 }
@@ -788,9 +789,9 @@ unsigned int FUN_004911c0(const char *a, const char *b) {
             FUN_00490800(b);
         }
         DAT_00668e38 = 1;
-        DAT_008119b4 = 2;
-        DAT_0080ff84 = 0xffffffff;
-        DAT_0080ff88 = 7;
+        EditMode.unk4 = 2;
+        DAT_0080ff80.unk4 = 0xffffffff;
+        DAT_0080ff80.unk8 = 7;
         if (DAT_00668e9c != 0) {
             ((struct PopUp *)DAT_00668e9c)->field_34 &= 0xfffffbff;
         }

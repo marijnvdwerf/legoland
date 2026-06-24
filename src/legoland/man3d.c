@@ -8,6 +8,7 @@
 #include "globals.h"
 #include "legoland.h"
 #include "map_object.h"
+#include "math.h"
 #include "print_sprite.h"
 #include "render.h"
 #include "render3d.h"

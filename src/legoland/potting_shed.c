@@ -76,10 +76,10 @@ void FUN_0043d1c0(void) {
 // FUNCTION: LEGOLAND 0x0043d1d0
 void FUN_0043d1d0(void) {
     void *p = DAT_0081caf0;
-    EditMode = 1;
-    DAT_008119b8 = p;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = p;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(&((struct EditTarget *)DAT_008119b8)->field_3c);
+    SetEditCursorFootPrint(&((struct EditTarget *)EditMode.unk8)->field_3c);
 }
 
 // FUNCTION: LEGOLAND 0x0043d210

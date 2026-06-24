@@ -10,6 +10,7 @@
 #include "draw.h"
 #include "gfx.h"
 #include "llidb.h"
+#include "math.h"
 #include "print_sprite.h"
 #include "text.h"
 #include "timer.h"
@@ -354,7 +355,7 @@ int FUN_00466080(void) {
     LLSAuto();
     if (lpConfig->field_1e != 0 && DAT_00668148 != 0) {
         PushRenderingStatusAndLockVideoSurface();
-        PrintSprite(DAT_00668148, DAT_00813a44, DAT_00813a48, 0, 0);
+        PrintSprite(DAT_00668148, DAT_00813a44.x, DAT_00813a44.y, 0, 0);
         PopRenderingStatus();
     }
     tick = GetTickCount();
@@ -411,7 +412,7 @@ int FUN_004661d0(void) {
     LLSAuto();
     if (lpConfig->field_1e != 0 && DAT_00668148 != 0) {
         PushRenderingStatusAndLockVideoSurface();
-        PrintSprite(DAT_00668148, DAT_00813a44, DAT_00813a48, 0, 0);
+        PrintSprite(DAT_00668148, DAT_00813a44.x, DAT_00813a44.y, 0, 0);
         PopRenderingStatus();
     }
     tick = GetTickCount();

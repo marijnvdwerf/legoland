@@ -44,7 +44,7 @@ unsigned char FUN_0048bf90(unsigned int arg0, unsigned int arg1) {
         FUN_00466360(0x186, 0x18b);
         DAT_00668e38 = 0;
         InitGameInterface(1);
-        DAT_008119b4 = 3;
+        EditMode.unk4 = 3;
         FUN_00474880();
         FUN_00458a50();
         FUN_004663c0();
@@ -80,7 +80,7 @@ unsigned char FUN_0048c090(void *param1, unsigned char param2) {
     if (param2 & 2) {
         DAT_00798660 = 0;
         DAT_00798668 = 1;
-        DAT_0080ff84 = 0xffffffff;
+        DAT_0080ff80.unk4 = 0xffffffff;
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
         if (DAT_00798664 != 0) {
             FUN_0048bd70();

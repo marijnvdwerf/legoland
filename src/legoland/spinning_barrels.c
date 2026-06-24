@@ -79,10 +79,10 @@ void FUN_0043c340(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043c490
 void FUN_0043c490(void) {
-    EditMode = 1;
-    DAT_008119b8 = (void *)DAT_0062fde4;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = (void *)DAT_0062fde4;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((unsigned int *)((unsigned int)DAT_008119b8 + 0x3c));
+    SetEditCursorFootPrint((unsigned int *)((unsigned int)EditMode.unk8 + 0x3c));
 }
 
 // FUNCTION: LEGOLAND 0x0043c4d0

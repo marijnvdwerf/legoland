@@ -4,6 +4,7 @@
 #include "controller.h"
 #include "globals.h"
 #include "map_object.h"
+#include "math.h"
 #include "tilemap.h"
 #include "timer.h"
 
@@ -105,7 +106,7 @@ void FUN_00452030(void) {
     v7c = DAT_00813a7c;
     v78 = DAT_00813a78;
     v80 = DAT_00813a80;
-    if (EditMode == 2) {
+    if (EditMode.unk0 == 2) {
         local_14 = v7c;
         if (v74 < v7c) {
             local_14 = v74;
@@ -149,7 +150,7 @@ void FUN_00452030(void) {
         if (v78 <= v80) {
             local_8 = v80;
         }
-        cls = (struct ObjClass *)DAT_008119b8;
+        cls = (struct ObjClass *)EditMode.unk8;
         local_c = cls->field_44 - cls->field_3c;
         DAT_00813a6c = local_c + 1;
         DAT_00813a70 = (cls->field_48 - cls->field_40) + 1;
@@ -174,8 +175,8 @@ void FUN_00452030(void) {
                 bValidate = 1;
             }
         }
-        if (EditMode == 1 && DAT_008119b8 != NULL) {
-            cls = (struct ObjClass *)DAT_008119b8;
+        if (EditMode.unk0 == 1 && EditMode.unk8 != NULL) {
+            cls = (struct ObjClass *)EditMode.unk8;
             DAT_00813a84 = cls->field_3c + local_14;
             DAT_00813a88 = cls->field_40 + local_10;
             DAT_00813a8c = cls->field_3c + local_c;
@@ -194,14 +195,14 @@ void FUN_00452030(void) {
         FUN_0045f460(&EditCursor);
         return;
     }
-    ValidateCursor(&EditCursor, (unsigned int)DAT_008119b8);
+    ValidateCursor(&EditCursor, (unsigned int)EditMode.unk8);
 }
 
 // FUNCTION: LEGOLAND 0x00452390
 void FUN_00452390(void) {
     struct ObjClass *cls;
 
-    if (EditMode == 2 && QueryClass != NULL) {
+    if (EditMode.unk0 == 2 && QueryClass != NULL) {
         cls = (struct ObjClass *)QueryClass;
         DAT_00813a34 = QueryObj;
         DAT_00813af0 = cls->field_3c;
@@ -315,8 +316,8 @@ LEGO_EXPORT void ReadGameButtons(void) {
 
     DAT_00813a94 = held;
     if (lpConfig->field_1e != 0) {
-        DAT_00813a44 = ((struct CtrlBuffer *)CONTROLLERBUFFER)->field_8;
-        DAT_00813a48 = ((struct CtrlBuffer *)CONTROLLERBUFFER)->field_c;
+        DAT_00813a44.x = ((struct CtrlBuffer *)CONTROLLERBUFFER)->field_8;
+        DAT_00813a44.y = ((struct CtrlBuffer *)CONTROLLERBUFFER)->field_c;
         if (DAT_00667c7c != 0) {
             scroll = FUN_00451f70();
             if ((GamePad & 0x1000) != 0 || FocussedIconPtr == 0) {

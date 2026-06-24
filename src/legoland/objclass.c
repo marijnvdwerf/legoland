@@ -190,24 +190,24 @@ struct ElemView {
 static const struct ObjClassAlias ObjClassAliasTable[] = {
     // STRING: LEGOLAND 0x004b5c0c
     {"CASTLE OBJ",
-     // STRING: LEGOLAND 0x004bce60
-     "CASTLE_DUMMY;ROLLER COASTER TRACK;SQUARE_TRACK;"},
+        // STRING: LEGOLAND 0x004bce60
+        "CASTLE_DUMMY;ROLLER COASTER TRACK;SQUARE_TRACK;"},
     // STRING: LEGOLAND 0x004b4bb4
     {"LOG FLUME ENTRANCE",
-     // STRING: LEGOLAND 0x004bce4c
-     "LOG FLUME TRACK;"},
+        // STRING: LEGOLAND 0x004bce4c
+        "LOG FLUME TRACK;"},
     // STRING: LEGOLAND 0x004b80c0
     {"JUNGLE CRUISE",
-     // STRING: LEGOLAND 0x004bce34
-     "JUNGLE CRUISE WATER;"},
+        // STRING: LEGOLAND 0x004bce34
+        "JUNGLE CRUISE WATER;"},
     // STRING: LEGOLAND 0x004b80b0
     {"DRIVING SCHOOL",
-     // STRING: LEGOLAND 0x004bce0c
-     "DRIVING SCHOOL ROADS;ZEBRA CROSSING;"},
+        // STRING: LEGOLAND 0x004bce0c
+        "DRIVING SCHOOL ROADS;ZEBRA CROSSING;"},
     // STRING: LEGOLAND 0x004b536c
     {"BOATING SCHOOL",
-     // STRING: LEGOLAND 0x004bcdf4
-     "BOATING SCHOOL WATER;"},
+        // STRING: LEGOLAND 0x004bcdf4
+        "BOATING SCHOOL WATER;"},
 };
 
 // FUNCTION: LEGOLAND 0x004809d0
@@ -284,10 +284,10 @@ void FUN_00480b70(struct ObjClassNames *param) {
     void *value;
 
     value = param->field_c;
-    EditMode = 1;
-    DAT_008119b8 = value;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = value;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((void *)((unsigned int)DAT_008119b8 + 0x3c));
+    SetEditCursorFootPrint((void *)((unsigned int)EditMode.unk8 + 0x3c));
 }
 
 // FUNCTION: LEGOLAND 0x00480bb0
@@ -890,8 +890,8 @@ LEGO_EXPORT struct ObjInstance *CreateObjectInstance(unsigned int param_1, unsig
 
 // FUNCTION: LEGOLAND 0x004816e0
 LEGO_EXPORT void SetEditObject(struct EditObject *obj) {
-    EditMode = 1;
-    DAT_008119b8 = obj;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = obj;
     if (obj == 0) {
         return;
     }

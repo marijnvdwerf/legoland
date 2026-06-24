@@ -2,6 +2,7 @@
 #include <dinput.h> /* this TU defines the DInput data symbols (c_dfDI*, GUID_Sys*, DAT_00668d78) */
 #include "icon.h"
 #include "interface.h"
+#include "math.h"
 #include "objclass.h"
 
 // GLOBAL: LEGOLAND 0x004ab38c
@@ -759,8 +760,22 @@ char *PTR_s_Adams_004bd180[0x6b];
 
 // GLOBAL: LEGOLAND 0x004bd32c
 short DAT_004bd32c[16] = {
-    -181, -181, 0,   -256, 181,  -181, 256,  0,
-    181,  181,  0,   256,  -181, 181,  -256, 0,
+    -181,
+    -181,
+    0,
+    -256,
+    181,
+    -181,
+    256,
+    0,
+    181,
+    181,
+    0,
+    256,
+    -181,
+    181,
+    -256,
+    0,
 };
 
 // GLOBAL: LEGOLAND 0x004bdd00
@@ -800,8 +815,8 @@ unsigned int DAT_004bf774;
 unsigned int DAT_004bf778;
 
 // GLOBAL: LEGOLAND 0x004bff28
-const int DAT_004bff28[24] = {0,  1, 0,  -1, 1, 0,  -1, 0, 0,  2,  0, -2,
-                              2,  0, -2, 0,  1, 1,  1,  -1, -1, 1,  -1, -1};
+const int DAT_004bff28[24] = {0, 1, 0, -1, 1, 0, -1, 0, 0, 2, 0, -2,
+    2, 0, -2, 0, 1, 1, 1, -1, -1, 1, -1, -1};
 
 // GLOBAL: LEGOLAND 0x004c10d4
 void *DAT_004c10d4;
@@ -2519,6 +2534,9 @@ unsigned int DAT_006687ac;
 // GLOBAL: LEGOLAND 0x006687b0
 unsigned int DAT_006687b0;
 
+// GLOBAL: LEGOLAND 0x006687b4
+unsigned int DAT_006687b4;
+
 // GLOBAL: LEGOLAND 0x006687bc
 unsigned int DAT_006687bc;
 
@@ -3186,10 +3204,10 @@ struct Sprite *DAT_007986d0;
 struct Sprite *DAT_007986d4;
 
 // GLOBAL: LEGOLAND 0x007986d8
-unsigned int DAT_007986d8;
+struct IconNode *DAT_007986d8;
 
 // GLOBAL: LEGOLAND 0x007986dc
-unsigned int DAT_007986dc;
+struct IconNode *DAT_007986dc;
 
 // GLOBAL: LEGOLAND 0x007986e0
 unsigned int DAT_007986e0;
@@ -3259,6 +3277,18 @@ unsigned int DAT_0079873c;
 
 // GLOBAL: LEGOLAND 0x00798740
 unsigned int DAT_00798740;
+
+// GLOBAL: LEGOLAND 0x00798748
+struct IconNode *DAT_00798748;
+
+// GLOBAL: LEGOLAND 0x0079874c
+struct IconNode *DAT_0079874c;
+
+// GLOBAL: LEGOLAND 0x00798750
+struct IconNode *DAT_00798750;
+
+// GLOBAL: LEGOLAND 0x00798754
+unsigned int DAT_00798754;
 
 // GLOBAL: LEGOLAND 0x00798764
 struct Sprite *DAT_00798764;
@@ -3517,6 +3547,9 @@ char DAT_007cb314;
 
 // GLOBAL: LEGOLAND 0x007cb315
 char DAT_007cb315;
+
+// GLOBAL: LEGOLAND 0x007cb318
+unsigned int DAT_007cb318;
 
 // GLOBAL: LEGOLAND 0x007cb31c
 char DAT_007cb31c;
@@ -4020,13 +4053,7 @@ LEGO_EXPORT unsigned int NEWFLC_AutoPlay;
 LEGO_EXPORT unsigned char NEWFLC_PauseType;
 
 // GLOBAL: LEGOLAND 0x0080ff80
-unsigned int DAT_0080ff80;
-
-// GLOBAL: LEGOLAND 0x0080ff84
-unsigned int DAT_0080ff84;
-
-// GLOBAL: LEGOLAND 0x0080ff88
-unsigned int DAT_0080ff88;
+struct ScreenMode DAT_0080ff80;
 
 // GLOBAL: LEGOLAND 0x0080ffc0
 unsigned int DAT_0080ffc0;
@@ -4034,8 +4061,14 @@ unsigned int DAT_0080ffc0;
 // GLOBAL: LEGOLAND 0x0080ffc4
 int DAT_0080ffc4;
 
+// GLOBAL: LEGOLAND 0x0080ffc8
+int DAT_0080ffc8;
+
 // GLOBAL: LEGOLAND 0x0080ffcc
 int DAT_0080ffcc;
+
+// GLOBAL: LEGOLAND 0x0080ffd9
+unsigned char DAT_0080ffd9;
 
 // GLOBAL: LEGOLAND 0x0080ffe3
 unsigned char DAT_0080ffe3;
@@ -4089,13 +4122,7 @@ LEGO_EXPORT unsigned int NEWFLC_BuffSize;
 LEGO_EXPORT unsigned short NEWFLC_Repeat;
 
 // GLOBAL: LEGOLAND 0x008119b0
-LEGO_EXPORT unsigned int EditMode;
-
-// GLOBAL: LEGOLAND 0x008119b4
-unsigned int DAT_008119b4;
-
-// GLOBAL: LEGOLAND 0x008119b8
-void *DAT_008119b8;
+LEGO_EXPORT struct EditState EditMode;
 
 // GLOBAL: LEGOLAND 0x008119bc
 unsigned int DAT_008119bc;
@@ -4158,10 +4185,7 @@ unsigned int DAT_00813a3c;
 LEGO_EXPORT unsigned int GamePad;
 
 // GLOBAL: LEGOLAND 0x00813a44
-unsigned int DAT_00813a44;
-
-// GLOBAL: LEGOLAND 0x00813a48
-unsigned int DAT_00813a48;
+struct Point DAT_00813a44;
 
 // GLOBAL: LEGOLAND 0x00813a4c
 unsigned int DAT_00813a4c;

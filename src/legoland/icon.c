@@ -496,7 +496,7 @@ unsigned char FUN_0046da20(struct IconNode *icon, unsigned char buttons, int a3,
 void FUN_0046dac0(void) {
     unsigned int v;
     struct IconNode *icon;
-    if (DAT_008119b4 == 2 && DAT_0080ff88 == 3) {
+    if (EditMode.unk4 == 2 && DAT_0080ff80.unk8 == 3) {
         int field = ((struct CtrlBuffer *)CONTROLLERBUFFER)->field_8;
         if (field < 0xb2) {
             v = 0xc8;
@@ -522,7 +522,7 @@ void FUN_0046dac0(void) {
 void FUN_0046db40(void) {
     unsigned int v;
     struct IconNode *icon;
-    if (DAT_008119b4 == 2 && DAT_0080ff88 == 3) {
+    if (EditMode.unk4 == 2 && DAT_0080ff80.unk8 == 3) {
         int field = ((struct CtrlBuffer *)CONTROLLERBUFFER)->field_8;
         if (field < 0xb2) {
             v = 0xc8;
@@ -734,9 +734,9 @@ LEGO_EXPORT int RenderBuildObjectIcon(struct IconNode *node) {
     ctx.flags = 2;
     ctx.node = node;
     ctx.field_8 = 0;
-    if (EditMode == 1 && DAT_008119b8 != 0) {
+    if (EditMode.unk0 == 1 && EditMode.unk8 != 0) {
         objsub = *(unsigned int **)((char *)node->field_8 + 0xc4);
-        if (*(unsigned int **)((char *)DAT_008119b8 + 0xc4) == objsub) {
+        if (*(unsigned int **)((char *)EditMode.unk8 + 0xc4) == objsub) {
             objsub[2] = objsub[2] & 0xfffdffff;
         }
     }
@@ -761,10 +761,10 @@ LEGO_EXPORT int RenderBuildObjectIcon(struct IconNode *node) {
         } else if ((char)node->field_20 == 2) {
             PrintSprite(DAT_00668e90, node->x, node->y, 0, 0);
         }
-        if (EditMode == 1 && DAT_008119b8 != 0) {
+        if (EditMode.unk0 == 1 && EditMode.unk8 != 0) {
             // STRING: LEGOLAND 0x004ba888
-            if (strcmp("Path", *(char **)((char *)DAT_008119b8 + 0x78)) != 0 &&
-                *(unsigned int **)((char *)DAT_008119b8 + 0xc4) == *(unsigned int **)((char *)node->field_8 + 0xc4)) {
+            if (strcmp("Path", *(char **)((char *)EditMode.unk8 + 0x78)) != 0 &&
+                *(unsigned int **)((char *)EditMode.unk8 + 0xc4) == *(unsigned int **)((char *)node->field_8 + 0xc4)) {
                 struct Sprite *s = DAT_00668e74;
                 if (GetBlink() != 0) {
                     s = DAT_00668e78;
@@ -1204,14 +1204,14 @@ void FUN_0046ee00(void) {
     struct IconNode *node = DAT_006687c8;
     int mode;
 
-    if (DAT_008119b4 == 1) {
+    if (EditMode.unk4 == 1) {
         mode = 4;
     } else {
-        switch (EditMode) {
+        switch (EditMode.unk0) {
         case 1:
-            if (DAT_008119b8 != 0) {
+            if (EditMode.unk8 != 0) {
                 // STRING: LEGOLAND 0x004ba888
-                if (strcmp("Path", *(char **)((char *)DAT_008119b8 + 0x78)) == 0) {
+                if (strcmp("Path", *(char **)((char *)EditMode.unk8 + 0x78)) == 0) {
                     mode = 1;
                     break;
                 }
@@ -1469,12 +1469,12 @@ LEGO_EXPORT unsigned char CheckFocussedIcon(void) {
             unsigned int buttons;
             if ((DAT_00813adc & 7) != 0 && DAT_00668954 == 0) {
                 return ((unsigned char (*)(struct IconNode *, unsigned int, short, short))icon->event_handler)(
-                    icon, DAT_00813adc, (short)DAT_00813a44 - icon->x, (short)DAT_00813a48 - icon->y);
+                    icon, DAT_00813adc, (short)DAT_00813a44.x - icon->x, (short)DAT_00813a44.y - icon->y);
             }
             buttons = DAT_00813ac4;
             DAT_00667c48 = 1;
             return ((unsigned char (*)(struct IconNode *, unsigned int, short, short))icon->event_handler)(
-                icon, buttons, (short)DAT_00813a44 - icon->x, (short)DAT_00813a48 - icon->y);
+                icon, buttons, (short)DAT_00813a44.x - icon->x, (short)DAT_00813a44.y - icon->y);
         }
         {
             unsigned int buttons = DAT_00813adc;
@@ -1482,7 +1482,7 @@ LEGO_EXPORT unsigned char CheckFocussedIcon(void) {
                 buttons = DAT_00813ac4;
                 DAT_00667c48 = 1;
             }
-            return FUN_0046f2e0(icon, buttons, (short)DAT_00813a44 - icon->x, (short)DAT_00813a48 - icon->y);
+            return FUN_0046f2e0(icon, buttons, (short)DAT_00813a44.x - icon->x, (short)DAT_00813a44.y - icon->y);
         }
     }
 

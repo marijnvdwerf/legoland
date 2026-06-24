@@ -145,10 +145,10 @@ void FUN_00415fd0(struct CarNode *param_1) {
 
 // FUNCTION: LEGOLAND 0x00416060
 void FUN_00416060(void) {
-    EditMode = 1;
-    DAT_008119b8 = (void *)DAT_004cbf20;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = (void *)DAT_004cbf20;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x004160a0

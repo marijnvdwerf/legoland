@@ -1,5 +1,5 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "globals.h"
 #include "legoland.h"
 
@@ -180,10 +180,10 @@ void FUN_0042c3f0(struct CarouselRideObj *input) {
 
 // FUNCTION: LEGOLAND 0x0042c460
 void FUN_0042c460(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_006160bc;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_006160bc;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x0042c4a0
@@ -624,7 +624,8 @@ void FUN_0042bcf0(struct CarouselRideObj *param_1, unsigned int param_2, unsigne
                     int iVar3 = DAT_00616078;
                     int iVar4 = DAT_0061607c;
                     for (e = ride->list; local_60 = iVar4, local_64 = iVar3, DAT_00616078 = local_64,
-                         DAT_0061607c = local_60, e != NULL; e = e->next) {
+                        DAT_0061607c = local_60, e != NULL;
+                        e = e->next) {
                         int b = (int)e->bloke;
                         if (*param_4 == (short)e->id && (*(unsigned char *)(b + 0x62) & 0x80) != 0) {
                             int unit = *(int *)(b + 4);

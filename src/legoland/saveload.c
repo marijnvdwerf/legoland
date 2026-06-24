@@ -98,7 +98,7 @@ void FUN_0047f810(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0047f820
-unsigned int FUN_0047f820(void) {
+int FUN_0047f820(void) {
     return GetGameTimer() - DAT_00669204;
 }
 

@@ -10,6 +10,7 @@
 #include "icon.h"
 #include "input.h"
 #include "main.h"
+#include "math.h"
 #include "options.h"
 #include "profile.h"
 #include "profile_io.h"
@@ -236,7 +237,7 @@ unsigned char FUN_0048d970(unsigned int a1, unsigned char flags) {
 unsigned char FUN_0048da50(unsigned int a1, unsigned int flags, unsigned int a3, unsigned int a4) {
     if (DAT_004bef9c == 0) {
         int r = FUN_0048e720(0, flags, a3, a4);
-        if (DAT_0080ff84 != 0xffffffff) {
+        if (DAT_0080ff80.unk4 != 0xffffffff) {
             return r;
         }
         DAT_00668e38 = 0;
@@ -253,7 +254,7 @@ unsigned char FUN_0048da50(unsigned int a1, unsigned int flags, unsigned int a3,
         RemoveIconGroup(7);
     }
     KillTitleScreenSprites();
-    DAT_008119b4 = 3;
+    EditMode.unk4 = 3;
     FUN_00474880();
     FUN_004993c0();
     DAT_004bef9c = 1;
@@ -264,7 +265,7 @@ unsigned char FUN_0048da50(unsigned int a1, unsigned int flags, unsigned int a3,
 unsigned char FUN_0048db10(int param1, unsigned char flags) {
     if (DAT_004bef9c != 0 && (flags & 0x2)) {
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_0080ff88 = 5;
+        DAT_0080ff80.unk8 = 5;
     }
     return 1;
 }
@@ -272,15 +273,24 @@ unsigned char FUN_0048db10(int param1, unsigned char flags) {
 // FUNCTION: LEGOLAND 0x0048db50
 LEGO_EXPORT struct Sprite *GetSavePanelBK(signed char slot) {
     switch (slot) {
-    case 1: return DAT_00798708;
-    case 2: return DAT_0079870c;
-    case 3: return DAT_00798710;
-    case 4: return DAT_00798714;
-    case 5: return DAT_00798718;
-    case 6: return DAT_0079871c;
-    case 7: return DAT_00798720;
-    case 8: return DAT_00798724;
-    default: return 0;
+    case 1:
+        return DAT_00798708;
+    case 2:
+        return DAT_0079870c;
+    case 3:
+        return DAT_00798710;
+    case 4:
+        return DAT_00798714;
+    case 5:
+        return DAT_00798718;
+    case 6:
+        return DAT_0079871c;
+    case 7:
+        return DAT_00798720;
+    case 8:
+        return DAT_00798724;
+    default:
+        return 0;
     }
 }
 
@@ -429,7 +439,7 @@ unsigned char FUN_0048e450(unsigned int a1, unsigned int a2) {
         CloseFontEndCheckBox();
         DAT_007986e4 = 0;
         RemoveSaveGame(DAT_0080ffe4);
-        DAT_0080ff84 = 0xffffffffu;
+        DAT_0080ff80.unk4 = 0xffffffffu;
         DAT_0080ffe4 = 0;
     }
     return 1;
@@ -532,16 +542,19 @@ LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite) {
     }
     DAT_007cad60.field_1e = count;
     focus = (struct EditSprite *)DAT_007986d8;
-    if (focus->field_c + 0x48 < (int)DAT_00813a44 || (int)DAT_00813a44 < focus->field_c) {
+    if (focus->field_c + 0x48 < (int)DAT_00813a44.x || (int)DAT_00813a44.x < focus->field_c) {
         FUN_0048e420();
     }
-    if (focus->field_e + 0x1b < (int)DAT_00813a48 || (int)DAT_00813a48 < focus->field_e) {
+    if (focus->field_e + 0x1b < (int)DAT_00813a44.y || (int)DAT_00813a44.y < focus->field_e) {
         FUN_0048e420();
     }
 }
 
 // FUNCTION: LEGOLAND 0x0048e720
-int FUN_0048e720(unsigned int a1, unsigned int a2, unsigned int a3, unsigned int a4) { STUB(); return 0; }
+int FUN_0048e720(unsigned int a1, unsigned int a2, unsigned int a3, unsigned int a4) {
+    STUB();
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x0048e810
 unsigned char FUN_0048e810(struct IconNode *icon, unsigned char flags) {

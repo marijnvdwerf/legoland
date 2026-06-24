@@ -102,10 +102,10 @@ void FUN_0043dee0(struct PlaneRideObject *input) {
 
 // FUNCTION: LEGOLAND 0x0043df50
 void FUN_0043df50(void) {
-    EditMode = 1;
-    DAT_008119b8 = (void *)DAT_0062fe58;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = (void *)DAT_0062fe58;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x0043df90

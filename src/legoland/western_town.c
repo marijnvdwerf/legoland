@@ -81,10 +81,10 @@ void FUN_00437610(void) {
 
 // FUNCTION: LEGOLAND 0x00437630
 void FUN_00437630(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0081cb30;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0081cb30;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x00437670
@@ -96,7 +96,10 @@ void FUN_00437670(struct MapObject *param_1, unsigned int param_2, unsigned int 
     int *p;
     int n;
     unsigned short id;
-    union { __int64 q; int i[2]; } coords;
+    union {
+        __int64 q;
+        int i[2];
+    } coords;
 
     {
         int *fill = array;
@@ -398,10 +401,10 @@ void FUN_00437bd0(void) {
 
 // FUNCTION: LEGOLAND 0x00437bf0
 void FUN_00437bf0(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0081cb14;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0081cb14;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x00437c30
@@ -409,7 +412,10 @@ void FUN_00437c30(struct MapObject *param_1, unsigned int param_2, unsigned int 
     struct Building *ride = param_1->building;
     struct RideListElem *elem = ride->list;
     int count = 0;
-    union { __int64 q; int i[2]; } coords;
+    union {
+        __int64 q;
+        int i[2];
+    } coords;
     if (elem != NULL) {
         do {
             if (*param_4 == elem->id) {
@@ -619,10 +625,10 @@ void FUN_004380f0(void) {
 
 // FUNCTION: LEGOLAND 0x00438110
 void FUN_00438110(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0081cb10;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0081cb10;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x00438150
@@ -635,8 +641,14 @@ void FUN_00438150(struct MapObject *param_1, unsigned int param_2, unsigned int 
     int *p;
     int n;
     unsigned short id;
-    union { __int64 q; int i[2]; } coords;
-    union { __int64 q; int i[2]; } offset;
+    union {
+        __int64 q;
+        int i[2];
+    } coords;
+    union {
+        __int64 q;
+        int i[2];
+    } offset;
 
     {
         int *fill = array;
@@ -990,10 +1002,10 @@ void FUN_004388a0(void) {
 
 // FUNCTION: LEGOLAND 0x004388c0
 void FUN_004388c0(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0081cb2c;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0081cb2c;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x00438900
@@ -1001,7 +1013,10 @@ void FUN_00438900(struct MapObject *param_1, unsigned int param_2, unsigned int 
     struct Building *ride = param_1->building;
     struct RideListElem *elem = ride->list;
     int count = 0;
-    union { __int64 q; int i[2]; } coords;
+    union {
+        __int64 q;
+        int i[2];
+    } coords;
     if (elem != NULL) {
         do {
             if (*param_4 == elem->id) {
@@ -1166,10 +1181,10 @@ void FUN_00438ca0(void) {
 
 // FUNCTION: LEGOLAND 0x00438cc0
 void FUN_00438cc0(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0081cb1c;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0081cb1c;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x00438d00
@@ -1181,7 +1196,10 @@ void FUN_00438d00(struct MapObject *param_1, unsigned int param_2, unsigned int 
     int *p;
     int n;
     unsigned short id;
-    union { __int64 q; int i[2]; } coords;
+    union {
+        __int64 q;
+        int i[2];
+    } coords;
 
     {
         int *fill = array;

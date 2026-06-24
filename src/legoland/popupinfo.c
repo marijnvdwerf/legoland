@@ -7,6 +7,7 @@
 #include "globals.h"
 #include "icon.h"
 #include "legoland.h"
+#include "math.h"
 #include "text.h"
 #include "worker_mouse.h"
 
@@ -742,10 +743,10 @@ void FUN_00471d90(void) {
     FUN_00455e50(local_14, DAT_007fdecc + 0xc, iVar1 + 6,
         (DAT_007fdecc + 0x86 + iVar5) - (DAT_007fdecc + 0xc), (iVar1 + 0x21) - (iVar1 + 6), 1, 5,
         0xff0000, 0xffffff);
-    if ((DAT_007fe000->x + 0x24 < (int)DAT_00813a44) || ((int)DAT_00813a44 < DAT_007fdea8->x)) {
+    if ((DAT_007fe000->x + 0x24 < (int)DAT_00813a44.x) || ((int)DAT_00813a44.x < DAT_007fdea8->x)) {
         FUN_00471d60();
     }
-    if ((iVar1 + 0x1b < (int)DAT_00813a48) || ((int)DAT_00813a48 < iVar1)) {
+    if ((iVar1 + 0x1b < (int)DAT_00813a44.y) || ((int)DAT_00813a44.y < iVar1)) {
         FUN_00471d60();
     }
     FUN_00471470();
@@ -854,16 +855,16 @@ void FUN_004720a0(void) {
     FUN_00455e50(local_80, 0xf0, 0xd1, 0x43, 0x12, 2, 1, 0xff0000, 0xffffff);
     PopRenderingStatus();
     PrintSprite((&DAT_007fdf24)[DAT_007fdf78], 0xc4, 100, 0, 0);
-    if (((unsigned int)(int)DAT_007fdfc0->field_10 <= (unsigned int)(DAT_00813a44 - DAT_007fdfc0->x)) ||
-        ((unsigned int)(int)DAT_007fdfc0->field_12 <= (unsigned int)(DAT_00813a48 - DAT_007fdfc0->y))) {
+    if (((unsigned int)(int)DAT_007fdfc0->field_10 <= (unsigned int)(DAT_00813a44.x - DAT_007fdfc0->x)) ||
+        ((unsigned int)(int)DAT_007fdfc0->field_12 <= (unsigned int)(DAT_00813a44.y - DAT_007fdfc0->y))) {
         FUN_0046d680((struct IconNode *)DAT_007fdfc0, DAT_00668920);
     }
-    if (((unsigned int)(int)DAT_007fdfc4->field_10 <= (unsigned int)(DAT_00813a44 - DAT_007fdfc4->x)) ||
-        ((unsigned int)(int)DAT_007fdfc4->field_12 <= (unsigned int)(DAT_00813a48 - DAT_007fdfc4->y))) {
+    if (((unsigned int)(int)DAT_007fdfc4->field_10 <= (unsigned int)(DAT_00813a44.x - DAT_007fdfc4->x)) ||
+        ((unsigned int)(int)DAT_007fdfc4->field_12 <= (unsigned int)(DAT_00813a44.y - DAT_007fdfc4->y))) {
         FUN_0046d680((struct IconNode *)DAT_007fdfc4, DAT_00668928);
     }
-    if (((unsigned int)(int)DAT_007fdfe8->field_10 <= (unsigned int)(DAT_00813a44 - DAT_007fdfe8->x)) ||
-        ((unsigned int)(int)DAT_007fdfe8->field_12 <= (unsigned int)(DAT_00813a48 - DAT_007fdfe8->y))) {
+    if (((unsigned int)(int)DAT_007fdfe8->field_10 <= (unsigned int)(DAT_00813a44.x - DAT_007fdfe8->x)) ||
+        ((unsigned int)(int)DAT_007fdfe8->field_12 <= (unsigned int)(DAT_00813a44.y - DAT_007fdfe8->y))) {
         FUN_0046d680((struct IconNode *)DAT_007fdfe8, DAT_00668930);
     }
     if (DAT_007fdf78 == 0) {
@@ -1184,10 +1185,10 @@ void FUN_004736f0(void) {
         FUN_00455e50(DAT_00668968, DAT_007fe010 + 0xc, DAT_007fe014 + 6,
             (DAT_007fe010 + 0x86 + DAT_00668964 * 0x14) - (DAT_007fe010 + 0xc),
             (DAT_007fe014 + 0x21) - (DAT_007fe014 + 6), 1, 5, 0xff0000, 0xffffff);
-        if ((DAT_007fe000->x + 0x24 < (int)DAT_00813a44) || ((int)DAT_00813a44 < DAT_007fdea8->x)) {
+        if ((DAT_007fe000->x + 0x24 < (int)DAT_00813a44.x) || ((int)DAT_00813a44.x < DAT_007fdea8->x)) {
             FUN_00471d60();
         }
-        if ((iVar1 + 0x1b < (int)DAT_00813a48) || ((int)DAT_00813a48 < iVar1)) {
+        if ((iVar1 + 0x1b < (int)DAT_00813a44.y) || ((int)DAT_00813a44.y < iVar1)) {
             FUN_00471d60();
         }
     }

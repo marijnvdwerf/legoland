@@ -20,3 +20,6 @@ unsigned char FUN_0048d970(unsigned int a1, unsigned char flags);
 unsigned char FUN_0048e4a0(struct SaveIcon *icon, unsigned int flags, unsigned int a3, unsigned int a4);
 unsigned char FUN_0048e4f0(struct SaveIcon *icon, unsigned int a2, unsigned int a3, unsigned int a4);
 int FUN_0048e720(unsigned int a1, unsigned int a2, unsigned int a3, unsigned int a4);
+int FUN_0048eac0(int param);
+int FUN_0048eaf0(int param);
+void FUN_0048eb20(void);

@@ -3,6 +3,7 @@
 #include "icon.h"
 #include "legoland.h"
 #include "man3d.h"
+#include "math.h"
 #include "render3d.h"
 #include "string.h"
 #include "tilemap.h"
@@ -52,10 +53,10 @@ LEGO_EXPORT void SetWorkersPositionAtMouse(void) {
     worker->var_e = 13;
     worker = DAT_007fdff0;
     inner = worker->inner;
-    inner->pos.field_0 = DAT_00813a44;
+    inner->pos.field_0 = DAT_00813a44.x;
     worker = DAT_007fdff0;
     inner = worker->inner;
-    inner->pos.field_4 = DAT_00813a48;
+    inner->pos.field_4 = DAT_00813a44.y;
     worker = DAT_007fdff0;
     inner = worker->inner;
     AdjustBlokePosition(&inner->pos);

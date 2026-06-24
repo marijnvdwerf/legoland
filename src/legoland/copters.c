@@ -118,8 +118,16 @@ struct PathTable DAT_004b4298 = {4, Copters_PathPairs4};
 
 // GLOBAL: LEGOLAND 0x004b4170
 static const char *Copters_LLSNames[10] = {
-    "mcop_gs.lls",  "mcop_b2s.lls", "mcop_rs.lls", "mcop_b1s.lls", "mcop_ys.lls",
-    "mcop_b1m.lls", "mcop_gm.lls",  "mcop_rm.lls", "mcop_ym.lls",  "mcop_b2m.lls",
+    "mcop_gs.lls",
+    "mcop_b2s.lls",
+    "mcop_rs.lls",
+    "mcop_b1s.lls",
+    "mcop_ys.lls",
+    "mcop_b1m.lls",
+    "mcop_gm.lls",
+    "mcop_rm.lls",
+    "mcop_ym.lls",
+    "mcop_b2m.lls",
 };
 
 // FUNCTION: LEGOLAND 0x00403c40
@@ -378,10 +386,10 @@ void FUN_00404290(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00404450
 void FUN_00404450(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_004c1198;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_004c1198;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((unsigned char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((unsigned char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x00404490

@@ -200,7 +200,7 @@ unsigned char FUN_0048d300(unsigned int dummy, unsigned char arg_0) {
         FUN_00498920();
         DAT_006687b0 = 4;
         PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_0080ff88 = 1;
+        DAT_0080ff80.unk8 = 1;
     }
     return 1;
 }
@@ -235,8 +235,8 @@ unsigned char FUN_0048d400(unsigned int arg0, unsigned int arg1) {
             DAT_007986e4 = 0;
             RemoveProfile(DAT_0080ffe3);
             DAT_0080ffe3 = 0;
-            DAT_0080ff84 = 0xffffffff;
-            DAT_0080ff88 = 0;
+            DAT_0080ff80.unk4 = 0xffffffff;
+            DAT_0080ff80.unk8 = 0;
         }
     }
     return 1;

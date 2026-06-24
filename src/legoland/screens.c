@@ -51,11 +51,11 @@ void FUN_004585c0(void) { STUB(); }
 LEGO_EXPORT void InitScreens(unsigned char param_1) {
     int id = (char)param_1;
 
-    if (DAT_0080ff84 != (unsigned int)id) {
+    if (DAT_0080ff80.unk4 != (unsigned int)id) {
         FUN_00498920();
         DAT_006687b0 = 4;
         FUN_004585c0();
-        DAT_0080ff80 = 0;
+        DAT_0080ff80.unk0 = 0;
         switch (id) {
         case 0:
             InitListProfiles();
@@ -93,7 +93,7 @@ LEGO_EXPORT void InitScreens(unsigned char param_1) {
         default:
             break;
         }
-        DAT_0080ff84 = id;
+        DAT_0080ff80.unk4 = id;
     }
     if (SPRITE_TitleScreenBk != 0) {
         RenderFrontEndScreen(param_1);
@@ -107,13 +107,13 @@ void RenderFrontEndScreen(unsigned char param_1) {
     PrintSprite(SPRITE_TitleScreenBk, 0, 0, 0, 0);
     if (DAT_00668e38 != 0) {
         RenderIcons2(7, 0xe, 0);
-        if (DAT_0080ff88 == 6) {
+        if (DAT_0080ff80.unk8 == 6) {
             RenderIcons2(0x1c, 0x23, 0);
         }
     } else {
         RenderIcons();
     }
-    switch (DAT_0080ff88) {
+    switch (DAT_0080ff80.unk8) {
     case 0:
         PrintProfileDetails();
         break;
@@ -174,18 +174,16 @@ void FUN_004588c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00458930
-int FUN_00458930(double value)
-{
-    __asm fistp dword ptr [DAT_00667c3c]
-    __asm mov eax, [DAT_00667c3c]
+int FUN_00458930(double value) {
+    __asm fistp dword ptr[DAT_00667c3c] __asm mov eax, [DAT_00667c3c]
 }
 
 // FUNCTION: LEGOLAND 0x00458940
 void FUN_00458940(void) {
-    EditMode = 0;
-    DAT_008119b4 = 3;
+    EditMode.unk0 = 0;
+    EditMode.unk4 = 3;
     FUN_00474880();
-    DAT_008119b8 = 0;
+    EditMode.unk8 = 0;
     DefaultCursor(&EditCursor);
     BuildCursorPtr(&EditCursor, 0x8f8, 0);
     GamePad = (GamePad & 0xffff0000) | ((((GamePad >> 8) & 0xeb) << 8) | ((GamePad & 0xff) | 0x20));
@@ -227,9 +225,9 @@ void FUN_00458bb0(unsigned int param_1) { DAT_00667c7c = param_1; }
 
 // FUNCTION: LEGOLAND 0x00458bc0
 void FUN_00458bc0(void) {
-    DAT_008119b4 = 2;
-    DAT_0080ff84 = 0xffffffff;
-    DAT_0080ff88 = 0;
+    EditMode.unk4 = 2;
+    DAT_0080ff80.unk4 = 0xffffffff;
+    DAT_0080ff80.unk8 = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00458be0
@@ -293,15 +291,15 @@ int FUN_00458c00(void) {
         UpdateSoundVols();
         DAT_00667c64 = 0;
         DAT_00832ba0 = 0;
-        DAT_008119b4 = 3;
+        EditMode.unk4 = 3;
         FUN_00474880();
         FUN_004993c0();
     }
 
-    switch (DAT_008119b4) {
+    switch (EditMode.unk4) {
     case 2:
         SetPointer(5);
-        InitScreens(DAT_0080ff88 & 0xff);
+        InitScreens(DAT_0080ff80.unk8 & 0xff);
         break;
     case 3:
         if (DAT_00667c78 != 0) {
@@ -325,7 +323,7 @@ int FUN_00458c00(void) {
         FUN_004969d0();
         ReadGameButtons();
         DAT_008119a4 = DAT_008119a4 + 1;
-        if (DAT_00832ba0 != 0 && DAT_008119b4 == 3) {
+        if (DAT_00832ba0 != 0 && EditMode.unk4 == 3) {
             if (DAT_00832bac != 0) {
                 SetPointer(0);
                 FUN_004771f0(DAT_008100c0, 1, 1);
@@ -339,16 +337,16 @@ int FUN_00458c00(void) {
                 FUN_0048a750();
                 FUN_00458b20();
                 DAT_00668e38 = 1;
-                DAT_008119b4 = 2;
-                DAT_0080ff84 = 0xffffffff;
-                DAT_0080ff88 = 6;
+                EditMode.unk4 = 2;
+                DAT_0080ff80.unk4 = 0xffffffff;
+                DAT_0080ff80.unk8 = 6;
                 FUN_0046d110();
                 return 1;
             }
             DAT_00668e38 = 0;
-            DAT_008119b4 = 2;
-            DAT_0080ff84 = 0xffffffff;
-            DAT_0080ff88 = 1;
+            EditMode.unk4 = 2;
+            DAT_0080ff80.unk4 = 0xffffffff;
+            DAT_0080ff80.unk8 = 1;
             FUN_00458b20();
         }
         FUN_0046d110();
@@ -364,7 +362,7 @@ void FUN_00459360(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004594e0
 void FUN_004594e0(void) {
-    switch (DAT_008119b4) {
+    switch (EditMode.unk4) {
     case 2:
         FUN_004585c0();
         break;

@@ -51,10 +51,10 @@ void FUN_0043d730(void) {
 
 // FUNCTION: LEGOLAND 0x0043d740
 void FUN_0043d740(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0081caf4;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0081caf4;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(&((struct EditCursorData *)DAT_008119b8)->field_3c);
+    SetEditCursorFootPrint(&((struct EditCursorData *)EditMode.unk8)->field_3c);
 }
 
 // FUNCTION: LEGOLAND 0x0043d780

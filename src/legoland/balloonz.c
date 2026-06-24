@@ -1,5 +1,5 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "globals.h"
 #include "legoland.h"
 
@@ -830,10 +830,10 @@ void FUN_0042ba40(void) {
     struct CursorState *temp;
 
     temp = DAT_0081cde4;
-    EditMode = 1;
-    DAT_008119b8 = temp;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = temp;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(&((struct CursorState *)DAT_008119b8)->var_3c);
+    SetEditCursorFootPrint(&((struct CursorState *)EditMode.unk8)->var_3c);
 }
 
 // FUNCTION: LEGOLAND 0x0042ba80

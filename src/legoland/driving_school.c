@@ -281,10 +281,10 @@ void FUN_00405460(void) {
 
 // FUNCTION: LEGOLAND 0x00405570
 void FUN_00405570(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0082c694;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0082c694;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
     DefaultCursor(&DAT_0082f760);
     memcpy(&DAT_00830b74, DAT_004b4440, 20);
     DAT_00830f88 |= 0x100;

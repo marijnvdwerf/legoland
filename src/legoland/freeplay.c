@@ -208,7 +208,7 @@ unsigned char FUN_0048ac60(unsigned int param_1, unsigned int param_2) {
         CleanUpFreePlay();
         KillTitleScreenSprites();
         RemoveIconGroup(0x7);
-        DAT_008119b4 = 0x3;
+        EditMode.unk4 = 0x3;
         InitGameInterface(0x1);
         FUN_00474880();
         DAT_0080ffe5 = 2;

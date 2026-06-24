@@ -1,5 +1,5 @@
-#include <stdlib.h>
 #include <math.h>
+#include <stdlib.h>
 #include "globals.h"
 #include "legoland.h"
 
@@ -34,7 +34,7 @@ int FUN_00418e60(unsigned int param_1, unsigned int param_2) {
     unsigned int r;
 
     for (score = DAT_004cc074; node = DAT_004cc03c, score != NULL && score->id != (unsigned short)id;
-         score = score->next) {
+        score = score->next) {
     }
     while (node != NULL) {
         if (node->id == (unsigned short)id) {
@@ -148,7 +148,7 @@ void FUN_00418fe0(int param_1) {
         ride->field_14 = (unsigned int)lpConfig->field_20 + baseX + dx + local_18;
         ride->field_18 = (unsigned int)lpConfig->field_22 + baseY + dy + local_14;
         PrintSprite(*(struct Sprite **)(*(int *)((char *)DAT_0082c65c + 8) + (ride->field_29c[DAT_004cc08c] & 0xff) * 4),
-                    ride->field_14, ride->field_18, 0, 0);
+            ride->field_14, ride->field_18, 0, 0);
         if (ride->field_3ec != 0) {
             person = Find3DPersonFromBloke(ride->field_3ec);
             *(float *)(person + 0x44) = ((float)(int)ride->field_29c[DAT_004cc08c] * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3e0 * DAT_004ab3dc;
@@ -163,7 +163,7 @@ void FUN_00418fe0(int param_1) {
             *(int *)(person + 0x20) = local_14 + th2;
             IP_RenderBlokeIn3DNow((struct Bloke *)ride->field_3ec);
             PrintSprite(*(struct Sprite **)(*(int *)((char *)DAT_0082c65c + 8) + ((ride->field_29c[DAT_004cc08c] + 0x30) & 0xff) * 4),
-                        ride->field_14, ride->field_18, 0, 0);
+                ride->field_14, ride->field_18, 0, 0);
         }
     next:
         if (ride->field_3e4 == 0x10 && ride->field_3e8 == 2 && DAT_004cc08c == 0x4f && param_1 != 0 && ride->field_3ec != 0) {
@@ -717,8 +717,8 @@ void FUN_00419ef0(void) {
 
 // FUNCTION: LEGOLAND 0x0041a000
 void FUN_0041a000(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0082c658;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0082c658;
     DefaultCursor(&EditCursor);
     DAT_004cc088 = DAT_004cc060;
     DAT_004cc070 = DAT_004cc048;
@@ -1364,8 +1364,8 @@ void FUN_0041b250(struct RideObject *param_1) {
 
 // FUNCTION: LEGOLAND 0x0041b260
 void FUN_0041b260(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0082adf8;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0082adf8;
     DefaultCursor(&EditCursor);
     EditCursor.field_1828 |= 0x8;
     SetEditCursorFootPrint(DAT_0082adf8->footprint);
@@ -1579,12 +1579,12 @@ void FUN_0041b830(struct RideObject *arg) {
 // FUNCTION: LEGOLAND 0x0041b880
 void FUN_0041b880(void) {
     struct RideBuilding *state = DAT_0082adf0;
-    EditMode = 1;
-    DAT_008119b8 = state;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = state;
     memcpy(state->footprint, DAT_004b53c0, 20);
     DefaultCursor(&EditCursor);
     EditCursor.field_1828 |= 0x8;
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x0041b8e0
@@ -1831,7 +1831,7 @@ void FUN_0041bfb0(unsigned int param_1, unsigned int *param_2) {
         unsigned int key = (unsigned int)x | ((unsigned int)y << 8);
         key = key & 0xff;
         while ((key != ride->field_4 || (unsigned int)y != ride->field_8) &&
-               (key != ride->field_c || (unsigned int)y != ride->field_10)) {
+            (key != ride->field_c || (unsigned int)y != ride->field_10)) {
             ride = ride->next;
             if (ride == NULL) {
                 return;

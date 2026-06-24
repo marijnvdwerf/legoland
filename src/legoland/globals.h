@@ -20,6 +20,7 @@ struct _DIMOUSESTATE;
 struct Sprite;
 struct Image;
 struct IconNode;
+struct Point;
 struct DirNode;
 struct CursorSource;
 struct Building;
@@ -237,6 +238,18 @@ struct SoftPrintState {
     /* 0x14 */ unsigned char pad_14[0x24 - 0x14];
     /* 0x24 */ void *pixels;
     /* 0x28 */ unsigned char pad_28[0x6c - 0x28];
+};
+
+struct EditState {
+    unsigned int unk0;
+    unsigned int unk4;
+    void *unk8;
+};
+
+struct ScreenMode {
+    unsigned int unk0;
+    unsigned int unk4;
+    unsigned int unk8;
 };
 
 struct ScreenState {
@@ -1905,6 +1918,8 @@ extern unsigned int DAT_006687a8;
 extern unsigned int DAT_006687ac;
 // 0x006687b0
 extern unsigned int DAT_006687b0;
+// 0x006687b4
+extern unsigned int DAT_006687b4;
 // 0x006687bc
 extern unsigned int DAT_006687bc;
 // 0x006687c0
@@ -2349,9 +2364,9 @@ extern struct Sprite *DAT_007986d0;
 // 0x007986d4
 extern struct Sprite *DAT_007986d4;
 // 0x007986d8
-extern unsigned int DAT_007986d8;
+extern struct IconNode *DAT_007986d8;
 // 0x007986dc
-extern unsigned int DAT_007986dc;
+extern struct IconNode *DAT_007986dc;
 // 0x007986e0
 extern unsigned int DAT_007986e0;
 // 0x007986e4
@@ -2398,6 +2413,14 @@ extern int DAT_00798738;
 extern unsigned int DAT_0079873c;
 // 0x00798740
 extern unsigned int DAT_00798740;
+// 0x00798748
+extern struct IconNode *DAT_00798748;
+// 0x0079874c
+extern struct IconNode *DAT_0079874c;
+// 0x00798750
+extern struct IconNode *DAT_00798750;
+// 0x00798754
+extern unsigned int DAT_00798754;
 // 0x00798764
 extern struct Sprite *DAT_00798764;
 // 0x00798768
@@ -2570,6 +2593,8 @@ extern unsigned int DAT_007cb310;
 extern char DAT_007cb314;
 // 0x007cb315
 extern char DAT_007cb315;
+// 0x007cb318
+extern unsigned int DAT_007cb318;
 // 0x007cb31c
 extern char DAT_007cb31c;
 // 0x007cb320
@@ -2904,17 +2929,17 @@ extern LEGO_EXPORT unsigned int NEWFLC_AutoPlay;
 // 0x0080ff78
 extern LEGO_EXPORT unsigned char NEWFLC_PauseType;
 // 0x0080ff80
-extern unsigned int DAT_0080ff80;
-// 0x0080ff84
-extern unsigned int DAT_0080ff84;
-// 0x0080ff88
-extern unsigned int DAT_0080ff88;
+extern struct ScreenMode DAT_0080ff80;
 // 0x0080ffc0
 extern unsigned int DAT_0080ffc0;
 // 0x0080ffc4
 extern int DAT_0080ffc4;
+// 0x0080ffc8
+extern int DAT_0080ffc8;
 // 0x0080ffcc
 extern int DAT_0080ffcc;
+// 0x0080ffd9
+extern unsigned char DAT_0080ffd9;
 // 0x0080ffe3
 extern unsigned char DAT_0080ffe3;
 // 0x0080ffe4
@@ -2950,11 +2975,7 @@ extern LEGO_EXPORT unsigned int NEWFLC_BuffSize;
 // 0x008119ac
 extern LEGO_EXPORT unsigned short NEWFLC_Repeat;
 // 0x008119b0
-extern LEGO_EXPORT unsigned int EditMode;
-// 0x008119b4
-extern unsigned int DAT_008119b4;
-// 0x008119b8
-extern void *DAT_008119b8;
+extern LEGO_EXPORT struct EditState EditMode;
 // 0x008119bc
 extern unsigned int DAT_008119bc;
 // 0x008139e0
@@ -2996,9 +3017,7 @@ extern unsigned int DAT_00813a3c;
 // 0x00813a40
 extern LEGO_EXPORT unsigned int GamePad;
 // 0x00813a44
-extern unsigned int DAT_00813a44;
-// 0x00813a48
-extern unsigned int DAT_00813a48;
+extern struct Point DAT_00813a44;
 // 0x00813a4c
 extern unsigned int DAT_00813a4c;
 // 0x00813a50

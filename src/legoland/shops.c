@@ -164,10 +164,10 @@ void FUN_00439350(struct ShopRemoveObject *obj, struct ShopCoords2 coords, void 
 
 // FUNCTION: LEGOLAND 0x004393a0
 void FUN_004393a0(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0081cb3c;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0081cb3c;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x004393e0
@@ -222,10 +222,10 @@ void FUN_00439700(void) {
 
 // FUNCTION: LEGOLAND 0x00439720
 void FUN_00439720(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0081cb4c;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0081cb4c;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x00439760
@@ -275,10 +275,10 @@ void FUN_00439ce0(void) {
 
 // FUNCTION: LEGOLAND 0x00439d00
 void FUN_00439d00(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0081cb40;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0081cb40;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x00439d40
@@ -305,10 +305,10 @@ void FUN_0043a120(void) {
 
 // FUNCTION: LEGOLAND 0x0043a140
 void FUN_0043a140(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0081cb44;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0081cb44;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x0043a180

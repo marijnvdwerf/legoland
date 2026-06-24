@@ -1318,10 +1318,10 @@ int FUN_00469fc0(struct RewardArg *arg) {
 
     FUN_00490600(0);
     if (FUN_004907a0(arg->field_8) != 0) {
-        DAT_008119b4 = 2;
+        EditMode.unk4 = 2;
         DAT_00668e38 = 1;
-        DAT_0080ff84 = 0xffffffff;
-        DAT_0080ff88 = 7;
+        DAT_0080ff80.unk4 = 0xffffffff;
+        DAT_0080ff80.unk8 = 7;
         return 1;
     }
     retries = arg->field_1c;

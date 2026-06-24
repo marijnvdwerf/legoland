@@ -9,6 +9,7 @@
 #include "draw.h"
 #include "gfx.h"
 #include "llidb.h"
+#include "math.h"
 #include "print_sprite.h"
 #include "render.h"
 #include "text.h"
@@ -454,12 +455,12 @@ LEGO_EXPORT void BubbleHelp(int *rect, char *text, int font) {
     RenderBlock(right4, width, left_corner_w + -1, mid_h, color);
     FUN_00455ec0(cell, box.left, box.top);
     hit_left = left4;
-    if (box.left <= (int)DAT_00813a44 && (int)DAT_00813a44 <= right4 && top4 <= (int)DAT_00813a48 &&
-        (int)DAT_00813a48 <= bottom4) {
+    if (box.left <= (int)DAT_00813a44.x && (int)DAT_00813a44.x <= right4 && top4 <= (int)DAT_00813a44.y &&
+        (int)DAT_00813a44.y <= bottom4) {
         DAT_004bdd00 = 5;
     }
-    if (hit_left <= (int)DAT_00813a44 && (int)DAT_00813a44 <= left_corner_w + right4 &&
-        width <= (int)DAT_00813a48 && (int)DAT_00813a48 <= mid_top) {
+    if (hit_left <= (int)DAT_00813a44.x && (int)DAT_00813a44.x <= left_corner_w + right4 &&
+        width <= (int)DAT_00813a44.y && (int)DAT_00813a44.y <= mid_top) {
         DAT_004bdd00 = 5;
     }
 }

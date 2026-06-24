@@ -163,7 +163,7 @@ void FUN_0042cf70(struct EarthNode *param_1) {
                 *(unsigned int *)((char *)bloke + 0x24) = (tbl[-1] + x + bx) * 0x100;
                 *(int *)((char *)bloke + 0x28) = (tbl[0] + by + y) * 0x100;
                 cv = CalcMoveLine(*(int *)((char *)bloke + 0x68), *(int *)((char *)bloke + 0x6c),
-                                  *(int *)((char *)bloke + 0x24), *(int *)((char *)bloke + 0x28), (char *)bloke + 0x98);
+                    *(int *)((char *)bloke + 0x24), *(int *)((char *)bloke + 0x28), (char *)bloke + 0x98);
                 *(unsigned short *)((char *)bloke + 0xe) = 7;
                 *(unsigned char *)((char *)bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -256,10 +256,10 @@ void FUN_0042d1f0(struct EarthRideObj *arg1) {
 
 // FUNCTION: LEGOLAND 0x0042d230
 void FUN_0042d230(void) {
-    EditMode = 1;
-    DAT_008119b8 = (void *)DAT_006160d0;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = (void *)DAT_006160d0;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x0042d270
@@ -488,7 +488,7 @@ void FUN_0042d610(struct EarthRideObj *param_1) {
                 *(int *)((char *)bloke + 0x24) = local_8;
                 *(int *)((char *)bloke + 0x28) = local_4;
                 cv = CalcMoveLine(*(int *)((char *)bloke + 0x68), *(int *)((char *)bloke + 0x6c),
-                                  *(int *)((char *)bloke + 0x24), local_4, (char *)bloke + 0x98);
+                    *(int *)((char *)bloke + 0x24), local_4, (char *)bloke + 0x98);
                 *(short *)((char *)bloke + 0xe) = 7;
                 *(unsigned char *)((char *)bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);

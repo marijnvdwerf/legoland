@@ -10,9 +10,9 @@
 #include "map_object.h"
 #include "math.h"
 #include "obj_instance.h"
+#include "objclass.h"
 #include "print_sprite.h"
 #include "render3d.h"
-#include "objclass.h"
 #include "sound_music.h"
 #include "space_tower.h"
 
@@ -624,10 +624,10 @@ void FUN_0043b2b0(struct SpaceTowerCtx *param_1) {
 
 // FUNCTION: LEGOLAND 0x0043b420
 void FUN_0043b420(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0062fd74;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0062fd74;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((void *)((unsigned int)DAT_008119b8 + 0x3c));
+    SetEditCursorFootPrint((void *)((unsigned int)EditMode.unk8 + 0x3c));
 }
 
 // FUNCTION: LEGOLAND 0x0043b460

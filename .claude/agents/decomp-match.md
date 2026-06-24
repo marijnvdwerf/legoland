@@ -31,6 +31,7 @@ Also read `docs/decomp-tips.md` in the project root for MSVC6 codegen patterns.
 
 ## Workflow
 
+0. **Read the real codebase first.** Before touching the scratch, look at the source file this function belongs to (under `src/legoland/`) and its headers (especially `globals.h`, `legoland.h`, and any TU-specific header). This gives you correct function signatures, struct definitions, global types, and calling conventions. The scratch source must declare its own externs, but the *types and signatures* should match what the real codebase uses.
 1. Call `mcp__decomp-me__diff` with the scratch/node ID to see the current asm diff.
 2. Analyze the diff: identify mismatched instructions, wrong registers, reordered operations.
 3. Call `mcp__decomp-me__compile` with:

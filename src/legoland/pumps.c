@@ -22,8 +22,8 @@ void FUN_00411a20(void) {
     unsigned int eax_temp;
 
     eax_temp = DAT_004cbe9c;
-    EditMode = 1;
-    DAT_008119b8 = (void *)eax_temp;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = (void *)eax_temp;
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint(DAT_004b4bd0);
     EditCursor.field_1828 = EditCursor.field_1828 | 8;

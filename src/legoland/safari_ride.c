@@ -117,10 +117,10 @@ void FUN_00414ea0(struct SafariObject *a1) {
 
 // FUNCTION: LEGOLAND 0x00414f00
 void FUN_00414f00(void) {
-    EditMode = 1;
-    DAT_008119b8 = (void *)DAT_004cbec4;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = (void *)DAT_004cbec4;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 struct SafariEditObj {

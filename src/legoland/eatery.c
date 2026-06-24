@@ -232,10 +232,10 @@ void FUN_0042e4b0(void) {
 // FUNCTION: LEGOLAND 0x0042e4c0
 void FUN_0042e4c0(void) {
     struct EateryFX *temp = DAT_0081cd38;
-    EditMode = 1;
-    DAT_008119b8 = temp;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = temp;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((void *)((unsigned int)DAT_008119b8 + 0x3c));
+    SetEditCursorFootPrint((void *)((unsigned int)EditMode.unk8 + 0x3c));
 }
 
 // FUNCTION: LEGOLAND 0x0042e500
@@ -411,10 +411,10 @@ void FUN_0042e8b0(void) {
 // FUNCTION: LEGOLAND 0x0042e8d0
 void FUN_0042e8d0(struct EditArg *arg) {
     unsigned int temp = arg->var_c;
-    EditMode = 1;
-    DAT_008119b8 = (void *)temp;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = (void *)temp;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((void *)((unsigned int)DAT_008119b8 + 0x3c));
+    SetEditCursorFootPrint((void *)((unsigned int)EditMode.unk8 + 0x3c));
 }
 
 // FUNCTION: LEGOLAND 0x0042e910

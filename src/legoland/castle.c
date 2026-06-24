@@ -1983,8 +1983,8 @@ unsigned int FUN_00424240(void) {
     if (DAT_00610a04 != 0) {
         return DAT_00610a04;
     }
-    EditMode = 1;
-    DAT_008119b8 = DAT_00829bf8;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_00829bf8;
     DefaultCursor(&EditCursor);
     FUN_00423de0();
     return ((unsigned int (*)(const char *))SetEditCursorFootPrint)((const char *)&DAT_00829a80); /* TODO: fold — SetEditCursorFootPrint leaves memcpy's eax, used here as uint return */
@@ -2995,8 +2995,8 @@ struct Struct427940 {
 // FUNCTION: LEGOLAND 0x00427940
 void FUN_00427940(struct Struct427940 *param_1) {
     unsigned int value = param_1->field_c;
-    EditMode = 1;
-    DAT_008119b8 = value;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = value;
     SetEditCursorFootPrint((void *)(value + 60));
     EditCursor.field_1830 = 0;
 }

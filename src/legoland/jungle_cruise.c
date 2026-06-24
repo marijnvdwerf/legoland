@@ -1,5 +1,5 @@
-#include <stdlib.h>
 #include <math.h>
+#include <stdlib.h>
 #include "globals.h"
 #include "legoland.h"
 
@@ -49,7 +49,7 @@ int FUN_00432b90(unsigned int param_1, void *param_2, void *param_3, void *param
     unsigned int r;
 
     for (score = DAT_00629c3c; node = DAT_00616164, score != NULL && score->field_0 != (unsigned short)id;
-         score = score->next) {
+        score = score->next) {
     }
     while (node != NULL) {
         if (node->field_0 == (unsigned short)id) {
@@ -154,7 +154,7 @@ void FUN_00432d00(int param_1) {
                 goto draw;
             }
         } else if (mode == 1 || mode == 0x10 ||
-                   (ride->field_8 == (ride->field_0 & 0xff) && (int)((ride->field_0 >> 8 & 0xff) + 5) <= (int)ride->field_10)) {
+            (ride->field_8 == (ride->field_0 & 0xff) && (int)((ride->field_0 >> 8 & 0xff) + 5) <= (int)ride->field_10)) {
         draw:
             frame = ride->field_1c[idx * 2 + 1];
             idx = ride->field_1c[idx * 2];
@@ -170,7 +170,7 @@ void FUN_00432d00(int param_1) {
             ride->field_14 = (unsigned int)lpConfig->field_20 + dx + local_20 + baseX;
             ride->field_18 = (unsigned int)lpConfig->field_22 + dy + local_1c + baseY;
             PrintSprite(*(struct Sprite **)(*(int *)((char *)DAT_0081cd00 + 8) + (ride->field_29c[DAT_00629c54] & 0xff) * 4),
-                        ride->field_14, ride->field_18, 0, 0);
+                ride->field_14, ride->field_18, 0, 0);
             local_20 = (unsigned int)lpConfig->field_20 + dx + baseX;
             local_1c = (unsigned int)lpConfig->field_22 + dy + baseY;
             AdjustBlokePosition((struct BlokePos *)&local_20);
@@ -222,7 +222,7 @@ void FUN_00432d00(int param_1) {
                         spr = ride->field_29c[idx] + 0x10;
                     print1:
                         PrintSprite(*(struct Sprite **)(*(int *)((char *)DAT_0081cd00 + 8) + (spr & 0xff) * 4),
-                                    *(unsigned int *)((char *)ride + 0x14), *(unsigned int *)((char *)ride + 0x18), 0, 0);
+                            *(unsigned int *)((char *)ride + 0x14), *(unsigned int *)((char *)ride + 0x18), 0, 0);
                         idx = DAT_00629c54;
                     }
                     row = row - 1;
@@ -274,7 +274,7 @@ void FUN_00432d00(int param_1) {
                         spr = ride->field_29c[idx] + 0x20;
                     print2:
                         PrintSprite(*(struct Sprite **)(*(int *)((char *)DAT_0081cd00 + 8) + (spr & 0xff) * 4),
-                                    *(unsigned int *)((char *)ride + 0x14), *(unsigned int *)((char *)ride + 0x18), 0, 0);
+                            *(unsigned int *)((char *)ride + 0x14), *(unsigned int *)((char *)ride + 0x18), 0, 0);
                         idx = DAT_00629c54;
                     }
                     row = row + 1;
@@ -732,8 +732,8 @@ void FUN_00433cd0(void) {
 
 // FUNCTION: LEGOLAND 0x00433ce0
 void FUN_00433ce0(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0081cb70;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0081cb70;
     DefaultCursor(&EditCursor);
     EditCursor.field_1828 |= 0x8;
     SetEditCursorFootPrint(&DAT_0081cb70->field_3c);
@@ -893,8 +893,8 @@ void FUN_004340b0(void) {
 
 // FUNCTION: LEGOLAND 0x004340c0
 void FUN_004340c0(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0081cb74;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0081cb74;
     DefaultCursor(&EditCursor);
     EditCursor.field_1828 |= 0x8;
     SetEditCursorFootPrint(&DAT_0081cb74->field_3c);
@@ -1281,8 +1281,8 @@ void FUN_00434e50(struct JungleHolder *param_1) {
 
 // FUNCTION: LEGOLAND 0x00434f50
 void FUN_00434f50(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0081cb60;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0081cb60;
     DefaultCursor(&EditCursor);
     DAT_00629c50 = &DAT_004b7278;
     DAT_004b7288 = &DAT_004b7260;
@@ -1630,7 +1630,7 @@ void FUN_00435750(void) {
                 person = (*(int *)((char *)DAT_0081cb60 + 0x10) + hi) * 0x100 + *(int *)((char *)&DAT_004b72b0 + slot * -8 + 4);
                 *(int *)(bloke + 0x28) = person;
                 cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
-                                  *(unsigned int *)(bloke + 0x24), person, bloke + 0x98);
+                    *(unsigned int *)(bloke + 0x24), person, bloke + 0x98);
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 *(short *)(bloke + 0xe) = 7;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -1671,7 +1671,7 @@ void FUN_00435750(void) {
                 person = ((int)*(char *)((char *)DAT_0081cb60 + 0x25) + hi) * 0x100 + 0x80;
                 *(int *)(bloke + 0x28) = person;
                 cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
-                                  *(unsigned int *)(bloke + 0x24), person, bloke + 0x98);
+                    *(unsigned int *)(bloke + 0x24), person, bloke + 0x98);
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -1682,7 +1682,7 @@ void FUN_00435750(void) {
                 person = ((int)*(char *)((char *)DAT_0081cb60 + 0x25) + hi) * 0x100 + 0x80;
                 *(int *)(bloke + 0x28) = person;
                 cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
-                                  *(unsigned int *)(bloke + 0x24), person, bloke + 0x98);
+                    *(unsigned int *)(bloke + 0x24), person, bloke + 0x98);
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -1690,7 +1690,7 @@ void FUN_00435750(void) {
                 break;
             case 5:
                 *(unsigned short *)(bloke + 0x62) &= 0xfff7;
-remove:
+            remove:
                 RemoveBlokeFromRide(DAT_0081cb60, queue);
             }
         }
@@ -1943,12 +1943,12 @@ void FUN_00436190(struct JungleHolder *param_1) {
 
 // FUNCTION: LEGOLAND 0x004361a0
 void FUN_004361a0(void) {
-    EditMode = 1;
-    DAT_008119b8 = DAT_0081cb54;
+    EditMode.unk0 = 1;
+    EditMode.unk8 = DAT_0081cb54;
     DAT_0081cb54->field_3c = DAT_004b7478;
     DefaultCursor(&EditCursor);
     EditCursor.field_1828 |= 0x8;
-    SetEditCursorFootPrint((char *)DAT_008119b8 + 0x3c);
+    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
 }
 
 // FUNCTION: LEGOLAND 0x00436200
@@ -2092,7 +2092,7 @@ void FUN_00436470(unsigned int param_1, unsigned int *param_2) {
     if (ride != NULL) {
         x = (unsigned char)((bx) | (by << 8)) & 0xff;
         while ((x != ride->field_4 || (unsigned int)by != ride->field_8) &&
-               (x != ride->field_c || (unsigned int)by != ride->field_10)) {
+            (x != ride->field_c || (unsigned int)by != ride->field_10)) {
             ride = ride->next;
             if (ride == NULL) {
                 return;

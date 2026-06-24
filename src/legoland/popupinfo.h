@@ -1,5 +1,7 @@
 #pragma once
 
+#include <windows.h>
+
 #include "legoland.h"
 
 struct NewObjInfo;
@@ -17,6 +19,7 @@ unsigned int FUN_00473160(void);
 void FUN_004735b0(void);
 void FUN_00473660(void);
 
+LEGO_EXPORT void InfoPrintCent(int len, char *text, int font, RECT rc, int flag);
 LEGO_EXPORT void DisableInfoPopUPIcons(void);
 void FUN_00471ca0(void *param);
 unsigned char FUN_004730f0(void *param1, unsigned char param2, unsigned int param3, unsigned int param4);
