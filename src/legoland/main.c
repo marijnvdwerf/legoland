@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include "legoland.h"
 
+#include "debug.h"
+#include "exceptlog.h"
 #include "globals.h"
 #include "main.h"
 #include "screens.h"

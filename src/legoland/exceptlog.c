@@ -1,3 +1,4 @@
+#include "exceptlog.h"
 #include <string.h>
 #include "legoland.h"
 
