@@ -60,9 +60,9 @@ LEGO_EXPORT void ResetTempProfile(void) {
     DAT_007cad60.field_38 = 0;
     DAT_007cad60.field_3c = 0;
     DAT_007cad60.field_40 = 0;
-    DAT_007cad60.field_0 = 0;
+    DAT_007cad60.name[0] = 0;
     DAT_007cad60.field_20 = 5;
-    DAT_007cad60.field_1e = 0;
+    DAT_007cad60.name_len = 0;
     DAT_007cad60.field_42 = 0;
     memset(DAT_007cad60.field_43, 0, 200);
     *(int *)&DAT_007cad60.field_10b = 0;
@@ -133,7 +133,7 @@ LEGO_EXPORT char ScanForProfiles(void) {
 // FUNCTION: LEGOLAND 0x00491470
 LEGO_EXPORT char LoadProfilesFormDisk(void) {
     char path[120];
-    char data[272];
+    struct ProfileData data;
     char slot;
     char result;
     int index;
@@ -149,10 +149,10 @@ LEGO_EXPORT char LoadProfilesFormDisk(void) {
         stream = fopen(path, "r");
         if (stream == 0) {
             printf("\ncannot open output file");
-            AddNodeToProfileList(0, data, slot);
+            AddNodeToProfileList(0, &data, slot);
         } else {
-            fread(data, 0x110, 1, stream);
-            AddNodeToProfileList(1, data, slot);
+            fread(&data, 0x110, 1, stream);
+            AddNodeToProfileList(1, &data, slot);
             fclose(stream);
         }
         slot--;
@@ -163,11 +163,11 @@ LEGO_EXPORT char LoadProfilesFormDisk(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00491540
-unsigned int FUN_00491540(void) { return DAT_007cad60.field_0 != 0; }
+unsigned int FUN_00491540(void) { return DAT_007cad60.name[0] != 0; }
 
 // FUNCTION: LEGOLAND 0x00491550
 LEGO_EXPORT char UpDateCurrentSaveSlotInfo(void) {
-    struct Settings temp;
+    struct ProfileData temp;
     char path[120];
     void *stream;
 
@@ -175,7 +175,7 @@ LEGO_EXPORT char UpDateCurrentSaveSlotInfo(void) {
     if (LoadDateIntoTempProfile(DAT_0080ffe3, DAT_0080ffe4 & 0xff) == 0) {
         return -1;
     }
-    strcpy((char *)&temp, (char *)&DAT_007cad60);
+    strcpy(temp.name, DAT_007cad60.name);
     temp.field_28 = DAT_0080ffa0.field_24;
     temp.field_2c = DAT_0080ffa0.field_28;
     temp.field_30 = DAT_0080ffa0.field_2c;
@@ -196,12 +196,12 @@ LEGO_EXPORT char UpDateCurrentSaveSlotInfo(void) {
 
 // FUNCTION: LEGOLAND 0x00491680
 LEGO_EXPORT char UpDateCurrentProfile(void) {
-    struct Settings temp;
+    struct ProfileData temp;
     char path[120];
     void *stream;
 
     memset(&temp, 0, 0x110);
-    strcpy((char *)&temp, (char *)&DAT_0080ffa0);
+    strcpy(temp.name, (char *)&DAT_0080ffa0);
     temp.field_20 = DAT_0080ffa0.field_20;
     temp.field_28 = DAT_0080ffa0.field_24;
     temp.field_2c = DAT_0080ffa0.field_28;
@@ -229,7 +229,7 @@ LEGO_EXPORT char UpDateCurrentProfile(void) {
 
 // FUNCTION: LEGOLAND 0x004917c0
 int FUN_004917c0(int slot) {
-    char data[272];
+    struct ProfileData data;
     char path[120];
     struct ProfileNode *node;
     void *stream;
@@ -238,15 +238,15 @@ int FUN_004917c0(int slot) {
     if (node == NULL) {
         return 0;
     }
-    memset(data, 0, 0x110);
-    strcpy(data, node->name);
-    *(int *)&data[0x20] = *(int *)&node->name[0x20];
-    *(int *)&data[0x28] = *(int *)&node->name[0x28];
-    *(int *)&data[0x2c] = *(int *)&node->name[0x2c];
-    *(int *)&data[0x30] = *(int *)&node->name[0x30];
-    memcpy(&data[0x34], &node->name[0x34], 15);
-    memcpy(&data[0x43], &node->name[0x43], 200);
-    *(int *)&data[0x10b] = *(int *)&node->name[0x10b];
+    memset(&data, 0, 0x110);
+    strcpy(data.name, node->data.name);
+    data.field_20 = node->data.field_20;
+    data.field_28 = node->data.field_28;
+    data.field_2c = node->data.field_2c;
+    data.field_30 = node->data.field_30;
+    memcpy(&data.field_34, &node->data.field_34, 15);
+    memcpy(data.field_43, node->data.field_43, 200);
+    *(int *)&data.field_10b = *(int *)&node->data.field_10b;
     if (Goto_ProfileDir() == 0) {
         return -1;
     }
@@ -256,7 +256,7 @@ int FUN_004917c0(int slot) {
         printf("\ncannot open output file");
         return 0;
     }
-    fwrite(data, 0x110, 1, stream);
+    fwrite(&data, 0x110, 1, stream);
     fclose(stream);
     return ReturnFrom_ProfileDir() != 0;
 }
@@ -300,20 +300,20 @@ struct ProfileNode *FUN_004919a0(unsigned char slot) {
 }
 
 // FUNCTION: LEGOLAND 0x004919c0
-LEGO_EXPORT void AddNodeToProfileList(int load, char *data, char slot) {
+LEGO_EXPORT void AddNodeToProfileList(int load, struct ProfileData *data, char slot) {
     struct ProfileNode *node = (struct ProfileNode *)malloc(0x11c);
     memset(node, 0, 0x11c);
     if (load != 0) {
-        strcpy(node->name, data);
-        *(int *)&node->name[0x20] = *(int *)&data[0x20];
-        *(int *)&node->name[0x28] = *(int *)&data[0x28];
-        *(int *)&node->name[0x2c] = *(int *)&data[0x2c];
-        *(int *)&node->name[0x30] = *(int *)&data[0x30];
+        strcpy(node->data.name, data->name);
+        node->data.field_20 = data->field_20;
+        node->data.field_28 = data->field_28;
+        node->data.field_2c = data->field_2c;
+        node->data.field_30 = data->field_30;
         node->slot = slot;
         node->has_header = 1;
-        memcpy(&node->name[0x34], &data[0x34], 15);
-        memcpy(&node->name[0x43], &data[0x43], 200);
-        *(int *)&node->name[0x10b] = *(int *)&data[0x10b];
+        memcpy(&node->data.field_34, &data->field_34, 15);
+        memcpy(node->data.field_43, data->field_43, 200);
+        *(int *)&node->data.field_10b = *(int *)&data->field_10b;
         node->next = (struct ProfileNode *)DAT_00798890;
         DAT_00798890 = node;
         return;
@@ -373,26 +373,26 @@ LEGO_EXPORT void EnterNewProfile(struct ProfileSprite *sprite) {
     int top;
     char *blink;
 
-    count = DAT_007cad60.field_1e;
+    count = DAT_007cad60.name_len;
     // STRING: LEGOLAND 0x004bf2e4
     *(short *)cursor_str = *(short *)"|";
     input = GetInputChar();
     if (input != '\0') {
         if (input == -1 && count != 0) {
             count--;
-            *((char *)&DAT_007cad60 + count) = 0;
+            ((char *)&DAT_007cad60)[count] = 0;
         }
         if (count < 0x1f && DAT_00798894 < 0x7b && input > '\0') {
             if (input == ' ') {
                 if (count != 0) {
-                    *((char *)&DAT_007cad60 + count) = ' ';
+                    ((char *)&DAT_007cad60)[count] = ' ';
                     count++;
-                    *((char *)&DAT_007cad60 + count) = 0;
+                    ((char *)&DAT_007cad60)[count] = 0;
                 }
             } else {
-                *((char *)&DAT_007cad60 + count) = input;
+                ((char *)&DAT_007cad60)[count] = input;
                 count++;
-                *((char *)&DAT_007cad60 + count) = 0;
+                ((char *)&DAT_007cad60)[count] = 0;
             }
         }
     }
@@ -406,7 +406,7 @@ LEGO_EXPORT void EnterNewProfile(struct ProfileSprite *sprite) {
         rc.top = top;
         rc.right = right;
         rc.bottom = bottom;
-        center_x = FUN_00491e40((char *)&DAT_007cad60, 2, rc, 1);
+        center_x = FUN_00491e40(DAT_007cad60.name, 2, rc, 1);
     } else {
         center_x = (right + left) >> 1;
     }
@@ -426,7 +426,7 @@ LEGO_EXPORT void EnterNewProfile(struct ProfileSprite *sprite) {
         rc.bottom = bottom;
         FUN_00490fa0(cursor_str, 2, rc, 1);
     }
-    DAT_007cad60.field_1e = count;
+    DAT_007cad60.name_len = count;
 }
 
 // FUNCTION: LEGOLAND 0x00491d60

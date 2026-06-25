@@ -422,8 +422,8 @@ LEGO_EXPORT void InitNewSaveGamePOPUP(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048e3d0
 void FUN_0048e3d0(const char *name) {
-    strcpy((char *)&DAT_007cad60, name);
-    DAT_007cad60.field_1e = (unsigned char)strlen(name);
+    strcpy(DAT_007cad60.name, name);
+    DAT_007cad60.name_len = (unsigned char)strlen(name);
     DAT_007986f0 = 1;
 }
 
@@ -485,29 +485,29 @@ LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite) {
     struct EditSprite *focus;
 
     *(short *)cursor_str = *(short *)"|";
-    count = DAT_007cad60.field_1e;
+    count = DAT_007cad60.name_len;
     cursor_str[2] = count;
     input = GetInputChar();
     if (input != '\0') {
         if (input == -1 && count != 0) {
             count--;
             cursor_str[2] = count;
-            *((char *)&DAT_007cad60 + count) = 0;
+            ((char *)&DAT_007cad60)[count] = 0;
         }
         if (count < 0x1f && DAT_00798738 < 0xcb) {
             if (input > '\0') {
                 unsigned int index = (unsigned int)(unsigned char)cursor_str[2];
                 count++;
                 cursor_str[2] = count;
-                *((char *)&DAT_007cad60 + index) = input;
-                *((char *)&DAT_007cad60 + count) = 0;
+                ((char *)&DAT_007cad60)[index] = input;
+                ((char *)&DAT_007cad60)[count] = 0;
             } else if (input == ' ') {
                 if (count != 0) {
                     unsigned int index = (unsigned int)(unsigned char)cursor_str[2];
                     count++;
                     cursor_str[2] = count;
-                    *((char *)&DAT_007cad60 + index) = ' ';
-                    *((char *)&DAT_007cad60 + count) = 0;
+                    ((char *)&DAT_007cad60)[index] = ' ';
+                    ((char *)&DAT_007cad60)[count] = 0;
                 }
             }
         }
@@ -521,7 +521,7 @@ LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite) {
         rc.top = sprite->field_e + 0x24;
         rc.right = right;
         rc.bottom = bottom;
-        center_x = FUN_00491e40((char *)&DAT_007cad60, 2, rc, 1);
+        center_x = FUN_00491e40(DAT_007cad60.name, 2, rc, 1);
     } else {
         center_x = (right + left) >> 1;
     }
@@ -540,7 +540,7 @@ LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite) {
         rc.bottom = bottom;
         FUN_00490fa0(cursor_str, 2, rc, 1);
     }
-    DAT_007cad60.field_1e = count;
+    DAT_007cad60.name_len = count;
     focus = (struct EditSprite *)DAT_007986d8;
     if (focus->field_c + 0x48 < (int)DAT_00813a44.x || (int)DAT_00813a44.x < focus->field_c) {
         FUN_0048e420();

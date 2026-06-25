@@ -1,5 +1,6 @@
 #pragma once
 
+#include "globals.h"
 #include "legoland.h"
 
 #include <windows.h>
@@ -7,7 +8,7 @@
 LEGO_EXPORT int Goto_ProfileDir(void);
 LEGO_EXPORT int ReturnFrom_ProfileDir(void);
 LEGO_EXPORT char LoadProfilesFormDisk(void);
-LEGO_EXPORT void AddNodeToProfileList(int load, char *data, char slot);
+LEGO_EXPORT void AddNodeToProfileList(int load, struct ProfileData *data, char slot);
 LEGO_EXPORT char UpDateCurrentSaveSlotInfo(void);
 LEGO_EXPORT char UpDateCurrentProfile(void);
 LEGO_EXPORT char SaveProfileToDisk(void);
@@ -18,7 +19,7 @@ int FUN_00491e40(char *text, int font, RECT rc, int color_flag);
 
 struct ProfileNode {
     /* 0x00 */ struct ProfileNode *next;
-    /* 0x04 */ char name[0x110];
+    /* 0x04 */ struct ProfileData data;
     /* 0x114 */ int has_header;
     /* 0x118 */ unsigned char slot;
 };

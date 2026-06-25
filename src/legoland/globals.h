@@ -208,25 +208,24 @@ struct EditFootPrint {
     void *field_10;
 };
 
-struct Settings {
-    unsigned char field_0;
-    unsigned char gap_1[0x1d];
-    unsigned char field_1e;
-    unsigned char gap_1f;
-    unsigned int field_20;
-    unsigned char field_24;
-    unsigned char gap_25[3];
-    unsigned int field_28;
-    unsigned int field_2c;
-    unsigned int field_30;
-    unsigned int field_34;
-    unsigned int field_38;
-    unsigned int field_3c;
-    unsigned short field_40;
-    unsigned char field_42;
-    unsigned char field_43[200];
-    unsigned char field_10b;
-    unsigned char gap_10c[4];
+struct ProfileData {
+    /* 0x00 */ char name[0x1e];
+    /* 0x1e */ unsigned char name_len;
+    /* 0x1f */ unsigned char pad_1f;
+    /* 0x20 */ unsigned int field_20;
+    /* 0x24 */ unsigned char field_24;
+    /* 0x25 */ unsigned char gap_25[3];
+    /* 0x28 */ unsigned int field_28;
+    /* 0x2c */ unsigned int field_2c;
+    /* 0x30 */ unsigned int field_30;
+    /* 0x34 */ unsigned int field_34;
+    /* 0x38 */ unsigned int field_38;
+    /* 0x3c */ unsigned int field_3c;
+    /* 0x40 */ unsigned short field_40;
+    /* 0x42 */ unsigned char field_42;
+    /* 0x43 */ unsigned char field_43[200];
+    /* 0x10b */ unsigned char field_10b;
+    /* 0x10c */ unsigned char gap_10c[4];
 };
 
 struct SoftPrintState {
@@ -2570,7 +2569,7 @@ extern void *DAT_007cad44;
 // 0x007cad48
 extern unsigned int DAT_007cad48;
 // 0x007cad60
-extern struct Settings DAT_007cad60;
+extern struct ProfileData DAT_007cad60;
 // 0x007cae80
 extern char DAT_007cae80[0x100];
 // 0x007caf80

@@ -3513,7 +3513,7 @@ void *DAT_007cad44;
 unsigned int DAT_007cad48;
 
 // GLOBAL: LEGOLAND 0x007cad60
-struct Settings DAT_007cad60;
+struct ProfileData DAT_007cad60;
 
 // GLOBAL: LEGOLAND 0x007cae80
 char DAT_007cae80[0x100];
