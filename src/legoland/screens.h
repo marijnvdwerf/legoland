@@ -1,5 +1,6 @@
 #pragma once
 
+void FUN_00458830(unsigned int param_1);
 int FUN_00458930(double value);
 void FUN_00458940(void);
 void FUN_00458a50(void);

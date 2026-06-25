@@ -1,9 +1,10 @@
 #include "path_control.h"
+#include "bricks.h"
 #include "globals.h"
 #include "legoland.h"
-#include "bricks.h"
 #include "map_object.h"
 #include "objclass.h"
+#include "print_sprite.h"
 #include "tilemap.h"
 
 struct PathSpriteHeader {
@@ -61,4 +62,22 @@ LEGO_EXPORT void RemoveRollerCoasterPath(int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045dcf0
-LEGO_EXPORT unsigned int *DrawBasicPath(void) { STUB(); }
+LEGO_EXPORT void DrawBasicPath(unsigned int idx, unsigned int x, unsigned int y, unsigned int mode) {
+    unsigned int src_idx;
+
+    PrintSprite((struct Sprite *)TileSpriteArray[idx], x, y, 0, 0);
+
+    src_idx = *(unsigned int *)TileSpriteInfo[idx].src;
+
+    switch (mode & 3) {
+    case 1:
+        PrintSprite((struct Sprite *)TileSpriteArray[16 + src_idx], x, y, 0, 0);
+        break;
+    case 2:
+        PrintSprite((struct Sprite *)TileSpriteArray[17 + src_idx], x, y, 0, 0);
+        break;
+    case 3:
+        PrintSprite((struct Sprite *)TileSpriteArray[18 + src_idx], x, y, 0, 0);
+        break;
+    }
+}

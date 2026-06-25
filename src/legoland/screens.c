@@ -148,7 +148,7 @@ void RenderFrontEndScreen(unsigned char param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00458830
-void FUN_00458830(void) { STUB(); }
+void FUN_00458830(unsigned int param_1) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004588c0
 void FUN_004588c0(void) {

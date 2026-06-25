@@ -7,7 +7,7 @@ struct ExceptionEntry {
 };
 
 // FUNCTION: LEGOLAND 0x00453da0
-void FUN_00453da0(void) { STUB(); }
+int stackdump(void *exc_info, const char *filename) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00454290
 void FUN_00454290(void) { STUB(); }
