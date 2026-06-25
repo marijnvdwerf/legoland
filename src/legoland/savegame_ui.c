@@ -29,7 +29,7 @@
 
 struct SaveNode {
     struct SaveNode *next;
-    char name[0x110];
+    struct ProfileData data;
     int has_header;
     unsigned char slot;
 };
@@ -198,7 +198,7 @@ LEGO_EXPORT int LoadDateIntoTempProfile(int a1, int a2) {
     // STRING: LEGOLAND 0x004bf2b8
     file = fopen(buffer, "r");
     if (file != 0) {
-        fread(&DAT_007cad60, 0x110, 1, file);
+        fread(&DAT_007cad60, sizeof(struct ProfileData), 1, file);
         fclose(file);
         ReturnFrom_ProfileDir();
         return 1;
@@ -354,14 +354,14 @@ LEGO_EXPORT void KillSaveScreenSprites(void) {
 LEGO_EXPORT void PrintSavedGameDetails(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048e0c0
-void FUN_0048e0c0(int has_header, char *header, unsigned char slot) {
-    struct SaveNode *node = (struct SaveNode *)malloc(0x11c);
-    memset(node, 0, 0x11c);
+void FUN_0048e0c0(int has_header, struct ProfileData *header, unsigned char slot) {
+    struct SaveNode *node = (struct SaveNode *)malloc(sizeof(struct SaveNode));
+    memset(node, 0, sizeof(struct SaveNode));
     if (has_header != 0) {
         node->has_header = 1;
-        strcpy(node->name, header);
+        strcpy(node->data.name, header->name);
         node->slot = slot;
-        node->name[0x24] = header[0x24];
+        node->data.field_24 = header->field_24;
         node->next = (struct SaveNode *)DAT_00798734;
         DAT_00798734 = node;
         return;
@@ -386,7 +386,7 @@ LEGO_EXPORT void DeleteSavedGameList(void) {
 // FUNCTION: LEGOLAND 0x0048e190
 LEGO_EXPORT unsigned char LoadSavedGamesList(unsigned char profile) {
     char path[120];
-    char header[0x110];
+    struct ProfileData header;
     char slot;
     int n;
     int rc;
@@ -402,13 +402,13 @@ LEGO_EXPORT unsigned char LoadSavedGamesList(unsigned char profile) {
         sprintf(path, "profiles\\%dsave%d.sh", profile, n);
         file = fopen(path, "r");
         if (file == 0) {
-            FUN_0048e0c0(0, header, slot);
+            FUN_0048e0c0(0, &header, slot);
         } else {
-            fread(header, 0x110, 1, file);
-            FUN_0048e0c0(1, header, slot);
+            fread(&header, sizeof(struct ProfileData), 1, file);
+            FUN_0048e0c0(1, &header, slot);
             fclose(file);
         }
-        memset(header, 0, 0x110);
+        memset(&header, 0, sizeof(struct ProfileData));
         slot = slot - 1;
         n = n - 1;
     } while (slot != 0);
@@ -612,7 +612,7 @@ LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void) {
         // STRING: LEGOLAND 0x004bf320
         FUN_00453ce0("\ncannot open output file %s", header_path);
     } else {
-        if (fwrite(&DAT_007cad60, 0x110, 1, file) == 0) {
+        if (fwrite(&DAT_007cad60, sizeof(struct ProfileData), 1, file) == 0) {
             // STRING: LEGOLAND 0x004bf2fc
             FUN_00453ce0("Failed to write to save header %s", header_path);
         }

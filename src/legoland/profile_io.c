@@ -151,7 +151,7 @@ LEGO_EXPORT char LoadProfilesFormDisk(void) {
             printf("\ncannot open output file");
             AddNodeToProfileList(0, &data, slot);
         } else {
-            fread(&data, 0x110, 1, stream);
+            fread(&data, sizeof(struct ProfileData), 1, stream);
             AddNodeToProfileList(1, &data, slot);
             fclose(stream);
         }
@@ -171,7 +171,7 @@ LEGO_EXPORT char UpDateCurrentSaveSlotInfo(void) {
     char path[120];
     void *stream;
 
-    memset(&temp, 0, 0x110);
+    memset(&temp, 0, sizeof(struct ProfileData));
     if (LoadDateIntoTempProfile(DAT_0080ffe3, DAT_0080ffe4 & 0xff) == 0) {
         return -1;
     }
@@ -188,7 +188,7 @@ LEGO_EXPORT char UpDateCurrentSaveSlotInfo(void) {
     if (stream == 0) {
         printf("\ncannot open output file");
     } else {
-        fwrite(&temp, 0x110, 1, stream);
+        fwrite(&temp, sizeof(struct ProfileData), 1, stream);
         fclose(stream);
     }
     return ReturnFrom_ProfileDir() != 0 ? 1 : -1;
@@ -200,7 +200,7 @@ LEGO_EXPORT char UpDateCurrentProfile(void) {
     char path[120];
     void *stream;
 
-    memset(&temp, 0, 0x110);
+    memset(&temp, 0, sizeof(struct ProfileData));
     strcpy(temp.name, (char *)&DAT_0080ffa0);
     temp.field_20 = DAT_0080ffa0.field_20;
     temp.field_28 = DAT_0080ffa0.field_24;
@@ -221,7 +221,7 @@ LEGO_EXPORT char UpDateCurrentProfile(void) {
     if (stream == 0) {
         printf("\ncannot open output file");
     } else {
-        fwrite(&temp, 0x110, 1, stream);
+        fwrite(&temp, sizeof(struct ProfileData), 1, stream);
         fclose(stream);
     }
     return ReturnFrom_ProfileDir() != 0 ? 1 : -1;
@@ -238,7 +238,7 @@ int FUN_004917c0(int slot) {
     if (node == NULL) {
         return 0;
     }
-    memset(&data, 0, 0x110);
+    memset(&data, 0, sizeof(struct ProfileData));
     strcpy(data.name, node->data.name);
     data.field_20 = node->data.field_20;
     data.field_28 = node->data.field_28;
@@ -256,7 +256,7 @@ int FUN_004917c0(int slot) {
         printf("\ncannot open output file");
         return 0;
     }
-    fwrite(&data, 0x110, 1, stream);
+    fwrite(&data, sizeof(struct ProfileData), 1, stream);
     fclose(stream);
     return ReturnFrom_ProfileDir() != 0;
 }
@@ -275,7 +275,7 @@ LEGO_EXPORT char SaveProfileToDisk(void) {
         printf("\ncannot open output file");
         return ReturnFrom_ProfileDir() != 0 ? 1 : -1;
     }
-    fwrite(&DAT_007cad60, 0x110, 1, stream);
+    fwrite(&DAT_007cad60, sizeof(struct ProfileData), 1, stream);
     fclose(stream);
     return ReturnFrom_ProfileDir() != 0 ? 1 : -1;
 }
@@ -301,8 +301,8 @@ struct ProfileNode *FUN_004919a0(unsigned char slot) {
 
 // FUNCTION: LEGOLAND 0x004919c0
 LEGO_EXPORT void AddNodeToProfileList(int load, struct ProfileData *data, char slot) {
-    struct ProfileNode *node = (struct ProfileNode *)malloc(0x11c);
-    memset(node, 0, 0x11c);
+    struct ProfileNode *node = (struct ProfileNode *)malloc(sizeof(struct ProfileNode));
+    memset(node, 0, sizeof(struct ProfileNode));
     if (load != 0) {
         strcpy(node->data.name, data->name);
         node->data.field_20 = data->field_20;
