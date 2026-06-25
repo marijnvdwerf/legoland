@@ -380,19 +380,19 @@ LEGO_EXPORT void EnterNewProfile(struct ProfileSprite *sprite) {
     if (input != '\0') {
         if (input == -1 && count != 0) {
             count--;
-            ((char *)&DAT_007cad60)[count] = 0;
+            DAT_007cad60.name[count] = 0;
         }
         if (count < 0x1f && DAT_00798894 < 0x7b && input > '\0') {
             if (input == ' ') {
                 if (count != 0) {
-                    ((char *)&DAT_007cad60)[count] = ' ';
+                    DAT_007cad60.name[count] = ' ';
                     count++;
-                    ((char *)&DAT_007cad60)[count] = 0;
+                    DAT_007cad60.name[count] = 0;
                 }
             } else {
-                ((char *)&DAT_007cad60)[count] = input;
+                DAT_007cad60.name[count] = input;
                 count++;
-                ((char *)&DAT_007cad60)[count] = 0;
+                DAT_007cad60.name[count] = 0;
             }
         }
     }

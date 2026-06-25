@@ -492,22 +492,22 @@ LEGO_EXPORT void EnterSaveGameDetails(struct EditSprite *sprite) {
         if (input == -1 && count != 0) {
             count--;
             cursor_str[2] = count;
-            ((char *)&DAT_007cad60)[count] = 0;
+            DAT_007cad60.name[count] = 0;
         }
         if (count < 0x1f && DAT_00798738 < 0xcb) {
             if (input > '\0') {
                 unsigned int index = (unsigned int)(unsigned char)cursor_str[2];
                 count++;
                 cursor_str[2] = count;
-                ((char *)&DAT_007cad60)[index] = input;
-                ((char *)&DAT_007cad60)[count] = 0;
+                DAT_007cad60.name[index] = input;
+                DAT_007cad60.name[count] = 0;
             } else if (input == ' ') {
                 if (count != 0) {
                     unsigned int index = (unsigned int)(unsigned char)cursor_str[2];
                     count++;
                     cursor_str[2] = count;
-                    ((char *)&DAT_007cad60)[index] = ' ';
-                    ((char *)&DAT_007cad60)[count] = 0;
+                    DAT_007cad60.name[index] = ' ';
+                    DAT_007cad60.name[count] = 0;
                 }
             }
         }
