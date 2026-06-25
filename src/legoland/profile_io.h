@@ -24,5 +24,6 @@ struct ProfileNode {
 };
 
 struct ProfileNode *FUN_004919a0(unsigned char slot);
+char FUN_004920a0(unsigned int param1, unsigned char flags);
 int FUN_00492130(void *hwnd);
 LEGO_EXPORT void ResetTempProfile(void);

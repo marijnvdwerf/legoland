@@ -53,6 +53,18 @@
 
 ## Stack Cleanup Batching
 - MSVC6 batches `add %esp` stack cleanup across multiple consecutive calls. Identifying batch boundaries (where the `add esp, 0xNN` appears) is essential for matching.
+- Count all pushed bytes across batched calls: e.g., 4×LoadSprite (2 args each = 0x20) + InsertIcon (4 args = 0x10) + GetString (1 arg = 0x04) = 0x34. The single `add $0x34, %esp` appears after the last call in the batch.
+
+## Global Pointer vs Local Pointer
+- A local `struct IconNode *icon = InsertIcon(...)` forces MSVC6 to allocate a callee-saved register (ESI) to keep the pointer alive across subsequent calls, adding `push %esi` / `pop %esi` and shifting all ESP-relative parameter accesses by 4.
+- If the target asm has NO callee-saved register push and instead reloads from a global (`mov _DAT_xxx, %reg`) before every field access, use the global directly: `DAT_007986dc = InsertIcon(...); DAT_007986dc->string_id = 0x4e;`
+- If the target DOES have `push %esi` and uses `%esi` as the pointer across field writes without reloading, then a local variable is correct.
+- The stack offset tells you which case: `param_1` at `[ESP+0x28]` (no extra pushes) vs `[ESP+0x2c]` (one callee-saved push).
+
+## Flag OR Patterns
+- Two separate `flags |= 0x2000; flags |= 0x4002;` produce two read-modify-write sequences. MSVC6 does NOT merge them even when it could.
+- `|= 0x2000` compiles to `OR DH, 0x20` (byte OR on high byte of low word — narrower encoding). `|= 0x4002` compiles to `OR ECX, 0x4002` (full dword). The encoding width is driven by the constant value.
+- Each OR reloads the pointer from the global when there's no local variable holding it.
 
 ## Persistent Constants in Callee-Saved Registers
 - When the same constant is used repeatedly (e.g., `0x6002` OR'd into every icon's flags), MSVC6 hoists it into a callee-saved register (EDI) rather than re-materializing each time.
@@ -64,6 +76,10 @@
 
 ## Parameter Stack Slot Reuse
 - When a parameter is only tested once early (via memory-form `testb $imm, N(%esp)` without loading into a register), MSVC6 may reuse its stack slot for a local variable.
+
+## Switch Jump Table Residuals
+- MSVC6 switch jump tables use internal local labels (`$L115`) in fresh compiles, while the original binary uses `.text`-base + addend relocations. Both resolve to the same addresses at link time, but decomp.me shows a small residual (~45 points). This is unavoidable from pure C — reccmp normalizes these correctly.
+- Switch on values 1–N generates `DEC EAX; CMP EAX, N-1; JA default` — subtracts the minimum case, then unsigned range check.
 
 ## Switch vs If-Else
 - `sub imm8; jcc` with NO intervening `test` = switch statement (compiler reuses flags from the subtraction).
