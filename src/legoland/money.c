@@ -30,10 +30,25 @@ LEGO_EXPORT void KillMoneySFX(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00453950
-LEGO_EXPORT void PlayMoneySFX(int a0, int a1, int a2) { STUB(); }
+LEGO_EXPORT void PlayMoneySFX(unsigned char *a0, int a1, int a2) {
+    struct SampleParams config;
+    void *def;
+
+    config.field_0 = 2;
+    config.field_8 = a0[0];
+    config.field_c = a0[1];
+    def = PTR_004b87b0[a1 * 3];
+    PlayInstanceOfSample(def, a2, 1, &config);
+}
 
 // FUNCTION: LEGOLAND 0x004539a0
-LEGO_EXPORT void StopMoneySFX(unsigned char *param_1) { STUB(); }
+LEGO_EXPORT void StopMoneySFX(unsigned char *param_1) {
+    struct SampleParams params;
+    params.field_0 = 2;
+    params.field_8 = param_1[0];
+    params.field_c = param_1[1];
+    UnSourceAndFadeAllSamplesFromSource(&params, -400);
+}
 
 // FUNCTION: LEGOLAND 0x004539e0
 LEGO_EXPORT void BuyItem(struct BuyItemArg *item, int a2, int a3) {

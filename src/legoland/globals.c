@@ -498,6 +498,9 @@ void *PTR_004b8770[5];
 // GLOBAL: LEGOLAND 0x004b87a8
 unsigned char MONEY_SFX[12];
 
+// GLOBAL: LEGOLAND 0x004b87b0
+void *PTR_004b87b0[1];
+
 // GLOBAL: LEGOLAND 0x004b8bbc
 unsigned char DAT_004b8bbc[1];
 
