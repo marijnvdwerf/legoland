@@ -492,6 +492,9 @@ unsigned char DAT_004b8750[0x18];
 // GLOBAL: LEGOLAND 0x004b8768
 unsigned char DINO_SFX[0x18];
 
+// GLOBAL: LEGOLAND 0x004b8770
+void *PTR_004b8770[5];
+
 // GLOBAL: LEGOLAND 0x004b87a8
 unsigned char MONEY_SFX[12];
 

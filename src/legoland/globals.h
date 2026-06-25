@@ -585,6 +585,8 @@ extern unsigned char DAT_004b8710[0x40];
 extern unsigned char DAT_004b8750[0x18];
 // 0x004b8768
 extern unsigned char DINO_SFX[0x18];
+// 0x004b8770
+extern void *PTR_004b8770[5];
 // 0x004b87a8
 extern unsigned char MONEY_SFX[12];
 // 0x004b8bbc

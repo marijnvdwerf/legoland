@@ -13,4 +13,4 @@ void FUN_00452ab0();
 void FUN_00452ad0(unsigned int param_1, int *param_2);
 void FUN_00452b20(unsigned int param_1, int *param_2);
 void FUN_00452ba0();
-void FUN_00452bc0();
+void FUN_00452bc0(unsigned int param_1, int *param_2);
