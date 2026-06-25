@@ -10,6 +10,7 @@ uv run tools/progress.py
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
 
 TOOLS_DIR = Path(__file__).resolve().parent
@@ -42,6 +43,53 @@ def parse_annotations(source_dir: Path) -> dict[int, tuple[str, MarkerType]]:
                             break
                 addr_to_tu[m.offset] = (src.stem, marker_type)
     return addr_to_tu
+
+
+RESET = "\033[0m"
+USE_COLOR = sys.stdout.isatty()
+
+# Braille dots encode 2 columns × 4 rows. Dot bit positions:
+#   1  4
+#   2  5
+#   3  6
+#   7  8
+# For a horizontal bar, fill left-to-right, top-to-bottom.
+_BRAILLE_BASE = 0x2800
+_DOT_BITS = [0x01, 0x02, 0x04, 0x40, 0x08, 0x10, 0x20, 0x80]
+
+
+def _braille_bar(count: int, max_width: int = 20) -> str:
+    """Render `count` braille dots in a horizontal bar of at most max_width chars."""
+    if count == 0:
+        return ""
+    dots_per_char = 8
+    total_dots = max_width * dots_per_char
+    n = min(count, total_dots)
+    full_chars = n // dots_per_char
+    remainder = n % dots_per_char
+    result = chr(_BRAILLE_BASE | 0xFF) * full_chars
+    if remainder > 0:
+        bits = 0
+        for i in range(remainder):
+            bits |= _DOT_BITS[i]
+        result += chr(_BRAILLE_BASE | bits)
+    return result
+
+
+def _fg(r: int, g: int, b: int) -> str:
+    return f"\033[38;2;{r};{g};{b}m" if USE_COLOR else ""
+
+
+def dim() -> str:
+    return _fg(100, 100, 100)
+
+
+def green_check() -> str:
+    return f"{_fg(80, 220, 80)}✓{RESET}" if USE_COLOR else "✓"
+
+
+def reset() -> str:
+    return RESET if USE_COLOR else ""
 
 
 def main():
@@ -80,8 +128,8 @@ def main():
     w_s = max(len(col_s), 4)
     w_pct = max(len(col_pct), 6)
 
-    header = f"{'':2s} {col_tu:<{w_tu}}  {col_m:>{w_m}}  {col_u:>{w_u}}  {col_s:>{w_s}}  {col_pct:>{w_pct}}"
-    sep = f"{'':2s} {'-' * w_tu}  {'-' * w_m}  {'-' * w_u}  {'-' * w_s}  {'-' * w_pct}"
+    header = f"{'':2s} {col_tu:<{w_tu}}  {col_m:>{w_m}}  {col_u:>{w_u}}  {col_s:>{w_s}}  {col_pct:>{w_pct}}  Remaining"
+    sep = f"{'':2s} {'-' * w_tu}  {'-' * w_m}  {'-' * w_u}  {'-' * w_s}  {'-' * w_pct}  ---------"
 
     print(header)
     print(sep)
@@ -91,10 +139,19 @@ def main():
         s = tu_stats[tu]
         game_total = s["matched"] + s["unmatched"] + s["stub"]
         pct = s["matched"] / game_total * 100 if game_total else 0
-        mark = "✓" if s["unmatched"] == 0 and s["stub"] == 0 and game_total > 0 else " "
-        print(
-            f"{mark:2s} {tu:<{w_tu}}  {s['matched']:>{w_m}}  {s['unmatched']:>{w_u}}  {s['stub']:>{w_s}}  {pct:>{w_pct}.1f}%"
-        )
+        is_done = s["unmatched"] == 0 and s["stub"] == 0 and game_total > 0
+        pct_str = f"{pct:>{w_pct}.1f}%"
+
+        if is_done:
+            mark = f"{green_check()} "
+            row = f"{dim()}{tu:<{w_tu}}  {s['matched']:>{w_m}}  {s['unmatched']:>{w_u}}  {s['stub']:>{w_s}}  {pct_str}{reset()}"
+        else:
+            mark = "  "
+            remaining = s["unmatched"] + s["stub"]
+            bar = f"{_fg(100, 100, 100)}{_braille_bar(remaining)}{reset()}" if remaining else ""
+            row = f"{tu:<{w_tu}}  {s['matched']:>{w_m}}  {s['unmatched']:>{w_u}}  {s['stub']:>{w_s}}  {pct_str}  {bar}"
+
+        print(f"{mark}{row}")
         total_m += s["matched"]
         total_u += s["unmatched"]
         total_s += s["stub"]
@@ -102,8 +159,11 @@ def main():
     print(sep)
     game_total = total_m + total_u + total_s
     pct = total_m / game_total * 100 if game_total else 0
+    pct_str = f"{pct:>{w_pct}.1f}%"
+    remaining = total_u + total_s
+    bar = f"{_fg(100, 100, 100)}{_braille_bar(remaining)}{reset()}" if remaining else ""
     print(
-        f"{'':2s} {'TOTAL':<{w_tu}}  {total_m:>{w_m}}  {total_u:>{w_u}}  {total_s:>{w_s}}  {pct:>{w_pct}.1f}%"
+        f"{'':2s} {'TOTAL':<{w_tu}}  {total_m:>{w_m}}  {total_u:>{w_u}}  {total_s:>{w_s}}  {pct_str}  {bar}"
     )
 
 

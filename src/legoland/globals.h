@@ -2196,6 +2196,8 @@ extern void *g_hInstance;
 extern int DAT_0066920c;
 // 0x00669210
 extern void *DAT_00669210;
+// 0x00669238
+extern unsigned int DAT_00669238;
 // 0x00669240
 extern LEGO_EXPORT void *ObjectClassList;
 // 0x00669244

@@ -6,6 +6,7 @@
 #include "globals.h"
 #include "input.h"
 #include "resource.h"
+#include "string.h"
 #include "wndenv.h"
 
 struct MidiTrack {
@@ -32,7 +33,32 @@ BOOL FUN_0047fe70(void) { return ShowWindow((HWND)WNDENV_Gethwnd(), 6); }
 void FUN_0047fe80(void) { ShowWindow((HWND)WNDENV_Gethwnd(), 9); }
 
 // FUNCTION: LEGOLAND 0x0047fe90
-LEGO_EXPORT LRESULT CALLBACK LegoLandWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) { STUB(); }
+LEGO_EXPORT LRESULT CALLBACK LegoLandWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+    switch (msg) {
+    case 0x10:
+        PostQuitMessage(0);
+        return 0;
+    case 0x102:
+        if ((unsigned char)wParam == 8) {
+            GamePad &= ~0x400;
+            EditMode.unk0 = 2;
+            DefaultCursor(&EditCursor);
+        }
+        return 0;
+    case 8:
+    case 0x1f:
+        DAT_00669238 = FUN_00499380();
+        lpConfig->field_1c |= 1;
+        break;
+    case 7:
+        if (DAT_00669238 == 0) {
+            FUN_004993c0();
+        }
+        *(unsigned short *)&lpConfig->field_1c &= (unsigned short)~1;
+        break;
+    }
+    return DefWindowProcA(hWnd, msg, wParam, lParam);
+}
 
 // FUNCTION: LEGOLAND 0x00480050
 LEGO_EXPORT int ProcessSystemEvents(void) {
