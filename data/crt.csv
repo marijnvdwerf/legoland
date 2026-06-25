@@ -72,7 +72,7 @@ address,symbol,type
 0x004a0580,_strstr,function
 0x004a0600,__strupr,function
 0x004a069e,_fwrite,function
-0x004a07a8,__rmdir,function
+0x004a07a8,_remove,function
 0x004a07d2,__unlink,function
 0x004a07dd,__mkdir,function
 0x004a0809,_wcscat,function

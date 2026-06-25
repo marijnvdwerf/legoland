@@ -587,7 +587,7 @@ LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void) {
         // STRING: LEGOLAND 0x004bf360
         FUN_00453ce0("Failed to save game %s", save_path);
         DAT_0080ffe4 = 0;
-        _rmdir(save_path);
+        remove(save_path);
         FUN_004663c0();
         return 0xff;
     }
@@ -637,14 +637,14 @@ LEGO_EXPORT void RemoveSaveGame(unsigned char slot) {
 
     // STRING: LEGOLAND 0x004b9164
     sprintf(path, "%s\\%dsave%d.sav", "profiles", DAT_0080ffe3, slot);
-    if (_rmdir(path) != 0) {
+    if (remove(path) != 0) {
         // STRING: LEGOLAND 0x004bf3b0
         DBPrintf("Failed to delete saved game %s\n", path);
     }
 
     // STRING: LEGOLAND 0x004bf3a0
     sprintf(path, "%s\\%dsave%d.sh", "profiles", DAT_0080ffe3, slot);
-    if (_rmdir(path) != 0) {
+    if (remove(path) != 0) {
         // STRING: LEGOLAND 0x004bf378
         DBPrintf("Failed to delete saved game Header %s\n", path);
     }

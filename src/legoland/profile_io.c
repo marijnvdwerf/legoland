@@ -333,15 +333,15 @@ LEGO_EXPORT int RemoveProfile(unsigned char index) {
         return -1;
     }
     sprintf(path, "profiles\\Profile%d.txt", index);
-    _rmdir(path);
+    remove(path);
     slot = 8;
     remaining = 8;
     do {
         // STRING: LEGOLAND 0x004bf730
         sprintf(path, "profiles\\%dsave%d.sav", index, slot);
-        _rmdir(path);
+        remove(path);
         sprintf(path, "profiles\\%dsave%d.sh", index, slot);
-        _rmdir(path);
+        remove(path);
         slot--;
         remaining--;
     } while (remaining != 0);
