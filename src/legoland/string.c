@@ -10,24 +10,20 @@
 #include "string.h"
 #include "timer.h"
 
-#pragma intrinsic(memset)
 // FUNCTION: LEGOLAND 0x00498d00
 void FUN_00498d00(void) {
     char cwd[256];
-    char token[240];
+    char token[240] = {0};
     int current_id;
     char num_str[4];
-    char *data_buf;
-    int file_size;
-    FILE *stream;
     int total;
+    char *data_buf;
+    FILE *stream;
     int offset;
     int len;
     char c;
     int quote_count;
 
-    memset(token, 0, sizeof(token));
-    memset(num_str, 0, sizeof(num_str));
     total = 0;
     offset = 0;
 
@@ -48,20 +44,17 @@ void FUN_00498d00(void) {
         }
         total += len;
     }
-    file_size = total;
-
-    data_buf = (char *)malloc(file_size + 1);
+    data_buf = (char *)malloc(total + 1);
     fseek(stream, 0, 0);
-    fread(data_buf, 1, file_size, stream);
+    fread(data_buf, 1, total, stream);
     fclose(stream);
 
     if (_chdir(cwd) != 0) {
         return;
     }
 
-    while (offset < file_size) {
-        c = data_buf[offset];
-        offset++;
+    while (offset < total) {
+        c = data_buf[offset++];
         if (c == 0) {
             break;
         }
@@ -70,14 +63,14 @@ void FUN_00498d00(void) {
             while (isdigit(c)) {
                 num_str[len] = c;
                 len++;
-                if (offset < file_size) {
+                if (offset < total) {
                     c = data_buf[offset];
                     offset++;
                 } else {
                     c = 0;
                 }
             }
-            if (offset != 0) {
+            if (offset) {
                 offset--;
             }
             num_str[len] = 0;
@@ -87,24 +80,23 @@ void FUN_00498d00(void) {
             quote_count = 0;
             while (1) {
                 if (c == '"') {
-                    if (offset < file_size) {
+                    if (offset < total) {
                         c = data_buf[offset];
                         offset++;
-                        if (c == '"') {
-                            goto store;
+                        if (c != '"') {
+                            quote_count++;
                         }
                     } else {
                         c = 0;
+                        quote_count++;
                     }
-                    quote_count++;
                 }
-            store:
                 if (quote_count == 2) {
                     break;
                 }
                 token[len] = c;
                 len++;
-                if (offset < file_size) {
+                if (offset < total) {
                     c = data_buf[offset];
                     offset++;
                 } else {
@@ -143,7 +135,7 @@ void FUN_00498f80(const char *text, int key) {
     node->next = (struct StringNode *)strings[index];
     strings[index] = node;
     node->text = (char *)malloc(strlen(text) + 1);
-    memcpy(node->text, text, strlen(text) + 1);
+    strcpy(node->text, text);
     node->key = key;
 }
 
@@ -174,13 +166,12 @@ LEGO_EXPORT void DeleteStrings(void) {
 
 // FUNCTION: LEGOLAND 0x00499040
 void FUN_00499040(const char *path, char *directory, char *filename) {
-    int len = strlen(path);
-    int dot = len;
-    int i = len;
-    int j;
-    int k;
+    int dot = strlen(path);
+    int i = dot;
+    int len;
+    char c;
 
-    while (path[i] != '\\') {
+    while ((c = path[i]) != '\\') {
         if (i <= 0) {
             break;
         }
@@ -190,25 +181,22 @@ void FUN_00499040(const char *path, char *directory, char *filename) {
         i--;
     }
 
-    j = i + 1;
-    while (j < dot) {
-        *filename = path[j];
+    len = i;
+    for (i = i + 1; i < dot; i++) {
+        *filename = path[i];
         filename++;
-        j++;
     }
     *filename = '\0';
-
-    if (i <= 0) {
+    i = 0;
+    if (len > 0) {
+        for (; i < len; i++) {
+            *directory = path[i];
+            directory++;
+        }
         *directory = '\0';
-        return;
+    } else {
+        *directory = '\0';
     }
-    k = 0;
-    while (k < i) {
-        *directory = path[k];
-        directory++;
-        k++;
-    }
-    *directory = '\0';
 }
 
 // FUNCTION: LEGOLAND 0x004990c0
@@ -270,9 +258,8 @@ int FUN_00499300(char *str) {
     str[0] = (char)toupper(str[0]);
     if (str[0] != '\0') {
         do {
-            int c = str[i + 1];
             i++;
-            str[i] = (char)toupper(c);
+            str[i] = (char)toupper(str[i]);
         } while (str[i] != '\0');
     }
     return i;
