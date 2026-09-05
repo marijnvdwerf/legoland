@@ -28,3 +28,5 @@ void FUN_0048a040(void);
 LEGO_EXPORT void RemoveBlokeFromRide(struct Ride *ride, struct RideNode *node);
 LEGO_EXPORT void RemoveAllBlokesFromRide(struct Ride *ride, unsigned int param_2);
 LEGO_EXPORT int GetAllBlokesOffRide(struct Ride *ride, unsigned short uid);
+
+LEGO_EXPORT void HandleRideAI(int arg_1, int arg_2, int arg_3);

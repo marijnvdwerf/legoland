@@ -93,6 +93,8 @@ void FUN_00482b10(void);
 void FUN_00482b20(int force);
 int FUN_00482b60(struct InstancePos *pos);
 struct Person;
+LEGO_EXPORT char *GetVisitorName(struct Bloke *bloke);
+int FUN_00482cb0(struct Bloke *bloke);
 void FUN_00482c60(struct Person *person);
 short FUN_00482df0(struct Bloke *bloke, int index, int mul);
 void FUN_00482d60(unsigned int index, int value);

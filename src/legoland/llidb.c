@@ -18,14 +18,6 @@
 
 #include "image_sprite.h"
 
-struct Element {
-    /* 0x00 */ char *name;
-    /* 0x04 */ char *path;
-    /* 0x08 */ unsigned int flags;
-    /* 0x0c */ void *data;
-    /* 0x10 */ unsigned int field_10;
-};
-
 #define LLIDB_PAGE(id) ((id) >> 8)
 #define LLIDB_SLOT(id) ((id) & 0xff)
 #define LLIDB_ELEM(id) (&DAT_006691a8[LLIDB_PAGE(id)][LLIDB_SLOT(id)])
@@ -166,9 +158,11 @@ LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, unsigned 
 }
 
 // FUNCTION: LEGOLAND 0x0047b3f0
-LEGO_EXPORT unsigned int ElemID(const char *name) {
-    LLIDB_FindElement(name, (unsigned int *)&name, NULL);
-    return (unsigned int)name;
+LEGO_EXPORT struct Element *ElemID(const char *name) {
+    struct Element *element;
+
+    LLIDB_FindElement(name, (unsigned int *)&element, NULL);
+    return element;
 }
 
 // FUNCTION: LEGOLAND 0x0047b410

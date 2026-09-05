@@ -12,12 +12,6 @@
 #include "render.h"
 #include "timer.h"
 
-struct HitInfo {
-    /* 0x00 */ int field_0;
-    /* 0x04 */ int field_4;
-    /* 0x08 */ int field_8;
-};
-
 struct SortNode {
     /* 0x00 */ struct SortNode *left;
     /* 0x04 */ struct SortNode *right;
@@ -333,7 +327,7 @@ LEGO_EXPORT void DrawAndClearPrintList(void) {
             if ((node->flags & 4) != 0) {
                 (*(void (**)(int))&node_save->field_34)(node_save->field_38);
             }
-            SetClipping((int *)&saved_clip);
+            SetClipping(&saved_clip);
         } else if ((node->flags & 0x2000) != 0) {
             Render3DPerson((struct Person *)node->sprite);
         } else {

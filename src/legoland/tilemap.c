@@ -215,15 +215,15 @@ void FUN_0045ade0(void) {
     int local_4c;
     int local_44;
     int local_2c;
-    unsigned int local_24[4];
+    RECT local_24;
     short size;
     struct MapTile tile;
 
-    local_24[0] = lpConfig->field_20;
-    local_24[1] = lpConfig->field_22;
-    local_24[2] = lpConfig->field_0;
-    local_24[3] = lpConfig->field_2;
-    SetClipping((int *)local_24);
+    local_24.left = lpConfig->field_20;
+    local_24.top = lpConfig->field_22;
+    local_24.right = lpConfig->field_0;
+    local_24.bottom = lpConfig->field_2;
+    SetClipping(&local_24);
     size = ((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
     iVar9 = (int)size;
     iVar13 = (short)(size * 2);
@@ -273,12 +273,12 @@ void FUN_0045ade0(void) {
         local_50 = local_50 + iVar2;
         local_4c = local_4c - iVar1;
     }
-    local_4c = (local_24[1] + iVar9 * -2) - local_4c;
-    if (local_4c < (int)(iVar9 * 2 + local_24[3])) {
+    local_4c = (local_24.top + iVar9 * -2) - local_4c;
+    if (local_4c < (int)(iVar9 * 2 + local_24.bottom)) {
         do {
             iVar2 = local_2c;
-            iVar8 = (local_24[0] + iVar13 * -2) - local_50;
-            if (iVar8 < (int)(iVar13 * 2 + local_24[2])) {
+            iVar8 = (local_24.left + iVar13 * -2) - local_50;
+            if (iVar8 < (int)(iVar13 * 2 + local_24.right)) {
                 iVar11 = local_2c * 0x14;
                 iVar10 = iVar3;
                 do {
@@ -295,11 +295,11 @@ void FUN_0045ade0(void) {
                     iVar11 = iVar11 + 0x14;
                     iVar8 = iVar8 + iVar13;
                     iVar10 = iVar10 + -1;
-                } while (iVar8 < (int)(iVar13 * 2 + local_24[2]));
+                } while (iVar8 < (int)(iVar13 * 2 + local_24.right));
             }
             iVar2 = iVar2 + 1;
-            iVar8 = (local_24[0] + iVar13 * -2) - local_50;
-            if (iVar8 < (int)(iVar13 * 2 + local_24[2])) {
+            iVar8 = (local_24.left + iVar13 * -2) - local_50;
+            if (iVar8 < (int)(iVar13 * 2 + local_24.right)) {
                 local_44 = iVar2 * 0x14;
                 iVar10 = iVar8 + iVar7;
                 iVar11 = iVar3;
@@ -319,12 +319,12 @@ void FUN_0045ade0(void) {
                     iVar8 = iVar8 + iVar13;
                     iVar11 = iVar11 + -1;
                     iVar10 = iVar10 + iVar13;
-                } while (iVar8 < (int)(iVar13 * 2 + local_24[2]));
+                } while (iVar8 < (int)(iVar13 * 2 + local_24.right));
             }
             iVar3 = iVar3 + 1;
             local_4c = local_4c + iVar9;
             local_2c = iVar2;
-        } while (local_4c < (int)(iVar9 * 2 + local_24[3]));
+        } while (local_4c < (int)(iVar9 * 2 + local_24.bottom));
     }
 }
 

@@ -6,7 +6,11 @@
 
 struct Person;
 struct Sprite;
-struct HitInfo;
+struct HitInfo {
+    int field_0;
+    int field_4;
+    int field_8;
+};
 struct SpriteExArg;
 struct IconNode;
 

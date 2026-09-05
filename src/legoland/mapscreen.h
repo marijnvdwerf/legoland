@@ -8,3 +8,7 @@ LEGO_EXPORT void RenderFullMap(void);
 LEGO_EXPORT void InitMapScreen(void);
 LEGO_EXPORT void KillMapScreen(void);
 void FUN_004562e0(void);
+
+LEGO_EXPORT void RenderMouseBounds(void);
+LEGO_EXPORT void MapScreenSetScrollPos(struct Point *point);
+LEGO_EXPORT void DrawMapScreen(void);

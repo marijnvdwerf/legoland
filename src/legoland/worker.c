@@ -368,8 +368,7 @@ struct WorkOrder *FUN_00499830(struct EditObject *obj, int *coords, int mode) {
             cell = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
         }
         level = *((unsigned char *)cell + 0x11);
-        FUN_00499760(order, (float)GetObjRepairCost((unsigned int)cls, level) /
-                                (float)(int)(*((unsigned char *)cls + 0x2c) - level));
+        FUN_00499760(order, (float)GetObjRepairCost((unsigned int)cls, level) / (float)(int)(*((unsigned char *)cls + 0x2c) - level));
     }
     return order;
 }
@@ -999,7 +998,7 @@ LEGO_EXPORT void Gardener_Build(struct Worker *worker) {
         worker->var_24 = worker->var_2c;
         worker->var_28 = worker->var_30;
         dir = CalcMoveLine(worker->var_68, worker->var_6c, worker->var_2c, worker->var_30,
-                           &worker->var_98);
+            &worker->var_98);
         worker->state = 0xc;
         worker->var_73 = dir + 0x10;
         NewDirForAction(worker, (worker->var_73 >> 5) + 3);
@@ -1099,7 +1098,7 @@ LEGO_EXPORT void Mechanic_Build(struct Worker *worker) {
         worker->var_24 = worker->var_2c;
         worker->var_28 = worker->var_30;
         dir = CalcMoveLine(worker->var_68, worker->var_6c, worker->var_2c, worker->var_30,
-                           &worker->var_98);
+            &worker->var_98);
         worker->state = 0xc;
         worker->var_73 = dir + 0x10;
         NewDirForAction(worker, (worker->var_73 >> 5) + 3);
@@ -1293,14 +1292,14 @@ void FUN_0049ac50(int param_1) {
                     if (iVar14 <= iVar12) {
                         do {
                             uVar11 = (unsigned int)(iVar14 != iVar12) << 2 |
-                                     (unsigned int)(iVar14 != iVar15);
+                                (unsigned int)(iVar14 != iVar15);
                             point[1] = iVar14;
                             iVar12 = local_4;
                             for (point[0] = iVar13; local_4 = iVar12, point[0] <= iVar16;
-                                 point[0]++) {
+                                point[0]++) {
                                 uVar9 = ((unsigned int)(point[0] != iVar13) << 2 |
-                                         (unsigned int)(point[0] != iVar16))
-                                        << 1;
+                                            (unsigned int)(point[0] != iVar16))
+                                    << 1;
                                 GetTileBounds((struct Point *)point, bounds);
                                 if (node->var_18 == 0) {
                                     uVar8 = 0x1f1f81;
@@ -1337,7 +1336,7 @@ void FUN_0049ac50(int param_1) {
                         point[1] = iVar12;
                         GetTileBounds((struct Point *)point, bounds);
                         PrintSprite(*(void **)((char *)cls + 0x68), ((iVar7 - iVar10) + iVar14) / 2,
-                                    ((bounds[3] - sVar2) + iVar6) / 2, 0, 0);
+                            ((bounds[3] - sVar2) + iVar6) / 2, 0, 0);
                     }
                     point[0] = iVar13;
                     point[1] = iVar12;
@@ -1573,8 +1572,8 @@ LEGO_EXPORT int SetMechanicsOrderAtPostion(struct Worker *worker, int x, int y) 
             }
         } else {
             repair = AddRepairOrderForObject(*(struct ObjClass **)((char *)target->field_0 + 0xc),
-                                             (char)*((unsigned char *)target + 4),
-                                             *((unsigned char *)target + 5));
+                (char)*((unsigned char *)target + 4),
+                *((unsigned char *)target + 5));
             if (repair != 0) {
                 *((unsigned char *)target + 0xd) |= 0x40;
                 FUN_00499b60(worker, repair);
@@ -1819,7 +1818,7 @@ LEGO_EXPORT struct WorkOrder *AddRepairOrderForObject(struct ObjClass *cls, int 
         return FUN_00499830((struct EditObject *)cls->field_c4, &x, 2);
     }
     FUN_0049b690((struct Footprint *)&cls->field_3c, &x,
-                 (float)cost / (float)(int)(*((unsigned char *)cls + 0x2c) - level));
+        (float)cost / (float)(int)(*((unsigned char *)cls + 0x2c) - level));
 }
 
 // FUNCTION: LEGOLAND 0x0049ba10
@@ -1950,7 +1949,7 @@ LEGO_EXPORT void Mechanics_Repair(struct Worker *worker) {
         worker->var_24 = worker->var_2c;
         worker->var_28 = worker->var_30;
         dir = CalcMoveLine(worker->var_68, worker->var_6c, worker->var_2c, worker->var_30,
-                           &worker->var_98);
+            &worker->var_98);
         worker->state = 0xc;
         worker->var_73 = dir + 0x10;
         NewDirForAction(worker, (worker->var_73 >> 5) + 3);
@@ -2061,7 +2060,7 @@ void FUN_0049c140(void) {
     struct BlokeSave rec;
     char *person;
 
-    list = (struct BlokeList *)*(int *)(ElemID("POTTING SHED") + 0xc);
+    list = (struct BlokeList *)ElemID("POTTING SHED")->data;
     count = 0;
     node = GardenerList;
     do {
@@ -2234,7 +2233,7 @@ void FUN_0049c630(void) {
     struct BlokeSave rec;
     char *person;
 
-    list = (struct BlokeList *)*(int *)(ElemID("MECHANICS HUT") + 0xc);
+    list = (struct BlokeList *)ElemID("MECHANICS HUT")->data;
     count = 0;
     node = MechanicList;
     do {

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#pragma intrinsic(strcpy, strlen)
 #include "globals.h"
 #include "legoland.h"
 
@@ -14,8 +15,10 @@
 #include "help.h"
 #include "icon.h"
 #include "interface.h"
+#include "llidb.h"
 #include "map_object.h"
 #include "mapscreen.h"
+#include "math.h"
 #include "nerps.h"
 #include "obj_instance.h"
 #include "objclass.h"
@@ -31,6 +34,7 @@
 #include "sound_music.h"
 #include "sound_sfx.h"
 #include "string.h"
+#include "timer.h"
 #include "title.h"
 #include "worker.h"
 
@@ -45,7 +49,35 @@ struct ScreenConfig {
 #include "stream.h"
 
 // FUNCTION: LEGOLAND 0x004585c0
-void FUN_004585c0(void) { STUB(); }
+void FUN_004585c0(void) {
+    if (SPRITE_TitleScreenBk != NULL) {
+        KillSprite(SPRITE_TitleScreenBk);
+        SPRITE_TitleScreenBk = NULL;
+    }
+    RemoveIconGroup(7);
+    if (DAT_0080ff80.unk4 != 0xffffffff) {
+        switch (DAT_0080ff80.unk4) {
+        case 0:
+            FUN_0048d230();
+            UpdateSoundVols();
+            DeleteProfileList();
+            KillListProfileSprite();
+            break;
+        case 3:
+            CleanUpFreePlay();
+            break;
+        case 4:
+            KillSaveScreenSprites();
+            KillTitleScreenSprites();
+            DeleteSavedGameList();
+            break;
+        default:
+            break;
+        }
+        DAT_006687bc = 0;
+        DAT_006687c0 = 0;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00458640
 LEGO_EXPORT void InitScreens(unsigned char param_1) {
@@ -156,10 +188,10 @@ void FUN_004588c0(void) {
     struct Sprite *sprite;
 
     config = (struct ScreenConfig *)lpConfig;
-    DAT_007fe020[0] = 0;
-    DAT_007fe020[1] = 0;
-    DAT_007fe020[2] = config->width;
-    DAT_007fe020[3] = config->height;
+    DAT_007fe020.left = 0;
+    DAT_007fe020.top = 0;
+    DAT_007fe020.right = config->width;
+    DAT_007fe020.bottom = config->height;
 
     // STRING: LEGOLAND 0x004b913c
     sprite = LoadSprite("TitleScreen1.lls", 0);
@@ -190,10 +222,52 @@ void FUN_00458940(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004589a0
-void FUN_004589a0(void) { STUB(); }
+void FUN_004589a0(void) {
+    unsigned int work[3];
+
+    CONTROLLERBUFFER->field_0 = 0;
+    CONTROLLERBUFFER->field_4 = 0;
+    CONTROLLERBUFFER->field_8 = 0;
+    CONTROLLERBUFFER->field_c = 0;
+    CONTROLLERBUFFER->field_10 = 0;
+    CONTROLLERBUFFER->field_14 = 0;
+    CONTROLLERBUFFER->field_8 = lpConfig->field_0 >> 1;
+    CONTROLLERBUFFER->field_c = lpConfig->field_2 >> 1;
+    SystemParametersInfoA(3, 0, work, 0);
+    CONTROLLERBUFFER->field_1c = work[0];
+    CONTROLLERBUFFER->field_20 = work[2];
+    CONTROLLERBUFFER->field_24 = work[3];
+    SetPointer(5);
+}
 
 // FUNCTION: LEGOLAND 0x00458a50
-void FUN_00458a50(void) { STUB(); }
+void FUN_00458a50(void) {
+    char buf[0x34];
+
+    if (DAT_00667c7c == 0) {
+        QueryClass = 0;
+        DAT_0079a8d0 = 0;
+        FUN_00499380();
+        FUN_00499410();
+        FUN_0047f810();
+        // STRING: LEGOLAND 0x004b9150
+        sprintf(buf, "objlist%d.txt", lpConfig->field_28);
+        FUN_00457870(0);
+        ResetMapAI();
+        DAT_00667c4c = FUN_0047afb0(buf);
+        FUN_00457870(1);
+        AllocBlokeCounters(lpConfig->field_1a);
+        FUN_00458940();
+        FUN_00489ee0();
+        DAT_00832ba0 = 0;
+        UpdateMenu();
+        FUN_00490600(1);
+        FUN_004911c0(DAT_0066861c, 0);
+        DAT_00667c7c = 1;
+        FUN_004993c0();
+        FUN_0048a800();
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00458b20
 void FUN_00458b20(void) {
@@ -355,10 +429,217 @@ int FUN_00458c00(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00458ee0
-void FUN_00458ee0(void) { STUB(); }
+void FUN_00458ee0(void) {
+    struct {
+        int outgoing[3];
+        RECT help_rect;
+    } frame;
+    unsigned int input;
+    char *value;
+    unsigned int saved_value;
+    unsigned int saved_action;
+    unsigned int *class_data;
+    struct ObjClass *query_class;
+
+    // STRING: LEGOLAND 0x004b91e4
+    DAT_00667c40 = "AI";
+    HandleRideAI(1, 0, 0);
+    DoMapAI();
+    ControlPeople();
+    ControlWorkers();
+    if (DAT_00668954 != 0) {
+        CheckWorkerOnMouseStatus(0);
+    }
+    // STRING: LEGOLAND 0x004b91d4
+    DAT_00667c40 = "ProcessStuff";
+    ProcessBuildingTimes();
+    ProcessDamage();
+    input = DAT_004bdd00;
+    SetPointer(5);
+    // STRING: LEGOLAND 0x004b91cc
+    DAT_00667c40 = "Zoning";
+    ResetHitInfo();
+    // STRING: LEGOLAND 0x004b91c0
+    DAT_00667c40 = "Rendering";
+    PushRenderingStatusAndLockVideoSurface();
+    RenderView();
+    if ((input & 0x100) != 0 || (GamePad & 0x1000) != 0) {
+        FUN_00457a70();
+    }
+    saved_value = DAT_004bdd04;
+    saved_action = DAT_004bdd08;
+    PrintSprite(DAT_00668e68, DAT_004bdd00, saved_value, saved_action, frame.outgoing);
+    FUN_0046f100(0x2c3);
+    FUN_0046ee00();
+    // STRING: LEGOLAND 0x004b91b0
+    DAT_00667c40 = "In Game Help";
+    ProcessInGameHelp();
+    DrawPopUpInfo();
+    RenderIcons2(0x2c3, 0, 0);
+    FUN_0046cff0();
+    if ((GamePad & 0x1000) != 0) {
+        DAT_004bdd00 = input;
+        DAT_004bdd04 = saved_value;
+        DAT_004bdd08 = saved_action;
+    }
+    input = DAT_004bdd00;
+    if ((input & 0x100) != 0 && (EditMode.unk0 == 0 || EditMode.unk0 == 2)) {
+        frame.help_rect.left = DAT_00813a44.x;
+        frame.help_rect.top = DAT_00813a44.y - 0xa;
+        frame.help_rect.right = DAT_00813a44.x;
+        frame.help_rect.bottom = DAT_00813a44.y;
+        if (EditMode.unk0 == 0) {
+            if (input == 0x7e4) {
+                value = GetString(0x7e4);
+                HTBubbleHelp(&frame.help_rect, value, 2);
+                FUN_0046d230(0x7e4);
+                SetPointer(8);
+            } else {
+                switch (input) {
+                case 0x103:
+                    SetPointer(8);
+                    query_class = QueryClass;
+                    if (query_class != NULL) {
+                        HTBubbleHelp(&frame.help_rect, query_class->name, 2);
+                        class_data = query_class->field_c4;
+                        FUN_0046d340(*class_data);
+                    }
+                    break;
+                case 0x10a:
+                    value = GetString(0xd4);
+                    HTBubbleHelp(&frame.help_rect, value, 2);
+                    FUN_0046d230(0xd4);
+                    SetPointer(8);
+                    break;
+                case 0x10b:
+                    value = GetString(0xd2);
+                    HTBubbleHelp(&frame.help_rect, value, 2);
+                    FUN_0046d230(0xd2);
+                    SetPointer(7);
+                    break;
+                case 0x10c:
+                    value = GetString(0xd3);
+                    HTBubbleHelp(&frame.help_rect, value, 2);
+                    FUN_0046d230(0xd3);
+                    SetPointer(7);
+                    break;
+                case 0x306:
+                    FUN_00455fc0(&frame.help_rect, GetVisitorName(DAT_004bdd04), 2, FUN_00482cb0(DAT_004bdd04));
+                    FUN_00450a40(DAT_004bdd04);
+                    SetPointer(8);
+                    break;
+                case 0x307:
+                    value = GetString(0x90);
+                    HTBubbleHelp(&frame.help_rect, value, 2);
+                    FUN_0046d230(0x90);
+                    SetPointer(8);
+                    FUN_00450a40(DAT_004bdd04);
+                    break;
+                case 0x308:
+                    value = GetString(0x92);
+                    HTBubbleHelp(&frame.help_rect, value, 2);
+                    FUN_0046d230(0x92);
+                    SetPointer(8);
+                    FUN_00450a40(DAT_004bdd04);
+                    break;
+                case 0x104:
+                case 0x105:
+                case 0x106:
+                case 0x107:
+                case 0x108:
+                case 0x109:
+                default:
+                    SetPointer(7);
+                    break;
+                }
+            }
+        } else {
+            query_class = QueryClass;
+            if (query_class != NULL) {
+                HTBubbleHelp(&frame.help_rect, query_class->name, 2);
+                class_data = query_class->field_c4;
+                FUN_0046d340(*class_data);
+            }
+        }
+    }
+    if (DAT_004bdd00 == 5 && (DAT_00813ac4 & 2) != 0) {
+        FUN_0046ce20();
+        DAT_00667c48 = 1;
+    }
+    // STRING: LEGOLAND 0x004b91a4
+    DAT_00667c40 = "Appraisals";
+    FUN_0044db90();
+    // STRING: LEGOLAND 0x004b9194
+    DAT_00667c40 = "Appraisals Over";
+    UpdateFocussedIconPtr();
+    if ((GamePad & 0x1000) == 0 && DAT_00667c48 == 0 && FocussedIconPtr != NULL && DAT_00668954 == 0) {
+        SetPointer(6);
+    }
+    CheckFocussedIcon();
+    if (DAT_00668954 != 0) {
+        RenderWorkerOnMouse();
+    }
+    PopRenderingStatus();
+    if (DAT_00832994 != 0) {
+        if (FUN_00474070() != 0 && FUN_00474080() != 0) {
+            FUN_004632b0();
+        }
+    }
+    RenderingComplete();
+    // STRING: LEGOLAND 0x004b9180
+    DAT_00667c40 = "Exiting GameProc";
+}
 
 // FUNCTION: LEGOLAND 0x00459360
-void FUN_00459360(void) { STUB(); }
+void FUN_00459360(void) {
+    unsigned int var_4;
+    struct HitInfo hit_info;
+    RECT clipping;
+    RECT old_clipping;
+
+    var_4 = 1;
+    hit_info.field_0 = 0;
+    hit_info.field_4 = 0;
+    ResetHitInfo();
+    PushRenderingStatusAndLockVideoSurface();
+    DrawMapScreen();
+    SetPointer(5);
+    PrintSprite(DAT_00668e68, 0, 0, 0, &hit_info.field_0);
+    FUN_0046ee00();
+    RenderIcons();
+    CheckFocussedIcon();
+    if (DAT_004bdd00 == 2) {
+        SetPointer(6);
+        UpdateFocussedIconPtr();
+        PopRenderingStatus();
+        RenderingComplete();
+        return;
+    }
+    if ((DAT_004bdd00 & 0x100) != 0) {
+        GetClipping(&clipping);
+        SetClipping(&old_clipping);
+        RenderMouseBounds();
+        SetClipping(&old_clipping);
+        if ((DAT_00813ac4 & 1) != 0) {
+            MapScreenSetScrollPos(&DAT_00813a44);
+        }
+        if ((DAT_00813ac4 & 2) != 0) {
+            hit_info.field_8 = GetTicks();
+            if (hit_info.field_8 - DAT_00667c68 < 0x1f4 && abs(DAT_00813a44.x - DAT_00667c70) < 5 &&
+                abs(DAT_00813a44.y - DAT_00667c74) < 5) {
+                DAT_0080ff70 = 1;
+                EditMode.unk4 = DAT_00667c60;
+                DAT_00667c60 = 1;
+            }
+            DAT_00667c70 = DAT_00813a44.x;
+            DAT_00667c74 = DAT_00813a44.y;
+            DAT_00667c68 = hit_info.field_8;
+        }
+    }
+    UpdateFocussedIconPtr();
+    PopRenderingStatus();
+    RenderingComplete();
+}
 
 // FUNCTION: LEGOLAND 0x004594e0
 void FUN_004594e0(void) {
@@ -385,10 +666,115 @@ void FUN_004594f0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00459520
-void FUN_00459520(void) { STUB(); }
+void FUN_00459520(void) {
+    HMODULE ir50;
+    MSG msg;
+
+    // STRING: LEGOLAND 0x004b7138
+    DAT_0081cd08 = ElemID("HEDGE")->data;
+    FUN_004594f0();
+    InitSoundSystem();
+    SetMusicGrooveLevel(1);
+    FUN_00492c60();
+    SetupControllers();
+    LLIDB_ClearOnLevel();
+    FUN_004589a0();
+    SetPointer(0);
+    ProcessSystemEvents();
+    // STRING: LEGOLAND 0x004b9200
+    FUN_004771f0("lmi.avi", 0, 1);
+    FUN_004588c0();
+    FUN_00492c80();
+    FUN_00466360(0, 0);
+
+    while (DAT_007988bc == 0) {
+        PeekMessageA(&msg, NULL, 0, 0, 0);
+        Sleep(100);
+        FUN_004663f0();
+    }
+
+    FUN_0046f890();
+    LoadWorkerInterfaceGFX();
+    LoadBubbleHelpGFX();
+    InitialiseBlokes();
+    InitGameMap();
+    SetPointer(0);
+    // STRING: LEGOLAND 0x004b91f4
+    FUN_004771f0("Intro.avi", 1, 0);
+    FUN_00492ca0(0);
+    SetPointer(5);
+    DAT_008119a4 = 0;
+    Load_Interface_ControlIcons();
+    FUN_004663f0();
+    Load_Interface_ThemeIcons();
+    FreeTileSpace(0, 0x800);
+    EditMode.unk4 = 3;
+    LoadMapTiles();
+    FUN_004663f0();
+    InitMan();
+    FUN_004663f0();
+    CreateObjectClasses();
+    FUN_004663f0();
+    FUN_00458bc0();
+    FUN_004663f0();
+    // STRING: LEGOLAND 0x004b91e8
+    ir50 = LoadLibraryA("Ir50_32.dll");
+    FUN_004663f0();
+    FUN_00444090();
+    FUN_004663f0();
+    FUN_004663c0();
+    FUN_00492c80();
+    while (FUN_00458c00() != 0) {
+    }
+    FUN_004594e0();
+    FUN_00498920();
+    if (SPRITE_TitleScreenBk != NULL) {
+        KillSprite(SPRITE_TitleScreenBk);
+        SPRITE_TitleScreenBk = NULL;
+    }
+    FUN_00451f40();
+    FUN_0046f920();
+    FUN_00454a10();
+    FUN_00482ec0();
+    KillGameMap();
+    UnLoad_Interface_ControlIcons();
+    UnLoad_Interface_ThemeIcons();
+    FUN_0045ac20();
+    UnInitMan();
+    FUN_00444150();
+    FreeLibrary(ir50);
+    FreeBlokeCounters();
+    KillHelp();
+    KillSoundSystem();
+    KillInputSystem();
+}
 
 // FUNCTION: LEGOLAND 0x00459710
-void FUN_00459710(char *s) { STUB(); }
+void FUN_00459710(char *s) {
+    char buffer[0x80];
+    char *semicolon;
+    char *source;
+
+    source = s;
+    semicolon = strchr(source, ';');
+    if (semicolon != NULL) {
+        *semicolon = 0;
+        strcpy(buffer, source);
+        semicolon++;
+        if (strlen(semicolon) != 0) {
+            strcpy(DAT_008100c0, semicolon);
+            DAT_00832bac = 1;
+        }
+        semicolon[-1] = ';';
+    }
+    FUN_00490600(0);
+    if (FUN_004907a0(buffer) != 0) {
+        DAT_00668e38 = 1;
+        EditMode.unk4 = 2;
+        DAT_0080ff80.unk4 = 0xffffffff;
+        DAT_0080ff80.unk8 = 7;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004597e0
 void FUN_004597e0(int param0, const char *param1) {

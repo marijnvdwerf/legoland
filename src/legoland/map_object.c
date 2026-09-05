@@ -1507,18 +1507,18 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
     int x;
     int y;
     int i;
-    int clip[4];
+    RECT clip;
     int tilept[2];
     int screen[2];
     RECT saved_clip;
     struct VideoArg surf;
 
-    clip[0] = lpConfig->field_20;
-    clip[1] = lpConfig->field_22;
-    clip[2] = lpConfig->field_10 + lpConfig->field_20;
-    clip[3] = lpConfig->field_12 + lpConfig->field_22;
+    clip.left = lpConfig->field_20;
+    clip.top = lpConfig->field_22;
+    clip.right = lpConfig->field_10 + lpConfig->field_20;
+    clip.bottom = lpConfig->field_12 + lpConfig->field_22;
     GetClipping(&saved_clip);
-    SetClipping(clip);
+    SetClipping(&clip);
     nextp = (struct FootprintNode *)&cursor->field_1414[0];
     do {
         rect = *nextp;
@@ -1588,7 +1588,7 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
             FUN_0045fca0((int *)&surf, 2, bx, by, pat, size);
         }
     }
-    SetClipping((int *)&saved_clip);
+    SetClipping(&saved_clip);
     if (cursor->field_1830 != 0) {
         RenderCursor((struct Cursor *)cursor->field_1830);
     }
@@ -1737,7 +1737,7 @@ void FUN_00460560(int index) {
 }
 
 // FUNCTION: LEGOLAND 0x004608c0
-void FUN_004608c0(int *param_1, int *param_2) {
+void FUN_004608c0(int *param_1, RECT *param_2) {
     struct Overlay *ov;
     int dx;
     int dy;
@@ -1761,8 +1761,8 @@ void FUN_004608c0(int *param_1, int *param_2) {
     int k;
 
     ov = (struct Overlay *)OverlayList;
-    dx = param_1[0] - param_2[0];
-    dy = param_1[1] - param_2[1];
+    dx = param_1[0] - param_2->left;
+    dy = param_1[1] - param_2->top;
     SetClipping(param_2);
     half_y = (int)((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
     dbl = (int)(short)(((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size * 2);
@@ -1815,16 +1815,16 @@ void FUN_004608c0(int *param_1, int *param_2) {
         }
     }
     {
-        int ybot = param_2[3] + half_y * 2;
-        int xright = param_2[2];
+        int ybot = param_2->bottom + half_y * 2;
+        int xright = param_2->right;
         PushRenderingStatusAndLockVideoSurface();
-        draw_y = (param_2[1] + half_y * -2) - phase;
+        draw_y = (param_2->top + half_y * -2) - phase;
         if (draw_y < ybot) {
             rem_x = rem_x + draw_y;
             do {
                 int saved_row = sypix;
                 int saved_col = sxpix;
-                for (col = (param_2[0] + dbl * -2) - (int)param_1; col < xright + dbl * 2; col = col + dbl) {
+                for (col = (param_2->left + dbl * -2) - (int)param_1; col < xright + dbl * 2; col = col + dbl) {
                     if ((int)sxpix < 0 || lpConfig->width <= (int)sxpix || sypix < 0 || lpConfig->height <= sypix) {
                         tile = 0;
                     } else {
@@ -1917,17 +1917,17 @@ void FUN_00460e00(void) {
     int sx;
     int sy;
     int rect[2];
-    int clip[4];
+    RECT clip;
 
     sx = ScrollX >> 8;
     sy = ScrollY >> 8;
-    clip[0] = lpConfig->field_20;
-    clip[1] = lpConfig->field_22;
-    clip[2] = lpConfig->field_10 + clip[0];
-    clip[3] = lpConfig->field_12 + clip[1];
+    clip.left = lpConfig->field_20;
+    clip.top = lpConfig->field_22;
+    clip.right = lpConfig->field_10 + clip.left;
+    clip.bottom = lpConfig->field_12 + clip.top;
     rect[0] = sx;
     rect[1] = sy;
-    FUN_004608c0(rect, clip);
+    FUN_004608c0(rect, &clip);
     DAT_004b95ec = sy;
     DAT_004b95e8 = sx;
     DAT_00667cd0 = 0;

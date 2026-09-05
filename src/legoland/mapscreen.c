@@ -60,7 +60,7 @@ void FUN_004563b0(void) { STUB(); }
 LEGO_EXPORT void RenderMouseBounds(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004565b0
-LEGO_EXPORT void MapScreenSetScrollPos(void) { STUB(); }
+LEGO_EXPORT void MapScreenSetScrollPos(struct Point *point) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004566f0
 LEGO_EXPORT void DrawMapScreen(void) { STUB(); }

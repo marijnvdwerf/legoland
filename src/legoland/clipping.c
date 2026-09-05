@@ -39,7 +39,7 @@ struct ClipNode {
 };
 
 // FUNCTION: LEGOLAND 0x0048a5c0
-LEGO_EXPORT void SetClipping(int *rect) { STUB(); }
+LEGO_EXPORT void SetClipping(RECT *rect) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048a630
 LEGO_EXPORT void GetClipping(RECT *dest) {

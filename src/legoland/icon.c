@@ -494,7 +494,7 @@ void FUN_0046dac0(void) {
     unsigned int v;
     struct IconNode *icon;
     if (EditMode.unk4 == 2 && DAT_0080ff80.unk8 == 3) {
-        int field = ((struct CtrlBuffer *)CONTROLLERBUFFER)->field_8;
+        int field = CONTROLLERBUFFER->field_8;
         if (field < 0xb2) {
             v = 0xc8;
         } else if (field < 0x143) {
@@ -520,7 +520,7 @@ void FUN_0046db40(void) {
     unsigned int v;
     struct IconNode *icon;
     if (EditMode.unk4 == 2 && DAT_0080ff80.unk8 == 3) {
-        int field = ((struct CtrlBuffer *)CONTROLLERBUFFER)->field_8;
+        int field = CONTROLLERBUFFER->field_8;
         if (field < 0xb2) {
             v = 0xc8;
         } else if (field < 0x143) {
@@ -668,15 +668,15 @@ void FUN_0046de90(struct IconNode *icon, struct Bbox *bbox) {
 
 // FUNCTION: LEGOLAND 0x0046df30
 int FUN_0046df30(struct Rect16 *src) {
-    int rect[4];
-    FUN_0046de50(src, (struct Rect32 *)&rect[0]);
-    SetClipping(&rect[0]);
+    RECT rect;
+    FUN_0046de50(src, (struct Rect32 *)&rect);
+    SetClipping(&rect);
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046df60
 int FUN_0046df60(int param) {
-    SetClipping((int *)DAT_007fe020);
+    SetClipping(&DAT_007fe020);
     return 0;
 }
 
@@ -849,7 +849,7 @@ LEGO_EXPORT int RenderEnergyBar(struct IconNode *node) {
     struct PrintCtx ctx;
     int fill1;
     int fill2;
-    int clip[4];
+    RECT clip;
 
     ctx.node = NULL;
     ctx.flags = 1;
@@ -904,11 +904,11 @@ LEGO_EXPORT int RenderEnergyBar(struct IconNode *node) {
     }
     DAT_006688bc = fill2;
 skip:
-    clip[0] = node->x;
-    clip[1] = node->y;
-    clip[2] = DAT_006688c0 + clip[0];
-    clip[3] = node->field_12 + clip[1];
-    SetClipping(&clip[0]);
+    clip.left = node->x;
+    clip.top = node->y;
+    clip.right = DAT_006688c0 + clip.left;
+    clip.bottom = node->field_12 + clip.top;
+    SetClipping(&clip);
     PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
     RestoreClipping();
     PrintSprite(DAT_00668e70, (node->x - DAT_00668e70->width / 2) + DAT_006688bc, node->field_12 / 2 + node->y, 0, (int *)&ctx);
@@ -921,7 +921,7 @@ LEGO_EXPORT int RenderMoneyBar(struct IconNode *node) {
     int fill;
     int width;
     int bricks;
-    int clip[4];
+    RECT clip;
     char buf[100];
 
     ctx.flags = 1;
@@ -953,11 +953,11 @@ LEGO_EXPORT int RenderMoneyBar(struct IconNode *node) {
     DAT_006688c4 = fill;
 skip:
     StoreClipping();
-    clip[0] = node->x;
-    clip[2] = DAT_006688c4 + clip[0];
-    clip[1] = node->y;
-    clip[3] = node->field_12 + clip[1];
-    SetClipping(&clip[0]);
+    clip.left = node->x;
+    clip.right = DAT_006688c4 + clip.left;
+    clip.top = node->y;
+    clip.bottom = node->field_12 + clip.top;
+    SetClipping(&clip);
     if (node->sprite != NULL) {
         PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
     }
@@ -976,18 +976,18 @@ skip:
 LEGO_EXPORT int RenderFreePlayBar(struct IconNode *node) {
     struct PrintCtx ctx;
     short x;
-    int clip[4];
+    RECT clip;
 
     ctx.flags = 2;
     ctx.node = node;
     ctx.field_8 = 0;
     StoreClipping();
     x = node->x;
-    clip[0] = x;
-    clip[2] = FUN_00458930(node->field_10 * 0.00005f * (int)DAT_007cb3a0) + x;
-    clip[1] = node->y;
-    clip[3] = node->field_12 + clip[1];
-    SetClipping(&clip[0]);
+    clip.left = x;
+    clip.right = FUN_00458930(node->field_10 * 0.00005f * (int)DAT_007cb3a0) + x;
+    clip.top = node->y;
+    clip.bottom = node->field_12 + clip.top;
+    SetClipping(&clip);
     if (node->sprite != NULL) {
         PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
     }

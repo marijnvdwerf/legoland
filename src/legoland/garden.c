@@ -24,7 +24,7 @@ struct EditTarget {
 // FUNCTION: LEGOLAND 0x00432480
 void FUN_00432480(struct GardenLayer *arg0) {
     struct GardenInner *temp = arg0->field_c;
-    DAT_0081cd08 = (unsigned int)temp;
+    DAT_0081cd08 = temp;
     temp->field_1c |= 0x404;
     // STRING: LEGOLAND 0x004b7114
     if (LLIDB_FindElement("HEDGE IMAGES", &DAT_0061615c, 0) != 0) {
@@ -40,7 +40,7 @@ void FUN_004324c0(void) {
 
 // FUNCTION: LEGOLAND 0x004324d0
 void FUN_004324d0(void) {
-    void *var = (void *)DAT_0081cd08;
+    void *var = DAT_0081cd08;
     EditMode.unk0 = 1;
     EditMode.unk8 = var;
     DefaultCursor(&EditCursor);

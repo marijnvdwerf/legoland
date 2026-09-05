@@ -17,3 +17,5 @@ LEGO_EXPORT void DoHighLevelAI(struct Bloke *bloke);
 int FUN_0044f4a0(struct Bloke *bloke, int objclass, int param_3);
 LEGO_EXPORT void PushLongTermAction(struct Bloke *bloke);
 void FUN_00450530(struct Bloke *bloke);
+
+void FUN_00450a40(struct Bloke *bloke);

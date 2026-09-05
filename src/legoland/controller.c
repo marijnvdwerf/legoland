@@ -16,7 +16,7 @@ LEGO_EXPORT int SetupControllers(void) {
         return 1;
     }
     CONTROLLERBUFFER = malloc(sizeof(struct CtrlBuffer));
-    ((struct CtrlBuffer *)CONTROLLERBUFFER)->field_18 = 0;
+    CONTROLLERBUFFER->field_18 = 0;
     DAT_00813a5c = 2;
     DAT_00813ac8 = 2;
     GamePad = 0;
@@ -239,7 +239,7 @@ LEGO_EXPORT void ReadGameButtons(void) {
     int my;
 
     DAT_00667c48 = 0;
-    held = ((struct CtrlBuffer *)CONTROLLERBUFFER)->field_18;
+    held = CONTROLLERBUFFER->field_18;
     pressed = (DAT_00813a94 ^ held) & held;
     released = ~pressed & (DAT_00813a94 ^ held);
     if (released != 0 && DAT_00667108 != 0) {
@@ -316,16 +316,16 @@ LEGO_EXPORT void ReadGameButtons(void) {
 
     DAT_00813a94 = held;
     if (lpConfig->field_1e != 0) {
-        DAT_00813a44.x = ((struct CtrlBuffer *)CONTROLLERBUFFER)->field_8;
-        DAT_00813a44.y = ((struct CtrlBuffer *)CONTROLLERBUFFER)->field_c;
+        DAT_00813a44.x = CONTROLLERBUFFER->field_8;
+        DAT_00813a44.y = CONTROLLERBUFFER->field_c;
         if (DAT_00667c7c != 0) {
             scroll = FUN_00451f70();
             if ((GamePad & 0x1000) != 0 || FocussedIconPtr == 0) {
                 if (scroll == 0 && (GamePad & 0x20) != 0) {
                     MouseScrollMap();
                 }
-                if (((struct CtrlBuffer *)CONTROLLERBUFFER)->field_10 != 0 ||
-                    ((struct CtrlBuffer *)CONTROLLERBUFFER)->field_14 != 0 || (GamePad & 0x10) != 0) {
+                if (CONTROLLERBUFFER->field_10 != 0 ||
+                    CONTROLLERBUFFER->field_14 != 0 || (GamePad & 0x10) != 0) {
                     GamePad = GamePad | 8;
                     DAT_00813ae0 = GetTicks();
                 }

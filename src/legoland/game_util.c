@@ -1759,7 +1759,7 @@ int FUN_0047af80(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0047afb0
-int FUN_0047afb0(int param_1) {
+int FUN_0047afb0(const char *param_1) {
     int result;
     int v1;
 

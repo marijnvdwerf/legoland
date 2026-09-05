@@ -11,9 +11,13 @@ struct LLS {
     unsigned int flags;
 };
 
-/* struct Element's full layout and the page/slot id encoding are private to
- * llidb.c (the owning TU). Other TUs only pass struct Element * around. */
-struct Element;
+struct Element {
+    char *name;
+    char *path;
+    unsigned int flags;
+    void *data;
+    unsigned int field_10;
+};
 
 #define LLIDB_FLAG_LEVEL 0x4
 #define LLIDB_FLAG_LOADED 0x1
@@ -51,7 +55,7 @@ LEGO_EXPORT unsigned int LLIDB_GetCount(void);
 LEGO_EXPORT int LLIDB_GetElement(unsigned int index, struct Element **output);
 LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, unsigned int *index_out);
 LEGO_EXPORT int LLIDB_FindElementFromDataPtr(void *data, unsigned int *out, unsigned int *index_out);
-LEGO_EXPORT unsigned int ElemID(const char *name);
+LEGO_EXPORT struct Element *ElemID(const char *name);
 LEGO_EXPORT void LLIDB_LoadICM(void);
 LEGO_EXPORT void LLIDB_CloseICM(void);
 LEGO_EXPORT unsigned int LLIDB_RegisterNewElement(const char *param_1, const char *param_2, unsigned int param_3);

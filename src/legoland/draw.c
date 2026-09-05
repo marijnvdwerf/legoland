@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include "clipping.h"
 #include "debug_alloc.h"
 #include "globals.h"
 
@@ -87,7 +88,175 @@ LEGO_EXPORT unsigned int SetPointer(unsigned int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00463870
-LEGO_EXPORT int InitScreen(void) { STUB(); }
+LEGO_EXPORT int InitScreen(void) {
+    LOGFONTA font;
+    WNDCLASSEXA wc;
+    DDSURFACEDESC desc;
+    RECT rect_slot;
+    RECT window_rect;
+    RGNDATA *rgn;
+
+    rect_slot.left = 0;
+    rect_slot.top = 0;
+    rect_slot.right = lpConfig->field_0;
+    rect_slot.bottom = lpConfig->field_2;
+    FrameNumber = 0;
+
+    wc.cbSize = sizeof(wc);
+    wc.style = 0;
+    wc.lpfnWndProc = LegoLandWindowProc;
+    wc.cbClsExtra = 0;
+    wc.cbWndExtra = 0;
+    wc.hInstance = WNDENV_GethInstance();
+    wc.hIcon = LoadIconA(WNDENV_GethInstance(), (LPCSTR)0x65);
+    wc.hCursor = LoadCursorA(WNDENV_GethInstance(), (LPCSTR)0x7d);
+    wc.hbrBackground = (HBRUSH)GetStockObject(5);
+    wc.lpszMenuName = NULL;
+    // STRING: LEGOLAND 0x004b9cfc
+    wc.lpszClassName = "LEGOLANDMAIN";
+    wc.hIconSm = LoadIconA(WNDENV_GethInstance(), (LPCSTR)0x65);
+    RegisterClassExA(&wc);
+
+    font.lfHeight = 0x18;
+    font.lfWidth = 0;
+    font.lfEscapement = 0;
+    font.lfOrientation = 0;
+    font.lfWeight = 0x2bc;
+    font.lfItalic = 0;
+    font.lfUnderline = 0;
+    font.lfStrikeOut = 0;
+    font.lfCharSet = 1;
+    font.lfOutPrecision = 0;
+    font.lfClipPrecision = 0;
+    font.lfQuality = 2;
+    font.lfPitchAndFamily = 0;
+    // STRING: LEGOLAND 0x004b86e0
+    strcpy(font.lfFaceName, "Lego");
+    PTR_00668090 = CreateFontIndirectA(&font);
+
+    font.lfWeight = 0x190;
+    font.lfHeight = 0x1c;
+    font.lfWidth = 0;
+    PTR_00668098 = CreateFontIndirectA(&font);
+    font.lfHeight = 0x14;
+    font.lfWidth = 0;
+    font.lfWeight = 0x2bc;
+    PTR_0066808c = CreateFontIndirectA(&font);
+    font.lfWeight = 0x258;
+    font.lfHeight = 0x12;
+    font.lfWidth = 0;
+    strcpy(font.lfFaceName, "Lego");
+    PTR_00668094 = CreateFontIndirectA(&font);
+
+    if (DAT_00667d6c == 0) {
+        DAT_00668088 = 2;
+        WNDENV_Sethwnd(CreateWindowExA(8, "LEGOLANDMAIN",
+            // STRING: LEGOLAND 0x004b86d0
+            "LEGOLAND", 0x90000000, 0, 0, lpConfig->field_0, lpConfig->field_2, GetDesktopWindow(), NULL, WNDENV_GethInstance(), NULL));
+        if (WNDENV_Gethwnd() == NULL) {
+            return 0;
+        }
+        if (IDirectDraw2_SetCooperativeLevel(DDRAWENV.ddraw2, WNDENV_Gethwnd(), 0x11) != 0) {
+            return 0;
+        }
+        if (FUN_00463ef0() == 0) {
+            return 0;
+        }
+        while ((lpConfig->field_1c & 1) != 0) {
+            ProcessSystemEvents();
+            ShowWindow(WNDENV_Gethwnd(), 3);
+        }
+        if (lpConfig->field_1e == 0) {
+            ShowCursor(0);
+        }
+        DAT_004b9ca4 = FUN_004661d0;
+        desc.dwSize = sizeof(desc);
+        desc.dwFlags = 1;
+        desc.ddsCaps.dwCaps = 0x4200;
+        if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &DAT_00668070, NULL) != 0) {
+            return 0;
+        }
+        LoadColourTable();
+        desc.dwSize = sizeof(desc);
+        desc.dwFlags = 7;
+        desc.ddsCaps.dwCaps = 0x800;
+        desc.dwWidth = lpConfig->field_0;
+        desc.dwHeight = lpConfig->field_2;
+        if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &DAT_00668078, NULL) != 0) {
+            return 0;
+        }
+        renderEngine = DAT_00668078;
+        desc.dwSize = sizeof(desc);
+        desc.dwFlags = 7;
+        desc.ddsCaps.dwCaps = 0x4000;
+        desc.dwWidth = lpConfig->field_0;
+        desc.dwHeight = lpConfig->field_2;
+        if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &DAT_00668074, NULL) != 0) {
+            return 0;
+        }
+        IDirectDraw2_CreateClipper(DDRAWENV.ddraw2, 0, &DAT_00668080, NULL);
+        SetClipping(&rect_slot);
+        rgn = malloc(sizeof(RGNDATA) - 1 + sizeof(RECT));
+        rgn->rdh.dwSize = 0x20;
+        rgn->rdh.iType = 1;
+        rgn->rdh.nCount = 1;
+        rgn->rdh.nRgnSize = 0x10;
+        rgn->rdh.rcBound = SPRITE_ClipRect;
+        memcpy(rgn->Buffer, &SPRITE_ClipRect, sizeof(RECT));
+        IDirectDrawClipper_SetClipList(DAT_00668080, (LPRGNDATA)rgn, 0);
+        free(rgn);
+    } else {
+        window_rect.left = 0;
+        window_rect.top = 0;
+        window_rect.right = lpConfig->field_0 - 1;
+        window_rect.bottom = lpConfig->field_2 - 1;
+        AdjustWindowRect(&window_rect, 0x10cf0000, 0);
+        WNDENV_Sethwnd(CreateWindowExA(0, "LEGOLANDMAIN",
+            // STRING: LEGOLAND 0x004b9cf0
+            "Lego Land", 0x10cf0000, 0, 0, window_rect.right - window_rect.left + 1, window_rect.bottom - window_rect.top + 1, NULL, NULL, WNDENV_GethInstance(), NULL));
+        if (WNDENV_Gethwnd() == NULL) {
+            return 0;
+        }
+        if (IDirectDraw2_SetCooperativeLevel(DDRAWENV.ddraw2, WNDENV_Gethwnd(), 8) != 0) {
+            DestroyWindow(WNDENV_Gethwnd());
+            return 0;
+        }
+        if (FUN_00463ef0() == 0) {
+            DestroyWindow(WNDENV_Gethwnd());
+            return 0;
+        }
+        IDirectDraw2_CreateClipper(DDRAWENV.ddraw2, 0, &DAT_00668080, NULL);
+        IDirectDrawClipper_SetHWnd(DAT_00668080, 0, WNDENV_Gethwnd());
+        desc.dwSize = sizeof(desc);
+        desc.dwFlags = 1;
+        desc.ddsCaps.dwCaps = 0x200;
+        if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &DAT_00668070, NULL) != 0) {
+            DestroyWindow(WNDENV_Gethwnd());
+            return 0;
+        }
+        IDirectDrawSurface_SetClipper(DAT_00668070, DAT_00668080);
+        desc.dwSize = sizeof(desc);
+        desc.dwFlags = 7;
+        desc.ddsCaps.dwCaps = 0x40;
+        desc.dwWidth = lpConfig->field_0;
+        desc.dwHeight = lpConfig->field_2;
+        if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &DAT_00668078, NULL) != 0) {
+            IDirectDrawSurface_Release(DAT_00668070);
+            DestroyWindow(WNDENV_Gethwnd());
+            return 0;
+        }
+        renderEngine = DAT_00668078;
+        desc.dwSize = sizeof(desc);
+        desc.dwFlags = 7;
+        desc.ddsCaps.dwCaps = 0x40;
+        desc.dwWidth = lpConfig->field_0;
+        desc.dwHeight = lpConfig->field_2;
+        if (IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &DAT_00668074, NULL) != 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 // FUNCTION: LEGOLAND 0x00463ef0
 int FUN_00463ef0(void) {
@@ -251,7 +420,7 @@ LEGO_EXPORT void CommitCliprectToHardware(void) {
     rgn->rdh.dwSize = 0x20;
     rgn->rdh.nRgnSize = 0x10;
     rgn->rdh.rcBound = SPRITE_ClipRect;
-    *(RECT *)rgn->Buffer = SPRITE_ClipRect;
+    memcpy(rgn->Buffer, &SPRITE_ClipRect, sizeof(RECT));
     clipper = DAT_00668080;
     IDirectDrawClipper_SetClipList(clipper, (LPRGNDATA)rgn, 0);
     free(rgn);

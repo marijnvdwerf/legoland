@@ -1459,14 +1459,14 @@ LEGO_EXPORT void ControlPeople(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00450a40
-void FUN_00450a40(struct BlokeRideState *bloke) {
+void FUN_00450a40(struct Bloke *bloke) {
     int *ride;
     int state;
 
     if ((bloke->flags & 0x28) != 0) {
         return;
     }
-    ride = bloke->ride;
+    ride = (int *)bloke->prev;
     state = ride[2];
     if (state < 2 || state > 3) {
         bloke->flags |= 0x8;

@@ -6,11 +6,14 @@
 #include "gamemap.h"
 #include "legoland.h"
 
+struct Bloke;
+
 /* DirectInput stays private to the input subsystem (input.c) + its definitions
  * (globals.c) — both include <dinput.h> directly. globals.h only needs an opaque
  * handle to the one DInput-typed global below, so it does NOT drag <dinput.h>
  * across every TU that includes globals.h. */
 struct _DIMOUSESTATE;
+struct CtrlBuffer;
 
 // ---------------------------------------------------------------------------
 // Forward declarations for typed/instance globals declared below. Full struct
@@ -745,7 +748,7 @@ extern void (*PTR_FUN_004bd34c[16])(void *);
 // 0x004bdd00
 extern unsigned int DAT_004bdd00;
 // 0x004bdd04
-extern unsigned int DAT_004bdd04;
+extern struct Bloke *DAT_004bdd04;
 // 0x004bdd08
 extern unsigned int DAT_004bdd08;
 // 0x004bdea0
@@ -1698,6 +1701,12 @@ extern LEGO_EXPORT unsigned short QueryObj;
 extern LEGO_EXPORT void *QueryClass;
 // 0x00667c60
 extern unsigned int DAT_00667c60;
+// 0x00667c68
+extern unsigned int DAT_00667c68;
+// 0x00667c70
+extern long DAT_00667c70;
+// 0x00667c74
+extern long DAT_00667c74;
 // 0x00667c64
 extern const char *DAT_00667c40;
 // 0x00667c48
@@ -1808,6 +1817,8 @@ struct DDRAWENV {
 extern LEGO_EXPORT struct DDRAWENV DDRAWENV;
 // 0x00668070
 extern LPDIRECTDRAWSURFACE DAT_00668070;
+// 0x00668074
+extern LPDIRECTDRAWSURFACE DAT_00668074;
 // 0x00668078
 extern LPDIRECTDRAWSURFACE DAT_00668078;
 // 0x0066807c
@@ -1819,13 +1830,13 @@ extern unsigned int DAT_00668084;
 // 0x00668088
 extern unsigned int DAT_00668088;
 // 0x0066808c
-extern void *PTR_0066808c;
+extern HFONT PTR_0066808c;
 // 0x00668090
-extern void *PTR_00668090;
+extern HFONT PTR_00668090;
 // 0x00668094
-extern void *PTR_00668094;
+extern HFONT PTR_00668094;
 // 0x00668098
-extern void *PTR_00668098;
+extern HFONT PTR_00668098;
 // 0x0066809c
 extern DDSURFACEDESC DAT_0066809c;
 // 0x00668108
@@ -2812,7 +2823,7 @@ extern int DAT_007fe014;
 // 0x007fe018
 extern struct Sprite *DAT_007fe018;
 // 0x007fe020
-extern unsigned int DAT_007fe020[4];
+extern RECT DAT_007fe020;
 // 0x007fe040
 extern unsigned int DAT_007fe040;
 // 0x007fe044
@@ -3093,7 +3104,7 @@ extern int DAT_00813af8;
 // 0x00813afc
 extern int DAT_00813afc;
 // 0x00813b00
-extern LEGO_EXPORT void *CONTROLLERBUFFER;
+extern LEGO_EXPORT struct CtrlBuffer *CONTROLLERBUFFER;
 // 0x00813b04
 extern char DAT_00813b04[28];
 // 0x00813b20
@@ -3233,7 +3244,7 @@ extern void *DAT_0081cd00;
 // 0x0081cd04
 extern void *DAT_0081cd04;
 // 0x0081cd08
-extern unsigned int DAT_0081cd08;
+extern void *DAT_0081cd08;
 // 0x0081cd0c
 extern unsigned int DAT_0081cd0c;
 // 0x0081cd10

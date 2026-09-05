@@ -123,15 +123,42 @@ struct SpinWalker {
 
 struct OrientPerson {
     unsigned char pad_0[0x58];
-    union { float m58; int i58; };
-    union { float m5c; int i5c; };
-    union { float m60; int i60; };
-    union { float m64; int i64; };
-    union { float m68; int i68; };
-    union { float m6c; int i6c; };
-    union { float m70; int i70; };
-    union { float m74; int i74; };
-    union { float m78; int i78; };
+    union {
+        float m58;
+        int i58;
+    };
+    union {
+        float m5c;
+        int i5c;
+    };
+    union {
+        float m60;
+        int i60;
+    };
+    union {
+        float m64;
+        int i64;
+    };
+    union {
+        float m68;
+        int i68;
+    };
+    union {
+        float m6c;
+        int i6c;
+    };
+    union {
+        float m70;
+        int i70;
+    };
+    union {
+        float m74;
+        int i74;
+    };
+    union {
+        float m78;
+        int i78;
+    };
 };
 
 struct BNVPath {
@@ -238,7 +265,8 @@ int FUN_00482b60(struct InstancePos *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x00482ba0
-LEGO_EXPORT char *GetVisitorName(struct Person *person) {
+LEGO_EXPORT char *GetVisitorName(struct Bloke *bloke) {
+    struct Person *person = (struct Person *)bloke;
     char *name;
     if (person->field_4->field_84 == 0) {
         name = PTR_s_Aaron_004bcecc[person->field_83];
@@ -1330,14 +1358,22 @@ LEGO_EXPORT void Bloke_DoNothing(void) {
 
 // GLOBAL: LEGOLAND 0x004bd34c
 void (*PTR_FUN_004bd34c[16])(void *) = {
-    (void (*)(void *))FUN_004838a0, (void (*)(void *))FUN_004838c0,
-    (void (*)(void *))FUN_00483ef0, (void (*)(void *))FUN_00484090,
-    (void (*)(void *))FUN_00483d10, (void (*)(void *))FUN_004838e0,
-    (void (*)(void *))FUN_00484220, (void (*)(void *))FUN_004845d0,
-    (void (*)(void *))FUN_00484630, (void (*)(void *))FUN_00484790,
-    (void (*)(void *))FUN_00483e20, (void (*)(void *))FUN_00484470,
-    (void (*)(void *))FUN_00484520, (void (*)(void *))FUN_004848e0,
-    (void (*)(void *))FUN_00483d90, (void (*)(void *))FUN_00484350,
+    (void (*)(void *))FUN_004838a0,
+    (void (*)(void *))FUN_004838c0,
+    (void (*)(void *))FUN_00483ef0,
+    (void (*)(void *))FUN_00484090,
+    (void (*)(void *))FUN_00483d10,
+    (void (*)(void *))FUN_004838e0,
+    (void (*)(void *))FUN_00484220,
+    (void (*)(void *))FUN_004845d0,
+    (void (*)(void *))FUN_00484630,
+    (void (*)(void *))FUN_00484790,
+    (void (*)(void *))FUN_00483e20,
+    (void (*)(void *))FUN_00484470,
+    (void (*)(void *))FUN_00484520,
+    (void (*)(void *))FUN_004848e0,
+    (void (*)(void *))FUN_00483d90,
+    (void (*)(void *))FUN_00484350,
 };
 
 // FUNCTION: LEGOLAND 0x00484920
@@ -1379,18 +1415,15 @@ LEGO_EXPORT void SetBlokePositionFromBNV(struct BinVFile *file, struct BNVPerson
     int i;
     float scale;
 
-    scale = DAT_004ab38c / (float)sqrt(object->m18 * object->m18 + object->m14 * object->m14 +
-                                       object->m10 * object->m10);
+    scale = DAT_004ab38c / (float)sqrt(object->m18 * object->m18 + object->m14 * object->m14 + object->m10 * object->m10);
     object->m10 = scale * object->m10;
     object->m14 = scale * object->m14;
     object->m18 = scale * object->m18;
-    scale = DAT_004ab38c / (float)sqrt(object->m24 * object->m24 + object->m20 * object->m20 +
-                                       object->m1c * object->m1c);
+    scale = DAT_004ab38c / (float)sqrt(object->m24 * object->m24 + object->m20 * object->m20 + object->m1c * object->m1c);
     object->m1c = scale * object->m1c;
     object->m20 = scale * object->m20;
     object->m24 = scale * object->m24;
-    scale = DAT_004ab38c / (float)sqrt(object->m2c * object->m2c + object->m28 * object->m28 +
-                                       object->m30 * object->m30);
+    scale = DAT_004ab38c / (float)sqrt(object->m2c * object->m2c + object->m28 * object->m28 + object->m30 * object->m30);
     object->m28 = scale * object->m28;
     object->m2c = scale * object->m2c;
     object->m30 = scale * object->m30;
@@ -1469,8 +1502,7 @@ LEGO_EXPORT int UpdateBlokeFromBNVPath(struct BNVBloke *bloke, struct BNVPath *p
     }
     binFrame = GetBinVFrame(path->file, (int)frame < 1 ? 0 : frame - 1);
     object = (struct BinVMatrix *)GetObjectFromName(binFrame, path->name);
-    scale = DAT_004ab38c / (float)sqrt(object->m18 * object->m18 + object->m14 * object->m14 +
-                                       object->m10 * object->m10);
+    scale = DAT_004ab38c / (float)sqrt(object->m18 * object->m18 + object->m14 * object->m14 + object->m10 * object->m10);
     object->m10 = scale * object->m10;
     object->m14 = scale * object->m14;
     object->m18 = scale * object->m18;

@@ -984,10 +984,10 @@ unsigned char FUN_004731e0(void *param_1, unsigned char flags) {
         *(unsigned char *)&QueryObj = (unsigned char)(v & 0xff);
         cls->method_94(cls->field_c4, local_8);
         BuildCursorPtr(&QueryCursor, 0, 0);
-        if (FUN_0045f4b0(&QueryCursor) != 0) {
+        if ((int)FUN_0045f4b0(&QueryCursor) != 0) {
             FUN_0045d3d0(QueryClass, local_8);
             cls = (struct ObjClass *)QueryClass;
-            RemObjFromMap(QueryClass, cls->field_c4, QueryObj, &QueryCursor);
+            RemObjFromMap(cls, *cls->field_c4, QueryObj, &QueryCursor);
         }
         memcpy(&QueryCursor, &local_cursor, sizeof(struct Cursor));
         QueryClass = saved_class;

@@ -1247,7 +1247,7 @@ int FUN_00469c80(struct MapRectArg *arg) {
                     found = FUN_0045f4b0(&QueryCursor);
                     if (found != 0) {
                         FUN_0045d3d0((struct PathFootprint *)cls, &point.x);
-                        RemObjFromMap(cls, cls->field_c4, QueryObj, &QueryCursor);
+                        RemObjFromMap(cls, *cls->field_c4, QueryObj, &QueryCursor);
                     }
                     QueryCursor = saved;
                 }

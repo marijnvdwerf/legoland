@@ -466,7 +466,7 @@ LEGO_EXPORT void BubbleHelp(int *rect, char *text, int font) {
 }
 
 // FUNCTION: LEGOLAND 0x004557c0
-LEGO_EXPORT void HTBubbleHelp(int *rect, char *text, int font) {
+LEGO_EXPORT void HTBubbleHelp(RECT *rect, char *text, int font) {
     RECT box;
     struct TextCell *cell;
     HDC hdc;
@@ -493,7 +493,7 @@ LEGO_EXPORT void HTBubbleHelp(int *rect, char *text, int font) {
             SetBkMode(hdc, 1);
             old_font = SelectFont(hdc, font);
             text_h = DrawTextA(hdc, text, strlen(text), &box, 0x410);
-            box.top = rect[1];
+            box.top = rect->top;
             box.bottom = text_h + box.top;
             SelectObject(hdc, old_font);
             DeleteDC(hdc);
@@ -505,7 +505,7 @@ LEGO_EXPORT void HTBubbleHelp(int *rect, char *text, int font) {
             box.bottom = cell->height;
             text_h = cell->height;
         }
-        cx = (rect[2] + rect[0]) >> 1;
+        cx = (rect->right + rect->left) >> 1;
         if (cx < 0) {
             cx = 0;
         } else if (cx > (int)(unsigned int)lpConfig->field_0) {
@@ -519,11 +519,11 @@ LEGO_EXPORT void HTBubbleHelp(int *rect, char *text, int font) {
             box.left = (unsigned int)lpConfig->field_0 - box.right;
         }
         box.right = box.right + box.left;
-        if (rect[1] < (box.bottom - box.top) + 8) {
-            box.top = rect[3] + 6;
+        if (rect->top < (box.bottom - box.top) + 8) {
+            box.top = rect->bottom + 6;
             box.bottom = text_h + box.top;
         } else {
-            box.bottom = rect[1] + -6;
+            box.bottom = rect->top + -6;
             box.top = box.bottom - text_h;
         }
         y4 = box.bottom + 4;
@@ -735,7 +735,7 @@ void FUN_00455f70(int evict_all) {
 }
 
 // FUNCTION: LEGOLAND 0x00455fc0
-void FUN_00455fc0(int *rect, const char *text, int font, int mood) {
+void FUN_00455fc0(RECT *rect, const char *text, int font, int mood) {
     RECT box;
     HDC hdc;
     HDC ddhdc;
@@ -768,7 +768,7 @@ void FUN_00455fc0(int *rect, const char *text, int font, int mood) {
             SetBkMode(hdc, 1);
             old_font = SelectFont(hdc, font);
             text_h = DrawTextA(hdc, text, strlen(text), &box, 0x410);
-            box.top = rect[1];
+            box.top = rect->top;
             box.bottom = text_h + box.top;
             SelectObject(hdc, old_font);
             DeleteDC(hdc);
@@ -780,7 +780,7 @@ void FUN_00455fc0(int *rect, const char *text, int font, int mood) {
             box.bottom = cell->height;
             text_h = cell->height;
         }
-        cx = (rect[2] + rect[0]) >> 1;
+        cx = (rect->right + rect->left) >> 1;
         if (cx < 0) {
             cx = 0;
         } else if ((int)(unsigned int)lpConfig->field_0 < cx) {
@@ -795,11 +795,11 @@ void FUN_00455fc0(int *rect, const char *text, int font, int mood) {
         }
         half_mood = mood_pad / 2;
         box.right = half_mood + box.right + box.left;
-        if (rect[1] < (box.bottom - box.top) + 8) {
-            box.top = rect[3] + 6;
+        if (rect->top < (box.bottom - box.top) + 8) {
+            box.top = rect->bottom + 6;
             box.bottom = text_h + box.top;
         } else {
-            box.bottom = rect[1] + -6;
+            box.bottom = rect->top + -6;
             box.top = box.bottom - text_h;
         }
         y4 = box.bottom + 4;

@@ -1,12 +1,12 @@
 #include "obj_instance.h"
 #include <stdlib.h>
-#include "globals.h"
-#include "legoland.h"
-#include "resource.h"
 #include "bloke.h"
 #include "bloke_ai.h"
-#include "objclass.h"
+#include "globals.h"
+#include "legoland.h"
 #include "man3d.h"
+#include "objclass.h"
+#include "resource.h"
 #include "sound_music.h"
 
 struct ObjClassKey {
@@ -88,7 +88,7 @@ char *FUN_00489e60(struct ResFile *file, char *dest, int maxlen) {
     } while (count < maxlen);
 skip_cr:
     if ((char)buf == '\r') {
-extra_read:
+    extra_read:
         RES_ReadFile(file, &buf, 1);
     }
 done:
@@ -246,7 +246,7 @@ LEGO_EXPORT struct ObjInstance *GetInstanceOfClass(struct ObjClassNode *cls, con
 }
 
 // FUNCTION: LEGOLAND 0x0048a0f0
-LEGO_EXPORT void HandleRideAI(void) {}
+LEGO_EXPORT void HandleRideAI(int arg_1, int arg_2, int arg_3) {}
 
 // FUNCTION: LEGOLAND 0x0048a100
 LEGO_EXPORT void RemoveBlokeFromRide(struct Ride *ride, struct RideNode *node) {

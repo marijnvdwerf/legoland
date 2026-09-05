@@ -25,11 +25,6 @@
 #include "string.h"
 #include "title.h"
 
-struct ElemRecord {
-    unsigned char pad_0[8];
-    unsigned char flags;
-};
-
 struct PanelNode {
     struct PanelNode *next;
     void *buffer1;
@@ -176,7 +171,7 @@ void FUN_0048abb0(void) {
     FUN_0047f810();
     DAT_0079a8d0 = 0;
     ResetMapAI();
-    DAT_00667c4c = FUN_0047afb0((int)buf);
+    DAT_00667c4c = FUN_0047afb0(buf);
     FUN_00457870(0);
     FUN_0048ab60();
     AllocBlokeCounters(lpConfig->field_1a);
@@ -220,15 +215,15 @@ unsigned char FUN_0048ac60(unsigned int param_1, unsigned int param_2) {
 LEGO_EXPORT void InitFreePlayLists(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048aef0
-unsigned int FUN_0048aef0(unsigned int arg1, struct ElemRecord *arg2) {
+unsigned int FUN_0048aef0(unsigned int arg1, struct Element *arg2) {
     unsigned int result;
-    struct ElemRecord *elem;
+    struct Element *elem;
 
     result = FUN_0048a840(arg1, 0);
     if ((int)(DAT_007cb3a0 + result) <= 0x4e20) {
         if (arg2) {
             // STRING: LEGOLAND 0x004bb49c
-            elem = (struct ElemRecord *)ElemID("BUILD MENU"); /* TODO: fold — ElemID handle (uint) viewed as ElemRecord* */
+            elem = ElemID("BUILD MENU");
             if (arg2 != elem) {
                 if ((arg2->flags & 0x4) == 0) {
                     return 0;

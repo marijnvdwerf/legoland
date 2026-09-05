@@ -2,9 +2,9 @@
 
 #include "legoland.h"
 
-struct ElemRecord;
+struct Element;
 
-unsigned int FUN_0048aef0(unsigned int arg1, struct ElemRecord *arg2);
+unsigned int FUN_0048aef0(unsigned int arg1, struct Element *arg2);
 void FUN_0048b770(void);
 LEGO_EXPORT void InitFreePlayScreen(void);
 void FUN_0048b6c0(void);

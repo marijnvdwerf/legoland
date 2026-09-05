@@ -19,11 +19,18 @@ struct ObjClass {
     /* 0x78 */ char *name;
     /* 0x7c */ unsigned char pad_7c[0x90 - 0x7c];
     /* 0x90 */ void (*method_90)(unsigned int object, struct Point *pos, int param_3);
-    /* 0x94 */ void (*method_94)(unsigned int param_1, void *cursor);
+    /* 0x94 */ void (*method_94)(unsigned int *param_1, void *cursor);
     /* 0x98 */ void (*method_98)(unsigned int classid, struct Point *pos);
     /* 0x9c */ void (*method_9c)(unsigned int classid, unsigned int coords, void *cursor);
     /* 0xa0 */ unsigned char pad_a0[0xc4 - 0xa0];
-    /* 0xc4 */ unsigned int field_c4;
+    /* 0xc4 */ unsigned int *field_c4;
+};
+
+struct WorkArea {
+    unsigned int field_0;
+    unsigned int field_4;
+    unsigned int field_8;
+    unsigned int field_c;
 };
 
 struct CtrlBuffer {
