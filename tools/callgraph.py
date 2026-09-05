@@ -4,6 +4,7 @@
 # dependencies = [
 #   "tree-sitter==0.26.0",
 #   "tree-sitter-c==0.24.2",
+#   "reccmp",
 # ]
 # ///
 """Print a source-oriented call graph for the Legoland decompilation."""
@@ -11,6 +12,8 @@
 from __future__ import annotations
 
 import argparse
+import logging
+import os
 import re
 import sys
 from collections import OrderedDict
@@ -22,25 +25,31 @@ import tree_sitter_c
 from tree_sitter import Language, Parser
 
 ROOT = Path(__file__).resolve().parents[1]
+TOOLS_DIR = Path(__file__).resolve().parent
+os.environ["PATH"] = str(TOOLS_DIR) + os.pathsep + os.environ.get("PATH", "")
+from reccmp.compare.core import Compare
+from reccmp.project.detect import RecCmpProject
+
 SRC_DIR = ROOT / "src" / "legoland"
 C_LANGUAGE = Language(tree_sitter_c.language())
-MAX_RENDER_DEPTH = 64
 
 
 @dataclass
 class Function:
     name: str
     file: str
-    kind: str  # "matched", "stub", or "runtime"
+    kind: str  # "matched", "partial", "stub", "runtime", or "synthetic"
     calls: list[str] = field(default_factory=list)
 
     @property
     def marker(self) -> str:
-        return {"matched": "🟢", "stub": "🔴", "runtime": "  "}[self.kind]
-
-    @property
-    def display_name(self) -> str:
-        return self.name
+        return {
+            "matched": "🟢",
+            "partial": "🟡",
+            "stub": "🔴",
+            "runtime": "  ",
+            "synthetic": "  ",
+        }[self.kind]
 
 
 Functions = OrderedDict[str, Function]
@@ -82,9 +91,8 @@ def macros() -> set[str]:
     }
 
 
-def calls(body, source: bytes, macro_names: set[str]) -> tuple[list[str], bool]:
+def calls(body, source: bytes, macro_names: set[str]) -> list[str]:
     found: list[str] = []
-    stub = False
     for node in nodes(body):
         if node.type != "call_expression":
             continue
@@ -92,38 +100,66 @@ def calls(body, source: bytes, macro_names: set[str]) -> tuple[list[str], bool]:
         if target is None or target.type != "identifier":
             continue
         name = text(source, target)
-        stub |= name == "STUB"
         if name not in macro_names:
             found.append(name)
-    return found, stub
+    return found
 
 
-def index_sources(functions: Functions) -> None:
+def match_results() -> dict[int, float]:
+    logging.disable(logging.CRITICAL)
+    project = RecCmpProject.from_directory(ROOT)
+    target = project.get("LEGOLAND")
+    compare = Compare.from_target(target)
+    return {diff.orig_addr: diff.effective_ratio for diff in compare.compare_all()}
+
+
+def index_sources(functions: Functions, matches: dict[int, float]) -> None:
     macro_names = macros()
     parser = Parser(C_LANGUAGE)
     for path in sorted(SRC_DIR.glob("*.c")):
         source = path.read_bytes()
+        addresses = {
+            source.count(b"\n", 0, marker.start()): int(marker.group(1), 16)
+            for marker in re.finditer(
+                rb"(?m)^// FUNCTION: LEGOLAND (0x[0-9A-Fa-f]+)\s*$", source
+            )
+        }
         tree = parser.parse(source)
         for definition in nodes(tree.root_node):
             if definition.type != "function_definition":
                 continue
             name = function_name(definition.child_by_field_name("declarator"), source)
             body = definition.child_by_field_name("body")
-            found, stub = (
-                calls(body, source, macro_names) if body is not None else ([], False)
-            )
+            found = calls(body, source, macro_names) if body is not None else []
             runtime = path.name in {"crt.c", "imports.c"}
+            if runtime:
+                kind = "runtime"
+            else:
+                address = addresses.get(definition.start_point[0] - 1)
+                if address is None:
+                    kind = "synthetic"
+                else:
+                    matching = matches.get(address)
+                    kind = (
+                        "synthetic"
+                        if matching is None
+                        else "matched"
+                        if matching == 1
+                        else "stub"
+                        if matching == 0
+                        else "partial"
+                    )
             functions[name] = Function(
                 name,
                 str(path.relative_to(ROOT)),
-                "runtime" if runtime else "stub" if stub else "matched",
-                [] if runtime or stub else found,
+                kind,
+                [] if runtime else found,
             )
 
 
 def build_index() -> Functions:
     functions: Functions = OrderedDict()
-    index_sources(functions)
+    index_sources(functions, match_results())
     for function in list(functions.values()):
         function.calls = list(dict.fromkeys(function.calls))
         for name in function.calls:
@@ -136,20 +172,20 @@ def render(functions: Functions, root: str, show_runtime: bool) -> str:
     expanded: set[str] = set()
     active: set[str] = set()
 
-    def walk(name: str, prefix: str, last: bool, depth: int, root_node: bool) -> None:
+    def walk(name: str, prefix: str, last: bool, root_node: bool) -> None:
         function = functions.get(name, Function(name, "", "runtime"))
         suffix = (
-            " … (depth limit)"
-            if depth >= MAX_RENDER_DEPTH
-            else " (cycle)"
+            " (cycle)"
             if name in active
-            else " (see above)"
-            if name in expanded and function.kind == "matched"
-            else ""
+            else (
+                " (see above)"
+                if name in expanded and function.kind == "matched"
+                else ""
+            )
         )
         branch = "" if root_node else ("└─ " if last else "├─ ")
         location = f" [{function.file}]" if function.file else ""
-        line = f"{function.marker} {function.display_name}{location}{suffix}"
+        line = f"{function.marker} {function.name}{location}{suffix}"
         if function.kind == "runtime" and sys.stdout.isatty():
             line = f"\x1b[2m{line}\x1b[0m"
         lines.append(f"{prefix}{branch}{line}")
@@ -161,14 +197,13 @@ def render(functions: Functions, root: str, show_runtime: bool) -> str:
         children = [
             child
             for child in function.calls
-            if show_runtime
-            or functions.get(child, Function(child, "", "runtime")).kind != "runtime"
+            if show_runtime or functions[child].kind != "runtime"
         ]
         for index, child in enumerate(children):
-            walk(child, child_prefix, index == len(children) - 1, depth + 1, False)
+            walk(child, child_prefix, index == len(children) - 1, False)
         active.remove(name)
 
-    walk(root, "", True, 0, True)
+    walk(root, "", True, True)
     return "\n".join(lines)
 
 
