@@ -664,7 +664,6 @@ unsigned int FUN_00444260(void) {
 unsigned int FUN_004442c0(void) {
     struct RideElem *elem;
 
-    // STRING: LEGOLAND 0x004b80b0
     elem = (struct RideElem *)ElemID("DRIVING SCHOOL"); /* TODO: fold — ElemID handle (uint) viewed as RideElem* */
     if ((elem->flags & 1) != 0) {
         return elem->obj->func(elem->obj->arg, 0);
@@ -676,7 +675,6 @@ unsigned int FUN_004442c0(void) {
 unsigned int FUN_004442f0(void) {
     struct RideElem *elem;
 
-    // STRING: LEGOLAND 0x004b536c
     elem = (struct RideElem *)ElemID("BOATING SCHOOL");
     if ((elem->flags & 1) != 0) {
         return elem->obj->func(elem->obj->arg, 0);
@@ -688,7 +686,6 @@ unsigned int FUN_004442f0(void) {
 unsigned int FUN_00444320(void) {
     struct RideElem *elem;
 
-    // STRING: LEGOLAND 0x004b5c0c
     elem = (struct RideElem *)ElemID("CASTLE OBJ");
     if ((elem->flags & 1) != 0) {
         return elem->obj->func(elem->obj->arg, 0);
@@ -700,7 +697,6 @@ unsigned int FUN_00444320(void) {
 unsigned int FUN_00444350(void) {
     struct RideElem *elem;
 
-    // STRING: LEGOLAND 0x004b4bb4
     elem = (struct RideElem *)ElemID("LOG FLUME ENTRANCE");
     if ((elem->flags & 1) != 0) {
         return elem->obj->func(elem->obj->arg, 0);
@@ -712,7 +708,6 @@ unsigned int FUN_00444350(void) {
 unsigned int FUN_00444380(void) {
     struct RideElem *elem;
 
-    // STRING: LEGOLAND 0x004b80c0
     elem = (struct RideElem *)ElemID("JUNGLE CRUISE");
     if ((elem->flags & 1) != 0) {
         return elem->obj->func(elem->obj->arg, 0);

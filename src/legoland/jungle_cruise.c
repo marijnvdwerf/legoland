@@ -1246,7 +1246,6 @@ void FUN_00434e50(struct JungleHolder *param_1) {
     struct JunglePath *path;
 
     DAT_0081cb60 = param_1->cursor;
-    // STRING: LEGOLAND 0x004b5334
     if (LLIDB_FindElement("BOATING SCHOOL TILE MAPPING", (unsigned int *)&handle, 0) == 0) {
         LLIDB_UnLoadData((unsigned int)handle);
     }

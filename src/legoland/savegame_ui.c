@@ -126,7 +126,6 @@ LEGO_EXPORT void InitSavedGameScreen(void) {
             ((struct SaveScreenIcon *)DAT_007986e0)->field_38 = GetString(0x2a);
         }
     } else {
-        // STRING: LEGOLAND 0x004bf15c
         DAT_007986e0 = (unsigned int)LoadSpriteIcon("Accept_On_Save.lls", 4, 0x1dc, 0x142, 7);
         ((struct SaveScreenIcon *)DAT_007986e0)->field_3c = 0x2b;
         ((struct SaveScreenIcon *)DAT_007986e0)->field_38 = GetString(0x2b);

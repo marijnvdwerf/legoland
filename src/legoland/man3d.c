@@ -595,7 +595,6 @@ LEGO_EXPORT void InitMan(void) {
     // STRING: LEGOLAND 0x004b7bc0
     DAT_0062febc[4] = FUN_0043fa80("ManPan.ManPan.3d", "visitor", ctx);
     // STRING: LEGOLAND 0x004b7ba4
-    // STRING: LEGOLAND 0x004b7bb0
     FUN_00442980("altman.txt", "NewProject.txt", "visitor", 0, ctx);
     // STRING: LEGOLAND 0x004b7b94
     FUN_00442980("altwoman.txt", "NewProject.txt", "visitor", 1, ctx);

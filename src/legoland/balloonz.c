@@ -426,7 +426,6 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
                 *(struct Sprite **)(*(int *)(blokepos + 4) + 0x2c) = DAT_00616040;
                 *(unsigned int *)(*(int *)(blokepos + 4) + 0x30) = 1;
                 *(float *)(*(int *)(blokepos + 4) + 0x3c) = (float)GetUnitDepth(0xc9c578e3, 0xc9c57f82);
-                // STRING: LEGOLAND 0x004b4704
                 sprintf(&buf[1], "%02d", *(unsigned char *)(blokepos + 0x36));
                 SetBlokePositionFromBNV(DAT_00616010, blokepos, buf, 0, 0xc9c578e3, 0xc9c57f82, 0);
                 *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';

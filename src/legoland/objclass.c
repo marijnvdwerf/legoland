@@ -188,11 +188,9 @@ struct ElemView {
 };
 
 static const struct ObjClassAlias ObjClassAliasTable[] = {
-    // STRING: LEGOLAND 0x004b5c0c
     {"CASTLE OBJ",
         // STRING: LEGOLAND 0x004bce60
         "CASTLE_DUMMY;ROLLER COASTER TRACK;SQUARE_TRACK;"},
-    // STRING: LEGOLAND 0x004b4bb4
     {"LOG FLUME ENTRANCE",
         // STRING: LEGOLAND 0x004bce4c
         "LOG FLUME TRACK;"},

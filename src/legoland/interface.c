@@ -442,7 +442,6 @@ LEGO_EXPORT int InitGameInterface(int a) {
 
     if (DAT_00668ebc == 0) {
         DAT_00668ebc = 1;
-        // STRING: LEGOLAND 0x004b8a70
         LLIDB_FindElement("PATH CONTROL", (unsigned int *)&element, 0);
         obj = element->obj;
         DAT_007fd624 = obj;
@@ -2136,19 +2135,19 @@ int FUN_004771f0(char *filename, unsigned int param_2, int param_3) {
         return 1;
     }
     // STRING: LEGOLAND 0x004bb554
-    FUN_0047f870("Movie openned OK : %s ", path);
+    FUN_0047f870("Movie openned OK (%s)", path);
     FUN_0047f850();
     FUN_00492830();
     FUN_00492d80();
     PushRenderingStatusAndUnlockVideoSurface();
     // STRING: LEGOLAND 0x004bb538
-    FUN_0047f870("Attempting to play movie ");
+    FUN_0047f870("Attempting to play movie..");
     FUN_0047f850();
     // STRING: LEGOLAND 0x004bb528
-    DBPrintf("Starting Movie");
+    DBPrintf("Starting Movie\n");
     result = FUN_004766f0(handle, rect, param_2);
     // STRING: LEGOLAND 0x004bb518
-    DBPrintf("Stopping Movie");
+    DBPrintf("Stopping Movie\n");
     // STRING: LEGOLAND 0x004bb508
     FUN_0047f870("Stopping movie");
     FUN_0047f850();

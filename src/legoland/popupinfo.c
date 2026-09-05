@@ -75,7 +75,6 @@ LEGO_EXPORT void InitPopUpInfo(void) {
     if (LLIDB_FindElement("MECHANICS HUT", &DAT_007fdfb4, 0) != 0) {
         _exit(1);
     }
-    // STRING: LEGOLAND 0x004b8a70
     if (LLIDB_FindElement("PATH CONTROL", &DAT_007fdfb8, 0) != 0) {
         _exit(1);
     }
@@ -850,7 +849,6 @@ void FUN_004720a0(void) {
     obj = (struct NewObjInfo *)(&DAT_007fded4)[DAT_007fdf78];
     FUN_00455e50(obj->field_80, 0x13e, 0x68, 0xfc, 0x77, 2, 0x10, 0xff0000, 0xffffff);
     obj = (struct NewObjInfo *)(&DAT_007fded4)[DAT_007fdf78];
-    // STRING: LEGOLAND 0x004b8a80
     sprintf(local_80, "%d", obj->field_26);
     FUN_00455e50(local_80, 0xf0, 0xd1, 0x43, 0x12, 2, 1, 0xff0000, 0xffffff);
     PopRenderingStatus();

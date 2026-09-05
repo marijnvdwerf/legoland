@@ -1210,7 +1210,6 @@ void FUN_0046ee00(void) {
         switch (EditMode.unk0) {
         case 1:
             if (EditMode.unk8 != 0) {
-                // STRING: LEGOLAND 0x004ba888
                 if (strcmp("Path", *(char **)((char *)EditMode.unk8 + 0x78)) == 0) {
                     mode = 1;
                     break;

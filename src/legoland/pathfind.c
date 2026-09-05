@@ -545,7 +545,6 @@ void FUN_00482a90(void) {
     }
 
     if (DAT_006661c4 == 0) {
-        // STRING: LEGOLAND 0x004b83d0
         DAT_006661c4 = ElemID("ENTRANCE 1");
     }
 

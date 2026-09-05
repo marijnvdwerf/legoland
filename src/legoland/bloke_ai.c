@@ -818,7 +818,6 @@ void FUN_0044f610(struct Bloke *bloke) {
                 }
                 element = (int *)GetNextObjectMatching((struct RenderObject *)element, (struct RenderObjectVtable *)bloke->field_14);
                 if (element == 0 && (element = (int *)GetFirstObjectMatching((struct RenderObjectVtable *)bloke->field_14)) == 0) {
-                    // STRING: LEGOLAND 0x004b8424
                     sprintf(msg, "Wandering...");
                     FUN_0044ed00(msg);
                     bloke->field_e = 4;
@@ -840,7 +839,6 @@ void FUN_0044f610(struct Bloke *bloke) {
         break;
     case 2:
     case 3:
-        // STRING: LEGOLAND 0x004b8424
         sprintf(msg, "Wandering...");
         FUN_0044ed00(msg);
         bloke->field_e = 4;
@@ -850,7 +848,6 @@ void FUN_0044f610(struct Bloke *bloke) {
         bloke->param_action = 0;
         return;
     case 5:
-        // STRING: LEGOLAND 0x004b8434
         sprintf(msg, "Stuck, Routing Point To Point...");
         FUN_0044ed00(msg);
         result = PTPSuggestNextMove(&bloke->field_68, &bloke->field_2c, out);
@@ -882,7 +879,6 @@ void FUN_0044f610(struct Bloke *bloke) {
         }
         break;
     case 6:
-        // STRING: LEGOLAND 0x004b8424
         sprintf(msg, "Wandering...");
         FUN_0044ed00(msg);
         bloke->field_e = 4;

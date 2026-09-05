@@ -1834,6 +1834,7 @@ void FUN_00410c10(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00410d60
 void FUN_00410d60(struct ClassNode *flume, struct CallbackTable *vtbl) {
+    // STRING: LEGOLAND 0x004b4bb4
     if (_stricmp("LOG FLUME ENTRANCE", flume->name) == 0) {
         vtbl->cb_a4 = FUN_0040a2e0;
         vtbl->cb_8c = FUN_0040a540;

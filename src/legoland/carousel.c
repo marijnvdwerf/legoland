@@ -132,7 +132,7 @@ void FUN_0042c280(struct CarouselRideObj *param_1) {
     struct LayerResult layer;
 
     DAT_006160bc = param_1->ride;
-    // STRING: LEGOLAND 0x004b64d8
+    // STRING: LEGOLAND 0x004b650c
     Load_FXList((const unsigned char *)"Carousel.wav", 2);
     DAT_006160bc->flags |= 0x420;
     DAT_00616068 = DAT_006160bc->layer;
@@ -416,9 +416,7 @@ void FUN_0042c820(struct CarouselRideObj *param_1) {
                 *(unsigned int *)(*(int *)(blokepos + 4) + 0x30) = 1;
                 *(float *)(*(int *)(blokepos + 4) + 0x3c) = (float)GetUnitDepth(0xc9c57dea, 0xc9c585e8);
                 *(unsigned char *)(blokepos + 0x35) = 0;
-                // STRING: LEGOLAND 0x004b4704
                 sprintf(DAT_004b64d4, "%02d", FUN_0042cd20(elem, (struct CarouselNode *)bloke, *(unsigned char *)((char *)DAT_006160bc + 0x2e)));
-                // STRING: LEGOLAND 0x004b64cc
                 *(unsigned int *)(blokepos + 0x54) = (unsigned int)NewBNVPath(DAT_00616090, 0, "BlokeBox??", 0xc9c57dea, 0xc9c585e8, &local_18);
                 UpdateBlokeFromBNVPath(blokepos, *(unsigned int *)(blokepos + 0x54));
                 *(unsigned char *)(blokepos + 0x62) |= 0x80;
@@ -457,9 +455,7 @@ void FUN_0042c820(struct CarouselRideObj *param_1) {
                 *(unsigned int *)(*(int *)(blokepos + 4) + 0x30) = 1;
                 *(float *)(*(int *)(blokepos + 4) + 0x3c) = (float)GetUnitDepth(0xc9c57dea, 0xc9c585e8);
                 *(unsigned char *)(blokepos + 0x35) = 2;
-                // STRING: LEGOLAND 0x004b4704
                 sprintf(DAT_004b64d4, "%02d", *(unsigned char *)(blokepos + 0x36));
-                // STRING: LEGOLAND 0x004b64cc
                 *(unsigned int *)(blokepos + 0x54) = (unsigned int)NewBNVPath(DAT_00616098, 2, "BlokeBox??", 0xc9c57dea, 0xc9c585e8, &local_c);
                 *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
                 break;

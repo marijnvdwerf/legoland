@@ -2061,7 +2061,6 @@ void FUN_0049c140(void) {
     struct BlokeSave rec;
     char *person;
 
-    // STRING: LEGOLAND 0x004b89ac
     list = (struct BlokeList *)*(int *)(ElemID("POTTING SHED") + 0xc);
     count = 0;
     node = GardenerList;
