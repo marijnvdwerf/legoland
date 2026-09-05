@@ -242,19 +242,16 @@ LEGO_EXPORT void PrintBackground(void) { return; }
 
 // FUNCTION: LEGOLAND 0x00464370
 LEGO_EXPORT void CommitCliprectToHardware(void) {
-    struct ClipRgnData {
-        /* 0x00 */ RGNDATAHEADER rdh;
-        /* 0x20 */ RECT rect;
-    } *rgn;
+    RGNDATA *rgn;
     LPDIRECTDRAWCLIPPER clipper;
 
-    rgn = malloc(0x33);
+    rgn = malloc(sizeof(RGNDATA) - 1 + sizeof(RECT));
     rgn->rdh.iType = 1;
     rgn->rdh.nCount = 1;
     rgn->rdh.dwSize = 0x20;
     rgn->rdh.nRgnSize = 0x10;
-    rgn->rdh.rcBound = *&SPRITE_ClipRect;
-    rgn->rect = *&SPRITE_ClipRect;
+    rgn->rdh.rcBound = SPRITE_ClipRect;
+    *(RECT *)rgn->Buffer = SPRITE_ClipRect;
     clipper = DAT_00668080;
     IDirectDrawClipper_SetClipList(clipper, (LPRGNDATA)rgn, 0);
     free(rgn);
@@ -306,22 +303,25 @@ void FUN_00465850(void *frame) { STUB(); }
 void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3) {
     int height;
     int width;
-    int src;
+    unsigned short *src;
     unsigned short *dst;
+    int offset;
     int i;
     int j;
+    unsigned short *p;
+    unsigned short v;
 
     height = param_1->height;
     width = param_1->width;
     dst = (unsigned short *)((char *)DAT_0066809c.lpSurface + DAT_0066809c.lPitch * param_3 + param_2 * 2);
-    src = (int)param_1 + 0x28 + (height - 1) * width * 2;
+    src = param_1->pixels + (height - 1) * width;
     for (i = height; i != 0; i--) {
         if (width > 0) {
-            int offset = src - (int)dst;
-            unsigned short *p = dst;
+            offset = (char *)src - (char *)dst;
+            p = dst;
             j = width;
             do {
-                unsigned short v = *(unsigned short *)(offset + (int)p);
+                v = *(unsigned short *)((char *)p + offset);
                 if (DAT_00668088 == 2) {
                     v = (v & 0x1f) | (v & 0xffe0) << 1;
                 }
@@ -331,7 +331,7 @@ void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3) {
             } while (j != 0);
         }
         dst = (unsigned short *)((char *)dst + DAT_0066809c.lPitch);
-        src += width * -2;
+        src -= width;
     }
 }
 
@@ -430,11 +430,10 @@ int FUN_004661d0(void) {
         return 0;
     }
     tick = GetTickCount();
-    frames = DAT_006681f8 + 1;
     FrameNumber = FrameNumber + 1;
-    DAT_006681f8 = frames;
+    DAT_006681f8 = DAT_006681f8 + 1;
     if (tick - DAT_006681f0 >= 0x3e8) {
-        FramesPerSecond = frames;
+        FramesPerSecond = DAT_006681f8;
         DAT_006681f8 = 0;
         DAT_006681f0 = tick;
     }
@@ -558,8 +557,7 @@ LEGO_EXPORT void PushSetTarget(struct Sprite *sprite) {
         }
     }
     DAT_00668144 = 0;
-    renderEngineTargets[renderEngineTargetIdx] = renderEngine;
-    renderEngineTargetIdx = renderEngineTargetIdx + 1;
+    renderEngineTargets[renderEngineTargetIdx++] = renderEngine;
     renderEngine = sprite->surface;
     FUN_004640f0();
 }
@@ -588,26 +586,28 @@ LEGO_EXPORT int RecreateSprite(struct Sprite *sprite) {
     desc.dwFlags = 7;
     desc.ddsCaps.dwCaps = 0x40;
     desc.dwHeight = (short)sprite->height;
-    if ((sprite->flags & 0x10) == 0) {
-        ddraw2 = DDRAWENV.ddraw2;
-        if (IDirectDraw2_CreateSurface(ddraw2, &desc, &sprite->surface, NULL) == 0) {
-            goto created;
+    for (;;) {
+        if ((sprite->flags & 0x10) == 0) {
+            ddraw2 = DDRAWENV.ddraw2;
+            if (IDirectDraw2_CreateSurface(ddraw2, &desc, &sprite->surface, NULL) == 0) {
+                break;
+            }
         }
-    }
-    desc.dwWidth = (short)sprite->width;
-    desc.dwHeight = (short)sprite->height;
-    desc.dwSize = 0x6c;
-    desc.dwFlags = 7;
-    desc.ddsCaps.dwCaps = 0x840;
-    ddraw2 = DDRAWENV.ddraw2;
-    if (IDirectDraw2_CreateSurface(ddraw2, &desc, &sprite->surface, NULL) != 0) {
+        desc.dwWidth = (short)sprite->width;
+        desc.dwHeight = (short)sprite->height;
+        desc.dwSize = 0x6c;
+        desc.dwFlags = 7;
+        desc.ddsCaps.dwCaps = 0x840;
         ddraw2 = DDRAWENV.ddraw2;
-        if (IDirectDraw2_Compact(ddraw2) == 0) {
-            IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &sprite->surface, NULL);
+        if (IDirectDraw2_CreateSurface(ddraw2, &desc, &sprite->surface, NULL) != 0) {
+            ddraw2 = DDRAWENV.ddraw2;
+            if (IDirectDraw2_Compact(ddraw2) == 0) {
+                IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &sprite->surface, NULL);
+            }
+            return 0;
         }
-        return 0;
+        break;
     }
-created:
     if ((sprite->flags & 0x80) != 0) {
         colorkey.dwColorSpaceLowValue = GetNearestColour(0xff, 0, 0xff);
         surface = sprite->surface;
