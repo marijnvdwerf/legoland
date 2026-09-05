@@ -243,6 +243,7 @@ LEGO_EXPORT void RemakeAllDetailDependentSprites(void) {
     const unsigned int mask = 0x400;
 
     sprite = sprite_list;
+    sprite = (struct Sprite *)((unsigned int)sprite | (mask & 0));
     node = sprite_list;
     if (sprite != NULL) {
         do {
@@ -455,13 +456,12 @@ void FUN_004975b0(struct Sprite *sprite) {
     if (current == NULL) {
         // STRING: LEGOLAND 0x004bfeb0
         DBPrintf("Couldn't unlink sprite\n");
-        free(sprite);
-        return;
-    }
-    if (prev == NULL) {
-        sprite_list = sprite->next;
     } else {
-        prev->next = sprite->next;
+        if (prev == NULL) {
+            sprite_list = sprite->next;
+        } else {
+            prev->next = sprite->next;
+        }
     }
     free(sprite);
 }
