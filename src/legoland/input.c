@@ -33,7 +33,7 @@ struct DInputDevice {
 LEGO_EXPORT int InitInputSystem(void) {
     HINSTANCE hinst;
 
-    hinst = (HINSTANCE)GetWindowLongA((HWND)WNDENV_Gethwnd(), GWL_HINSTANCE);
+    hinst = (HINSTANCE)GetWindowLongA(WNDENV_Gethwnd(), GWL_HINSTANCE);
     DirectInputCreateA(hinst, 0x300, (LPDIRECTINPUTA *)&dinput, NULL);
     if (FUN_004738b0() == 0) {
         return 0;
@@ -80,7 +80,7 @@ int FUN_00473970(void) {
     DIDEVCAPS caps;
 
     if (IDirectInput_CreateDevice((LPDIRECTINPUTA)dinput, &GUID_SysMouse, (LPDIRECTINPUTDEVICEA *)&dintput_mouse, NULL) == 0) {
-        IDirectInputDevice_SetCooperativeLevel((LPDIRECTINPUTDEVICEA)dintput_mouse, (HWND)WNDENV_Gethwnd(), 5);
+        IDirectInputDevice_SetCooperativeLevel((LPDIRECTINPUTDEVICEA)dintput_mouse, WNDENV_Gethwnd(), 5);
         IDirectInputDevice_SetDataFormat((LPDIRECTINPUTDEVICEA)dintput_mouse, &c_dfDIMouse);
         prop.diph.dwSize = 0x14;
         prop.diph.dwHeaderSize = 0x10;

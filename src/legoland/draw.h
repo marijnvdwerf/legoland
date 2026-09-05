@@ -4,6 +4,11 @@
 
 #include <windows.h>
 
+union RectPoints {
+    RECT rect;
+    POINT pt[2];
+};
+
 struct VideoArg {
     /* 0x00 */ int field_0;
     /* 0x04 */ int field_4;

@@ -2418,7 +2418,7 @@ unsigned int FUN_0046c920(void) {
     if (FUN_00474920() == 0) {
         return 0;
     }
-    if (SaveGameWrite(&DAT_0066861c, 0x80) == 0) {
+    if (SaveGameWrite(DAT_0066861c, 0x80) == 0) {
         return 0;
     }
     if (SaveGameWrite(DAT_0066869c, 0x80) == 0) {
@@ -2504,7 +2504,7 @@ unsigned int FUN_0046cb60(void) {
     if (FUN_00474970() == 0) {
         return 0;
     }
-    if (SaveGameRead(&DAT_0066861c, 0x80) == 0) {
+    if (SaveGameRead(DAT_0066861c, 0x80) == 0) {
         return 0;
     }
     if (SaveGameRead(DAT_0066869c, 0x80) == 0) {

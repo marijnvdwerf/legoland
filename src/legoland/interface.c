@@ -538,7 +538,7 @@ LEGO_EXPORT int InitGameInterface(int a) {
         icon->field_28 = (void *)FUN_0046e040;
         DAT_00668e9c = icon;
         icon->flags |= 0x400;
-        FUN_00491240((const char *)&DAT_0066861c);
+        FUN_00491240(DAT_0066861c);
 
         icon = InsertIcon(0x20a, 0x17a, 0x93, DAT_00668ea0);
         icon->field_20p = NULL;
@@ -604,7 +604,7 @@ unsigned char FUN_00474f40(void *context, unsigned int flags, const char *a, con
         if (flags & 2) {
             EditMode.unk0 = 0;
             FUN_00490600(1);
-            FUN_004911c0((const char *)&DAT_0066861c, (const char *)&DAT_0066869c);
+            FUN_004911c0(DAT_0066861c, DAT_0066869c);
         }
     }
     return 1;

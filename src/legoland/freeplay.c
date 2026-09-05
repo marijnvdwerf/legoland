@@ -186,7 +186,7 @@ void FUN_0048abb0(void) {
     UpdateMenu();
     FUN_004663c0();
     FUN_00490600(1);
-    FUN_004911c0((const char *)&DAT_0066861c, 0);
+    FUN_004911c0(DAT_0066861c, 0);
     FUN_00458bb0(1);
     FUN_004993c0();
     UpdateSoundVols();

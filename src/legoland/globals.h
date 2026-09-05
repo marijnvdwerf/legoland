@@ -1869,9 +1869,7 @@ extern unsigned int DAT_00668614;
 // 0x00668618
 extern unsigned int DAT_00668618;
 // 0x0066861c
-extern unsigned char DAT_0066861c;
-// 0x0066869b
-extern unsigned char DAT_0066869b;
+extern char DAT_0066861c[128];
 // 0x0066869c
 extern char DAT_0066869c[128];
 // 0x0066871c
@@ -2187,7 +2185,7 @@ extern void *g_hInstance;
 // 0x0066920c
 extern int DAT_0066920c;
 // 0x00669210
-extern void *DAT_00669210;
+extern HWND DAT_00669210;
 // 0x00669238
 extern unsigned int DAT_00669238;
 // 0x00669240
@@ -2999,7 +2997,7 @@ extern void *DAT_00813a0c;
 // 0x00813a10
 extern unsigned int DAT_00813a10;
 // 0x00813a18
-extern int DAT_00813a18;
+extern unsigned long DAT_00813a18;
 // 0x00813a2c
 extern int DAT_00813a2c;
 // 0x00813a34

@@ -396,7 +396,7 @@ int FUN_00466080(void) {
 // FUNCTION: LEGOLAND 0x004661d0
 int FUN_004661d0(void) {
     RECT dst;
-    RECT client;
+    union RectPoints client;
     DWORD tick;
     LPDIRECTDRAWSURFACE surface;
     int result;
@@ -417,9 +417,9 @@ int FUN_004661d0(void) {
         tick = GetTickCount();
     }
     DAT_00668200 = GetTickCount();
-    GetClientRect((HWND)WNDENV_Gethwnd(), &client);
-    ClientToScreen((HWND)WNDENV_Gethwnd(), (LPPOINT)&client);
-    OffsetRect(&dst, client.left, client.top);
+    GetClientRect(WNDENV_Gethwnd(), &client.rect);
+    ClientToScreen(WNDENV_Gethwnd(), &client.pt[0]);
+    OffsetRect(&dst, client.rect.left, client.rect.top);
     surface = DAT_00668070;
     result = IDirectDrawSurface_Blt(surface, &dst, DAT_00668078, NULL, 0x1000000, NULL);
     if (result == 0x887601c2) {
@@ -475,26 +475,26 @@ void FUN_004663c0(void) {
 
 // FUNCTION: LEGOLAND 0x004663f0
 void FUN_004663f0(void) {
-    RECT cursor;
+    union RectPoints cursor;
     LPDIRECTDRAWSURFACE surface;
     struct Image *image;
 
     if (DAT_00668204 != 0) {
         if ((int)(GetTicks() - DAT_00667d60) > 0xc8) {
-            cursor.left = DAT_007fea30.left;
-            cursor.top = DAT_007fea30.top;
-            cursor.right = DAT_007fea30.right;
-            cursor.bottom = DAT_007fea30.bottom;
+            cursor.rect.left = DAT_007fea30.left;
+            cursor.rect.top = DAT_007fea30.top;
+            cursor.rect.right = DAT_007fea30.right;
+            cursor.rect.bottom = DAT_007fea30.bottom;
             DAT_00667d60 = GetTicks();
             image = DAT_00668208->image;
             FUN_0047d610((struct LLS *)image->data);
             PushRenderingStatusAndLockVideoSurface();
             PrintSprite(DAT_00668208, DAT_007fea30.left, DAT_007fea30.top, 0, 0);
             PopRenderingStatus();
-            ClientToScreen((HWND)WNDENV_Gethwnd(), (LPPOINT)&cursor);
-            ClientToScreen((HWND)WNDENV_Gethwnd(), (LPPOINT)&cursor.right);
+            ClientToScreen(WNDENV_Gethwnd(), &cursor.pt[0]);
+            ClientToScreen(WNDENV_Gethwnd(), &cursor.pt[1]);
             surface = DAT_00668070;
-            if (IDirectDrawSurface_Blt(surface, &cursor, DAT_00668078, &DAT_007fea30, 0x1000000, NULL) == 0x887601c2) {
+            if (IDirectDrawSurface_Blt(surface, &cursor.rect, DAT_00668078, &DAT_007fea30, 0x1000000, NULL) == 0x887601c2) {
                 IDirectDrawSurface_Restore(DAT_00668070);
                 IDirectDrawSurface_Blt(DAT_00668070, &cursor, DAT_00668078, NULL, 0x1000000, NULL);
             }
@@ -657,6 +657,6 @@ void FUN_00468410(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004687f0
 void FUN_004687f0(const char *param_1) {
-    strncpy((char *)&DAT_0066861c, param_1, 0x80);
-    DAT_0066869b = 0;
+    strncpy(DAT_0066861c, param_1, 0x80);
+    DAT_0066861c[0x7f] = 0;
 }

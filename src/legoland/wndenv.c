@@ -21,16 +21,16 @@ struct MidiTrack {
 LEGO_EXPORT void *WNDENV_GethInstance(void) { return g_hInstance; }
 
 // FUNCTION: LEGOLAND 0x0047fe50
-LEGO_EXPORT void WNDENV_Sethwnd(void *param_1) { DAT_00669210 = param_1; }
+LEGO_EXPORT void WNDENV_Sethwnd(HWND param_1) { DAT_00669210 = param_1; }
 
 // FUNCTION: LEGOLAND 0x0047fe60
-LEGO_EXPORT void *WNDENV_Gethwnd(void) { return DAT_00669210; }
+LEGO_EXPORT HWND WNDENV_Gethwnd(void) { return DAT_00669210; }
 
 // FUNCTION: LEGOLAND 0x0047fe70
-BOOL FUN_0047fe70(void) { return ShowWindow((HWND)WNDENV_Gethwnd(), 6); }
+BOOL FUN_0047fe70(void) { return ShowWindow(WNDENV_Gethwnd(), 6); }
 
 // FUNCTION: LEGOLAND 0x0047fe80
-void FUN_0047fe80(void) { ShowWindow((HWND)WNDENV_Gethwnd(), 9); }
+void FUN_0047fe80(void) { ShowWindow(WNDENV_Gethwnd(), 9); }
 
 // FUNCTION: LEGOLAND 0x0047fe90
 LEGO_EXPORT LRESULT CALLBACK LegoLandWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -68,8 +68,8 @@ LEGO_EXPORT int ProcessSystemEvents(void) {
     WNDENV_Gethwnd();
     peeked = 0;
     do {
-        while (PeekMessageA(&msg, (HWND)WNDENV_Gethwnd(), 0, 0, 0) != 0) {
-            if (GetMessageA(&msg, (HWND)WNDENV_Gethwnd(), 0, 0) == 0) {
+        while (PeekMessageA(&msg, WNDENV_Gethwnd(), 0, 0, 0) != 0) {
+            if (GetMessageA(&msg, WNDENV_Gethwnd(), 0, 0) == 0) {
                 return 1;
             }
             TranslateMessage(&msg);
