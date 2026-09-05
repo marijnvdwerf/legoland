@@ -283,7 +283,7 @@ LEGO_EXPORT void LoadColourTable(void) {
 
     RES_ReadFile(file, DAT_00814020, 0x8000);
 
-    ddraw = (LPDIRECTDRAW2)DDRAWENV[1];
+    ddraw = DDRAWENV.ddraw2;
     ddraw->lpVtbl->CreatePalette(ddraw, 0x44, entries, (LPDIRECTDRAWPALETTE *)&DAT_00668084, NULL);
     surface = (LPDIRECTDRAWSURFACE)DAT_00668070;
     surface->lpVtbl->SetPalette(surface, (LPDIRECTDRAWPALETTE)DAT_00668084);

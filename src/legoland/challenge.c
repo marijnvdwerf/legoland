@@ -442,12 +442,6 @@ struct AdvisorObject {
     /* 0x0e */ short y;
 };
 
-struct AviFrame {
-    /* 0x00 */ unsigned char pad_0[4];
-    /* 0x04 */ int width;
-    /* 0x08 */ int height;
-};
-
 // FUNCTION: LEGOLAND 0x00443e30
 unsigned int FUN_00443e30(struct AdvisorObject *param_1) {
     struct AnimHandle *anim;
@@ -480,7 +474,7 @@ unsigned int FUN_00443e30(struct AdvisorObject *param_1) {
             // STRING: LEGOLAND 0x004b7da8
             DAT_00667c40 = "BltAdvisor";
             PushRenderingStatusAndLockVideoSurface();
-            FUN_004659a0((int)frame, param_1->x, param_1->y);
+            FUN_004659a0(frame, param_1->x, param_1->y);
             PopRenderingStatus();
             DAT_00665eec = DAT_00665eec + 1;
             // STRING: LEGOLAND 0x004b7d98

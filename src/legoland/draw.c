@@ -26,23 +26,23 @@ LEGO_EXPORT int InitHostSystemGPU(void) {
     LPDIRECTDRAW ddraw;
     LPDIRECTDRAW2 ddraw2;
 
-    if (DDRAWENV[1] != 0) {
+    if (DDRAWENV.ddraw2 != 0) {
         return 1;
     }
-    if (DirectDrawCreate(NULL, (LPDIRECTDRAW *)&DDRAWENV[0], NULL) == 0) {
-        ddraw = (LPDIRECTDRAW)DDRAWENV[0];
-        if (ddraw->lpVtbl->QueryInterface(ddraw, &DAT_004acf80, (LPVOID *)&DDRAWENV[1]) != 0) {
-            ((LPDIRECTDRAW)DDRAWENV[0])->lpVtbl->Release((LPDIRECTDRAW)DDRAWENV[0]);
+    if (DirectDrawCreate(NULL, &DDRAWENV.ddraw, NULL) == 0) {
+        ddraw = DDRAWENV.ddraw;
+        if (IDirectDraw_QueryInterface(ddraw, &DAT_004acf80, &DDRAWENV.ddraw2) != 0) {
+            IDirectDraw_Release(DDRAWENV.ddraw);
             // STRING: LEGOLAND 0x004b9cd0
             DBPrintf("Can't Create DDCOM");
             return 0;
         }
-        DDRAWENV[2] = 0x17c;
-        DDRAWENV[97] = 0x17c;
-        ddraw2 = (LPDIRECTDRAW2)DDRAWENV[1];
-        if (ddraw2->lpVtbl->GetCaps(ddraw2, (LPDDCAPS)&DDRAWENV[2], (LPDDCAPS)&DDRAWENV[97]) != 0) {
-            ((LPDIRECTDRAW2)DDRAWENV[1])->lpVtbl->Release((LPDIRECTDRAW2)DDRAWENV[1]);
-            ((LPDIRECTDRAW)DDRAWENV[0])->lpVtbl->Release((LPDIRECTDRAW)DDRAWENV[0]);
+        DDRAWENV.caps.dwSize = 0x17c;
+        DDRAWENV.hel_caps.dwSize = 0x17c;
+        ddraw2 = DDRAWENV.ddraw2;
+        if (IDirectDraw2_GetCaps(ddraw2, &DDRAWENV.caps, &DDRAWENV.hel_caps) != 0) {
+            IDirectDraw2_Release(DDRAWENV.ddraw2);
+            IDirectDraw_Release(DDRAWENV.ddraw);
             // STRING: LEGOLAND 0x004b9cb8
             DBPrintf("Can't get DDCOM caps");
             return 0;
@@ -56,10 +56,7 @@ LEGO_EXPORT int InitHostSystemGPU(void) {
 
 // FUNCTION: LEGOLAND 0x004637c0
 LEGO_EXPORT int CheckHostSystemGPU(void) {
-    int i;
-    for (i = 0; i < 246; ++i) {
-        DDRAWENV[i] = 0;
-    }
+    memset(&DDRAWENV, 0, sizeof(DDRAWENV));
     InitHostSystemGPU();
 }
 
@@ -67,17 +64,17 @@ LEGO_EXPORT int CheckHostSystemGPU(void) {
 LEGO_EXPORT void KillHostSystemGPU(void) {
     // STRING: LEGOLAND 0x004b9ce4
     RemoveFontResourceA("lego.ttf");
-    if (DDRAWENV[1] != 0) {
-        ((LPDIRECTDRAW2)DDRAWENV[1])->lpVtbl->Release((LPDIRECTDRAW2)DDRAWENV[1]);
-        DDRAWENV[1] = 0;
+    if (DDRAWENV.ddraw2 != 0) {
+        IDirectDraw2_Release(DDRAWENV.ddraw2);
+        DDRAWENV.ddraw2 = 0;
     }
     DeleteObject((HGDIOBJ)PTR_00668090);
     DeleteObject((HGDIOBJ)PTR_00668098);
     DeleteObject((HGDIOBJ)PTR_0066808c);
     DeleteObject((HGDIOBJ)PTR_00668094);
-    if (DDRAWENV[0] != 0) {
-        ((LPDIRECTDRAW)DDRAWENV[0])->lpVtbl->Release((LPDIRECTDRAW)DDRAWENV[0]);
-        DDRAWENV[0] = 0;
+    if (DDRAWENV.ddraw != 0) {
+        IDirectDraw_Release(DDRAWENV.ddraw);
+        DDRAWENV.ddraw = 0;
     }
 }
 
@@ -98,17 +95,17 @@ int FUN_00463ef0(void) {
     LPDIRECTDRAW2 ddraw2;
 
     if (DAT_00667d6c == 0) {
-        ddraw2 = (LPDIRECTDRAW2)DDRAWENV[1];
-        if (ddraw2->lpVtbl->SetDisplayMode(ddraw2, lpConfig->field_0, lpConfig->field_2, 0x10, 0, 0) != 0) {
-            ddraw2 = (LPDIRECTDRAW2)DDRAWENV[1];
-            if (ddraw2->lpVtbl->SetDisplayMode(ddraw2, lpConfig->field_0, lpConfig->field_2, 8, 0, 0) != 0) {
+        ddraw2 = DDRAWENV.ddraw2;
+        if (IDirectDraw2_SetDisplayMode(ddraw2, lpConfig->field_0, lpConfig->field_2, 0x10, 0, 0) != 0) {
+            ddraw2 = DDRAWENV.ddraw2;
+            if (IDirectDraw2_SetDisplayMode(ddraw2, lpConfig->field_0, lpConfig->field_2, 8, 0, 0) != 0) {
                 return 0;
             }
         }
     }
     desc.dwSize = 0x6c;
-    ddraw2 = (LPDIRECTDRAW2)DDRAWENV[1];
-    ddraw2->lpVtbl->GetDisplayMode(ddraw2, &desc);
+    ddraw2 = DDRAWENV.ddraw2;
+    IDirectDraw2_GetDisplayMode(ddraw2, &desc);
     if (desc.ddpfPixelFormat.dwRGBBitCount != 8) {
         if (desc.ddpfPixelFormat.dwRGBBitCount != 0x10) {
             return 0;
@@ -134,12 +131,12 @@ LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void) {
         local.top = value;
         local.right = lpConfig->field_0 - 1;
         local.bottom = lpConfig->field_2 - 1;
-        DAT_0066809c.field_0 = 0x6c;
-        IntersectRect((LPRECT)&DAT_00668108, &local, (RECT *)&SPRITE_ClipRect);
-        surface = (LPDIRECTDRAWSURFACE)renderEngine;
-        if (surface->lpVtbl->Lock(surface, NULL, (LPDDSURFACEDESC)&DAT_0066809c, 0x21, NULL) == 0x887601c2) {
-            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)renderEngine);
-            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Lock((LPDIRECTDRAWSURFACE)renderEngine, NULL, (LPDDSURFACEDESC)&DAT_0066809c, 0x21, NULL);
+        DAT_0066809c.dwSize = 0x6c;
+        IntersectRect(&DAT_00668108, &local, &SPRITE_ClipRect);
+        surface = renderEngine;
+        if (IDirectDrawSurface_Lock(surface, NULL, &DAT_0066809c, 0x21, NULL) == 0x887601c2) {
+            IDirectDrawSurface_Restore(renderEngine);
+            IDirectDrawSurface_Lock(renderEngine, NULL, &DAT_0066809c, 0x21, NULL);
         }
         DAT_007fea44 = GetTransparentColour();
     }
@@ -153,10 +150,10 @@ LEGO_EXPORT void PushRenderingStatusAndUnlockVideoSurface(void) {
     DAT_00668164[DAT_006681e4] = DAT_00668144;
     DAT_006681e4 = DAT_006681e4 + 1;
     if (DAT_00668144 != 0) {
-        surface = (LPDIRECTDRAWSURFACE)renderEngine;
-        if (surface->lpVtbl->Unlock(surface, DAT_0066809c.pixels) == 0x887601c2) {
-            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)renderEngine);
-            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Unlock((LPDIRECTDRAWSURFACE)renderEngine, DAT_0066809c.pixels);
+        surface = renderEngine;
+        if (IDirectDrawSurface_Unlock(surface, DAT_0066809c.lpSurface) == 0x887601c2) {
+            IDirectDrawSurface_Restore(renderEngine);
+            IDirectDrawSurface_Unlock(renderEngine, DAT_0066809c.lpSurface);
         }
     }
     DAT_00668144 = 0;
@@ -176,18 +173,18 @@ void FUN_004640f0(void) {
     DAT_00668164[DAT_006681e4] = DAT_00668144;
     DAT_006681e4 = DAT_006681e4 + 1;
     if (wasLocked != 0) {
-        surface = (LPDIRECTDRAWSURFACE)renderEngine;
-        if (surface->lpVtbl->Unlock(surface, DAT_0066809c.pixels) == 0x887601c2) {
-            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)renderEngine);
-            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Unlock((LPDIRECTDRAWSURFACE)renderEngine, DAT_0066809c.pixels);
+        surface = renderEngine;
+        if (IDirectDrawSurface_Unlock(surface, DAT_0066809c.lpSurface) == 0x887601c2) {
+            IDirectDrawSurface_Restore(renderEngine);
+            IDirectDrawSurface_Unlock(renderEngine, DAT_0066809c.lpSurface);
         }
     }
-    DAT_0066809c.field_0 = 0x6c;
-    IntersectRect((LPRECT)&DAT_00668108, &local, (RECT *)&SPRITE_ClipRect);
-    surface = (LPDIRECTDRAWSURFACE)renderEngine;
-    if (surface->lpVtbl->Lock(surface, NULL, (LPDDSURFACEDESC)&DAT_0066809c, 0x21, NULL) == 0x887601c2) {
-        ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)renderEngine);
-        ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Lock((LPDIRECTDRAWSURFACE)renderEngine, NULL, (LPDDSURFACEDESC)&DAT_0066809c, 0x21, NULL);
+    DAT_0066809c.dwSize = 0x6c;
+    IntersectRect(&DAT_00668108, &local, &SPRITE_ClipRect);
+    surface = renderEngine;
+    if (IDirectDrawSurface_Lock(surface, NULL, &DAT_0066809c, 0x21, NULL) == 0x887601c2) {
+        IDirectDrawSurface_Restore(renderEngine);
+        IDirectDrawSurface_Lock(renderEngine, NULL, &DAT_0066809c, 0x21, NULL);
     }
     DAT_007fea44 = GetTransparentColour();
     DAT_00668144 = 1;
@@ -205,12 +202,12 @@ LEGO_EXPORT void PopRenderingStatus(void) {
             local.top = 0;
             local.right = lpConfig->field_0 - 1;
             local.bottom = lpConfig->field_2 - 1;
-            DAT_0066809c.field_0 = 0x6c;
-            IntersectRect((LPRECT)&DAT_00668108, &local, (RECT *)&SPRITE_ClipRect);
-            surface = (LPDIRECTDRAWSURFACE)renderEngine;
-            if (surface->lpVtbl->Lock(surface, NULL, (LPDDSURFACEDESC)&DAT_0066809c, 0x21, NULL) == 0x887601c2) {
-                ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)renderEngine);
-                ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Lock((LPDIRECTDRAWSURFACE)renderEngine, NULL, (LPDDSURFACEDESC)&DAT_0066809c, 0x21, NULL);
+            DAT_0066809c.dwSize = 0x6c;
+            IntersectRect(&DAT_00668108, &local, &SPRITE_ClipRect);
+            surface = renderEngine;
+            if (IDirectDrawSurface_Lock(surface, NULL, &DAT_0066809c, 0x21, NULL) == 0x887601c2) {
+                IDirectDrawSurface_Restore(renderEngine);
+                IDirectDrawSurface_Lock(renderEngine, NULL, &DAT_0066809c, 0x21, NULL);
             }
             DAT_007fea44 = GetTransparentColour();
             DAT_00668144 = 1;
@@ -218,10 +215,10 @@ LEGO_EXPORT void PopRenderingStatus(void) {
         return;
     }
     if (DAT_00668144 != 0) {
-        surface = (LPDIRECTDRAWSURFACE)renderEngine;
-        if (surface->lpVtbl->Unlock(surface, DAT_0066809c.pixels) == 0x887601c2) {
-            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)renderEngine);
-            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Unlock((LPDIRECTDRAWSURFACE)renderEngine, DAT_0066809c.pixels);
+        surface = renderEngine;
+        if (IDirectDrawSurface_Unlock(surface, DAT_0066809c.lpSurface) == 0x887601c2) {
+            IDirectDrawSurface_Restore(renderEngine);
+            IDirectDrawSurface_Unlock(renderEngine, DAT_0066809c.lpSurface);
         }
         DAT_00668144 = 0;
     }
@@ -232,10 +229,10 @@ LEGO_EXPORT int GetVideoSurface(struct VideoArg *arg) {
     if (DAT_00668144 == 0) {
         return 0;
     }
-    arg->field_0 = DAT_0066809c.pitch;
+    arg->field_0 = DAT_0066809c.lPitch;
     arg->field_4 = lpConfig->field_0;
     arg->field_8 = lpConfig->field_2;
-    arg->field_c = DAT_0066809c.pixels;
+    arg->field_c = DAT_0066809c.lpSurface;
     arg->field_14 = 2;
     return 1;
 }
@@ -251,15 +248,15 @@ LEGO_EXPORT void CommitCliprectToHardware(void) {
     } *rgn;
     LPDIRECTDRAWCLIPPER clipper;
 
-    rgn = (struct ClipRgnData *)malloc(0x33);
+    rgn = malloc(0x33);
     rgn->rdh.iType = 1;
     rgn->rdh.nCount = 1;
     rgn->rdh.dwSize = 0x20;
     rgn->rdh.nRgnSize = 0x10;
-    rgn->rdh.rcBound = *(RECT *)&SPRITE_ClipRect;
-    rgn->rect = *(RECT *)&SPRITE_ClipRect;
-    clipper = (LPDIRECTDRAWCLIPPER)DAT_00668080;
-    clipper->lpVtbl->SetClipList(clipper, (LPRGNDATA)rgn, 0);
+    rgn->rdh.rcBound = *&SPRITE_ClipRect;
+    rgn->rect = *&SPRITE_ClipRect;
+    clipper = DAT_00668080;
+    IDirectDrawClipper_SetClipList(clipper, (LPRGNDATA)rgn, 0);
     free(rgn);
 }
 
@@ -306,7 +303,7 @@ void FUN_00465240(void) { STUB(); }
 void FUN_00465850(void *frame) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004659a0
-void FUN_004659a0(int param_1, int param_2, int param_3) {
+void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3) {
     int height;
     int width;
     int src;
@@ -314,10 +311,10 @@ void FUN_004659a0(int param_1, int param_2, int param_3) {
     int i;
     int j;
 
-    height = *(int *)(param_1 + 8);
-    width = *(int *)(param_1 + 4);
-    dst = (unsigned short *)((char *)DAT_0066809c.pixels + DAT_0066809c.pitch * param_3 + param_2 * 2);
-    src = param_1 + 0x28 + (height - 1) * width * 2;
+    height = param_1->height;
+    width = param_1->width;
+    dst = (unsigned short *)((char *)DAT_0066809c.lpSurface + DAT_0066809c.lPitch * param_3 + param_2 * 2);
+    src = (int)param_1 + 0x28 + (height - 1) * width * 2;
     for (i = height; i != 0; i--) {
         if (width > 0) {
             int offset = src - (int)dst;
@@ -333,7 +330,7 @@ void FUN_004659a0(int param_1, int param_2, int param_3) {
                 j--;
             } while (j != 0);
         }
-        dst = (unsigned short *)((char *)dst + DAT_0066809c.pitch);
+        dst = (unsigned short *)((char *)dst + DAT_0066809c.lPitch);
         src += width * -2;
     }
 }
@@ -363,25 +360,25 @@ int FUN_00466080(void) {
         tick = GetTickCount();
     }
     DAT_00668200 = GetTickCount();
-    primary = (LPDIRECTDRAWSURFACE)DAT_00668070;
-    result = primary->lpVtbl->Flip(primary, NULL, 1);
+    primary = DAT_00668070;
+    result = IDirectDrawSurface_Flip(primary, NULL, 1);
     while (result != 0) {
         if (result == 0x887601c2) {
-            ((LPDIRECTDRAWSURFACE)DAT_00668070)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)DAT_00668070);
-            ((LPDIRECTDRAWSURFACE)DAT_00668078)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)DAT_00668078);
+            IDirectDrawSurface_Restore(DAT_00668070);
+            IDirectDrawSurface_Restore(DAT_00668078);
             return 0;
         }
         if (result != 0x887601ae && result != 0x8876021c) {
             return 0;
         }
-        primary = (LPDIRECTDRAWSURFACE)DAT_00668070;
-        result = primary->lpVtbl->Flip(primary, NULL, 1);
+        primary = DAT_00668070;
+        result = IDirectDrawSurface_Flip(primary, NULL, 1);
     }
-    back = (LPDIRECTDRAWSURFACE)DAT_00668078;
-    result = back->lpVtbl->GetFlipStatus(back, 2);
+    back = DAT_00668078;
+    result = IDirectDrawSurface_GetFlipStatus(back, 2);
     while (result != 0) {
-        back = (LPDIRECTDRAWSURFACE)DAT_00668078;
-        result = back->lpVtbl->GetFlipStatus(back, 2);
+        back = DAT_00668078;
+        result = IDirectDrawSurface_GetFlipStatus(back, 2);
     }
     tick = GetTickCount();
     FrameNumber = FrameNumber + 1;
@@ -423,11 +420,11 @@ int FUN_004661d0(void) {
     GetClientRect((HWND)WNDENV_Gethwnd(), &client);
     ClientToScreen((HWND)WNDENV_Gethwnd(), (LPPOINT)&client);
     OffsetRect(&dst, client.left, client.top);
-    surface = (LPDIRECTDRAWSURFACE)DAT_00668070;
-    result = surface->lpVtbl->Blt(surface, &dst, (LPDIRECTDRAWSURFACE)DAT_00668078, NULL, 0x1000000, NULL);
+    surface = DAT_00668070;
+    result = IDirectDrawSurface_Blt(surface, &dst, DAT_00668078, NULL, 0x1000000, NULL);
     if (result == 0x887601c2) {
-        ((LPDIRECTDRAWSURFACE)DAT_00668070)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)DAT_00668070);
-        result = ((LPDIRECTDRAWSURFACE)DAT_00668070)->lpVtbl->Blt((LPDIRECTDRAWSURFACE)DAT_00668070, &dst, (LPDIRECTDRAWSURFACE)DAT_00668078, NULL, 0x1000000, NULL);
+        IDirectDrawSurface_Restore(DAT_00668070);
+        result = IDirectDrawSurface_Blt(DAT_00668070, &dst, DAT_00668078, NULL, 0x1000000, NULL);
     }
     if (result != 0) {
         return 0;
@@ -496,10 +493,10 @@ void FUN_004663f0(void) {
             PopRenderingStatus();
             ClientToScreen((HWND)WNDENV_Gethwnd(), (LPPOINT)&cursor);
             ClientToScreen((HWND)WNDENV_Gethwnd(), (LPPOINT)&cursor.right);
-            surface = (LPDIRECTDRAWSURFACE)DAT_00668070;
-            if (surface->lpVtbl->Blt(surface, &cursor, (LPDIRECTDRAWSURFACE)DAT_00668078, &DAT_007fea30, 0x1000000, NULL) == 0x887601c2) {
-                ((LPDIRECTDRAWSURFACE)DAT_00668070)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)DAT_00668070);
-                ((LPDIRECTDRAWSURFACE)DAT_00668070)->lpVtbl->Blt((LPDIRECTDRAWSURFACE)DAT_00668070, &cursor, (LPDIRECTDRAWSURFACE)DAT_00668078, NULL, 0x1000000, NULL);
+            surface = DAT_00668070;
+            if (IDirectDrawSurface_Blt(surface, &cursor, DAT_00668078, &DAT_007fea30, 0x1000000, NULL) == 0x887601c2) {
+                IDirectDrawSurface_Restore(DAT_00668070);
+                IDirectDrawSurface_Blt(DAT_00668070, &cursor, DAT_00668078, NULL, 0x1000000, NULL);
             }
         }
     }
@@ -554,10 +551,10 @@ LEGO_EXPORT void PushSetTarget(struct Sprite *sprite) {
     DAT_00668164[DAT_006681e4] = DAT_00668144;
     DAT_006681e4 = DAT_006681e4 + 1;
     if (locked != 0) {
-        surface = (LPDIRECTDRAWSURFACE)renderEngine;
-        if (surface->lpVtbl->Unlock(surface, DAT_0066809c.pixels) == 0x887601c2) {
-            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Restore((LPDIRECTDRAWSURFACE)renderEngine);
-            ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->Unlock((LPDIRECTDRAWSURFACE)renderEngine, DAT_0066809c.pixels);
+        surface = renderEngine;
+        if (IDirectDrawSurface_Unlock(surface, DAT_0066809c.lpSurface) == 0x887601c2) {
+            IDirectDrawSurface_Restore(renderEngine);
+            IDirectDrawSurface_Unlock(renderEngine, DAT_0066809c.lpSurface);
         }
     }
     DAT_00668144 = 0;
@@ -592,8 +589,8 @@ LEGO_EXPORT int RecreateSprite(struct Sprite *sprite) {
     desc.ddsCaps.dwCaps = 0x40;
     desc.dwHeight = (short)sprite->height;
     if ((sprite->flags & 0x10) == 0) {
-        ddraw2 = (LPDIRECTDRAW2)DDRAWENV[1];
-        if (ddraw2->lpVtbl->CreateSurface(ddraw2, &desc, (LPDIRECTDRAWSURFACE *)&sprite->surface, NULL) == 0) {
+        ddraw2 = DDRAWENV.ddraw2;
+        if (IDirectDraw2_CreateSurface(ddraw2, &desc, &sprite->surface, NULL) == 0) {
             goto created;
         }
     }
@@ -602,26 +599,26 @@ LEGO_EXPORT int RecreateSprite(struct Sprite *sprite) {
     desc.dwSize = 0x6c;
     desc.dwFlags = 7;
     desc.ddsCaps.dwCaps = 0x840;
-    ddraw2 = (LPDIRECTDRAW2)DDRAWENV[1];
-    if (ddraw2->lpVtbl->CreateSurface(ddraw2, &desc, (LPDIRECTDRAWSURFACE *)&sprite->surface, NULL) != 0) {
-        ddraw2 = (LPDIRECTDRAW2)DDRAWENV[1];
-        if (ddraw2->lpVtbl->Compact(ddraw2) == 0) {
-            ((LPDIRECTDRAW2)DDRAWENV[1])->lpVtbl->CreateSurface((LPDIRECTDRAW2)DDRAWENV[1], &desc, (LPDIRECTDRAWSURFACE *)&sprite->surface, NULL);
+    ddraw2 = DDRAWENV.ddraw2;
+    if (IDirectDraw2_CreateSurface(ddraw2, &desc, &sprite->surface, NULL) != 0) {
+        ddraw2 = DDRAWENV.ddraw2;
+        if (IDirectDraw2_Compact(ddraw2) == 0) {
+            IDirectDraw2_CreateSurface(DDRAWENV.ddraw2, &desc, &sprite->surface, NULL);
         }
         return 0;
     }
 created:
     if ((sprite->flags & 0x80) != 0) {
         colorkey.dwColorSpaceLowValue = GetNearestColour(0xff, 0, 0xff);
-        surface = (LPDIRECTDRAWSURFACE)sprite->surface;
+        surface = sprite->surface;
         colorkey.dwColorSpaceHighValue = colorkey.dwColorSpaceLowValue;
-        surface->lpVtbl->SetColorKey(surface, 8, &colorkey);
+        IDirectDrawSurface_SetColorKey(surface, 8, &colorkey);
         return 1;
     }
     colorkey.dwColorSpaceLowValue = GetTransparentColour();
-    surface = (LPDIRECTDRAWSURFACE)sprite->surface;
+    surface = sprite->surface;
     colorkey.dwColorSpaceHighValue = colorkey.dwColorSpaceLowValue;
-    surface->lpVtbl->SetColorKey(surface, 8, &colorkey);
+    IDirectDrawSurface_SetColorKey(surface, 8, &colorkey);
     return 1;
 }
 

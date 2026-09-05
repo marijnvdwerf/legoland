@@ -314,7 +314,7 @@ void FUN_00455220(int x, int y, const char *text, int font, int width) {
     rc.right = 0;
     rc.bottom = 0;
     hdc = CreateCompatibleDC(NULL);
-    region = CreateRectRgnIndirect((RECT *)&SPRITE_ClipRect);
+    region = CreateRectRgnIndirect(&SPRITE_ClipRect);
     rc.right = width - 1;
     SetBkMode(hdc, 1);
     SelectFont(hdc, font);

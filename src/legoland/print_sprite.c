@@ -318,7 +318,7 @@ LEGO_EXPORT void DrawAndClearPrintList(void) {
                 // STRING: LEGOLAND 0x004bdd0c
                 printf("error");
             }
-            GetClipping((struct ClipRect *)&saved_clip);
+            GetClipping(&saved_clip);
             SetClipping(&node->field_28);
             if (node->sprite != NULL) {
                 SetOverridePalette(node->field_3c);

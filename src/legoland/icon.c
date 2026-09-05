@@ -117,10 +117,7 @@ struct ScrollRegion {
     /* 0x10 */ int field_10;
     /* 0x14 */ int field_14;
     /* 0x18 */ int field_18;
-    /* 0x1c */ int field_1c;
-    /* 0x20 */ int field_20;
-    /* 0x24 */ int field_24;
-    /* 0x28 */ int field_28;
+    /* 0x1c */ RECT clip;
 };
 
 struct IndicatorFuncs {
@@ -395,36 +392,36 @@ void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3) {
     int ebp;
 
     if ((r->field_4 & 1) != 0) {
-        if (r->field_18 - r->field_10 <= r->field_28 - r->field_20) {
-            MoveIcons(0xffff, r->field_0, 0, (short)(r->field_20 - r->field_10));
+        if (r->field_18 - r->field_10 <= r->clip.bottom - r->clip.top) {
+            MoveIcons(0xffff, r->field_0, 0, (short)(r->clip.top - r->field_10));
             return;
         }
     } else {
-        if (r->field_14 - r->field_c <= r->field_24 - r->field_1c) {
-            MoveIcons(0xffff, r->field_0, (short)(r->field_1c - r->field_c), 0);
+        if (r->field_14 - r->field_c <= r->clip.right - r->clip.left) {
+            MoveIcons(0xffff, r->field_0, (short)(r->clip.left - r->field_c), 0);
             return;
         }
     }
 
-    dy = FUN_0046dd10(0xffff, (short)((r->field_20 - r->field_10) - param_3), (short)(r->field_10 + param_3), r->field_0, param_3);
+    dy = FUN_0046dd10(0xffff, (short)((r->clip.top - r->field_10) - param_3), (short)(r->field_10 + param_3), r->field_0, param_3);
     dx = param_3;
     ebp = r->field_c + param_3;
     if ((r->field_4 & 1) != 0) {
-        if (r->field_10 + dy <= r->field_20) {
+        if (r->field_10 + dy <= r->clip.top) {
             ebp = r->field_18 + dy;
-            if (ebp < r->field_28) {
-                dy = dy + (r->field_28 - ebp);
+            if (ebp < r->clip.bottom) {
+                dy = dy + (r->clip.bottom - ebp);
             }
         } else {
-            dy = dy + (r->field_20 - (r->field_10 + dy));
+            dy = dy + (r->clip.top - (r->field_10 + dy));
         }
     } else {
-        if (ebp > r->field_1c) {
-            dx = dx + (r->field_1c - ebp);
+        if (ebp > r->clip.left) {
+            dx = dx + (r->clip.left - ebp);
         } else {
             ebp = r->field_14 + param_3;
-            if (ebp < r->field_24) {
-                dx = dx + (r->field_24 - ebp);
+            if (ebp < r->clip.right) {
+                dx = dx + (r->clip.right - ebp);
             }
         }
     }
@@ -1084,7 +1081,7 @@ int FUN_0046ea10(struct IconNode *node) {
     rect.right = node->field_10 + rect.left;
     rect.bottom = node->field_12 + rect.top;
     ctx.field_8 = 0;
-    if (IntersectRect(&out, &rect, (RECT *)&((struct ScrollRegion *)node->field_30)->field_1c) != 0 && node->sprite != NULL) {
+    if (IntersectRect(&out, &rect, &((struct ScrollRegion *)node->field_30)->clip) != 0 && node->sprite != NULL) {
         PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
     }
     return 0;

@@ -1342,7 +1342,7 @@ void FUN_0045fad0(int *surface, int dir, int px, int py, unsigned char *color, i
             for (; count != 0; count--) {
                 pt.y = py;
                 pt.x = px;
-                in = PtInRect((RECT *)&SPRITE_ClipRect, pt);
+                in = PtInRect(&SPRITE_ClipRect, pt);
                 if (in != 0) {
                     unsigned short c = pattern[frame & 0xf];
                     *dst = c;
@@ -1368,7 +1368,7 @@ void FUN_0045fad0(int *surface, int dir, int px, int py, unsigned char *color, i
                     unsigned short *cur;
                     pt.y = y;
                     pt.x = px;
-                    in = PtInRect((RECT *)&SPRITE_ClipRect, pt);
+                    in = PtInRect(&SPRITE_ClipRect, pt);
                     if (in != 0) {
                         unsigned short c = pattern[frame & 0xf];
                         *dst = c;
@@ -1433,7 +1433,7 @@ void FUN_0045fca0(int *surface, int dir, int px, int py, unsigned char *color, i
             for (; count != 0; count--) {
                 pt.y = py;
                 pt.x = px;
-                in = PtInRect((RECT *)&SPRITE_ClipRect, pt);
+                in = PtInRect(&SPRITE_ClipRect, pt);
                 if (in != 0) {
                     val = (short)pattern[frame & 0x1f];
                     if (val != 0) {
@@ -1461,7 +1461,7 @@ void FUN_0045fca0(int *surface, int dir, int px, int py, unsigned char *color, i
                     short *cur;
                     pt.y = py;
                     pt.x = px;
-                    in = PtInRect((RECT *)&SPRITE_ClipRect, pt);
+                    in = PtInRect(&SPRITE_ClipRect, pt);
                     if (in != 0) {
                         val = (short)pattern[frame & 0x1f];
                         if (val != 0) {
@@ -1510,7 +1510,7 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
     int clip[4];
     int tilept[2];
     int screen[2];
-    struct ClipRect saved_clip;
+    RECT saved_clip;
     struct VideoArg surf;
 
     clip[0] = lpConfig->field_20;

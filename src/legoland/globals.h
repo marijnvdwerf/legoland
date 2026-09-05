@@ -1,6 +1,7 @@
 #pragma once
 
 #include <windows.h>
+#include <ddraw.h>
 
 #include "gamemap.h"
 #include "legoland.h"
@@ -153,13 +154,6 @@ struct FreePlaySpriteSlot {
     unsigned char pad_8[0x14];
 };
 
-struct ClipRect {
-    int left;
-    int top;
-    int right;
-    int bottom;
-};
-
 struct InfoTimedEntry {
     /* 0x00 */ unsigned int sample;
     /* 0x04 */ int interval;
@@ -226,17 +220,6 @@ struct ProfileData {
     /* 0x43 */ unsigned char field_43[200];
     /* 0x10b */ unsigned char field_10b;
     /* 0x10c */ unsigned char gap_10c[4];
-};
-
-struct SoftPrintState {
-    /* 0x00 */ unsigned int field_0;
-    /* 0x04 */ unsigned int field_4;
-    /* 0x08 */ int height;
-    /* 0x0c */ int width;
-    /* 0x10 */ int pitch;
-    /* 0x14 */ unsigned char pad_14[0x24 - 0x14];
-    /* 0x24 */ void *pixels;
-    /* 0x28 */ unsigned char pad_28[0x6c - 0x28];
 };
 
 struct EditState {
@@ -766,7 +749,7 @@ extern unsigned int DAT_004bdd04;
 // 0x004bdd08
 extern unsigned int DAT_004bdd08;
 // 0x004bdea0
-extern LEGO_EXPORT struct ClipRect SPRITE_ClipRect;
+extern LEGO_EXPORT RECT SPRITE_ClipRect;
 // 0x004beb94
 extern struct FreePlaySpriteSlot DAT_004beb94[10];
 // 0x004beba0
@@ -1812,15 +1795,25 @@ extern unsigned int DAT_00667d68;
 // 0x00667d6c
 extern int DAT_00667d6c;
 // 0x00667d70
-extern LEGO_EXPORT unsigned int DDRAWENV[246];
+/* DX6 DDCAPS is 0x17c; this SDK's DX5 DDCAPS is 0x16c, so each caps block has a four-DWORD DDSCAPS2 tail. */
+struct DDRAWENV {
+    /* 0x000 */ LPDIRECTDRAW ddraw;
+    /* 0x004 */ LPDIRECTDRAW2 ddraw2;
+    /* 0x008 */ DDCAPS caps;
+    /* 0x174 */ unsigned int ddsCaps[4];
+    /* 0x184 */ DDCAPS hel_caps;
+    /* 0x2f0 */ unsigned int hel_ddsCaps[4];
+    /* 0x300 */ unsigned int unk[54];
+};
+extern LEGO_EXPORT struct DDRAWENV DDRAWENV;
 // 0x00668070
-extern void *DAT_00668070;
+extern LPDIRECTDRAWSURFACE DAT_00668070;
 // 0x00668078
-extern void *DAT_00668078;
+extern LPDIRECTDRAWSURFACE DAT_00668078;
 // 0x0066807c
-extern void *renderEngine;
+extern LPDIRECTDRAWSURFACE renderEngine;
 // 0x00668080
-extern void *DAT_00668080;
+extern LPDIRECTDRAWCLIPPER DAT_00668080;
 // 0x00668084
 extern unsigned int DAT_00668084;
 // 0x00668088
@@ -1834,19 +1827,13 @@ extern void *PTR_00668094;
 // 0x00668098
 extern void *PTR_00668098;
 // 0x0066809c
-extern struct SoftPrintState DAT_0066809c;
+extern DDSURFACEDESC DAT_0066809c;
 // 0x00668108
-extern int DAT_00668108;
-// 0x0066810c
-extern int DAT_0066810c;
-// 0x00668110
-extern int DAT_00668110;
-// 0x00668114
-extern int DAT_00668114;
+extern RECT DAT_00668108;
 // 0x00668118
 extern int renderEngineTargetIdx;
 // 0x0066811c
-extern void *renderEngineTargets[1];
+extern LPDIRECTDRAWSURFACE renderEngineTargets[1];
 // 0x00668144
 extern int DAT_00668144;
 // 0x00668148
@@ -2251,7 +2238,7 @@ extern unsigned int DAT_0066b5a8;
 // 0x0066b5ac
 extern unsigned int DAT_0066b5ac;
 // 0x0066b5b0
-extern struct SoftPrintState DAT_0066b5b0;
+extern DDSURFACEDESC DAT_0066b5b0;
 // 0x0066b61c
 extern unsigned int DAT_0066b61c;
 // 0x0066b620

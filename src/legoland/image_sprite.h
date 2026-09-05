@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ddraw.h>
 #include "legoland.h"
 
 /* Shared layouts: struct Sprite and struct Image are defined once here and
@@ -21,7 +22,7 @@ struct LayerHost;
 
 struct Sprite {
     /* 0x00 */ struct Sprite *next;
-    /* 0x04 */ void *surface;
+    /* 0x04 */ LPDIRECTDRAWSURFACE surface;
     /* 0x08 */ union {
         struct Image *image;
         int (*render_fn)(struct Sprite *);

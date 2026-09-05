@@ -42,7 +42,6 @@ struct CursorBitmap {
     void *pixels;
 };
 
-
 struct RenderViewport {
     unsigned int x;
     unsigned int y;
@@ -219,23 +218,23 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
     if (DAT_00798590 == 0) {
         FUN_004887a0();
     }
-    DAT_0066b620 = DAT_00668108;
-    DAT_0066b628 = DAT_00668110;
+    DAT_0066b620 = DAT_00668108.left;
+    DAT_0066b628 = DAT_00668108.right;
     DAT_0066b5b0 = DAT_0066809c;
-    DAT_0066b62c = DAT_00668114;
-    DAT_0066809c.pitch = w * 2;
-    DAT_0066b624 = DAT_0066810c;
-    DAT_0066809c.pixels = DAT_0066be54;
-    DAT_00668108 = 0;
-    DAT_0066810c = 0;
+    DAT_0066b62c = DAT_00668108.bottom;
+    DAT_0066809c.lPitch = w * 2;
+    DAT_0066b624 = DAT_00668108.top;
+    DAT_0066809c.lpSurface = DAT_0066be54;
+    DAT_00668108.left = 0;
+    DAT_00668108.top = 0;
     local.left = 0;
     local.top = 0;
     local.right = 0;
     local.bottom = 0;
-    DAT_0066809c.height = h;
-    DAT_0066809c.width = w;
-    DAT_00668110 = w;
-    DAT_00668114 = h;
+    DAT_0066809c.dwHeight = h;
+    DAT_0066809c.dwWidth = w;
+    DAT_00668108.right = w;
+    DAT_00668108.bottom = h;
     local.w = w;
     local.h = h;
     DAT_007fea44 = GetTransparentColour();
@@ -269,11 +268,11 @@ LEGO_EXPORT struct Sprite *GenerateNewImageFromZBuffer(struct Sprite *sprite, st
     DAT_0066be50->height = (short)h;
     DAT_00701e64->width = (short)w;
     DAT_00701e64->height = (short)h;
-    DAT_00668110 = DAT_0066b628;
-    DAT_0066810c = DAT_0066b624;
+    DAT_00668108.right = DAT_0066b628;
+    DAT_00668108.top = DAT_0066b624;
     DAT_0066809c = DAT_0066b5b0;
-    DAT_00668108 = DAT_0066b620;
-    DAT_00668114 = DAT_0066b62c;
+    DAT_00668108.left = DAT_0066b620;
+    DAT_00668108.bottom = DAT_0066b62c;
     return DAT_00701e64;
 }
 
@@ -292,7 +291,7 @@ LEGO_EXPORT unsigned int RenderSprite(struct Sprite *sprite, int x, int y) {
     src.left = 0;
     src.top = 0;
     if ((sprite->flags & 0x60) != 0) {
-        if (IntersectRect(&dst, &dst, (RECT *)&SPRITE_ClipRect) != 0) {
+        if (IntersectRect(&dst, &dst, &SPRITE_ClipRect) != 0) {
             int i;
             unsigned int *p;
             src.top = dst.top;
@@ -317,7 +316,7 @@ LEGO_EXPORT unsigned int RenderSprite(struct Sprite *sprite, int x, int y) {
             return 1;
         }
     } else {
-        if (IntersectRect(&dst, &dst, (RECT *)&SPRITE_ClipRect) != 0) {
+        if (IntersectRect(&dst, &dst, &SPRITE_ClipRect) != 0) {
             src.top = dst.top;
             sprite->field_c = DAT_008119a4;
             src.left = dst.left;
@@ -343,7 +342,7 @@ LEGO_EXPORT unsigned int RenderSpriteX(struct Sprite *sprite, int x, int y, unsi
     dst.top = y;
     src.left = 0;
     src.top = 0;
-    if (IntersectRect(&dst, &dst, (RECT *)&SPRITE_ClipRect) != 0) {
+    if (IntersectRect(&dst, &dst, &SPRITE_ClipRect) != 0) {
         src.top = dst.top;
         sprite->field_c = DAT_008119a4;
         src.left = dst.left;
@@ -382,7 +381,7 @@ LEGO_EXPORT unsigned int RenderBlock(int x, int y, int w, int h, unsigned int co
     dst.bottom = y + h;
     fx.dwSize = 100;
     fx.dwFillColor = color;
-    if (IntersectRect(&dst, &dst, (RECT *)&SPRITE_ClipRect) == 0) {
+    if (IntersectRect(&dst, &dst, &SPRITE_ClipRect) == 0) {
         return 1;
     }
     PushRenderingStatusAndUnlockVideoSurface();

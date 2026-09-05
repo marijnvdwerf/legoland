@@ -1,5 +1,5 @@
-#include <string.h>
 #include <windows.h>
+#include <string.h>
 #include "legoland.h"
 
 #include "clipping.h"
@@ -42,7 +42,7 @@ struct ClipNode {
 LEGO_EXPORT void SetClipping(int *rect) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0048a630
-LEGO_EXPORT void GetClipping(struct ClipRect *dest) {
+LEGO_EXPORT void GetClipping(RECT *dest) {
     dest->left = SPRITE_ClipRect.left;
     dest->top = SPRITE_ClipRect.top;
     dest->right = SPRITE_ClipRect.right;
@@ -67,7 +67,7 @@ LEGO_EXPORT void RestoreClipping(void) {
 
 // FUNCTION: LEGOLAND 0x0048a6c0
 LEGO_EXPORT int ClipThisRect(RECT *lpRect) {
-    return IntersectRect(lpRect, lpRect, (RECT *)&SPRITE_ClipRect);
+    return IntersectRect(lpRect, lpRect, &SPRITE_ClipRect);
 }
 
 // FUNCTION: LEGOLAND 0x0048a6e0

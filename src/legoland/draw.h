@@ -14,6 +14,14 @@ struct VideoArg {
 };
 struct Sprite;
 
+struct AviFrame {
+    /* 0x00 */ unsigned char pad_0[4];
+    /* 0x04 */ int width;
+    /* 0x08 */ int height;
+    /* 0x0c */ unsigned char pad_c[0x1c];
+    /* 0x28 */ unsigned short pixels[1];
+};
+
 LEGO_EXPORT int InitHostSystemGPU(void);
 LEGO_EXPORT void KillHostSystemGPU(void);
 LEGO_EXPORT int InitScreen(void);
@@ -31,7 +39,7 @@ LEGO_EXPORT void ZBufferHelper(unsigned int *param_1, int *param_2, int *param_3
 LEGO_EXPORT void ClearOverrideFrame(void);
 LEGO_EXPORT void ClearOverridePalette(void);
 void FUN_00465850(void *frame);
-void FUN_004659a0(int param_1, int param_2, int param_3);
+void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3);
 void FUN_00466360(int a, int b);
 void FUN_004663c0(void);
 LEGO_EXPORT int RenderingComplete(void);
