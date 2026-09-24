@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "globals.h"
 #include "legoland.h"
 
 #include "binv.h"
@@ -41,41 +42,38 @@ LEGO_EXPORT struct BinVFile *LoadBinV(const char *filename) {
 
     // STRING: LEGOLAND 0x004b81b8
     stream = fopen(filename, "rb");
-    if (stream == NULL) {
-        return NULL;
-    }
-
-    fseek(stream, 0, 2);
-    size = ftell(stream);
-    fseek(stream, 0, 0);
-    file = (struct BinVFile *)malloc(size);
-    fread(file, 1, size, stream);
-    fclose(stream);
-
-    if (file->magic != 0x101) {
-        free(file);
-        return NULL;
-    }
-
-    file->frames = (struct BinVFrame *)((int)file->frames + (int)file);
-    frame = file->frames;
-    for (i = 0; i < file->frameCount; i++) {
-        object = (struct BinVObject *)((int)frame->objects + (int)file);
-        frame->objects = object;
-        for (j = 0; j < frame->count; j++) {
-            object->vertices = (struct Vertex *)((int)object->vertices + (int)file);
-            object->name = (char *)((int)object->name + (int)file);
-            if (object->next != NULL) {
-                object->next = (struct BinVObject *)((int)object->next + (int)file);
-                object = object->next;
+    if (stream != NULL) {
+        fseek(stream, 0, 2);
+        size = ftell(stream);
+        fseek(stream, 0, 0);
+        file = (struct BinVFile *)malloc(size);
+        fread(file, 1, size, stream);
+        fclose(stream);
+        if (file->magic != 0x101) {
+            free(file);
+        } else {
+            file->frames = (struct BinVFrame *)((int)file->frames + (int)file);
+            frame = file->frames;
+            for (i = 0; i < file->frameCount; i++) {
+                object = (struct BinVObject *)((int)frame->objects + (int)file);
+                frame->objects = object;
+                for (j = 0; j < frame->count; j++) {
+                    object->vertices = (struct Vertex *)((int)object->vertices + (int)file);
+                    object->name = (char *)((int)object->name + (int)file);
+                    if (object->next != NULL) {
+                        object->next = (struct BinVObject *)((int)object->next + (int)file);
+                        object = object->next;
+                    }
+                }
+                if (frame->next != NULL) {
+                    frame->next = (struct BinVFrame *)((int)frame->next + (int)file);
+                    frame = frame->next;
+                }
             }
-        }
-        if (frame->next != NULL) {
-            frame->next = (struct BinVFrame *)((int)frame->next + (int)file);
-            frame = frame->next;
+            return file;
         }
     }
-    return file;
+    return NULL;
 }
 
 // FUNCTION: LEGOLAND 0x0044dd60
@@ -119,7 +117,7 @@ LEGO_EXPORT struct BinVObject *GetObjectFromName(struct BinVFrame *frame, const 
     object = frame->objects;
     for (i = 0; i < frame->count; i++) {
         if (_stricmp(name, object->name) == 0) {
-            return object;
+            break;
         }
         object = object->next;
     }
@@ -138,7 +136,20 @@ LEGO_EXPORT struct Vertex *GetVertex(struct BinVObject *object, int index) {
 }
 
 // FUNCTION: LEGOLAND 0x0044de20
-LEGO_EXPORT double GetZSkew(struct BinVFile *file, struct BinVObject *object, struct Vertex *vertex) { STUB(); }
+LEGO_EXPORT double GetZSkew(struct BinVFile *file, struct BinVObject *object, struct Vertex *vertex) {
+    float *v = (float *)vertex;
+    float *f = (float *)file;
+
+    return v[4] * v[4] / ((f[5] + f[5] - DAT_004ab38c) * v[4] - v[3] * f[5]);
+}
 
 // FUNCTION: LEGOLAND 0x0044de50
-LEGO_EXPORT double GetUnitDepth(unsigned int param_1, unsigned int param_2) { STUB(); }
+LEGO_EXPORT double GetUnitDepth(unsigned int param_1, unsigned int param_2) {
+    float near_z = *(float *)&param_1;
+    float far_z = *(float *)&param_2;
+    float scale = DAT_004ab4d8 / (near_z - far_z);
+    float a = scale * (DOUBLE_004ab460 - far_z) + DOUBLE_004ab4d0;
+    float b = scale * (DAT_004ab3a8 - far_z) + DOUBLE_004ab4d0;
+
+    return a - b;
+}
