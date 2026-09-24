@@ -41,7 +41,7 @@ struct Sprite {
 
 LEGO_EXPORT struct Image *CreateSourceImage(const char *str, unsigned char type);
 LEGO_EXPORT int KillImage(struct Image *image);
-LEGO_EXPORT void ReloadImageBitmapAndBuildSprites(struct Image *image);
+LEGO_EXPORT int ReloadImageBitmapAndBuildSprites(struct Image *image);
 LEGO_EXPORT void FreeBitmapResources(struct Image *image);
 
 LEGO_EXPORT void **GetVRAMAddress(struct Sprite *sprite);

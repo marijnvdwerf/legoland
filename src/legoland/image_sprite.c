@@ -340,11 +340,10 @@ LEGO_EXPORT int ReloadImageBitmap(struct Image *image) {
 }
 
 // FUNCTION: LEGOLAND 0x00497380
-LEGO_EXPORT void ReloadImageBitmapAndBuildSprites(struct Image *image) {
+LEGO_EXPORT int ReloadImageBitmapAndBuildSprites(struct Image *image) {
     struct Sprite *sprite;
     struct LLS *lls;
     int bVar4;
-    int iVar5;
     unsigned int local_buf[6];
 
     bVar4 = 0;
@@ -357,49 +356,49 @@ LEGO_EXPORT void ReloadImageBitmapAndBuildSprites(struct Image *image) {
         free(image->aux);
     }
     FreeBitmapResources(image);
-    iVar5 = __BMPLoader(image);
-    if (iVar5 != 0) {
-        if (bVar4) {
-            lls = (struct LLS *)image->data;
-            lls->frame = (short)local_buf[0];
-            lls->loop_delay = *(short *)((char *)local_buf + 18);
-            lls->flags |= local_buf[5] & 4;
-            LLSPlay(lls, (unsigned int)image);
-        }
-        sprite = sprite_list;
-        while (sprite->image != image) {
-            sprite = sprite->next;
-        }
-        if ((sprite->flags & 0x400) == 0 && sprite->image == image) {
-            *(short *)&sprite->src_x >>= 1;
-            *(short *)&sprite->width >>= 1;
-            *(short *)&sprite->height >>= 1;
-            *(short *)&sprite->src_y >>= 1;
-            if ((short)sprite->src_x < 0) {
-                sprite->width = sprite->width + sprite->src_x;
-                sprite->src_x = 0;
-            }
-            if ((int)(short)sprite->src_x + (int)(short)sprite->width > (int)sprite->image->width) {
-                if ((int)(short)sprite->src_x > (int)sprite->image->width - 1) {
-                    sprite->src_x = sprite->image->width - 1;
-                }
-                sprite->width = sprite->image->width - sprite->src_x;
-            }
-            if ((short)sprite->src_y < 0) {
-                sprite->height = sprite->height + sprite->src_y;
-                sprite->src_y = 0;
-            }
-            iVar5 = (int)sprite->image->height;
-            if ((int)(short)sprite->src_y + (int)(short)sprite->height > iVar5) {
-                if ((int)(short)sprite->src_y > iVar5 - 1) {
-                    sprite->src_y = sprite->image->height - 1;
-                }
-                sprite->height = sprite->image->height - sprite->src_y;
-            }
-            FUN_00499500(sprite);
-            MarkSpriteResized(sprite);
-        }
+    if (__BMPLoader(image) == 0) {
+        return 0;
     }
+    if (bVar4) {
+        lls = (struct LLS *)image->data;
+        lls->frame = (short)local_buf[0];
+        lls->loop_delay = *(short *)((char *)local_buf + 18);
+        lls->flags |= local_buf[5] & 4;
+        LLSPlay(lls, (unsigned int)image);
+    }
+    sprite = sprite_list;
+    while (sprite->image != image) {
+        sprite = sprite->next;
+    }
+    if ((sprite->flags & 0x400) == 0 && sprite->image == image) {
+        *(short *)&sprite->src_x >>= 1;
+        *(short *)&sprite->width >>= 1;
+        *(short *)&sprite->height >>= 1;
+        *(short *)&sprite->src_y >>= 1;
+        if ((short)sprite->src_x < 0) {
+            sprite->width = sprite->width + sprite->src_x;
+            sprite->src_x = 0;
+        }
+        if ((int)(short)sprite->src_x + (int)(short)sprite->width > (int)sprite->image->width) {
+            if ((int)(short)sprite->src_x > (int)sprite->image->width - 1) {
+                sprite->src_x = sprite->image->width - 1;
+            }
+            sprite->width = sprite->image->width - sprite->src_x;
+        }
+        if ((short)sprite->src_y < 0) {
+            sprite->height = sprite->height + sprite->src_y;
+            sprite->src_y = 0;
+        }
+        if ((int)(short)sprite->src_y + (int)(short)sprite->height > (int)sprite->image->height) {
+            if ((int)(short)sprite->src_y > (int)sprite->image->height - 1) {
+                sprite->src_y = sprite->image->height - 1;
+            }
+            sprite->height = sprite->image->height - sprite->src_y;
+        }
+        FUN_00499500(sprite);
+        MarkSpriteResized(sprite);
+    }
+    return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00497500
@@ -624,7 +623,6 @@ int FUN_004978b0(struct Sprite *sprite, const char *name, unsigned int flags) {
     char path[512];
     char element_name[512];
 
-    i = 0;
     count = 0;
     if (sprite == NULL) {
         return 0;
@@ -646,29 +644,22 @@ int FUN_004978b0(struct Sprite *sprite, const char *name, unsigned int flags) {
         if (table->xoffs != NULL && table->yoffs != NULL && table->sprites != NULL) {
             RES_ReadFile(file, &length, 4);
             RES_ReadFile(file, element_name, length);
-            if (count > 0) {
-                do {
-                    RES_ReadFile(file, &table->xoffs[i], 4);
-                    RES_ReadFile(file, &table->yoffs[i], 4);
-                    i++;
-                } while (i < count);
+            for (i = 0; i < count; i++) {
+                RES_ReadFile(file, &table->xoffs[i], 4);
+                RES_ReadFile(file, &table->yoffs[i], 4);
             }
-            i = 0;
-            if (count > 0) {
-                do {
-                    RES_ReadFile(file, &length, 4);
-                    RES_ReadFile(file, path, length);
-                    path[length] = 0;
-                    table->sprites[i] = LoadSprite(path, flags);
-                    element = table->sprites[i];
-                    if (element != NULL) {
-                        image = element->image;
-                        if (image->field_14 == 2 || image->field_14 == 3) {
-                            LLSPlay((struct LLS *)image->data, (unsigned int)image);
-                        }
+            for (i = 0; i < count; i++) {
+                RES_ReadFile(file, &length, 4);
+                RES_ReadFile(file, path, length);
+                path[length] = 0;
+                table->sprites[i] = LoadSprite(path, flags);
+                element = table->sprites[i];
+                if (element != NULL) {
+                    image = element->image;
+                    if (image->field_14 == 2 || image->field_14 == 3) {
+                        LLSPlay((struct LLS *)image->data, (unsigned int)image);
                     }
-                    i++;
-                } while (i < count);
+                }
             }
             RES_CloseFile(file);
             sprite->image = (struct Image *)table;
