@@ -12,20 +12,17 @@
 
 // FUNCTION: LEGOLAND 0x00498d00
 void FUN_00498d00(void) {
+    int total = 0;
+    int offset = 0;
     char cwd[256];
     char token[240] = {0};
     int current_id;
     char num_str[4];
-    int total;
     char *data_buf;
     FILE *stream;
-    int offset;
     int len;
     char c;
     int quote_count;
-
-    total = 0;
-    offset = 0;
 
     if (_getcwd(cwd, 256) == 0) {
         return;
@@ -53,8 +50,12 @@ void FUN_00498d00(void) {
         return;
     }
 
-    while (offset < total) {
-        c = data_buf[offset++];
+    for (;;) {
+        if (offset < total) {
+            c = data_buf[offset++];
+        } else {
+            c = 0;
+        }
         if (c == 0) {
             break;
         }
@@ -85,6 +86,8 @@ void FUN_00498d00(void) {
                         offset++;
                         if (c != '"') {
                             quote_count++;
+                        } else {
+                            c = '"'; // "" is an escaped quote
                         }
                     } else {
                         c = 0;

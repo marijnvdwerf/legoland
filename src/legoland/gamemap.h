@@ -71,6 +71,6 @@ LEGO_EXPORT struct RenderObject *GetFirstRenderObject(void);
 LEGO_EXPORT struct RenderObject *GetNextRenderObject(struct RenderObject *object);
 LEGO_EXPORT struct RenderObject *GetFirstObjectMatching(struct RenderObjectVtable *vtable);
 LEGO_EXPORT struct RenderObject *GetNextObjectMatching(struct RenderObject *object, struct RenderObjectVtable *vtable);
-LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsigned int coords, void *cursor);
+LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsigned short coords, void *cursor);
 void FUN_00459880(void);
 LEGO_EXPORT struct Point PlayfieldToMap(int a, int b);

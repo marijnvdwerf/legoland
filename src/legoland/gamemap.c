@@ -246,13 +246,13 @@ LEGO_EXPORT void PutObjOnMap(struct ObjClass *obj, unsigned int classid, struct 
         }
         DAT_004b8320 = (cell->src.b.byte_4 + entrance->field_3c) * 0x100 + -0x100;
         DAT_004b8324 = ((unsigned int)(entrance->field_48 - entrance->field_40) >> 1) * 0x100 +
-                       (cell->src.b.byte_5 + entrance->field_40) * 0x100;
+            (cell->src.b.byte_5 + entrance->field_40) * 0x100;
     }
     DAT_00668610 = DAT_00668610 | 1;
 }
 
 // FUNCTION: LEGOLAND 0x00459c90
-LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsigned int coords, void *cursor) {
+LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsigned short coords, void *cursor) {
     int area;
     struct MapCell *cell;
     struct Cursor *query;
@@ -318,9 +318,9 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsig
         if ((query->field_1828 & 0x1000) != 0) {
             if (query != NULL) {
                 for (blk.f4 = query->field_1414[1] + query->field_1408;
-                     blk.f4 <= (int)(query->field_1408 + query->field_1414[3]); blk.f4 = blk.f4 + 1) {
+                    blk.f4 <= (int)(query->field_1408 + query->field_1414[3]); blk.f4 = blk.f4 + 1) {
                     for (blk.f0 = query->field_1404 + query->field_1414[0];
-                         blk.f0 <= (int)(query->field_1404 + query->field_1414[2]); blk.f0 = blk.f0 + 1) {
+                        blk.f0 <= (int)(query->field_1404 + query->field_1414[2]); blk.f0 = blk.f0 + 1) {
                         cell = (struct MapCell *)((char *)GameMap[blk.f4] + blk.f0 * 0x14);
                         cell->flags.word = cell->flags.word & 0xffe7;
                         cell->byte_10 = 0;

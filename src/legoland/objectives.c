@@ -199,7 +199,6 @@ void FUN_004689a0(void) {
 // FUNCTION: LEGOLAND 0x004689f0
 unsigned int FUN_004689f0(char *param_1, char *param_2, int param_3) {
     void *buffer;
-    unsigned int index;
 
     if (param_3 != 0) {
         if (param_1 != NULL) {
@@ -209,32 +208,21 @@ unsigned int FUN_004689f0(char *param_1, char *param_2, int param_3) {
                 if (buffer != NULL) {
                     // STRING: LEGOLAND 0x004b9f90
                     sprintf(buffer, "%s%c%s", param_1, 0x40, param_2);
-                    index = DAT_00668720;
-                    DAT_00668720 = DAT_00668720 + 1;
-                    return index;
                 }
             } else {
                 buffer = malloc(strlen(param_1) + 1);
                 DAT_007fe120[DAT_00668720] = (unsigned int)buffer;
                 if (buffer != NULL) {
                     sprintf(buffer, (char *)DAT_004b8bbc, param_1);
-                    index = DAT_00668720;
-                    DAT_00668720 = DAT_00668720 + 1;
-                    return index;
                 }
             }
         } else {
-            index = DAT_00668720;
-            DAT_007fe120[index] = 0;
-            DAT_00668720 = index + 1;
-            return index;
+            DAT_007fe120[DAT_00668720] = 0;
         }
     } else {
         DAT_007fe120[DAT_00668720] = (unsigned int)param_1;
     }
-    index = DAT_00668720;
-    DAT_00668720 = DAT_00668720 + 1;
-    return index;
+    return DAT_00668720++;
 }
 
 // FUNCTION: LEGOLAND 0x00468b00
@@ -328,22 +316,21 @@ void FUN_00468c80(struct ObjectiveEvent *event) {
     prev = NULL;
     if (node != NULL) {
         key = event->sort_key;
-        while (node->sort_key <= key) {
-            prev = node;
-            node = node->next;
-            if (node == NULL) {
+        while (node != NULL) {
+            if (node->sort_key > key) {
                 break;
             }
-        }
-        if (prev != NULL) {
-            event->next = prev->next;
-            prev->next = event;
-            DAT_0066872c[event->type] += 1;
-            return;
+            prev = node;
+            node = node->next;
         }
     }
-    DAT_00668728 = event;
-    event->next = NULL;
+    if (prev != NULL) {
+        event->next = prev->next;
+        prev->next = event;
+    } else {
+        DAT_00668728 = event;
+        event->next = NULL;
+    }
     DAT_0066872c[event->type] += 1;
 }
 
@@ -774,245 +761,201 @@ void FUN_004693b0(unsigned int type) {
 }
 
 // FUNCTION: LEGOLAND 0x00469400
-unsigned int FUN_00469400(void) {
-    const char *format;
-    int value;
-    unsigned int name;
+void FUN_00469400(void) {
+    struct ObjectiveEvent *node;
 
     GetGameTimer();
-    while (DAT_00668728 != NULL) {
-        switch (DAT_00668728->type) {
-        case 0:
-            FUN_00468bb0((char *)DAT_004b8bbc, DAT_007fe120[DAT_00668728->field_40]);
-            DAT_00668614 = DAT_00668728->field_40;
-            FUN_004693b0(DAT_00668728->type);
-            continue;
-        case 1:
-            value = DAT_00668728->field_1c;
-            name = (unsigned int)((struct PlaceObject *)DAT_00668728->field_4)->cls->name;
-            // STRING: LEGOLAND 0x004ba6bc
-            format = "You need to build %d more of object %s";
-            break;
-        case 2:
-            value = DAT_00668728->field_4;
-            if (DAT_00668728->field_1c == 0) {
-                if (value == 0) {
-                    // STRING: LEGOLAND 0x004ba648
-                    FUN_00468bb0("You need to connect all objects to a path");
-                } else {
-                    // STRING: LEGOLAND 0x004ba674
-                    FUN_00468bb0("You need to connect your %s to a path", ((struct PlaceObject *)value)->cls->name);
-                }
-            } else if (value == 0) {
-                // STRING: LEGOLAND 0x004ba5c8
-                FUN_00468bb0("You need to link the paths from all objects to the park entrance.");
-            } else {
-                // STRING: LEGOLAND 0x004ba60c
-                FUN_00468bb0("You need to link the path from your %s to the park entrance", ((struct PlaceObject *)value)->cls->name);
-            }
-            FUN_004693b0(DAT_00668728->type);
-            continue;
-        case 3:
-            value = DAT_00668728->field_14;
-            if (value == 0) {
-                name = *(unsigned int *)DAT_00668728->field_4;
-                value = DAT_00668728->field_1c;
-                // STRING: LEGOLAND 0x004ba558
-                format = "You need to build %d more attractions from the %s range";
-            } else {
-                name = *(unsigned int *)DAT_00668728->field_4;
-                // STRING: LEGOLAND 0x004ba590
-                format = "You need to build %d new attractions from the %s range";
-            }
-            break;
-        case 4:
-            value = DAT_00668728->field_14;
-            if (value == 0) {
-                name = *(unsigned int *)DAT_00668728->field_4;
-                value = DAT_00668728->field_1c;
-                // STRING: LEGOLAND 0x004ba4dc
-                format = "You need delete %d attractions from the %s range";
-            } else {
-                name = *(unsigned int *)DAT_00668728->field_4;
-                // STRING: LEGOLAND 0x004ba510
-                format = "You need to delete all instances of %d attractions from the %s range";
-            }
-            break;
-        case 5:
-            // STRING: LEGOLAND 0x004ba4b0
-            FUN_00468bb0("You need to remove %d items from the area", DAT_00668728->field_1c);
-            FUN_004693b0(DAT_00668728->type);
-            continue;
-        case 6:
-            value = DAT_00668728->field_1c;
-            name = (unsigned int)((struct PlaceObject *)DAT_00668728->field_4)->cls->name;
-            // STRING: LEGOLAND 0x004ba48c
-            format = "You need to delete %d of object %s";
-            break;
-        case 7:
-            // STRING: LEGOLAND 0x004ba45c
-            FUN_00468bb0("You need to attract %d more people to your park", DAT_00668728->field_1c);
-            FUN_004693b0(DAT_00668728->type);
-            continue;
-        case 8:
-            value = DAT_00668728->field_1c;
-            if (value < 1) {
-                // STRING: LEGOLAND 0x004ba3fc
-                FUN_00468bb0("You need %d fewer gardeners in your park", -value);
-                FUN_004693b0(DAT_00668728->type);
-            } else {
-                // STRING: LEGOLAND 0x004ba428
-                FUN_00468bb0("You need %d more gardeners to look after your park", value);
-                FUN_004693b0(DAT_00668728->type);
-            }
-            continue;
-        case 9:
-            value = DAT_00668728->field_1c;
-            if (value < 1) {
-                // STRING: LEGOLAND 0x004ba3a0
-                FUN_00468bb0("You need %d fewer mechanics in your park", -value);
-                FUN_004693b0(DAT_00668728->type);
-            } else {
-                // STRING: LEGOLAND 0x004ba3cc
-                FUN_00468bb0("You need %d more mechanics to help in the park", value);
-                FUN_004693b0(DAT_00668728->type);
-            }
-            continue;
-        case 0xa:
-            switch (DAT_00668728->field_1c) {
+    do {
+        node = DAT_00668728;
+        if (node != NULL) {
+            switch (node->type) {
             case 0:
-                // STRING: LEGOLAND 0x004ba370
-                FUN_00468bb0("You need to cover %d more squares with objects", DAT_00668728->field_14);
-                FUN_004693b0(DAT_00668728->type);
+                FUN_00468bb0((char *)DAT_004b8bbc, DAT_007fe120[node->field_40]);
+                DAT_00668614 = node->field_40;
                 break;
             case 1:
-                // STRING: LEGOLAND 0x004ba340
-                FUN_00468bb0("You need to cover %d more squares with rides", DAT_00668728->field_14);
-                FUN_004693b0(DAT_00668728->type);
+                // STRING: LEGOLAND 0x004ba6bc
+                FUN_00468bb0("You need to build %d more of object %s", node->field_1c,
+                    ((struct PlaceObject *)node->field_4)->cls->name);
+                break;
+            case 0xc:
+                // STRING: LEGOLAND 0x004ba69c
+                FUN_00468bb0("You need to research object %s", ((struct PlaceObject *)node->field_4)->cls->name);
                 break;
             case 2:
-                // STRING: LEGOLAND 0x004ba2ac
-                FUN_00468bb0("You need to cover %d more squares with scenery", DAT_00668728->field_14);
-                FUN_004693b0(DAT_00668728->type);
+                if (node->field_1c == 0) {
+                    if (node->field_4 != 0) {
+                        // STRING: LEGOLAND 0x004ba674
+                        FUN_00468bb0("You need to connect your %s to a path",
+                            ((struct PlaceObject *)node->field_4)->cls->name);
+                    } else {
+                        // STRING: LEGOLAND 0x004ba648
+                        FUN_00468bb0("You need to connect all objects to a path");
+                    }
+                } else {
+                    if (node->field_4 != 0) {
+                        // STRING: LEGOLAND 0x004ba60c
+                        FUN_00468bb0("You need to link the path from your %s to the park entrance",
+                            ((struct PlaceObject *)node->field_4)->cls->name);
+                    } else {
+                        // STRING: LEGOLAND 0x004ba5c8
+                        FUN_00468bb0("You need to link the paths from all objects to the park entrance.");
+                    }
+                }
                 break;
             case 3:
-                // STRING: LEGOLAND 0x004ba26c
-                FUN_00468bb0("You need to cover %d more squares with stop 'n' wonder objects", DAT_00668728->field_14);
-                FUN_004693b0(DAT_00668728->type);
+                if (node->field_14 != 0) {
+                    // STRING: LEGOLAND 0x004ba590
+                    FUN_00468bb0("You need to build %d new attractions from the %s range", node->field_14,
+                        *(unsigned int *)node->field_4);
+                } else {
+                    // STRING: LEGOLAND 0x004ba558
+                    FUN_00468bb0("You need to build %d more attractions from the %s range", node->field_1c,
+                        *(unsigned int *)node->field_4);
+                }
                 break;
             case 4:
-                // STRING: LEGOLAND 0x004ba310
-                FUN_00468bb0("You need to cover %d more squares with shops", DAT_00668728->field_14);
-                FUN_004693b0(DAT_00668728->type);
+                if (node->field_14 != 0) {
+                    // STRING: LEGOLAND 0x004ba510
+                    FUN_00468bb0("You need to delete all instances of %d attractions from the %s range", node->field_14,
+                        *(unsigned int *)node->field_4);
+                } else {
+                    // STRING: LEGOLAND 0x004ba4dc
+                    FUN_00468bb0("You need delete %d attractions from the %s range", node->field_1c,
+                        *(unsigned int *)node->field_4);
+                }
                 break;
             case 5:
-                // STRING: LEGOLAND 0x004ba2dc
-                FUN_00468bb0("You need to cover %d more squares with food outlets", DAT_00668728->field_14);
-                FUN_004693b0(DAT_00668728->type);
+                // STRING: LEGOLAND 0x004ba4b0
+                FUN_00468bb0("You need to remove %d items from the area", node->field_1c);
                 break;
-            default:
-                FUN_004693b0(DAT_00668728->type);
-                continue;
+            case 6:
+                // STRING: LEGOLAND 0x004ba48c
+                FUN_00468bb0("You need to delete %d of object %s", node->field_1c,
+                    ((struct PlaceObject *)node->field_4)->cls->name);
+                break;
+            case 7:
+                // STRING: LEGOLAND 0x004ba45c
+                FUN_00468bb0("You need to attract %d more people to your park", node->field_1c);
+                break;
+            case 8:
+                if ((int)node->field_1c > 0) {
+                    // STRING: LEGOLAND 0x004ba428
+                    FUN_00468bb0("You need %d more gardeners to look after your park", node->field_1c);
+                } else {
+                    // STRING: LEGOLAND 0x004ba3fc
+                    FUN_00468bb0("You need %d fewer gardeners in your park", -(int)node->field_1c);
+                }
+                break;
+            case 9:
+                if ((int)node->field_1c > 0) {
+                    // STRING: LEGOLAND 0x004ba3cc
+                    FUN_00468bb0("You need %d more mechanics to help in the park", node->field_1c);
+                } else {
+                    // STRING: LEGOLAND 0x004ba3a0
+                    FUN_00468bb0("You need %d fewer mechanics in your park", -(int)node->field_1c);
+                }
+                break;
+            case 0xa:
+                switch (node->field_1c) {
+                case 0:
+                    // STRING: LEGOLAND 0x004ba370
+                    FUN_00468bb0("You need to cover %d more squares with objects", node->field_14);
+                    break;
+                case 1:
+                    // STRING: LEGOLAND 0x004ba340
+                    FUN_00468bb0("You need to cover %d more squares with rides", node->field_14);
+                    break;
+                case 4:
+                    // STRING: LEGOLAND 0x004ba310
+                    FUN_00468bb0("You need to cover %d more squares with shops", node->field_14);
+                    break;
+                case 5:
+                    // STRING: LEGOLAND 0x004ba2dc
+                    FUN_00468bb0("You need to cover %d more squares with food outlets", node->field_14);
+                    break;
+                case 2:
+                    // STRING: LEGOLAND 0x004ba2ac
+                    FUN_00468bb0("You need to cover %d more squares with scenery", node->field_14);
+                    break;
+                case 3:
+                    // STRING: LEGOLAND 0x004ba26c
+                    FUN_00468bb0("You need to cover %d more squares with stop 'n' wonder objects", node->field_14);
+                    break;
+                }
+                break;
+            case 0xb:
+                // STRING: LEGOLAND 0x004ba234
+                FUN_00468bb0("You need to line %d%% more of your path with scenery", node->field_14);
+                break;
+            case 0xd:
+                // STRING: LEGOLAND 0x004ba210
+                FUN_00468bb0("You need to save up %d more coins.", node->field_1c);
+                break;
+            case 0xe:
+                // STRING: LEGOLAND 0x004ba1dc
+                FUN_00468bb0("You need make %d people up to happiness level %d", node->field_1c, node->field_14);
+                break;
+            case 0xf:
+                if (node->field_18 != 0) {
+                    // STRING: LEGOLAND 0x004ba198
+                    FUN_00468bb0("You need to get %d fewer people with hunger levels greater than %d", node->field_1c,
+                        node->field_14);
+                } else {
+                    // STRING: LEGOLAND 0x004ba15c
+                    FUN_00468bb0("You need to get %d more people with hunger level below %d", node->field_1c,
+                        node->field_14);
+                }
+                break;
+            case 0x10:
+                // STRING: LEGOLAND 0x004ba110
+                FUN_00468bb0("You need make repairs to %d objects to bring them to above %d%% of health", node->field_1c,
+                    node->field_14);
+                break;
+            case 0x11:
+                // STRING: LEGOLAND 0x004ba0e4
+                FUN_00468bb0("You need to get %d more people on the %s", node->field_1c,
+                    ((struct PlaceObject *)node->field_4)->cls->name);
+                break;
+            case 0x12:
+                if (node->field_14 != 0) {
+                    // STRING: LEGOLAND 0x004ba0b4
+                    FUN_00468bb0("You need to add %d different parts to the %s", node->field_14,
+                        ((struct PlaceObject *)node->field_4)->cls->name);
+                } else {
+                    // STRING: LEGOLAND 0x004ba08c
+                    FUN_00468bb0("You need to add %d more parts to the %s", node->field_1c,
+                        ((struct PlaceObject *)node->field_4)->cls->name);
+                }
+                break;
+            case 0x13:
+                switch (node->field_18) {
+                case 0:
+                    // STRING: LEGOLAND 0x004ba050
+                    FUN_00468bb0("You need to improve the LEGOLAND zoning (from %d%% to %d%%)", node->field_1c,
+                        node->field_14);
+                    break;
+                case 1:
+                    // STRING: LEGOLAND 0x004ba010
+                    FUN_00468bb0("You need to improve the ADVENTURER zoning (from %d%% to %d%%)", node->field_1c,
+                        node->field_14);
+                    break;
+                case 2:
+                    // STRING: LEGOLAND 0x004b9fd4
+                    FUN_00468bb0("You need to  inprove the CASTLE zoning (from %d%% to %d%%)", node->field_1c,
+                        node->field_14);
+                    break;
+                case 3:
+                    // STRING: LEGOLAND 0x004b9f98
+                    FUN_00468bb0("You need to improve the WESTERN zoning (from %d%% to %d%%)", node->field_1c,
+                        node->field_14);
+                    break;
+                }
+                break;
             }
-            continue;
-        case 0xb:
-            // STRING: LEGOLAND 0x004ba234
-            FUN_00468bb0("You need to line %d%% more of your path with scenery", DAT_00668728->field_14);
-            FUN_004693b0(DAT_00668728->type);
-            continue;
-        case 0xc:
-            // STRING: LEGOLAND 0x004ba69c
-            FUN_00468bb0("You need to research object %s", ((struct PlaceObject *)DAT_00668728->field_4)->cls->name);
-            FUN_004693b0(DAT_00668728->type);
-            continue;
-        case 0xd:
-            // STRING: LEGOLAND 0x004ba210
-            FUN_00468bb0("You need to save up %d more coins.", DAT_00668728->field_1c);
-            FUN_004693b0(DAT_00668728->type);
-            continue;
-        case 0xe:
-            name = DAT_00668728->field_14;
-            value = DAT_00668728->field_1c;
-            // STRING: LEGOLAND 0x004ba1dc
-            format = "You need make %d people up to happiness level %d";
-            break;
-        case 0xf:
-            if (DAT_00668728->field_18 == 0) {
-                name = DAT_00668728->field_14;
-                value = DAT_00668728->field_1c;
-                // STRING: LEGOLAND 0x004ba15c
-                format = "You need to get %d more people with hunger level below %d";
-            } else {
-                name = DAT_00668728->field_14;
-                value = DAT_00668728->field_1c;
-                // STRING: LEGOLAND 0x004ba198
-                format = "You need to get %d fewer people with hunger levels greater than %d";
-            }
-            break;
-        case 0x10:
-            name = DAT_00668728->field_14;
-            value = DAT_00668728->field_1c;
-            // STRING: LEGOLAND 0x004ba110
-            format = "You need make repairs to %d objects to bring them to above %d%% of health";
-            break;
-        case 0x11:
-            value = DAT_00668728->field_1c;
-            name = (unsigned int)((struct PlaceObject *)DAT_00668728->field_4)->cls->name;
-            // STRING: LEGOLAND 0x004ba0e4
-            format = "You need to get %d more people on the %s";
-            break;
-        case 0x12:
-            value = DAT_00668728->field_14;
-            if (value == 0) {
-                value = DAT_00668728->field_1c;
-                name = (unsigned int)((struct PlaceObject *)DAT_00668728->field_4)->cls->name;
-                // STRING: LEGOLAND 0x004ba08c
-                format = "You need to add %d more parts to the %s";
-            } else {
-                name = (unsigned int)((struct PlaceObject *)DAT_00668728->field_4)->cls->name;
-                // STRING: LEGOLAND 0x004ba0b4
-                format = "You need to add %d different parts to the %s";
-            }
-            break;
-        case 0x13:
-            switch (DAT_00668728->field_18) {
-            case 0:
-                name = DAT_00668728->field_14;
-                value = DAT_00668728->field_1c;
-                // STRING: LEGOLAND 0x004ba050
-                format = "You need to improve the LEGOLAND zoning (from %d%% to %d%%)";
-                break;
-            case 1:
-                name = DAT_00668728->field_14;
-                value = DAT_00668728->field_1c;
-                // STRING: LEGOLAND 0x004ba010
-                format = "You need to improve the ADVENTURER zoning (from %d%% to %d%%)";
-                break;
-            case 2:
-                name = DAT_00668728->field_14;
-                value = DAT_00668728->field_1c;
-                // STRING: LEGOLAND 0x004b9fd4
-                format = "You need to  inprove the CASTLE zoning (from %d%% to %d%%)";
-                break;
-            case 3:
-                name = DAT_00668728->field_14;
-                value = DAT_00668728->field_1c;
-                // STRING: LEGOLAND 0x004b9f98
-                format = "You need to improve the WESTERN zoning (from %d%% to %d%%)";
-                break;
-            default:
-                FUN_004693b0(DAT_00668728->type);
-                continue;
-            }
-            break;
-        default:
-            FUN_004693b0(DAT_00668728->type);
-            continue;
+            FUN_004693b0(node->type);
         }
-        FUN_00468bb0(format, value, name);
-        FUN_004693b0(DAT_00668728->type);
-    }
-    return 1;
+    } while (node != NULL);
 }
 
 // FUNCTION: LEGOLAND 0x00469900
@@ -1021,22 +964,19 @@ void FUN_00469900(struct NerpsArg *object, unsigned int a, unsigned int b) {
     unsigned int flags;
 
     obj = (struct RewardObject *)object;
-    if (obj == NULL) {
-        DAT_0066871c = 1;
-        return;
-    }
-    flags = obj->flags;
-    if ((flags & 1) != 0) {
-        if ((flags & 0x10002) == 2) {
-            // STRING: LEGOLAND 0x004ba6e4
-            DBPrintf("Not giving %d.. Already got it\n", obj->id);
-            DAT_0066871c = 1;
-            return;
-        }
-        obj->flags = (flags & 0xfffeffff) | 2;
-        FUN_0048a6e0((struct ClippedObject *)obj);
-        if (a != 0) {
-            FUN_00471c10(obj->info);
+    if (obj != NULL) {
+        flags = obj->flags;
+        if ((flags & 1) != 0) {
+            if ((flags & 0x10002) != 2) {
+                obj->flags = (flags & 0xfffeffff) | 2;
+                FUN_0048a6e0((struct ClippedObject *)obj);
+                if (a != 0) {
+                    FUN_00471c10(obj->info);
+                }
+            } else {
+                // STRING: LEGOLAND 0x004ba6e4
+                DBPrintf("Not giving %d.. Already got it\n", obj->id);
+            }
         }
     }
     DAT_0066871c = 1;
@@ -1184,78 +1124,79 @@ int FUN_00469c60(unsigned int handle) {
 
 // FUNCTION: LEGOLAND 0x00469c80
 int FUN_00469c80(struct MapRectArg *arg) {
+    struct SweepInstance *next;
+    RECT rect;
+    struct SweepInstance *current;
+    char tile_x;
+    struct ObjClass *cls;
+    char tile_y;
     struct Cursor saved;
     struct Point point;
     struct Sample *sample;
-    struct SweepInstance *current;
-    struct SweepInstance *next;
-    struct ObjClass *cls;
-    int phase;
     int power;
-    int found;
-    unsigned int tile_x;
-    unsigned int tile_y;
-    int left;
-    int bottom;
+    void *saved_class;
+    int phase;
 
     sample = PlayInstanceOfSample(DAT_004b92fc, 1, 1, 0);
     FUN_00496d10(sample);
     AddSFX_Callback((struct CallbackEntry *)sample, 3000, (unsigned int (*)(struct CallbackEntry *))FUN_00469c60);
-    phase = 0;
-    do {
+    for (phase = 0; phase < 3; phase++) {
         current = (struct SweepInstance *)GetFirstRenderObject();
         while (current != NULL) {
             FUN_004969d0();
-            next = current;
-            if (phase == 0) {
-                while ((next = (struct SweepInstance *)GetNextRenderObject((struct RenderObject *)current)) != NULL) {
-                    cls = next->object->cls;
-                    power = FindObjectsPower(cls);
-                    if (cls->field_58 == NULL || (cls->field_58[8] & 0x10) == 0 || (current = next, power > 0)) {
-                        break;
-                    }
-                }
-            } else if (phase == 1) {
+            switch (phase) {
+            case 0:
+                next = current;
                 do {
-                    next = (struct SweepInstance *)GetNextRenderObject((struct RenderObject *)current);
-                    if (next == NULL) {
-                        break;
-                    }
-                    power = FindObjectsPower(next->object->cls);
-                    current = next;
-                } while (power < 1);
-            } else if (phase == 2) {
+                    next = (struct SweepInstance *)GetNextRenderObject((struct RenderObject *)next);
+                } while (next != NULL && (cls = next->object->cls, power = FindObjectsPower(cls), cls->field_58 != NULL) &&
+                    (cls->field_58[8] & 0x10) != 0 && power <= 0);
+                break;
+            case 1:
+                next = current;
+                do {
+                    next = (struct SweepInstance *)GetNextRenderObject((struct RenderObject *)next);
+                } while (next != NULL && FindObjectsPower(next->object->cls) <= 0);
+                break;
+            case 2:
                 next = (struct SweepInstance *)GetNextRenderObject((struct RenderObject *)current);
+                break;
             }
             if (current->flags_c & 0x80) {
-                tile_x = current->tile_x;
-                QueryClass = current->object->cls;
-                QueryObj = *(unsigned short *)&current->tile_x;
+                cls = current->object->cls;
                 tile_y = current->tile_y;
-                cls = (struct ObjClass *)QueryClass;
-                left = cls->field_40 + tile_y;
-                bottom = cls->field_48 + tile_y;
-                if (cls->field_3c + (int)tile_x <= arg->x1 && arg->x0 <= cls->field_44 + (int)tile_x &&
-                    left <= arg->y1 && arg->y0 <= bottom) {
-                    saved = QueryCursor;
-                    DAT_00811564 = tile_x;
+                tile_x = current->tile_x;
+                rect.top = cls->field_40;
+                rect.bottom = cls->field_48;
+                rect.top += tile_y;
+                rect.right = cls->field_44;
+                rect.right += tile_x;
+                rect.bottom += tile_y;
+                rect.left = cls->field_3c + tile_x;
+                if (rect.left <= arg->x1 && rect.right >= arg->x0 && rect.top <= arg->y1 && rect.bottom >= arg->y0) {
+                    point.y = tile_y;
+                    saved_class = QueryClass;
+                    memcpy(&saved, &QueryCursor, sizeof(struct Cursor));
                     DAT_00811568 = tile_y;
                     point.x = tile_x;
-                    point.y = tile_y;
+                    DAT_00811564 = point.x;
+                    *(unsigned char *)&QueryObj = (unsigned char)point.x;
+                    QueryClass = cls;
+                    *((unsigned char *)&QueryObj + 1) = (unsigned char)point.y;
                     cls->method_94(cls->field_c4, &point);
                     BuildCursorPtr(&QueryCursor, 0, 0);
-                    found = FUN_0045f4b0(&QueryCursor);
-                    if (found != 0) {
-                        FUN_0045d3d0((struct PathFootprint *)cls, &point.x);
-                        RemObjFromMap(cls, *cls->field_c4, QueryObj, &QueryCursor);
+                    if (FUN_0045f4b0(&QueryCursor) != 0) {
+                        FUN_0045d3d0(QueryClass, &point.x);
+                        RemObjFromMap((struct ObjClass *)QueryClass, (unsigned int)((struct ObjClass *)QueryClass)->field_c4, QueryObj,
+                            &QueryCursor);
                     }
-                    QueryCursor = saved;
+                    memcpy(&QueryCursor, &saved, sizeof(struct Cursor));
+                    QueryClass = saved_class;
                 }
             }
             current = next;
         }
-        phase++;
-    } while (phase <= 2);
+    }
     CalculateMapRenderOrder();
     PlayInstanceOfSample(DAT_004b92fc, 0, 1, 0);
     return 1;

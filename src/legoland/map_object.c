@@ -1070,7 +1070,7 @@ void FUN_0045f480(struct Cursor *cursor, int param) {
 }
 
 // FUNCTION: LEGOLAND 0x0045f4b0
-unsigned char FUN_0045f4b0(struct Cursor *cursor) {
+int FUN_0045f4b0(struct Cursor *cursor) {
     int target;
 
     target = cursor->field_140c;
@@ -1089,7 +1089,7 @@ void FUN_0045f4d0(struct Cursor *cursor) {
             best = node;
         }
     }
-    if ((int)FUN_0045f4b0(best) == 0) {
+    if (FUN_0045f4b0(best) == 0) {
         for (; cursor != 0; cursor = (struct Cursor *)cursor->field_1830) {
             FUN_0045f480(cursor, best->field_1410);
         }
