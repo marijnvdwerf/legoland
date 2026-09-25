@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["reccmp"]
+# dependencies = ["reccmp>=0.1.7"]
 # ///
 """Show per-TU progress, or details for one TU."""
 
@@ -60,7 +60,7 @@ def classify(ratio: float) -> str:
 def main():
     target = RecCmpProject.from_directory(Path(".")).get("LEGOLAND")
     ratios = {
-        d.orig_addr: d.effective_ratio
+        d.orig_addr: d.effective_accuracy
         for d in Compare.from_target(target).compare_all()
     }
     functions = {

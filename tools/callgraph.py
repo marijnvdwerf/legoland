@@ -4,7 +4,7 @@
 # dependencies = [
 #   "tree-sitter==0.26.0",
 #   "tree-sitter-c==0.24.2",
-#   "reccmp",
+#   "reccmp>=0.1.7",
 # ]
 # ///
 """Print a source-oriented call graph for the Legoland decompilation."""
@@ -110,7 +110,7 @@ def match_results() -> dict[int, float]:
     project = RecCmpProject.from_directory(ROOT)
     target = project.get("LEGOLAND")
     compare = Compare.from_target(target)
-    return {diff.orig_addr: diff.effective_ratio for diff in compare.compare_all()}
+    return {diff.orig_addr: diff.effective_accuracy for diff in compare.compare_all()}
 
 
 def index_sources(functions: Functions, matches: dict[int, float]) -> None:

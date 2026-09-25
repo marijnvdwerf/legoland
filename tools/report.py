@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["reccmp"]
+# dependencies = ["reccmp>=0.1.7"]
 # ///
 """Generate an objdiff-format report.json from reccmp comparison results.
 
@@ -52,7 +52,7 @@ def build_report(cmp: Compare, addr_to_tu: dict[int, str]) -> dict:
                 "addr": diff.orig_addr,
                 "name": diff.name,
                 "size": size,
-                "ratio": diff.effective_ratio,
+                "ratio": diff.effective_accuracy,
                 "stub": diff.is_stub,
             }
         )
