@@ -509,11 +509,11 @@ extern struct Footprint DAT_004b7278;
 // 0x004b7288
 extern struct Footprint *DAT_004b7288;
 // 0x004b7148
-extern int DAT_004b7148[0x10];
+extern struct BoatDirStep DAT_004b7148[4];
 // 0x004b7188
-extern float DAT_004b7188[0x10];
+extern struct BoatArc DAT_004b7188[4];
 // 0x004b71c8
-extern float DAT_004b71c8[0x10];
+extern struct BoatArc DAT_004b71c8[4];
 // 0x004b7290
 extern struct Point DAT_004b7290[5];
 // 0x004b7230

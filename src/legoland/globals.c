@@ -370,13 +370,13 @@ struct Footprint DAT_004b7278;
 struct Footprint *DAT_004b7288;
 
 // GLOBAL: LEGOLAND 0x004b7148
-int DAT_004b7148[0x10];
+struct BoatDirStep DAT_004b7148[4];
 
 // GLOBAL: LEGOLAND 0x004b7188
-float DAT_004b7188[0x10];
+struct BoatArc DAT_004b7188[4];
 
 // GLOBAL: LEGOLAND 0x004b71c8
-float DAT_004b71c8[0x10];
+struct BoatArc DAT_004b71c8[4];
 
 // GLOBAL: LEGOLAND 0x004b7290
 struct Point DAT_004b7290[5];
