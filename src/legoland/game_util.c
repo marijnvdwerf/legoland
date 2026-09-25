@@ -1067,9 +1067,9 @@ int FUN_0047a020(struct CommandArgs *arg, int argc) {
     }
     if (DAT_00669054 == 1) {
         FUN_00468860(v2, v3);
-        return 1;
+    } else {
+        FUN_0046bc80(v2, v3);
     }
-    FUN_0046bc80(v2, v3);
     return 1;
 }
 
@@ -1120,9 +1120,9 @@ int FUN_0047a140(struct CommandArgs *arg, int argc) {
     }
     if (DAT_00669054 == 1) {
         FUN_004688f0(v1, v2);
-        return 1;
+    } else {
+        FUN_0046bce0(v1, v2);
     }
-    FUN_0046bce0(v1, v2);
     return 1;
 }
 
@@ -1159,19 +1159,18 @@ int FUN_0047a2f0(struct CommandArgs *arg, int argc) {
     if (DAT_004bb5b0 == 0) {
         return 1;
     }
-    if (FUN_004786c0((unsigned int)arg, argc, 2, 0) == 0) {
-        return 0;
-    }
-    if (argc != 0) {
-        index = FUN_004781b0((char *)arg->field_4, &DAT_004bb5c4, 5);
-        if (index == -1) {
-            return 0;
+    if (FUN_004786c0((unsigned int)arg, argc, 2, 0) != 0) {
+        if (argc != 0) {
+            index = FUN_004781b0((char *)arg->field_4, &DAT_004bb5c4, 5);
+        } else {
+            index = 0;
         }
-    } else {
-        index = 0;
+        if (index != -1) {
+            FUN_0046c450(DAT_00669050, index);
+            return 1;
+        }
     }
-    FUN_0046c450(DAT_00669050, index);
-    return 1;
+    return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0047a360
@@ -1181,19 +1180,18 @@ int FUN_0047a360(struct CommandArgs *arg, int argc) {
     if (DAT_004bb5b0 == 0) {
         return 1;
     }
-    if (FUN_004786c0((unsigned int)arg, argc, 2, 0) == 0) {
-        return 0;
-    }
-    if (argc != 0) {
-        index = FUN_004781b0((char *)arg->field_4, &DAT_004bb5d8, 2);
-        if (index == -1) {
-            return 0;
+    if (FUN_004786c0((unsigned int)arg, argc, 2, 0) != 0) {
+        if (argc != 0) {
+            index = FUN_004781b0((char *)arg->field_4, &DAT_004bb5d8, 2);
+        } else {
+            index = 0;
         }
-    } else {
-        index = 0;
+        if (index != -1) {
+            FUN_0046c480(DAT_00669050, index);
+            return 1;
+        }
     }
-    FUN_0046c480(DAT_00669050, index);
-    return 1;
+    return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0047a3d0
@@ -1356,12 +1354,8 @@ int FUN_0047a6f0(struct CommandArgs *arg, int argc) {
             return 1;
         }
         for (y = rect[1]; y <= rect[3]; y++) {
-            if (rect[0] <= rect[2]) {
-                x = rect[0];
-                do {
-                    *(unsigned char *)&GameMap[y][x].flags |= 0x40;
-                    x++;
-                } while (x <= rect[2]);
+            for (x = rect[0]; x <= rect[2]; x++) {
+                GameMap[y][x].flags |= 0x40;
             }
         }
     }
@@ -1449,7 +1443,6 @@ int FUN_0047a960(struct CommandArgs *arg, int argc) {
     int index;
     unsigned int v2;
     unsigned int v3;
-    char *name;
 
     if (DAT_004bb5b0 != 0) {
         if (FUN_004786c0((unsigned int)arg, argc, 5, 2) == 0) {
@@ -1465,17 +1458,14 @@ int FUN_0047a960(struct CommandArgs *arg, int argc) {
             v3 = atoi(arg->field_c);
         } else {
             is_off = 1;
-            v2 = argc;
-            v3 = argc;
         }
         // STRING: LEGOLAND 0x004bc0d8
         if (_stricmp((char *)arg->field_4, "HAPPY_VIS") == 0) {
             // STRING: LEGOLAND 0x004bc0cc
-            name = "Happpy_Vis";
+            index = FUN_004781b0("Happpy_Vis", &DAT_004bb624, 0x19);
         } else {
-            name = (char *)arg->field_4;
+            index = FUN_004781b0((char *)arg->field_4, &DAT_004bb624, 0x19);
         }
-        index = FUN_004781b0(name, &DAT_004bb624, 0x19);
         if (index == -1) {
             return 0;
         }
@@ -1659,7 +1649,7 @@ int FUN_0047ada0(struct CommandArgs *arg, int argc) {
 // FUNCTION: LEGOLAND 0x0047ae00
 int FUN_0047ae00(char **argv, int argc) {
     int index;
-    unsigned int bit;
+    int i;
     unsigned int mask;
 
     mask = 0;
@@ -1667,24 +1657,19 @@ int FUN_0047ae00(char **argv, int argc) {
         if (FUN_004786c0((unsigned int)argv, argc, 5, 1) == 0) {
             return 0;
         }
-        if (argc >= 1) {
-            do {
-                argv = argv + 1;
-                index = FUN_004781b0(*argv, &DAT_004bb6d4, 9);
-                if (index != -1) {
-                    bit = 1 << (index & 0x1f);
-                } else {
-                    bit = atoi(*argv);
-                }
-                mask = mask | bit;
-                argc = argc - 1;
-            } while (argc != 0);
+        for (i = 1; i <= argc; i++) {
+            index = FUN_004781b0(argv[i], &DAT_004bb6d4, 9);
+            if (index != -1) {
+                mask |= 1 << index;
+            } else {
+                mask |= atoi(argv[i]);
+            }
         }
         if (DAT_00669054 == 1) {
             FUN_00476070(mask, 1);
-            return 1;
+        } else {
+            FUN_0046bd70(mask, 1);
         }
-        FUN_0046bd70(mask, 1);
     }
     return 1;
 }
@@ -1692,7 +1677,7 @@ int FUN_0047ae00(char **argv, int argc) {
 // FUNCTION: LEGOLAND 0x0047aea0
 int FUN_0047aea0(char **argv, int argc) {
     int index;
-    unsigned int bit;
+    int i;
     unsigned int mask;
 
     mask = 0;
@@ -1703,24 +1688,19 @@ int FUN_0047aea0(char **argv, int argc) {
         if (argc == 0) {
             mask = 0xffffffff;
         }
-        if (argc >= 1) {
-            do {
-                argv = argv + 1;
-                index = FUN_004781b0(*argv, &DAT_004bb6d4, 9);
-                if (index != -1) {
-                    bit = 1 << (index & 0x1f);
-                } else {
-                    bit = atoi(*argv);
-                }
-                mask = mask | bit;
-                argc = argc - 1;
-            } while (argc != 0);
+        for (i = 1; i <= argc; i++) {
+            index = FUN_004781b0(argv[i], &DAT_004bb6d4, 9);
+            if (index != -1) {
+                mask |= 1 << index;
+            } else {
+                mask |= atoi(argv[i]);
+            }
         }
         if (DAT_00669054 == 1) {
-            FUN_00476070(mask, 1);
-            return 1;
+            FUN_00476070(mask, 0);
+        } else {
+            FUN_0046bd70(mask, 0);
         }
-        FUN_0046bd70(mask, 0);
     }
     return 1;
 }
