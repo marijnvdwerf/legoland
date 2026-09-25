@@ -1177,9 +1177,9 @@ int FUN_00469c80(struct MapRectArg *arg) {
                     point.y = tile_y;
                     saved_class = QueryClass;
                     memcpy(&saved, &QueryCursor, sizeof(struct Cursor));
-                    DAT_00811568 = tile_y;
+                    QueryCursor.field_1408 = tile_y;
                     point.x = tile_x;
-                    DAT_00811564 = point.x;
+                    QueryCursor.field_1404 = point.x;
                     *(unsigned char *)&QueryObj = (unsigned char)point.x;
                     QueryClass = cls;
                     *((unsigned char *)&QueryObj + 1) = (unsigned char)point.y;

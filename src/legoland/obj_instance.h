@@ -59,6 +59,7 @@ struct Ride {
 struct RideObject {
     /* 0x00 */ unsigned char pad_0[0xc];
     /* 0x0c */ struct Ride *ride;
+    /* 0x10 */ unsigned int field_10;
 };
 struct ObjClassNode;
 struct ObjInstance;

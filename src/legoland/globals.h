@@ -2984,10 +2984,6 @@ extern struct Sprite *SPRITE_TitleScreenBk;
 extern LEGO_EXPORT unsigned char NEWFLC_ID[20];
 // 0x00810160
 extern LEGO_EXPORT struct Cursor QueryCursor;
-// 0x00811564
-extern unsigned int DAT_00811564;
-// 0x00811568
-extern unsigned int DAT_00811568;
 // 0x008119a0
 extern LEGO_EXPORT unsigned int NEWFLC_CheckDuplicate;
 // 0x008119a4

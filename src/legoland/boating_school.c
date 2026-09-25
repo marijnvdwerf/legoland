@@ -812,17 +812,17 @@ void FUN_0041a3d0(void *param_1, unsigned int param_2) {
     struct MermaidNode *node = DAT_004d2164;
 
     BasicObjectDCalcCursor((unsigned int)param_1, param_2);
+    PathCursor.field_1404 = QueryCursor.field_1404;
     PathCursor.field_1408 = QueryCursor.field_1408;
     PathCursor.field_1414[0] = QueryCursor.field_1414[2] + 1;
-    PathCursor.field_1404 = QueryCursor.field_1404;
-    PathCursor.field_1414[3] = QueryCursor.field_1414[3];
+    PathCursor.field_1414[2] = PathCursor.field_1414[0];
     PathCursor.field_1414[1] = QueryCursor.field_1414[1];
+    PathCursor.field_1414[3] = QueryCursor.field_1414[3];
     PathCursor.field_1414[4] = 0;
     PathCursor.field_1828 = 0x1008;
     PathCursor.field_1830 = 0;
     QueryCursor.field_1830 = (unsigned int)&PathCursor;
     DAT_00810144 = 1;
-    PathCursor.field_1414[2] = PathCursor.field_1414[0];
     DefaultCursor(&DAT_0082ae20);
     *(struct Footprint *)DAT_0082ae20.field_1414 = *(struct Footprint *)DAT_004b53c0;
     for (; path != NULL; path = path->next) {
@@ -837,8 +837,8 @@ void FUN_0041a3d0(void *param_1, unsigned int param_2) {
     }
     for (; node != NULL; node = node->next) {
         if (node->field_2 == QueryObj) {
-            DAT_0082ae20.field_1404 = (unsigned char)node->field_0;
-            DAT_0082ae20.field_1408 = (unsigned char)(node->field_0 >> 8);
+            DAT_0082ae20.field_1404 = node->tile.pos.x;
+            DAT_0082ae20.field_1408 = node->tile.pos.y;
             FUN_0045f460(&DAT_0082ae20);
             DAT_0082ae20.field_1828 = 8;
             BuildCursorPtr(&DAT_0082ae20, 0, 0);
@@ -848,86 +848,78 @@ void FUN_0041a3d0(void *param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0041a530
-void FUN_0041a530(int param_1, unsigned int param_2, int param_3) {
+void FUN_0041a530(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
     struct BoatRideNode *score = DAT_004cc074;
-    struct BoatRide *ride = DAT_004cc03c;
     struct BoatRideNode *prev = NULL;
+    struct BoatRide *ride = DAT_004cc03c;
     struct PathNode *path;
     struct MermaidNode *mer;
-    short id = (short)param_2;
+    struct RideObject fake;
     int x;
     int y;
-    unsigned int savedX;
-    unsigned int savedY;
-    void *local_8;
-    unsigned char local_14[12];
+    int savedX;
+    int savedY;
 
-    StandardRemoveObject(param_1, *(TileId *)&param_2, param_3);
-    y = DAT_004cc078[1];
-    if (DAT_004cc078[1] <= DAT_004cc078[3]) {
-        do {
-            x = DAT_004cc078[0];
-            if (DAT_004cc078[0] <= DAT_004cc078[2]) {
-                do {
-                    RestoreBaseMap(*(int *)(param_3 + 0x1404) + x, *(int *)(param_3 + 0x1408) + y);
-                    x = x + 1;
-                } while (x <= DAT_004cc078[2]);
+    StandardRemoveObject((struct EditObject *)obj, tile, cursor);
+    for (y = DAT_004cc078[1]; y <= DAT_004cc078[3]; y++) {
+        for (x = DAT_004cc078[0]; x <= DAT_004cc078[2]; x++) {
+            RestoreBaseMap(cursor->field_1404 + x, cursor->field_1408 + y);
+        }
+    }
+    while (score->id != tile.id) {
+        prev = score;
+        score = score->next;
+        if (score == NULL) {
+            return;
+        }
+    }
+    if (score != NULL) {
+        fake.ride = DAT_0082adf0;
+        IncrementObjectCount(DAT_0082adf0);
+        IncrementObjectCount(DAT_0082adf0);
+        path = DAT_004d823c;
+        while (path != NULL) {
+            if (path->field_2 == tile.id) {
+                DAT_0082ae20.field_1404 = path->x;
+                DAT_0082ae20.field_1408 = path->y;
+                FUN_0041c620(&fake, *(TileId *)&path->x, &DAT_0082ae20);
+                path = DAT_004d823c;
+            } else {
+                path = path->next;
             }
-            y = y + 1;
-        } while (y <= DAT_004cc078[3]);
-    }
-    while (score->id == (unsigned short)id ? 1 : (prev = score, score = score->next, score != NULL)) {
-        if (score->id == (unsigned short)id) {
-            break;
         }
-    }
-    if (score->id != (unsigned short)id) {
-        return;
-    }
-    local_8 = DAT_0082adf0;
-    IncrementObjectCount(DAT_0082adf0);
-    IncrementObjectCount(DAT_0082adf0);
-    path = DAT_004d823c;
-    while (path != NULL) {
-        if (path->field_2 == id) {
-            DAT_0082ae20.field_1404 = path->x;
-            DAT_0082ae20.field_1408 = path->y;
-            FUN_0041c620(local_14, *(TileId *)&path->field_2, &DAT_0082ae20);
-            path = DAT_004d823c;
+        fake.ride = DAT_0082adf8;
+        mer = DAT_004d2164;
+        while (mer != NULL) {
+            if (mer->field_2 == tile.id) {
+                savedX = cursor->field_1404;
+                savedY = cursor->field_1408;
+                cursor->field_1404 = mer->tile.pos.x;
+                cursor->field_1408 = mer->tile.pos.y;
+                FUN_0041b6f0(&fake, mer->tile, cursor);
+                cursor->field_1404 = savedX;
+                cursor->field_1408 = savedY;
+                mer = DAT_004d2164;
+            } else {
+                mer = mer->next;
+            }
+        }
+        if (prev != NULL) {
+            prev->next = score->next;
         } else {
-            path = path->next;
+            DAT_004cc074 = score->next;
         }
-    }
-    mer = DAT_004d2164;
-    while (mer != NULL) {
-        if (mer->field_2 == id) {
-            savedX = *(unsigned int *)(param_3 + 0x1404);
-            savedY = *(unsigned int *)(param_3 + 0x1408);
-            *(unsigned int *)(param_3 + 0x1404) = (unsigned char)mer->field_0;
-            *(unsigned int *)(param_3 + 0x1408) = (unsigned char)(mer->field_0 >> 8);
-            FUN_0041b6f0(local_14, *(TileId *)&mer->field_2, (struct Cursor *)param_3);
-            *(unsigned int *)(param_3 + 0x1404) = savedX;
-            *(unsigned int *)(param_3 + 0x1408) = savedY;
-            mer = DAT_004d2164;
-        } else {
-            mer = mer->next;
+        while (ride != NULL) {
+            if (ride->id == tile.id) {
+                FUN_00418f90(ride);
+                ride = DAT_004cc03c;
+            } else {
+                ride = ride->next;
+            }
         }
+        RemoveAllBlokesFromRide(obj->ride, *(unsigned int *)&tile);
+        free(score);
     }
-    if (prev == NULL) {
-        DAT_004cc074 = score->next;
-    } else {
-        prev->next = score->next;
-    }
-    while (ride != NULL) {
-        if (ride->id == id) {
-            FUN_00418f90(ride);
-            ride = DAT_004cc03c;
-        } else {
-            ride = ride->next;
-        }
-    }
-    RemoveAllBlokesFromRide(*(unsigned int *)(param_1 + 0xc), param_2);
-    free(score);
 }
 
 // FUNCTION: LEGOLAND 0x0041a720
@@ -1381,7 +1373,7 @@ void FUN_0041b2a0(int param_1, int *param_2) {
     if (node == NULL) {
         return;
     }
-    node->field_0 = coord;
+    node->tile.id = coord;
     node->field_2 = (unsigned short)(unsigned int)param_2;
     node->next = DAT_004d2164;
     DAT_004d2164 = node;
@@ -1524,7 +1516,7 @@ void FUN_0041b6f0(void *param_1, TileId tile, struct Cursor *param_3) {
             RestoreBaseMap(x + param_3->field_1404, y + param_3->field_1408);
         }
     }
-    while (node->field_0 != tile.id) {
+    while (node->tile.id != tile.id) {
         prev = node;
         node = node->next;
         if (node == NULL) {
@@ -1837,7 +1829,7 @@ void FUN_0041c130(void *param_1, unsigned int param_2, struct Cursor *param_3) {
     }
     if (*tile != (int)DAT_0082adf0->footprint[(0xc4 - 0x3c) / 4]) {
         *(struct Footprint *)((char *)QueryClass + 0x3c) = *(struct Footprint *)DAT_004b53c0;
-        FUN_0041a530((int)local_14, local_param2, (int)param_3);
+        FUN_0041a530((struct RideObject *)local_14, *(TileId *)&local_param2, param_3);
         return;
     }
     u9 = FUN_0041c690(param_3->field_1404, param_3->field_1408, (unsigned short *)&param_2);
