@@ -38,10 +38,10 @@ int FUN_00418e60(unsigned int param_1, unsigned int param_2) {
     }
     while (node != NULL) {
         if (node->id == (unsigned short)id) {
-            if (node->field_4 == score->field_2 && node->field_8 == score->field_3) {
+            if (node->field_4 == score->start.pos.x && node->field_8 == score->start.pos.y) {
                 return 0;
             }
-            if (node->field_c == score->field_2 && node->field_10 == score->field_3) {
+            if (node->field_c == score->start.pos.x && node->field_10 == score->start.pos.y) {
                 return 0;
             }
             if (node->field_3e4 == 1) {
@@ -317,9 +317,9 @@ void FUN_00419520(struct BoatRide *param_1, int param_2) {
         } while (score != NULL);
     }
     mask = path->field_4;
-    if (*(short *)&path->x == *(short *)&score->field_2) {
+    if (path->tile.id == score->start.id) {
         mask = mask & 0xfffffffe;
-    } else if (*(short *)&path->x == *(short *)&score->field_4) {
+    } else if (path->tile.id == score->end.id) {
         param_1->field_3e4 = 0x10;
         param_1->field_3e8 = 3;
         FUN_004198a0(param_1, param_1->field_3dc, 4);
@@ -348,9 +348,9 @@ void FUN_00419520(struct BoatRide *param_1, int param_2) {
         }
     }
     if (param_2 != 0 && path->field_18 != NULL) {
-        if (((unsigned char *)path->field_18)[1] == path->y) {
+        if (path->field_18->tile.pos.y == path->tile.pos.y) {
             mask = mask & 0xfffffffb;
-        } else if ((int)((unsigned int)((unsigned char *)path->field_18)[0] - (unsigned int)path->x) < 0) {
+        } else if ((int)((unsigned int)path->field_18->tile.pos.x - (unsigned int)path->tile.pos.x) < 0) {
             mask = mask & 0xfffffff7;
         } else {
             mask = mask & 0xfffffffd;
@@ -710,13 +710,13 @@ void FUN_0041a040(unsigned int param_1, int *param_2) {
         return;
     }
     score->id = *(unsigned short *)temp;
-    score->field_2 = (unsigned char)param_2[0] + (char)DAT_004cc060.v[0] + 2;
-    score->field_3 = (unsigned char)param_2[1] + (char)DAT_004cc060.v[1] + 2;
-    score->field_4 = (unsigned char)param_2[0] + (char)DAT_004cc048.v[0] + 2;
+    score->start.pos.x = (unsigned char)param_2[0] + (char)DAT_004cc060.v[0] + 2;
+    score->start.pos.y = (unsigned char)param_2[1] + (char)DAT_004cc060.v[1] + 2;
+    score->end.pos.x = (unsigned char)param_2[0] + (char)DAT_004cc048.v[0] + 2;
     score->field_8 = 0;
     score->field_c = 9999;
     score->field_10 = 0;
-    score->field_5 = (unsigned char)param_2[1] + (char)DAT_004cc048.v[1] + 2;
+    score->end.pos.y = (unsigned char)param_2[1] + (char)DAT_004cc048.v[1] + 2;
     score->field_14 = 0;
     score->value = 5;
     score->blokes[0] = 0;
@@ -802,8 +802,8 @@ void FUN_0041a3d0(void *param_1, unsigned int param_2) {
     *(struct Footprint *)DAT_0082ae20.field_1414 = *(struct Footprint *)DAT_004b53c0;
     for (; path != NULL; path = path->next) {
         if (path->field_2 == QueryObj) {
-            DAT_0082ae20.field_1404 = path->x;
-            DAT_0082ae20.field_1408 = path->y;
+            DAT_0082ae20.field_1404 = path->tile.pos.x;
+            DAT_0082ae20.field_1408 = path->tile.pos.y;
             FUN_0045f460(&DAT_0082ae20);
             DAT_0082ae20.field_1828 = 8;
             BuildCursorPtr(&DAT_0082ae20, 0, 0);
@@ -855,9 +855,9 @@ void FUN_0041a530(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
         path = DAT_004d823c;
         while (path != NULL) {
             if (path->field_2 == tile.id) {
-                DAT_0082ae20.field_1404 = path->x;
-                DAT_0082ae20.field_1408 = path->y;
-                FUN_0041c620(&fake, *(TileId *)&path->x, &DAT_0082ae20);
+                DAT_0082ae20.field_1404 = path->tile.pos.x;
+                DAT_0082ae20.field_1408 = path->tile.pos.y;
+                FUN_0041c620(&fake, path->tile, &DAT_0082ae20);
                 path = DAT_004d823c;
             } else {
                 path = path->next;
@@ -977,7 +977,7 @@ void FUN_0041a720(void) {
                 }
                 break;
             case 1:
-                if (bloke == (int)score->blokes[0] && score->field_2 != 0 &&
+                if (bloke == (int)score->blokes[0] && score->start.pos.x != 0 &&
                     (int)FUN_004192d0((struct BoatRide *)score) * 6 <= (int)score->blokes[3] &&
                     FUN_00418e60((id & 0xff) | (idhi << 8) | (id & 0xffff0000), bloke) != 0) {
                     BlokeSitAnim(bloke);
@@ -1095,59 +1095,59 @@ void FUN_0041abd0(int param_1, unsigned int param_2, unsigned int param_3, short
 // FUNCTION: LEGOLAND 0x0041acf0
 int FUN_0041acf0(void) {
     struct BoatRideNode *score;
+    struct BoatRideNode *scoreCur;
     struct PathNode *path;
+    struct PathNode *pathCur;
     struct MermaidNode *mer;
+    struct MermaidNode *merCur;
     struct BoatRide *ride;
+    struct BoatRide *rideCur;
     int count;
     int i;
     struct BoatRideNode scoreCopy;
     struct BoatRide rideCopy;
 
     count = 0;
-    for (score = DAT_004cc074; score != NULL; score = score->next) {
-        count = count + 1;
+    for (scoreCur = DAT_004cc074; scoreCur != NULL; scoreCur = scoreCur->next) {
+        count++;
     }
-    SaveGameWrite(&count, 4);
     score = DAT_004cc074;
-    while (count != 0) {
-        count = count - 1;
+    SaveGameWrite(&count, 4);
+    while (count--) {
         scoreCopy = *score;
-        for (i = 0; i < 5; i = i + 1) {
+        for (i = 0; i < 5; i++) {
             scoreCopy.blokes[i] = GetBlokeNum(scoreCopy.blokes[i]);
         }
         SaveGameWrite(&scoreCopy, 0x34);
         score = score->next;
     }
     count = 0;
-    for (path = DAT_004d823c; path != NULL; path = path->next) {
-        count = count + 1;
+    for (pathCur = DAT_004d823c; pathCur != NULL; pathCur = pathCur->next) {
+        count++;
     }
-    SaveGameWrite(&count, 4);
     path = DAT_004d823c;
-    while (count != 0) {
-        count = count - 1;
+    SaveGameWrite(&count, 4);
+    while (count--) {
         SaveGameWrite(path, 0x1c);
         path = path->next;
     }
     count = 0;
-    for (mer = DAT_004d2164; mer != NULL; mer = mer->next) {
-        count = count + 1;
+    for (merCur = DAT_004d2164; merCur != NULL; merCur = merCur->next) {
+        count++;
     }
-    SaveGameWrite(&count, 4);
     mer = DAT_004d2164;
-    while (count != 0) {
-        count = count - 1;
+    SaveGameWrite(&count, 4);
+    while (count--) {
         SaveGameWrite(mer, 8);
         mer = mer->next;
     }
     count = 0;
-    for (ride = DAT_004cc03c; ride != NULL; ride = ride->next) {
-        count = count + 1;
+    for (rideCur = DAT_004cc03c; rideCur != NULL; rideCur = rideCur->next) {
+        count++;
     }
-    SaveGameWrite(&count, 4);
     ride = DAT_004cc03c;
-    while (count != 0) {
-        count = count - 1;
+    SaveGameWrite(&count, 4);
+    while (count--) {
         rideCopy = *ride;
         rideCopy.field_3ec = GetBlokeNum(rideCopy.field_3ec);
         SaveGameWrite(&rideCopy, 0x3f4);
@@ -1170,64 +1170,60 @@ int FUN_0041aee0(void) {
     int i;
 
     prevScore = NULL;
+    prevPath = NULL;
+    prevMer = NULL;
     SaveGameRead(&count, 4);
-    while (count != 0) {
-        count = count - 1;
+    while (count--) {
         if (prevScore == NULL) {
-            score = (struct BoatRideNode *)malloc(sizeof(struct BoatRideNode));
-            DAT_004cc074 = score;
+            DAT_004cc074 = (struct BoatRideNode *)malloc(sizeof(struct BoatRideNode));
+            prevScore = DAT_004cc074;
         } else {
             score = (struct BoatRideNode *)malloc(sizeof(struct BoatRideNode));
             prevScore->next = score;
+            prevScore = score;
         }
-        SaveGameRead(score, 0x34);
-        for (i = 0; i < 5; i = i + 1) {
-            score->blokes[i] = GetBlokePtr(score->blokes[i]);
+        SaveGameRead(prevScore, 0x34);
+        for (i = 0; i < 5; i++) {
+            prevScore->blokes[i] = GetBlokePtr(prevScore->blokes[i]);
         }
-        prevScore = score;
     }
-    prevPath = NULL;
     SaveGameRead(&count, 4);
-    while (count != 0) {
-        count = count - 1;
+    while (count--) {
         if (prevPath == NULL) {
-            path = (struct PathNode *)malloc(0x1c);
-            DAT_004d823c = path;
+            DAT_004d823c = (struct PathNode *)malloc(0x1c);
+            prevPath = DAT_004d823c;
         } else {
             path = (struct PathNode *)malloc(0x1c);
             prevPath->next = path;
+            prevPath = path;
         }
-        SaveGameRead(path, 0x1c);
-        prevPath = path;
+        SaveGameRead(prevPath, 0x1c);
     }
-    prevMer = NULL;
     SaveGameRead(&count, 4);
-    while (count != 0) {
-        count = count - 1;
+    while (count--) {
         if (prevMer == NULL) {
-            mer = (struct MermaidNode *)malloc(8);
-            DAT_004d2164 = mer;
+            DAT_004d2164 = (struct MermaidNode *)malloc(8);
+            prevMer = DAT_004d2164;
         } else {
             mer = (struct MermaidNode *)malloc(8);
             prevMer->next = mer;
+            prevMer = mer;
         }
-        SaveGameRead(mer, 8);
-        prevMer = mer;
+        SaveGameRead(prevMer, 8);
     }
-    prevRide = NULL;
+    prevRide = DAT_004cc03c;
     SaveGameRead(&count, 4);
-    while (count != 0) {
-        count = count - 1;
+    while (count--) {
         if (prevRide == NULL) {
-            ride = (struct BoatRide *)malloc(sizeof(struct BoatRide));
-            DAT_004cc03c = ride;
+            DAT_004cc03c = (struct BoatRide *)malloc(sizeof(struct BoatRide));
+            prevRide = DAT_004cc03c;
         } else {
             ride = (struct BoatRide *)malloc(sizeof(struct BoatRide));
             prevRide->next = ride;
+            prevRide = ride;
         }
-        SaveGameRead(ride, 0x3f4);
-        ride->field_3ec = GetBlokePtr(ride->field_3ec);
-        prevRide = ride;
+        SaveGameRead(prevRide, 0x3f4);
+        prevRide->field_3ec = GetBlokePtr(prevRide->field_3ec);
     }
     for (score = DAT_004cc074; score != NULL; score = score->next) {
         FUN_0041caa0(score->id);
@@ -1569,7 +1565,7 @@ void FUN_0041b8e0(int param_1, int *param_2) {
                 return;
             }
         }
-        dir = FUN_0041c8c0(score->field_2, score->field_3, score->field_4, score->field_5);
+        dir = FUN_0041c8c0(score->start.pos.x, score->start.pos.y, score->end.pos.x, score->end.pos.y);
         score->field_8 = dir;
         if (dir != 0) {
             FUN_0041caa0((unsigned short)(unsigned int)param_2);
@@ -1592,9 +1588,9 @@ void FUN_0041bab0(int param_1, int param_2, unsigned short *param_3) {
     }
     if (path != NULL) {
         mask = path->field_4;
-        if (*(short *)&path->x == *(short *)&score->field_2) {
+        if (path->tile.id == score->start.id) {
             mask = mask & 0xfffffffe;
-        } else if (*(short *)&path->x == *(short *)&score->field_4) {
+        } else if (path->tile.id == score->end.id) {
             mask = mask & 0xfffffffb;
         }
         if ((mask & 8) != 0 && (mask & 1) != 0 &&
@@ -1748,15 +1744,15 @@ void FUN_0041bfb0(unsigned int param_1, unsigned int *param_2) {
     ride = DAT_004cc03c;
     if (score != NULL) {
         do {
-            if (*(short *)temp == *(short *)&score->field_2 || *(short *)temp == *(short *)&score->field_4) {
+            if (*(short *)temp == score->start.id || *(short *)temp == score->end.id) {
                 struct PathNode *p;
                 temp[0] = x;
                 temp[1] = y;
                 p = FUN_0041c890(*param_2, y);
-                QueryObj = p->x;
-                *param_2 = p->x;
-                QueryObj = (unsigned short)((QueryObj & 0xff) | (p->y << 8));
-                param_2[1] = p->y;
+                QueryObj = p->tile.pos.x;
+                *param_2 = p->tile.pos.x;
+                QueryObj = (unsigned short)((QueryObj & 0xff) | (p->tile.pos.y << 8));
+                param_2[1] = p->tile.pos.y;
                 *(struct Footprint *)((char *)QueryClass + 0x3c) = *(struct Footprint *)DAT_004cc078.v;
                 FUN_0041a3d0((void *)temp, param_1);
                 return;
@@ -1892,7 +1888,7 @@ void FUN_0041c130(void *param_1, unsigned int param_2, struct Cursor *param_3) {
                 return;
             }
         }
-        find->value = FUN_0041c8c0(find->field_2, find->field_3, find->field_4, find->field_5);
+        find->value = FUN_0041c8c0(find->start.pos.x, find->start.pos.y, find->end.pos.x, find->end.pos.y);
     }
 }
 
@@ -1917,7 +1913,7 @@ void FUN_0041c4c0(int param_1, int param_2, int param_3, unsigned short *param_4
         node->next = DAT_004d823c;
         DAT_004d823c = node;
     }
-    *(unsigned short *)node = coord;
+    node->tile.id = coord;
     node->field_4 = param_3;
     if (param_4 != NULL) {
         node->field_2 = *param_4;
@@ -1952,7 +1948,7 @@ void FUN_0041c620(void *param_1, TileId tile, struct Cursor *param_3) {
     struct PathNode *prev = NULL;
 
     StandardRemoveObject((struct EditObject *)param_1, tile, param_3);
-    while (*(unsigned short *)node != tile.id) {
+    while (node->tile.id != tile.id) {
         prev = node;
         node = node->next;
         if (node == NULL) {
@@ -1971,86 +1967,80 @@ void FUN_0041c620(void *param_1, TileId tile, struct Cursor *param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x0041c690
-unsigned int FUN_0041c690(int param_1, int param_2, unsigned short *param_3) {
-    struct BoatRideNode *score = DAT_004cc074;
+unsigned int FUN_0041c690(int x, int y, unsigned short *owner) {
+    struct BoatRideNode *score;
     struct PathNode *node;
-    int n;
     unsigned int mask;
     int valid;
-    short key;
+    int n;
+    TileId key;
 
     mask = 0;
-    node = FUN_0041c890(param_1, param_2);
-    valid = node != NULL;
-    if (valid) {
-        *param_3 = node->field_2;
+    valid = 0;
+    score = DAT_004cc074;
+    node = FUN_0041c890(x, y);
+    if (node != NULL) {
+        *owner = node->field_2;
+        valid = 1;
     }
-    n = param_2 - 5;
-    if (-1 < param_1 && -1 < n && param_1 < (int)(unsigned int)lpConfig->width && n < (int)(unsigned int)lpConfig->height &&
-        (node = FUN_0041c890(param_1, n), node != NULL)) {
+    n = y - 5;
+    if (x >= 0 && n >= 0 && x < lpConfig->width && n < lpConfig->height && (node = FUN_0041c890(x, n)) != NULL) {
         if (valid) {
-            if (node->field_2 == *param_3) {
+            if (node->field_2 == *owner) {
                 mask = 1;
             }
         } else {
             mask = 1;
-            *param_3 = node->field_2;
+            *owner = node->field_2;
             valid = 1;
         }
     }
-    n = param_1 + 5;
-    if (-1 < n && -1 < param_2 && n < (int)(unsigned int)lpConfig->width && param_2 < (int)(unsigned int)lpConfig->height &&
-        (node = FUN_0041c890(n, param_2), node != NULL)) {
+    n = x + 5;
+    if (n >= 0 && y >= 0 && n < lpConfig->width && y < lpConfig->height && (node = FUN_0041c890(n, y)) != NULL) {
         if (valid) {
-            if (node->field_2 == *param_3) {
-                mask = mask | 2;
+            if (node->field_2 == *owner) {
+                mask |= 2;
             }
         } else {
-            mask = mask | 2;
-            *param_3 = node->field_2;
+            mask |= 2;
+            *owner = node->field_2;
             valid = 1;
         }
     }
-    n = param_2 + 5;
-    if (-1 < param_1 && -1 < n && param_1 < (int)(unsigned int)lpConfig->width && n < (int)(unsigned int)lpConfig->height &&
-        (node = FUN_0041c890(param_1, n), node != NULL)) {
+    n = y + 5;
+    if (x >= 0 && n >= 0 && x < lpConfig->width && n < lpConfig->height && (node = FUN_0041c890(x, n)) != NULL) {
         if (valid) {
-            if (node->field_2 == *param_3) {
-                mask = mask | 4;
+            if (node->field_2 == *owner) {
+                mask |= 4;
             }
         } else {
-            mask = mask | 4;
-            *param_3 = node->field_2;
+            mask |= 4;
+            *owner = node->field_2;
             valid = 1;
         }
     }
-    n = param_1 - 5;
-    if (-1 < n && -1 < param_2 && n < (int)(unsigned int)lpConfig->width && param_2 < (int)(unsigned int)lpConfig->height &&
-        (node = FUN_0041c890(n, param_2), node != NULL)) {
+    n = x - 5;
+    if (n >= 0 && y >= 0 && n < lpConfig->width && y < lpConfig->height && (node = FUN_0041c890(n, y)) != NULL) {
         if (valid) {
-            if (node->field_2 == *param_3) {
-                mask = mask | 8;
+            if (node->field_2 == *owner) {
+                mask |= 8;
             }
         } else {
-            mask = mask | 8;
-            *param_3 = node->field_2;
+            mask |= 8;
+            *owner = node->field_2;
         }
     }
-    key = (short)((unsigned char)param_1 | ((unsigned char)param_2 << 8));
-    if (score != NULL) {
-        while (1) {
-            if (key == (short)score->id) {
-                return mask | 1;
-            }
-            if (key == *(short *)&score->field_4) {
-                break;
-            }
-            score = score->next;
-            if (score == NULL) {
-                return mask;
-            }
+    key.pos.x = x;
+    key.pos.y = y;
+    for (; score != NULL; score = score->next) {
+        if (key.id == score->start.id) {
+            mask |= 1;
+            break;
         }
-        mask = mask | 4;
+        if (key.id == score->end.id) {
+            mask |= 4;
+            break;
+        }
     }
     return mask;
 }
@@ -2066,7 +2056,7 @@ struct PathNode *FUN_0041c890(unsigned int a, unsigned int b) {
     key = *(unsigned short *)stack_key;
 
     current = DAT_004d823c;
-    while (current != NULL && *(unsigned short *)current != key) {
+    while (current != NULL && current->tile.id != key) {
         current = current->next;
     }
 
@@ -2137,7 +2127,7 @@ void FUN_0041caa0(unsigned short param_1) {
     while (score != NULL && score->id != param_1) {
         score = score->next;
     }
-    node = FUN_0041c890(score->field_4, score->field_5);
+    node = FUN_0041c890(score->end.pos.x, score->end.pos.y);
     node->field_8 = 0;
     node->field_14 = NULL;
     DAT_004d8240 = node;
@@ -2159,10 +2149,10 @@ void FUN_0041cb20(short param_1) {
     struct PathNode *n4;
 
     for (p = DAT_004d8240; p != NULL; p = p->field_14) {
-        n1 = FUN_0041c890(p->x, p->y - 5);
-        n2 = FUN_0041c890(p->x + 5, p->y);
-        n3 = FUN_0041c890(p->x, p->y + 5);
-        n4 = FUN_0041c890(p->x - 5, p->y);
+        n1 = FUN_0041c890(p->tile.pos.x, p->tile.pos.y - 5);
+        n2 = FUN_0041c890(p->tile.pos.x + 5, p->tile.pos.y);
+        n3 = FUN_0041c890(p->tile.pos.x, p->tile.pos.y + 5);
+        n4 = FUN_0041c890(p->tile.pos.x - 5, p->tile.pos.y);
         if (n1 != NULL && (short)n1->field_2 == param_1 && n1->field_18 == NULL) {
             n1->field_18 = p;
             n1->field_8 = p->field_8 + 1;
