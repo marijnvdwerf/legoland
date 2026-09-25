@@ -98,16 +98,14 @@ void FUN_00418f90(struct BoatRide *param_1) {
             return;
         }
     }
-    if (node == NULL) {
-        return;
-    }
-    if (prev != NULL) {
-        prev->next = node->next;
+    if (node != NULL) {
+        if (prev != NULL) {
+            prev->next = node->next;
+        } else {
+            DAT_004cc03c = node->next;
+        }
         free(param_1);
-        return;
     }
-    DAT_004cc03c = node->next;
-    free(param_1);
 }
 
 // FUNCTION: LEGOLAND 0x00418fe0
@@ -229,15 +227,12 @@ void FUN_004193c0(struct BoatRide *param_1) {
     FUN_004198a0(param_1, param_1->field_3dc, 4);
     param_1->field_3e4 = 4;
     param_1->field_10 = param_1->field_8 + 5;
-    if (node != NULL) {
-        while (node->id != param_1->id) {
-            node = node->next;
-            if (node == NULL) {
-                return;
-            }
+    for (; node != NULL; node = node->next) {
+        if (node->id == param_1->id) {
+            node->field_c = 0;
+            node->field_10 = 0;
+            return;
         }
-        node->field_c = 0;
-        node->field_10 = 0;
     }
 }
 
@@ -867,7 +862,7 @@ void FUN_0041a530(int param_1, unsigned int param_2, int param_3) {
     void *local_8;
     unsigned char local_14[12];
 
-    StandardRemoveObject(param_1, *(union TileId *)&param_2, param_3);
+    StandardRemoveObject(param_1, *(TileId *)&param_2, param_3);
     y = DAT_004cc078[1];
     if (DAT_004cc078[1] <= DAT_004cc078[3]) {
         do {
@@ -897,7 +892,7 @@ void FUN_0041a530(int param_1, unsigned int param_2, int param_3) {
         if (path->field_2 == id) {
             DAT_0082ae20.field_1404 = path->x;
             DAT_0082ae20.field_1408 = path->y;
-            FUN_0041c620(local_14, (unsigned short)path->field_2, &DAT_0082ae20);
+            FUN_0041c620(local_14, *(TileId *)&path->field_2, &DAT_0082ae20);
             path = DAT_004d823c;
         } else {
             path = path->next;
@@ -1517,7 +1512,7 @@ void FUN_0041b6f0(void *param_1, unsigned short param_2, struct Cursor *param_3)
     int n;
     struct SampleParams params;
 
-    StandardRemoveObject((unsigned int)param_1, *(union TileId *)&param_2, (unsigned int)param_3);
+    StandardRemoveObject((unsigned int)param_1, *(TileId *)&param_2, (unsigned int)param_3);
     params.field_8 = param_2 & 0xff;
     params.field_c = param_2 >> 8 & 0xff;
     params.field_0 = 2;
@@ -1862,7 +1857,7 @@ void FUN_0041c130(void *param_1, unsigned int param_2, struct Cursor *param_3) {
         return;
     }
     u9 = FUN_0041c690(param_3->field_1404, param_3->field_1408, (unsigned short *)&param_2);
-    FUN_0041c620(param_1, (unsigned short)local_param2, param_3);
+    FUN_0041c620(param_1, *(TileId *)&local_param2, param_3);
     FUN_0041b0d0((unsigned short)(unsigned int)param_2, 0xffffffff);
     u1 = u9 & 1;
     if (u1 != 0) {
@@ -2001,22 +1996,17 @@ void FUN_0041c4c0(int param_1, int param_2, int param_3, unsigned short *param_4
 }
 
 // FUNCTION: LEGOLAND 0x0041c620
-void FUN_0041c620(void *param_1, unsigned short param_2, struct Cursor *param_3) {
+void FUN_0041c620(void *param_1, TileId tile, struct Cursor *param_3) {
     struct PathNode *node = DAT_004d823c;
     struct PathNode *prev = NULL;
-    struct PathNode *nxt;
-    short key;
 
-    StandardRemoveObject((unsigned int)param_1, *(union TileId *)&param_2, (unsigned int)param_3);
-    key = *(short *)node;
-    while (key != (short)param_2) {
-        nxt = node->next;
-        if (nxt == NULL) {
+    StandardRemoveObject((struct EditObject *)param_1, tile, param_3);
+    while (*(unsigned short *)node != tile.id) {
+        prev = node;
+        node = node->next;
+        if (node == NULL) {
             return;
         }
-        prev = node;
-        node = nxt;
-        key = *(short *)nxt;
     }
     if (node != NULL) {
         if (prev != NULL) {

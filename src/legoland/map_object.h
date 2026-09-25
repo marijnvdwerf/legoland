@@ -36,7 +36,7 @@ LEGO_EXPORT void AddObjectToMap(struct EditObject *param_1, unsigned int param_2
 LEGO_EXPORT void RemoveObjectFromMap(unsigned int coords);
 LEGO_EXPORT unsigned int GetObjectClassAndInstance(int *coords, unsigned short *out);
 void FUN_004618d0(const char *param_1);
-LEGO_EXPORT void StandardRemoveObject(struct EditObject *editObj, union TileId coords, struct Cursor *cursor);
+LEGO_EXPORT void StandardRemoveObject(struct EditObject *editObj, TileId coords, struct Cursor *cursor);
 LEGO_EXPORT void SetEditCursorFootPrint(void *src);
 int FUN_0045f4b0(struct Cursor *cursor);
 LEGO_EXPORT void SetObjRectFlags(struct EditObject *editObj, struct Point *pos, unsigned short flags);

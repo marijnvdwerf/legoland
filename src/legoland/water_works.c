@@ -491,7 +491,7 @@ void FUN_004181e0(struct EditObject *editObj, unsigned char *coords) {
 void FUN_00418230(unsigned int a, unsigned int b, unsigned int c) {
     struct WaterNode *node;
 
-    StandardRemoveObject(a, *(union TileId *)&b, c);
+    StandardRemoveObject(a, *(TileId *)&b, c);
     node = FUN_00417d10((unsigned short *)&b);
     if (node != NULL) {
         FUN_00417cf0(node);
@@ -626,7 +626,7 @@ void FUN_004184e0(struct EditObject *editObj, unsigned char *coords) {
 void FUN_00418510(unsigned int a, unsigned int b, unsigned int c) {
     struct WaterNode *node;
 
-    StandardRemoveObject(a, *(union TileId *)&b, c);
+    StandardRemoveObject(a, *(TileId *)&b, c);
     node = FUN_004182c0((unsigned short *)&b);
     if (node != NULL) {
         FUN_004182a0(node);
@@ -800,7 +800,7 @@ void FUN_004188d0(struct EditObject *editObj, unsigned char *coords) {
 void FUN_00418910(unsigned int a, unsigned int b, unsigned int c) {
     struct WaterNode *node;
 
-    StandardRemoveObject(a, *(union TileId *)&b, c);
+    StandardRemoveObject(a, *(TileId *)&b, c);
     node = FUN_00418690((unsigned short *)&b);
     if (node != NULL) {
         FUN_00418670(node);

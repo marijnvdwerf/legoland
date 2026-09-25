@@ -932,7 +932,7 @@ void FUN_0041ed90(unsigned int param1, unsigned int param2) {
 // FUNCTION: LEGOLAND 0x0041edb0
 void FUN_0041edb0(unsigned int param1, unsigned int param2, unsigned int param3) {
     if (DAT_004b55f4 != 0) {
-        StandardRemoveObject(param1, *(union TileId *)&param2, param3);
+        StandardRemoveObject(param1, *(TileId *)&param2, param3);
     }
 }
 

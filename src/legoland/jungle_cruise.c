@@ -846,7 +846,7 @@ void FUN_00433fc0(void *param_1, unsigned short param_2, void *param_3) {
     struct JungleObj *node = DAT_00629c2c;
     struct JungleObj *prev = NULL;
     struct JungleObj *nxt;
-    StandardRemoveObject((unsigned int)param_1, *(union TileId *)&param_2, (unsigned int)param_3);
+    StandardRemoveObject((unsigned int)param_1, *(TileId *)&param_2, (unsigned int)param_3);
     while (node->field_0 != param_2) {
         nxt = node->next;
         if (nxt == NULL) {
@@ -1088,7 +1088,7 @@ void FUN_00434670(void *param_1, unsigned short param_2, struct Cursor *param_3)
             y = y + 1;
         } while (y <= DAT_0081cb74->field_3c.v[3]);
     }
-    StandardRemoveObject((unsigned int)param_1, *(union TileId *)&param_2, (unsigned int)param_3);
+    StandardRemoveObject((unsigned int)param_1, *(TileId *)&param_2, (unsigned int)param_3);
     while (node->field_0 != param_2) {
         nxt = node->next;
         if (nxt == NULL) {
@@ -1152,7 +1152,7 @@ void FUN_00434b40(void *param_1, unsigned short param_2, struct Cursor *param_3)
     param_3->field_1414[3] = 1;
     param_3->field_1414[0] = 0;
     param_3->field_1414[2] = 0;
-    StandardRemoveObject((unsigned int)param_1, *(union TileId *)&param_2, (unsigned int)param_3);
+    StandardRemoveObject((unsigned int)param_1, *(TileId *)&param_2, (unsigned int)param_3);
     y = param_3->field_1408;
     x = param_3->field_1404 - 6;
     if (x < 0 || (int)(unsigned int)lpConfig->width <= x || y < 0 || (int)(unsigned int)lpConfig->height <= y) {
@@ -1446,7 +1446,7 @@ void FUN_00435470(void *param_1, unsigned int param_2, struct Cursor *param_3) {
     unsigned int savedY;
     unsigned char local_14[12];
 
-    StandardRemoveObject((unsigned int)param_1, *(union TileId *)&param_2, (unsigned int)param_3);
+    StandardRemoveObject((unsigned int)param_1, *(TileId *)&param_2, (unsigned int)param_3);
     while (score->field_0 != (unsigned short)param_2) {
         prev = score;
         score = score->next;
@@ -2356,7 +2356,7 @@ void FUN_00436f30(void *param_1, unsigned short param_2, struct Cursor *param_3)
     struct JunglePath *node = DAT_0062fd2c;
     struct JunglePath *prev = NULL;
     struct JunglePath *nxt;
-    StandardRemoveObject((unsigned int)param_1, *(union TileId *)&param_2, (unsigned int)param_3);
+    StandardRemoveObject((unsigned int)param_1, *(TileId *)&param_2, (unsigned int)param_3);
     while (*(unsigned short *)&node->x != param_2) {
         nxt = node->next;
         if (nxt == NULL) {

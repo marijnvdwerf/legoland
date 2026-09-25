@@ -1,6 +1,7 @@
 #pragma once
 
 #include "legoland.h"
+#include "obj_instance.h"
 
 struct Cursor;
 
@@ -80,7 +81,7 @@ void FUN_0041b0d0(unsigned short id, unsigned int value);
 struct PathNode *FUN_0041c890(unsigned int a, unsigned int b);
 unsigned int FUN_0041c690(int param_1, int param_2, unsigned short *param_3);
 void FUN_0041c4c0(int param_1, int param_2, int param_3, unsigned short *param_4);
-void FUN_0041c620(void *param_1, unsigned short param_2, struct Cursor *param_3);
+void FUN_0041c620(void *param_1, TileId tile, struct Cursor *param_3);
 void FUN_0041bab0(int param_1, int param_2, unsigned short *param_3);
 void FUN_0041caa0(unsigned short param_1);
 void FUN_0041cb20(short param_1);

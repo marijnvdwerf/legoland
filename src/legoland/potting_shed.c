@@ -55,7 +55,7 @@ unsigned int FUN_0043ceb0(unsigned int param_1, unsigned int param_2) {
 
 // FUNCTION: LEGOLAND 0x0043ced0
 void FUN_0043ced0(struct RideObject *obj, unsigned int tile, struct Cursor *cursor) {
-    StandardRemoveObject((struct EditObject *)obj, *(union TileId *)&tile, cursor);
+    StandardRemoveObject((struct EditObject *)obj, *(TileId *)&tile, cursor);
     FUN_0043d7c0(obj->ride, tile, 1);
 }
 

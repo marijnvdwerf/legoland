@@ -59,7 +59,7 @@ struct DSCarInner {
 };
 
 struct CountNode {
-    union TileId tile;
+    TileId tile;
     unsigned char pad_2[2];
     int field_4;
     struct CountNode *next;
@@ -179,7 +179,7 @@ void FUN_004051a0(short param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00405310
-void FUN_00405310(union TileId tile) {
+void FUN_00405310(TileId tile) {
     struct RideQueueEntry *cur;
     struct RideQueueEntry *ret;
     struct RideQueueEntry *tmp;
@@ -299,7 +299,7 @@ void FUN_00405570(void) {
 
 // FUNCTION: LEGOLAND 0x00405630
 void FUN_00405630(unsigned int param_1, int *coords) {
-    union TileId tile;
+    TileId tile;
     struct CountNode *node;
     struct Cursor *cursor;
     int x;
@@ -315,15 +315,14 @@ void FUN_00405630(unsigned int param_1, int *coords) {
     node->next = (struct CountNode *)DAT_004c11bc;
     DAT_004c11bc = node;
     cursor = (struct Cursor *)EditCursor.field_1830;
-    y = cursor->field_1408;
     x = cursor->field_1404;
+    y = cursor->field_1408;
 
     FUN_004132a0(tile, x - 3, y - 4, 6, 1);
     FUN_004132a0(tile, x + 1, y - 4, 0, 1);
-    x += 5;
-    FUN_004132a0(tile, x, y - 4, 3, 1);
-    FUN_004132a0(tile, x, y, 0, 0);
-    FUN_004132a0(tile, x, y + 4, 0, 0);
+    FUN_004132a0(tile, x + 5, y - 4, 3, 1);
+    FUN_004132a0(tile, x + 5, y, 0, 0);
+    FUN_004132a0(tile, x + 5, y + 4, 0, 0);
 
     // STRING: LEGOLAND 0x004b455c
     elem = (struct DSRoadElem *)ElemID("Driving School Roads");
@@ -405,13 +404,12 @@ void FUN_004058a0(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00405940
-void FUN_00405940(struct RideObject *obj, union TileId tile, unsigned int param_3) {
+void FUN_00405940(struct RideObject *obj, TileId tile, unsigned int param_3) {
     struct RideQueueEntry *queue = DAT_004cbeac;
     struct CountNode *count = (struct CountNode *)DAT_004c11bc;
     struct DSBlokeNode *blokes = (struct DSBlokeNode *)DAT_004c10d4;
     struct RideQueueEntry *next;
     struct DSBlokeNode *nextBloke;
-    struct CountNode *cur;
 
     StandardRemoveObject((struct EditObject *)obj, tile, (struct Cursor *)param_3);
     DefaultCursor(&DAT_0082f760);
@@ -421,13 +419,13 @@ void FUN_00405940(struct RideObject *obj, union TileId tile, unsigned int param_
         DAT_004c11bc = count->next;
         free(count);
     } else {
-        for (cur = count->next; cur != NULL; cur = cur->next) {
-            if (cur->tile.id == tile.id) {
+        while (count->next != NULL) {
+            if (count->next->tile.id == tile.id) {
                 count->next = count->next->next;
                 free(count->next);
                 break;
             }
-            count = cur;
+            count = count->next;
         }
     }
 
@@ -443,7 +441,7 @@ void FUN_00405940(struct RideObject *obj, union TileId tile, unsigned int param_
             }
             DAT_0082f760.field_1404 = queue->x;
             DAT_0082f760.field_1408 = queue->y;
-            StandardRemoveObject((struct EditObject *)((struct DSObjClass *)DAT_0082c684)->field_c4, *(union TileId *)&queue->field_8, &DAT_0082f760);
+            StandardRemoveObject((struct EditObject *)((struct DSObjClass *)DAT_0082c684)->field_c4, *(TileId *)&queue->field_8, &DAT_0082f760);
             FUN_004133e0(queue->x, queue->y);
         }
         queue = next;

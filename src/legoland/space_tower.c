@@ -630,7 +630,7 @@ void FUN_0043b460(struct EditObject *param_1, unsigned int param_2, struct Curso
     if (node != NULL) {
         FUN_0043abc0(node);
     }
-    StandardRemoveObject(param_1, *(union TileId *)&param_2, param_3);
+    StandardRemoveObject(param_1, *(TileId *)&param_2, param_3);
     RemoveAllBlokesFromRide(*(struct Ride **)((char *)param_1 + 0xc), param_2);
     FUN_0043aa50((unsigned char *)&param_2);
 }

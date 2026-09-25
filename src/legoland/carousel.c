@@ -193,7 +193,7 @@ void FUN_0042c4a0(struct CarouselRideObj *param_1, unsigned int param_2, unsigne
     if (node != NULL) {
         FUN_0042bc00(node);
     }
-    StandardRemoveObject((unsigned int)param_1, *(union TileId *)&param_2, param_3);
+    StandardRemoveObject((unsigned int)param_1, *(TileId *)&param_2, param_3);
     RemoveAllBlokesFromRide((unsigned int)param_1->ride, param_2);
     params.field_8 = param_2 & 0xff;
     params.field_c = *((unsigned char *)&param_2 + 1);

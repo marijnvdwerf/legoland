@@ -984,7 +984,7 @@ LEGO_EXPORT void RemoveObjectFromMap(unsigned int coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045f220
-LEGO_EXPORT void StandardRemoveObject(struct EditObject *editObj, union TileId coords, struct Cursor *cursor) {
+LEGO_EXPORT void StandardRemoveObject(struct EditObject *editObj, TileId coords, struct Cursor *cursor) {
     int cx;
     int cy;
     struct MapElement *tile;

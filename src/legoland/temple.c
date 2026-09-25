@@ -198,7 +198,7 @@ void FUN_00416e00(unsigned int param_1, unsigned int param_2) {
 
 // FUNCTION: LEGOLAND 0x00416e20
 void FUN_00416e20(struct RideObject *a1, void *a2, unsigned int a3) {
-    StandardRemoveObject((unsigned int)a1, *(union TileId *)&a2, a3);
+    StandardRemoveObject((unsigned int)a1, *(TileId *)&a2, a3);
     RemoveAllBlokesFromRide(a1->ride, (unsigned int)a2);
 }
 

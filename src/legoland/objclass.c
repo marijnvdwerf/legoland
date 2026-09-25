@@ -624,7 +624,7 @@ LEGO_EXPORT void BuildObjInfoList(void) {
     struct InfoNode *node;
     struct FootprintNode *fp;
     struct ClassObjNode *obj;
-    union TileId tile;
+    TileId tile;
     struct Point pos;
     int best;
     struct Point at;
