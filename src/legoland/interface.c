@@ -1074,55 +1074,43 @@ LEGO_EXPORT int MakeUpObjectList(int param_1, int param_2, int param_3, int para
     panel->field_4 = 1;
     panel->group = (short)param_1;
     SetNewGroup_Callbacks(0, (void *)RenderBuildObjectIcon, (void *)FUN_00470000);
-    ctx = (struct InterfaceListNode *)param_2;
-    while (1) {
-        if (node == NULL) {
-            goto finish;
-        }
-        if (node->flag == 0) {
-            if ((((struct BuildObject *)ctx->data)->field_c4->flags & 8) == 0) {
-                ListChildrenBar(ctx, param_1, (short)x, (short)(y - 10));
-                y = y + 0x1a;
-                while (ctx = node, node->flag == 0) {
-                    node = node->next;
-                    if (ctx->next == NULL) {
-                        goto finish;
-                    }
-                }
-            } else {
-                CloseChildrenBar(ctx, param_1, (short)x, (short)(y - 10));
-                y = y + 0x10;
-                do {
-                    ctx = node;
-                    if (node->flag != 0) {
-                        break;
-                    }
-                    last_icon = AddGBarClassIcon((unsigned int)panel, (struct InfoSource *)node->data, x, y, param_1, 1);
-                    last_icon->field_20b = 1;
-                    node = node->next;
-                    y = y + 0x38;
-                } while (node != NULL);
-                y = y + 10;
-                last_icon->field_20b = 2;
-            }
-        } else {
+    while (node != NULL) {
+        if (node->flag != 0) {
             AddGBarClassIcon((unsigned int)panel, (struct InfoSource *)node->data, x, y, param_1, 1);
             y = y + 0x42;
             ctx = node;
             node = node->next;
+        } else if ((((struct BuildObject *)ctx->data)->field_c4->flags & 8) != 0) {
+            CloseChildrenBar(ctx, param_1, (short)x, (short)(y - 10));
+            y = y + 0x10;
+            while (node != NULL && node->flag == 0) {
+                last_icon = AddGBarClassIcon((unsigned int)panel, (struct InfoSource *)node->data, x, y, param_1, 1);
+                last_icon->field_20b = 1;
+                ctx = node;
+                node = node->next;
+                y = y + 0x38;
+            }
+            y = y + 10;
+            last_icon->field_20b = 2;
+        } else {
+            ListChildrenBar(ctx, param_1, (short)x, (short)(y - 10));
+            y = y + 0x1a;
+            while (node != NULL && node->flag == 0) {
+                ctx = node;
+                node = node->next;
+            }
         }
     }
-finish:
-    AddFullScreenIcon((void *)(param_2 + 6));
+    AddFullScreenIcon((void *)(param_1 + 6));
     panel->field_14 = x;
     panel->field_18 = y;
     if (y < panel->icon->field_12 + panel->icon->y) {
-        icon = FindIcon((unsigned short)(param_2 + 4));
+        icon = FindIcon((unsigned short)(param_1 + 4));
         if (icon != NULL) {
             icon->y = (short)param_4 - 0x1e + (short)param_3;
             icon->flags |= 0x400;
         }
-        icon = FindIcon((unsigned short)(param_2 + 3));
+        icon = FindIcon((unsigned short)(param_1 + 3));
         if (icon != NULL) {
             icon->flags |= 0x400;
         }
