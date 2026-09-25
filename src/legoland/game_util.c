@@ -287,24 +287,28 @@ int FUN_00478cd0(char **argv, int argc) {
 // FUNCTION: LEGOLAND 0x00478d30
 int FUN_00478d30(int param_1, int param_2) {
     int local[2];
-    int a8;
-    int b8;
+    char **args;
+    int a;
+    int b;
 
     if (DAT_004bb5b0 == 0) {
         return 1;
     }
-    if (FUN_004786c0(param_1, param_2, 5, 2) == 0) {
+    args = (char **)param_1;
+    if (FUN_004786c0((int)args, param_2, 5, 2) == 0) {
         return 0;
     }
-    FUN_00478770(local, (char **)param_1, 1);
-    a8 = local[0] << 8;
-    b8 = local[1] << 8;
-    local[0] = a8;
-    local[1] = b8;
+    FUN_00478770(local, args, 1);
+    local[0] <<= 8;
+    local[1] <<= 8;
     if (DAT_00669054 == 1) {
-        GetTileDimensions(&local[0], &local[1]);
-        ScrollX = ((((a8 - b8) * local[0]) >> 9) - (lpConfig->field_0 >> 1)) << 8;
-        ScrollY = ((((a8 + b8) * local[1]) >> 9) - (lpConfig->field_2 >> 1)) << 8;
+        b = local[1];
+        a = local[0];
+        GetTileDimensions(&param_2, &param_1);
+        local[0] = ((a - b) * param_2) >> 9;
+        local[1] = ((a + b) * param_1) >> 9;
+        ScrollX = (local[0] - (lpConfig->field_0 >> 1)) << 8;
+        ScrollY = (local[1] - (lpConfig->field_2 >> 1)) << 8;
         return 1;
     }
     FUN_0046bda0((unsigned int *)local);
