@@ -163,6 +163,22 @@ struct InfoTimedEntry {
     /* 0x08 */ int last_time;
 };
 
+/* Boating school: one straight step per direction (dx, dy per frame; ox, oy start offset). */
+struct BoatDirStep {
+    /* 0x00 */ int dx;
+    /* 0x04 */ int dy;
+    /* 0x08 */ int ox;
+    /* 0x0c */ int oy;
+};
+
+/* Boating school: one quarter-circle turn (angle a0 -> a1 around cx, cy). */
+struct BoatArc {
+    /* 0x00 */ float a0;
+    /* 0x04 */ float a1;
+    /* 0x08 */ float cx;
+    /* 0x0c */ float cy;
+};
+
 struct MapRect {
     /* 0x00 */ int x0;
     /* 0x04 */ int y0;
@@ -391,11 +407,11 @@ extern void *DAT_004b4d90;
 // 0x004b4fa8
 extern unsigned char WATERWORKS_SFX[0x24];
 // 0x004b5118
-extern int DAT_004b5118[0x10];
+extern struct BoatDirStep DAT_004b5118[4];
 // 0x004b5158
-extern float DAT_004b5158[0x10];
+extern struct BoatArc DAT_004b5158[4];
 // 0x004b5198
-extern float DAT_004b5198[0x10];
+extern struct BoatArc DAT_004b5198[4];
 // 0x004b51d8
 extern int DAT_004b51d8[0x80];
 // 0x004b5260

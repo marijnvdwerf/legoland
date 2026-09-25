@@ -75,7 +75,7 @@ void FUN_00419300(void);
 void FUN_004193c0(struct BoatRide *param_1);
 struct BoatRide *FUN_00419420(struct BoatRide *param_1);
 void FUN_00419520(struct BoatRide *param_1, int param_2);
-void FUN_004198a0(struct BoatRide *param_1, unsigned int param_2, unsigned int param_3);
+void FUN_004198a0(struct BoatRide *ride, int from, int to);
 unsigned int FUN_004192d0(struct BoatRide *param_1);
 void FUN_00418f90(struct BoatRide *param_1);
 void FUN_0041b0d0(unsigned short id, unsigned int value);

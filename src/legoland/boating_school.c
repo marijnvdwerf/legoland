@@ -419,167 +419,135 @@ void FUN_00419520(struct BoatRide *param_1, int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x004198a0
-void FUN_004198a0(struct BoatRide *param_1, unsigned int param_2, unsigned int param_3) {
+void FUN_004198a0(struct BoatRide *ride, int from, int to) {
+    struct BoatArc *arc = NULL;
     int *p;
     int i;
     int bit;
-    unsigned int idx;
-    float *table;
-    int cx;
-    int cy;
+    int idx;
+    int sx;
+    int sy;
     int tx;
     int ty;
     int dx;
     int dy;
-    int angle;
+    float fx;
+    float fy;
+    float angle;
+    float step;
 
-    table = NULL;
-    if (param_3 == 0xffffffff) {
-        if (param_2 == 0xffffffff) {
-            p = param_1->field_1c;
-            for (i = 0xa0; i != 0; i = i - 1) {
-                *p = 0;
-                p = p + 1;
-            }
+    if (to == -1) {
+        if (from == -1) {
+            memset(ride->field_1c, 0, sizeof(ride->field_1c));
         } else {
-            bit = 0;
-            do {
-                if ((param_2 & (1 << bit)) != 0) {
+            for (bit = 0; bit < 4; bit++) {
+                if ((from & (1 << bit)) != 0) {
                     break;
                 }
-                bit = bit + 1;
-            } while (bit < 4);
-            FUN_00458930((float)0);
-            FUN_00458930((float)0);
-            i = 0;
-            p = &param_1->field_1c[1];
-            do {
-                if (i < 0x28) {
-                    p[-1] = FUN_00458930((float)0);
-                    p[0] = FUN_00458930((float)0);
+            }
+            sx = (int)((float)(DAT_004b5118[bit].ox * 40) * DAT_004ab3fc);
+            sy = (int)((float)(DAT_004b5118[bit].oy * 40) * DAT_004ab3fc);
+            for (i = 0; i < 80; i++) {
+                if (i < 40) {
+                    ride->field_1c[i * 2] = (int)((float)(DAT_004b5118[bit].dx * i) * DAT_004ab3fc + sx);
+                    ride->field_1c[i * 2 + 1] = (int)((float)(DAT_004b5118[bit].dy * i) * DAT_004ab3fc + sy);
                 } else {
-                    p[-1] = 0;
-                    p[0] = 0;
+                    ride->field_1c[i * 2] = 0;
+                    ride->field_1c[i * 2 + 1] = 0;
                 }
-                i = i + 1;
-                p = p + 2;
-            } while (i < 0x50);
+            }
         }
-    } else if (param_2 == 0xffffffff) {
-        bit = 0;
-        do {
-            if ((param_3 & (1 << bit)) != 0) {
+    } else if (from == -1) {
+        for (bit = 0; bit < 4; bit++) {
+            if ((to & (1 << bit)) != 0) {
                 break;
             }
-            bit = bit + 1;
-        } while (bit < 4);
-        idx = (bit + 2) & 0x80000003;
-        if ((int)idx < 0) {
-            idx = ((idx - 1) | 0xfffffffc) + 1;
         }
-        i = 0;
-        p = param_1->field_1c;
-        do {
-            if (i < 0x28) {
-                p[0] = 0;
-                p[1] = 0;
+        idx = (bit + 2) % 4;
+        for (i = 0; i < 80; i++) {
+            if (i < 40) {
+                ride->field_1c[i * 2] = 0;
+                ride->field_1c[i * 2 + 1] = 0;
             } else {
-                p[0] = DAT_004b5118[idx * 4] * 0x10 + p[-2];
-                p[1] = DAT_004b5118[idx * 4 + 1] * 0x10 + p[-1];
+                ride->field_1c[i * 2] = DAT_004b5118[idx].dx * 16 + ride->field_1c[i * 2 - 2];
+                ride->field_1c[i * 2 + 1] = DAT_004b5118[idx].dy * 16 + ride->field_1c[i * 2 - 1];
             }
-            i = i + 1;
-            p = p + 2;
-        } while (i < 0x50);
+        }
     } else {
-        if (param_2 == 1) {
-            param_2 = 0x11;
+        if (from == 1) {
+            from = 0x11;
         }
-        if (param_3 == 1) {
-            param_3 = 0x11;
+        if (to == 1) {
+            to = 0x11;
         }
-        if (((int)param_3 < (int)param_2 && (param_3 & ((int)param_2 >> 2)) == 0) ||
-            ((int)param_3 >= (int)param_2 && param_3 != param_2 && (param_2 & ((int)param_3 >> 2)) == 0)) {
-            if ((param_3 & param_2 * 2) != 0) {
-                table = DAT_004b5158;
-            } else if ((param_2 & param_3 * 2) != 0) {
-                table = DAT_004b5198;
+        if ((to < from && (to & (from >> 2)) == 0) || (to > from && (from & (to >> 2)) == 0)) {
+            if ((to & (from * 2)) != 0) {
+                arc = DAT_004b5158;
+            } else if ((from & (to * 2)) != 0) {
+                arc = DAT_004b5198;
             }
-            bit = 0;
-            do {
-                if ((param_2 & (1 << bit)) != 0) {
+            for (bit = 0; bit < 4; bit++) {
+                if ((from & (1 << bit)) != 0) {
                     break;
                 }
-                bit = bit + 1;
-            } while (bit < 4);
-            cx = FUN_00458930((float)((sin((double)table[bit * 4] * (double)DAT_004ab3f4) + (double)DAT_004ab3ec) * (double)DAT_004ab3f4));
-            param_1->field_1c[0] = cx;
-            cy = FUN_00458930((float)((cos((double)table[bit * 4] * (double)DAT_004ab3f4) + (double)DAT_004ab3ec) * (double)DAT_004ab3f4));
-            param_1->field_1c[1] = cy;
-            p = &param_1->field_1c[3];
-            i = 0x4f;
-            do {
-                cx = FUN_00458930((float)sin((double)DAT_004ab3f4));
-                p[-1] = cx;
-                cy = FUN_00458930((float)cos((double)DAT_004ab3f4));
-                p[0] = cy;
-                p = p + 2;
-                i = i - 1;
-            } while (i != 0);
+            }
+            arc += bit;
+            step = (arc->a1 - arc->a0) * DAT_004ab3f8;
+            angle = arc->a0;
+            ride->field_1c[0] = (int)((sin(angle * DAT_004ab3f4) + arc->cx) * DAT_004ab3f0);
+            ride->field_1c[1] = (int)((cos((angle + DAT_004ab3ec) * DAT_004ab3f4) + arc->cy) * DAT_004ab3f0);
+            p = &ride->field_1c[3];
+            for (i = 0x4f; i != 0; i--) {
+                angle += step;
+                p[-1] = (int)((sin(angle * DAT_004ab3f4) + arc->cx) * DAT_004ab3f0);
+                p[0] = (int)((cos((angle + DAT_004ab3ec) * DAT_004ab3f4) + arc->cy) * DAT_004ab3f0);
+                p += 2;
+            }
         } else {
-            bit = 0;
-            do {
-                if ((param_2 & (1 << bit)) != 0) {
+            for (bit = 0; bit < 4; bit++) {
+                if ((from & (1 << bit)) != 0) {
                     break;
                 }
-                bit = bit + 1;
-            } while (bit < 4);
-            FUN_00458930((float)0);
-            FUN_00458930((float)0);
-            if (param_2 == param_3) {
-                i = 0x50;
-                p = &param_1->field_1c[1];
-                do {
-                    p[-1] = FUN_00458930((float)0);
-                    p[0] = FUN_00458930((float)0);
-                    p = p + 2;
-                    i = i - 1;
-                } while (0 < i);
+            }
+            sx = (int)((float)(DAT_004b5118[bit].ox * 40) * DAT_004ab3fc);
+            sy = (int)((float)(DAT_004b5118[bit].oy * 40) * DAT_004ab3fc);
+            if (from == to) {
+                for (i = 0; i < 80; i++) {
+                    if (i < 40) {
+                        ride->field_1c[i * 2] = (int)((float)(DAT_004b5118[bit].dx * i) * DAT_004ab3fc + sx);
+                        ride->field_1c[i * 2 + 1] = (int)((float)(DAT_004b5118[bit].dy * i) * DAT_004ab3fc + sy);
+                    } else {
+                        ride->field_1c[i * 2] = (int)((float)(DAT_004b5118[bit].dx * (80 - i)) * DAT_004ab3fc + sx);
+                        ride->field_1c[i * 2 + 1] = (int)((float)(DAT_004b5118[bit].dy * (80 - i)) * DAT_004ab3fc + sy);
+                    }
+                }
             } else {
-                i = 0;
-                p = &param_1->field_1c[1];
-                do {
-                    p[-1] = FUN_00458930((float)0);
-                    p[0] = FUN_00458930((float)0);
-                    i = i + 1;
-                    p = p + 2;
-                } while (i < 0x50);
+                fx = (float)sx;
+                fy = (float)sy;
+                for (i = 0; i < 80; i++) {
+                    ride->field_1c[i * 2] = (int)((float)(DAT_004b5118[bit].dx * i) * DAT_004ab3fc + fx);
+                    ride->field_1c[i * 2 + 1] = (int)((float)(i * DAT_004b5118[bit].dy) * DAT_004ab3fc + fy);
+                }
             }
         }
     }
-    i = 0;
-    p = &param_1->field_4;
-    do {
-        if (i < 0x4c) {
-            tx = p[0xe];
-            ty = p[0xf];
+    for (i = 0; i < 80; i++) {
+        if (i < 76) {
+            tx = ride->field_1c[(i + 4) * 2];
+            ty = ride->field_1c[(i + 4) * 2 + 1];
         } else {
-            tx = param_1->field_1c[0x9e];
-            ty = param_1->field_1c[0x9f];
+            tx = ride->field_1c[0x9e];
+            ty = ride->field_1c[0x9f];
         }
-        if (i < 4) {
-            cx = param_1->field_1c[0];
-            cy = param_1->field_1c[1];
+        if (i > 3) {
+            dx = tx - ride->field_1c[(i - 3) * 2];
+            dy = ty - ride->field_1c[(i - 3) * 2 + 1];
         } else {
-            cx = p[0];
-            cy = p[1];
+            dx = tx - ride->field_1c[0];
+            dy = ty - ride->field_1c[1];
         }
-        dx = tx - cx;
-        dy = ty - cy;
-        angle = ArcTan256(dx, dy);
-        param_1->field_29c[i] = ((angle >> 4) + 6 & 0xf) + param_1->field_3e0 * 0x10;
-        i = i + 1;
-        p = p + 2;
-    } while (i < 0x50);
+        ride->field_29c[i] = ((ArcTan256(dx, dy) >> 4) + 6 & 0xf) + ride->field_3e0 * 16;
+    }
 }
 
 // FUNCTION: LEGOLAND 0x00419d10
