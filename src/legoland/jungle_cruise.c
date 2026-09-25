@@ -321,14 +321,15 @@ unsigned int FUN_004332c0(unsigned short *param_1) {
 // FUNCTION: LEGOLAND 0x004332f0
 void FUN_004332f0(void) {
     struct JungleRide *node = DAT_00616164;
+    struct JungleRide *cur;
+
     while (node != NULL) {
-        struct JungleRide *cur = node;
         node->field_4 = node->field_c;
         node->field_8 = node->field_10;
         if (node->field_3e0 == 0x10) {
-            cur = FUN_004333e0(node);
-            if (cur != node) {
-                node = cur;
+            cur = node;
+            node = FUN_004333e0(node);
+            if (node != cur) {
                 continue;
             }
         } else {
@@ -342,12 +343,15 @@ void FUN_004332f0(void) {
             case 8:
                 FUN_004334c0(node, 1);
                 break;
+            case 0x10:
+                node = FUN_004333e0(node);
+                break;
             }
         }
-        if (cur == NULL) {
+        if (node == NULL) {
             return;
         }
-        node = cur->next;
+        node = node->next;
     }
 }
 
@@ -761,76 +765,77 @@ void FUN_00433d20(unsigned int param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00433d90
-void FUN_00433d90(int param_1, unsigned int param_2, unsigned int param_3) {
-    struct Ride *ride = ((struct RideObject *)param_1)->ride;
+void FUN_00433d90(struct RideObject *obj, unsigned int param_2, unsigned int param_3) {
+    struct Ride *ride;
     unsigned int mask;
-    int valid;
+    unsigned short owner;
+    int n;
     int x;
     int y;
-    unsigned int n;
-    int i;
+    struct Cursor *c;
 
-    *(struct Footprint *)EditCursor.field_1414 = ride->footprint;
+    n = 0;
+    ride = obj->ride;
+    memcpy(EditCursor.field_1414, &ride->footprint, 20);
     ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
-    mask = FUN_00436fb0(EditCursor.field_1404, EditCursor.field_1408, (unsigned short *)&param_1);
-    EditCursor.field_1830 = 0;
+    mask = FUN_00436fb0(EditCursor.field_1404, EditCursor.field_1408, &owner);
+    EditCursor.field_1830 = n;
     if (mask == 0) {
         FUN_0045f480(&EditCursor, 0xe);
         return;
     }
     ValidateCursor(&EditCursor, (unsigned int)ride);
-    valid = FUN_0045f4b0(&EditCursor);
-    if (valid == 0) {
+    if (FUN_0045f4b0(&EditCursor) == 0) {
         return;
     }
     DefaultCursor(&DAT_00622320[0]);
     DefaultCursor(&DAT_00622320[1]);
     DefaultCursor(&DAT_00622320[2]);
     DefaultCursor(&DAT_00622320[3]);
-    *(struct Footprint *)DAT_00622320[0].field_1414 = *(struct Footprint *)EditCursor.field_1414;
-    *(struct Footprint *)DAT_00622320[1].field_1414 = *(struct Footprint *)EditCursor.field_1414;
-    *(struct Footprint *)DAT_00622320[2].field_1414 = *(struct Footprint *)EditCursor.field_1414;
-    *(struct Footprint *)DAT_00622320[3].field_1414 = *(struct Footprint *)EditCursor.field_1414;
+    memcpy(DAT_00622320[0].field_1414, EditCursor.field_1414, 20);
+    memcpy(DAT_00622320[1].field_1414, EditCursor.field_1414, 20);
+    memcpy(DAT_00622320[2].field_1414, EditCursor.field_1414, 20);
+    memcpy(DAT_00622320[3].field_1414, EditCursor.field_1414, 20);
     FUN_0045f460(&DAT_00622320[0]);
     FUN_0045f460(&DAT_00622320[1]);
     FUN_0045f460(&DAT_00622320[2]);
     FUN_0045f460(&DAT_00622320[3]);
-    y = EditCursor.field_1408;
     x = EditCursor.field_1404;
+    y = EditCursor.field_1408;
     DAT_00622320[0].field_1828 = 0x2034;
     DAT_00622320[1].field_1828 = 0x2034;
     DAT_00622320[2].field_1828 = 0x2034;
     DAT_00622320[3].field_1828 = 0x2034;
     if ((mask & 1) != 0) {
-        DAT_00622320[0].field_1408 = EditCursor.field_1408 - 5;
-        DAT_00622320[0].field_1404 = EditCursor.field_1404;
+        DAT_00622320[0].field_1404 = x;
+        DAT_00622320[0].field_1408 = y - 5;
+        n = 1;
     }
-    n = mask & 1;
     if ((mask & 2) != 0) {
-        DAT_00622320[n].field_1404 = EditCursor.field_1404 + 5;
+        DAT_00622320[n].field_1404 = x + 5;
         DAT_00622320[n].field_1408 = y;
-        n = n + 1;
+        n++;
     }
     if ((mask & 4) != 0) {
         DAT_00622320[n].field_1404 = x;
         DAT_00622320[n].field_1408 = y + 5;
-        n = n + 1;
+        n++;
     }
     if ((mask & 8) != 0) {
         DAT_00622320[n].field_1404 = x - 5;
         DAT_00622320[n].field_1408 = y;
-        n = n + 1;
+        n++;
     }
     if (n != 0) {
         EditCursor.field_1830 = (unsigned int)&DAT_00622320[0];
-        if (1 < n) {
-            struct Cursor *c = &DAT_00622320[1];
-            i = n - 1;
+        if (n > 1) {
+            c = &DAT_00622320[1];
+            n--;
             do {
                 c[-1].field_1830 = (unsigned int)c;
-                c = c + 1;
-                i = i - 1;
-            } while (i != 0);
+                c++;
+                n--;
+            } while (n != 0);
         }
     }
 }
@@ -2077,47 +2082,46 @@ void FUN_00436470(unsigned int param_1, unsigned int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x004365f0
-void FUN_004365f0(unsigned int param_1, int *param_2) {
+void FUN_004365f0(struct RideObject *obj, int *coords) {
     struct JungleScore *score = DAT_00629c3c;
     unsigned int mask;
-    unsigned short coord;
-    int result;
+    unsigned short owner;
+    int x0;
+    int y0;
+    int x1;
+    int y1;
 
-    mask = FUN_00436fb0(param_2[0], param_2[1], (unsigned short *)&coord);
-    FUN_00436dc0(param_2[0], param_2[1], mask, &coord);
-    IncrementObjectCount(*(unsigned int *)(param_1 + 0xc));
-    FUN_004367b0(param_2[0], param_2[1], &coord);
+    mask = FUN_00436fb0(coords[0], coords[1], &owner);
+    FUN_00436dc0(coords[0], coords[1], mask, &owner);
+    IncrementObjectCount(obj->ride);
+    FUN_004367b0(coords[0], coords[1], &owner);
     if ((mask & 1) != 0) {
-        result = FUN_00436fb0(param_2[0], param_2[1] - 5, &coord);
-        FUN_00436dc0(param_2[0], param_2[1] - 5, result, &coord);
-        FUN_004367b0(param_2[0], param_2[1] - 5, &coord);
+        FUN_00436dc0(coords[0], coords[1] - 5, FUN_00436fb0(coords[0], coords[1] - 5, &owner), NULL);
+        FUN_004367b0(coords[0], coords[1] - 5, &owner);
     }
     if ((mask & 2) != 0) {
-        result = FUN_00436fb0(param_2[0] + 5, param_2[1], &coord);
-        FUN_00436dc0(param_2[0] + 5, param_2[1], result, &coord);
-        FUN_004367b0(param_2[0] + 5, param_2[1], &coord);
+        FUN_00436dc0(coords[0] + 5, coords[1], FUN_00436fb0(coords[0] + 5, coords[1], &owner), NULL);
+        FUN_004367b0(coords[0] + 5, coords[1], &owner);
     }
     if ((mask & 4) != 0) {
-        result = FUN_00436fb0(param_2[0], param_2[1] + 5, &coord);
-        FUN_00436dc0(param_2[0], param_2[1] + 5, result, &coord);
-        FUN_004367b0(param_2[0], param_2[1] + 5, &coord);
+        FUN_00436dc0(coords[0], coords[1] + 5, FUN_00436fb0(coords[0], coords[1] + 5, &owner), NULL);
+        FUN_004367b0(coords[0], coords[1] + 5, &owner);
     }
     if ((mask & 8) != 0) {
-        result = FUN_00436fb0(param_2[0] - 5, param_2[1], &coord);
-        FUN_00436dc0(param_2[0] - 5, param_2[1], result, &coord);
-        FUN_004367b0(param_2[0] - 5, param_2[1], &coord);
+        FUN_00436dc0(coords[0] - 5, coords[1], FUN_00436fb0(coords[0] - 5, coords[1], &owner), NULL);
+        FUN_004367b0(coords[0] - 5, coords[1], &owner);
     }
-    if (score != NULL) {
-        while (score->field_0 != coord) {
-            score = score->next;
-            if (score == NULL) {
-                return;
+    for (; score != NULL; score = score->next) {
+        if (score->field_0 == owner) {
+            x0 = score->start.pos.x;
+            y0 = score->start.pos.y;
+            x1 = score->end.pos.x;
+            y1 = score->end.pos.y;
+            score->field_8 = FUN_004371e0(x0, y0, x1, y1);
+            if (score->field_8 != 0) {
+                FUN_004373c0(owner);
             }
-        }
-        result = FUN_004371e0(score->start.pos.x, score->start.pos.y, score->end.pos.x, score->end.pos.y);
-        score->field_8 = result;
-        if (result != 0) {
-            FUN_004373c0(coord);
+            return;
         }
     }
 }
