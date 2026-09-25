@@ -24,7 +24,10 @@ int __stdcall DirectDrawCreate(void *guid, void *ddraw, void *unknown) {
 }
 
 // STUB: LEGOLAND 0x0049d31a
-void Ordinal_1(void) { STUB(); }
+int __stdcall DirectSoundCreate(void *guid, void *dsound, void *unknown) {
+    STUB();
+    return 0;
+}
 
 // STUB: LEGOLAND 0x0049d320
 void DirectInputCreateA(void) { STUB(); }

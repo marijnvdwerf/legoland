@@ -3521,6 +3521,9 @@ void *DAT_007cacd8;
 // GLOBAL: LEGOLAND 0x007cacdc
 void *DAT_007cacdc;
 
+// GLOBAL: LEGOLAND 0x007cace0
+unsigned int DAT_007cace0[0x18];
+
 // GLOBAL: LEGOLAND 0x007cad40
 void *DAT_007cad40;
 

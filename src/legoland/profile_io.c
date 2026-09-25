@@ -7,6 +7,7 @@
 
 #include <windows.h>
 #include <ddraw.h>
+#include <dsound.h>
 
 #include "clipping.h"
 #include "draw.h"
@@ -460,8 +461,7 @@ int FUN_00491e40(char *text, int font, RECT rc, int color_flag) {
     HDC hdc;
     HGDIOBJ old_region;
 
-    measured.right = rc.left;
-    measured.bottom = rc.top;
+    measured = rc;
     region = CreateRectRgn(SPRITE_ClipRect.left, SPRITE_ClipRect.top, SPRITE_ClipRect.right, SPRITE_ClipRect.bottom);
     PushRenderingStatusAndUnlockVideoSurface();
     ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->GetDC((LPDIRECTDRAWSURFACE)renderEngine, &hdc);
@@ -478,7 +478,7 @@ int FUN_00491e40(char *text, int font, RECT rc, int color_flag) {
     ((LPDIRECTDRAWSURFACE)renderEngine)->lpVtbl->ReleaseDC((LPDIRECTDRAWSURFACE)renderEngine, hdc);
     PopRenderingStatus();
     DeleteObject(region);
-    return (rc.left + rc.right) / 2 + (measured.left - measured.right) / 2;
+    return (rc.left + rc.right) / 2 + (measured.right - measured.left) / 2;
 }
 
 // FUNCTION: LEGOLAND 0x00491f90
@@ -544,4 +544,21 @@ void FUN_00492110(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00492130
-int FUN_00492130(void *hwnd) { STUB(); }
+int FUN_00492130(void *hwnd) {
+    if (DirectSoundCreate(NULL, (LPDIRECTSOUND *)&DAT_007cad40, NULL) == 0) {
+        if (((LPDIRECTSOUND)DAT_007cad40)->lpVtbl->SetCooperativeLevel((LPDIRECTSOUND)DAT_007cad40, (HWND)hwnd, 1) ==
+            0) {
+            memset(DAT_007cace0, 0, sizeof(DAT_007cace0));
+            DAT_007cace0[0] = sizeof(DAT_007cace0);
+            if (((LPDIRECTSOUND)DAT_007cad40)->lpVtbl->GetCaps((LPDIRECTSOUND)DAT_007cad40, (LPDSCAPS)DAT_007cace0) ==
+                0) {
+                DAT_007988c0 = 1;
+                return 1;
+            }
+        }
+        ((LPDIRECTSOUND)DAT_007cad40)->lpVtbl->Release((LPDIRECTSOUND)DAT_007cad40);
+    }
+    DAT_007cad40 = NULL;
+    DAT_007988c0 = 0;
+    return 0;
+}

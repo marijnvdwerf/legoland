@@ -2572,6 +2572,8 @@ extern LEGO_EXPORT unsigned int FrameNumber;
 extern void *DAT_007cacd8;
 // 0x007cacdc
 extern void *DAT_007cacdc;
+// 0x007cace0
+extern unsigned int DAT_007cace0[0x18];
 // 0x007cad40
 extern void *DAT_007cad40;
 // 0x007cad44
