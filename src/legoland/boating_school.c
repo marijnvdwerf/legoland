@@ -107,7 +107,6 @@ void FUN_00418fe0(int param_1) {
     int sy;
     int person;
     struct Point off;
-    struct Point pos;
     struct Point seat;
 
     GetTileDimensions(&tw, &th);
@@ -129,16 +128,16 @@ void FUN_00418fe0(int param_1) {
             PrintSprite(DAT_0082c65c->sprites[ride->field_29c[DAT_004cc08c] & 0xff], ride->field_14, ride->field_18, 0, 0);
             if (ride->field_3ec != 0) {
                 person = (int)Find3DPersonFromBloke(ride->field_3ec);
-                *(float *)(person + 0x44) = ((float)(int)ride->field_29c[DAT_004cc08c] * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3e0 * DAT_004ab3dc;
+                *(float *)(person + 0x44) = ((float)(int)ride->field_29c[DAT_004cc08c] * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3dc * DAT_004ab3e0;
                 SetPersonRotation((struct Person *)person, (float *)(person + 0x40));
-                pos.x = lpConfig->field_20 + bx + sx;
-                pos.y = lpConfig->field_22 + by + sy;
-                AdjustBlokePosition((struct BlokePos *)&pos);
+                off.x = lpConfig->field_20 + bx + sx;
+                off.y = lpConfig->field_22 + by + sy;
+                AdjustBlokePosition((struct BlokePos *)&off);
                 seat.x = DAT_004b51d8[(ride->field_29c[DAT_004cc08c] & 0xf) * 2] + 0x44;
                 seat.y = DAT_004b51d8[(ride->field_29c[DAT_004cc08c] & 0xf) * 2 + 1] + 0x34;
                 AdjustOffsetForViewMode(&seat);
-                *(int *)(person + 0x1c) = seat.x + pos.x;
-                *(int *)(person + 0x20) = seat.y + pos.y;
+                *(int *)(person + 0x1c) = seat.x + off.x;
+                *(int *)(person + 0x20) = seat.y + off.y;
                 IP_RenderBlokeIn3DNow((struct Bloke *)ride->field_3ec);
                 PrintSprite(DAT_0082c65c->sprites[(ride->field_29c[DAT_004cc08c] + 0x30) & 0xff], ride->field_14, ride->field_18, 0, 0);
             }
