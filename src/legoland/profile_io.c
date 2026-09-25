@@ -78,6 +78,7 @@ LEGO_EXPORT int Goto_ProfileDir(void) {
     int next;
 
     found = 0;
+    // STRING: LEGOLAND 0x004b9174
     handle = _findfirst("profiles", &find_data);
     next = (int)handle;
     while (next != -1) {
@@ -88,7 +89,8 @@ LEGO_EXPORT int Goto_ProfileDir(void) {
     }
     _findclose(handle);
     if (!found) {
-        return _chdir("profiles") == 0;
+        // STRING: LEGOLAND 0x004b9174
+        return _mkdir("profiles") == 0;
     }
     return 1;
 }
@@ -158,7 +160,7 @@ LEGO_EXPORT char LoadProfilesFormDisk(void) {
         slot--;
         index--;
     } while (slot != 0);
-    result = (ReturnFrom_ProfileDir() != 0) - 1;
+    result = ReturnFrom_ProfileDir() ? 0 : -1;
     return result;
 }
 
@@ -167,6 +169,7 @@ unsigned int FUN_00491540(void) { return DAT_007cad60.name[0] != 0; }
 
 // FUNCTION: LEGOLAND 0x00491550
 LEGO_EXPORT char UpDateCurrentSaveSlotInfo(void) {
+    char result;
     struct ProfileData temp;
     char path[120];
     void *stream;
@@ -191,11 +194,13 @@ LEGO_EXPORT char UpDateCurrentSaveSlotInfo(void) {
         fwrite(&temp, sizeof(struct ProfileData), 1, stream);
         fclose(stream);
     }
-    return ReturnFrom_ProfileDir() != 0 ? 1 : -1;
+    result = ReturnFrom_ProfileDir() ? 1 : -1;
+    return result;
 }
 
 // FUNCTION: LEGOLAND 0x00491680
 LEGO_EXPORT char UpDateCurrentProfile(void) {
+    char result;
     struct ProfileData temp;
     char path[120];
     void *stream;
@@ -224,7 +229,8 @@ LEGO_EXPORT char UpDateCurrentProfile(void) {
         fwrite(&temp, sizeof(struct ProfileData), 1, stream);
         fclose(stream);
     }
-    return ReturnFrom_ProfileDir() != 0 ? 1 : -1;
+    result = ReturnFrom_ProfileDir() ? 1 : -1;
+    return result;
 }
 
 // FUNCTION: LEGOLAND 0x004917c0
@@ -263,6 +269,7 @@ int FUN_004917c0(int slot) {
 
 // FUNCTION: LEGOLAND 0x00491910
 LEGO_EXPORT char SaveProfileToDisk(void) {
+    char result;
     char path[120];
     void *stream;
 
@@ -273,11 +280,13 @@ LEGO_EXPORT char SaveProfileToDisk(void) {
     stream = fopen(path, "w+");
     if (stream == 0) {
         printf("\ncannot open output file");
-        return ReturnFrom_ProfileDir() != 0 ? 1 : -1;
+        result = ReturnFrom_ProfileDir() ? 1 : -1;
+        return result;
     }
     fwrite(&DAT_007cad60, sizeof(struct ProfileData), 1, stream);
     fclose(stream);
-    return ReturnFrom_ProfileDir() != 0 ? 1 : -1;
+    result = ReturnFrom_ProfileDir() ? 1 : -1;
+    return result;
 }
 
 // FUNCTION: LEGOLAND 0x004919a0
