@@ -1635,9 +1635,6 @@ void FUN_0041c130(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
     int ex;
     int ey;
     unsigned int mask;
-    unsigned int u1;
-    unsigned int u2;
-    unsigned int u3;
     unsigned int dir;
     int x;
     int y;
@@ -1664,70 +1661,64 @@ void FUN_0041c130(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
     mask = FUN_0041c690(cursor->field_1404, cursor->field_1408, &owner);
     FUN_0041c620(obj, tile, cursor);
     FUN_0041b0d0(owner, -1);
-    u1 = mask & 1;
-    if (u1 != 0) {
+    if ((mask & 1) != 0) {
         y = cursor->field_1408 - 5;
         x = cursor->field_1404;
         dir = FUN_0041c690(x, y, &other);
         FUN_0041c4c0(x, y, dir, &owner);
         FUN_0041bab0(x, y, &owner);
     }
-    u2 = mask & 2;
-    if (u2 != 0) {
+    if ((mask & 2) != 0) {
         x = cursor->field_1404 + 5;
         y = cursor->field_1408;
         dir = FUN_0041c690(x, y, &other);
         FUN_0041c4c0(x, y, dir, &owner);
         FUN_0041bab0(x, y, &owner);
     }
-    u3 = mask & 4;
-    if (u3 != 0) {
+    if ((mask & 4) != 0) {
         y = cursor->field_1408 + 5;
         x = cursor->field_1404;
         dir = FUN_0041c690(x, y, &other);
         FUN_0041c4c0(x, y, dir, &owner);
         FUN_0041bab0(x, y, &owner);
     }
-    mask &= 8;
-    if (mask != 0) {
+    if ((mask & 8) != 0) {
         x = cursor->field_1404 - 5;
         y = cursor->field_1408;
         dir = FUN_0041c690(x, y, &other);
         FUN_0041c4c0(x, y, dir, &owner);
         FUN_0041bab0(x, y, &owner);
     }
-    if (u1 != 0) {
-        if (mask != 0) {
-            y = cursor->field_1408 - 5;
-            x = cursor->field_1404 - 5;
-            if (FUN_0041c890(x, y) != NULL) {
-                dir = FUN_0041c690(x, y, &other);
-                FUN_0041c4c0(x, y, dir, &owner);
-                FUN_0041bab0(x, y, &owner);
-            }
-        }
-        if (u1 != 0 && u2 != 0) {
-            y = cursor->field_1408 - 5;
-            x = cursor->field_1404 + 5;
-            if (FUN_0041c890(x, y) != NULL) {
-                dir = FUN_0041c690(x, y, &other);
-                FUN_0041c4c0(x, y, dir, &owner);
-                FUN_0041bab0(x, y, &owner);
-            }
-        }
-    }
-    if (u3 != 0 && mask != 0) {
-        y = cursor->field_1408 + 5;
+    if ((mask & 1) != 0 && (mask & 8) != 0) {
         x = cursor->field_1404 - 5;
+        y = cursor->field_1408 - 5;
         if (FUN_0041c890(x, y) != NULL) {
             dir = FUN_0041c690(x, y, &other);
             FUN_0041c4c0(x, y, dir, &owner);
             FUN_0041bab0(x, y, &owner);
         }
     }
-    if (u3 != 0 && u2 != 0) {
-        y = cursor->field_1408 + 5;
+    if ((mask & 1) != 0 && (mask & 2) != 0) {
         x = cursor->field_1404 + 5;
+        y = cursor->field_1408 - 5;
+        if (FUN_0041c890(x, y) != NULL) {
+            dir = FUN_0041c690(x, y, &other);
+            FUN_0041c4c0(x, y, dir, &owner);
+            FUN_0041bab0(x, y, &owner);
+        }
+    }
+    if ((mask & 4) != 0 && (mask & 8) != 0) {
+        x = cursor->field_1404 - 5;
+        y = cursor->field_1408 + 5;
+        if (FUN_0041c890(x, y) != NULL) {
+            dir = FUN_0041c690(x, y, &other);
+            FUN_0041c4c0(x, y, dir, &owner);
+            FUN_0041bab0(x, y, &owner);
+        }
+    }
+    if ((mask & 4) != 0 && (mask & 2) != 0) {
+        x = cursor->field_1404 + 5;
+        y = cursor->field_1408 + 5;
         if (FUN_0041c890(x, y) != NULL) {
             dir = FUN_0041c690(x, y, &other);
             FUN_0041c4c0(x, y, dir, &owner);
@@ -1735,20 +1726,14 @@ void FUN_0041c130(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
         }
     }
     FUN_0041caa0(owner);
-    if (score != NULL) {
-        for (;;) {
-            if (score->id == owner) {
-                x0 = score->start.pos.x;
-                y0 = score->start.pos.y;
-                x1 = score->end.pos.x;
-                y1 = score->end.pos.y;
-                score->field_8 = FUN_0041c8c0(x0, y0, x1, y1);
-                return;
-            }
-            score = score->next;
-            if (score == NULL) {
-                return;
-            }
+    for (; score != NULL; score = score->next) {
+        if (score->id == owner) {
+            x0 = score->start.pos.x;
+            y0 = score->start.pos.y;
+            x1 = score->end.pos.x;
+            y1 = score->end.pos.y;
+            score->field_8 = FUN_0041c8c0(x0, y0, x1, y1);
+            break;
         }
     }
 }
