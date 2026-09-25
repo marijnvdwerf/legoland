@@ -1394,46 +1394,37 @@ LEGO_EXPORT struct IconNode *GetIconAtPos(struct Point *param_1, unsigned char *
     short x = (short)param_1->x;
     short y = (short)param_1->y;
     struct IconNode *found = NULL;
+    struct IconNode *cur;
     int doGeom = 1;
-    int i = 0;
+    int i;
+    unsigned int flags;
     struct Bbox bbox;
 
-    do {
-        struct IconNode *cur = (i != 0) ? DAT_006687cc : DAT_006687c8;
-        for (; cur != NULL; cur = cur->next) {
-            struct IconNode *candidate = found;
-            unsigned int flags = cur->flags;
-            if (doGeom &&
-                (((flags & 0x10) == 0 || (flags & 0x400) != 0) ||
-                    (x < cur->x) ||
-                    (y < cur->y) ||
-                    (cur->field_10 + cur->x < x) ||
-                    (candidate = cur, cur->field_12 + cur->y < y)) &&
-                (candidate = found, (flags & 0x40) != 0 && (flags & 0x400) == 0) &&
-                FUN_0046f330(param_1, cur) != 0) {
-                *param_2 = *param_2 | 4;
-                if (found != NULL && (found->flags & 0x800) != 0) {
-                    if ((unsigned short)(cur->id - 1) == (unsigned short)(found->id - 3) ||
-                        (unsigned short)(cur->id - 1) == (unsigned short)(found->id - 4)) {
-                        goto next;
+    for (i = 0; i < 2; i++) {
+        for (cur = i != 0 ? DAT_006687cc : DAT_006687c8; cur != NULL; cur = cur->next) {
+            if (doGeom) {
+                flags = cur->flags;
+                if ((flags & 0x10) != 0 && (flags & 0x400) == 0 && x >= cur->x && y >= cur->y &&
+                    x <= cur->field_10 + cur->x && y <= cur->field_12 + cur->y) {
+                    found = cur;
+                } else if ((flags & 0x40) != 0 && (flags & 0x400) == 0 && FUN_0046f330(param_1, cur) != 0) {
+                    *param_2 |= 4;
+                    if (found == NULL || (found->flags & 0x800) == 0 ||
+                        (cur->id - 1 != found->id - 3 && cur->id - 1 != found->id - 4)) {
+                        found = NULL;
                     }
                 }
-                candidate = NULL;
             }
-        next:
             if ((cur->flags & 0x20) != 0 && (cur->flags & 0x400) == 0) {
                 FUN_0046de50((struct Rect16 *)cur, (struct Rect32 *)&bbox);
-                if (x < bbox.min_x || bbox.max_x < x || y < bbox.min_y || bbox.max_y < y) {
+                if (x < bbox.min_x || x > bbox.max_x || y < bbox.min_y || y > bbox.max_y) {
                     doGeom = 0;
                 } else {
                     doGeom = 1;
                 }
             }
-            found = candidate;
         }
-        i++;
-    } while (i <= 1);
-
+    }
     return found;
 }
 
@@ -1893,75 +1884,66 @@ LEGO_EXPORT void ControlIndicators(void) {
     struct Indicator *node = DAT_006688d8;
     int now = GetGameTimer();
     int x = ((struct Config *)lpConfig)->field_0 - 0x50;
+    struct Indicator *cur;
+    struct Indicator *head;
+    struct Indicator *prev;
 
     DAT_006688d8 = NULL;
     while (node != NULL) {
-        struct Indicator *head;
-        struct Indicator *cur;
-        struct Indicator *prev;
-        unsigned int key = node->field_10 & 0xffff;
-        node->field_10 = key;
+        node->field_10 &= 0xffff;
         if (now - (int)node->field_8 < 0x1388) {
-            node->field_10 = key | 0x10000;
+            node->field_10 |= 0x10000;
         } else {
-            node->field_14->flags = node->field_14->flags & 0xfffffff7;
+            node->field_14->flags &= ~8;
         }
         if ((node->field_4 & 1) != 0) {
-            node->field_10 = node->field_10 | 0x20000;
+            node->field_10 |= 0x20000;
         } else if (now - (int)node->field_8 >= (int)node->field_c) {
-            cur = node->next;
-            node->next = DAT_006688d8;
-            DAT_006688d8 = node;
-            RemoveIndicator(node);
-            if ((node->field_4 & 2) != 0) {
-                DeleteIndicator(node);
+            cur = node;
+            node = node->next;
+            cur->next = DAT_006688d8;
+            DAT_006688d8 = cur;
+            RemoveIndicator(cur);
+            if ((cur->field_4 & 2) != 0) {
+                DeleteIndicator(cur);
             }
-            node = cur;
             continue;
         }
         head = DAT_006688d8;
-        cur = node->next;
+        cur = node;
+        node = node->next;
         if (head == NULL) {
-            DAT_006688d8 = node;
-            node->next = NULL;
-            node = cur;
+            DAT_006688d8 = cur;
+            cur->next = NULL;
             continue;
         }
-        prev = NULL;
-        while ((int)head->field_10 >= (int)node->field_10) {
-            prev = head;
-            head = head->next;
-            if (head == NULL) {
-                prev->next = node;
-                node->next = NULL;
-                goto next_node;
+        for (prev = NULL; head != NULL; prev = head, head = head->next) {
+            if ((int)head->field_10 < (int)cur->field_10) {
+                if (prev != NULL) {
+                    prev->next = cur;
+                } else {
+                    DAT_006688d8 = cur;
+                }
+                cur->next = head;
+                break;
             }
         }
-        if (prev != NULL) {
-            prev->next = node;
-        } else {
-            DAT_006688d8 = node;
+        if (head == NULL) {
+            prev->next = cur;
+            cur->next = NULL;
         }
-        node->next = head;
-    next_node:
-        node = cur;
     }
 
-    node = DAT_006688d8;
-    if (node != NULL) {
-        do {
-            node->field_14->x = (short)x;
-            x = x - 0x34;
-            node->field_14->y = 8;
-            if (x <= (int)(((struct Config *)lpConfig)->field_0 >> 2)) {
-                while (node != NULL) {
-                    node->field_14->x = (short)0xf000;
-                    node = node->next;
-                }
-                return;
-            }
-            node = node->next;
-        } while (node != NULL);
+    for (node = DAT_006688d8; node != NULL; node = node->next) {
+        node->field_14->x = (short)x;
+        x = x - 0x34;
+        node->field_14->y = 8;
+        if (x <= (int)(((struct Config *)lpConfig)->field_0 >> 2)) {
+            break;
+        }
+    }
+    for (; node != NULL; node = node->next) {
+        node->field_14->x = (short)0xf000;
     }
 }
 

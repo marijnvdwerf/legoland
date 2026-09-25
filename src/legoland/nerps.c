@@ -2264,30 +2264,22 @@ void FUN_0046c5c0(void) {
 // FUNCTION: LEGOLAND 0x0046c620
 unsigned int FUN_0046c620(char *str) {
     int len;
-    char *buf;
 
-    buf = str;
-    if (str == (char *)0x0) {
-        buf = (char *)&str;
-        str = (char *)0xffffffff;
-        len = 4;
+    if (str != NULL) {
+        len = strlen(str);
+        if (SaveGameWrite(&len, 4) == 0) {
+            return 0;
+        }
+        if (len != 0 && SaveGameWrite(str, len) == 0) {
+            return 0;
+        }
     } else {
-        str = (char *)strlen(str);
-        if (SaveGameWrite(&str, 4) == 0) {
-            goto fail;
-        }
-        len = (int)str;
-        if (str == (char *)0x0) {
-            goto ok;
+        len = -1;
+        if (SaveGameWrite(&len, 4) == 0) {
+            return 0;
         }
     }
-    if (SaveGameWrite(buf, len) == 0) {
-        goto fail;
-    }
-ok:
     return 1;
-fail:
-    return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046c680
