@@ -1608,22 +1608,18 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
     code = FUN_0045e6b0((struct ObjBox *)EditMode.unk8);
     switch (code) {
     case 1:
-        sprite = DAT_00667c8c;
+        PrintSprite(DAT_00667c8c, screen[0], screen[1], 0, 0);
         break;
     case 2:
-        sprite = DAT_00667c94;
+        PrintSprite(DAT_00667c94, screen[0], screen[1], 0, 0);
         break;
     case 4:
-        sprite = DAT_00667c90;
+        PrintSprite(DAT_00667c90, screen[0], screen[1], 0, 0);
         break;
     case 8:
-        sprite = DAT_00667c88;
+        PrintSprite(DAT_00667c88, screen[0], screen[1], 0, 0);
         break;
-    default:
-        goto after_first;
     }
-    PrintSprite(sprite, screen[0], screen[1], 0, 0);
-after_first:
     if ((cursor->field_1828 & 0x800) != 0 && FUN_0045e690((struct ObjInfo *)EditMode.unk8) != 0) {
         tilept[0] = ((signed char *)EditMode.unk8)[0x24] + cursor->field_1404;
         tilept[1] = ((signed char *)EditMode.unk8)[0x25] + cursor->field_1408;
@@ -1841,33 +1837,24 @@ void FUN_004608c0(int *param_1, RECT *param_2) {
                         }
                     }
                     sxpix = sxpix + 1;
-                    if (tile == 0) {
-                        if ((int)sxpix >= 0 && (int)sxpix < lpConfig->width && sypix >= 0 && sypix < lpConfig->height &&
-                            (tile = (struct MapElement *)((int)GameMap[sypix] + sxpix * 0x14)) != 0) {
-                            goto draw_lower;
-                        }
-                    } else {
+                    if (tile != 0) {
                         if ((unsigned int)sxpix == lpConfig->width) {
                             break;
                         }
                         tile = tile + 1;
-                        if (tile == 0) {
-                            goto check_lower;
-                        }
-                    draw_lower:
-                        sprite_id = tile->field_8;
-                        if (sprite_id != 0) {
-                            if ((tile->flags & 3) == 0 || (tile->flags & 8) == 0 || tile->field_0 == 0) {
-                                FUN_00485f00((struct Sprite *)TileSpriteArray[sprite_id], col + half_x, rem_x);
-                                if (FUN_0045ce10((struct MapTile *)tile) != 0) {
-                                    FUN_00460e90((int *)&sxpix, col + half_x, rem_x, 0);
-                                }
-                            } else if (*(int *)(*(int *)(tile->field_0 + 0xc) + 0xa0) == 0) {
-                                FUN_00485f00((struct Sprite *)TileSpriteArray[sprite_id], col, draw_y);
+                    } else if ((int)sxpix >= 0 && (int)sxpix < lpConfig->width && sypix >= 0 && sypix < lpConfig->height) {
+                        tile = (struct MapElement *)((int)GameMap[sypix] + sxpix * 0x14);
+                    }
+                    if (tile != 0 && (sprite_id = tile->field_8) != 0) {
+                        if ((tile->flags & 3) == 0 || (tile->flags & 8) == 0 || tile->field_0 == 0) {
+                            FUN_00485f00((struct Sprite *)TileSpriteArray[sprite_id], col + half_x, rem_x);
+                            if (FUN_0045ce10((struct MapTile *)tile) != 0) {
+                                FUN_00460e90((int *)&sxpix, col + half_x, rem_x, 0);
                             }
+                        } else if (*(int *)(*(int *)(tile->field_0 + 0xc) + 0xa0) == 0) {
+                            FUN_00485f00((struct Sprite *)TileSpriteArray[sprite_id], col, draw_y);
                         }
                     }
-                check_lower:
                     sypix = sypix + -1;
                 }
                 sxpix = saved_col + 1;
