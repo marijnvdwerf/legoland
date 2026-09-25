@@ -1945,7 +1945,7 @@ void FUN_00436200(struct RideObject *obj, unsigned int param_2, unsigned int par
     struct MapRect rect;
 
     n = 0;
-    memcpy(EditCursor.field_1414, &DAT_004b53c0, sizeof(DAT_004b53c0));
+    memcpy(EditCursor.field_1414, &DAT_004b7478, sizeof(DAT_004b7478));
     ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
     mask = FUN_00436fb0(EditCursor.field_1404, EditCursor.field_1408, &owner);
     EditCursor.field_1830 = n;
@@ -2144,31 +2144,31 @@ void FUN_004367b0(int param_1, int param_2, unsigned short *param_3) {
         }
         if ((mask & 8) != 0 && (mask & 1) != 0 &&
             (other = (int)FUN_004371b0(param_1, (param_2 - 5)), (*(unsigned char *)(other + 4) & 8) != 0)) {
-            SetMapTile(param_1 - 3, param_2 - 3, *DAT_0082adf4->tiles);
-            SetMapTile(param_1 - 2, param_2 - 3, *DAT_0082adf4->tiles);
-            SetMapTile(param_1 - 3, param_2 - 2, *DAT_0082adf4->tiles);
-            SetMapTile(param_1 - 2, param_2 - 2, *DAT_0082adf4->tiles);
+            SetMapTile(param_1 - 3, param_2 - 3, *DAT_0081cb58->tiles);
+            SetMapTile(param_1 - 2, param_2 - 3, *DAT_0081cb58->tiles);
+            SetMapTile(param_1 - 3, param_2 - 2, *DAT_0081cb58->tiles);
+            SetMapTile(param_1 - 2, param_2 - 2, *DAT_0081cb58->tiles);
         }
         if ((mask & 8) != 0 && (mask & 4) != 0 &&
             (other = (int)FUN_004371b0(param_1, (param_2 + 5)), (*(unsigned char *)(other + 4) & 8) != 0)) {
-            SetMapTile(param_1 - 3, param_2 + 3, *DAT_0082adf4->tiles);
-            SetMapTile(param_1 - 2, param_2 + 3, *DAT_0082adf4->tiles);
-            SetMapTile(param_1 - 3, param_2 + 2, *DAT_0082adf4->tiles);
-            SetMapTile(param_1 - 2, param_2 + 2, *DAT_0082adf4->tiles);
+            SetMapTile(param_1 - 3, param_2 + 3, *DAT_0081cb58->tiles);
+            SetMapTile(param_1 - 2, param_2 + 3, *DAT_0081cb58->tiles);
+            SetMapTile(param_1 - 3, param_2 + 2, *DAT_0081cb58->tiles);
+            SetMapTile(param_1 - 2, param_2 + 2, *DAT_0081cb58->tiles);
         }
         if ((mask & 2) != 0 && (mask & 1) != 0 &&
             (other = (int)FUN_004371b0(param_1, (param_2 - 5)), (*(unsigned char *)(other + 4) & 2) != 0)) {
-            SetMapTile(param_1 + 3, param_2 - 3, *DAT_0082adf4->tiles);
-            SetMapTile(param_1 + 2, param_2 - 3, *DAT_0082adf4->tiles);
-            SetMapTile(param_1 + 3, param_2 - 2, *DAT_0082adf4->tiles);
-            SetMapTile(param_1 + 2, param_2 - 2, *DAT_0082adf4->tiles);
+            SetMapTile(param_1 + 3, param_2 - 3, *DAT_0081cb58->tiles);
+            SetMapTile(param_1 + 2, param_2 - 3, *DAT_0081cb58->tiles);
+            SetMapTile(param_1 + 3, param_2 - 2, *DAT_0081cb58->tiles);
+            SetMapTile(param_1 + 2, param_2 - 2, *DAT_0081cb58->tiles);
         }
         if ((mask & 2) != 0 && (mask & 4) != 0 &&
             (other = (int)FUN_004371b0(param_1, (param_2 + 5)), (*(unsigned char *)(other + 4) & 2) != 0)) {
-            SetMapTile(param_1 + 3, param_2 + 3, *DAT_0082adf4->tiles);
-            SetMapTile(param_1 + 2, param_2 + 3, *DAT_0082adf4->tiles);
-            SetMapTile(param_1 + 3, param_2 + 2, *DAT_0082adf4->tiles);
-            SetMapTile(param_1 + 2, param_2 + 2, *DAT_0082adf4->tiles);
+            SetMapTile(param_1 + 3, param_2 + 3, *DAT_0081cb58->tiles);
+            SetMapTile(param_1 + 2, param_2 + 3, *DAT_0081cb58->tiles);
+            SetMapTile(param_1 + 3, param_2 + 2, *DAT_0081cb58->tiles);
+            SetMapTile(param_1 + 2, param_2 + 2, *DAT_0081cb58->tiles);
         }
     }
 }
@@ -2433,28 +2433,18 @@ unsigned int FUN_00436fb0(int x, int y, unsigned short *owner) {
 }
 
 // FUNCTION: LEGOLAND 0x004371b0
-struct JunglePath *FUN_004371b0(unsigned char param_1, unsigned char param_2) {
-    struct JunglePath *entry;
-    unsigned short combined;
-    unsigned char temp[2];
+struct JunglePath *FUN_004371b0(int x, int y) {
+    struct JunglePath *node;
+    TileId key;
 
-    temp[0] = param_1;
-    temp[1] = param_2;
-    combined = *(unsigned short *)temp;
-
-    entry = DAT_0062fd2c;
-    if (entry != NULL) {
-        while (1) {
-            if (entry->tile.id == combined) {
-                break;
-            }
-            entry = entry->next;
-            if (entry == NULL) {
-                break;
-            }
+    key.pos.x = x;
+    key.pos.y = y;
+    for (node = DAT_0062fd2c; node != NULL; node = node->next) {
+        if (node->tile.id == key.id) {
+            break;
         }
     }
-    return entry;
+    return node;
 }
 
 // FUNCTION: LEGOLAND 0x004371e0
