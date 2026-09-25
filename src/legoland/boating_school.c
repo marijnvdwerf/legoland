@@ -1743,7 +1743,6 @@ void FUN_0041c4c0(int x, int y, int mask, unsigned short *owner) {
     TileId tile;
     struct PathNode *node;
     struct MapElement *elem;
-    unsigned char *map;
     int row;
     int col;
     struct Point pt;
@@ -1756,8 +1755,8 @@ void FUN_0041c4c0(int x, int y, int mask, unsigned short *owner) {
         if (node == NULL) {
             return;
         }
-        node->field_18 = NULL;
         node->next = DAT_004d823c;
+        node->field_18 = NULL;
         DAT_004d823c = node;
     }
     node->tile = tile;
@@ -1766,7 +1765,6 @@ void FUN_0041c4c0(int x, int y, int mask, unsigned short *owner) {
         node->owner.id = *owner;
     }
     BGFullUpdate = 1;
-    map = &DAT_004b53d4[mask * 0x19];
     for (row = 0; row < 5; row++) {
         for (col = 0; col < 5; col++) {
             pt.y = row + y - 2;
@@ -1780,8 +1778,7 @@ void FUN_0041c4c0(int x, int y, int mask, unsigned short *owner) {
             elem->field_10 = 2;
             elem->field_0 = DAT_0082adf0->field_c4;
             *(unsigned short *)&elem->field_4 = tile.id;
-            SetMapTile(pt.x, pt.y, *DAT_0082adf4[*map >> 8].tiles + (unsigned char)*map);
-            map++;
+            SetMapTile(pt.x, pt.y, *DAT_0082adf4[DAT_004b53d4[mask * 25 + row * 5 + col] >> 8].tiles + (unsigned char)DAT_004b53d4[mask * 25 + row * 5 + col]);
         }
     }
 }
