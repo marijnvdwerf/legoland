@@ -66,32 +66,29 @@ struct Ride {
 char *FUN_00489e60(struct ResFile *file, char *dest, int maxlen) {
     int error;
     int count;
-    int buf;
+    char c;
     char *out;
 
     error = 0;
     count = 0;
     out = dest;
-    do {
-        if (RES_ReadFile(file, &buf, 1) == 0) {
+    for (;;) {
+        if (RES_ReadFile(file, &c, 1) == 0) {
             error = 1;
-            goto skip_cr;
+            break;
         }
-        if ((char)buf == '\r') {
-            goto extra_read;
+        if (c == '\r' || c == '\n') {
+            break;
         }
-        if ((char)buf == '\n') {
-            goto done;
-        }
-        *out++ = (char)buf;
+        *out++ = c;
         count++;
-    } while (count < maxlen);
-skip_cr:
-    if ((char)buf == '\r') {
-    extra_read:
-        RES_ReadFile(file, &buf, 1);
+        if (count >= maxlen) {
+            break;
+        }
     }
-done:
+    if (c == '\r') {
+        RES_ReadFile(file, &c, 1);
+    }
     *out = '\0';
     if (error && count == 0) {
         return 0;
