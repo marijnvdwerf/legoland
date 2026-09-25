@@ -424,7 +424,7 @@ void FUN_00417f90(struct WaterArg *arg) {
                 ry = ry * 0x100 + 0x80;
                 *(unsigned int *)(bloke + 0x24) = rx * 0x100 + -0x80;
                 *(int *)(bloke + 0x28) = ry;
-                dir = CalcMoveLine(*(int *)(bloke + 0x68), *(int *)(bloke + 0x6c), *(int *)(bloke + 0x24), ry, bloke + 0x98);
+                dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 bloke[0x73] = dir + 0x10;
                 NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);

@@ -173,8 +173,7 @@ void FUN_0042e2a0(int param_1) {
                 x = x * 0x100 + -0x80;
                 *(int *)(bloke + 0x28) = (y + 1) * 0x100;
                 *(int *)(bloke + 0x24) = x;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), x,
-                    *(unsigned int *)(bloke + 0x28), bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -199,7 +198,7 @@ void FUN_0042e2a0(int param_1) {
                 my = *(int *)(bloke + 0x6c);
                 mx = *(int *)(bloke + 0x68);
             calc:
-                cv = CalcMoveLine(mx, my, x, y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -317,8 +316,7 @@ void FUN_0042e610(int param_1) {
                 y = ((unsigned int)b1 + y) * 0x100 + 0x80;
                 *(int *)(bloke + 0x24) = x;
                 *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
-                    *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -519,7 +517,7 @@ void FUN_0042ea60(int param_1) {
                 my = *(int *)(bloke + 0x6c);
                 mx = *(int *)(bloke + 0x68);
             calc:
-                cv = CalcMoveLine(mx, my, x, y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -577,8 +575,7 @@ void FUN_0042ec10(int param_1) {
                 x = y * 0x100 + 0x80;
             calc:
                 *(int *)(bloke + 0x28) = x;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
-                    *(unsigned int *)(bloke + 0x24), x, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -635,8 +632,7 @@ void FUN_0042ed70(int param_1) {
                 y = ((unsigned int)b1 + y) * 0x100 + 0x80;
                 *(int *)(bloke + 0x24) = x;
                 *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
-                    *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -758,8 +754,7 @@ void FUN_0042f0f0(int param_1, int param_2, int param_3, int param_4) {
     *(int *)(param_1 + 0x24) = (DAT_004b66f4[idx] + param_2) * 0x100 + DAT_004b66f4[idx + 2];
     y = (param_3 + y_add) * 0x100 + DAT_004b66f4[idx + 3];
     *(int *)(param_1 + 0x28) = y;
-    cv = CalcMoveLine(*(unsigned int *)(param_1 + 0x68), *(unsigned int *)(param_1 + 0x6c),
-        *(unsigned int *)(param_1 + 0x24), y, param_1 + 0x98);
+    cv = CalcMoveLine(*(struct Point *)(param_1 + 0x68), *(struct Point *)(param_1 + 0x24), (struct Navigator *)(param_1 + 0x98));
     *(unsigned char *)(param_1 + 0x73) = cv + 0x10;
     *(short *)(param_1 + 0xe) = 7;
     *(char *)(param_1 + 0x37) = (char)frame;
@@ -806,7 +801,7 @@ void FUN_0042f1a0(int param_1) {
                 *(unsigned char *)(bloke + 0x37) = 3;
                 *(int *)(bloke + 0x24) = x;
                 *(int *)(bloke + 0x28) = y * 0x100;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), x, y * 0x100, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -890,7 +885,7 @@ void FUN_0042f1a0(int param_1) {
                 *(unsigned char *)(bloke + 0x37) = 3;
                 *(int *)(bloke + 0x24) = x * 0x100;
                 *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), x * 0x100, y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -1214,7 +1209,7 @@ void FUN_0042fbb0(int param_1) {
                 *(int *)(bloke + 0x24) = x * 0x100 + 0x3c8;
                 y = (y + -2) * 0x100;
                 *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -1228,7 +1223,7 @@ void FUN_0042fbb0(int param_1) {
                 *(int *)(bloke + 0x24) = x * 0x100 + 0x3c8;
                 y = (y + -4) * 0x100 + fc * 100;
                 *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -1239,7 +1234,7 @@ void FUN_0042fbb0(int param_1) {
                     x = x * 0x100 + 0x2ce;
                     *(int *)(bloke + 0x28) = y * 0x100 + -0x39c;
                     *(int *)(bloke + 0x24) = x;
-                    cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), x, *(unsigned int *)(bloke + 0x28), bloke + 0x98);
+                    cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                     *(short *)(bloke + 0xe) = 7;
                     *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                     NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -1251,7 +1246,7 @@ void FUN_0042fbb0(int param_1) {
                 *(int *)(bloke + 0x24) = x * 0x100 + 0x16a;
                 y = y * 0x100 + -0x39c;
                 *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -1261,7 +1256,7 @@ void FUN_0042fbb0(int param_1) {
                 *(int *)(bloke + 0x24) = x * 0x100 + 0x16a;
                 y = y * 0x100 + -0x532 + (unsigned int)f10 * 100;
                 *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -1297,7 +1292,7 @@ void FUN_0042fbb0(int param_1) {
                     *(int *)(bloke + 0x24) = x * 0x100 + -0x79c;
                     y = y * 0x100 + -0xc9c;
                     *(int *)(bloke + 0x28) = y;
-                    cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), *(unsigned int *)(bloke + 0x24), *(int *)(bloke + 0x28), bloke + 0x98);
+                    cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                     *(short *)(bloke + 0xe) = 7;
                     *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                     NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -1308,7 +1303,7 @@ void FUN_0042fbb0(int param_1) {
                 *(int *)(bloke + 0x24) = (x + -10) * 0x100;
                 y = y * 0x100 + -0xc9c;
                 *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -1365,7 +1360,7 @@ void FUN_0042fbb0(int param_1) {
                     *(int *)(bloke + 0x24) = (x + -2) * 0x100;
                     y = y * 0x100 + -0x46a;
                     *(int *)(bloke + 0x28) = y;
-                    cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), *(unsigned int *)(bloke + 0x24), *(int *)(bloke + 0x28), bloke + 0x98);
+                    cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                     *(short *)(bloke + 0xe) = 7;
                     *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                     NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -1376,7 +1371,7 @@ void FUN_0042fbb0(int param_1) {
                 *(int *)(bloke + 0x24) = (x + -3) * 0x100;
                 y = y * 0x100 + -0x46a;
                 *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -1832,8 +1827,7 @@ void FUN_00431170(int param_1) {
                 x = y * 0x100 + 0x80;
             calc:
                 *(int *)(bloke + 0x28) = x;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c),
-                    *(unsigned int *)(bloke + 0x24), x, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -2064,7 +2058,7 @@ void FUN_004316f0(int param_1) {
                 *(unsigned int *)(bloke + 0x24) = DAT_004b6990[u * 2] + (unsigned int)pos[0] * 0x100 + -0x80 + DAT_004b6b38[DAT_004b6be8[f36] * 4];
                 y = (unsigned int)*((unsigned char *)node + 0xd) * 0x100 + DAT_004b6990[u * 2 + 1] + 0x80 + t;
                 *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 goto setdir;
             case 7:
@@ -2081,7 +2075,7 @@ void FUN_004316f0(int param_1) {
                 *(unsigned int *)(bloke + 0x24) = DAT_004b6990[u * 2] + (unsigned int)pos[0] * 0x100 + -0x80 + DAT_004b6b38[DAT_004b6be8[f36] * 4 + 2];
                 y = (unsigned int)*((unsigned char *)node + 0xd) * 0x100 + DAT_004b6990[u * 2 + 1] + 0x80 + t;
                 *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(char *)(bloke + 0x73) = cv + 0x10;
                 *(short *)(bloke + 0xe) = 7;
                 *(char *)(bloke + 0x60) += 1;
@@ -2113,7 +2107,7 @@ void FUN_004316f0(int param_1) {
                 *(unsigned int *)(bloke + 0x24) = DAT_004b6990[u * 2] + (unsigned int)pos[0] * 0x100 + -0x80 + DAT_004b6b38[DAT_004b6be8[f36] * 4];
                 y = (unsigned int)*((unsigned char *)node + 0xd) * 0x100 + DAT_004b6990[u * 2 + 1] + 0x80 + t;
                 *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(char *)(bloke + 0x73) = cv + 0x10;
                 *(short *)(bloke + 0xe) = 7;
                 *(char *)(bloke + 0x60) += 1;
@@ -2126,7 +2120,7 @@ void FUN_004316f0(int param_1) {
                 *(unsigned int *)(bloke + 0x24) = DAT_004b6990[t * 2] + -0x80 + (unsigned int)pos[0] * 0x100;
                 y = (unsigned int)*((unsigned char *)node + 0xd) * 0x100 + 0x80 + DAT_004b6990[t * 2 + 1];
                 *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
             setdir:
                 *(short *)(bloke + 0xe) = 7;
@@ -2144,7 +2138,7 @@ void FUN_004316f0(int param_1) {
                 *(unsigned int *)(bloke + 0x24) = DAT_004b6990[t * 2] + -0x80 + (unsigned int)pos[0] * 0x100;
                 y = (unsigned int)*((unsigned char *)node + 0xd) * 0x100 + 0x80 + DAT_004b6990[t * 2 + 1];
                 *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -2154,7 +2148,7 @@ void FUN_004316f0(int param_1) {
                 *(unsigned int *)(bloke + 0x24) = (*(int *)(ride + 0xc) + (unsigned int)pos[0]) * 0x100 + 0x80;
                 y = ((unsigned int)*((unsigned char *)node + 0xd) + *(int *)(ride + 0x10)) * 0x100 + 0x80;
                 *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(unsigned int *)(bloke + 0x68), *(unsigned int *)(bloke + 0x6c), *(unsigned int *)(bloke + 0x24), y, bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);

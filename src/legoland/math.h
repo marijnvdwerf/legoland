@@ -10,6 +10,14 @@ struct Point {
     /* 0x04 */ int y;
 };
 
+/* Fixed-point line walker filled in by CalcMoveLine and stepped by NavigMoveLine. */
+struct Navigator {
+    /* 0x00 */ int x;
+    /* 0x04 */ int y;
+    /* 0x08 */ short dx;
+    /* 0x0a */ short dy;
+};
+
 struct RectNode {
     /* 0x00 */ int field_0;
     /* 0x04 */ int field_4;
@@ -19,11 +27,10 @@ struct RectNode {
 };
 
 LEGO_EXPORT int ArcTan256(int dx, int dy);
-LEGO_EXPORT char CalcMoveLine(int x1, int y1, int x2, int y2, void *out);
+LEGO_EXPORT char CalcMoveLine(struct Point from, struct Point to, struct Navigator *nav);
 void FUN_00480840(struct Point *src, struct Point *dst, int dir);
 void FUN_004808d0(int *src, int *dst, int dir);
 LEGO_EXPORT int GetRectArea(struct RectNode *list);
 LEGO_EXPORT unsigned int Rand_Max(unsigned int max_value);
 LEGO_EXPORT unsigned int Rand_Tween(unsigned int min_val, unsigned int max_val);
-struct Navigator;
 LEGO_EXPORT void NavigMoveLine(struct Navigator *nav, unsigned short a, struct Point *out);

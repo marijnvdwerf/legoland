@@ -1,6 +1,7 @@
 #pragma once
 
 #include "legoland.h"
+#include "math.h"
 
 struct WorkOrder;
 struct EditObject;
@@ -19,8 +20,7 @@ struct Worker {
     /* 0x12 */ unsigned char pad_12[10];
     /* 0x1c */ unsigned int flags_1c;
     /* 0x20 */ unsigned int field_20;
-    /* 0x24 */ int var_24;
-    /* 0x28 */ int var_28;
+    /* 0x24 */ struct Point dest;
     /* 0x2c */ int var_2c;
     /* 0x30 */ int var_30;
     /* 0x34 */ unsigned char pad_34[0x36 - 0x34];
@@ -36,8 +36,7 @@ struct Worker {
     /* 0x62 */ unsigned short flags;
     /* 0x64 */ unsigned char var_64;
     /* 0x65 */ unsigned char pad_65[0x68 - 0x65];
-    /* 0x68 */ int var_68;
-    /* 0x6c */ int var_6c;
+    /* 0x68 */ struct Point pos;
     /* 0x70 */ unsigned short var_70;
     /* 0x72 */ unsigned char var_72;
     /* 0x73 */ unsigned char var_73;
@@ -48,7 +47,8 @@ struct Worker {
     /* 0x80 */ unsigned char pad_80[0x82 - 0x80];
     /* 0x82 */ unsigned char var_82;
     /* 0x83 */ unsigned char pad_83[0x98 - 0x83];
-    /* 0x98 */ int var_98;
+    /* 0x98 */ struct Navigator nav;
+    /* 0xa4 */ unsigned char pad_a4[0xac - 0xa4];
 };
 
 LEGO_EXPORT struct Worker *GenerateGardener(int *coords, int param_2);

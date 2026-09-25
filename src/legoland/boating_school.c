@@ -1008,7 +1008,7 @@ void FUN_0041a720(void) {
                 frame = ((int)*(char *)((char *)DAT_0082c658 + 0x10) + (idhi & 0xff)) * 0x100 + DAT_004b5290[(4 - slot) * 2 + 1];
                 *(int *)(bloke + 0x28) = frame;
                 {
-                    char dir = CalcMoveLine(*(int *)(bloke + 0x68), *(int *)(bloke + 0x6c), *(int *)(bloke + 0x24), frame, bloke + 0x98);
+                    char dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                     *(unsigned char *)(bloke + 0x73) = dir + 0x10;
                     *(short *)(bloke + 0xe) = 7;
                     NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
@@ -1041,7 +1041,7 @@ void FUN_0041a720(void) {
                 frame = ((int)*(char *)((char *)DAT_0082c658 + 0x25) + (idhi & 0xff)) * 0x100 + 0x240;
                 *(int *)(bloke + 0x28) = frame;
                 {
-                    char dir = CalcMoveLine(*(int *)(bloke + 0x68), *(int *)(bloke + 0x6c), *(int *)(bloke + 0x24), frame, bloke + 0x98);
+                    char dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                     *(short *)(bloke + 0xe) = 7;
                     *(unsigned char *)(bloke + 0x73) = dir + 0x10;
                     NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
@@ -1053,7 +1053,7 @@ void FUN_0041a720(void) {
                 frame = ((int)*(char *)((char *)DAT_0082c658 + 0x25) + (idhi & 0xff)) * 0x100 + 0x80;
                 *(int *)(bloke + 0x28) = frame;
                 {
-                    char dir = CalcMoveLine(*(int *)(bloke + 0x68), *(int *)(bloke + 0x6c), *(int *)(bloke + 0x24), frame, bloke + 0x98);
+                    char dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                     *(short *)(bloke + 0xe) = 7;
                     *(unsigned char *)(bloke + 0x73) = dir + 0x10;
                     NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
@@ -1065,7 +1065,7 @@ void FUN_0041a720(void) {
                 frame = ((int)*(char *)((char *)DAT_0082c658 + 0x25) + (idhi & 0xff)) * 0x100 + 0x80;
                 *(int *)(bloke + 0x28) = frame;
                 {
-                    char dir = CalcMoveLine(*(int *)(bloke + 0x68), *(int *)(bloke + 0x6c), *(int *)(bloke + 0x24), frame, bloke + 0x98);
+                    char dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                     *(short *)(bloke + 0xe) = 7;
                     *(unsigned char *)(bloke + 0x73) = dir + 0x10;
                     NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);

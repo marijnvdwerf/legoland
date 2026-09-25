@@ -313,7 +313,7 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
                 iVar18 = iVar18 * 0x100 + -0x9c;
                 *(int *)(blokepos + 0x24) = iVar18;
                 *(int *)(blokepos + 0x28) = iVar16;
-                cVar11 = CalcMoveLine(*(unsigned int *)(blokepos + 0x68), *(unsigned int *)(blokepos + 0x6c), iVar18, iVar16, blokepos + 0x98);
+                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
                 *(short *)(blokepos + 0xe) = 7;
                 *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
                 NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
@@ -325,7 +325,7 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
                 iVar16 = (iVar16 + 7) * 0x100;
                 *(int *)(blokepos + 0x28) = iVar16;
                 iVar18 = *(int *)(blokepos + 0x24);
-                cVar11 = CalcMoveLine(*(unsigned int *)(blokepos + 0x68), *(unsigned int *)(blokepos + 0x6c), iVar18, iVar16, blokepos + 0x98);
+                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
                 *(short *)(blokepos + 0xe) = 7;
                 *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
                 NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
@@ -337,7 +337,7 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
                 iVar16 = iVar16 << 8;
                 *(int *)(blokepos + 0x28) = iVar16;
                 iVar18 = *(int *)(blokepos + 0x24);
-                cVar11 = CalcMoveLine(*(unsigned int *)(blokepos + 0x68), *(unsigned int *)(blokepos + 0x6c), iVar18, iVar16, blokepos + 0x98);
+                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
                 *(short *)(blokepos + 0xe) = 7;
                 *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
                 NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
@@ -348,7 +348,7 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
                 iVar16 = (iVar16 + 1) * 0x100;
                 *(int *)(blokepos + 0x24) = iVar18;
                 *(int *)(blokepos + 0x28) = iVar16;
-                cVar11 = CalcMoveLine(*(unsigned int *)(blokepos + 0x68), *(unsigned int *)(blokepos + 0x6c), iVar18, iVar16, blokepos + 0x98);
+                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
                 *(short *)(blokepos + 0xe) = 7;
                 *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
                 NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
@@ -359,7 +359,7 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
                 iVar16 = (iVar16 + 1) * 0x100;
                 *(int *)(blokepos + 0x24) = iVar18;
                 *(int *)(blokepos + 0x28) = iVar16;
-                cVar11 = CalcMoveLine(*(unsigned int *)(blokepos + 0x68), *(unsigned int *)(blokepos + 0x6c), iVar18, iVar16, blokepos + 0x98);
+                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
                 *(short *)(blokepos + 0xe) = 7;
                 *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
                 NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
@@ -371,7 +371,7 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
                 iVar16 = iVar16 << 8;
                 *(int *)(blokepos + 0x28) = iVar16;
                 iVar18 = *(int *)(blokepos + 0x24);
-                cVar11 = CalcMoveLine(*(unsigned int *)(blokepos + 0x68), *(unsigned int *)(blokepos + 0x6c), iVar18, iVar16, blokepos + 0x98);
+                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
                 *(short *)(blokepos + 0xe) = 7;
                 *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
                 NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
@@ -382,7 +382,7 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
                 iVar18 = iVar18 * 0x100 + -0x632;
                 *(int *)(blokepos + 0x24) = iVar18;
                 *(int *)(blokepos + 0x28) = iVar16;
-                cVar11 = CalcMoveLine(*(unsigned int *)(blokepos + 0x68), *(unsigned int *)(blokepos + 0x6c), iVar18, iVar16, blokepos + 0x98);
+                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
                 *(short *)(blokepos + 0xe) = 7;
                 *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
                 NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
@@ -396,7 +396,7 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
                     iVar18 = iVar18 * 0x100 + -0x564;
                     *(int *)(blokepos + 0x24) = iVar18;
                     *(int *)(blokepos + 0x28) = iVar16;
-                    cVar11 = CalcMoveLine(*(unsigned int *)(blokepos + 0x68), *(unsigned int *)(blokepos + 0x6c), iVar18, iVar16, blokepos + 0x98);
+                    cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
                     *(short *)(blokepos + 0xe) = 7;
                     *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
                     NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
@@ -415,7 +415,7 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
                 iVar16 = iVar16 * 0x100 + 0x26a;
                 *(int *)(blokepos + 0x28) = iVar16;
                 iVar18 = *(int *)(blokepos + 0x24);
-                cVar11 = CalcMoveLine(*(unsigned int *)(blokepos + 0x68), *(unsigned int *)(blokepos + 0x6c), iVar18, iVar16, blokepos + 0x98);
+                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
                 *(short *)(blokepos + 0xe) = 7;
                 *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
                 NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
@@ -459,7 +459,7 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
                         iVar18 = iVar18 * 0x100 + -0x564;
                         *(int *)(blokepos + 0x24) = iVar18;
                         *(int *)(blokepos + 0x28) = iVar16;
-                        cVar10 = CalcMoveLine(*(unsigned int *)(blokepos + 0x68), *(unsigned int *)(blokepos + 0x6c), iVar18, iVar16, blokepos + 0x98);
+                        cVar10 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
                         *(unsigned char *)(blokepos + 0x73) = cVar10 + '\x10';
                         *(short *)(blokepos + 0xe) = 7;
                         *(unsigned int *)(*(int *)(blokepos + 4) + 0x2c) = 0;
@@ -477,7 +477,7 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
                 iVar16 = iVar16 << 8;
                 *(int *)(blokepos + 0x28) = iVar16;
                 iVar18 = *(int *)(blokepos + 0x24);
-                cVar11 = CalcMoveLine(*(unsigned int *)(blokepos + 0x68), *(unsigned int *)(blokepos + 0x6c), iVar18, iVar16, blokepos + 0x98);
+                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
                 *(short *)(blokepos + 0xe) = 7;
                 *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
                 NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
@@ -488,7 +488,7 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
                 iVar18 = (iVar18 + -5) * 0x100;
                 *(int *)(blokepos + 0x24) = iVar18;
                 *(int *)(blokepos + 0x28) = iVar16;
-                cVar11 = CalcMoveLine(*(unsigned int *)(blokepos + 0x68), *(unsigned int *)(blokepos + 0x6c), iVar18, iVar16, blokepos + 0x98);
+                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
                 *(short *)(blokepos + 0xe) = 7;
                 *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
                 NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);

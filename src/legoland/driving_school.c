@@ -543,7 +543,7 @@ void FUN_00405bd0(struct DSRenderRoot *param_1) {
                 *(unsigned int *)(bloke + 0x24) = (sub->field_c + (unsigned int)((unsigned char *)node)[0xc]) * 0x100;
                 frame = (((unsigned char *)node)[0xd] - 3 + sub->field_10) * 0x100;
                 *(int *)(bloke + 0x28) = frame;
-                dir = CalcMoveLine(*(int *)(bloke + 0x68), *(int *)(bloke + 0x6c), *(int *)(bloke + 0x24), frame, bloke + 0x98);
+                dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = dir + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
@@ -592,7 +592,7 @@ void FUN_00405bd0(struct DSRenderRoot *param_1) {
                 *(unsigned int *)(bloke + 0x24) = ((unsigned int)((unsigned char *)node)[0xc] + sub->field_c) * 0x100 + 0x80;
                 frame = ((unsigned int)((unsigned char *)node)[0xd] + sub->field_10) * 0x100 + 0x80;
                 *(int *)(bloke + 0x28) = frame;
-                dir = CalcMoveLine(*(int *)(bloke + 0x68), *(int *)(bloke + 0x6c), *(int *)(bloke + 0x24), frame, bloke + 0x98);
+                dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
                 *(short *)(bloke + 0xe) = 7;
                 *(unsigned char *)(bloke + 0x73) = dir + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);

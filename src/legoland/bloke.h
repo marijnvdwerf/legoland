@@ -1,6 +1,7 @@
 #pragma once
 
 #include "legoland.h"
+#include "math.h"
 
 /* Canonical "bloke" record (one 0xac allocation).  Shared by the AI code
    (bloke_ai.c) and the visitor allocator (bloke.c), which previously each
@@ -25,8 +26,7 @@ struct Bloke {
     unsigned int field_18;
     unsigned int field_1c;
     unsigned char pad_20[0x24 - 0x20];
-    int field_24;
-    int field_28;
+    struct Point dest;
     int field_2c;
     int field_30;
     unsigned char pad_34[0x35 - 0x34];
@@ -49,8 +49,7 @@ struct Bloke {
     unsigned short flags;
     unsigned char field_64;
     unsigned char pad_65[0x68 - 0x65];
-    int field_68;
-    int field_6c;
+    struct Point pos;
     unsigned char pad_70[0x72 - 0x70];
     unsigned char field_72;
     unsigned char field_73;
@@ -70,7 +69,8 @@ struct Bloke {
     unsigned int favourite_attraction_1;
     unsigned int favourite_attraction_2;
     unsigned int favourite_food;
-    unsigned char field_98[0xac - 0x98];
+    struct Navigator nav;
+    unsigned char pad_a4[0xac - 0xa4];
 };
 
 struct InstancePos;

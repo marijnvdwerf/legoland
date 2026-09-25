@@ -162,9 +162,9 @@ void FUN_0043a820(struct AnimEntry *param_1, struct SpaceTowerRideNode *param_2)
     bloke = param_2->bloke;
     base = FUN_0043a7a0((int *)DAT_004b7758[bloke->field_50].field_4, bloke->field_4a, bloke->field_38);
     ride = (struct SpaceTowerRide *)DAT_0062fd74;
-    bloke->field_24 = (int)base + (param_2->coord.x + ride->field_c) * 0x100;
-    bloke->field_28 = (int)(base >> 0x20) + (param_2->coord.y + ride->field_10) * 0x100;
-    dir = CalcMoveLine(bloke->field_68, bloke->field_6c, bloke->field_24, bloke->field_28, bloke->field_98);
+    bloke->dest.x = (int)base + (param_2->coord.x + ride->field_c) * 0x100;
+    bloke->dest.y = (int)(base >> 0x20) + (param_2->coord.y + ride->field_10) * 0x100;
+    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
     bloke->field_e = 7;
     bloke->field_73 = dir + 0x10;
     NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
@@ -961,9 +961,9 @@ void FUN_0043bac0(struct SpaceTowerCtx *param_1) {
                 bloke->flags = bloke->flags | 8;
                 ride_x = (ride_x + x) * 0x100;
                 target_y = (ride_y + (unsigned int)y + 1) * 0x100;
-                bloke->field_28 = target_y;
-                bloke->field_24 = ride_x;
-                dir = CalcMoveLine(bloke->field_68, bloke->field_6c, ride_x, target_y, bloke->field_98);
+                bloke->dest.y = target_y;
+                bloke->dest.x = ride_x;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
                 NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
@@ -980,10 +980,10 @@ void FUN_0043bac0(struct SpaceTowerCtx *param_1) {
                 break;
             case 3:
                 seat = bloke->field_36;
-                bloke->field_24 = (DAT_004b77e8[seat].x + x) * 0x100;
+                bloke->dest.x = (DAT_004b77e8[seat].x + x) * 0x100;
                 target_y = (DAT_004b77e8[seat].y + (unsigned int)node->coord.y) * 0x100;
-                bloke->field_28 = target_y;
-                dir = CalcMoveLine(bloke->field_68, bloke->field_6c, bloke->field_24, target_y, bloke->field_98);
+                bloke->dest.y = target_y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + '\x10';
                 dir = (char)DAT_004b7798[seat >> 1].field_10;
@@ -1011,10 +1011,10 @@ void FUN_0043bac0(struct SpaceTowerCtx *param_1) {
                 bloke->param_action = bloke->param_action + '\x01';
                 break;
             case 8:
-                bloke->field_24 = ((int)ride->field_24 + x) * 0x100 + 0x80;
+                bloke->dest.x = ((int)ride->field_24 + x) * 0x100 + 0x80;
                 target_y = ((int)ride->field_25 + (unsigned int)y) * 0x100 + 0x80;
-                bloke->field_28 = target_y;
-                dir = CalcMoveLine(bloke->field_68, bloke->field_6c, bloke->field_24, target_y, bloke->field_98);
+                bloke->dest.y = target_y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
                 dir = ((unsigned char)(dir + 0x10) >> 5) + 3;

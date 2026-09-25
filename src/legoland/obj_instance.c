@@ -317,8 +317,8 @@ LEGO_EXPORT void RemoveAllBlokesFromRide(struct Ride *ride, unsigned int param_2
         if ((short)node->uid == *(short *)&param_2) {
             bloke = (struct Bloke *)node->rider;
             *(int *)(*(int *)((char *)bloke + 4) + 0x2c) = 0;
-            bloke->field_68 = tx * 0x100;
-            bloke->field_6c = ty * 0x100;
+            bloke->pos.x = tx * 0x100;
+            bloke->pos.y = ty * 0x100;
             *(short *)((char *)bloke + 0x70) = 0;
             RemoveBlokeFromRide(ride, node);
             BlokeWalkAnim(bloke);

@@ -162,8 +162,7 @@ void FUN_0042cf70(struct EarthNode *param_1) {
                 bloke = q->elem->bloke;
                 *(unsigned int *)((char *)bloke + 0x24) = (tbl[-1] + x + bx) * 0x100;
                 *(int *)((char *)bloke + 0x28) = (tbl[0] + by + y) * 0x100;
-                cv = CalcMoveLine(*(int *)((char *)bloke + 0x68), *(int *)((char *)bloke + 0x6c),
-                    *(int *)((char *)bloke + 0x24), *(int *)((char *)bloke + 0x28), (char *)bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)((char *)bloke + 0x68), *(struct Point *)((char *)bloke + 0x24), (struct Navigator *)((char *)bloke + 0x98));
                 *(unsigned short *)((char *)bloke + 0xe) = 7;
                 *(unsigned char *)((char *)bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -484,8 +483,7 @@ void FUN_0042d610(struct EarthRideObj *param_1) {
                 FUN_0042ce50(node, elem);
                 *(int *)((char *)bloke + 0x24) = local_8;
                 *(int *)((char *)bloke + 0x28) = local_4;
-                cv = CalcMoveLine(*(int *)((char *)bloke + 0x68), *(int *)((char *)bloke + 0x6c),
-                    *(int *)((char *)bloke + 0x24), local_4, (char *)bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)((char *)bloke + 0x68), *(struct Point *)((char *)bloke + 0x24), (struct Navigator *)((char *)bloke + 0x98));
                 *(short *)((char *)bloke + 0xe) = 7;
                 *(unsigned char *)((char *)bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -503,7 +501,7 @@ void FUN_0042d610(struct EarthRideObj *param_1) {
                     byy = byy * 0x100 + 0x380;
                     *(int *)((char *)bloke + 0x24) = bx;
                     *(int *)((char *)bloke + 0x28) = byy;
-                    cv = CalcMoveLine(*(int *)((char *)bloke + 0x68), *(int *)((char *)bloke + 0x6c), bx, byy, (char *)bloke + 0x98);
+                    cv = CalcMoveLine(*(struct Point *)((char *)bloke + 0x68), *(struct Point *)((char *)bloke + 0x24), (struct Navigator *)((char *)bloke + 0x98));
                     *(short *)((char *)bloke + 0xe) = 7;
                     *(unsigned char *)((char *)bloke + 0x73) = cv + 0x10;
                     NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -515,7 +513,7 @@ void FUN_0042d610(struct EarthRideObj *param_1) {
                 byy = (byy + 3) * 0x100;
                 *(int *)((char *)bloke + 0x24) = bx;
                 *(int *)((char *)bloke + 0x28) = byy;
-                cv = CalcMoveLine(*(int *)((char *)bloke + 0x68), *(int *)((char *)bloke + 0x6c), bx, byy, (char *)bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)((char *)bloke + 0x68), *(struct Point *)((char *)bloke + 0x24), (struct Navigator *)((char *)bloke + 0x98));
                 *(short *)((char *)bloke + 0xe) = 7;
                 *(unsigned char *)((char *)bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
@@ -526,7 +524,7 @@ void FUN_0042d610(struct EarthRideObj *param_1) {
                 byy = (byy + 3) * 0x100;
                 *(int *)((char *)bloke + 0x24) = bx;
                 *(int *)((char *)bloke + 0x28) = byy;
-                cv = CalcMoveLine(*(int *)((char *)bloke + 0x68), *(int *)((char *)bloke + 0x6c), bx, byy, (char *)bloke + 0x98);
+                cv = CalcMoveLine(*(struct Point *)((char *)bloke + 0x68), *(struct Point *)((char *)bloke + 0x24), (struct Navigator *)((char *)bloke + 0x98));
                 *(short *)((char *)bloke + 0xe) = 7;
                 *(unsigned char *)((char *)bloke + 0x73) = cv + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);

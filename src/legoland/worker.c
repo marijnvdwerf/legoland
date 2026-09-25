@@ -831,8 +831,8 @@ LEGO_EXPORT struct Worker *GenerateGardener(int *coords, int param_2) {
         // STRING: LEGOLAND 0x004c0080
         DBPrintf("   Gardener Generated at (%d,%d)\n", coords[0], coords[1]);
         action = 0x10;
-        worker->var_68 = coords[0] << 8;
-        worker->var_6c = coords[1] << 8;
+        worker->pos.x = coords[0] << 8;
+        worker->pos.y = coords[1] << 8;
     } else {
         x = coords[0];
         if (-1 < x && x < (int)lpConfig->width && (y = coords[1], -1 < y) &&
@@ -844,11 +844,11 @@ LEGO_EXPORT struct Worker *GenerateGardener(int *coords, int param_2) {
         PutWorkerOnRide(worker, cell);
         x = coords[0];
         coords[0] = x - 2;
-        worker->var_68 = (x - 2) * 0x100;
-        worker->var_24 = (x - 2) * 0x100;
+        worker->pos.x = (x - 2) * 0x100;
+        worker->dest.x = (x - 2) * 0x100;
         coords[1]++;
-        worker->var_6c = coords[1] << 8;
-        worker->var_28 = coords[1] << 8;
+        worker->pos.y = coords[1] << 8;
+        worker->dest.y = coords[1] << 8;
         action = 5;
     }
     NewLongTermAction((struct Bloke *)worker, action);
@@ -916,16 +916,16 @@ LEGO_EXPORT struct Worker *GenerateMechanic(int *coords, int param_2) {
         }
         PutWorkerOnRide(worker, cell);
         x = coords[0] * 0x100 - 0x80;
-        worker->var_68 = x;
-        worker->var_24 = x;
+        worker->pos.x = x;
+        worker->dest.x = x;
         y = coords[1];
-        worker->var_6c = y << 8;
-        worker->var_28 = y << 8;
+        worker->pos.y = y << 8;
+        worker->dest.y = y << 8;
         NewLongTermAction((struct Bloke *)worker, 5);
         return worker;
     }
-    worker->var_68 = coords[0] << 8;
-    worker->var_6c = coords[1] << 8;
+    worker->pos.x = coords[0] << 8;
+    worker->pos.y = coords[1] << 8;
     NewLongTermAction((struct Bloke *)worker, 0x11);
     return worker;
 }
@@ -995,22 +995,21 @@ LEGO_EXPORT void Gardener_Build(struct Worker *worker) {
 
     switch (worker->var_60) {
     case 0:
-        worker->var_24 = worker->var_2c;
-        worker->var_28 = worker->var_30;
-        dir = CalcMoveLine(worker->var_68, worker->var_6c, worker->var_2c, worker->var_30,
-            &worker->var_98);
+        worker->dest.x = worker->var_2c;
+        worker->dest.y = worker->var_30;
+        dir = CalcMoveLine(worker->pos, worker->dest, &worker->nav);
         worker->state = 0xc;
         worker->var_73 = dir + 0x10;
         NewDirForAction(worker, (worker->var_73 >> 5) + 3);
         worker->var_60 = 0xb;
         return;
     case 0xb:
-        dy = worker->var_28 - worker->var_6c;
-        dx = worker->var_24 - worker->var_68;
+        dy = worker->dest.y - worker->pos.y;
+        dx = worker->dest.x - worker->pos.x;
         worker->var_60 = (unsigned char)(((0x8fff < dy * dy + dx * dx) - 1U & 7) + 100);
         return;
     case 100:
-        result = FUN_00482710(&worker->var_68, &worker->var_2c, dest);
+        result = FUN_00482710(&worker->pos.x, &worker->var_2c, dest);
         if (result == 0) {
             FUN_00499e60(worker->var_50);
             worker->flags_c = 0x10;
@@ -1020,9 +1019,9 @@ LEGO_EXPORT void Gardener_Build(struct Worker *worker) {
             return;
         }
         if (result == 1) {
-            worker->var_24 = dest[0];
-            worker->var_28 = dest[1];
-            dir = CalcMoveLine(worker->var_68, worker->var_6c, dest[0], dest[1], &worker->var_98);
+            worker->dest.x = dest[0];
+            worker->dest.y = dest[1];
+            dir = CalcMoveLine(worker->pos, worker->dest, &worker->nav);
             worker->state = 0xc;
             worker->var_73 = dir + 0x10;
             NewDirForAction(worker, (worker->var_73 >> 5) + 3);
@@ -1031,9 +1030,9 @@ LEGO_EXPORT void Gardener_Build(struct Worker *worker) {
                 return;
             }
         } else if (result == 2) {
-            worker->var_24 = dest[0];
-            worker->var_28 = dest[1];
-            dir = CalcMoveLine(worker->var_68, worker->var_6c, dest[0], dest[1], &worker->var_98);
+            worker->dest.x = dest[0];
+            worker->dest.y = dest[1];
+            dir = CalcMoveLine(worker->pos, worker->dest, &worker->nav);
             worker->state = 0xc;
             worker->var_73 = dir + 0x10;
             NewDirForAction(worker, (worker->var_73 >> 5) + 3);
@@ -1095,22 +1094,21 @@ LEGO_EXPORT void Mechanic_Build(struct Worker *worker) {
 
     switch (worker->var_60) {
     case 0:
-        worker->var_24 = worker->var_2c;
-        worker->var_28 = worker->var_30;
-        dir = CalcMoveLine(worker->var_68, worker->var_6c, worker->var_2c, worker->var_30,
-            &worker->var_98);
+        worker->dest.x = worker->var_2c;
+        worker->dest.y = worker->var_30;
+        dir = CalcMoveLine(worker->pos, worker->dest, &worker->nav);
         worker->state = 0xc;
         worker->var_73 = dir + 0x10;
         NewDirForAction(worker, (worker->var_73 >> 5) + 3);
         worker->var_60 = 0xb;
         return;
     case 0xb:
-        dy = worker->var_28 - worker->var_6c;
-        dx = worker->var_24 - worker->var_68;
+        dy = worker->dest.y - worker->pos.y;
+        dx = worker->dest.x - worker->pos.x;
         worker->var_60 = (unsigned char)(((0xffff < dy * dy + dx * dx) - 1U & 6) + 0x65);
         return;
     case 0x65:
-        result = FUN_00482710(&worker->var_68, &worker->var_2c, dest);
+        result = FUN_00482710(&worker->pos.x, &worker->var_2c, dest);
         if (result == 0) {
             FUN_00499f40(worker->var_50);
             worker->flags_c = 0x11;
@@ -1120,9 +1118,9 @@ LEGO_EXPORT void Mechanic_Build(struct Worker *worker) {
             return;
         }
         if (result == 1) {
-            worker->var_24 = dest[0];
-            worker->var_28 = dest[1];
-            dir = CalcMoveLine(worker->var_68, worker->var_6c, dest[0], dest[1], &worker->var_98);
+            worker->dest.x = dest[0];
+            worker->dest.y = dest[1];
+            dir = CalcMoveLine(worker->pos, worker->dest, &worker->nav);
             worker->state = 0xc;
             worker->var_73 = dir + 0x10;
             NewDirForAction(worker, (worker->var_73 >> 5) + 3);
@@ -1131,9 +1129,9 @@ LEGO_EXPORT void Mechanic_Build(struct Worker *worker) {
                 return;
             }
         } else if (result == 2) {
-            worker->var_24 = dest[0];
-            worker->var_28 = dest[1];
-            dir = CalcMoveLine(worker->var_68, worker->var_6c, dest[0], dest[1], &worker->var_98);
+            worker->dest.x = dest[0];
+            worker->dest.y = dest[1];
+            dir = CalcMoveLine(worker->pos, worker->dest, &worker->nav);
             worker->state = 0xc;
             worker->var_73 = dir + 0x10;
             NewDirForAction(worker, (worker->var_73 >> 5) + 3);
@@ -1833,7 +1831,7 @@ LEGO_EXPORT void Garderner_Repair(struct Worker *worker) {
 
     switch (worker->var_60) {
     case 0:
-        result = FUN_00482710(&worker->var_68, &worker->var_2c, dest);
+        result = FUN_00482710(&worker->pos.x, &worker->var_2c, dest);
         if (result == 0) {
             FUN_00499720(worker->var_50);
             FUN_00499e60(worker->var_50);
@@ -1844,9 +1842,9 @@ LEGO_EXPORT void Garderner_Repair(struct Worker *worker) {
             return;
         }
         if (result == 1) {
-            worker->var_24 = dest[0];
-            worker->var_28 = dest[1];
-            dir = CalcMoveLine(worker->var_68, worker->var_6c, dest[0], dest[1], &worker->var_98);
+            worker->dest.x = dest[0];
+            worker->dest.y = dest[1];
+            dir = CalcMoveLine(worker->pos, worker->dest, &worker->nav);
             worker->state = 0xc;
             worker->var_73 = dir + 0x10;
             NewDirForAction(worker, (worker->var_73 >> 5) + 3);
@@ -1855,9 +1853,9 @@ LEGO_EXPORT void Garderner_Repair(struct Worker *worker) {
                 return;
             }
         } else if (result == 2) {
-            worker->var_24 = dest[0];
-            worker->var_28 = dest[1];
-            dir = CalcMoveLine(worker->var_68, worker->var_6c, dest[0], dest[1], &worker->var_98);
+            worker->dest.x = dest[0];
+            worker->dest.y = dest[1];
+            dir = CalcMoveLine(worker->pos, worker->dest, &worker->nav);
             worker->state = 0xc;
             worker->var_73 = dir + 0x10;
             NewDirForAction(worker, (worker->var_73 >> 5) + 3);
@@ -1946,22 +1944,21 @@ LEGO_EXPORT void Mechanics_Repair(struct Worker *worker) {
 
     switch ((char)worker->var_60) {
     case 0:
-        worker->var_24 = worker->var_2c;
-        worker->var_28 = worker->var_30;
-        dir = CalcMoveLine(worker->var_68, worker->var_6c, worker->var_2c, worker->var_30,
-            &worker->var_98);
+        worker->dest.x = worker->var_2c;
+        worker->dest.y = worker->var_30;
+        dir = CalcMoveLine(worker->pos, worker->dest, &worker->nav);
         worker->state = 0xc;
         worker->var_73 = dir + 0x10;
         NewDirForAction(worker, (worker->var_73 >> 5) + 3);
         worker->var_60 = 0xb;
         return;
     case 0xb:
-        dx = worker->var_28 - worker->var_6c;
-        dy = worker->var_24 - worker->var_68;
+        dx = worker->dest.y - worker->pos.y;
+        dy = worker->dest.x - worker->pos.x;
         worker->var_60 = (unsigned char)(((0xffff < dx * dx + dy * dy) - 1U & 7) + 100);
         return;
     case 0x64:
-        result = FUN_00482710(&worker->var_68, &worker->var_2c, dest);
+        result = FUN_00482710(&worker->pos.x, &worker->var_2c, dest);
         if (result == 0) {
             FUN_00499720(worker->var_50);
             FUN_00499f40(worker->var_50);
@@ -1972,9 +1969,9 @@ LEGO_EXPORT void Mechanics_Repair(struct Worker *worker) {
             return;
         }
         if (result == 1) {
-            worker->var_24 = dest[0];
-            worker->var_28 = dest[1];
-            dir = CalcMoveLine(worker->var_68, worker->var_6c, dest[0], dest[1], &worker->var_98);
+            worker->dest.x = dest[0];
+            worker->dest.y = dest[1];
+            dir = CalcMoveLine(worker->pos, worker->dest, &worker->nav);
             worker->state = 0xc;
             worker->var_73 = dir + 0x10;
             NewDirForAction(worker, (worker->var_73 >> 5) + 3);
@@ -1983,9 +1980,9 @@ LEGO_EXPORT void Mechanics_Repair(struct Worker *worker) {
                 return;
             }
         } else if (result == 2) {
-            worker->var_24 = dest[0];
-            worker->var_28 = dest[1];
-            dir = CalcMoveLine(worker->var_68, worker->var_6c, dest[0], dest[1], &worker->var_98);
+            worker->dest.x = dest[0];
+            worker->dest.y = dest[1];
+            dir = CalcMoveLine(worker->pos, worker->dest, &worker->nav);
             worker->state = 0xc;
             worker->var_73 = dir + 0x10;
             NewDirForAction(worker, (worker->var_73 >> 5) + 3);
@@ -2078,8 +2075,8 @@ void FUN_0049c140(void) {
                         rec.field_4 = node->field_10;
                         rec.field_10 = node->flags_1c;
                         rec.field_14 = node->field_20;
-                        rec.field_18 = node->var_24;
-                        rec.field_1c = node->var_28;
+                        rec.field_18 = node->dest.x;
+                        rec.field_1c = node->dest.y;
                         rec.field_20 = node->var_2c;
                         rec.field_24 = node->var_30;
                         memcpy(rec.field_28, (char *)node + 0x34, 40);
@@ -2089,14 +2086,14 @@ void FUN_0049c140(void) {
                         rec.field_58 = node->var_64;
                         rec.field_59 = node->var_7f;
                         rec.field_5a = node->var_82;
-                        rec.field_5c = node->var_68;
-                        rec.field_60 = node->var_6c;
+                        rec.field_5c = node->pos.x;
+                        rec.field_60 = node->pos.y;
                         rec.field_64 = node->var_70;
                         rec.field_66 = node->var_72;
                         rec.field_67 = node->var_73;
                         rec.field_68 = node->var_74;
                         rec.field_69 = node->var_75;
-                        memcpy(rec.field_6c, &node->var_98, 20);
+                        memcpy(rec.field_6c, &node->nav, 20);
                         person = (char *)node->field_4;
                         rec.field_80 = *(unsigned int *)(person + 8);
                         rec.field_84 = *(unsigned int *)(person + 0x10);
@@ -2131,8 +2128,8 @@ void FUN_0049c140(void) {
         }
         cur->flags &= 0xffd7;
         if (cur->var_60 < 100) {
-            cur->var_68 = cur->var_24;
-            cur->var_6c = cur->var_28;
+            cur->pos.x = cur->dest.x;
+            cur->pos.y = cur->dest.y;
             NewLongTermAction((struct Bloke *)cur, 0x10);
         } else {
             RemoveAGardener(cur);
@@ -2175,8 +2172,8 @@ void FUN_0049c3c0(void) {
         node->field_10 = rec.field_4;
         node->flags_1c = rec.field_10;
         node->field_20 = rec.field_14;
-        node->var_24 = rec.field_18;
-        node->var_28 = rec.field_1c;
+        node->dest.x = rec.field_18;
+        node->dest.y = rec.field_1c;
         node->var_2c = rec.field_20;
         node->var_30 = rec.field_24;
         memcpy((char *)node + 0x34, rec.field_28, 40);
@@ -2186,14 +2183,14 @@ void FUN_0049c3c0(void) {
         node->var_64 = rec.field_58;
         node->var_7f = rec.field_59;
         node->var_82 = rec.field_5a;
-        node->var_68 = rec.field_5c;
-        node->var_6c = rec.field_60;
+        node->pos.x = rec.field_5c;
+        node->pos.y = rec.field_60;
         node->var_70 = rec.field_64;
         node->var_72 = rec.field_66;
         node->var_73 = rec.field_67;
         node->var_74 = rec.field_68;
         node->var_75 = rec.field_69;
-        memcpy(&node->var_98, rec.field_6c, 20);
+        memcpy(&node->nav, rec.field_6c, 20);
         person = malloc(0x94);
         node->field_4 = (struct Person *)person;
         FUN_0043f810((struct Person *)person);
@@ -2251,8 +2248,8 @@ void FUN_0049c630(void) {
                         rec.field_4 = node->field_10;
                         rec.field_10 = node->flags_1c;
                         rec.field_14 = node->field_20;
-                        rec.field_18 = node->var_24;
-                        rec.field_1c = node->var_28;
+                        rec.field_18 = node->dest.x;
+                        rec.field_1c = node->dest.y;
                         rec.field_20 = node->var_2c;
                         rec.field_24 = node->var_30;
                         memcpy(rec.field_28, (char *)node + 0x34, 40);
@@ -2262,14 +2259,14 @@ void FUN_0049c630(void) {
                         rec.field_58 = node->var_64;
                         rec.field_59 = node->var_7f;
                         rec.field_5a = node->var_82;
-                        rec.field_5c = node->var_68;
-                        rec.field_60 = node->var_6c;
+                        rec.field_5c = node->pos.x;
+                        rec.field_60 = node->pos.y;
                         rec.field_64 = node->var_70;
                         rec.field_66 = node->var_72;
                         rec.field_67 = node->var_73;
                         rec.field_68 = node->var_74;
                         rec.field_69 = node->var_75;
-                        memcpy(rec.field_6c, &node->var_98, 20);
+                        memcpy(rec.field_6c, &node->nav, 20);
                         person = (char *)node->field_4;
                         rec.field_80 = *(unsigned int *)(person + 8);
                         rec.field_84 = *(unsigned int *)(person + 0x10);
@@ -2304,8 +2301,8 @@ void FUN_0049c630(void) {
         }
         cur->flags &= 0xffd7;
         if (cur->var_60 < 100) {
-            cur->var_68 = cur->var_24;
-            cur->var_6c = cur->var_28;
+            cur->pos.x = cur->dest.x;
+            cur->pos.y = cur->dest.y;
             NewLongTermAction((struct Bloke *)cur, 0x11);
         } else {
             RemoveAMechanic(cur);
@@ -2348,8 +2345,8 @@ void FUN_0049c8b0(void) {
         node->field_10 = rec.field_4;
         node->flags_1c = rec.field_10;
         node->field_20 = rec.field_14;
-        node->var_24 = rec.field_18;
-        node->var_28 = rec.field_1c;
+        node->dest.x = rec.field_18;
+        node->dest.y = rec.field_1c;
         node->var_2c = rec.field_20;
         node->var_30 = rec.field_24;
         memcpy((char *)node + 0x34, rec.field_28, 40);
@@ -2359,14 +2356,14 @@ void FUN_0049c8b0(void) {
         node->var_64 = rec.field_58;
         node->var_7f = rec.field_59;
         node->var_82 = rec.field_5a;
-        node->var_68 = rec.field_5c;
-        node->var_6c = rec.field_60;
+        node->pos.x = rec.field_5c;
+        node->pos.y = rec.field_60;
         node->var_70 = rec.field_64;
         node->var_72 = rec.field_66;
         node->var_73 = rec.field_67;
         node->var_74 = rec.field_68;
         node->var_75 = rec.field_69;
-        memcpy(&node->var_98, rec.field_6c, 20);
+        memcpy(&node->nav, rec.field_6c, 20);
         person = malloc(0x94);
         node->field_4 = (struct Person *)person;
         FUN_0043f810((struct Person *)person);
@@ -2598,16 +2595,16 @@ void FUN_0049cf00(struct MapRect *rect) {
 
     cfg = lpConfig;
     for (node = MechanicList; node != 0; node = node->next) {
-        if (node->var_68 >= 0 && (x = node->var_68 >> 8, x < (int)cfg->width) &&
-            node->var_6c >= 0 && (y = node->var_6c >> 8, y < (int)cfg->height)) {
+        if (node->pos.x >= 0 && (x = node->pos.x >> 8, x < (int)cfg->width) &&
+            node->pos.y >= 0 && (y = node->pos.y >> 8, y < (int)cfg->height)) {
             tile = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
             *((unsigned char *)tile + 0xd) |= 0x10;
             cfg = lpConfig;
         }
     }
     for (node = GardenerList; node != 0; node = node->next) {
-        if (node->var_68 >= 0 && (x = node->var_68 >> 8, x < (int)cfg->width) &&
-            node->var_6c >= 0 && (y = node->var_6c >> 8, y < (int)cfg->height)) {
+        if (node->pos.x >= 0 && (x = node->pos.x >> 8, x < (int)cfg->width) &&
+            node->pos.y >= 0 && (y = node->pos.y >> 8, y < (int)cfg->height)) {
             tile = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
             *((unsigned char *)tile + 0xd) |= 0x10;
             cfg = lpConfig;

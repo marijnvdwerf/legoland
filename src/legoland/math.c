@@ -3,13 +3,6 @@
 #include "globals.h"
 #include "legoland.h"
 
-struct Navigator {
-    int x;
-    int y;
-    short dx;
-    short dy;
-};
-
 // FUNCTION: LEGOLAND 0x004806a0
 LEGO_EXPORT unsigned int Rand_Max(unsigned int max_value) {
     return (unsigned int)rand() % (max_value + 1);
@@ -35,16 +28,15 @@ LEGO_EXPORT int ArcTan256(int dx, int dy) {
 }
 
 // FUNCTION: LEGOLAND 0x00480740
-LEGO_EXPORT char CalcMoveLine(int x1, int y1, int x2, int y2, void *out) {
-    struct Navigator *nav = (struct Navigator *)out;
-    int dy = y2 - y1;
+LEGO_EXPORT char CalcMoveLine(struct Point from, struct Point to, struct Navigator *nav) {
+    int dy = to.y - from.y;
 
-    x2 -= x1;
-    nav->dx = (short)(int)floor(cos(atan2(dy, x2)) * DOUBLE_004ab538 + DOUBLE_004ab398);
-    nav->dy = (short)(int)floor(sin(atan2(dy, x2)) * DOUBLE_004ab538 + DOUBLE_004ab398);
-    nav->x = (x1 << 8) + 0x80;
-    nav->y = (y1 << 8) + 0x80;
-    return (char)(int)(atan2(dy, x2) * DOUBLE_004ab530);
+    to.x -= from.x;
+    nav->dx = (short)(int)floor(cos(atan2(dy, to.x)) * DOUBLE_004ab538 + DOUBLE_004ab398);
+    nav->dy = (short)(int)floor(sin(atan2(dy, to.x)) * DOUBLE_004ab538 + DOUBLE_004ab398);
+    nav->x = (from.x << 8) + 0x80;
+    nav->y = (from.y << 8) + 0x80;
+    return (char)(int)(atan2(dy, to.x) * DOUBLE_004ab530);
 }
 
 // FUNCTION: LEGOLAND 0x004807f0
