@@ -64,7 +64,7 @@ struct JunglePath {
 
 void FUN_00432ac0(void);
 void FUN_00432d00(int param_1);
-int FUN_00432b90(unsigned int param_1, void *param_2, void *param_3, void *param_4);
+int FUN_00432b90(TileId tile, unsigned int bloke0, unsigned int bloke1, unsigned int bloke2);
 void FUN_00432cb0(struct JungleRide *param_1);
 unsigned int FUN_004332c0(unsigned short *param_1);
 void FUN_004332f0(void);

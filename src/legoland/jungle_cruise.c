@@ -38,20 +38,18 @@ void FUN_00432ac0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00432b90
-int FUN_00432b90(unsigned int param_1, void *param_2, void *param_3, void *param_4) {
-    short id = (short)param_1;
+int FUN_00432b90(TileId tile, unsigned int bloke0, unsigned int bloke1, unsigned int bloke2) {
     struct JungleScore *score;
-    struct JungleRide *node;
+    struct JungleRide *node = DAT_00616164;
     struct JungleRide *fresh;
-    short *fill;
-    int i;
-    unsigned int r;
 
-    for (score = DAT_00629c3c; node = DAT_00616164, score != NULL && score->field_0 != (unsigned short)id;
-        score = score->next) {
+    for (score = DAT_00629c3c; score != NULL; score = score->next) {
+        if (score->field_0 == tile.id) {
+            break;
+        }
     }
-    while (node != NULL) {
-        if (node->field_0 == (unsigned short)id) {
+    for (; node != NULL; node = node->next) {
+        if (node->field_0 == tile.id) {
             if (node->field_4 == score->start.pos.x && node->field_8 == score->start.pos.y) {
                 return 0;
             }
@@ -62,39 +60,26 @@ int FUN_00432b90(unsigned int param_1, void *param_2, void *param_3, void *param
                 return 0;
             }
         }
-        node = node->next;
     }
     fresh = (struct JungleRide *)malloc(sizeof(struct JungleRide));
     if (fresh == NULL) {
         return 0;
     }
     fresh->next = DAT_00616164;
-    i = (param_1 >> 8 & 0xff) + 5;
-    fresh->field_0 = id;
-    fresh->field_4 = param_1 & 0xff;
-    fresh->field_8 = i;
-    fresh->field_c = param_1 & 0xff;
-    fresh->field_10 = i;
+    fresh->field_0 = tile.id;
+    fresh->field_4 = tile.pos.x;
+    fresh->field_8 = tile.pos.y + 5;
+    fresh->field_c = tile.pos.x;
+    fresh->field_10 = tile.pos.y + 5;
     fresh->field_3dc = 1;
     fresh->field_3e0 = 1;
-    r = rand();
-    fresh->blokes[2] = (unsigned int)param_4;
-    fresh->blokes[0] = (unsigned int)param_2;
-    fresh->field_3e4 = (r & 0xf) + 4;
-    fresh->blokes[1] = (unsigned int)param_3;
-    fill = (short *)fresh->field_1c;
+    fresh->field_3e4 = (rand() & 0xf) + 4;
+    fresh->blokes[0] = bloke0;
+    fresh->blokes[1] = bloke1;
+    fresh->blokes[2] = bloke2;
     DAT_00616164 = fresh;
-    for (i = 0xa0; i != 0; i = i - 1) {
-        fill[0] = -0xe0f;
-        fill[1] = -0xe0f;
-        fill = fill + 2;
-    }
-    fill = (short *)fresh->field_29c;
-    for (i = 0x50; i != 0; i = i - 1) {
-        fill[0] = 0;
-        fill[1] = 0;
-        fill = fill + 2;
-    }
+    memset(fresh->field_1c, 0xf1, sizeof(fresh->field_1c));
+    memset(fresh->field_29c, 0, sizeof(fresh->field_29c));
     return 1;
 }
 
@@ -1519,7 +1504,7 @@ void FUN_00435750(void) {
         id = score->field_0;
         if (score->field_30[0] != 0 && --score->field_2c < 1 && score->field_8 != 0 &&
             (int)FUN_004332c0((unsigned short *)score) * 6 < (int)score->field_40 &&
-            FUN_00432b90(id, (void *)score->field_30[0], (void *)score->field_30[1], (void *)score->field_30[2]) != 0) {
+            FUN_00432b90(*(TileId *)&id, score->field_30[0], score->field_30[1], score->field_30[2]) != 0) {
             *(unsigned char *)(score->field_30[0] + 0x62) |= 0x80;
             *(char *)(score->field_30[0] + 0x60) += 1;
             BlokeSitAnim((struct Bloke *)score->field_30[0]);
