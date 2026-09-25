@@ -54,6 +54,8 @@ struct Worker {
 LEGO_EXPORT struct Worker *GenerateGardener(int *coords, int param_2);
 LEGO_EXPORT struct Worker *GenerateMechanic(int *coords, int param_2);
 LEGO_EXPORT void RemoveAGardener(struct Worker *worker);
+LEGO_EXPORT void RefundGardener(void);
+LEGO_EXPORT void RefundMechanic(void);
 LEGO_EXPORT void RemoveAMechanic(struct Worker *worker);
 LEGO_EXPORT void IterateNoneWorkersRepairOrders(void);
 LEGO_EXPORT void RemoveGardenersWorkOrderAt(unsigned int x, unsigned int y);
