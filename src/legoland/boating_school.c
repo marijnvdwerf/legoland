@@ -1505,48 +1505,47 @@ void FUN_0041b880(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0041b8e0
-void FUN_0041b8e0(int param_1, int *param_2) {
-    int *piVar1 = param_2;
+void FUN_0041b8e0(struct RideObject *obj, int *coords) {
     struct BoatRideNode *score = DAT_004cc074;
     unsigned int mask;
-    int dir;
+    unsigned short owner;
+    int x0;
+    int y0;
+    int x1;
+    int y1;
 
-    mask = FUN_0041c690(*param_2, param_2[1], (unsigned short *)&param_2);
-    FUN_0041c4c0(*piVar1, piVar1[1], mask, (unsigned short *)&param_2);
-    IncrementObjectCount(*(void **)(param_1 + 0xc));
-    FUN_0041b0d0((unsigned short)(unsigned int)param_2, 1);
-    FUN_0041bab0(*piVar1, piVar1[1], (unsigned short *)&param_2);
+    mask = FUN_0041c690(coords[0], coords[1], &owner);
+    FUN_0041c4c0(coords[0], coords[1], mask, &owner);
+    IncrementObjectCount(obj->ride);
+    FUN_0041b0d0(owner, 1);
+    FUN_0041bab0(coords[0], coords[1], &owner);
     if ((mask & 1) != 0) {
-        dir = FUN_0041c690(*piVar1, piVar1[1] - 5, (unsigned short *)&param_2);
-        FUN_0041c4c0(*piVar1, piVar1[1] - 5, dir, (unsigned short *)&param_2);
-        FUN_0041bab0(*piVar1, piVar1[1] - 5, (unsigned short *)&param_2);
+        FUN_0041c4c0(coords[0], coords[1] - 5, FUN_0041c690(coords[0], coords[1] - 5, &owner), NULL);
+        FUN_0041bab0(coords[0], coords[1] - 5, &owner);
     }
     if ((mask & 2) != 0) {
-        dir = FUN_0041c690(*piVar1 + 5, piVar1[1], (unsigned short *)&param_2);
-        FUN_0041c4c0(*piVar1 + 5, piVar1[1], dir, (unsigned short *)&param_2);
-        FUN_0041bab0(*piVar1 + 5, piVar1[1], (unsigned short *)&param_2);
+        FUN_0041c4c0(coords[0] + 5, coords[1], FUN_0041c690(coords[0] + 5, coords[1], &owner), NULL);
+        FUN_0041bab0(coords[0] + 5, coords[1], &owner);
     }
     if ((mask & 4) != 0) {
-        dir = FUN_0041c690(*piVar1, piVar1[1] + 5, (unsigned short *)&param_2);
-        FUN_0041c4c0(*piVar1, piVar1[1] + 5, dir, (unsigned short *)&param_2);
-        FUN_0041bab0(*piVar1, piVar1[1] + 5, (unsigned short *)&param_2);
+        FUN_0041c4c0(coords[0], coords[1] + 5, FUN_0041c690(coords[0], coords[1] + 5, &owner), NULL);
+        FUN_0041bab0(coords[0], coords[1] + 5, &owner);
     }
     if ((mask & 8) != 0) {
-        dir = FUN_0041c690(*piVar1 - 5, piVar1[1], (unsigned short *)&param_2);
-        FUN_0041c4c0(*piVar1 - 5, piVar1[1], dir, (unsigned short *)&param_2);
-        FUN_0041bab0(*piVar1 - 5, piVar1[1], (unsigned short *)&param_2);
+        FUN_0041c4c0(coords[0] - 5, coords[1], FUN_0041c690(coords[0] - 5, coords[1], &owner), NULL);
+        FUN_0041bab0(coords[0] - 5, coords[1], &owner);
     }
-    if (score != NULL) {
-        while (score->id != (unsigned short)(unsigned int)param_2) {
-            score = score->next;
-            if (score == NULL) {
-                return;
+    for (; score != NULL; score = score->next) {
+        if (score->id == owner) {
+            x0 = score->start.pos.x;
+            y0 = score->start.pos.y;
+            x1 = score->end.pos.x;
+            y1 = score->end.pos.y;
+            score->field_8 = FUN_0041c8c0(x0, y0, x1, y1);
+            if (score->field_8 != 0) {
+                FUN_0041caa0(owner);
             }
-        }
-        dir = FUN_0041c8c0(score->start.pos.x, score->start.pos.y, score->end.pos.x, score->end.pos.y);
-        score->field_8 = dir;
-        if (dir != 0) {
-            FUN_0041caa0((unsigned short)(unsigned int)param_2);
+            return;
         }
     }
 }
@@ -1745,117 +1744,127 @@ void FUN_0041bfb0(unsigned int param_1, unsigned int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0041c130
-void FUN_0041c130(void *param_1, unsigned int param_2, struct Cursor *param_3) {
+void FUN_0041c130(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
     struct BoatRideNode *score = DAT_004cc074;
-    struct BoatRideNode *find = DAT_004cc074;
-    int *tile;
+    struct MapElement *elem;
+    int ex;
+    int ey;
     unsigned int mask;
     unsigned int u1;
     unsigned int u2;
     unsigned int u3;
-    unsigned int u9;
+    unsigned int dir;
     int x;
     int y;
-    int other;
-    unsigned char local_14[12];
-    unsigned int local_param2 = param_2;
+    int x0;
+    int y0;
+    int x1;
+    int y1;
+    unsigned short owner;
+    unsigned short other;
+    struct RideObject fake;
 
-    if ((param_2 & 0xff) < (unsigned int)lpConfig->width && (param_2 >> 8 & 0xff) < (unsigned int)lpConfig->height) {
-        tile = (int *)((char *)GameMap[param_2 >> 8 & 0xff] + (param_2 & 0xff) * 0x14);
+    ex = tile.pos.x;
+    ey = tile.pos.y;
+    if (ex >= 0 && ex < lpConfig->width && ey >= 0 && ey < lpConfig->height) {
+        elem = &GameMap[ey][ex];
     } else {
-        tile = NULL;
+        elem = NULL;
     }
-    if (*tile != (int)DAT_0082adf0->footprint[(0xc4 - 0x3c) / 4]) {
-        *(struct Footprint *)((char *)QueryClass + 0x3c) = *(struct Footprint *)DAT_004b53c0;
-        FUN_0041a530((struct RideObject *)local_14, *(TileId *)&local_param2, param_3);
+    if (elem->field_0 != DAT_0082adf0->field_c4) {
+        fake.ride = DAT_0082c658;
+        FUN_0041a530(&fake, tile, cursor);
         return;
     }
-    u9 = FUN_0041c690(param_3->field_1404, param_3->field_1408, (unsigned short *)&param_2);
-    FUN_0041c620(param_1, *(TileId *)&local_param2, param_3);
-    FUN_0041b0d0((unsigned short)(unsigned int)param_2, 0xffffffff);
-    u1 = u9 & 1;
+    mask = FUN_0041c690(cursor->field_1404, cursor->field_1408, &owner);
+    FUN_0041c620(obj, tile, cursor);
+    FUN_0041b0d0(owner, -1);
+    u1 = mask & 1;
     if (u1 != 0) {
-        y = param_3->field_1408 - 5;
-        x = param_3->field_1404;
-        mask = FUN_0041c690(x, y, (unsigned short *)&param_3);
-        FUN_0041c4c0(x, y, mask, (unsigned short *)&param_2);
-        FUN_0041bab0(x, y, (unsigned short *)&param_2);
+        y = cursor->field_1408 - 5;
+        x = cursor->field_1404;
+        dir = FUN_0041c690(x, y, &other);
+        FUN_0041c4c0(x, y, dir, &owner);
+        FUN_0041bab0(x, y, &owner);
     }
-    u2 = u9 & 2;
+    u2 = mask & 2;
     if (u2 != 0) {
-        y = param_3->field_1408;
-        x = param_3->field_1404 + 5;
-        mask = FUN_0041c690(x, y, (unsigned short *)&param_3);
-        FUN_0041c4c0(x, y, mask, (unsigned short *)&param_2);
-        FUN_0041bab0(x, y, (unsigned short *)&param_2);
+        x = cursor->field_1404 + 5;
+        y = cursor->field_1408;
+        dir = FUN_0041c690(x, y, &other);
+        FUN_0041c4c0(x, y, dir, &owner);
+        FUN_0041bab0(x, y, &owner);
     }
-    u3 = u9 & 4;
+    u3 = mask & 4;
     if (u3 != 0) {
-        y = param_3->field_1408 + 5;
-        x = param_3->field_1404;
-        mask = FUN_0041c690(x, y, (unsigned short *)&param_3);
-        FUN_0041c4c0(x, y, mask, (unsigned short *)&param_2);
-        FUN_0041bab0(x, y, (unsigned short *)&param_2);
+        y = cursor->field_1408 + 5;
+        x = cursor->field_1404;
+        dir = FUN_0041c690(x, y, &other);
+        FUN_0041c4c0(x, y, dir, &owner);
+        FUN_0041bab0(x, y, &owner);
     }
-    u9 = u9 & 8;
-    if (u9 != 0) {
-        y = param_3->field_1408;
-        x = param_3->field_1404 - 5;
-        mask = FUN_0041c690(x, y, (unsigned short *)&param_3);
-        FUN_0041c4c0(x, y, mask, (unsigned short *)&param_2);
-        FUN_0041bab0(x, y, (unsigned short *)&param_2);
+    mask &= 8;
+    if (mask != 0) {
+        x = cursor->field_1404 - 5;
+        y = cursor->field_1408;
+        dir = FUN_0041c690(x, y, &other);
+        FUN_0041c4c0(x, y, dir, &owner);
+        FUN_0041bab0(x, y, &owner);
     }
     if (u1 != 0) {
-        if (u9 != 0) {
-            y = param_3->field_1408 - 5;
-            x = param_3->field_1404 - 5;
-            other = (int)FUN_0041c890(x, y);
-            if (other != 0) {
-                mask = FUN_0041c690(x, y, (unsigned short *)&param_3);
-                FUN_0041c4c0(x, y, mask, (unsigned short *)&param_2);
-                FUN_0041bab0(x, y, (unsigned short *)&param_2);
+        if (mask != 0) {
+            y = cursor->field_1408 - 5;
+            x = cursor->field_1404 - 5;
+            if (FUN_0041c890(x, y) != NULL) {
+                dir = FUN_0041c690(x, y, &other);
+                FUN_0041c4c0(x, y, dir, &owner);
+                FUN_0041bab0(x, y, &owner);
             }
         }
         if (u1 != 0 && u2 != 0) {
-            y = param_3->field_1408 - 5;
-            x = param_3->field_1404 + 5;
-            other = (int)FUN_0041c890(x, y);
-            if (other != 0) {
-                mask = FUN_0041c690(x, y, (unsigned short *)&param_3);
-                FUN_0041c4c0(x, y, mask, (unsigned short *)&param_2);
-                FUN_0041bab0(x, y, (unsigned short *)&param_2);
+            y = cursor->field_1408 - 5;
+            x = cursor->field_1404 + 5;
+            if (FUN_0041c890(x, y) != NULL) {
+                dir = FUN_0041c690(x, y, &other);
+                FUN_0041c4c0(x, y, dir, &owner);
+                FUN_0041bab0(x, y, &owner);
             }
         }
     }
-    if (u3 != 0 && u9 != 0) {
-        y = param_3->field_1408 + 5;
-        x = param_3->field_1404 - 5;
-        other = (int)FUN_0041c890(x, y);
-        if (other != 0) {
-            mask = FUN_0041c690(x, y, (unsigned short *)&param_3);
-            FUN_0041c4c0(x, y, mask, (unsigned short *)&param_2);
-            FUN_0041bab0(x, y, (unsigned short *)&param_2);
+    if (u3 != 0 && mask != 0) {
+        y = cursor->field_1408 + 5;
+        x = cursor->field_1404 - 5;
+        if (FUN_0041c890(x, y) != NULL) {
+            dir = FUN_0041c690(x, y, &other);
+            FUN_0041c4c0(x, y, dir, &owner);
+            FUN_0041bab0(x, y, &owner);
         }
     }
     if (u3 != 0 && u2 != 0) {
-        y = param_3->field_1408 + 5;
-        x = param_3->field_1404 + 5;
-        other = (int)FUN_0041c890(x, y);
-        if (other != 0) {
-            mask = FUN_0041c690(x, y, (unsigned short *)&param_3);
-            FUN_0041c4c0(x, y, mask, (unsigned short *)&param_2);
-            FUN_0041bab0(x, y, (unsigned short *)&param_2);
+        y = cursor->field_1408 + 5;
+        x = cursor->field_1404 + 5;
+        if (FUN_0041c890(x, y) != NULL) {
+            dir = FUN_0041c690(x, y, &other);
+            FUN_0041c4c0(x, y, dir, &owner);
+            FUN_0041bab0(x, y, &owner);
         }
     }
-    FUN_0041caa0((unsigned short)(unsigned int)param_2);
+    FUN_0041caa0(owner);
     if (score != NULL) {
-        while (find->id != (unsigned short)(unsigned int)param_2) {
-            find = find->next;
-            if (find == NULL) {
+        for (;;) {
+            if (score->id == owner) {
+                x0 = score->start.pos.x;
+                y0 = score->start.pos.y;
+                x1 = score->end.pos.x;
+                y1 = score->end.pos.y;
+                score->field_8 = FUN_0041c8c0(x0, y0, x1, y1);
+                return;
+            }
+            score = score->next;
+            if (score == NULL) {
                 return;
             }
         }
-        find->value = FUN_0041c8c0(find->start.pos.x, find->start.pos.y, find->end.pos.x, find->end.pos.y);
     }
 }
 

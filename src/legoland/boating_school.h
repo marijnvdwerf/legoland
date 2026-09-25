@@ -110,7 +110,7 @@ void FUN_0041b4c0(struct RideObject *obj, unsigned int param_2, unsigned int par
 unsigned int FUN_0041b6d0(unsigned int param_1, unsigned int param_2);
 void FUN_0041b830(struct RideObject *arg);
 void FUN_0041b880();
-void FUN_0041b8e0(int param_1, int *param_2);
+void FUN_0041b8e0(struct RideObject *obj, int *coords);
 void FUN_0041bd40(struct RideObject *obj, unsigned int param_2, unsigned int param_3);
 void FUN_0041bfb0(unsigned int param_1, unsigned int *param_2);
-void FUN_0041c130(void *param_1, unsigned int param_2, struct Cursor *param_3);
+void FUN_0041c130(struct RideObject *obj, TileId tile, struct Cursor *cursor);
