@@ -375,38 +375,40 @@ LEGO_EXPORT int Catapult_Save(void) {
     unsigned int zero;
     struct CatapultSaveBuf scratch;
 
+    node = DAT_004c1118;
     one = 1;
     zero = 0;
-    node = DAT_004c1118;
-    while (node != NULL) {
-        scratch = *(struct CatapultSaveBuf *)node;
-        if (SaveGameWrite(&one, 4) == 0) {
-            return 0;
-        }
-        ride = DAT_004c10f4;
-        field = (int *)&scratch.data[4];
-        i = 4;
-        do {
-            value = (unsigned int *)*field;
-            index = 0;
-            for (cursor = (unsigned int *)ride->riders; cursor != NULL; cursor = (unsigned int *)*cursor) {
-                if (cursor == value) {
-                    break;
+    if (DAT_004c1118 != NULL) {
+        while (node != NULL) {
+            scratch = *(struct CatapultSaveBuf *)node;
+            if (SaveGameWrite(&one, 4) == 0) {
+                return 0;
+            }
+            ride = DAT_004c10f4;
+            field = (int *)&scratch.data[4];
+            i = 4;
+            do {
+                value = (unsigned int *)*field;
+                index = 0;
+                for (cursor = (unsigned int *)ride->riders; cursor != NULL; cursor = (unsigned int *)*cursor) {
+                    if (cursor == value) {
+                        break;
+                    }
+                    index = index + 1;
                 }
-                index = index + 1;
+                if (cursor != NULL) {
+                    *field = index + 1;
+                } else {
+                    *field = 0;
+                }
+                field++;
+                i--;
+            } while (i != 0);
+            if (SaveGameWrite(&scratch, 0x3c) == 0) {
+                return 0;
             }
-            if (cursor != NULL) {
-                *field = index + 1;
-            } else {
-                *field = 0;
-            }
-            field++;
-            i--;
-        } while (i != 0);
-        if (SaveGameWrite(&scratch, 0x3c) == 0) {
-            return 0;
+            node = node->next;
         }
-        node = node->next;
     }
     return SaveGameWrite(&zero, 4) != 0;
 }
