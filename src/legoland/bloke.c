@@ -496,7 +496,7 @@ int FUN_00483160(int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x004831a0
-struct Point FUN_004831a0(unsigned int dir, short dist) {
+struct Point FUN_004831a0(unsigned char dir, short dist) {
     struct Point result;
     int index = (dir & 0xff) * 2;
     result.x = (int)DAT_004bd32c[index] * (int)dist >> 8;
@@ -1062,39 +1062,38 @@ void FUN_00483ef0(struct TileWalker *walker) {
 // FUNCTION: LEGOLAND 0x00484090
 void FUN_00484090(struct TileWalker *walker) {
     struct Point d = FUN_004831a0(walker->field_72, walker->field_7f);
-    int ny = d.y + walker->pos.y;
-    int nx = d.x + walker->pos.x;
-    unsigned char rf;
+    struct Point next;
+    short rf;
+    short mapFlags;
+    short rf2;
 
-    FUN_004837a0((struct Walker *)walker, nx, ny);
-    if (CrossTileCentre(walker, nx, ny) != 0) {
-        *(unsigned char *)&walker->field_62 |= 4;
+    next = walker->pos;
+    next.y += d.y;
+    next.x += d.x;
+    FUN_004837a0((struct Walker *)walker, next.x, next.y);
+    if (CrossTileCentre(walker, next.x, next.y) != 0) {
+        walker->field_62 |= 4;
         rf = GetCurrentRFFlags(walker->pos.x, walker->pos.y);
-        if (walker->pos.x >= 0 && walker->pos.x < (int)(lpConfig->width * 0x100) &&
-            walker->pos.y >= 0 && walker->pos.y < (int)(lpConfig->height * 0x100)) {
-            short mapFlags = Get_MapFlags(walker->pos.x, walker->pos.y);
-            unsigned char rf2 = GetCurrentRFFlags(walker->pos.x, walker->pos.y);
-            if ((rf2 & 1) != 0 || ((mapFlags & 0x10) != 0 && (rf2 & 2) == 0)) {
-                if ((rf & 0x24) != 0) {
-                    walker->field_e = 0;
-                    walker->field_64 |= 4;
-                    return;
-                }
-                if ((rf & 8) != 0) {
-                    walker->field_e = 0;
-                    return;
-                }
-                goto finalize;
-            }
+        if (walker->pos.x < 0 || walker->pos.x >= (int)(lpConfig->width * 0x100) || walker->pos.y < 0 ||
+            walker->pos.y >= (int)(lpConfig->height * 0x100) ||
+            (mapFlags = Get_MapFlags(walker->pos.x, walker->pos.y), rf2 = GetCurrentRFFlags(walker->pos.x, walker->pos.y),
+                (rf2 & 1) == 0 && ((mapFlags & 0x10) == 0 || (rf2 & 2) != 0))) {
+            walker->field_e = 0;
+            walker->field_64 |= 2;
+            return;
         }
-        walker->field_e = 0;
-        walker->field_64 |= 2;
-        return;
+        if ((rf & 0x24) != 0) {
+            walker->field_e = 0;
+            walker->field_64 |= 4;
+            return;
+        }
+        if ((rf & 8) != 0) {
+            walker->field_e = 0;
+            return;
+        }
     }
-finalize:
-    FUN_00483680(walker, nx, ny);
-    walker->pos.x = nx;
-    walker->pos.y = ny;
+    FUN_00483680(walker, next.x, next.y);
+    walker->pos = next;
     FUN_00483830((struct Walker *)walker);
 }
 

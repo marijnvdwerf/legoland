@@ -87,7 +87,7 @@ int CheckForPeople(struct MapRect *rect);
 LEGO_EXPORT void SetBlokePositionFromBNV(struct BinVFile *file, struct BNVPerson *person, char *name, int frame, int param_5, int param_6, float *orient);
 LEGO_EXPORT struct BNVPath *NewBNVPath(struct BinVFile *file, unsigned int param_2, char *name, float param_4, float param_5, int *coords);
 LEGO_EXPORT int UpdateBlokeFromBNVPath(struct BNVBloke *bloke, struct BNVPath *path);
-struct Point FUN_004831a0(unsigned int dir, short dist);
+struct Point FUN_004831a0(unsigned char dir, short dist);
 LEGO_EXPORT struct Point GetTileInDir(int x, int y, unsigned int dir);
 LEGO_EXPORT int OverNewTile(struct OverTile *tile, unsigned int x, unsigned int y);
 void FUN_00482b10(void);
