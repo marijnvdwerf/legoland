@@ -244,7 +244,7 @@ int DAT_004b5290[0xc];
 unsigned char PTR_s_Boat_Noise_wav[0x18];
 
 // GLOBAL: LEGOLAND 0x004b53c0
-unsigned int DAT_004b53c0[5];
+struct Footprint DAT_004b53c0;
 
 // GLOBAL: LEGOLAND 0x004b53d4
 unsigned char DAT_004b53d4[0x190];
@@ -361,13 +361,13 @@ int DAT_004b6be8[0x5c];
 unsigned char DAT_004b6d58[0x120];
 
 // GLOBAL: LEGOLAND 0x004b7260
-int DAT_004b7260[6];
+struct Footprint DAT_004b7260;
 
 // GLOBAL: LEGOLAND 0x004b7278
-int DAT_004b7278[4];
+struct Footprint DAT_004b7278;
 
 // GLOBAL: LEGOLAND 0x004b7288
-void *DAT_004b7288;
+struct Footprint *DAT_004b7288;
 
 // GLOBAL: LEGOLAND 0x004b7148
 int DAT_004b7148[0x10];
@@ -1773,10 +1773,10 @@ struct JungleFish *DAT_00629c34;
 struct JungleScore *DAT_00629c3c;
 
 // GLOBAL: LEGOLAND 0x00629c40
-int DAT_00629c40[5];
+struct Footprint DAT_00629c40;
 
 // GLOBAL: LEGOLAND 0x00629c50
-void *DAT_00629c50;
+struct Footprint *DAT_00629c50;
 
 // GLOBAL: LEGOLAND 0x00629c54
 int DAT_00629c54;
@@ -4524,7 +4524,7 @@ struct Building *DAT_0081cb4c;
 struct Sprite *DAT_0081cb50;
 
 // GLOBAL: LEGOLAND 0x0081cb54
-struct Cursor *DAT_0081cb54;
+struct Ride *DAT_0081cb54;
 
 // GLOBAL: LEGOLAND 0x0081cb58
 struct JungleTileMap *DAT_0081cb58;
@@ -4533,7 +4533,7 @@ struct JungleTileMap *DAT_0081cb58;
 struct Sprite *DAT_0081cb5c;
 
 // GLOBAL: LEGOLAND 0x0081cb60
-struct Cursor *DAT_0081cb60;
+struct Ride *DAT_0081cb60;
 
 // GLOBAL: LEGOLAND 0x0081cb64
 struct Cursor *DAT_0081cb64;
@@ -4545,16 +4545,16 @@ struct Sprite *DAT_0081cb68;
 struct Sprite *DAT_0081cb6c;
 
 // GLOBAL: LEGOLAND 0x0081cb70
-struct Cursor *DAT_0081cb70;
+struct Ride *DAT_0081cb70;
 
 // GLOBAL: LEGOLAND 0x0081cb74
-struct Cursor *DAT_0081cb74;
+struct Ride *DAT_0081cb74;
 
 // GLOBAL: LEGOLAND 0x0081cb80
 struct Point DAT_0081cb80[3][16];
 
 // GLOBAL: LEGOLAND 0x0081cd00
-void *DAT_0081cd00;
+struct SpriteSet *DAT_0081cd00;
 
 // GLOBAL: LEGOLAND 0x0081cd04
 void *DAT_0081cd04;
@@ -4836,7 +4836,7 @@ struct Sprite *DAT_0082c654;
 struct Ride *DAT_0082c658;
 
 // GLOBAL: LEGOLAND 0x0082c65c
-struct BoatSpriteSet *DAT_0082c65c;
+struct SpriteSet *DAT_0082c65c;
 
 // GLOBAL: LEGOLAND 0x0082c668
 struct Sprite *DAT_0082c668;

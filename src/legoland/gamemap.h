@@ -22,6 +22,15 @@ struct Footprint {
     int v[5];
 };
 
+/* LLIDB sprite set: count, sprite table and per-sprite draw offsets. */
+struct SpriteSet {
+    /* 0x00 */ int field_0;
+    /* 0x04 */ int count;
+    /* 0x08 */ struct Sprite **sprites;
+    /* 0x0c */ int *offset_x;
+    /* 0x10 */ int *offset_y;
+};
+
 // The map edit cursor. EditCursor / QueryCursor / DAT_0082f760 are instances of
 // this 0x1834-byte structure. Only the fields actually touched are named; the
 // gaps are explicit padding so the layout matches the original byte-for-byte.

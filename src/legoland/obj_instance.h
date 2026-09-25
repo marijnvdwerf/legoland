@@ -1,5 +1,6 @@
 #pragma once
 
+#include "gamemap.h"
 #include "legoland.h"
 
 struct Bloke;
@@ -42,7 +43,7 @@ struct Ride {
     /* 0x2c */ unsigned char pad_2c[0x36 - 0x2c];
     /* 0x36 */ short value;
     /* 0x38 */ unsigned char pad_38[0x3c - 0x38];
-    /* 0x3c */ unsigned int footprint[5];
+    /* 0x3c */ struct Footprint footprint;
     /* 0x50 */ unsigned char pad_50[0x64 - 0x50];
     /* 0x64 */ struct RideLayer *layer;
     /* 0x68 */ unsigned char pad_68[0xc4 - 0x68];

@@ -234,7 +234,10 @@ struct DirNode *FUN_00482300(unsigned int x, unsigned int y) {
 }
 
 // FUNCTION: LEGOLAND 0x00482330
-int FUN_00482330(struct PathLink *a, struct PathLink *b, struct PathLink *c, struct PathLink *d) { STUB(); return 0; }
+int FUN_00482330(struct PathLink *a, struct PathLink *b, struct PathLink *c, struct PathLink *d) {
+    STUB();
+    return 0;
+}
 
 // FUNCTION: LEGOLAND 0x00482430
 int FUN_00482430(void) {

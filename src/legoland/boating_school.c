@@ -547,7 +547,7 @@ void FUN_00419d10(struct RideObject *obj) {
     }
     // STRING: LEGOLAND 0x004b531c
     if (LLIDB_FindElement("BOATING SCHOOL BOATS", &handle, 0) == 0) {
-        DAT_0082c65c = (struct BoatSpriteSet *)LLIDB_LoadData((void *)handle);
+        DAT_0082c65c = (struct SpriteSet *)LLIDB_LoadData((void *)handle);
     }
     for (i = 0; i < DAT_0082c65c->count; i++) {
         sprite = DAT_0082c65c->sprites[i & 0xff];
@@ -560,7 +560,7 @@ void FUN_00419d10(struct RideObject *obj) {
     lls = GetLLSForSprite((struct SpriteLLS *)(DAT_0082ae00 = (void *)GetSpriteForLayer((struct LayerContainer *)DAT_0082c658->layer, 5)));
     LLSStop(lls);
     LLSSetFrame((struct LLS *)lls, *(short *)(lls + 0x10));
-    DAT_004cc078 = *(struct Footprint *)DAT_0082c658->footprint;
+    DAT_004cc078 = DAT_0082c658->footprint;
     DAT_004cc048 = DAT_004b5260;
     DAT_004cc048.v[1] += DAT_004cc078.v[1];
     DAT_004cc048.v[0] += DAT_004cc078.v[0];
@@ -710,7 +710,7 @@ void FUN_0041a3d0(void *param_1, unsigned int param_2) {
     QueryCursor.field_1830 = (unsigned int)&PathCursor;
     DAT_00810144 = 1;
     DefaultCursor(&DAT_0082ae20);
-    *(struct Footprint *)DAT_0082ae20.field_1414 = *(struct Footprint *)DAT_004b53c0;
+    *(struct Footprint *)DAT_0082ae20.field_1414 = DAT_004b53c0;
     for (; path != NULL; path = path->next) {
         if (path->owner.id == QueryObj) {
             DAT_0082ae20.field_1404 = path->tile.pos.x;
@@ -1207,7 +1207,7 @@ void FUN_0041b260(void) {
     EditMode.unk8 = DAT_0082adf8;
     DefaultCursor(&EditCursor);
     EditCursor.field_1828 |= 0x8;
-    SetEditCursorFootPrint(DAT_0082adf8->footprint);
+    SetEditCursorFootPrint(&DAT_0082adf8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x0041b2a0
@@ -1233,25 +1233,25 @@ void FUN_0041b2a0(struct EditObject *obj, int *coords) {
     DAT_004d2164 = node;
     FUN_0041b0d0(owner, 1);
     AddBasicObject(obj, coords);
-    for (y = ride->footprint[1]; y <= (int)ride->footprint[3]; y++) {
-        for (x = ride->footprint[0]; x <= (int)ride->footprint[2]; x++) {
-            if (x == (int)ride->footprint[0]) {
+    for (y = ride->footprint.v[1]; y <= ride->footprint.v[3]; y++) {
+        for (x = ride->footprint.v[0]; x <= ride->footprint.v[2]; x++) {
+            if (x == ride->footprint.v[0]) {
                 SetMapTile(coords[0] + x, coords[1] + y, *DAT_0082adf4->tiles + 9);
-            } else if (x == (int)ride->footprint[2]) {
+            } else if (x == ride->footprint.v[2]) {
                 SetMapTile(coords[0] + x, coords[1] + y, *DAT_0082adf4->tiles + 0xc);
-            } else if (y == (int)ride->footprint[1]) {
+            } else if (y == ride->footprint.v[1]) {
                 SetMapTile(coords[0] + x, coords[1] + y, *DAT_0082adf4->tiles + 10);
-            } else if (y == (int)ride->footprint[3]) {
+            } else if (y == ride->footprint.v[3]) {
                 SetMapTile(coords[0] + x, coords[1] + y, *DAT_0082adf4->tiles + 0xb);
             } else {
                 SetMapTile(coords[0] + x, coords[1] + y, *DAT_0082adf4->tiles);
             }
         }
     }
-    SetMapTile(ride->footprint[0] + coords[0], ride->footprint[1] + coords[1], *DAT_0082adf4->tiles + 5);
-    SetMapTile(coords[0] + ride->footprint[2], ride->footprint[1] + coords[1], *DAT_0082adf4->tiles + 8);
-    SetMapTile(ride->footprint[0] + coords[0], ride->footprint[3] + coords[1], *DAT_0082adf4->tiles + 6);
-    SetMapTile(coords[0] + ride->footprint[2], ride->footprint[3] + coords[1], *DAT_0082adf4->tiles + 7);
+    SetMapTile(ride->footprint.v[0] + coords[0], ride->footprint.v[1] + coords[1], *DAT_0082adf4->tiles + 5);
+    SetMapTile(coords[0] + ride->footprint.v[2], ride->footprint.v[1] + coords[1], *DAT_0082adf4->tiles + 8);
+    SetMapTile(ride->footprint.v[0] + coords[0], ride->footprint.v[3] + coords[1], *DAT_0082adf4->tiles + 6);
+    SetMapTile(coords[0] + ride->footprint.v[2], ride->footprint.v[3] + coords[1], *DAT_0082adf4->tiles + 7);
     source.field_8 = coords[0];
     source.type = 2;
     source.field_c = coords[1];
@@ -1270,7 +1270,7 @@ void FUN_0041b4c0(struct RideObject *obj, unsigned int param_2, unsigned int par
 
     n = 0;
     ride = obj->ride;
-    memcpy(EditCursor.field_1414, ride->footprint, 20);
+    memcpy(EditCursor.field_1414, &ride->footprint, 20);
     ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
     mask = FUN_0041c690(EditCursor.field_1404, EditCursor.field_1408, &owner);
     EditCursor.field_1830 = n;
@@ -1384,10 +1384,10 @@ void FUN_0041b6f0(void *param_1, TileId tile, struct Cursor *param_3) {
 void FUN_0041b830(struct RideObject *arg) {
     struct Ride *building = arg->ride;
     DAT_0082adf0 = building;
-    DAT_004b53c0[1] += building->footprint[1];
-    DAT_004b53c0[0] += building->footprint[0];
-    DAT_004b53c0[2] += building->footprint[0];
-    DAT_004b53c0[3] += building->footprint[1];
+    DAT_004b53c0.v[1] += building->footprint.v[1];
+    DAT_004b53c0.v[0] += building->footprint.v[0];
+    DAT_004b53c0.v[2] += building->footprint.v[0];
+    DAT_004b53c0.v[3] += building->footprint.v[1];
 }
 
 // FUNCTION: LEGOLAND 0x0041b880
@@ -1395,7 +1395,7 @@ void FUN_0041b880(void) {
     struct Ride *state = DAT_0082adf0;
     EditMode.unk0 = 1;
     EditMode.unk8 = state;
-    memcpy(state->footprint, DAT_004b53c0, 20);
+    memcpy(&state->footprint, &DAT_004b53c0, sizeof(DAT_004b53c0));
     DefaultCursor(&EditCursor);
     EditCursor.field_1828 |= 0x8;
     SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
@@ -1510,7 +1510,7 @@ void FUN_0041bd40(struct RideObject *obj, unsigned int param_2, unsigned int par
     struct MapRect rect;
 
     n = 0;
-    memcpy(EditCursor.field_1414, DAT_004b53c0, 20);
+    memcpy(EditCursor.field_1414, &DAT_004b53c0, sizeof(DAT_004b53c0));
     ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
     mask = FUN_0041c690(EditCursor.field_1404, EditCursor.field_1408, &owner);
     EditCursor.field_1830 = n;
@@ -1618,7 +1618,7 @@ void FUN_0041bfb0(unsigned int param_1, int *coords) {
         }
     }
     ride = DAT_004cc03c;
-    memcpy((char *)QueryClass + 0x3c, DAT_004b53c0, 20);
+    memcpy((char *)QueryClass + 0x3c, &DAT_004b53c0, sizeof(DAT_004b53c0));
     BasicObjectDCalcCursor(param_1, (unsigned int)coords);
     for (; ride != NULL; ride = ride->next) {
         if ((tile.pos.x == ride->field_4 && tile.pos.y == ride->field_8) || (tile.pos.x == ride->field_c && tile.pos.y == ride->field_10)) {

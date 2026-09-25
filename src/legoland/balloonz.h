@@ -25,7 +25,7 @@ void FUN_0042a7b0(struct BalloonRideObj *param_1);
 void FUN_0042a950(unsigned int param_1, unsigned char *param_2);
 void FUN_0042aa10(struct BalloonRideObj *param_1, unsigned int param_2, unsigned int param_3);
 void FUN_0042aa90(struct BalloonRideObj *param_1);
-unsigned int * FUN_0042b2a0(struct BalloonRideObj *arg1, unsigned short arg2);
+unsigned int *FUN_0042b2a0(struct BalloonRideObj *arg1, unsigned short arg2);
 void FUN_0042b2e0(struct BalloonRideObj *param_1, void *param_2, void *param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6);
 void FUN_0042b9d0();
 void FUN_0042ba40();

@@ -1,7 +1,5 @@
-#include <string.h>
 #include "setcustomcallbacks.h"
-#include "legoland.h"
-#include "objclass.h"
+#include <string.h>
 #include "balloonz.h"
 #include "boating_school.h"
 #include "carousel.h"
@@ -18,8 +16,10 @@
 #include "gold_rush.h"
 #include "joust.h"
 #include "jungle_cruise.h"
+#include "legoland.h"
 #include "log_flume.h"
 #include "mechanics_hut.h"
+#include "objclass.h"
 #include "path_control.h"
 #include "plane_ride.h"
 #include "potting_shed.h"
@@ -46,10 +46,10 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
     }
     // STRING: LEGOLAND 0x004b8a64
     else if (_stricmp(head->name, "FOUNTAIN 1") == 0 ||
-             // STRING: LEGOLAND 0x004b8a58
-             _stricmp(head->name, "FOUNTAIN 2") == 0 ||
-             // STRING: LEGOLAND 0x004b8a4c
-             _stricmp(head->name, "FOUNTAIN 3") == 0) {
+        // STRING: LEGOLAND 0x004b8a58
+        _stricmp(head->name, "FOUNTAIN 2") == 0 ||
+        // STRING: LEGOLAND 0x004b8a4c
+        _stricmp(head->name, "FOUNTAIN 3") == 0) {
         iface->cb_98 = FUN_004529e0;
         iface->cb_9c = RemoveSoundObject;
         iface->cb_ac = FUN_004529c0;
@@ -71,10 +71,10 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
     }
     // STRING: LEGOLAND 0x004b8a14
     else if (_stricmp(head->name, "Dino Big") == 0 ||
-             // STRING: LEGOLAND 0x004b8a08
-             _stricmp(head->name, "Dino Small") == 0 ||
-             // STRING: LEGOLAND 0x004b89fc
-             _stricmp(head->name, "Dino Mini") == 0) {
+        // STRING: LEGOLAND 0x004b8a08
+        _stricmp(head->name, "Dino Small") == 0 ||
+        // STRING: LEGOLAND 0x004b89fc
+        _stricmp(head->name, "Dino Mini") == 0) {
         iface->cb_98 = FUN_00452bc0;
         iface->cb_9c = RemoveSoundObject;
         iface->cb_ac = FUN_00452ba0;
@@ -87,8 +87,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_90 = FUN_00411cd0;
         iface->cb_98 = FUN_00411bf0;
         iface->cb_9c = FUN_00411c70;
-    }
-    else if (_stricmp("DRIVING SCHOOL", head->name) == 0) {
+    } else if (_stricmp("DRIVING SCHOOL", head->name) == 0) {
         iface->cb_a4 = FUN_00405370;
         iface->cb_8c = FUN_00405570;
         iface->cb_90 = FUN_00405740;
@@ -121,15 +120,13 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_94 = FUN_00413fa0;
         iface->cb_98 = FUN_00414950;
         iface->cb_9c = FUN_00414220;
-    }
-    else if (_stricmp("ENTRANCE 1", head->name) == 0) {
+    } else if (_stricmp("ENTRANCE 1", head->name) == 0) {
         iface->cb_a4 = FUN_0042de50;
         iface->cb_ac = FUN_0042def0;
         iface->cb_a8 = FUN_0042dfa0;
         iface->cb_b0 = FUN_0042d9c0;
         iface->cb_9c = FUN_0042df70;
-    }
-    else if (_stricmp("POTTING SHED", head->name) == 0) {
+    } else if (_stricmp("POTTING SHED", head->name) == 0) {
         iface->cb_a4 = FUN_0043ce60;
         iface->cb_8c = FUN_0043d1d0;
         iface->cb_98 = FUN_0043ceb0;
@@ -138,8 +135,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_b0 = FUN_0043d0b0;
         iface->cb_ac = FUN_0043d1c0;
         iface->cb_a0 = FUN_0043d210;
-    }
-    else if (_stricmp("MECHANICS HUT", head->name) == 0) {
+    } else if (_stricmp("MECHANICS HUT", head->name) == 0) {
         iface->cb_a4 = FUN_0043d250;
         iface->cb_8c = FUN_0043d740;
         iface->cb_98 = FUN_0043d2a0;
@@ -284,16 +280,14 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_98 = FUN_0042e500;
         iface->cb_a0 = FUN_0042e560;
         iface->cb_ac = FUN_0042e4b0;
-    }
-    else if (_stricmp("BOATING SCHOOL WATER", head->name) == 0) {
+    } else if (_stricmp("BOATING SCHOOL WATER", head->name) == 0) {
         iface->cb_a4 = FUN_0041b830;
         iface->cb_8c = FUN_0041b880;
         iface->cb_90 = FUN_0041bd40;
         iface->cb_94 = FUN_0041bfb0;
         iface->cb_98 = FUN_0041b8e0;
         iface->cb_9c = FUN_0041c130;
-    }
-    else if (_stricmp("BOATING SCHOOL", head->name) == 0) {
+    } else if (_stricmp("BOATING SCHOOL", head->name) == 0) {
         iface->cb_a4 = FUN_00419d10;
         iface->cb_ac = FUN_00419ef0;
         iface->cb_8c = FUN_0041a000;
@@ -324,8 +318,7 @@ LEGO_EXPORT void SetCustomCallbacks(struct ClassNode *head) {
         iface->cb_94 = FUN_00436470;
         iface->cb_98 = FUN_004365f0;
         iface->cb_9c = FUN_00436a40;
-    }
-    else if (_stricmp("JUNGLE CRUISE", head->name) == 0) {
+    } else if (_stricmp("JUNGLE CRUISE", head->name) == 0) {
         iface->cb_a4 = FUN_00434cb0;
         iface->cb_ac = FUN_00434e50;
         iface->cb_8c = FUN_00434f50;

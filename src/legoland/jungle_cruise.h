@@ -1,6 +1,7 @@
 #pragma once
 
 struct Cursor;
+struct RideObject;
 
 struct JungleRide {
     /* 0x000 */ unsigned short field_0;
@@ -64,11 +65,6 @@ struct JunglePath {
     /* 0x18 */ struct JunglePath *field_18;
 };
 
-struct JungleHolder {
-    /* 0x00 */ unsigned char pad_0[0xc];
-    /* 0x0c */ struct Cursor *cursor;
-};
-
 struct JungleTileMap {
     /* 0x00 */ unsigned char pad_0[4];
     /* 0x04 */ short *tiles;
@@ -102,30 +98,30 @@ int FUN_00435c70(void);
 int FUN_00435ec0(void);
 void FUN_00435470(void *param_1, unsigned int param_2, struct Cursor *param_3);
 
-void FUN_00433ca0(struct JungleHolder *param_1);
+void FUN_00433ca0(struct RideObject *obj);
 void FUN_00433cd0();
 void FUN_00433ce0();
 void FUN_00433d20(unsigned int param_1, int *param_2);
 void FUN_00433d90(int param_1, unsigned int param_2, unsigned int param_3);
 unsigned int FUN_00433fa0(unsigned int param_1, unsigned int param_2);
-unsigned int *FUN_00434040(struct JungleHolder *param_1, unsigned short param_2);
-void FUN_00434080(struct JungleHolder *param_1);
+unsigned int *FUN_00434040(struct RideObject *obj, unsigned short param_2);
+void FUN_00434080(struct RideObject *obj);
 void FUN_004340b0();
 void FUN_004340c0();
 void FUN_00434100(unsigned int param_1, int *param_2);
 void FUN_00434330(int *param_1, unsigned int param_2, int *param_3);
 unsigned int FUN_00434650(unsigned int param_1, unsigned int param_2);
-unsigned int *FUN_00434740(struct JungleHolder *param_1, short param_2);
-void FUN_00434cb0(struct JungleHolder *param_1);
-void FUN_00434e50(struct JungleHolder *param_1);
+unsigned int *FUN_00434740(struct RideObject *obj, short param_2);
+void FUN_00434cb0(struct RideObject *obj);
+void FUN_00434e50(struct RideObject *obj);
 void FUN_00434f50();
 void FUN_00434f90(unsigned int param_1, int *param_2);
-void FUN_00435150(int param_1, unsigned int param_2, unsigned int param_3);
+void FUN_00435150(struct RideObject *obj, unsigned int param_2, unsigned int param_3);
 void FUN_00435230(unsigned int param_1, unsigned int param_2);
 void FUN_00435750();
 void FUN_00435bd0(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6);
-void FUN_00436160(unsigned int param_1, int param_2);
-void FUN_00436190(struct JungleHolder *param_1);
+int FUN_00436160(struct RideObject *obj, int param_2);
+void FUN_00436190(struct RideObject *obj);
 void FUN_004361a0();
 void FUN_00436200(int param_1, unsigned int param_2, unsigned int param_3);
 void FUN_00436470(unsigned int param_1, unsigned int *param_2);

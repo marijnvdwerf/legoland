@@ -53,7 +53,6 @@ struct JungleTileMap;
 struct BoatRide;
 struct RideNode;
 struct PathNode;
-struct BoatSpriteSet;
 struct BoatRideNode;
 struct MermaidNode;
 struct Ride;
@@ -427,7 +426,7 @@ extern int DAT_004b5290[0xc];
 // 0x004b52c0
 extern unsigned char PTR_s_Boat_Noise_wav[0x18];
 // 0x004b53c0
-extern unsigned int DAT_004b53c0[5];
+extern struct Footprint DAT_004b53c0;
 // 0x004b53d4
 extern unsigned char DAT_004b53d4[0x190];
 // 0x004b55f4
@@ -505,11 +504,11 @@ extern int DAT_004b6be8[0x5c];
 // 0x004b6d58
 extern unsigned char DAT_004b6d58[0x120];
 // 0x004b7260
-extern int DAT_004b7260[6];
+extern struct Footprint DAT_004b7260;
 // 0x004b7278
-extern int DAT_004b7278[4];
+extern struct Footprint DAT_004b7278;
 // 0x004b7288
-extern void *DAT_004b7288;
+extern struct Footprint *DAT_004b7288;
 // 0x004b7148
 extern int DAT_004b7148[0x10];
 // 0x004b7188
@@ -1416,9 +1415,9 @@ extern struct JungleFish *DAT_00629c34;
 // 0x00629c3c
 extern struct JungleScore *DAT_00629c3c;
 // 0x00629c40
-extern int DAT_00629c40[5];
+extern struct Footprint DAT_00629c40;
 // 0x00629c50
-extern void *DAT_00629c50;
+extern struct Footprint *DAT_00629c50;
 // 0x00629c54
 extern int DAT_00629c54;
 // 0x00629c58
@@ -3256,13 +3255,13 @@ extern struct Building *DAT_0081cb4c;
 // 0x0081cb50
 extern struct Sprite *DAT_0081cb50;
 // 0x0081cb54
-extern struct Cursor *DAT_0081cb54;
+extern struct Ride *DAT_0081cb54;
 // 0x0081cb58
 extern struct JungleTileMap *DAT_0081cb58;
 // 0x0081cb5c
 extern struct Sprite *DAT_0081cb5c;
 // 0x0081cb60
-extern struct Cursor *DAT_0081cb60;
+extern struct Ride *DAT_0081cb60;
 // 0x0081cb64
 extern struct Cursor *DAT_0081cb64;
 // 0x0081cb68
@@ -3270,13 +3269,13 @@ extern struct Sprite *DAT_0081cb68;
 // 0x0081cb6c
 extern struct Sprite *DAT_0081cb6c;
 // 0x0081cb70
-extern struct Cursor *DAT_0081cb70;
+extern struct Ride *DAT_0081cb70;
 // 0x0081cb74
-extern struct Cursor *DAT_0081cb74;
+extern struct Ride *DAT_0081cb74;
 // 0x0081cb80
 extern struct Point DAT_0081cb80[3][16];
 // 0x0081cd00
-extern void *DAT_0081cd00;
+extern struct SpriteSet *DAT_0081cd00;
 // 0x0081cd04
 extern void *DAT_0081cd04;
 // 0x0081cd08
@@ -3464,7 +3463,7 @@ extern struct Sprite *DAT_0082c654;
 // 0x0082c658
 extern struct Ride *DAT_0082c658;
 // 0x0082c65c
-extern struct BoatSpriteSet *DAT_0082c65c;
+extern struct SpriteSet *DAT_0082c65c;
 // 0x0082c668
 extern struct Sprite *DAT_0082c668;
 // 0x0082c678
