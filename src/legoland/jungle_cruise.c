@@ -21,21 +21,20 @@
 
 // FUNCTION: LEGOLAND 0x00432ac0
 void FUN_00432ac0(void) {
-    int *p = &DAT_0081cb80[1];
-    int i = 0;
-    do {
-        double angle = (double)i * (double)DAT_004ab3e8 * (double)DAT_004ab3f4;
-        p[-1] = FUN_00458930((float)sin(angle));
-        p[0] = FUN_00458930((float)cos(angle));
-        angle = (sin(angle) + (double)DAT_004ab3ec - (double)DAT_004ab3fc) * (double)DAT_004ab3f4;
-        p[0x1f] = FUN_00458930((float)sin(angle));
-        p[0x20] = FUN_00458930((float)cos(angle));
-        angle = (cos(angle) + (double)DAT_004ab4a0) * (double)DAT_004ab3f4;
-        p[0x3f] = FUN_00458930((float)sin(angle));
-        p[0x40] = FUN_00458930((float)cos(angle));
-        p = p + 2;
-        i = i + 1;
-    } while (p < &DAT_0081cb80[0x21]);
+    int i;
+    float a;
+
+    for (i = 0; i < 16; i++) {
+        a = (i * DAT_004ab3e8) * DAT_004ab3f4;
+        DAT_0081cb80[i * 2] = (int)(sin(a) * DAT_004ab4b0);
+        DAT_0081cb80[i * 2 + 1] = (int)(cos(a) * DAT_004ab4a8);
+        a = (i * DAT_004ab3e8 + DAT_004ab3ec - DAT_004ab3fc) * DAT_004ab3f4;
+        DAT_0081cb80[i * 2 + 0x20] = (int)(sin(a) * DAT_004ab4b0);
+        DAT_0081cb80[i * 2 + 0x21] = (int)(cos(a) * DAT_004ab4a8);
+        a = (i * DAT_004ab3e8 + DAT_004ab4a0) * DAT_004ab3f4;
+        DAT_0081cb80[i * 2 + 0x40] = (int)(sin(a) * DAT_004ab4b0);
+        DAT_0081cb80[i * 2 + 0x41] = (int)(cos(a) * DAT_004ab4a8);
+    }
 }
 
 // FUNCTION: LEGOLAND 0x00432b90
