@@ -226,10 +226,10 @@ float DAT_004b5198[0x10];
 int DAT_004b51d8[0x80];
 
 // GLOBAL: LEGOLAND 0x004b5260
-int DAT_004b5260[5];
+struct Footprint DAT_004b5260;
 
 // GLOBAL: LEGOLAND 0x004b5278
-int DAT_004b5278[5];
+struct Footprint DAT_004b5278;
 
 // GLOBAL: LEGOLAND 0x004b5290
 int DAT_004b5290[0xc];
@@ -1395,10 +1395,10 @@ struct InterfaceResearchNode;
 struct BoatRide *DAT_004cc03c;
 
 // GLOBAL: LEGOLAND 0x004cc048
-int DAT_004cc048[5];
+struct Footprint DAT_004cc048;
 
 // GLOBAL: LEGOLAND 0x004cc060
-int DAT_004cc060[4];
+struct Footprint DAT_004cc060;
 
 // GLOBAL: LEGOLAND 0x004cc070
 int *DAT_004cc070;
@@ -1407,7 +1407,7 @@ int *DAT_004cc070;
 struct BoatRideNode *DAT_004cc074;
 
 // GLOBAL: LEGOLAND 0x004cc078
-int DAT_004cc078[4];
+struct Footprint DAT_004cc078;
 
 // GLOBAL: LEGOLAND 0x004cc088
 int *DAT_004cc088;
@@ -4830,7 +4830,7 @@ struct Sprite *DAT_0082c654;
 struct Cursor *DAT_0082c658;
 
 // GLOBAL: LEGOLAND 0x0082c65c
-void *DAT_0082c65c;
+struct BoatSpriteSet *DAT_0082c65c;
 
 // GLOBAL: LEGOLAND 0x0082c668
 struct Sprite *DAT_0082c668;

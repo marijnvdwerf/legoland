@@ -140,12 +140,12 @@ void FUN_00418fe0(int param_1) {
         baseY = (dx + dy) * th2 >> 9;
         local_18 = ((ride->field_4 - ride->field_8) * (tw >> 1) - ((tw + 1) >> 1)) - (ScrollX >> 8);
         local_14 = (ride->field_4 + ride->field_8) * (th >> 1) - (ScrollY >> 8);
-        dx = *(int *)(*(int *)((char *)DAT_0082c65c + 0xc) + (ride->field_29c[DAT_004cc08c] & 0xff) * 4) >> 1;
-        dy = *(int *)(*(int *)((char *)DAT_0082c65c + 0x10) + (ride->field_29c[DAT_004cc08c] & 0xff) * 4) >> 1;
+        dx = DAT_0082c65c->offset_x[ride->field_29c[DAT_004cc08c] & 0xff] >> 1;
+        dy = DAT_0082c65c->offset_y[ride->field_29c[DAT_004cc08c] & 0xff] >> 1;
         AdjustOffsetForViewMode((struct Point *)&dx);
         ride->field_14 = (unsigned int)lpConfig->field_20 + baseX + dx + local_18;
         ride->field_18 = (unsigned int)lpConfig->field_22 + baseY + dy + local_14;
-        PrintSprite(*(struct Sprite **)(*(int *)((char *)DAT_0082c65c + 8) + (ride->field_29c[DAT_004cc08c] & 0xff) * 4),
+        PrintSprite(DAT_0082c65c->sprites[ride->field_29c[DAT_004cc08c] & 0xff],
             ride->field_14, ride->field_18, 0, 0);
         if (ride->field_3ec != 0) {
             person = Find3DPersonFromBloke(ride->field_3ec);
@@ -160,7 +160,7 @@ void FUN_00418fe0(int param_1) {
             *(int *)(person + 0x1c) = local_18 + tw2;
             *(int *)(person + 0x20) = local_14 + th2;
             IP_RenderBlokeIn3DNow((struct Bloke *)ride->field_3ec);
-            PrintSprite(*(struct Sprite **)(*(int *)((char *)DAT_0082c65c + 8) + ((ride->field_29c[DAT_004cc08c] + 0x30) & 0xff) * 4),
+            PrintSprite(DAT_0082c65c->sprites[(ride->field_29c[DAT_004cc08c] + 0x30) & 0xff],
                 ride->field_14, ride->field_18, 0, 0);
         }
     next:
@@ -191,14 +191,15 @@ unsigned int FUN_004192d0(struct BoatRide *param_1) {
 // FUNCTION: LEGOLAND 0x00419300
 void FUN_00419300(void) {
     struct BoatRide *node = DAT_004cc03c;
+    struct BoatRide *cur;
+
     while (node != NULL) {
-        struct BoatRide *cur = node;
         node->field_4 = node->field_c;
         node->field_8 = node->field_10;
         if (node->field_3e4 == 0x10) {
-            cur = FUN_00419420(node);
-            if (cur != node) {
-                node = cur;
+            cur = node;
+            node = FUN_00419420(node);
+            if (node != cur) {
                 continue;
             }
         } else {
@@ -212,12 +213,15 @@ void FUN_00419300(void) {
             case 8:
                 FUN_00419520(node, 1);
                 break;
+            case 0x10:
+                node = FUN_00419420(node);
+                break;
             }
         }
-        if (cur == NULL) {
+        if (node == NULL) {
             return;
         }
-        node = cur->next;
+        node = node->next;
     }
 }
 
@@ -602,105 +606,76 @@ void FUN_004198a0(struct BoatRide *param_1, unsigned int param_2, unsigned int p
 
 // FUNCTION: LEGOLAND 0x00419d10
 void FUN_00419d10(struct BoatHolder *param_1) {
-    void *handle;
-    unsigned int i;
-    int sprite;
+    unsigned int handle;
+    int i;
+    struct Sprite *sprite;
     int lls;
-    int *src;
-    int *dst;
-    int absorbed;
 
     Load_FXList(PTR_s_Boat_Noise_wav, 2);
     DAT_0082c658 = param_1->cursor;
     DAT_0082c658->field_1c |= 0x20;
-    *(unsigned int *)((char *)DAT_0082c658->field_64 + 0x10) |= 0x2000;
+    ((struct RideLayer *)DAT_0082c658->field_64)->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b5334
-    if (LLIDB_FindElement("BOATING SCHOOL TILE MAPPING", (unsigned int *)&handle, 0) == 0) {
-        DAT_0082adf4 = (struct BoatTileMap *)LLIDB_LoadData(handle);
+    if (LLIDB_FindElement("BOATING SCHOOL TILE MAPPING", &handle, 0) == 0) {
+        DAT_0082adf4 = (struct BoatTileMap *)LLIDB_LoadData((void *)handle);
     }
     // STRING: LEGOLAND 0x004b531c
-    if (LLIDB_FindElement("BOATING SCHOOL BOATS", (unsigned int *)&handle, 0) == 0) {
-        DAT_0082c65c = LLIDB_LoadData(handle);
+    if (LLIDB_FindElement("BOATING SCHOOL BOATS", &handle, 0) == 0) {
+        DAT_0082c65c = (struct BoatSpriteSet *)LLIDB_LoadData((void *)handle);
     }
-    i = 0;
-    if (0 < *(int *)((char *)DAT_0082c65c + 4)) {
-        do {
-            sprite = *(int *)(*(int *)((char *)DAT_0082c65c + 8) + (i & 0xff) * 4);
-            lls = GetLLSForSprite((struct SpriteLLS *)sprite);
-            LLSPlay((struct LLS *)lls, *(unsigned int *)(sprite + 8));
-            i = i + 1;
-        } while ((int)i < *(int *)((char *)DAT_0082c65c + 4));
+    for (i = 0; i < DAT_0082c65c->count; i++) {
+        sprite = DAT_0082c65c->sprites[i & 0xff];
+        LLSPlay((struct LLS *)GetLLSForSprite((struct SpriteLLS *)sprite), *(unsigned int *)((char *)sprite + 8));
     }
     // STRING: LEGOLAND 0x004b530c
     DAT_0082adfc = LoadSprite("bs_hullmask.lls", 1);
     // STRING: LEGOLAND 0x004b52fc
     DAT_0082c654 = LoadSprite("bs_railm.lls", 1);
-    DAT_0082ae00 = GetSpriteForLayer((void *)DAT_0082c658->field_64, 5);
-    lls = GetLLSForSprite((struct SpriteLLS *)DAT_0082ae00);
+    lls = GetLLSForSprite((struct SpriteLLS *)(DAT_0082ae00 = (void *)GetSpriteForLayer((struct LayerContainer *)DAT_0082c658->field_64, 5)));
     LLSStop(lls);
     LLSSetFrame((struct LLS *)lls, *(short *)(lls + 0x10));
-    src = (int *)&DAT_0082c658->field_3c;
-    dst = DAT_004cc078;
-    for (i = 5; i != 0; i = i - 1) {
-        *dst = *src;
-        src = src + 1;
-        dst = dst + 1;
-    }
-    src = DAT_004b5260;
-    dst = DAT_004cc048;
-    for (i = 5; absorbed = DAT_004cc078[0], i != 0; i = i - 1) {
-        *dst = *src;
-        src = src + 1;
-        dst = dst + 1;
-    }
-    DAT_004cc048[1] = DAT_004b5260[1] + DAT_004cc078[1];
-    DAT_004cc048[3] += DAT_004cc078[1];
-    DAT_004cc048[0] += DAT_004cc078[0];
-    DAT_004cc048[2] += DAT_004cc078[0];
-    src = DAT_004b5278;
-    dst = DAT_004cc060;
-    for (i = 5; i != 0; i = i - 1) {
-        *dst = *src;
-        src = src + 1;
-        dst = dst + 1;
-    }
-    DAT_004cc060[0] += absorbed;
-    DAT_004cc060[1] = DAT_004b5278[1] + 1 + DAT_004cc078[3];
-    DAT_004cc060[2] += absorbed;
-    DAT_004cc060[3] += 1 + DAT_004cc078[3];
+    DAT_004cc078 = DAT_0082c658->field_3c;
+    DAT_004cc048 = DAT_004b5260;
+    DAT_004cc048.v[1] = DAT_004b5260.v[1] + DAT_004cc078.v[1];
+    DAT_004cc048.v[3] += DAT_004cc078.v[1];
+    DAT_004cc048.v[0] += DAT_004cc078.v[0];
+    DAT_004cc048.v[2] += DAT_004cc078.v[0];
+    DAT_004cc060 = DAT_004b5278;
+    DAT_004cc060.v[0] += DAT_004cc078.v[0];
+    DAT_004cc060.v[1] = DAT_004b5278.v[1] + 1 + DAT_004cc078.v[3];
+    DAT_004cc060.v[2] += DAT_004cc078.v[0];
+    DAT_004cc060.v[3] += 1 + DAT_004cc078.v[3];
 }
 
 // FUNCTION: LEGOLAND 0x00419ef0
 void FUN_00419ef0(void) {
-    void *handle;
+    unsigned int handle;
     unsigned int i;
     struct BoatRide *ride;
     struct PathNode *path;
 
     Kill_FXList(PTR_s_Boat_Noise_wav, 2);
     i = 0;
-    if (0 < *(int *)((char *)DAT_0082c65c + 4)) {
+    if (0 < DAT_0082c65c->count) {
         do {
-            LLSStop(GetLLSForSprite(*(struct SpriteLLS **)(*(int *)((char *)DAT_0082c65c + 8) + (i & 0xff) * 4)));
+            LLSStop(GetLLSForSprite((struct SpriteLLS *)DAT_0082c65c->sprites[i & 0xff]));
             i = i + 1;
-        } while ((int)i < *(int *)((char *)DAT_0082c65c + 4));
+        } while ((int)i < DAT_0082c65c->count);
     }
-    if (LLIDB_FindElement("BOATING SCHOOL TILE MAPPING", (unsigned int *)&handle, 0) == 0) {
-        LLIDB_UnLoadData((unsigned int)handle);
+    if (LLIDB_FindElement("BOATING SCHOOL TILE MAPPING", &handle, 0) == 0) {
+        LLIDB_UnLoadData(handle);
     }
-    if (LLIDB_FindElement("BOATING SCHOOL BOATS", (unsigned int *)&handle, 0) == 0) {
-        LLIDB_UnLoadData((unsigned int)handle);
+    if (LLIDB_FindElement("BOATING SCHOOL BOATS", &handle, 0) == 0) {
+        LLIDB_UnLoadData(handle);
     }
     while (DAT_004cc074 != NULL) {
         struct BoatRideNode *next = DAT_004cc074->next;
         free(DAT_004cc074);
         DAT_004cc074 = next;
     }
-    DAT_004cc074 = NULL;
     while (DAT_004cc03c != NULL) {
         FUN_00418f90(DAT_004cc03c);
     }
-    DAT_004cc03c = NULL;
     while (DAT_004d823c != NULL) {
         path = DAT_004d823c->next;
         free(DAT_004d823c);
@@ -715,9 +690,9 @@ void FUN_0041a000(void) {
     EditMode.unk0 = 1;
     EditMode.unk8 = DAT_0082c658;
     DefaultCursor(&EditCursor);
-    DAT_004cc088 = DAT_004cc060;
-    DAT_004cc070 = DAT_004cc048;
-    SetEditCursorFootPrint(DAT_004cc078);
+    DAT_004cc088 = DAT_004cc060.v;
+    DAT_004cc070 = DAT_004cc048.v;
+    SetEditCursorFootPrint(DAT_004cc078.v);
 }
 
 // FUNCTION: LEGOLAND 0x0041a040
@@ -735,13 +710,13 @@ void FUN_0041a040(unsigned int param_1, int *param_2) {
         return;
     }
     score->id = *(unsigned short *)temp;
-    score->field_2 = (unsigned char)param_2[0] + (char)DAT_004cc060[0] + 2;
-    score->field_3 = (unsigned char)param_2[1] + (char)DAT_004cc060[1] + 2;
-    score->field_4 = (unsigned char)param_2[0] + (char)DAT_004cc048[0] + 2;
+    score->field_2 = (unsigned char)param_2[0] + (char)DAT_004cc060.v[0] + 2;
+    score->field_3 = (unsigned char)param_2[1] + (char)DAT_004cc060.v[1] + 2;
+    score->field_4 = (unsigned char)param_2[0] + (char)DAT_004cc048.v[0] + 2;
     score->field_8 = 0;
     score->field_c = 9999;
     score->field_10 = 0;
-    score->field_5 = (unsigned char)param_2[1] + (char)DAT_004cc048[1] + 2;
+    score->field_5 = (unsigned char)param_2[1] + (char)DAT_004cc048.v[1] + 2;
     score->field_14 = 0;
     score->value = 5;
     score->blokes[0] = 0;
@@ -752,44 +727,44 @@ void FUN_0041a040(unsigned int param_1, int *param_2) {
     score->next = DAT_004cc074;
     DAT_004cc074 = score;
     AddBasicObject(param_1, (unsigned int)param_2);
-    FUN_0041c4c0(param_2[0] + 2 + DAT_004cc060[0], param_2[1] + 2 + DAT_004cc060[1], 1, &score->id);
-    FUN_0041c4c0(param_2[0] + 2 + DAT_004cc048[0], param_2[1] + 2 + DAT_004cc048[1], 4, &score->id);
-    y = DAT_004cc078[1];
-    if (DAT_004cc078[1] <= DAT_004cc078[3]) {
+    FUN_0041c4c0(param_2[0] + 2 + DAT_004cc060.v[0], param_2[1] + 2 + DAT_004cc060.v[1], 1, &score->id);
+    FUN_0041c4c0(param_2[0] + 2 + DAT_004cc048.v[0], param_2[1] + 2 + DAT_004cc048.v[1], 4, &score->id);
+    y = DAT_004cc078.v[1];
+    if (DAT_004cc078.v[1] <= DAT_004cc078.v[3]) {
         do {
-            x = DAT_004cc078[0];
-            if (DAT_004cc078[0] <= DAT_004cc078[2]) {
+            x = DAT_004cc078.v[0];
+            if (DAT_004cc078.v[0] <= DAT_004cc078.v[2]) {
                 do {
-                    if (x == DAT_004cc078[0]) {
+                    if (x == DAT_004cc078.v[0]) {
                         tile = *DAT_0082adf4->tiles + 9;
-                    } else if (x == DAT_004cc078[2]) {
+                    } else if (x == DAT_004cc078.v[2]) {
                         tile = *DAT_0082adf4->tiles + 0xc;
                     } else {
                         tile = *DAT_0082adf4->tiles;
                     }
                     SetMapTile(param_2[0] + x, param_2[1] + y, tile);
                     x = x + 1;
-                } while (x <= DAT_004cc078[2]);
+                } while (x <= DAT_004cc078.v[2]);
             }
             y = y + 1;
-        } while (y <= DAT_004cc078[3]);
+        } while (y <= DAT_004cc078.v[3]);
     }
-    SetMapTile(param_2[0] + DAT_004cc078[2], param_2[1] + DAT_004cc078[1], *DAT_0082adf4->tiles + 8);
-    SetMapTile(param_2[0] + DAT_004cc078[2], param_2[1] + DAT_004cc078[3], *DAT_0082adf4->tiles + 7);
-    SetMapTile(param_2[0] + 4 + DAT_004cc078[0], param_2[1] + DAT_004cc078[3], *DAT_0082adf4->tiles + 4);
-    SetMapTile(param_2[0] + 4 + DAT_004cc078[0], param_2[1] + DAT_004cc078[1], *DAT_0082adf4->tiles + 1);
-    SetMapTile(param_2[0] + 5 + DAT_004cc078[0], param_2[1] + DAT_004cc078[3], *DAT_0082adf4->tiles + 0xb);
-    SetMapTile(param_2[0] + 5 + DAT_004cc078[0], param_2[1] + DAT_004cc078[1], *DAT_0082adf4->tiles + 10);
+    SetMapTile(param_2[0] + DAT_004cc078.v[2], param_2[1] + DAT_004cc078.v[1], *DAT_0082adf4->tiles + 8);
+    SetMapTile(param_2[0] + DAT_004cc078.v[2], param_2[1] + DAT_004cc078.v[3], *DAT_0082adf4->tiles + 7);
+    SetMapTile(param_2[0] + 4 + DAT_004cc078.v[0], param_2[1] + DAT_004cc078.v[3], *DAT_0082adf4->tiles + 4);
+    SetMapTile(param_2[0] + 4 + DAT_004cc078.v[0], param_2[1] + DAT_004cc078.v[1], *DAT_0082adf4->tiles + 1);
+    SetMapTile(param_2[0] + 5 + DAT_004cc078.v[0], param_2[1] + DAT_004cc078.v[3], *DAT_0082adf4->tiles + 0xb);
+    SetMapTile(param_2[0] + 5 + DAT_004cc078.v[0], param_2[1] + DAT_004cc078.v[1], *DAT_0082adf4->tiles + 10);
 }
 
 // FUNCTION: LEGOLAND 0x0041a2f0
 void FUN_0041a2f0(int param_1, unsigned int param_2, unsigned int param_3) {
     struct Cursor *cursor = *(struct Cursor **)(param_1 + 0xc);
 
-    DAT_004cc088 = DAT_004cc060;
-    DAT_004cc070 = DAT_004cc048;
+    DAT_004cc088 = DAT_004cc060.v;
+    DAT_004cc070 = DAT_004cc048.v;
     DAT_004cc070[4] = 0;
-    memcpy(EditCursor.field_1414, DAT_004cc078, 20);
+    memcpy(EditCursor.field_1414, DAT_004cc078.v, 20);
     EditCursor.field_1830 = 0;
     ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
     PathCursor.field_1404 = EditCursor.field_1404;
@@ -861,8 +836,8 @@ void FUN_0041a530(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
     int savedY;
 
     StandardRemoveObject((struct EditObject *)obj, tile, cursor);
-    for (y = DAT_004cc078[1]; y <= DAT_004cc078[3]; y++) {
-        for (x = DAT_004cc078[0]; x <= DAT_004cc078[2]; x++) {
+    for (y = DAT_004cc078.v[1]; y <= DAT_004cc078.v[3]; y++) {
+        for (x = DAT_004cc078.v[0]; x <= DAT_004cc078.v[2]; x++) {
             RestoreBaseMap(cursor->field_1404 + x, cursor->field_1408 + y);
         }
     }
@@ -1782,7 +1757,7 @@ void FUN_0041bfb0(unsigned int param_1, unsigned int *param_2) {
                 *param_2 = p->x;
                 QueryObj = (unsigned short)((QueryObj & 0xff) | (p->y << 8));
                 param_2[1] = p->y;
-                *(struct Footprint *)((char *)QueryClass + 0x3c) = *(struct Footprint *)DAT_004cc078;
+                *(struct Footprint *)((char *)QueryClass + 0x3c) = *(struct Footprint *)DAT_004cc078.v;
                 FUN_0041a3d0((void *)temp, param_1);
                 return;
             }
@@ -2099,9 +2074,9 @@ struct PathNode *FUN_0041c890(unsigned int a, unsigned int b) {
 }
 
 // FUNCTION: LEGOLAND 0x0041c8c0
-int FUN_0041c8c0(unsigned char a, unsigned char b, unsigned char c, unsigned char d) {
+int FUN_0041c8c0(int a, int b, int c, int d) {
     struct PathNode *node;
-    short key;
+    TileId key;
     int result;
 
     result = 0;
@@ -2109,60 +2084,42 @@ int FUN_0041c8c0(unsigned char a, unsigned char b, unsigned char c, unsigned cha
         node->field_c = 0;
     }
     node = FUN_0041c890(a, b);
-    if (node != NULL) {
-        key = node->field_2;
-        FUN_0041c940(a, b, c, d, &key, &result);
-        return result;
+    if (node == NULL) {
+        return 0;
     }
-    return 0;
+    key.id = node->field_2;
+    FUN_0041c940(a, b, c, d, &key, &result);
+    return result;
 }
 
 // FUNCTION: LEGOLAND 0x0041c940
-void FUN_0041c940(int param_1, int param_2, int param_3, int param_4, short *param_5, int *param_6) {
+void FUN_0041c940(int x, int y, int tx, int ty, TileId *owner, int *found) {
     struct PathNode *node;
-    struct PathNode *neighbour;
+    struct PathNode *next;
 
-    if (*param_6 != 1) {
-        while (1) {
-            node = FUN_0041c890(param_1, param_2);
-            if (node == NULL) {
-                return;
-            }
-            if (node->field_2 != *param_5) {
-                return;
-            }
-            if (param_1 == param_3 && param_2 == param_4) {
-                break;
-            }
-            node->field_c = 1;
-            if ((node->field_4 & 1) != 0 &&
-                (neighbour = FUN_0041c890(param_1, (param_2 - 5)), neighbour != NULL) && neighbour->field_c == 0) {
-                FUN_0041c940(param_1, param_2 - 5, param_3, param_4, param_5, param_6);
-            }
-            if ((node->field_4 & 2) != 0 &&
-                (neighbour = FUN_0041c890((param_1 + 5), param_2), neighbour != NULL) && neighbour->field_c == 0) {
-                FUN_0041c940(param_1 + 5, param_2, param_3, param_4, param_5, param_6);
-            }
-            if ((node->field_4 & 4) != 0 &&
-                (neighbour = FUN_0041c890(param_1, (param_2 + 5)), neighbour != NULL) && neighbour->field_c == 0) {
-                FUN_0041c940(param_1, param_2 + 5, param_3, param_4, param_5, param_6);
-            }
-            if ((node->field_4 & 8) == 0) {
-                return;
-            }
-            param_1 = param_1 - 5;
-            node = FUN_0041c890(param_1, param_2);
-            if (node == NULL) {
-                return;
-            }
-            if (node->field_c != 0) {
-                return;
-            }
-            if (*param_6 == 1) {
-                return;
-            }
-        }
-        *param_6 = 1;
+    if (*found == 1) {
+        return;
+    }
+    node = FUN_0041c890(x, y);
+    if (node == NULL || node->field_2 != owner->id) {
+        return;
+    }
+    if (x == tx && y == ty) {
+        *found = 1;
+        return;
+    }
+    node->field_c = 1;
+    if ((node->field_4 & 1) != 0 && (next = FUN_0041c890(x, y - 5)) != NULL && next->field_c == 0) {
+        FUN_0041c940(x, y - 5, tx, ty, owner, found);
+    }
+    if ((node->field_4 & 2) != 0 && (next = FUN_0041c890(x + 5, y)) != NULL && next->field_c == 0) {
+        FUN_0041c940(x + 5, y, tx, ty, owner, found);
+    }
+    if ((node->field_4 & 4) != 0 && (next = FUN_0041c890(x, y + 5)) != NULL && next->field_c == 0) {
+        FUN_0041c940(x, y + 5, tx, ty, owner, found);
+    }
+    if ((node->field_4 & 8) != 0 && (next = FUN_0041c890(x - 5, y)) != NULL && next->field_c == 0) {
+        FUN_0041c940(x - 5, y, tx, ty, owner, found);
     }
 }
 

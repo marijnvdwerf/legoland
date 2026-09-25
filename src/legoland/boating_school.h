@@ -58,6 +58,15 @@ struct MermaidNode {
     /* 0x04 */ struct MermaidNode *next;
 };
 
+/* LLIDB "BOATING SCHOOL BOATS" data: boat sprites with per-frame screen offsets. */
+struct BoatSpriteSet {
+    /* 0x00 */ int field_0;
+    /* 0x04 */ int count;
+    /* 0x08 */ struct Sprite **sprites;
+    /* 0x0c */ int *offset_x;
+    /* 0x10 */ int *offset_y;
+};
+
 struct BoatHolder {
     /* 0x00 */ unsigned char pad_0[0xc];
     /* 0x0c */ struct Cursor *cursor;
@@ -85,8 +94,8 @@ void FUN_0041c620(void *param_1, TileId tile, struct Cursor *param_3);
 void FUN_0041bab0(int param_1, int param_2, unsigned short *param_3);
 void FUN_0041caa0(unsigned short param_1);
 void FUN_0041cb20(short param_1);
-int FUN_0041c8c0(unsigned char a, unsigned char b, unsigned char c, unsigned char d);
-void FUN_0041c940(int param_1, int param_2, int param_3, int param_4, short *param_5, int *param_6);
+int FUN_0041c8c0(int a, int b, int c, int d);
+void FUN_0041c940(int x, int y, int tx, int ty, TileId *owner, int *found);
 void FUN_0041b6f0(void *param_1, TileId tile, struct Cursor *param_3);
 void FUN_0041a3d0(void *param_1, unsigned int param_2);
 void FUN_0041a530(struct RideObject *obj, TileId tile, struct Cursor *cursor);
