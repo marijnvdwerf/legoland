@@ -272,10 +272,11 @@ int FUN_00478cd0(char **argv, int argc) {
         }
         if (DAT_00669054 == 1) {
             out = &DAT_00832928;
+            argv++;
             do {
-                argv = argv + 1;
                 *out = atoi(*argv);
-                out = out + 1;
+                argv++;
+                out++;
             } while ((int)out < (int)DAT_0083293c);
         }
     }
@@ -389,13 +390,9 @@ int FUN_00478fa0(struct CommandArgs *arg, int argc) {
             count = 1;
         }
         if (DAT_00669054 == 1) {
-            int i = count;
-            if (i != 0) {
-                do {
-                    GenerateGardener(coords, 0);
-                    i = i - 1;
-                } while (i != 0);
-                return 1;
+            while (count != 0) {
+                GenerateGardener(coords, 0);
+                count--;
             }
         } else {
             FUN_0046bad0(1, count, (unsigned int *)coords);
@@ -419,13 +416,9 @@ int FUN_00479060(struct CommandArgs *arg, int argc) {
             count = 1;
         }
         if (DAT_00669054 == 1) {
-            int i = count;
-            if (i != 0) {
-                do {
-                    GenerateMechanic(coords, 0);
-                    i = i - 1;
-                } while (i != 0);
-                return 1;
+            while (count != 0) {
+                GenerateMechanic(coords, 0);
+                count--;
             }
         } else {
             FUN_0046bad0(0, count, (unsigned int *)coords);
@@ -1211,9 +1204,7 @@ int FUN_0047a3d0(struct CommandArgs *arg, int argc) {
         return 1;
     }
     if (FUN_004786c0((unsigned int)arg, argc, 2, 1) != 0) {
-        if (argc == 0) {
-            index = 0;
-        } else {
+        if (argc != 0) {
             index = FUN_004781b0((char *)arg->field_4, &DAT_004bb5e0, 5);
         }
         if (index != -1) {
@@ -1314,9 +1305,9 @@ int FUN_0047a5a0(struct CommandArgs *arg, int argc) {
     if (id != 0) {
         if (DAT_00669054 == 1) {
             FUN_00469bd0(id, coords);
-            return 1;
+        } else {
+            FUN_0046b880(id, coords, v);
         }
-        FUN_0046b880(id, coords, v);
     }
     return 1;
 }

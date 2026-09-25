@@ -2196,11 +2196,11 @@ void FUN_0046c4b0(unsigned char param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0046c510
-void FUN_0046c510(unsigned int param_1) {
+void FUN_0046c510(unsigned char param_1) {
     struct ObjectiveEvent *node;
 
     node = FUN_00468910(0x45, 1);
-    node->flags_10 = (unsigned char)param_1;
+    node->flags_10 = param_1;
     FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
 }
 

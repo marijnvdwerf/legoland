@@ -101,7 +101,7 @@ void FUN_0046c420(unsigned char param_1, unsigned int param_2, unsigned int para
 void FUN_0046c450(unsigned char param_1, unsigned int param_2);
 void FUN_0046c480(unsigned char param_1, unsigned int param_2);
 void FUN_0046c4b0(unsigned char param_1, unsigned int param_2);
-void FUN_0046c510(unsigned int param_1);
+void FUN_0046c510(unsigned char param_1);
 void FUN_0046c5c0(void);
 unsigned int FUN_0046cb20(void);
 void FUN_0046ce00(void);
