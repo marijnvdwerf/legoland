@@ -577,17 +577,14 @@ void FUN_00419d10(struct RideObject *obj) {
 // FUNCTION: LEGOLAND 0x00419ef0
 void FUN_00419ef0(void) {
     unsigned int handle;
-    unsigned int i;
-    struct BoatRide *ride;
+    int i;
+    struct Sprite *sprite;
     struct PathNode *path;
 
     Kill_FXList(PTR_s_Boat_Noise_wav, 2);
-    i = 0;
-    if (0 < DAT_0082c65c->count) {
-        do {
-            LLSStop(GetLLSForSprite((struct SpriteLLS *)DAT_0082c65c->sprites[i & 0xff]));
-            i = i + 1;
-        } while ((int)i < DAT_0082c65c->count);
+    for (i = 0; i < DAT_0082c65c->count; i++) {
+        sprite = DAT_0082c65c->sprites[(unsigned char)i];
+        LLSStop(GetLLSForSprite((struct SpriteLLS *)sprite));
     }
     if (LLIDB_FindElement("BOATING SCHOOL TILE MAPPING", &handle, 0) == 0) {
         LLIDB_UnLoadData(handle);
