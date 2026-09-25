@@ -696,27 +696,26 @@ void FUN_0041a000(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0041a040
-void FUN_0041a040(unsigned int param_1, int *param_2) {
+void FUN_0041a040(struct EditObject *obj, int *coords) {
+    TileId tile;
     struct BoatRideNode *score;
-    unsigned char temp[2];
     int x;
     int y;
-    short tile;
 
-    temp[0] = (unsigned char)param_2[0];
-    temp[1] = (unsigned char)param_2[1];
+    tile.pos.x = coords[0];
+    tile.pos.y = coords[1];
     score = (struct BoatRideNode *)malloc(sizeof(struct BoatRideNode));
     if (score == NULL) {
         return;
     }
-    score->id = *(unsigned short *)temp;
-    score->start.pos.x = (unsigned char)param_2[0] + (char)DAT_004cc060.v[0] + 2;
-    score->start.pos.y = (unsigned char)param_2[1] + (char)DAT_004cc060.v[1] + 2;
-    score->end.pos.x = (unsigned char)param_2[0] + (char)DAT_004cc048.v[0] + 2;
+    score->id = tile.id;
+    score->start.pos.x = coords[0] + DAT_004cc060.v[0] + 2;
+    score->start.pos.y = coords[1] + DAT_004cc060.v[1] + 2;
+    score->end.pos.x = coords[0] + DAT_004cc048.v[0] + 2;
     score->field_8 = 0;
     score->field_c = 9999;
     score->field_10 = 0;
-    score->end.pos.y = (unsigned char)param_2[1] + (char)DAT_004cc048.v[1] + 2;
+    score->end.pos.y = coords[1] + DAT_004cc048.v[1] + 2;
     score->field_14 = 0;
     score->value = 5;
     score->blokes[0] = 0;
@@ -726,35 +725,26 @@ void FUN_0041a040(unsigned int param_1, int *param_2) {
     score->blokes[4] = 0;
     score->next = DAT_004cc074;
     DAT_004cc074 = score;
-    AddBasicObject(param_1, (unsigned int)param_2);
-    FUN_0041c4c0(param_2[0] + 2 + DAT_004cc060.v[0], param_2[1] + 2 + DAT_004cc060.v[1], 1, &score->id);
-    FUN_0041c4c0(param_2[0] + 2 + DAT_004cc048.v[0], param_2[1] + 2 + DAT_004cc048.v[1], 4, &score->id);
-    y = DAT_004cc078.v[1];
-    if (DAT_004cc078.v[1] <= DAT_004cc078.v[3]) {
-        do {
-            x = DAT_004cc078.v[0];
-            if (DAT_004cc078.v[0] <= DAT_004cc078.v[2]) {
-                do {
-                    if (x == DAT_004cc078.v[0]) {
-                        tile = *DAT_0082adf4->tiles + 9;
-                    } else if (x == DAT_004cc078.v[2]) {
-                        tile = *DAT_0082adf4->tiles + 0xc;
-                    } else {
-                        tile = *DAT_0082adf4->tiles;
-                    }
-                    SetMapTile(param_2[0] + x, param_2[1] + y, tile);
-                    x = x + 1;
-                } while (x <= DAT_004cc078.v[2]);
+    AddBasicObject(obj, coords);
+    FUN_0041c4c0(coords[0] + DAT_004cc060.v[0] + 2, coords[1] + DAT_004cc060.v[1] + 2, 1, &score->id);
+    FUN_0041c4c0(coords[0] + DAT_004cc048.v[0] + 2, coords[1] + DAT_004cc048.v[1] + 2, 4, &score->id);
+    for (y = DAT_004cc078.v[1]; y <= DAT_004cc078.v[3]; y++) {
+        for (x = DAT_004cc078.v[0]; x <= DAT_004cc078.v[2]; x++) {
+            if (x == DAT_004cc078.v[0]) {
+                SetMapTile(coords[0] + x, coords[1] + y, *DAT_0082adf4->tiles + 9);
+            } else if (x == DAT_004cc078.v[2]) {
+                SetMapTile(coords[0] + x, coords[1] + y, *DAT_0082adf4->tiles + 0xc);
+            } else {
+                SetMapTile(coords[0] + x, coords[1] + y, *DAT_0082adf4->tiles);
             }
-            y = y + 1;
-        } while (y <= DAT_004cc078.v[3]);
+        }
     }
-    SetMapTile(param_2[0] + DAT_004cc078.v[2], param_2[1] + DAT_004cc078.v[1], *DAT_0082adf4->tiles + 8);
-    SetMapTile(param_2[0] + DAT_004cc078.v[2], param_2[1] + DAT_004cc078.v[3], *DAT_0082adf4->tiles + 7);
-    SetMapTile(param_2[0] + 4 + DAT_004cc078.v[0], param_2[1] + DAT_004cc078.v[3], *DAT_0082adf4->tiles + 4);
-    SetMapTile(param_2[0] + 4 + DAT_004cc078.v[0], param_2[1] + DAT_004cc078.v[1], *DAT_0082adf4->tiles + 1);
-    SetMapTile(param_2[0] + 5 + DAT_004cc078.v[0], param_2[1] + DAT_004cc078.v[3], *DAT_0082adf4->tiles + 0xb);
-    SetMapTile(param_2[0] + 5 + DAT_004cc078.v[0], param_2[1] + DAT_004cc078.v[1], *DAT_0082adf4->tiles + 10);
+    SetMapTile(coords[0] + DAT_004cc078.v[2], coords[1] + DAT_004cc078.v[1], *DAT_0082adf4->tiles + 8);
+    SetMapTile(coords[0] + DAT_004cc078.v[2], coords[1] + DAT_004cc078.v[3], *DAT_0082adf4->tiles + 7);
+    SetMapTile(coords[0] + 4 + DAT_004cc078.v[0], coords[1] + DAT_004cc078.v[3], *DAT_0082adf4->tiles + 4);
+    SetMapTile(coords[0] + 4 + DAT_004cc078.v[0], coords[1] + DAT_004cc078.v[1], *DAT_0082adf4->tiles + 1);
+    SetMapTile(coords[0] + 5 + DAT_004cc078.v[0], coords[1] + DAT_004cc078.v[3], *DAT_0082adf4->tiles + 0xb);
+    SetMapTile(coords[0] + 5 + DAT_004cc078.v[0], coords[1] + DAT_004cc078.v[1], *DAT_0082adf4->tiles + 10);
 }
 
 // FUNCTION: LEGOLAND 0x0041a2f0
@@ -1324,70 +1314,58 @@ void FUN_0041b260(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0041b2a0
-void FUN_0041b2a0(int param_1, int *param_2) {
-    int *piVar2 = param_2;
-    int iVar9 = param_1;
-    int iVar1 = *(int *)(param_1 + 0xc);
+void FUN_0041b2a0(struct EditObject *obj, int *coords) {
+    struct Ride *ride = ((struct RideObject *)obj)->ride;
+    TileId tile;
     struct MermaidNode *node;
-    unsigned char temp[2];
+    unsigned short owner;
     int x;
     int y;
-    short tile;
-    struct SampleParams params;
-    unsigned short coord;
+    struct SampleSource source;
 
-    temp[0] = (unsigned char)param_2[0];
-    temp[1] = (unsigned char)param_2[1];
-    coord = *(unsigned short *)temp;
-    FUN_0041c690(*param_2, param_2[1], (unsigned short *)&param_2);
+    tile.pos.x = coords[0];
+    tile.pos.y = coords[1];
+    FUN_0041c690(coords[0], coords[1], &owner);
     node = (struct MermaidNode *)malloc(8);
     if (node == NULL) {
         return;
     }
-    node->tile.id = coord;
-    node->field_2 = (unsigned short)(unsigned int)param_2;
+    node->tile = tile;
+    node->field_2 = owner;
     node->next = DAT_004d2164;
     DAT_004d2164 = node;
-    FUN_0041b0d0((unsigned short)(unsigned int)param_2, 1);
-    AddBasicObject(iVar9, (unsigned int)piVar2);
-    y = *(int *)(iVar1 + 0x40);
-    if (*(int *)(iVar1 + 0x40) <= *(int *)(iVar1 + 0x48)) {
-        do {
-            x = *(int *)(iVar1 + 0x3c);
-            if (*(int *)(iVar1 + 0x3c) <= *(int *)(iVar1 + 0x44)) {
-                do {
-                    if (x == *(int *)(iVar1 + 0x3c)) {
-                        tile = *DAT_0082adf4->tiles + 9;
-                    } else if (x == *(int *)(iVar1 + 0x44)) {
-                        tile = *DAT_0082adf4->tiles + 0xc;
-                    } else if (y == *(int *)(iVar1 + 0x40)) {
-                        tile = *DAT_0082adf4->tiles + 10;
-                    } else if (y == *(int *)(iVar1 + 0x48)) {
-                        tile = *DAT_0082adf4->tiles + 0xb;
-                    } else {
-                        tile = *DAT_0082adf4->tiles;
-                    }
-                    SetMapTile(*piVar2 + x, piVar2[1] + y, tile);
-                    x = x + 1;
-                } while (x <= *(int *)(iVar1 + 0x44));
+    FUN_0041b0d0(owner, 1);
+    AddBasicObject(obj, coords);
+    for (y = ride->footprint[1]; y <= (int)ride->footprint[3]; y++) {
+        for (x = ride->footprint[0]; x <= (int)ride->footprint[2]; x++) {
+            if (x == (int)ride->footprint[0]) {
+                SetMapTile(coords[0] + x, coords[1] + y, *DAT_0082adf4->tiles + 9);
+            } else if (x == (int)ride->footprint[2]) {
+                SetMapTile(coords[0] + x, coords[1] + y, *DAT_0082adf4->tiles + 0xc);
+            } else if (y == (int)ride->footprint[1]) {
+                SetMapTile(coords[0] + x, coords[1] + y, *DAT_0082adf4->tiles + 10);
+            } else if (y == (int)ride->footprint[3]) {
+                SetMapTile(coords[0] + x, coords[1] + y, *DAT_0082adf4->tiles + 0xb);
+            } else {
+                SetMapTile(coords[0] + x, coords[1] + y, *DAT_0082adf4->tiles);
             }
-            y = y + 1;
-        } while (y <= *(int *)(iVar1 + 0x48));
+        }
     }
-    SetMapTile(*(int *)(iVar1 + 0x3c) + *piVar2, *(int *)(iVar1 + 0x40) + piVar2[1], *DAT_0082adf4->tiles + 5);
-    SetMapTile(*piVar2 + *(int *)(iVar1 + 0x44), *(int *)(iVar1 + 0x40) + piVar2[1], *DAT_0082adf4->tiles + 8);
-    SetMapTile(*(int *)(iVar1 + 0x3c) + *piVar2, *(int *)(iVar1 + 0x48) + piVar2[1], *DAT_0082adf4->tiles + 6);
-    SetMapTile(*piVar2 + *(int *)(iVar1 + 0x44), *(int *)(iVar1 + 0x48) + piVar2[1], *DAT_0082adf4->tiles + 7);
-    params.field_8 = *piVar2;
-    params.field_c = piVar2[1];
-    params.field_0 = 2;
-    PlayInstanceOfSample(*(void **)(PTR_s_Boat_Noise_wav + 0x14), 1, 1, &params);
+    SetMapTile(ride->footprint[0] + coords[0], ride->footprint[1] + coords[1], *DAT_0082adf4->tiles + 5);
+    SetMapTile(coords[0] + ride->footprint[2], ride->footprint[1] + coords[1], *DAT_0082adf4->tiles + 8);
+    SetMapTile(ride->footprint[0] + coords[0], ride->footprint[3] + coords[1], *DAT_0082adf4->tiles + 6);
+    SetMapTile(coords[0] + ride->footprint[2], ride->footprint[3] + coords[1], *DAT_0082adf4->tiles + 7);
+    source.field_8 = coords[0];
+    source.type = 2;
+    source.field_c = coords[1];
+    PlayInstanceOfSample(*(void **)(PTR_s_Boat_Noise_wav + 0x14), 1, 1, &source);
 }
 
 // FUNCTION: LEGOLAND 0x0041b4c0
 void FUN_0041b4c0(struct RideObject *obj, unsigned int param_2, unsigned int param_3) {
     struct Ride *ride;
     unsigned int mask;
+    unsigned short owner;
     int n;
     int x;
     int y;
@@ -1397,7 +1375,7 @@ void FUN_0041b4c0(struct RideObject *obj, unsigned int param_2, unsigned int par
     ride = obj->ride;
     memcpy(EditCursor.field_1414, ride->footprint, 20);
     ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
-    mask = FUN_0041c690(EditCursor.field_1404, EditCursor.field_1408, (unsigned short *)&obj);
+    mask = FUN_0041c690(EditCursor.field_1404, EditCursor.field_1408, &owner);
     EditCursor.field_1830 = n;
     if (mask == 0) {
         FUN_0045f480(&EditCursor, 0xe);
@@ -1627,6 +1605,7 @@ void FUN_0041bab0(int param_1, int param_2, unsigned short *param_3) {
 // FUNCTION: LEGOLAND 0x0041bd40
 void FUN_0041bd40(struct RideObject *obj, unsigned int param_2, unsigned int param_3) {
     unsigned int mask;
+    unsigned short owner;
     int n;
     int x;
     int y;
@@ -1637,7 +1616,7 @@ void FUN_0041bd40(struct RideObject *obj, unsigned int param_2, unsigned int par
     memcpy(EditCursor.field_1414, DAT_004b53c0, 20);
     n = 0;
     ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
-    mask = FUN_0041c690(EditCursor.field_1404, EditCursor.field_1408, (unsigned short *)&param_3);
+    mask = FUN_0041c690(EditCursor.field_1404, EditCursor.field_1408, &owner);
     EditCursor.field_1830 = n;
     if (mask == 0) {
         FUN_0045f480(&EditCursor, 0xe);
