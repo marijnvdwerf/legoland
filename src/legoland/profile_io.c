@@ -56,14 +56,10 @@ LEGO_EXPORT void ResetTempProfile(void) {
     DAT_007cad60.field_28 = 0x4b;
     DAT_007cad60.field_2c = 0x4b;
     DAT_007cad60.field_30 = 0x4b;
-    DAT_007cad60.field_34 = 0;
-    DAT_007cad60.field_38 = 0;
-    DAT_007cad60.field_3c = 0;
-    DAT_007cad60.field_40 = 0;
     DAT_007cad60.name[0] = 0;
     DAT_007cad60.field_20 = 5;
     DAT_007cad60.name_len = 0;
-    DAT_007cad60.field_42 = 0;
+    memset(&DAT_007cad60.field_34, 0, 15);
     memset(DAT_007cad60.field_43, 0, 200);
     *(int *)&DAT_007cad60.field_10b = 0;
     DAT_007cad60.field_10b = 1;
@@ -280,11 +276,10 @@ LEGO_EXPORT char SaveProfileToDisk(void) {
     stream = fopen(path, "w+");
     if (stream == 0) {
         printf("\ncannot open output file");
-        result = ReturnFrom_ProfileDir() ? 1 : -1;
-        return result;
+    } else {
+        fwrite(&DAT_007cad60, sizeof(struct ProfileData), 1, stream);
+        fclose(stream);
     }
-    fwrite(&DAT_007cad60, sizeof(struct ProfileData), 1, stream);
-    fclose(stream);
     result = ReturnFrom_ProfileDir() ? 1 : -1;
     return result;
 }
@@ -336,7 +331,7 @@ LEGO_EXPORT void AddNodeToProfileList(int load, struct ProfileData *data, char s
 LEGO_EXPORT int RemoveProfile(unsigned char index) {
     char path[120];
     int slot;
-    int remaining;
+    int i;
 
     if (Goto_ProfileDir() == 0) {
         return -1;
@@ -344,16 +339,14 @@ LEGO_EXPORT int RemoveProfile(unsigned char index) {
     sprintf(path, "profiles\\Profile%d.txt", index);
     remove(path);
     slot = 8;
-    remaining = 8;
-    do {
+    for (i = 0; i < 8; i++) {
         // STRING: LEGOLAND 0x004bf730
         sprintf(path, "profiles\\%dsave%d.sav", index, slot);
         remove(path);
         sprintf(path, "profiles\\%dsave%d.sh", index, slot);
         remove(path);
         slot--;
-        remaining--;
-    } while (remaining != 0);
+    }
     return (ReturnFrom_ProfileDir() != 0) - 1;
 }
 
