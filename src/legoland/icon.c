@@ -1391,15 +1391,19 @@ int FUN_0046f330(struct Point *point, struct IconNode *icon) {
 
 // FUNCTION: LEGOLAND 0x0046f360
 LEGO_EXPORT struct IconNode *GetIconAtPos(struct Point *param_1, unsigned char *param_2) {
-    short x = (short)param_1->x;
-    short y = (short)param_1->y;
-    struct IconNode *found = NULL;
+    short x;
+    short y;
+    struct IconNode *found;
     struct IconNode *cur;
-    int doGeom = 1;
+    int doGeom;
     int i;
     unsigned int flags;
     struct Bbox bbox;
 
+    found = NULL;
+    doGeom = 1;
+    x = (short)param_1->x;
+    y = (short)param_1->y;
     for (i = 0; i < 2; i++) {
         for (cur = i != 0 ? DAT_006687cc : DAT_006687c8; cur != NULL; cur = cur->next) {
             if (doGeom) {
