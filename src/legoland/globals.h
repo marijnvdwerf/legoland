@@ -1282,14 +1282,6 @@ extern unsigned int DAT_00616004;
 extern void *DAT_00616010;
 // 0x00616018
 extern void *DAT_00616018;
-// 0x00616028
-extern unsigned int DAT_00616028;
-// 0x0061602c
-extern unsigned int DAT_0061602c;
-// 0x00616030
-extern unsigned int DAT_00616030;
-// 0x00616034
-extern unsigned short DAT_00616034;
 // 0x0061603c
 extern unsigned int DAT_0061603c;
 // 0x00616040
@@ -1332,14 +1324,6 @@ extern void *DAT_00616090;
 extern void *DAT_00616094;
 // 0x00616098
 extern void *DAT_00616098;
-// 0x006160a0
-extern unsigned int DAT_006160a0;
-// 0x006160a4
-extern unsigned int DAT_006160a4;
-// 0x006160a8
-extern unsigned int DAT_006160a8;
-// 0x006160ac
-extern unsigned short DAT_006160ac;
 // 0x006160b8
 extern struct Sprite *DAT_006160b8;
 // 0x006160bc
@@ -1480,22 +1464,6 @@ extern void *DAT_0062fe00[1];
 extern struct Sprite *DAT_0062fe04;
 // 0x0062fe08
 extern void *DAT_0062fe08;
-// 0x0062fe10
-extern unsigned int DAT_0062fe10;
-// 0x0062fe14
-extern unsigned int DAT_0062fe14;
-// 0x0062fe18
-extern unsigned int DAT_0062fe18;
-// 0x0062fe1c
-extern unsigned short DAT_0062fe1c;
-// 0x0062fe30
-extern unsigned int DAT_0062fe30;
-// 0x0062fe34
-extern unsigned int DAT_0062fe34;
-// 0x0062fe38
-extern unsigned int DAT_0062fe38;
-// 0x0062fe3c
-extern unsigned short DAT_0062fe3c;
 // 0x0062fe48
 extern struct RideLayer *DAT_0062fe48;
 // 0x0062fe4c
@@ -3478,16 +3446,6 @@ extern void *DAT_0082c688;
 extern unsigned short *DAT_0082c690;
 // 0x0082c694
 extern struct DSCursorSource *DAT_0082c694;
-// 0x0082c6a0
-extern unsigned int DAT_0082c6a0;
-// 0x0082c6a4
-extern unsigned int DAT_0082c6a4;
-// 0x0082c6a8
-extern unsigned int DAT_0082c6a8;
-// 0x0082c6b0
-extern unsigned int DAT_0082c6b0;
-// 0x0082c6ac
-extern unsigned short DAT_0082c6ac;
 // 0x0082c6b8
 extern unsigned short *DAT_0082c6b8;
 // 0x0082c6bc
@@ -3632,3 +3590,13 @@ extern int DAT_00832bdc;
 extern int DAT_00832be0[4];
 // 0x00832bf0
 extern LEGO_EXPORT void *PathSprite;
+// 0x0082c6a0
+extern struct RideSpriteInfo DAT_0082c6a0;
+// 0x00616028
+extern struct RideSpriteInfo DAT_00616028;
+// 0x006160a0
+extern struct RideSpriteInfo DAT_006160a0;
+// 0x0062fe30
+extern struct RideSpriteInfo DAT_0062fe30;
+// 0x0062fe10
+extern struct RideSpriteInfo DAT_0062fe10;

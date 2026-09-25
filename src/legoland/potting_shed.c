@@ -164,14 +164,14 @@ void FUN_0043d1d0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043d210
-unsigned int *FUN_0043d210(struct PSCarLayer *param1, unsigned short param2) {
+struct RideSpriteInfo *FUN_0043d210(struct PSCarLayer *param1, unsigned short param2) {
     struct PSCarSub *s2 = param1->field_c;
     struct PSCarInner *s3;
 
-    DAT_0062fe10 = (unsigned int)s2->field_64;
-    DAT_0062fe14 = s2->field_14;
-    DAT_0062fe18 = s2->field_18;
-    DAT_0062fe1c = param2;
+    DAT_0062fe10.sprite = s2->field_64;
+    DAT_0062fe10.x = s2->field_14;
+    DAT_0062fe10.y = s2->field_18;
+    DAT_0062fe10.id = param2;
 
     s3 = s2->field_64;
     s3->field_10 |= 0x2000;

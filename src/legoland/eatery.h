@@ -18,7 +18,7 @@ void FUN_0042e460(struct EateryObj *obj);
 void FUN_0042e4b0();
 void FUN_0042e4c0();
 void FUN_0042e500(int param_1, unsigned char *param_2);
-unsigned int *FUN_0042e560(int param_1, unsigned int param_2);
+struct RideSpriteInfo *FUN_0042e560(int param_1, unsigned int param_2);
 void FUN_0042e5d0(struct EateryObj *obj);
 void FUN_0042e600();
 void FUN_0042e610(struct RideObject *obj);

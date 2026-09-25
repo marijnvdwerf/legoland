@@ -18,7 +18,7 @@ LEGO_EXPORT unsigned int LoadObjectClass(struct ElemView *cls);
 
 typedef void (*RideCallback)();
 typedef int (*RideIntCallback)();
-typedef unsigned int *(*RidePtrCallback)();
+typedef struct RideSpriteInfo *(*RidePtrCallback)();
 
 struct CallbackTable {
     /* 0x00 */ unsigned char pad_0[0x88];

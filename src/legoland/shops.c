@@ -338,10 +338,10 @@ void FUN_0043a1e0(void) { STUB(); }
 // FUNCTION: LEGOLAND 0x0043a390
 unsigned int *FUN_0043a390(struct ShopRideObject *obj, unsigned short param_2) {
     struct RideBuilding *building = obj->building;
-    DAT_0082c6a0 = (unsigned int)building->field_64;
-    DAT_0082c6a4 = building->field_14;
-    DAT_0082c6a8 = building->field_18;
-    DAT_0082c6ac = param_2;
+    DAT_0082c6a0.sprite = building->field_64;
+    DAT_0082c6a0.x = building->field_14;
+    DAT_0082c6a0.y = building->field_18;
+    DAT_0082c6a0.id = param_2;
     building->field_64->field_10 |= 0x2000;
     return &DAT_0082c6a0;
 }

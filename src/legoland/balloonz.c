@@ -515,13 +515,13 @@ void FUN_0042aa90(struct BalloonRideObj *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0042b2a0
-unsigned int *FUN_0042b2a0(struct BalloonRideObj *arg1, unsigned short arg2) {
+struct RideSpriteInfo *FUN_0042b2a0(struct BalloonRideObj *arg1, unsigned short arg2) {
     struct BalloonRide *ride = arg1->ride;
 
-    DAT_00616028 = (unsigned int)ride->layer;
-    DAT_0061602c = ride->field_14;
-    DAT_00616030 = ride->field_18;
-    DAT_00616034 = arg2;
+    DAT_00616028.sprite = ride->layer;
+    DAT_00616028.x = ride->field_14;
+    DAT_00616028.y = ride->field_18;
+    DAT_00616028.id = arg2;
     *(unsigned int *)((char *)ride->layer + 0x10) |= 0x2000;
     return &DAT_00616028;
 }

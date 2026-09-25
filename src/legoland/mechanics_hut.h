@@ -13,5 +13,5 @@ void FUN_0043d2f0(struct RideObject *obj);
 void FUN_0043d580(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile);
 void FUN_0043d730();
 void FUN_0043d740();
-unsigned int *FUN_0043d780(void *ptr, unsigned short arg2);
+struct RideSpriteInfo *FUN_0043d780(void *ptr, unsigned short arg2);
 void FUN_0043d7c0(struct Ride *hut, unsigned int tile, int flag);

@@ -214,13 +214,13 @@ void FUN_0042c520(unsigned int param_1, unsigned char *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0042c550
-unsigned int *FUN_0042c550(struct CarouselRideObj *param1, unsigned short param2) {
+struct RideSpriteInfo *FUN_0042c550(struct CarouselRideObj *param1, unsigned short param2) {
     struct CarouselRide *ride = param1->ride;
 
-    DAT_006160a0 = (unsigned int)ride->layer;
-    DAT_006160a4 = *(unsigned int *)((char *)ride + 0x14);
-    DAT_006160a8 = *(unsigned int *)((char *)ride + 0x18);
-    DAT_006160ac = param2;
+    DAT_006160a0.sprite = ride->layer;
+    DAT_006160a0.x = *(unsigned int *)((char *)ride + 0x14);
+    DAT_006160a0.y = *(unsigned int *)((char *)ride + 0x18);
+    DAT_006160a0.id = param2;
     *(unsigned int *)((char *)ride->layer + 0x10) |= 0x2000;
     return &DAT_006160a0;
 }

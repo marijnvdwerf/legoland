@@ -193,13 +193,13 @@ void FUN_0043d740(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043d780
-unsigned int *FUN_0043d780(void *ptr, unsigned short arg2) {
+struct RideSpriteInfo *FUN_0043d780(void *ptr, unsigned short arg2) {
     unsigned int *p = (unsigned int *)((unsigned int *)ptr)[3];
 
-    DAT_0062fe30 = p[25];
-    DAT_0062fe34 = ((unsigned int *)p)[5];
-    DAT_0062fe38 = ((unsigned int *)p)[6];
-    DAT_0062fe3c = arg2;
+    DAT_0062fe30.sprite = p[25];
+    DAT_0062fe30.x = ((unsigned int *)p)[5];
+    DAT_0062fe30.y = ((unsigned int *)p)[6];
+    DAT_0062fe30.id = arg2;
 
     p = p[25];
     p[4] |= 0x2000;

@@ -871,12 +871,12 @@ void FUN_00433fc0(void *param_1, TileId tile, struct Cursor *param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00434040
-unsigned int *FUN_00434040(struct RideObject *obj, unsigned short param_2) {
+struct RideSpriteInfo *FUN_00434040(struct RideObject *obj, unsigned short param_2) {
     struct Ride *ride = obj->ride;
-    DAT_0082c6a0 = ride->layer;
-    DAT_0082c6a4 = ride->field_14;
-    DAT_0082c6a8 = ride->field_18;
-    DAT_0082c6ac = param_2;
+    DAT_0082c6a0.sprite = ride->layer;
+    DAT_0082c6a0.x = ride->field_14;
+    DAT_0082c6a0.y = ride->field_18;
+    DAT_0082c6a0.id = param_2;
     return &DAT_0082c6a0;
 }
 
@@ -1084,10 +1084,11 @@ void FUN_00434670(void *param_1, TileId tile, struct Cursor *param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00434740
-unsigned int *FUN_00434740(struct RideObject *obj, short param_2) {
+struct RideSpriteInfo *FUN_00434740(struct RideObject *obj, short param_2) {
     struct Ride *ride = obj->ride;
     struct JungleFish *node = DAT_00629c30;
     short *lls;
+    struct LLS *fish_lls;
 
     while (node != NULL && node->tile.id != (unsigned short)param_2) {
         node = node->next;
@@ -1103,15 +1104,16 @@ unsigned int *FUN_00434740(struct RideObject *obj, short param_2) {
     }
 
     if (node->field_4 != 0) {
-        LLSSetFrame((struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_0081cb6c), *lls);
-        DAT_0082c6a0 = (unsigned int)DAT_0081cb6c;
+        fish_lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_0081cb6c);
+        LLSSetFrame(fish_lls, *lls);
+        DAT_0082c6a0.sprite = DAT_0081cb6c;
     } else {
-        DAT_0082c6a0 = ride->layer;
+        DAT_0082c6a0.sprite = ride->layer;
     }
-    DAT_0082c6a4 = ride->field_14;
-    DAT_0082c6ac = (unsigned short)param_2;
-    DAT_0082c6a8 = ride->field_18;
-    return (unsigned int *)&DAT_0082c6a0;
+    DAT_0082c6a0.x = ride->field_14;
+    DAT_0082c6a0.y = ride->field_18;
+    DAT_0082c6a0.id = param_2;
+    return &DAT_0082c6a0;
 }
 
 // FUNCTION: LEGOLAND 0x00434b40

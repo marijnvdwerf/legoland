@@ -461,14 +461,14 @@ void FUN_00405940(struct RideObject *obj, TileId tile, unsigned int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00405ad0
-unsigned int *FUN_00405ad0(struct DSCarLayer *arg1, unsigned short arg2) {
+struct RideSpriteInfo *FUN_00405ad0(struct DSCarLayer *arg1, unsigned short arg2) {
     struct DSCarSub *sub = arg1->field_c;
     struct DSCarInner *inner = sub->field_64;
 
-    DAT_0082c6a0 = (unsigned int)inner;
-    DAT_0082c6a4 = sub->field_14;
-    DAT_0082c6a8 = sub->field_18;
-    DAT_0082c6ac = arg2;
+    DAT_0082c6a0.sprite = inner;
+    DAT_0082c6a0.x = sub->field_14;
+    DAT_0082c6a0.y = sub->field_18;
+    DAT_0082c6a0.id = arg2;
 
     inner = sub->field_64;
     inner->field_10 |= 0x2000;

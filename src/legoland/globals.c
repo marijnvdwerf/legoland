@@ -1577,18 +1577,6 @@ void *DAT_00616010;
 // GLOBAL: LEGOLAND 0x00616018
 void *DAT_00616018;
 
-// GLOBAL: LEGOLAND 0x00616028
-unsigned int DAT_00616028;
-
-// GLOBAL: LEGOLAND 0x0061602c
-unsigned int DAT_0061602c;
-
-// GLOBAL: LEGOLAND 0x00616030
-unsigned int DAT_00616030;
-
-// GLOBAL: LEGOLAND 0x00616034
-unsigned short DAT_00616034;
-
 // GLOBAL: LEGOLAND 0x0061603c
 unsigned int DAT_0061603c;
 
@@ -1651,18 +1639,6 @@ void *DAT_00616094;
 
 // GLOBAL: LEGOLAND 0x00616098
 void *DAT_00616098;
-
-// GLOBAL: LEGOLAND 0x006160a0
-unsigned int DAT_006160a0;
-
-// GLOBAL: LEGOLAND 0x006160a4
-unsigned int DAT_006160a4;
-
-// GLOBAL: LEGOLAND 0x006160a8
-unsigned int DAT_006160a8;
-
-// GLOBAL: LEGOLAND 0x006160ac
-unsigned short DAT_006160ac;
 
 // GLOBAL: LEGOLAND 0x006160b8
 struct Sprite *DAT_006160b8;
@@ -1873,30 +1849,6 @@ struct Sprite *DAT_0062fe04;
 
 // GLOBAL: LEGOLAND 0x0062fe08
 void *DAT_0062fe08;
-
-// GLOBAL: LEGOLAND 0x0062fe10
-unsigned int DAT_0062fe10;
-
-// GLOBAL: LEGOLAND 0x0062fe14
-unsigned int DAT_0062fe14;
-
-// GLOBAL: LEGOLAND 0x0062fe18
-unsigned int DAT_0062fe18;
-
-// GLOBAL: LEGOLAND 0x0062fe1c
-unsigned short DAT_0062fe1c;
-
-// GLOBAL: LEGOLAND 0x0062fe30
-unsigned int DAT_0062fe30;
-
-// GLOBAL: LEGOLAND 0x0062fe34
-unsigned int DAT_0062fe34;
-
-// GLOBAL: LEGOLAND 0x0062fe38
-unsigned int DAT_0062fe38;
-
-// GLOBAL: LEGOLAND 0x0062fe3c
-unsigned short DAT_0062fe3c;
 
 // GLOBAL: LEGOLAND 0x0062fe48
 struct RideLayer *DAT_0062fe48;
@@ -4862,21 +4814,6 @@ unsigned short *DAT_0082c690;
 // GLOBAL: LEGOLAND 0x0082c694
 struct DSCursorSource *DAT_0082c694;
 
-// GLOBAL: LEGOLAND 0x0082c6a0
-unsigned int DAT_0082c6a0;
-
-// GLOBAL: LEGOLAND 0x0082c6a4
-unsigned int DAT_0082c6a4;
-
-// GLOBAL: LEGOLAND 0x0082c6a8
-unsigned int DAT_0082c6a8;
-
-// GLOBAL: LEGOLAND 0x0082c6b0
-unsigned int DAT_0082c6b0;
-
-// GLOBAL: LEGOLAND 0x0082c6ac
-unsigned short DAT_0082c6ac;
-
 // GLOBAL: LEGOLAND 0x0082c6b8
 unsigned short *DAT_0082c6b8;
 
@@ -5100,3 +5037,18 @@ int DAT_00832be0[4];
 
 // GLOBAL: LEGOLAND 0x00832bf0
 LEGO_EXPORT void *PathSprite;
+
+// GLOBAL: LEGOLAND 0x0082c6a0
+struct RideSpriteInfo DAT_0082c6a0;
+
+// GLOBAL: LEGOLAND 0x00616028
+struct RideSpriteInfo DAT_00616028;
+
+// GLOBAL: LEGOLAND 0x006160a0
+struct RideSpriteInfo DAT_006160a0;
+
+// GLOBAL: LEGOLAND 0x0062fe30
+struct RideSpriteInfo DAT_0062fe30;
+
+// GLOBAL: LEGOLAND 0x0062fe10
+struct RideSpriteInfo DAT_0062fe10;
