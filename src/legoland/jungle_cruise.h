@@ -103,7 +103,7 @@ void FUN_00434080(struct RideObject *obj);
 void FUN_004340b0();
 void FUN_004340c0();
 void FUN_00434100(struct EditObject *obj, int *coords);
-void FUN_00434330(int *param_1, unsigned int param_2, int *param_3);
+void FUN_00434330(struct RideObject *obj, unsigned int param_2, int *param_3);
 unsigned int FUN_00434650(unsigned int param_1, unsigned int param_2);
 struct RideSpriteInfo *FUN_00434740(struct RideObject *obj, short param_2);
 void FUN_00434cb0(struct RideObject *obj);
