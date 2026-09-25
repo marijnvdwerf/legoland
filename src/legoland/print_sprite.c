@@ -201,17 +201,22 @@ LEGO_EXPORT unsigned int PrintSpriteEx(struct SpriteExArg *arg, int x, int y) {
     if ((sprite->flags & 0x8000) == 0) {
         if (arg->mode != 0) {
             if (*GetVRAMAddress(sprite) == 0) {
-                if (FUN_00499500(sprite) == 0) {
-                    return 0;
+                if (FUN_00499500(sprite) != 0) {
+                    return RenderSpriteX(sprite, x, y, arg->mode);
                 }
+            } else {
                 return RenderSpriteX(sprite, x, y, arg->mode);
             }
-            return RenderSpriteX(sprite, x, y, arg->mode);
+        } else {
+            if (*GetVRAMAddress(sprite) == 0) {
+                if (FUN_00499500(sprite) != 0) {
+                    return RenderSprite(sprite, x, y);
+                }
+            } else {
+                return RenderSprite(sprite, x, y);
+            }
         }
-        if (*GetVRAMAddress(sprite) == 0 && FUN_00499500(sprite) == 0) {
-            return 0;
-        }
-        return RenderSprite(sprite, x, y);
+        return 0;
     }
     mask = arg->mask;
     group = (struct SpriteGroup *)sprite->image;
@@ -243,16 +248,14 @@ LEGO_EXPORT unsigned int PrintSpriteEx(struct SpriteExArg *arg, int x, int y) {
                 }
             } else {
                 if (*GetVRAMAddress(group->subs[i]) == 0) {
-                    if (FUN_00499500(((struct SpriteGroup *)sprite->image)->subs[i]) == 0) {
-                        goto cont;
+                    if (FUN_00499500(((struct SpriteGroup *)sprite->image)->subs[i]) != 0) {
+                        RenderSprite(((struct SpriteGroup *)sprite->image)->subs[i], xoff + x, yoff + y);
                     }
-                    RenderSprite(((struct SpriteGroup *)sprite->image)->subs[i], xoff + x, yoff + y);
                 } else {
                     RenderSprite(((struct SpriteGroup *)sprite->image)->subs[i], xoff + x, yoff + y);
                 }
             }
         }
-    cont:
         group = (struct SpriteGroup *)sprite->image;
         i = i + 1;
         mask = (int)mask >> 1;

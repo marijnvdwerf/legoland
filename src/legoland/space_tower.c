@@ -707,18 +707,17 @@ LEGO_EXPORT int SpaceTower_Save(void) {
                 target = *field;
                 do {
                     if (cursor == (int *)target) {
-                        if (cursor != NULL) {
-                            *field = index + 1;
-                            goto next;
-                        }
                         break;
                     }
                     cursor = (int *)*cursor;
                     index = index + 1;
                 } while (cursor != NULL);
             }
-            *field = 0;
-        next:
+            if (cursor != NULL) {
+                *field = index + 1;
+            } else {
+                *field = 0;
+            }
             i = i + 1;
         } while ((int)i < 8);
         if (SaveGameWrite(node, 0xb4) == 0) {

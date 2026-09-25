@@ -542,16 +542,15 @@ LEGO_EXPORT int Copters_Save(void) {
             *saved = (int)original;
             for (cursor = *(unsigned int **)((char *)DAT_004c1198 + 0xcc); cursor != NULL; cursor = (unsigned int *)*cursor) {
                 if (cursor == original) {
-                    if (cursor != NULL) {
-                        *field = index + 1;
-                        goto next;
-                    }
                     break;
                 }
                 index = index + 1;
             }
-            *field = 0;
-        next:
+            if (cursor != NULL) {
+                *field = index + 1;
+            } else {
+                *field = 0;
+            }
             saved++;
             field += 8;
             i--;

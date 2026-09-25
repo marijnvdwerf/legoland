@@ -1694,22 +1694,20 @@ void FUN_0049b6e0(struct RepairOrder *order) {
 
     if (DAT_0079a8d4 == order) {
         DAT_0079a8d4 = order->next;
-        free(order);
-        return;
-    }
-    cur = ((struct RepairOrder *)DAT_0079a8d4)->next;
-    prev = DAT_0079a8d4;
-    while (cur != order) {
-        prev = prev->next;
-        if (prev == 0) {
-            goto done;
+    } else {
+        cur = ((struct RepairOrder *)DAT_0079a8d4)->next;
+        prev = DAT_0079a8d4;
+        while (cur != order) {
+            prev = prev->next;
+            if (prev == NULL) {
+                break;
+            }
+            cur = prev->next;
         }
-        cur = prev->next;
+        if (prev != NULL) {
+            prev->next = order->next;
+        }
     }
-    if (prev != 0) {
-        prev->next = order->next;
-    }
-done:
     free(order);
 }
 

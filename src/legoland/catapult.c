@@ -368,6 +368,8 @@ LEGO_EXPORT int Catapult_Save(void) {
     int *field;
     unsigned int *cursor;
     int i;
+    struct Ride *ride;
+    unsigned int *value;
     int index;
     unsigned int one;
     unsigned int zero;
@@ -381,22 +383,23 @@ LEGO_EXPORT int Catapult_Save(void) {
         if (SaveGameWrite(&one, 4) == 0) {
             return 0;
         }
+        ride = DAT_004c10f4;
         field = (int *)&scratch.data[4];
         i = 4;
         do {
+            value = (unsigned int *)*field;
             index = 0;
-            for (cursor = *(unsigned int **)((char *)DAT_004c10f4 + 0xcc); cursor != NULL; cursor = (unsigned int *)*cursor) {
-                if (cursor == (unsigned int *)*field) {
-                    if (cursor != NULL) {
-                        *field = index + 1;
-                        goto next;
-                    }
+            for (cursor = (unsigned int *)ride->riders; cursor != NULL; cursor = (unsigned int *)*cursor) {
+                if (cursor == value) {
                     break;
                 }
                 index = index + 1;
             }
-            *field = 0;
-        next:
+            if (cursor != NULL) {
+                *field = index + 1;
+            } else {
+                *field = 0;
+            }
             field++;
             i--;
         } while (i != 0);
