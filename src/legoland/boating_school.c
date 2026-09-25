@@ -890,8 +890,8 @@ void FUN_0041a720(void) {
                 BlokeSetFrame(bloke, 0);
                 score->blokes[0] = 0;
                 score->field_14--;
-                bloke->param_action++;
                 bloke->flags |= 0x80;
+                bloke->param_action++;
                 source.type = 1;
                 source.field_4 = bloke;
                 sample = PlayInstanceOfSample(*(void **)(PTR_s_Boat_Noise_wav + 8), 1, 1, &source);
