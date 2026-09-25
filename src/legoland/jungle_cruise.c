@@ -2554,28 +2554,14 @@ void FUN_00437440(short param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00437570
-int FUN_00437570(struct JungleScore *param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
-    struct Bloke *bloke;
-    unsigned int v;
-    int r;
-    int result;
+void FUN_00437570(struct RideNode *node, struct RideObject *obj, TileId *tile, int sfx) {
+    struct Bloke *bloke = node->rider;
 
-    bloke = (struct Bloke *)param_1->field_8;
     if (bloke->field_58 == 0) {
-        bloke->param_action = bloke->param_action + 1;
+        bloke->param_action++;
     }
-    v = bloke->field_58;
-    bloke->field_58 = v - 1;
-    result = (int)bloke;
-    if ((v & 0x1f) == 0) {
-        r = rand();
-        result = r / 100;
-        if (r % 100 < 0x1f) {
-            BuyItem((struct BuyItemArg *)param_2, (TileId *)param_3, param_4);
-            bloke = (struct Bloke *)param_1->field_8;
-            result = (int)bloke;
-            bloke->param_action = bloke->param_action + 1;
-        }
+    if ((bloke->field_58-- & 0x1f) == 0 && rand() % 100 <= 30) {
+        BuyItem((struct BuyItemArg *)obj, tile, sfx);
+        node->rider->param_action++;
     }
-    return result;
 }

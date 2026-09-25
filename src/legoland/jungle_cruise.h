@@ -73,7 +73,7 @@ struct JungleRide *FUN_004333e0(struct JungleRide *param_1);
 void FUN_004334c0(struct JungleRide *param_1, int param_2);
 void FUN_00433840(struct JungleRide *param_1, unsigned int param_2, unsigned int param_3);
 void FUN_00436130(unsigned short owner, int delta);
-int FUN_00437570(struct JungleScore *param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4);
+void FUN_00437570(struct RideNode *node, struct RideObject *obj, TileId *tile, int sfx);
 void FUN_00436dc0(int x, int y, int mask, unsigned short *owner);
 void FUN_00436f30(void *param_1, TileId tile, struct Cursor *param_3);
 unsigned int FUN_00436fb0(int param_1, int param_2, unsigned short *param_3);

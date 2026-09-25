@@ -335,7 +335,7 @@ void FUN_004378e0(struct MapObject *param_1) {
                 bloke->param_action++;
                 break;
             case 7:
-                FUN_00437570((struct JungleScore *)node, (unsigned int)param_1, (unsigned int)&node->pos, 1);
+                FUN_00437570((struct RideNode *)node, (struct RideObject *)param_1, (TileId *)&node->pos, 1);
                 break;
             case 8:
                 bloke->dest.x = x * 0x100 + 0x80;
@@ -475,7 +475,7 @@ void FUN_00437c90(struct MapObject *param_1) {
                 bloke->param_action++;
                 break;
             case 3:
-                FUN_00437570((struct JungleScore *)node, (unsigned int)param_1, (unsigned int)&node->pos, 1);
+                FUN_00437570((struct RideNode *)node, (struct RideObject *)param_1, (TileId *)&node->pos, 1);
                 break;
             case 4:
                 bloke->dest.x = (x - 3) * 0x100;
@@ -1397,7 +1397,7 @@ void FUN_00438f10(struct MapObject *param_1) {
                 bloke->param_action++;
                 break;
             case 4:
-                FUN_00437570((struct JungleScore *)node, (unsigned int)param_1, (unsigned int)&node->pos, 1);
+                FUN_00437570((struct RideNode *)node, (struct RideObject *)param_1, (TileId *)&node->pos, 1);
                 break;
             case 5:
                 bloke->dest.x = (x - 4) * 0x100;
