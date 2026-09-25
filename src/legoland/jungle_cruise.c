@@ -39,13 +39,13 @@ void FUN_00432ac0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00432b90
-int FUN_00432b90(TileId tile, unsigned int bloke0, unsigned int bloke1, unsigned int bloke2) {
+int FUN_00432b90(TileId tile, struct Bloke *bloke0, struct Bloke *bloke1, struct Bloke *bloke2) {
     struct JungleScore *score;
     struct JungleRide *node = DAT_00616164;
     struct JungleRide *fresh;
 
     for (score = DAT_00629c3c; score != NULL; score = score->next) {
-        if (score->field_0 == tile.id) {
+        if (score->tile.id == tile.id) {
             break;
         }
     }
@@ -376,7 +376,7 @@ void FUN_004334c0(struct JungleRide *ride, int param_2) {
 
     path = FUN_004371b0(ride->field_4, ride->field_8);
     for (; score != NULL; score = score->next) {
-        if (path->owner.id == score->field_0) {
+        if (path->owner.id == score->tile.id) {
             break;
         }
     }
@@ -1174,7 +1174,7 @@ void FUN_00434f90(struct EditObject *obj, int *coords) {
     if (score == NULL) {
         return;
     }
-    score->field_0 = tile.id;
+    score->tile.id = tile.id;
     score->start.pos.x = coords[0] + DAT_004b7278.v[0] + 2;
     score->start.pos.y = coords[1] + DAT_004b7278.v[1] + 2;
     score->end.pos.x = coords[0] + DAT_004b7260.v[0] + 2;
@@ -1194,8 +1194,8 @@ void FUN_00434f90(struct EditObject *obj, int *coords) {
     score->next = DAT_00629c3c;
     DAT_00629c3c = score;
     AddBasicObject(obj, coords);
-    FUN_00436dc0(coords[0] + DAT_004b7278.v[0] + 2, coords[1] + DAT_004b7278.v[1] + 2, 1, &score->field_0);
-    FUN_00436dc0(coords[0] + DAT_004b7260.v[0] + 2, coords[1] + DAT_004b7260.v[1] + 2, 4, &score->field_0);
+    FUN_00436dc0(coords[0] + DAT_004b7278.v[0] + 2, coords[1] + DAT_004b7278.v[1] + 2, 1, &score->tile.id);
+    FUN_00436dc0(coords[0] + DAT_004b7260.v[0] + 2, coords[1] + DAT_004b7260.v[1] + 2, 4, &score->tile.id);
     for (y = DAT_00629c40.v[1]; y <= DAT_00629c40.v[3]; y++) {
         for (x = DAT_00629c40.v[0]; x <= DAT_00629c40.v[2] - 1; x++) {
             if (x == DAT_00629c40.v[0]) {
@@ -1313,7 +1313,7 @@ void FUN_00435470(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
             RestoreBaseMap(cursor->field_1404 + x, cursor->field_1408 + y);
         }
     }
-    while (score->field_0 != tile.id) {
+    while (score->tile.id != tile.id) {
         prev = score;
         score = score->next;
         if (score == NULL) {
@@ -1422,10 +1422,10 @@ void FUN_00435750(void) {
     }
     FUN_00432d00(0);
     for (score = DAT_00629c3c; score != NULL; score = score->next) {
-        tile.id = score->field_0;
+        tile.id = score->tile.id;
         if (score->seats[0] != NULL && --score->timer <= 0 && score->field_8 != 0 &&
-            score->field_40 > (int)FUN_004332c0(&score->field_0) * 6 &&
-            FUN_00432b90(tile, (unsigned int)score->seats[0], (unsigned int)score->seats[1], (unsigned int)score->seats[2]) != 0) {
+            score->field_40 > (int)FUN_004332c0(&score->tile.id) * 6 &&
+            FUN_00432b90(tile, score->seats[0], score->seats[1], score->seats[2]) != 0) {
             score->seats[0]->flags |= 0x80;
             score->seats[0]->param_action++;
             BlokeSitAnim(score->seats[0]);
@@ -1453,7 +1453,7 @@ void FUN_00435750(void) {
         next = node->next;
         tile = node->tile;
         for (; score != NULL; score = score->next) {
-            if (score->field_0 == tile.id) {
+            if (score->tile.id == tile.id) {
                 break;
             }
         }
@@ -1515,7 +1515,7 @@ void FUN_00435750(void) {
             pos.y = 0;
             BlokeWalkAnim(bloke);
             BlokeSetFrame(bloke, 0);
-            person = Find3DPersonFromBloke((unsigned int)bloke);
+            person = Find3DPersonFromBloke(bloke);
             AdjustBlokePosition((struct BlokePos *)&pos);
             pos.x = person->field_1c - pos.x - 0x10;
             pos.y = person->field_20 - pos.y;
@@ -1734,7 +1734,7 @@ int FUN_00435ec0(void) {
         }
     }
     for (score = DAT_00629c3c; score != NULL; score = score->next) {
-        FUN_004373c0(score->field_0);
+        FUN_004373c0(score->tile.id);
     }
     return 1;
 }
@@ -1743,7 +1743,7 @@ int FUN_00435ec0(void) {
 void FUN_00436130(unsigned short param_1, unsigned int param_2) {
     struct JungleScore *node = DAT_00629c3c;
     while (node != NULL) {
-        if (node->field_0 == param_1) {
+        if (node->tile.id == param_1) {
             if (node != NULL) {
                 node->field_40 += param_2;
             }
@@ -1942,7 +1942,7 @@ void FUN_004365f0(struct RideObject *obj, int *coords) {
         FUN_004367b0(coords[0] - 5, coords[1], &owner);
     }
     for (; score != NULL; score = score->next) {
-        if (score->field_0 == owner) {
+        if (score->tile.id == owner) {
             x0 = score->start.pos.x;
             y0 = score->start.pos.y;
             x1 = score->end.pos.x;
@@ -1965,7 +1965,7 @@ void FUN_004367b0(int param_1, int param_2, unsigned short *param_3) {
 
     path = FUN_004371b0(param_1, param_2);
     for (; score != NULL; score = score->next) {
-        if (score->field_0 == *param_3) {
+        if (score->tile.id == *param_3) {
             break;
         }
     }
@@ -2105,7 +2105,7 @@ void FUN_00436a40(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
     }
     FUN_004373c0(owner);
     for (; score != NULL; score = score->next) {
-        if (score->field_0 == owner) {
+        if (score->tile.id == owner) {
             x0 = score->start.pos.x;
             y0 = score->start.pos.y;
             x1 = score->end.pos.x;
@@ -2342,7 +2342,7 @@ void FUN_004373c0(unsigned short param_1) {
             node->field_18 = NULL;
         }
     }
-    while (score != NULL && score->field_0 != param_1) {
+    while (score != NULL && score->tile.id != param_1) {
         score = score->next;
     }
     node = FUN_004371b0(score->end.pos.x, score->end.pos.y);

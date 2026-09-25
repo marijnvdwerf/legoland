@@ -25,7 +25,7 @@ struct JungleRide {
 };
 
 struct JungleScore {
-    /* 0x00 */ unsigned short field_0;
+    /* 0x00 */ TileId tile;
     /* 0x02 */ TileId start;
     /* 0x04 */ TileId end;
     /* 0x06 */ unsigned char pad_6[2];
@@ -66,7 +66,7 @@ struct JunglePath {
 
 void FUN_00432ac0(void);
 void FUN_00432d00(int param_1);
-int FUN_00432b90(TileId tile, unsigned int bloke0, unsigned int bloke1, unsigned int bloke2);
+int FUN_00432b90(TileId tile, struct Bloke *bloke0, struct Bloke *bloke1, struct Bloke *bloke2);
 void FUN_00432cb0(struct JungleRide *param_1);
 unsigned int FUN_004332c0(unsigned short *param_1);
 void FUN_004332f0(void);
