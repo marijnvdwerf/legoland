@@ -1627,89 +1627,76 @@ void FUN_00435bd0(int param_1, unsigned int param_2, unsigned int param_3, short
 // FUNCTION: LEGOLAND 0x00435c70
 int FUN_00435c70(void) {
     struct JungleScore *score;
-    struct JungleObj *obj;
-    struct JungleFish *fish;
+    struct JungleScore *scoreCur;
     struct JunglePath *path;
+    struct JunglePath *pathCur;
+    struct JungleFish *fish;
+    struct JungleFish *fishCur;
+    struct JungleObj *thing;
+    struct JungleObj *thingCur;
     struct JungleRide *ride;
-    struct JungleScore scoreCopy;
-    struct JungleRide rideCopy;
+    struct JungleRide *rideCur;
     int count;
     int i;
-    unsigned int *blokes;
+    struct JungleScore scoreCopy;
+    struct JungleRide rideCopy;
 
-    score = DAT_00629c3c;
     count = 0;
-    for (; score != NULL; score = score->next) {
-        count = count + 1;
+    for (scoreCur = DAT_00629c3c; scoreCur != NULL; scoreCur = scoreCur->next) {
+        count++;
     }
-    SaveGameWrite(&count, 4);
     score = DAT_00629c3c;
-    path = DAT_0062fd2c;
-    while (count-- != 0) {
+    SaveGameWrite(&count, 4);
+    while (count--) {
         scoreCopy = *score;
-        blokes = scoreCopy.blokes;
-        i = 5;
-        do {
-            *blokes = GetBlokeNum(*blokes);
-            blokes = blokes + 1;
-            i = i - 1;
-        } while (i != 0);
-        SaveGameWrite(&scoreCopy, 0x44);
+        for (i = 0; i < 5; i++) {
+            scoreCopy.blokes[i] = (struct Bloke *)GetBlokeNum(scoreCopy.blokes[i]);
+        }
+        SaveGameWrite(&scoreCopy, sizeof(scoreCopy));
         score = score->next;
-        path = DAT_0062fd2c;
     }
     count = 0;
-    for (; path != NULL; path = path->next) {
-        count = count + 1;
+    for (pathCur = DAT_0062fd2c; pathCur != NULL; pathCur = pathCur->next) {
+        count++;
     }
-    SaveGameWrite(&count, 4);
     path = DAT_0062fd2c;
-    fish = DAT_00629c30;
-    while (count-- != 0) {
-        SaveGameWrite(path, 0x1c);
+    SaveGameWrite(&count, 4);
+    while (count--) {
+        SaveGameWrite(path, sizeof(*path));
         path = path->next;
-        fish = DAT_00629c30;
     }
     count = 0;
-    for (; fish != NULL; fish = fish->next) {
-        count = count + 1;
+    for (fishCur = DAT_00629c30; fishCur != NULL; fishCur = fishCur->next) {
+        count++;
     }
-    SaveGameWrite(&count, 4);
     fish = DAT_00629c30;
-    obj = DAT_00629c2c;
-    while (count-- != 0) {
-        SaveGameWrite(fish, 0xc);
+    SaveGameWrite(&count, 4);
+    while (count--) {
+        SaveGameWrite(fish, sizeof(*fish));
         fish = fish->next;
-        obj = DAT_00629c2c;
     }
     count = 0;
-    for (; obj != NULL; obj = obj->next) {
-        count = count + 1;
+    for (thingCur = DAT_00629c2c; thingCur != NULL; thingCur = thingCur->next) {
+        count++;
     }
+    thing = DAT_00629c2c;
     SaveGameWrite(&count, 4);
-    obj = DAT_00629c2c;
-    ride = DAT_00616164;
-    while (count-- != 0) {
-        SaveGameWrite(obj, 8);
-        obj = obj->next;
-        ride = DAT_00616164;
+    while (count--) {
+        SaveGameWrite(thing, sizeof(*thing));
+        thing = thing->next;
     }
     count = 0;
-    for (; ride != NULL; ride = ride->next) {
-        count = count + 1;
+    for (rideCur = DAT_00616164; rideCur != NULL; rideCur = rideCur->next) {
+        count++;
     }
-    SaveGameWrite(&count, 4);
     ride = DAT_00616164;
-    while (count-- != 0) {
+    SaveGameWrite(&count, 4);
+    while (count--) {
         rideCopy = *ride;
-        blokes = rideCopy.blokes;
-        i = 3;
-        do {
-            *blokes = GetBlokeNum(*blokes);
-            blokes = blokes + 1;
-            i = i - 1;
-        } while (i != 0);
-        SaveGameWrite(&rideCopy, 0x3f8);
+        for (i = 0; i < 3; i++) {
+            rideCopy.blokes[i] = GetBlokeNum((struct Bloke *)rideCopy.blokes[i]);
+        }
+        SaveGameWrite(&rideCopy, sizeof(rideCopy));
         ride = ride->next;
     }
     return 1;
@@ -1723,92 +1710,83 @@ int FUN_00435ec0(void) {
     struct JunglePath *prevPath;
     struct JungleFish *fish;
     struct JungleFish *prevFish;
-    struct JungleObj *obj;
-    struct JungleObj *prevObj;
+    struct JungleObj *thing;
+    struct JungleObj *prevThing;
     struct JungleRide *ride;
     struct JungleRide *prevRide;
-    unsigned int *blokes;
     int count;
     int i;
 
     prevScore = NULL;
-    SaveGameRead(&count, 4);
-    while (count-- != 0) {
-        if (prevScore == NULL) {
-            score = (struct JungleScore *)malloc(0x44);
-            DAT_00629c3c = score;
-        } else {
-            score = (struct JungleScore *)malloc(0x44);
-            prevScore->next = score;
-        }
-        SaveGameRead(score, 0x44);
-        blokes = score->blokes;
-        i = 5;
-        do {
-            *blokes = GetBlokePtr(*blokes);
-            blokes = blokes + 1;
-            i = i - 1;
-        } while (i != 0);
-        prevScore = score;
-    }
-    SaveGameRead(&count, 4);
     prevPath = NULL;
-    while (count-- != 0) {
-        if (prevPath == NULL) {
-            path = (struct JunglePath *)malloc(0x1c);
-            DAT_0062fd2c = path;
-        } else {
-            path = (struct JunglePath *)malloc(0x1c);
-            prevPath->next = path;
-        }
-        SaveGameRead(path, 0x1c);
-        prevPath = path;
-    }
-    SaveGameRead(&count, 4);
+    prevThing = NULL;
     prevFish = NULL;
-    while (count-- != 0) {
+    SaveGameRead(&count, 4);
+    while (count--) {
+        if (prevScore == NULL) {
+            DAT_00629c3c = (struct JungleScore *)malloc(sizeof(struct JungleScore));
+            prevScore = DAT_00629c3c;
+        } else {
+            score = (struct JungleScore *)malloc(sizeof(struct JungleScore));
+            prevScore->next = score;
+            prevScore = score;
+        }
+        SaveGameRead(prevScore, sizeof(struct JungleScore));
+        for (i = 0; i < 5; i++) {
+            prevScore->blokes[i] = GetBlokePtr((int)prevScore->blokes[i]);
+        }
+    }
+    SaveGameRead(&count, 4);
+    while (count--) {
+        if (prevPath == NULL) {
+            DAT_0062fd2c = (struct JunglePath *)malloc(sizeof(struct JunglePath));
+            prevPath = DAT_0062fd2c;
+        } else {
+            path = (struct JunglePath *)malloc(sizeof(struct JunglePath));
+            prevPath->next = path;
+            prevPath = path;
+        }
+        SaveGameRead(prevPath, sizeof(struct JunglePath));
+    }
+    SaveGameRead(&count, 4);
+    while (count--) {
         if (prevFish == NULL) {
-            fish = (struct JungleFish *)malloc(0xc);
-            DAT_00629c30 = fish;
+            DAT_00629c30 = (struct JungleFish *)malloc(sizeof(struct JungleFish));
+            prevFish = DAT_00629c30;
         } else {
-            fish = (struct JungleFish *)malloc(0xc);
+            fish = (struct JungleFish *)malloc(sizeof(struct JungleFish));
             prevFish->next = fish;
+            prevFish = fish;
         }
-        SaveGameRead(fish, 0xc);
-        prevFish = fish;
+        SaveGameRead(prevFish, sizeof(struct JungleFish));
     }
     SaveGameRead(&count, 4);
-    prevObj = NULL;
-    while (count-- != 0) {
-        if (prevObj == NULL) {
-            obj = (struct JungleObj *)malloc(8);
-            DAT_00629c2c = obj;
+    while (count--) {
+        if (prevThing == NULL) {
+            DAT_00629c2c = (struct JungleObj *)malloc(sizeof(struct JungleObj));
+            prevThing = DAT_00629c2c;
         } else {
-            obj = (struct JungleObj *)malloc(8);
-            prevObj->next = obj;
+            thing = (struct JungleObj *)malloc(sizeof(struct JungleObj));
+            prevThing->next = thing;
+            prevThing = thing;
         }
-        SaveGameRead(obj, 8);
-        prevObj = obj;
+        SaveGameRead(prevThing, sizeof(struct JungleObj));
     }
+    prevRide = DAT_00616164;
     SaveGameRead(&count, 4);
-    prevRide = NULL;
-    while (count-- != 0) {
+    while (count--) {
         if (prevRide == NULL) {
-            ride = (struct JungleRide *)malloc(sizeof(struct JungleRide));
-            DAT_00616164 = ride;
+            DAT_00616164 = (struct JungleRide *)malloc(sizeof(struct JungleRide));
+            prevRide = DAT_00616164;
         } else {
             ride = (struct JungleRide *)malloc(sizeof(struct JungleRide));
             prevRide->next = ride;
+            prevRide = ride;
         }
-        SaveGameRead(ride, 0x3f8);
-        blokes = ride->blokes;
-        i = 3;
-        do {
-            *blokes = GetBlokePtr(*blokes);
-            blokes = blokes + 1;
-            i = i - 1;
-        } while (i != 0);
-        prevRide = ride;
+        SaveGameRead(prevRide, sizeof(struct JungleRide));
+        for (i = 0; i < 3; i++) {
+            prevRide->blokes[i] = (unsigned int)GetBlokePtr(prevRide->blokes[i]);
+        }
     }
     for (score = DAT_00629c3c; score != NULL; score = score->next) {
         FUN_004373c0(score->field_0);
