@@ -635,17 +635,15 @@ void FUN_0041a040(struct EditObject *obj, int *coords) {
     score->start.pos.x = coords[0] + DAT_004cc060.v[0] + 2;
     score->start.pos.y = coords[1] + DAT_004cc060.v[1] + 2;
     score->end.pos.x = coords[0] + DAT_004cc048.v[0] + 2;
+    score->end.pos.y = coords[1] + DAT_004cc048.v[1] + 2;
     score->field_8 = 0;
     score->field_c = 9999;
     score->field_10 = 0;
-    score->end.pos.y = coords[1] + DAT_004cc048.v[1] + 2;
     score->field_14 = 0;
     score->value = 5;
-    score->blokes[0] = 0;
-    score->blokes[1] = 0;
-    score->blokes[2] = 0;
-    score->blokes[3] = 0;
-    score->blokes[4] = 0;
+    for (x = 0; x < 5; x++) {
+        score->blokes[x] = 0;
+    }
     score->next = DAT_004cc074;
     DAT_004cc074 = score;
     AddBasicObject(obj, coords);
