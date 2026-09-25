@@ -2482,22 +2482,22 @@ struct JunglePath *FUN_004371b0(unsigned char param_1, unsigned char param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x004371e0
-unsigned int FUN_004371e0(unsigned char param_1, unsigned char param_2, unsigned char param_3, unsigned char param_4) {
-    struct JunglePath *path;
-    int local_4;
-    unsigned short local_6;
+int FUN_004371e0(int a, int b, int c, int d) {
+    struct JunglePath *node;
+    TileId key;
+    int result;
 
-    local_4 = 0;
-    for (path = DAT_0062fd2c; path != NULL; path = path->next) {
-        path->field_c = 0;
+    result = 0;
+    for (node = DAT_0062fd2c; node != NULL; node = node->next) {
+        node->field_c = 0;
     }
-    path = FUN_004371b0(param_1, param_2);
-    if (path == NULL) {
+    node = FUN_004371b0(a, b);
+    if (node == NULL) {
         return 0;
     }
-    local_6 = path->field_2;
-    FUN_00437260(param_1, param_2, param_3, param_4, &local_6, &local_4);
-    return local_4;
+    key.id = node->field_2;
+    FUN_00437260(a, b, c, d, &key.id, &result);
+    return result;
 }
 
 // FUNCTION: LEGOLAND 0x00437260
