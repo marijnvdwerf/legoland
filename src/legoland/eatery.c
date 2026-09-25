@@ -57,11 +57,14 @@ struct BlokeNode {
     unsigned short field_c;
 };
 
+struct Seats {
+    unsigned char c[3];
+};
+
 struct BrollyNode {
     /* 0x00 */ struct BrollyNode *next;
     /* 0x04 */ unsigned short value;
-    /* 0x06 */ unsigned short field_6;
-    /* 0x08 */ unsigned char field_8;
+    /* 0x06 */ struct Seats seats;
     /* 0x09 */ unsigned char field_9;
 };
 
@@ -659,7 +662,7 @@ struct BrollyNode *FUN_0042eec0(unsigned short *param_1) {
         memset(node, 0, sizeof(struct BrollyNode));
         node->value = *param_1;
         node->next = DAT_00616144;
-        memset(&node->field_6, 0, 3);
+        memset(&node->seats, 0, sizeof(node->seats));
         node->field_9 = 0;
         DAT_00616144 = node;
     }
@@ -768,139 +771,131 @@ void FUN_0042f0f0(int param_1, int param_2, int param_3, int param_4) {
 
 // FUNCTION: LEGOLAND 0x0042f1a0
 void FUN_0042f1a0(int param_1) {
-    unsigned char *pos;
-    int bloke;
-    unsigned int *node;
-    char cv;
-    int x;
-    int y;
-    struct SaveBlock *state;
+    struct Ride *ride = ((struct RideObject *)param_1)->ride;
+    struct RideNode *node = ride->riders;
+    struct RideNode *next;
+    struct Bloke *bloke;
+    TileId *tile;
+    struct BrollyNode *state;
+    struct Seats *slot;
+    struct Seats seats;
     char last_zero = 0;
     char zero_count = 0;
-    char choices[3];
-    char *pc;
-    int ride = *(int *)(param_1 + 0xc);
-    unsigned int *next;
-    int arg;
-    node = *(unsigned int **)(*(int *)(param_1 + 0xc) + 0xcc);
+    char i;
+    char *p;
+    char dir;
+    char pick;
+    int x;
+    int y;
+
     while (node != NULL) {
-        next = (unsigned int *)*node;
-        bloke = node[2];
-        pos = (unsigned char *)(node + 3);
-        state = FUN_0042f9d0((unsigned short *)pos);
+        next = node->next;
+        tile = &node->tile;
+        bloke = node->rider;
+        state = FUN_0042ef40((unsigned short *)tile);
         if (state == NULL) {
             return;
         }
-        *(short *)choices = *(short *)((char *)state + 6);
-        choices[2] = *((char *)state + 8);
-        x = *(int *)(ride + 0xc) + (unsigned int)*pos;
-        y = (unsigned int)*((unsigned char *)node + 0xd) + *(int *)(ride + 0x10);
-        if (*(short *)(bloke + 0xe) == 0) {
-            cv = *(char *)(bloke + 0x60);
-            switch (cv) {
+        slot = &state->seats;
+        seats = *slot;
+        x = ride->x + tile->pos.x;
+        y = tile->pos.y + ride->y;
+        if (bloke->field_e == 0) {
+            switch (bloke->param_action) {
             case 0:
-                *(unsigned char *)(bloke + 0x62) |= 8;
-                x = (x + -6) * 0x100;
-                *(unsigned char *)(bloke + 0x37) = 3;
-                *(int *)(bloke + 0x24) = x;
-                *(int *)(bloke + 0x28) = y * 0x100;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(short *)(bloke + 0xe) = 7;
-                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
-                cv = 0;
-                pc = choices;
-                do {
-                    if (*pc == 0) {
-                        zero_count = zero_count + 1;
-                        last_zero = cv;
+                bloke->flags |= 8;
+                bloke->field_37 = 3;
+                bloke->dest.x = (x - 6) << 8;
+                bloke->dest.y = y << 8;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                for (i = 0, p = (char *)seats.c; i < 3; i++, p++) {
+                    if (*p == 0) {
+                        zero_count++;
+                        last_zero = i;
                     }
-                    cv = cv + 1;
-                    pc = pc + 1;
-                } while (cv < 3);
-                if (zero_count == 0) {
-                    *(short *)(bloke + 0x46) = 4;
-                    *(int *)(bloke + 0x5c) = 500;
-                    *(char *)(bloke + 0x60) += 1;
-                } else {
-                    cv = last_zero;
+                }
+                if (zero_count != 0) {
                     if (zero_count == 3) {
-                        cv = (char)(rand() % 3);
+                        pick = rand() % 3;
+                    } else {
+                        pick = last_zero;
                     }
-                    *(char *)(bloke + 0x36) = cv;
-                    *(short *)(bloke + 0x46) = 3;
-                    choices[(int)cv] = 1;
-                    *(int *)(bloke + 0x5c) = 300;
-                    *(char *)(bloke + 0x60) += 1;
+                    seats.c[pick] = 1;
+                    bloke->field_36 = pick;
+                    bloke->field_46 = 3;
+                    bloke->field_5c = 300;
+                    bloke->param_action++;
+                } else {
+                    bloke->field_46 = 4;
+                    bloke->field_5c = 500;
+                    bloke->param_action++;
                 }
                 break;
             case 1:
-                BuyItem(param_1, pos, 1);
-                if (*(short *)(bloke + 0x46) != 4) {
-                    arg = 0;
-                    goto move;
+                BuyItem((struct BuyItemArg *)param_1, (int)tile, 1);
+                if (bloke->field_46 == 4) {
+                    bloke->param_action = 8;
+                } else {
+                    FUN_0042f0f0((int)bloke, x, y, 0);
+                    bloke->param_action++;
                 }
-                *(unsigned char *)(bloke + 0x60) = 8;
                 break;
             case 2:
-                arg = 1;
-                goto move;
+                FUN_0042f0f0((int)bloke, x, y, 1);
+                bloke->param_action++;
+                break;
             case 3:
-                arg = 2;
-            move:
-                FUN_0042f0f0(bloke, x, y, arg);
-                *(char *)(bloke + 0x60) += 1;
+                FUN_0042f0f0((int)bloke, x, y, 2);
+                bloke->param_action++;
                 break;
             case 4:
-                *(unsigned char *)(bloke + 0x63) |= 1;
-                *(short *)(bloke + 0x70) = 10;
+                bloke->flags |= 0x100;
+                bloke->field_70 = 10;
                 BlokeSitAnim(bloke);
                 BlokeSetFrame(bloke, 0);
-                *(char *)(bloke + 0x60) += 1;
+                bloke->param_action++;
                 break;
             case 5:
-                arg = *(int *)(bloke + 0x5c);
-                *(int *)(bloke + 0x5c) = arg + -1;
-                if (arg < 0) {
-                    *(char *)(bloke + 0x60) = cv + 1;
+                if ((int)bloke->field_5c-- < 0) {
+                    bloke->param_action++;
                 }
                 break;
             case 6:
-                *(unsigned short *)(bloke + 0x62) &= 0xfeff;
-                *(short *)(bloke + 0x70) = 0;
-                BlokeWalkAnim((struct Bloke *)bloke);
-                FUN_0042f0f0(bloke, x, y, 3);
-                *(char *)(bloke + 0x60) += 1;
+                bloke->flags &= 0xfeff;
+                bloke->field_70 = 0;
+                BlokeWalkAnim(bloke);
+                FUN_0042f0f0((int)bloke, x, y, 3);
+                bloke->param_action++;
                 break;
             case 7:
-                FUN_0042f0f0(bloke, x, y, 4);
-                *(char *)(bloke + 0x60) += 2;
-                choices[*(unsigned char *)(bloke + 0x36)] = 0;
+                FUN_0042f0f0((int)bloke, x, y, 4);
+                bloke->param_action += 2;
+                seats.c[bloke->field_36] = 0;
                 break;
             case 8:
-                arg = *(int *)(bloke + 0x5c);
-                *(int *)(bloke + 0x5c) = arg + -1;
-                if (arg < 0) {
-                    *(char *)(bloke + 0x60) = cv + 1;
+                if ((int)bloke->field_5c-- < 0) {
+                    bloke->param_action++;
                 }
             case 9:
-                y = (y + 1) * 0x100;
-                *(unsigned char *)(bloke + 0x37) = 3;
-                *(int *)(bloke + 0x24) = x * 0x100;
-                *(int *)(bloke + 0x28) = y;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(short *)(bloke + 0xe) = 7;
-                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
-                *(char *)(bloke + 0x60) += 1;
+                bloke->field_37 = 3;
+                bloke->dest.x = x << 8;
+                bloke->dest.y = (y + 1) << 8;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->param_action++;
                 break;
             case 10:
-                RemoveBlokeFromRide((void *)ride, node);
-                *(unsigned short *)(bloke + 0x62) &= 0xfff7;
+                RemoveBlokeFromRide(ride, node);
+                bloke->flags &= 0xfff7;
+                break;
             }
         }
-        *(short *)((char *)state + 6) = *(short *)choices;
-        *((char *)state + 8) = choices[2];
+        *slot = seats;
         node = next;
     }
 }

@@ -32,7 +32,7 @@ struct Bloke {
     unsigned char pad_34[0x35 - 0x34];
     unsigned char field_35;
     unsigned char field_36;
-    unsigned char pad_37[0x38 - 0x37];
+    unsigned char field_37;
     short field_38;
     short field_3a;
     unsigned char pad_3c[0x46 - 0x3c];
@@ -51,7 +51,7 @@ struct Bloke {
     unsigned char field_64;
     unsigned char pad_65[0x68 - 0x65];
     struct Point pos;
-    unsigned char pad_70[0x72 - 0x70];
+    unsigned short field_70;
     unsigned char field_72;
     unsigned char field_73;
     unsigned char field_74;
