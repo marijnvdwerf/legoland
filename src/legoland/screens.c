@@ -206,7 +206,7 @@ void FUN_004588c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00458930
-int FUN_00458930(double value) {
+int _ftol() {
     __asm fistp dword ptr[DAT_00667c3c] __asm mov eax, [DAT_00667c3c]
 }
 

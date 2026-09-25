@@ -1,5 +1,6 @@
 #include "math.h"
 #include <stdlib.h>
+#include "globals.h"
 #include "legoland.h"
 
 struct Navigator {
@@ -20,10 +21,31 @@ LEGO_EXPORT unsigned int Rand_Tween(unsigned int min_val, unsigned int max_val) 
 }
 
 // FUNCTION: LEGOLAND 0x004806e0
-LEGO_EXPORT int ArcTan256(int dx, int dy) { STUB(); }
+LEGO_EXPORT int ArcTan256(int dx, int dy) {
+    float angle;
+
+    if (dx == 0) {
+        return dy < 0 ? 0xc0 : 0x40;
+    }
+    angle = atan2(dy, dx) * DOUBLE_004ab530;
+    if (angle < FLOAT_004ab390) {
+        angle += FLOAT_004ab52c;
+    }
+    return (int)floor(angle + DOUBLE_004ab398);
+}
 
 // FUNCTION: LEGOLAND 0x00480740
-LEGO_EXPORT char CalcMoveLine(int x1, int y1, int x2, int y2, void *out) { STUB(); }
+LEGO_EXPORT char CalcMoveLine(int x1, int y1, int x2, int y2, void *out) {
+    struct Navigator *nav = (struct Navigator *)out;
+    int dy = y2 - y1;
+
+    x2 -= x1;
+    nav->dx = (short)(int)floor(cos(atan2(dy, x2)) * DOUBLE_004ab538 + DOUBLE_004ab398);
+    nav->dy = (short)(int)floor(sin(atan2(dy, x2)) * DOUBLE_004ab538 + DOUBLE_004ab398);
+    nav->x = (x1 << 8) + 0x80;
+    nav->y = (y1 << 8) + 0x80;
+    return (char)(int)(atan2(dy, x2) * DOUBLE_004ab530);
+}
 
 // FUNCTION: LEGOLAND 0x004807f0
 LEGO_EXPORT void NavigMoveLine(struct Navigator *nav, unsigned short a, struct Point *out) {

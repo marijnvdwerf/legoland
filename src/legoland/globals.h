@@ -260,6 +260,8 @@ struct ScreenState {
 extern float DAT_004ab38c;
 // 0x004ab390
 extern float FLOAT_004ab390;
+// 0x004ab398
+extern double DOUBLE_004ab398;
 // 0x004ab3a8
 extern double DAT_004ab3a8;
 // 0x004ab3d0
@@ -310,6 +312,12 @@ extern float DAT_004ab518;
 extern float DAT_004ab520;
 // 0x004ab528
 extern float DAT_004ab528;
+// 0x004ab52c
+extern float FLOAT_004ab52c;
+// 0x004ab530
+extern double DOUBLE_004ab530;
+// 0x004ab538
+extern double DOUBLE_004ab538;
 // 0x004ab548
 extern double DAT_004ab548;
 // 0x004ab560 c_dfDIKeyboard, 0x004ab578 c_dfDIMouse — declared in <dinput.h>, defined in globals.c
