@@ -521,14 +521,14 @@ LEGO_EXPORT void *LLIDB_LoadODFData(struct LLIDBHead *head) {
                 }
                 obj->flags |= 4;
             }
-            goto icon;
+        } else {
+            // STRING: LEGOLAND 0x004bc37c
+            FUN_0047f870("Class %s has no sprite name.", *(char **)obj->cleanup_arg);
+            obj->sprite_0 = NULL;
         }
-        // STRING: LEGOLAND 0x004bc37c
-        FUN_0047f870("Class %s has no sprite name.", *(char **)obj->cleanup_arg);
+    } else {
+        obj->sprite_0 = NULL;
     }
-    obj->sprite_0 = NULL;
-
-icon:
     NEWFLC_PauseType = 2;
     NEWFLC_AutoPlay = 0;
     RES_ReadFile(file, &size, 4);
@@ -552,16 +552,13 @@ icon:
     if (name[0] != '\0') {
         sprite = LoadSprite(name, 1);
         obj->sprite_2 = (struct ODFSprite *)sprite;
-        if (sprite != 0 && (sprite->flags & 0x8000) != 0 &&
-            (int)sprite->image->aux > 0) {
-            j = 0;
-            do {
+        if (sprite != 0 && (sprite->flags & 0x8000) != 0) {
+            for (j = 0; j < (int)((struct Sprite *)obj->sprite_2)->image->aux; j++) {
                 sprite = (struct Sprite *)GetSpriteForLayer((struct LayerContainer *)obj->sprite_2, j);
                 if (sprite != 0 && (sprite = (struct Sprite *)GetLLSForSprite((struct SpriteLLS *)sprite)) != 0) {
                     LLSStop((unsigned int)sprite);
                 }
-                j++;
-            } while (j < (int)((struct Sprite *)obj->sprite_2)->image->aux);
+            }
         }
     } else {
         // STRING: LEGOLAND 0x004bc328

@@ -61,21 +61,10 @@ unsigned int FUN_0046cee0(void) {
 // FUNCTION: LEGOLAND 0x0046cf20
 unsigned int FUN_0046cf20(void) {
     int diff = (int)(GetGameTimer() - DAT_007fe04c);
-    if (diff > 0x7530) {
-        goto return_1;
+
+    if (diff > 0x7530 || (DAT_007fe044 != 0 && DAT_00668724 != NULL && ((struct HelpAdvisor *)DAT_00668724)->field_c != 0)) {
+        return 1;
     }
-    if (DAT_007fe044 == 0) {
-        goto return_0;
-    }
-    if (DAT_00668724 == NULL) {
-        goto return_0;
-    }
-    if (((struct HelpAdvisor *)DAT_00668724)->field_c == 0) {
-        goto return_0;
-    }
-return_1:
-    return 1;
-return_0:
     return 0;
 }
 

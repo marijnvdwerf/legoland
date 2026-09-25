@@ -2166,33 +2166,24 @@ void FUN_004316f0(int param_1) {
 // FUNCTION: LEGOLAND 0x00431c50
 void FUN_00431c50(unsigned int param_1, unsigned int param_2, struct Sprite *param_3, struct Sprite *param_4, struct Sprite *param_5, int param_6, int param_7, int param_8, int param_9, unsigned int param_10) {
     PrintSprite(param_3, param_1, param_2, param_10, 0);
-    if (param_6 == 0) {
-        if (param_7 != 0) {
-            goto render7;
+    if (param_6 != 0 || param_7 != 0) {
+        if (param_6 != 0) {
+            IP_RenderBlokeIn3DNow((struct Bloke *)param_6);
         }
-    } else {
-        IP_RenderBlokeIn3DNow((struct Bloke *)param_6);
         if (param_7 != 0) {
-        render7:
             IP_RenderBlokeIn3DNow((struct Bloke *)param_7);
-            goto print4;
         }
-    print4:
         PrintSprite(param_4, param_1, param_2, param_10, 0);
     }
-    if (param_8 == 0) {
-        if (param_9 == 0) {
-            return;
+    if (param_8 != 0 || param_9 != 0) {
+        if (param_8 != 0) {
+            IP_RenderBlokeIn3DNow((struct Bloke *)param_8);
         }
-    } else {
-        IP_RenderBlokeIn3DNow((struct Bloke *)param_8);
-        if (param_9 == 0) {
-            goto print5;
+        if (param_9 != 0) {
+            IP_RenderBlokeIn3DNow((struct Bloke *)param_9);
         }
+        PrintSprite(param_5, param_1, param_2, param_10, 0);
     }
-    IP_RenderBlokeIn3DNow((struct Bloke *)param_9);
-print5:
-    PrintSprite(param_5, param_1, param_2, param_10, 0);
 }
 
 // FUNCTION: LEGOLAND 0x00431d00
