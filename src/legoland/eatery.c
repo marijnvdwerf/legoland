@@ -651,15 +651,10 @@ void FUN_0042ed70(int param_1) {
 struct BrollyNode *FUN_0042eec0(unsigned short *param_1) {
     struct BrollyNode *node = malloc(sizeof(struct BrollyNode));
     if (node != NULL) {
-        node->next = NULL;
-        node->value = 0;
-        node->field_6 = 0;
-        node->field_8 = 0;
-        node->field_9 = 0;
+        memset(node, 0, sizeof(struct BrollyNode));
         node->value = *param_1;
         node->next = DAT_00616144;
-        node->field_6 = 0;
-        node->field_8 = 0;
+        memset(&node->field_6, 0, 3);
         node->field_9 = 0;
         DAT_00616144 = node;
     }
@@ -678,13 +673,16 @@ void FUN_0042ef10(unsigned int param_1, unsigned char *param_2) {
 // FUNCTION: LEGOLAND 0x0042ef40
 struct BrollyNode *FUN_0042ef40(unsigned short *param_1) {
     struct BrollyNode *node = DAT_00616144;
-    while (node != NULL) {
-        if (node->value == *param_1) {
-            return node;
-        }
-        node = node->next;
+    if (node == NULL) {
+        return NULL;
     }
-    return NULL;
+    while (memcmp(&node->value, param_1, 2) != 0) {
+        node = node->next;
+        if (node == NULL) {
+            return NULL;
+        }
+    }
+    return node;
 }
 
 // FUNCTION: LEGOLAND 0x0042ef70
@@ -1068,16 +1066,16 @@ void FUN_0042f9a0(unsigned int param_1, unsigned char *param_2) {
 // FUNCTION: LEGOLAND 0x0042f9d0
 struct SaveBlock *FUN_0042f9d0(unsigned short *param) {
     struct SaveBlock *node = DAT_00616148;
-    while (node != NULL) {
-        if (node->value == *param) {
-            return node;
-        }
-        if (node->next == NULL) {
-            break;
-        }
-        node = node->next;
+    if (node == NULL) {
+        return NULL;
     }
-    return NULL;
+    while (memcmp(&node->value, param, 2) != 0) {
+        node = node->next;
+        if (node == NULL) {
+            return NULL;
+        }
+    }
+    return node;
 }
 
 // FUNCTION: LEGOLAND 0x0042fa00
