@@ -445,12 +445,12 @@ void FUN_004198a0(struct BoatRide *ride, int from, int to) {
         }
         idx = (bit + 2) % 4;
         for (i = 0; i < 80; i++) {
-            if (i < 40) {
-                ride->field_1c[i * 2] = 0;
-                ride->field_1c[i * 2 + 1] = 0;
-            } else {
+            if (i >= 40) {
                 ride->field_1c[i * 2] = DAT_004b5118[idx].dx * 16 + ride->field_1c[i * 2 - 2];
                 ride->field_1c[i * 2 + 1] = DAT_004b5118[idx].dy * 16 + ride->field_1c[i * 2 - 1];
+            } else {
+                ride->field_1c[i * 2] = 0;
+                ride->field_1c[i * 2 + 1] = 0;
             }
         }
     } else {
@@ -460,7 +460,7 @@ void FUN_004198a0(struct BoatRide *ride, int from, int to) {
         if (to == 1) {
             to = 0x11;
         }
-        if ((to < from) ? (to & (from >> 2)) == 0 : (to != from && (from & (to >> 2)) == 0)) {
+        if ((to < from ? to & (from >> 2) : to == from || from & (to >> 2)) == 0) {
             if ((to & (from * 2)) != 0) {
                 arc = DAT_004b5158;
             } else if ((from & (to * 2)) != 0) {
