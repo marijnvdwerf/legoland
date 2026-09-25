@@ -398,149 +398,130 @@ struct JungleRide *FUN_004333e0(struct JungleRide *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x004334c0
-void FUN_004334c0(struct JungleRide *param_1, int param_2) {
+void FUN_004334c0(struct JungleRide *ride, int param_2) {
     struct JungleScore *score = DAT_00629c3c;
     struct JungleRide *other = DAT_00616164;
     struct JunglePath *path;
     unsigned int mask;
-    unsigned int rnd;
-    int bit;
-    int count;
+    unsigned int free;
+    struct Point d;
+    int i;
+    int n;
+    int back;
+    int step;
     int dir;
-    unsigned int sel;
-    unsigned char d;
-    char step;
 
-    path = FUN_004371b0((unsigned char)param_1->field_4, (unsigned char)param_1->field_8);
-    if (score != NULL) {
-        do {
-            if (path->owner.id == score->field_0) {
-                break;
-            }
-            score = score->next;
-        } while (score != NULL);
+    path = FUN_004371b0(ride->field_4, ride->field_8);
+    for (; score != NULL; score = score->next) {
+        if (path->owner.id == score->field_0) {
+            break;
+        }
     }
     mask = path->field_4;
     if (path->tile.id == score->start.id) {
-        mask = mask & 0xfffffffe;
+        mask &= ~1;
     } else if (path->tile.id == score->end.id) {
-        param_1->field_3e0 = 0x10;
-        param_1->field_3e4 = 3;
-        FUN_00433840(param_1, param_1->field_3dc, 4);
-        param_1->field_3dc = 1;
-        param_1->field_10 = param_1->field_8 + 5;
+        ride->field_3e0 = 0x10;
+        ride->field_3e4 = 3;
+        FUN_00433840(ride, ride->field_3dc, 4);
+        ride->field_3dc = 1;
+        ride->field_10 = ride->field_8 + 5;
         return;
     }
     for (; other != NULL; other = other->next) {
-        if (other != param_1) {
-            if ((param_1->field_4 == other->field_4 && param_1->field_8 - 5 == other->field_8) ||
-                (param_1->field_4 == other->field_c && param_1->field_8 - 5 == other->field_10)) {
-                mask = mask & 0xfffffffe;
-            }
-            if ((param_1->field_4 + 5 == other->field_4 && param_1->field_8 == other->field_8) ||
-                (param_1->field_4 + 5 == other->field_c && param_1->field_8 == other->field_10)) {
-                mask = mask & 0xfffffffd;
-            }
-            if ((param_1->field_4 == other->field_4 && param_1->field_8 + 5 == other->field_8) ||
-                (param_1->field_4 == other->field_c && param_1->field_8 + 5 == other->field_10)) {
-                mask = mask & 0xfffffffb;
-            }
-            if ((param_1->field_4 - 5 == other->field_4 && param_1->field_8 == other->field_8) ||
-                (param_1->field_4 - 5 == other->field_c && param_1->field_8 == other->field_10)) {
-                mask = mask & 0xfffffff7;
-            }
+        if (other == ride) {
+            continue;
+        }
+        if ((ride->field_4 == other->field_4 && ride->field_8 - 5 == other->field_8) || (ride->field_4 == other->field_c && ride->field_8 - 5 == other->field_10)) {
+            mask &= ~1;
+        }
+        if ((ride->field_4 + 5 == other->field_4 && ride->field_8 == other->field_8) || (ride->field_4 + 5 == other->field_c && ride->field_8 == other->field_10)) {
+            mask &= ~2;
+        }
+        if ((ride->field_4 == other->field_4 && ride->field_8 + 5 == other->field_8) || (ride->field_4 == other->field_c && ride->field_8 + 5 == other->field_10)) {
+            mask &= ~4;
+        }
+        if ((ride->field_4 - 5 == other->field_4 && ride->field_8 == other->field_8) || (ride->field_4 - 5 == other->field_c && ride->field_8 == other->field_10)) {
+            mask &= ~8;
         }
     }
     if (param_2 != 0 && path->field_18 != NULL) {
-        if (((unsigned char *)path->field_18)[1] == path->tile.pos.y) {
-            mask = mask & 0xfffffffb;
-        } else if ((int)((unsigned int)((unsigned char *)path->field_18)[0] - (unsigned int)path->tile.pos.x) < 0) {
-            mask = mask & 0xfffffff7;
+        d.x = path->field_18->tile.pos.x - path->tile.pos.x;
+        d.y = path->field_18->tile.pos.y - path->tile.pos.y;
+        if (d.y != 0) {
+            if (d.x < 0) {
+                mask &= ~8;
+            } else {
+                mask &= ~2;
+            }
         } else {
-            mask = mask & 0xfffffffd;
+            mask &= ~4;
         }
     }
     if (mask == 0) {
-        FUN_00433840(param_1, param_1->field_3dc, 0xffffffff);
-        param_1->field_3dc = 0xffffffff;
+        FUN_00433840(ride, ride->field_3dc, -1);
+        ride->field_3dc = -1;
         return;
     }
-    rnd = rand();
-    if ((rnd & 7) == 0 && (rnd = ~param_1->field_3dc & mask) != 0) {
-        while (1) {
-            mask = rnd;
-            bit = 0;
-            count = 0;
-            do {
-                if ((mask & (1 << bit)) != 0) {
-                    count = count + 1;
+    if ((rand() & 7) == 0 && (free = ~ride->field_3dc & mask) != 0) {
+        for (;;) {
+            for (i = 0, n = 0; i < 4; i++) {
+                if ((free & (1 << i)) != 0) {
+                    n++;
                 }
-                bit = bit + 1;
-            } while (bit < 4);
-            if (count < 2) {
+            }
+            if (n <= 1) {
                 break;
             }
-            d = rand();
-            rnd = mask & ~(1 << (d & 3));
+            free &= ~(1 << (rand() & 3));
         }
+        mask = free;
     }
-    bit = 0;
-    do {
-        if ((param_1->field_3dc & (1 << bit)) != 0) {
+    for (i = 0; i < 4; i++) {
+        if ((ride->field_3dc & (1 << i)) != 0) {
             break;
         }
-        bit = bit + 1;
-    } while (bit < 4);
-    sel = (bit + 2) & 0x80000003;
-    if ((int)sel < 0) {
-        sel = ((sel - 1) | 0xfffffffc) + 1;
     }
-    dir = 1 << ((unsigned char)sel & 0x1f);
+    back = (i + 2) % 4;
+    dir = 1 << back;
     if ((mask & dir) == 0) {
-        d = rand();
-        step = (-((d & 1) != 0) & 2) - 1;
-        dir = 1 << ((step + (char)sel) & 3);
+        step = (rand() & 1) ? 1 : -1;
+        dir = 1 << ((step + back) & 3);
         if ((mask & dir) == 0) {
-            dir = 1 << (((char)sel - step) & 3);
+            dir = 1 << ((back - step) & 3);
             if ((mask & dir) == 0) {
-                sel = (sel + 2) & 0x80000003;
-                if ((int)sel < 0) {
-                    sel = ((sel - 1) | 0xfffffffc) + 1;
-                }
-                dir = 1 << ((unsigned char)sel & 0x1f);
+                dir = 1 << ((back + 2) % 4);
             }
         }
     }
     switch (dir) {
     case 1:
-        param_1->field_c = param_1->field_4;
-        param_1->field_10 = param_1->field_8 - 5;
-        FUN_00433840(param_1, param_1->field_3dc, dir);
-        param_1->field_3dc = 4;
+        ride->field_c = ride->field_4;
+        ride->field_10 = ride->field_8 - 5;
+        FUN_00433840(ride, ride->field_3dc, dir);
+        ride->field_3dc = 4;
         break;
     case 2:
-        param_1->field_c = param_1->field_4 + 5;
-        param_1->field_10 = param_1->field_8;
-        FUN_00433840(param_1, param_1->field_3dc, dir);
-        param_1->field_3dc = 8;
+        ride->field_c = ride->field_4 + 5;
+        ride->field_10 = ride->field_8;
+        FUN_00433840(ride, ride->field_3dc, dir);
+        ride->field_3dc = 8;
         break;
     case 4:
-        param_1->field_c = param_1->field_4;
-        param_1->field_10 = param_1->field_8 + 5;
-        FUN_00433840(param_1, param_1->field_3dc, dir);
-        param_1->field_3dc = 1;
+        ride->field_c = ride->field_4;
+        ride->field_10 = ride->field_8 + 5;
+        FUN_00433840(ride, ride->field_3dc, dir);
+        ride->field_3dc = 1;
         break;
     case 8:
-        param_1->field_c = param_1->field_4 - 5;
-        param_1->field_10 = param_1->field_8;
-        FUN_00433840(param_1, param_1->field_3dc, dir);
-        param_1->field_3dc = 2;
+        ride->field_c = ride->field_4 - 5;
+        ride->field_10 = ride->field_8;
+        FUN_00433840(ride, ride->field_3dc, dir);
+        ride->field_3dc = 2;
         break;
     }
-    bit = param_1->field_3e4 - 1;
-    param_1->field_3e4 = bit;
-    if (bit == 0) {
-        param_1->field_3e0 = 8;
+    if (--ride->field_3e4 == 0) {
+        ride->field_3e0 = 8;
     }
 }
 
