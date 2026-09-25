@@ -52,10 +52,10 @@ int FUN_00432b90(unsigned int param_1, void *param_2, void *param_3, void *param
     }
     while (node != NULL) {
         if (node->field_0 == (unsigned short)id) {
-            if (node->field_4 == score->field_2 && node->field_8 == score->field_3) {
+            if (node->field_4 == score->start.pos.x && node->field_8 == score->start.pos.y) {
                 return 0;
             }
-            if (node->field_c == score->field_2 && node->field_10 == score->field_3) {
+            if (node->field_c == score->start.pos.x && node->field_10 == score->start.pos.y) {
                 return 0;
             }
             if (node->field_3e0 == 1) {
@@ -424,16 +424,16 @@ void FUN_004334c0(struct JungleRide *param_1, int param_2) {
     path = FUN_004371b0((unsigned char)param_1->field_4, (unsigned char)param_1->field_8);
     if (score != NULL) {
         do {
-            if (path->field_2 == score->field_0) {
+            if (path->owner == score->field_0) {
                 break;
             }
             score = score->next;
         } while (score != NULL);
     }
     mask = path->field_4;
-    if (*(short *)&path->x == *(short *)&score->field_2) {
+    if (path->tile.id == score->start.id) {
         mask = mask & 0xfffffffe;
-    } else if (*(short *)&path->x == *(short *)&score->field_4) {
+    } else if (path->tile.id == score->end.id) {
         param_1->field_3e0 = 0x10;
         param_1->field_3e4 = 3;
         FUN_00433840(param_1, param_1->field_3dc, 4);
@@ -462,9 +462,9 @@ void FUN_004334c0(struct JungleRide *param_1, int param_2) {
         }
     }
     if (param_2 != 0 && path->field_18 != NULL) {
-        if (((unsigned char *)path->field_18)[1] == path->y) {
+        if (((unsigned char *)path->field_18)[1] == path->tile.pos.y) {
             mask = mask & 0xfffffffb;
-        } else if ((int)((unsigned int)((unsigned char *)path->field_18)[0] - (unsigned int)path->x) < 0) {
+        } else if ((int)((unsigned int)((unsigned char *)path->field_18)[0] - (unsigned int)path->tile.pos.x) < 0) {
             mask = mask & 0xfffffff7;
         } else {
             mask = mask & 0xfffffffd;
@@ -1293,13 +1293,13 @@ void FUN_00434f90(unsigned int param_1, int *param_2) {
         return;
     }
     score->field_0 = *(unsigned short *)temp;
-    score->field_2 = (unsigned char)param_2[0] + (char)DAT_004b7278.v[0] + 2;
-    score->field_3 = (unsigned char)param_2[1] + (char)DAT_004b7278.v[1] + 2;
-    score->field_4 = (unsigned char)param_2[0] + (char)DAT_004b7260.v[0] + 2;
+    score->start.pos.x = (unsigned char)param_2[0] + (char)DAT_004b7278.v[0] + 2;
+    score->start.pos.y = (unsigned char)param_2[1] + (char)DAT_004b7278.v[1] + 2;
+    score->end.pos.x = (unsigned char)param_2[0] + (char)DAT_004b7260.v[0] + 2;
     score->field_8 = 0;
     score->field_c = 9999;
     score->field_10 = 0;
-    score->field_5 = (unsigned char)param_2[1] + (char)DAT_004b7260.v[1] + 2;
+    score->end.pos.y = (unsigned char)param_2[1] + (char)DAT_004b7260.v[1] + 2;
     score->field_14 = 0;
     score->field_2c = 0x96;
     score->field_40 = 3;
@@ -1374,9 +1374,9 @@ void FUN_00435230(unsigned int param_1, unsigned int param_2) {
     DefaultCursor(&DAT_0082ae20);
     *(struct Footprint *)DAT_0082ae20.field_1414 = DAT_004b7478;
     for (; p1 != NULL; p1 = p1->next) {
-        if (p1->field_2 == QueryObj) {
-            DAT_0082ae20.field_1404 = p1->x;
-            DAT_0082ae20.field_1408 = p1->y;
+        if (p1->owner == QueryObj) {
+            DAT_0082ae20.field_1404 = p1->tile.pos.x;
+            DAT_0082ae20.field_1408 = p1->tile.pos.y;
             FUN_0045f460(&DAT_0082ae20);
             DAT_0082ae20.field_1828 = 8;
             BuildCursorPtr(&DAT_0082ae20, 0, 0);
@@ -1451,10 +1451,10 @@ void FUN_00435470(void *param_1, unsigned int param_2, struct Cursor *param_3) {
     *(struct Footprint *)DAT_0082ae20.field_1414 = DAT_004b7478;
     path = DAT_0062fd2c;
     while (path != NULL) {
-        if (path->field_2 == (unsigned short)param_2) {
-            DAT_0082ae20.field_1404 = path->x;
-            DAT_0082ae20.field_1408 = path->y;
-            FUN_00436f30(local_14, *(unsigned short *)&path->x, &DAT_0082ae20);
+        if (path->owner == (unsigned short)param_2) {
+            DAT_0082ae20.field_1404 = path->tile.pos.x;
+            DAT_0082ae20.field_1408 = path->tile.pos.y;
+            FUN_00436f30(local_14, path->tile.id, &DAT_0082ae20);
             path = DAT_0062fd2c;
         } else {
             path = path->next;
@@ -2061,9 +2061,9 @@ void FUN_00436470(unsigned int param_1, unsigned int *param_2) {
     ride = DAT_00616164;
     if (score != NULL) {
         do {
-            if ((short)((bx) | (by << 8)) == *(short *)&score->field_2 || (short)((bx) | (by << 8)) == *(short *)&score->field_4) {
+            if ((short)((bx) | (by << 8)) == score->start.id || (short)((bx) | (by << 8)) == score->end.id) {
                 path = FUN_004371b0(param_2[0], by);
-                QueryObj = path->field_2;
+                QueryObj = path->owner;
                 param_2[0] = (unsigned char)QueryObj;
                 param_2[1] = (unsigned char)(QueryObj >> 8);
                 *(struct Footprint *)((char *)QueryClass + 0x3c) = DAT_004b7478;
@@ -2127,7 +2127,7 @@ void FUN_004365f0(unsigned int param_1, int *param_2) {
                 return;
             }
         }
-        result = FUN_004371e0(score->field_2, score->field_3, score->field_4, score->field_5);
+        result = FUN_004371e0(score->start.pos.x, score->start.pos.y, score->end.pos.x, score->end.pos.y);
         score->field_8 = result;
         if (result != 0) {
             FUN_004373c0(coord);
@@ -2155,9 +2155,9 @@ void FUN_004367b0(int param_1, int param_2, unsigned short *param_3) {
         return;
     }
     mask = p->field_4;
-    if (*(short *)&p->x == *(short *)&score->field_2) {
+    if (p->tile.id == score->start.id) {
         mask = mask & 0xfffffffe;
-    } else if (*(short *)&p->x == *(short *)&score->field_4) {
+    } else if (p->tile.id == score->end.id) {
         mask = mask & 0xfffffffb;
     }
     if ((mask & 8) != 0 && (mask & 1) != 0 && (adj = FUN_004371b0(param_1, param_2 - 5)) != NULL && (adj->field_4 & 8) != 0) {
@@ -2284,7 +2284,7 @@ void FUN_00436a40(void *param_1, unsigned int param_2, struct Cursor *param_3) {
                 return;
             }
         }
-        result = FUN_004371e0(cur->field_2, cur->field_3, cur->field_4, cur->field_5);
+        result = FUN_004371e0(cur->start.pos.x, cur->start.pos.y, cur->end.pos.x, cur->end.pos.y);
         cur->field_8 = result;
     }
 }
@@ -2313,10 +2313,10 @@ void FUN_00436dc0(int param_1, int param_2, int param_3, unsigned short *param_4
         DAT_0062fd2c = path;
         FUN_00436130(*param_4, 1);
     }
-    *(unsigned short *)&path->x = coord;
+    path->tile.id = coord;
     path->field_4 = param_3;
     if (param_4 != NULL) {
-        path->field_2 = *param_4;
+        path->owner = *param_4;
     }
     BGFullUpdate = 1;
     row = &DAT_004b72e4[param_3 * 0x19];
@@ -2348,7 +2348,7 @@ void FUN_00436f30(void *param_1, unsigned short param_2, struct Cursor *param_3)
     struct JunglePath *prev = NULL;
     struct JunglePath *nxt;
     StandardRemoveObject((unsigned int)param_1, *(TileId *)&param_2, (unsigned int)param_3);
-    while (*(unsigned short *)&node->x != param_2) {
+    while (node->tile.id != param_2) {
         nxt = node->next;
         if (nxt == NULL) {
             return;
@@ -2357,7 +2357,7 @@ void FUN_00436f30(void *param_1, unsigned short param_2, struct Cursor *param_3)
         node = nxt;
     }
     if (node != NULL) {
-        FUN_00436130(node->field_2, 0xffffffff);
+        FUN_00436130(node->owner, 0xffffffff);
         if (prev != NULL) {
             prev->next = node->next;
             free(node);
@@ -2379,62 +2379,62 @@ unsigned int FUN_00436fb0(int param_1, int param_2, unsigned short *param_3) {
     p = FUN_004371b0(param_1, param_2);
     found = p != NULL;
     if (found) {
-        *param_3 = p->field_2;
+        *param_3 = p->owner;
     }
     if (param_1 >= 0 && param_2 - 5 >= 0 && param_1 < lpConfig->width && param_2 - 5 < lpConfig->height &&
         (p = FUN_004371b0(param_1, param_2 - 5)) != NULL) {
         if (found) {
-            if (p->field_2 == *param_3) {
+            if (p->owner == *param_3) {
                 result = 1;
             }
         } else {
             result = 1;
-            *param_3 = p->field_2;
+            *param_3 = p->owner;
             found = 1;
         }
     }
     if (param_1 + 5 >= 0 && param_2 >= 0 && param_1 + 5 < lpConfig->width && param_2 < lpConfig->height &&
         (p = FUN_004371b0(param_1 + 5, param_2)) != NULL) {
         if (found) {
-            if (p->field_2 == *param_3) {
+            if (p->owner == *param_3) {
                 result = result | 2;
             }
         } else {
             result = result | 2;
-            *param_3 = p->field_2;
+            *param_3 = p->owner;
             found = 1;
         }
     }
     if (param_1 >= 0 && param_2 + 5 >= 0 && param_1 < lpConfig->width && param_2 + 5 < lpConfig->height &&
         (p = FUN_004371b0(param_1, param_2 + 5)) != NULL) {
         if (found) {
-            if (p->field_2 == *param_3) {
+            if (p->owner == *param_3) {
                 result = result | 4;
             }
         } else {
             result = result | 4;
-            *param_3 = p->field_2;
+            *param_3 = p->owner;
             found = 1;
         }
     }
     if (param_1 - 5 >= 0 && param_2 >= 0 && param_1 - 5 < lpConfig->width && param_2 < lpConfig->height &&
         (p = FUN_004371b0(param_1 - 5, param_2)) != NULL) {
         if (found) {
-            if (p->field_2 == *param_3) {
+            if (p->owner == *param_3) {
                 result = result | 8;
             }
         } else {
             result = result | 8;
-            *param_3 = p->field_2;
+            *param_3 = p->owner;
         }
     }
     id = (short)((param_1 & 0xff) | (param_2 << 8));
     if (score != NULL) {
         while (1) {
-            if (id == *(short *)&score->field_2) {
+            if (id == score->start.id) {
                 return result | 1;
             }
-            if (id == *(short *)&score->field_4) {
+            if (id == score->end.id) {
                 break;
             }
             score = score->next;
@@ -2460,7 +2460,7 @@ struct JunglePath *FUN_004371b0(unsigned char param_1, unsigned char param_2) {
     entry = DAT_0062fd2c;
     if (entry != NULL) {
         while (1) {
-            if (*(unsigned short *)&entry->x == combined) {
+            if (entry->tile.id == combined) {
                 break;
             }
             entry = entry->next;
@@ -2486,7 +2486,7 @@ int FUN_004371e0(int a, int b, int c, int d) {
     if (node == NULL) {
         return 0;
     }
-    key.id = node->field_2;
+    key.id = node->owner;
     FUN_00437260(a, b, c, d, &key.id, &result);
     return result;
 }
@@ -2504,7 +2504,7 @@ void FUN_00437260(int param_1, int param_2, int param_3, int param_4, unsigned s
         if (cur == NULL) {
             return;
         }
-        if (cur->field_2 != *param_5) {
+        if (cur->owner != *param_5) {
             return;
         }
         if (param_1 == param_3 && param_2 == param_4) {
@@ -2545,14 +2545,14 @@ void FUN_004373c0(unsigned short param_1) {
     int again;
 
     for (path = DAT_0062fd2c; path != NULL; path = path->next) {
-        if (path->field_2 == param_1) {
+        if (path->owner == param_1) {
             path->field_18 = NULL;
         }
     }
     while (score != NULL && score->field_0 != param_1) {
         score = score->next;
     }
-    DAT_0062fd30 = FUN_004371b0(score->field_4, score->field_5);
+    DAT_0062fd30 = FUN_004371b0(score->end.pos.x, score->end.pos.y);
     DAT_0062fd30->field_8 = 0;
     DAT_0062fd30->field_14 = NULL;
     do {
@@ -2573,29 +2573,29 @@ void FUN_00437440(short param_1) {
     struct JunglePath *a3;
 
     for (cur = DAT_0062fd30; cur != NULL; cur = cur->field_14) {
-        a0 = FUN_004371b0(cur->x, cur->y - 5);
-        a1 = FUN_004371b0(cur->x + 5, cur->y);
-        a2 = FUN_004371b0(cur->x, cur->y + 5);
-        a3 = FUN_004371b0(cur->x - 5, cur->y);
-        if (a0 != NULL && a0->field_2 == (unsigned short)param_1 && a0->field_18 == NULL) {
+        a0 = FUN_004371b0(cur->tile.pos.x, cur->tile.pos.y - 5);
+        a1 = FUN_004371b0(cur->tile.pos.x + 5, cur->tile.pos.y);
+        a2 = FUN_004371b0(cur->tile.pos.x, cur->tile.pos.y + 5);
+        a3 = FUN_004371b0(cur->tile.pos.x - 5, cur->tile.pos.y);
+        if (a0 != NULL && a0->owner == (unsigned short)param_1 && a0->field_18 == NULL) {
             a0->field_18 = cur;
             a0->field_8 = cur->field_8 + 1;
             a0->field_14 = DAT_0062fd34;
             DAT_0062fd34 = a0;
         }
-        if (a1 != NULL && a1->field_2 == (unsigned short)param_1 && a1->field_18 == NULL) {
+        if (a1 != NULL && a1->owner == (unsigned short)param_1 && a1->field_18 == NULL) {
             a1->field_18 = cur;
             a1->field_8 = cur->field_8 + 1;
             a1->field_14 = DAT_0062fd34;
             DAT_0062fd34 = a1;
         }
-        if (a2 != NULL && a2->field_2 == (unsigned short)param_1 && a2->field_18 == NULL) {
+        if (a2 != NULL && a2->owner == (unsigned short)param_1 && a2->field_18 == NULL) {
             a2->field_18 = cur;
             a2->field_8 = cur->field_8 + 1;
             a2->field_14 = DAT_0062fd34;
             DAT_0062fd34 = a2;
         }
-        if (a3 != NULL && a3->field_2 == (unsigned short)param_1 && a3->field_18 == NULL) {
+        if (a3 != NULL && a3->owner == (unsigned short)param_1 && a3->field_18 == NULL) {
             a3->field_18 = cur;
             a3->field_8 = cur->field_8 + 1;
             a3->field_14 = DAT_0062fd34;
