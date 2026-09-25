@@ -421,25 +421,19 @@ void FUN_0042e8d0(struct EditArg *arg) {
 void FUN_0042e910(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6) {
     int ride = *(int *)(param_1 + 0xc);
     unsigned int *node;
-    union {
-        __int64 q;
-        int i[2];
-    } coords;
-    union {
-        __int64 q;
-        int i[2];
-    } offset;
+    struct Point coords;
+    struct Point offset;
     for (node = *(unsigned int **)(ride + 0xcc); node != NULL; node = (unsigned int *)*node) {
         if (*param_4 == *(short *)(node + 3)) {
             IP_RenderBlokeIn3DNow((struct Bloke *)node[2]);
         }
     }
-    coords.q = GetScreenCoordsForObject((unsigned char *)param_4, (void *)ride);
-    offset.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0081cd10, 1);
-    AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
+    coords = GetScreenCoordsForObject((unsigned char *)param_4, (void *)ride);
+    offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0081cd10, 1);
+    AdjustOffsetForViewMode(&offset);
     if (GetSpriteForLayer((struct LayerContainer *)DAT_0081cd10, 1) != 0) {
         PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_0081cd10, 1),
-            offset.i[0] + coords.i[0], offset.i[1] + coords.i[1], param_6, 0);
+            offset.x + coords.x, offset.y + coords.y, param_6, 0);
     }
 }
 
@@ -922,14 +916,8 @@ void FUN_0042f4c0(int param_1, unsigned int param_2, unsigned int param_3, short
     int i;
     int *p;
     struct BrollyNode *state;
-    union {
-        __int64 q;
-        int i[2];
-    } coords;
-    union {
-        __int64 q;
-        int i[2];
-    } offset;
+    struct Point coords;
+    struct Point offset;
     struct {
         /* 0x00 */ int field_0;
         /* 0x04 */ int field_4;
@@ -945,7 +933,7 @@ void FUN_0042f4c0(int param_1, unsigned int param_2, unsigned int param_3, short
         *p = 0;
     }
     count = 0;
-    coords.q = GetScreenCoordsForObject((unsigned char *)param_4, (void *)ride);
+    coords = GetScreenCoordsForObject((unsigned char *)param_4, (void *)ride);
     if (node != NULL) {
         short v = *param_4;
         p = blokes;
@@ -987,10 +975,10 @@ void FUN_0042f4c0(int param_1, unsigned int param_2, unsigned int param_3, short
             frame = 0;
         }
         LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_0081cd2c, 1), frame);
-        offset.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0081cd2c, 1);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
+        offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0081cd2c, 1);
+        AdjustOffsetForViewMode(&offset);
         PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_0081cd2c, 1),
-            offset.i[0] + coords.i[0], offset.i[1] + coords.i[1], param_6, (int *)&cfg);
+            offset.x + coords.x, offset.y + coords.y, param_6, (int *)&cfg);
         state->field_9 = frame;
     }
 }
@@ -1566,14 +1554,8 @@ void *FUN_004304a0(struct EateryObj *obj, unsigned short a2) {
 // FUNCTION: LEGOLAND 0x004304e0
 void FUN_004304e0(unsigned short *param_1, int param_2, unsigned int param_3) {
     struct SaveBlock *state;
-    union {
-        __int64 q;
-        int i[2];
-    } coords;
-    union {
-        __int64 q;
-        int i[2];
-    } off;
+    struct Point coords;
+    struct Point off;
     struct {
         /* 0x00 */ int field_0;
         /* 0x04 */ int field_4;
@@ -1592,9 +1574,9 @@ void FUN_004304e0(unsigned short *param_1, int param_2, unsigned int param_3) {
     if (state == NULL) {
         return;
     }
-    coords.q = GetScreenCoordsForObject((unsigned char *)param_1, (void *)param_2);
-    sy = coords.i[1];
-    sx = coords.i[0];
+    coords = GetScreenCoordsForObject((unsigned char *)param_1, (void *)param_2);
+    sy = coords.y;
+    sx = coords.x;
     c8 = state->field_8;
     c9 = state->field_9;
     c6 = state->field_6;
@@ -1603,13 +1585,13 @@ void FUN_004304e0(unsigned short *param_1, int param_2, unsigned int param_3) {
     case 0:
     case 1:
         LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 1), c7);
-        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), off.i[0] + sx, off.i[1] + sy, param_3, (int *)&cfg);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), off.x + sx, off.y + sy, param_3, (int *)&cfg);
         LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), c9);
-        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), off.i[0] + sx, off.i[1] + sy, param_3, (int *)&cfg);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), off.x + sx, off.y + sy, param_3, (int *)&cfg);
         if (state->field_18 == 0 && state->field_c == 0) {
             return;
         }
@@ -1617,39 +1599,39 @@ void FUN_004304e0(unsigned short *param_1, int param_2, unsigned int param_3) {
         return;
     case 2:
         LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 1), c7);
-        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
-        sx = off.i[0] + sx;
-        sy = off.i[1] + sy;
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
+        AdjustOffsetForViewMode(&off);
+        sx = off.x + sx;
+        sy = off.y + sy;
         PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), sx, sy, param_3, (int *)&cfg);
         return;
     case 3:
         LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 1), c7);
-        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), off.i[0] + sx, off.i[1] + sy, param_3, (int *)&cfg);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), off.x + sx, off.y + sy, param_3, (int *)&cfg);
         LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), c9);
-        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
-        sx = off.i[0] + sx;
-        sy = off.i[1] + sy;
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
+        AdjustOffsetForViewMode(&off);
+        sx = off.x + sx;
+        sy = off.y + sy;
         PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), sx, sy, param_3, (int *)&cfg);
         return;
     case 4:
     case 5:
         LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 1), c7);
-        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), off.i[0] + sx, off.i[1] + sy, param_3, (int *)&cfg);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 1);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 1), off.x + sx, off.y + sy, param_3, (int *)&cfg);
         LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 2), c6);
-        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 2);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 2), off.i[0] + sx, off.i[1] + sy, param_3, (int *)&cfg);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 2);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 2), off.x + sx, off.y + sy, param_3, (int *)&cfg);
         LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 0), c6);
-        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 0);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
-        sx = off.i[0] + sx;
-        sy = off.i[1] + sy;
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 0);
+        AdjustOffsetForViewMode(&off);
+        sx = off.x + sx;
+        sy = off.y + sy;
         PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 0), sx, sy, param_3, (int *)&cfg);
         return;
     }
@@ -1669,14 +1651,8 @@ void FUN_00430b10(int param_1, unsigned int param_2, unsigned int param_3, short
     int f38;
     int f3c;
     int blokes[30];
-    union {
-        __int64 q;
-        int i[2];
-    } coords;
-    union {
-        __int64 q;
-        int i[2];
-    } off;
+    struct Point coords;
+    struct Point off;
     struct {
         /* 0x00 */ int field_0;
         /* 0x04 */ int field_4;
@@ -1703,7 +1679,7 @@ void FUN_00430b10(int param_1, unsigned int param_2, unsigned int param_3, short
     f38 = state->field_38;
     f3c = state->field_3c;
     FUN_004304e0((unsigned short *)param_4, ride, param_6);
-    coords.q = GetScreenCoordsForObject((unsigned char *)param_4, (void *)ride);
+    coords = GetScreenCoordsForObject((unsigned char *)param_4, (void *)ride);
     if (node == NULL) {
         return;
     }
@@ -1719,25 +1695,25 @@ void FUN_00430b10(int param_1, unsigned int param_2, unsigned int param_3, short
     if (count == 0) {
         return;
     }
-    sx = coords.i[0];
-    sy = coords.i[1];
+    sx = coords.x;
+    sy = coords.y;
     if (s18 == 0 || s18 == 1) {
-        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 5);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 5), off.i[0] + sx, off.i[1] + sy, param_6, (int *)&cfg);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 5);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 5), off.x + sx, off.y + sy, param_6, (int *)&cfg);
         for (i = 0; i < count; i = i + 1) {
             if (*(char *)(blokes[i] + 0x60) == 5) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
         }
         for (i = 0; i < count; i = i + 1) {
             if (*(char *)(blokes[i] + 0x60) == 6) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
         }
-        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 6);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 6), off.i[0] + sx, off.i[1] + sy, param_6, (int *)&cfg);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 6);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 6), off.x + sx, off.y + sy, param_6, (int *)&cfg);
         for (i = 0; i < count; i = i + 1) {
             if (*(char *)(blokes[i] + 0x60) == 4) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
         }
-        PrintSprite(DAT_0081cd48, off.i[0] + sx, off.i[1] + sy, param_6, (int *)&cfg);
+        PrintSprite(DAT_0081cd48, off.x + sx, off.y + sy, param_6, (int *)&cfg);
     } else if (s18 == 2) {
         if (f11 != 0) {
             for (i = 0; i < count; i = i + 1) {
@@ -1749,14 +1725,14 @@ void FUN_00430b10(int param_1, unsigned int param_2, unsigned int param_3, short
         for (i = 0; i < count; i = i + 1) {
             if (*(char *)(blokes[i] + 0x60) == 6) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
         }
-        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 6);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
-        PrintSprite(DAT_0081cd34, off.i[0] + sx, f38 / 2 + sy, param_6, (int *)&cfg);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 6);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(DAT_0081cd34, off.x + sx, f38 / 2 + sy, param_6, (int *)&cfg);
         LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), c9);
-        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
-        sy = off.i[1] + sy;
-        sx = off.i[0] + sx;
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
+        AdjustOffsetForViewMode(&off);
+        sy = off.y + sy;
+        sx = off.x + sx;
         PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), sx, sy, param_6, (int *)&cfg);
     } else if (s18 == 5 || s18 == 4) {
         for (i = 0; i < count; i = i + 1) {
@@ -1768,8 +1744,8 @@ void FUN_00430b10(int param_1, unsigned int param_2, unsigned int param_3, short
         for (i = 0; i < count; i = i + 1) {
             if (*(char *)(blokes[i] + 0x60) == 9) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
         }
-        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 0);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 0);
+        AdjustOffsetForViewMode(&off);
         for (i = 0; i < count; i = i + 1) {
             if (*(char *)(blokes[i] + 0x60) == 0xd) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
         }
@@ -1779,16 +1755,16 @@ void FUN_00430b10(int param_1, unsigned int param_2, unsigned int param_3, short
         for (i = 0; i < count; i = i + 1) {
             if (*(char *)(blokes[i] + 0x60) == 0xf) IP_RenderBlokeIn3DNow((struct Bloke *)blokes[i]);
         }
-        PrintSprite(DAT_0081cd84, sx, off.i[1] + sy, param_6, (int *)&cfg);
+        PrintSprite(DAT_0081cd84, sx, off.y + sy, param_6, (int *)&cfg);
         PrintSprite(DAT_0081cd20, sx, sy, param_6, (int *)&cfg);
-        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 2);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
-        PrintSprite(DAT_0081cd34, off.i[0] + sx, off.i[1] + sy, param_6, (int *)&cfg);
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 2);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(DAT_0081cd34, off.x + sx, off.y + sy, param_6, (int *)&cfg);
         LLSSetFrame((struct LLS *)GetLLSForLayer(DAT_00616118, 3), c9);
-        off.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&off);
-        sy = off.i[1] + sy;
-        sx = off.i[0] + sx;
+        off = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616118, 3);
+        AdjustOffsetForViewMode(&off);
+        sy = off.y + sy;
+        sx = off.x + sx;
         PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616118, 3), sx, sy, param_6, (int *)&cfg);
     }
     for (i = 0; i < count; i = i + 1) {

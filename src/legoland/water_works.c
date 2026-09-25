@@ -598,20 +598,17 @@ void FUN_00418450(struct WaterRender *render, unsigned int p2, unsigned int p3, 
     struct WaterNode *node;
     void *ctx;
     struct AdjustOffset offset;
-    union {
-        __int64 q;
-        int i[2];
-    } sc;
+    struct Point sc;
 
     ctx = render->field_c;
     node = FUN_004182c0((unsigned short *)coords);
     if (node != NULL && node->field_8 == 2) {
         offset.x = -8;
         offset.y = 0x14;
-        AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
-        sc.q = GetScreenCoordsForObject(coords, ctx);
+        AdjustOffsetForViewMode((struct Point *)&offset);
+        sc = GetScreenCoordsForObject(coords, ctx);
         LLSSetFrame((struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_004cc014), node->field_9);
-        PrintSprite(DAT_004cc014, sc.i[0] + offset.x, sc.i[1] + offset.y, p6, 0);
+        PrintSprite(DAT_004cc014, sc.x + offset.x, sc.y + offset.y, p6, 0);
     }
 }
 
@@ -756,10 +753,7 @@ void FUN_004187f0(void) {
     int limit;
     struct AdjustOffset offset;
     int y;
-    union {
-        __int64 q;
-        int i[2];
-    } sc;
+    struct Point sc;
 
     FUN_004187b0();
     for (node = DAT_004cc034; node != NULL; node = node->next) {
@@ -777,11 +771,11 @@ void FUN_004187f0(void) {
             if (node->field_8 == 1) {
                 offset.x = -0x75;
                 offset.y = 0x8a;
-                AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
-                sc.q = GetScreenCoordsForObject((unsigned char *)&node->key, DAT_004cbfdc);
+                AdjustOffsetForViewMode((struct Point *)&offset);
+                sc = GetScreenCoordsForObject((unsigned char *)&node->key, DAT_004cbfdc);
                 SetOverrideFrame(node->field_9);
-                y = sc.i[1] + offset.y;
-                SortSprite(DAT_004cc020, sc.i[0] + offset.x, y, y + 0x20, 0, 0);
+                y = sc.y + offset.y;
+                SortSprite(DAT_004cc020, sc.x + offset.x, y, y + 0x20, 0, 0);
                 ClearOverrideFrame();
             }
         }

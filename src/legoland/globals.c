@@ -409,7 +409,7 @@ struct SpaceTowerLayout DAT_004b7758[8];
 struct SpaceTowerSeatData DAT_004b7798[4];
 
 // GLOBAL: LEGOLAND 0x004b77e8
-struct LayerOffset DAT_004b77e8[8];
+struct Point DAT_004b77e8[8];
 
 // GLOBAL: LEGOLAND 0x004b79d0
 unsigned char DAT_004b79d0[0x18];
@@ -1272,13 +1272,19 @@ unsigned short DAT_004cbf4c;
 void *DAT_004cbf58;
 
 // GLOBAL: LEGOLAND 0x004cbf5c
-void *DAT_004cbf5c;
+struct TempleRide *DAT_004cbf5c;
+
+// GLOBAL: LEGOLAND 0x004cbf64
+void *DAT_004cbf64;
 
 // GLOBAL: LEGOLAND 0x004cbf68
 struct Sprite *DAT_004cbf68;
 
 // GLOBAL: LEGOLAND 0x004cbf6c
 struct Sprite *DAT_004cbf6c;
+
+// GLOBAL: LEGOLAND 0x004cbf70
+struct RenderItemNode *DAT_004cbf70;
 
 // GLOBAL: LEGOLAND 0x004cbf78
 struct Sprite *DAT_004cbf78;
@@ -1815,7 +1821,7 @@ struct Sprite *DAT_0062fd7c;
 struct Sprite *DAT_0062fd80;
 
 // GLOBAL: LEGOLAND 0x0062fd88
-struct LayerOffset DAT_0062fd88[4];
+struct Point DAT_0062fd88[4];
 
 // GLOBAL: LEGOLAND 0x0062fda8
 struct RideObject *DAT_0062fda8;

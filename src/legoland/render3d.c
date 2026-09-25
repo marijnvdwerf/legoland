@@ -17,11 +17,6 @@
 
 #include "image_sprite.h"
 
-struct AdjustStruct {
-    int field0;
-    int field4;
-};
-
 // FUNCTION: LEGOLAND 0x00441800
 LEGO_EXPORT void Render_SetViewport(struct tagRECT *viewport) {
     DAT_0081c8d0 = viewport->left;
@@ -109,22 +104,16 @@ struct BlokeRideNode {
 
 // FUNCTION: LEGOLAND 0x00441a60
 LEGO_EXPORT void Put3DBlokesOnRide(struct ViewportEntry *param_1, unsigned char *param_2, int param_3, int *param_4) {
-    union {
-        __int64 i;
-        struct {
-            int lo;
-            int hi;
-        } p;
-    } coords;
+    struct Point coords;
     int i;
 
-    coords.i = GetScreenCoordsForObject(param_2, param_1);
+    coords = GetScreenCoordsForObject(param_2, param_1);
     i = 0;
     if (param_4[1] > 0) {
         do {
             struct BlokeRideNode *node = (struct BlokeRideNode *)FUN_004418c0(i, param_1, (short *)param_2);
             if (node != NULL && (node->inner->flags & 0x80) != 0) {
-                FUN_00441980(param_4, i, param_3, node->field_10, coords.p.lo, coords.p.hi);
+                FUN_00441980(param_4, i, param_3, node->field_10, coords.x, coords.y);
             }
             i = i + 1;
         } while (i < param_4[1]);
@@ -289,19 +278,13 @@ struct RinRender {
 
 // FUNCTION: LEGOLAND 0x00441d60
 LEGO_EXPORT void RenderUsingRin(struct RinRender *param_1, int param_2, struct ViewportEntry *param_3, unsigned char *param_4) {
-    union {
-        __int64 i;
-        struct {
-            int lo;
-            int hi;
-        } p;
-    } coords;
+    struct Point coords;
     int idx;
     int *entry;
     int i;
-    struct AdjustStruct offset;
+    struct Point offset;
 
-    coords.i = GetScreenCoordsForObject(param_4, param_3);
+    coords = GetScreenCoordsForObject(param_4, param_3);
     idx = param_2;
     if (param_1->modulo <= param_2) {
         idx = param_2 % param_1->modulo;
@@ -326,12 +309,12 @@ LEGO_EXPORT void RenderUsingRin(struct RinRender *param_1, int param_2, struct V
             if (frame != NULL) {
                 LLSSetFrame((struct LLS *)GetLLSForSprite((struct SpriteLLS *)frame), param_2);
             }
-            offset.field0 = param_1->x;
-            offset.field4 = param_1->y;
+            offset.x = param_1->x;
+            offset.y = param_1->y;
             AdjustOffsetForViewMode(&offset);
             frame = (int *)param_1->index_array[sprite_id];
             if (frame != NULL) {
-                PrintSprite((struct Sprite *)frame, coords.p.lo + offset.field0, coords.p.hi + offset.field4, 0, 0);
+                PrintSprite((struct Sprite *)frame, coords.x + offset.x, coords.y + offset.y, 0, 0);
             }
             entry = entry - 1;
             i = i - 1;
@@ -392,18 +375,12 @@ struct LayerOffsetHolder {
 };
 
 // FUNCTION: LEGOLAND 0x00441ee0
-LEGO_EXPORT __int64 GetRenderOffsetForLayer(struct LayerOffsetHolder *param_1, int param_2) {
+LEGO_EXPORT struct Point GetRenderOffsetForLayer(struct LayerOffsetHolder *param_1, int param_2) {
     struct LayerOffsets *o = param_1->field_8;
-    union {
-        __int64 i;
-        struct {
-            int lo;
-            int hi;
-        } p;
-    } r;
-    r.p.lo = o->x_offsets[param_2];
-    r.p.hi = o->y_offsets[param_2];
-    return r.i;
+    struct Point r;
+    r.x = o->x_offsets[param_2];
+    r.y = o->y_offsets[param_2];
+    return r;
 }
 
 // FUNCTION: LEGOLAND 0x00441f00
@@ -702,18 +679,12 @@ struct ScreenObj {
 };
 
 // FUNCTION: LEGOLAND 0x00442cc0
-LEGO_EXPORT __int64 GetScreenCoordsForObject(unsigned char *param_1, void *param_2) {
+LEGO_EXPORT struct Point GetScreenCoordsForObject(unsigned char *param_1, void *param_2) {
     int bounds[2];
     struct Point ref;
     int iVar1;
     int iVar2;
-    union {
-        __int64 i;
-        struct {
-            int lo;
-            int hi;
-        } p;
-    } r;
+    struct Point r;
 
     ref.x = param_1[0];
     ref.y = param_1[1];
@@ -726,35 +697,35 @@ LEGO_EXPORT __int64 GetScreenCoordsForObject(unsigned char *param_1, void *param
         iVar2 = iVar2 >> 1;
     }
     if (iVar1 < 0) {
-        r.p.hi = bounds[1] - (-iVar1 >> 1);
-        r.p.lo = iVar2 + bounds[0];
-        return r.i;
+        r.y = bounds[1] - (-iVar1 >> 1);
+        r.x = iVar2 + bounds[0];
+        return r;
     }
-    r.p.hi = bounds[1] + (iVar1 >> 1);
-    r.p.lo = iVar2 + bounds[0];
-    return r.i;
+    r.y = bounds[1] + (iVar1 >> 1);
+    r.x = iVar2 + bounds[0];
+    return r;
 }
 
 // FUNCTION: LEGOLAND 0x00442d30
-LEGO_EXPORT void AdjustOffsetForViewMode(struct AdjustStruct *param_1) {
+LEGO_EXPORT void AdjustOffsetForViewMode(struct Point *param_1) {
     int temp0;
     int temp4;
 
-    temp0 = param_1->field0;
+    temp0 = param_1->x;
     if (temp0 < 0) {
         temp0 = -((-temp0) >> 1);
     } else {
         temp0 = temp0 >> 1;
     }
-    param_1->field0 = temp0;
+    param_1->x = temp0;
 
-    temp4 = param_1->field4;
+    temp4 = param_1->y;
     if (temp4 < 0) {
         temp4 = -((-temp4) >> 1);
     } else {
         temp4 = temp4 >> 1;
     }
-    param_1->field4 = temp4;
+    param_1->y = temp4;
 }
 
 // FUNCTION: LEGOLAND 0x00442d60

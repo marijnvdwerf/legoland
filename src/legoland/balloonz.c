@@ -539,8 +539,8 @@ void FUN_0042b2e0(struct BalloonRideObj *param_1, void *param_2, void *param_3, 
     char cVar4;
     int local_4c;
     int local_44;
-    __int64 local_40;
-    __int64 local_38;
+    struct Point local_40;
+    struct Point local_38;
     struct LayerResult local_18;
     int *p;
     int i;
@@ -558,7 +558,7 @@ void FUN_0042b2e0(struct BalloonRideObj *param_1, void *param_2, void *param_3, 
     count = 0;
     blokes[0] = 0;
     blokes[5] = 0;
-    AdjustOffsetForViewMode((struct AdjustStruct *)&local_40);
+    AdjustOffsetForViewMode(&local_40);
     local_44 = (int)FUN_0042a980(param_4);
     if (local_44 == 0) {
         return;
@@ -580,7 +580,7 @@ void FUN_0042b2e0(struct BalloonRideObj *param_1, void *param_2, void *param_3, 
         if ((char)count != '\0') {
             list2 = ride->list;
             local_40 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616044, 0);
-            AdjustOffsetForViewMode((struct AdjustStruct *)&local_40);
+            AdjustOffsetForViewMode(&local_40);
             if ('\0' < (char)count) {
                 p = blokes;
                 i = count;
@@ -603,9 +603,9 @@ void FUN_0042b2e0(struct BalloonRideObj *param_1, void *param_2, void *param_3, 
                     } while (i != 0);
                 }
             }
-            iVar6 = (int)local_38;
-            iVar7 = (int)(local_38 >> 0x20);
-            PrintSprite(DAT_00616048, (int)local_40 + iVar6, (int)(local_40 >> 0x20) + iVar7, param_6, 0);
+            iVar6 = local_38.x;
+            iVar7 = local_38.y;
+            PrintSprite(DAT_00616048, local_40.x + iVar6, local_40.y + iVar7, param_6, 0);
             if ('\0' < (char)count) {
                 p = blokes;
                 i = count;
@@ -617,7 +617,7 @@ void FUN_0042b2e0(struct BalloonRideObj *param_1, void *param_2, void *param_3, 
                     i--;
                 } while (i != 0);
             }
-            PrintSprite(DAT_0061604c, (int)local_40 + iVar6, (int)(local_40 >> 0x20) + iVar7, param_6, 0);
+            PrintSprite(DAT_0061604c, local_40.x + iVar6, local_40.y + iVar7, param_6, 0);
             if ('\0' < (char)count) {
                 p = blokes;
                 i = count;
@@ -662,7 +662,7 @@ void FUN_0042b2e0(struct BalloonRideObj *param_1, void *param_2, void *param_3, 
                     }
                 }
             }
-            PrintSprite(DAT_00616050, (int)local_40 + iVar6, (int)(local_40 >> 0x20) + iVar7, param_6, 0);
+            PrintSprite(DAT_00616050, local_40.x + iVar6, local_40.y + iVar7, param_6, 0);
             if ('\0' < (char)count) {
                 p = blokes;
                 i = count;
@@ -699,8 +699,8 @@ void FUN_0042b2e0(struct BalloonRideObj *param_1, void *param_2, void *param_3, 
             uVar10 = (unsigned int)cVar1;
             LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_00616044, 1), uVar10);
             local_40 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616044, 1);
-            AdjustOffsetForViewMode((struct AdjustStruct *)&local_40);
-            PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616044, 1), (int)local_40 + iVar6, (int)(local_40 >> 0x20) + iVar7, param_6, 0);
+            AdjustOffsetForViewMode(&local_40);
+            PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616044, 1), local_40.x + iVar6, local_40.y + iVar7, param_6, 0);
             uVar8 = uVar10 & 0x80000007;
             bVar13 = uVar8 == 0;
             if ((int)uVar8 < 0) {
@@ -709,7 +709,7 @@ void FUN_0042b2e0(struct BalloonRideObj *param_1, void *param_2, void *param_3, 
             if (bVar13 || cVar1 == '\0') {
                 LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_00616044, 1), uVar10);
                 local_40 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616044, 1);
-                AdjustOffsetForViewMode((struct AdjustStruct *)&local_40);
+                AdjustOffsetForViewMode(&local_40);
                 if ('\0' < (char)count) {
                     p = blokes;
                     i = count;
@@ -758,15 +758,15 @@ void FUN_0042b2e0(struct BalloonRideObj *param_1, void *param_2, void *param_3, 
                 switch (sprcase) {
                 case 0:
                 case 3:
-                    PrintSprite(DAT_00616054, (int)local_40 + (int)local_38, (int)(local_40 >> 0x20) + iVar7, param_6, 0);
+                    PrintSprite(DAT_00616054, local_40.x + local_38.x, local_40.y + iVar7, param_6, 0);
                     break;
                 case 1:
                 case 4:
-                    PrintSprite(DAT_00616058, (int)local_40 + (int)local_38, (int)(local_40 >> 0x20) + iVar7, param_6, 0);
+                    PrintSprite(DAT_00616058, local_40.x + local_38.x, local_40.y + iVar7, param_6, 0);
                     break;
                 case 2:
                 case 5:
-                    PrintSprite(DAT_0061605c, (int)local_40 + (int)local_38, (int)(local_40 >> 0x20) + iVar7, param_6, 0);
+                    PrintSprite(DAT_0061605c, local_40.x + local_38.x, local_40.y + iVar7, param_6, 0);
                     break;
                 }
             }
@@ -779,15 +779,15 @@ void FUN_0042b2e0(struct BalloonRideObj *param_1, void *param_2, void *param_3, 
                     local_50 = (int)local_18.field_8 + -6;
                     local_4c = 0x12;
                     local_44 = 0;
-                    AdjustOffsetForViewMode((struct AdjustStruct *)&local_4c);
+                    AdjustOffsetForViewMode((struct Point *)&local_4c);
                     local_44 = local_44 + -8;
                     unit = *(int *)(b + 4);
                     *(int *)(unit + 0x24) = *(short *)(b + 0x3c) - local_4c;
                     *(int *)(unit + 0x28) = *(short *)(b + 0x3e) - local_44;
                     AdjustBlokePosition((struct BlokePos *)(unit + 0x24));
-                    AdjustOffsetForViewMode((struct AdjustStruct *)&local_54);
-                    *(int *)(unit + 0x1c) = local_54 + (int)local_38 + (*(short *)(b + 0x3c) - local_4c);
-                    *(int *)(unit + 0x20) = (*(short *)(b + 0x3e) - local_44) + local_50 + (int)(local_38 >> 0x20);
+                    AdjustOffsetForViewMode((struct Point *)&local_54);
+                    *(int *)(unit + 0x1c) = local_54 + local_38.x + (*(short *)(b + 0x3c) - local_4c);
+                    *(int *)(unit + 0x20) = (*(short *)(b + 0x3e) - local_44) + local_50 + local_38.y;
                     AdjustBlokePosition((struct BlokePos *)(unit + 0x1c));
                     IP_RenderBlokeIn3DNow(list2->bloke);
                 }
@@ -797,8 +797,8 @@ void FUN_0042b2e0(struct BalloonRideObj *param_1, void *param_2, void *param_3, 
     }
     LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_00616044, 1), (int)cVar1);
     local_40 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616044, 1);
-    AdjustOffsetForViewMode((struct AdjustStruct *)&local_40);
-    PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616044, 1), (int)local_40 + (int)local_38, (int)(local_40 >> 0x20) + (int)(local_38 >> 0x20), param_6, 0);
+    AdjustOffsetForViewMode(&local_40);
+    PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616044, 1), local_40.x + local_38.x, local_40.y + local_38.y, param_6, 0);
 draw_layer2:
     cVar4 = cVar4 + '\x01';
     if ('0' < cVar4) {
@@ -807,8 +807,8 @@ draw_layer2:
     *(char *)(local_44 + 0x16) = cVar4;
     LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_00616044, 2), (int)cVar4);
     local_40 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616044, 2);
-    AdjustOffsetForViewMode((struct AdjustStruct *)&local_40);
-    PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616044, 2), (int)local_40 + (int)local_38, (int)(local_40 >> 0x20) + (int)(local_38 >> 0x20), param_6, 0);
+    AdjustOffsetForViewMode(&local_40);
+    PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616044, 2), local_40.x + local_38.x, local_40.y + local_38.y, param_6, 0);
 }
 
 // FUNCTION: LEGOLAND 0x0042b9d0

@@ -193,7 +193,7 @@ void FUN_00439400(struct ShopObject *obj, unsigned int param2, unsigned int para
     }
 
     if (count != 0) {
-        __int64 q = GetScreenCoordsForObject((unsigned char *)ride, building);
+        struct Point q = GetScreenCoordsForObject((unsigned char *)ride, building);
         struct Coords *coords = (struct Coords *)&q;
         PrintSprite(DAT_0081cb18, coords->x, coords->y, param1, (int *)node);
     }
@@ -326,7 +326,7 @@ void FUN_0043a180(struct ShopObject *obj, unsigned int param2, unsigned int para
     }
 
     if (count != 0) {
-        __int64 q = GetScreenCoordsForObject((unsigned char *)ride, building);
+        struct Point q = GetScreenCoordsForObject((unsigned char *)ride, building);
         struct Coords *coords = (struct Coords *)&q;
         PrintSprite(DAT_0081cb28, coords->x, coords->y, param1, (int *)node);
     }

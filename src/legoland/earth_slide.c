@@ -190,10 +190,7 @@ void FUN_0042d040(struct EarthNode *list) {
 void FUN_0042d070(struct EarthRideObj *param_1, unsigned int param_2, unsigned int param_3, unsigned char *param_4, unsigned int param_5, unsigned int param_6) {
     struct Cursor *ride = param_1->ride;
     struct EarthNode *node = FUN_0042ce20((unsigned short *)param_4);
-    union {
-        __int64 q;
-        int i[2];
-    } coords;
+    struct Point coords;
     char cv;
 
     if (node != NULL) {
@@ -203,11 +200,11 @@ void FUN_0042d070(struct EarthRideObj *param_1, unsigned int param_2, unsigned i
         }
         RenderBlokesNotInSeats((unsigned int)ride, (unsigned int)param_4);
         if (node->field_4 != 0) {
-            coords.q = GetScreenCoordsForObject(param_4, ride);
-            PrintSprite(DAT_006160d8, coords.i[0], coords.i[1], param_6, 0);
+            coords = GetScreenCoordsForObject(param_4, ride);
+            PrintSprite(DAT_006160d8, coords.x, coords.y, param_6, 0);
         }
-        coords.q = GetScreenCoordsForObject(param_4, ride);
-        PrintSprite(DAT_006160e0, coords.i[0], coords.i[1], param_6, 0);
+        coords = GetScreenCoordsForObject(param_4, ride);
+        PrintSprite(DAT_006160e0, coords.x, coords.y, param_6, 0);
     }
 }
 

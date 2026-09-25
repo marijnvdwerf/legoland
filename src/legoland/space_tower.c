@@ -459,7 +459,7 @@ int FUN_0043ad00(unsigned char *param_1, int param_2) {
 
 // FUNCTION: LEGOLAND 0x0043ad90
 void FUN_0043ad90(struct RideObject *param_1, int param_2, unsigned int param_3) {
-    __int64 coords;
+    struct Point coords;
     int off_x;
     int off_y;
 
@@ -467,14 +467,14 @@ void FUN_0043ad90(struct RideObject *param_1, int param_2, unsigned int param_3)
     if (DAT_0062fd64[param_2] != NULL) {
         off_x = DAT_0062fd88[param_2].x;
         off_y = DAT_0062fd88[param_2].y - param_1->seats[param_2].pos;
-        AdjustOffsetForViewMode((struct AdjustStruct *)&off_x);
-        PrintSprite(DAT_0062fd64[param_2], off_x + (int)coords, off_y + (int)(coords >> 0x20), param_3, 0);
+        AdjustOffsetForViewMode((struct Point *)&off_x);
+        PrintSprite(DAT_0062fd64[param_2], off_x + coords.x, off_y + coords.y, param_3, 0);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0043ae20
 void FUN_0043ae20(struct RideObject *param_1, int param_2, unsigned int param_3) {
-    __int64 coords;
+    struct Point coords;
     int off_x;
     int off_y;
     int sprite_id;
@@ -482,7 +482,7 @@ void FUN_0043ae20(struct RideObject *param_1, int param_2, unsigned int param_3)
     coords = GetScreenCoordsForObject((unsigned char *)param_1, DAT_0062fd74);
     off_x = DAT_0062fd88[param_2].x;
     off_y = DAT_0062fd88[param_2].y - param_1->seats[param_2].pos;
-    AdjustOffsetForViewMode((struct AdjustStruct *)&off_x);
+    AdjustOffsetForViewMode((struct Point *)&off_x);
     switch (param_2) {
     case 0:
         sprite_id = 6;
@@ -499,7 +499,7 @@ void FUN_0043ae20(struct RideObject *param_1, int param_2, unsigned int param_3)
     default:
         sprite_id = off_y;
     }
-    PrintSprite(GetSpriteForLayer((struct LayerContainer *)DAT_0062fd60, sprite_id), off_x + (int)coords, (int)(coords >> 0x20) + off_y, param_3, 0);
+    PrintSprite(GetSpriteForLayer((struct LayerContainer *)DAT_0062fd60, sprite_id), off_x + coords.x, coords.y + off_y, param_3, 0);
 }
 
 // FUNCTION: LEGOLAND 0x0043aee0
@@ -525,25 +525,19 @@ void FUN_0043af50(struct SpaceTowerCtx *param_1, unsigned int param_2, unsigned 
     struct Bloke *bloke;
     int coord_x;
     int coord_y;
-    union {
-        __int64 q;
-        struct {
-            int low;
-            int high;
-        } parts;
-    } coords;
-    struct LayerOffset local_8;
-    struct LayerOffset local_10;
+    struct Point coords;
+    struct Point local_8;
+    struct Point local_10;
 
     ride = param_1->ride;
     node = ride->list;
     obj = FUN_0043ac40(param_4);
     if (obj != NULL) {
-        coords.q = GetScreenCoordsForObject((unsigned char *)param_4, ride);
-        coord_x = coords.parts.low;
-        coord_y = coords.parts.high;
-        *(__int64 *)&local_8 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 1);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&local_8);
+        coords = GetScreenCoordsForObject((unsigned char *)param_4, ride);
+        coord_x = coords.x;
+        coord_y = coords.y;
+        local_8 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 1);
+        AdjustOffsetForViewMode(&local_8);
         if (node == NULL) {
             FUN_0043aee0(obj, 1, param_6);
             FUN_0043aee0(obj, 2, param_6);
@@ -580,12 +574,12 @@ void FUN_0043af50(struct SpaceTowerCtx *param_1, unsigned int param_2, unsigned 
             PrintSprite(DAT_0062fd80, local_8.x + coord_x, local_8.y + coord_y, param_6, 0);
         }
         LLSSetFrame(GetLLSForLayer(DAT_0062fd60, 5), (int)obj->var_ad);
-        *(__int64 *)&local_10 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 5);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&local_10);
+        local_10 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 5);
+        AdjustOffsetForViewMode(&local_10);
         PrintSprite(GetSpriteForLayer((struct LayerContainer *)DAT_0062fd60, 5), local_10.x + coord_x, local_10.y + coord_y, param_6, 0);
         LLSSetFrame(GetLLSForLayer(DAT_0062fd60, 3), (int)obj->var_ac);
-        *(__int64 *)&local_10 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 3);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&local_10);
+        local_10 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 3);
+        AdjustOffsetForViewMode(&local_10);
         PrintSprite(GetSpriteForLayer((struct LayerContainer *)DAT_0062fd60, 3), local_10.x + coord_x, local_10.y + coord_y, param_6, 0);
     }
 }
@@ -605,10 +599,10 @@ void FUN_0043b2b0(struct SpaceTowerCtx *param_1) {
     HideLayer(DAT_0062fd60, 3);
     StopLayerPlaying(DAT_0062fd60, 3);
     LLSSetFrame(GetLLSForLayer(DAT_0062fd60, 3), 0);
-    *(__int64 *)&DAT_0062fd88[0] = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 6);
-    *(__int64 *)&DAT_0062fd88[1] = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 4);
-    *(__int64 *)&DAT_0062fd88[2] = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 0);
-    *(__int64 *)&DAT_0062fd88[3] = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 2);
+    DAT_0062fd88[0] = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 6);
+    DAT_0062fd88[1] = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 4);
+    DAT_0062fd88[2] = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 0);
+    DAT_0062fd88[3] = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 2);
     DAT_0062fd64[0] = NULL;
     // STRING: LEGOLAND 0x004b7880
     DAT_0062fd64[1] = LoadSprite("SpaceTower Seat2 Matte.lls", 1);
@@ -820,13 +814,7 @@ void FUN_0043b810(struct RideObject *param_1) {
     int off_y;
     int dat_x;
     int dat_y;
-    union {
-        __int64 q;
-        struct {
-            int low;
-            int high;
-        } parts;
-    } coords;
+    struct Point coords;
 
     node = ((struct SpaceTowerRide *)DAT_0062fd74)->list;
     param_1->seats[0].field_18 = NULL;
@@ -837,7 +825,7 @@ void FUN_0043b810(struct RideObject *param_1) {
     param_1->seats[2].field_1c = NULL;
     param_1->seats[3].field_18 = NULL;
     param_1->seats[3].field_1c = NULL;
-    coords.q = GetScreenCoordsForObject((unsigned char *)param_1, DAT_0062fd74);
+    coords = GetScreenCoordsForObject((unsigned char *)param_1, DAT_0062fd74);
     for (; node != NULL; node = node->next) {
         if (node->id == param_1->var_0 && (node->bloke->flags & 0x80) != 0) {
             bloke = node->bloke;
@@ -852,9 +840,9 @@ void FUN_0043b810(struct RideObject *param_1) {
             }
             off_x = DAT_0062fd88[idx].x;
             off_y = DAT_0062fd88[idx].y - seat->pos;
-            AdjustOffsetForViewMode((struct AdjustStruct *)&off_x);
-            off_x = off_x + coords.parts.low;
-            off_y = coords.parts.high + off_y;
+            AdjustOffsetForViewMode((struct Point *)&off_x);
+            off_x = off_x + coords.x;
+            off_y = coords.y + off_y;
             if ((slot & 1) == 0) {
                 dat_x = DAT_004b7798[idx].field_0;
                 dat_y = DAT_004b7798[idx].field_4;
@@ -862,7 +850,7 @@ void FUN_0043b810(struct RideObject *param_1) {
                 dat_x = DAT_004b7798[idx].field_8;
                 dat_y = DAT_004b7798[idx].field_c;
             }
-            AdjustOffsetForViewMode((struct AdjustStruct *)&dat_x);
+            AdjustOffsetForViewMode((struct Point *)&dat_x);
             off_x = off_x + dat_x;
             off_y = off_y + dat_y;
             AdjustBlokePosition((struct BlokePos *)&off_x);

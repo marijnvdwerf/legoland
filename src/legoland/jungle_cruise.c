@@ -166,7 +166,7 @@ void FUN_00432d00(int param_1) {
             angleIdx = ride->field_29c[DAT_00629c54] & 0xff;
             local_20 = *(int *)(*(int *)((char *)DAT_0081cd00 + 0xc) + angleIdx * 4) >> 1;
             local_1c = *(int *)(*(int *)((char *)DAT_0081cd00 + 0x10) + angleIdx * 4) >> 1;
-            AdjustOffsetForViewMode((struct AdjustStruct *)&local_20);
+            AdjustOffsetForViewMode((struct Point *)&local_20);
             ride->field_14 = (unsigned int)lpConfig->field_20 + dx + local_20 + baseX;
             ride->field_18 = (unsigned int)lpConfig->field_22 + dy + local_1c + baseY;
             PrintSprite(*(struct Sprite **)(*(int *)((char *)DAT_0081cd00 + 8) + (ride->field_29c[DAT_00629c54] & 0xff) * 4),
@@ -209,7 +209,7 @@ void FUN_00432d00(int param_1) {
                         }
                     skip1:
                         SetPersonRotation(person, person + 0x40);
-                        AdjustOffsetForViewMode((struct AdjustStruct *)&local_10);
+                        AdjustOffsetForViewMode((struct Point *)&local_10);
                         *(int *)(person + 0x1c) = local_10 + local_20;
                         *(int *)(person + 0x20) = local_c + local_1c;
                         IP_RenderBlokeIn3DNow((struct Bloke *)ride->blokes[off]);
@@ -261,7 +261,7 @@ void FUN_00432d00(int param_1) {
                         }
                     skip2:
                         SetPersonRotation(person, person + 0x40);
-                        AdjustOffsetForViewMode((struct AdjustStruct *)&local_10);
+                        AdjustOffsetForViewMode((struct Point *)&local_10);
                         *(int *)(person + 0x1c) = local_10 + local_20;
                         *(int *)(person + 0x20) = local_c + local_1c;
                         IP_RenderBlokeIn3DNow((struct Bloke *)ride->blokes[off]);
@@ -1703,7 +1703,7 @@ void FUN_00435bd0(int param_1, unsigned int param_2, unsigned int param_3, short
     unsigned int *node = *(unsigned int **)(cursor + 0xcc);
     short *lls1;
     unsigned int lls2;
-    __int64 coords;
+    struct Point coords;
 
     FUN_00432d00(1);
     for (; node != NULL; node = (unsigned int *)*node) {
@@ -1715,7 +1715,7 @@ void FUN_00435bd0(int param_1, unsigned int param_2, unsigned int param_3, short
     lls1 = (short *)GetLLSForSprite((struct SpriteLLS *)DAT_0081cb60->field_64);
     lls2 = GetLLSForSprite((struct SpriteLLS *)DAT_0081cb5c);
     LLSSetFrame((struct LLS *)lls2, *lls1);
-    PrintSprite(DAT_0081cb5c, (unsigned int)coords, param_6, 0, 0);
+    PrintSprite(DAT_0081cb5c, coords.x, coords.y, param_6, 0);
 }
 
 // FUNCTION: LEGOLAND 0x00435c70

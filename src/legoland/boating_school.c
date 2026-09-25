@@ -144,7 +144,7 @@ void FUN_00418fe0(int param_1) {
         local_14 = (ride->field_4 + ride->field_8) * (th >> 1) - (ScrollY >> 8);
         dx = *(int *)(*(int *)((char *)DAT_0082c65c + 0xc) + (ride->field_29c[DAT_004cc08c] & 0xff) * 4) >> 1;
         dy = *(int *)(*(int *)((char *)DAT_0082c65c + 0x10) + (ride->field_29c[DAT_004cc08c] & 0xff) * 4) >> 1;
-        AdjustOffsetForViewMode((struct AdjustStruct *)&dx);
+        AdjustOffsetForViewMode((struct Point *)&dx);
         ride->field_14 = (unsigned int)lpConfig->field_20 + baseX + dx + local_18;
         ride->field_18 = (unsigned int)lpConfig->field_22 + baseY + dy + local_14;
         PrintSprite(*(struct Sprite **)(*(int *)((char *)DAT_0082c65c + 8) + (ride->field_29c[DAT_004cc08c] & 0xff) * 4),
@@ -158,7 +158,7 @@ void FUN_00418fe0(int param_1) {
             AdjustBlokePosition((struct BlokePos *)&tw2);
             local_18 = DAT_004b51d8[(ride->field_29c[DAT_004cc08c] & 0xf) * 8] + 0x44;
             local_14 = DAT_004b51d8[(ride->field_29c[DAT_004cc08c] & 0xf) * 8 + 1] + 0x34;
-            AdjustOffsetForViewMode((struct AdjustStruct *)&local_18);
+            AdjustOffsetForViewMode((struct Point *)&local_18);
             *(int *)(person + 0x1c) = local_18 + tw2;
             *(int *)(person + 0x20) = local_14 + th2;
             IP_RenderBlokeIn3DNow((struct Bloke *)ride->field_3ec);
@@ -1106,34 +1106,28 @@ void FUN_0041abd0(int param_1, unsigned int param_2, unsigned int param_3, short
     unsigned int **bloke_list;
     int cursor;
     short *lls;
-    union {
-        __int64 q;
-        int i[2];
-    } coords;
-    union {
-        __int64 q;
-        int i[2];
-    } offset;
+    struct Point coords;
+    struct Point offset;
 
     cursor = *(int *)(param_1 + 0xc);
     bloke_list = *(unsigned int ***)(cursor + 0xcc);
     FUN_00418fe0(1);
-    coords.q = GetScreenCoordsForObject((unsigned char *)param_4, (void *)cursor);
-    offset.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0082c658->field_64, 3);
-    AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
+    coords = GetScreenCoordsForObject((unsigned char *)param_4, (void *)cursor);
+    offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0082c658->field_64, 3);
+    AdjustOffsetForViewMode(&offset);
     lls = (short *)GetLLSForSprite((struct SpriteLLS *)GetSpriteForLayer((struct LayerContainer *)DAT_0082c658->field_64, 3));
     LLSSetFrame((struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_0082adfc), *lls);
-    PrintSprite(DAT_0082adfc, offset.i[0] + coords.i[0], offset.i[1] + coords.i[1], param_6, 0);
+    PrintSprite(DAT_0082adfc, offset.x + coords.x, offset.y + coords.y, param_6, 0);
     for (; bloke_list != NULL; bloke_list = (unsigned int **)*bloke_list) {
         if (*param_4 == *(short *)(bloke_list + 3) && *(char *)(((int *)bloke_list)[2] + 0x60) != 2) {
             IP_RenderBlokeIn3DNow((struct Bloke *)((int *)bloke_list)[2]);
         }
     }
-    offset.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0082c658->field_64, 3);
-    offset.i[0] = offset.i[0] + 0x71;
-    offset.i[1] = offset.i[1] + 0xac;
-    AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
-    PrintSprite(DAT_0082c654, offset.i[0] + coords.i[0], offset.i[1] + coords.i[1], param_6, 0);
+    offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0082c658->field_64, 3);
+    offset.x = offset.x + 0x71;
+    offset.y = offset.y + 0xac;
+    AdjustOffsetForViewMode(&offset);
+    PrintSprite(DAT_0082c654, offset.x + coords.x, offset.y + coords.y, param_6, 0);
 }
 
 // FUNCTION: LEGOLAND 0x0041acf0

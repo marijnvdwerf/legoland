@@ -5,6 +5,7 @@
 
 #include "gamemap.h"
 #include "legoland.h"
+#include "math.h"
 
 struct Bloke;
 
@@ -22,6 +23,7 @@ struct CtrlBuffer;
 // layout comes from gamemap.h, used by the EditCursor / QueryCursor instances.)
 // ---------------------------------------------------------------------------
 struct Sprite;
+struct TempleRide;
 struct Image;
 struct IconNode;
 struct Point;
@@ -86,11 +88,6 @@ struct SpaceTowerLayout {
     /* 0x00 */ unsigned short field_0;
     /* 0x02 */ unsigned char pad_2[2];
     /* 0x04 */ void *field_4;
-};
-
-struct LayerOffset {
-    /* 0x00 */ int x;
-    /* 0x04 */ int y;
 };
 
 struct SpaceTowerSeatData {
@@ -521,7 +518,7 @@ extern struct SpaceTowerLayout DAT_004b7758[8];
 // 0x004b7798
 extern struct SpaceTowerSeatData DAT_004b7798[4];
 // 0x004b77e8
-extern struct LayerOffset DAT_004b77e8[8];
+extern struct Point DAT_004b77e8[8];
 // 0x004b79d0
 extern unsigned char DAT_004b79d0[0x18];
 // 0x004b7abc
@@ -1072,11 +1069,15 @@ extern unsigned short DAT_004cbf4c;
 // 0x004cbf58
 extern void *DAT_004cbf58;
 // 0x004cbf5c
-extern void *DAT_004cbf5c;
+extern struct TempleRide *DAT_004cbf5c;
+// 0x004cbf64
+extern void *DAT_004cbf64;
 // 0x004cbf68
 extern struct Sprite *DAT_004cbf68;
 // 0x004cbf6c
 extern struct Sprite *DAT_004cbf6c;
+// 0x004cbf70
+extern struct RenderItemNode *DAT_004cbf70;
 // 0x004cbf78
 extern struct Sprite *DAT_004cbf78;
 // 0x004cbf80
@@ -1428,7 +1429,7 @@ extern struct Sprite *DAT_0062fd7c;
 // 0x0062fd80
 extern struct Sprite *DAT_0062fd80;
 // 0x0062fd88
-extern struct LayerOffset DAT_0062fd88[4];
+extern struct Point DAT_0062fd88[4];
 // 0x0062fda8
 extern struct RideObject *DAT_0062fda8;
 // 0x0062fdb0

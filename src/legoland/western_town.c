@@ -96,10 +96,7 @@ void FUN_00437670(struct MapObject *param_1, unsigned int param_2, unsigned int 
     int *p;
     int n;
     unsigned short id;
-    union {
-        __int64 q;
-        int i[2];
-    } coords;
+    struct Point coords;
 
     {
         int *fill = array;
@@ -119,7 +116,7 @@ void FUN_00437670(struct MapObject *param_1, unsigned int param_2, unsigned int 
             elem = elem->next;
         } while (elem != NULL);
         if (count != 0) {
-            coords.q = GetScreenCoordsForObject((unsigned char *)param_4, ride);
+            coords = GetScreenCoordsForObject((unsigned char *)param_4, ride);
             if (0 < count) {
                 p = array;
                 n = count;
@@ -153,7 +150,7 @@ void FUN_00437670(struct MapObject *param_1, unsigned int param_2, unsigned int 
                     }
                 }
             }
-            PrintSprite(DAT_0081cb24, coords.i[0], coords.i[1], param_6, NULL);
+            PrintSprite(DAT_0081cb24, coords.x, coords.y, param_6, NULL);
             if (0 < count) {
                 p = array;
                 n = count;
@@ -253,7 +250,7 @@ void FUN_00437670(struct MapObject *param_1, unsigned int param_2, unsigned int 
                     }
                 }
             }
-            PrintSprite(DAT_0081cb08, coords.i[0], coords.i[1], param_6, NULL);
+            PrintSprite(DAT_0081cb08, coords.x, coords.y, param_6, NULL);
         }
     }
 }
@@ -412,10 +409,7 @@ void FUN_00437c30(struct MapObject *param_1, unsigned int param_2, unsigned int 
     struct Building *ride = param_1->building;
     struct RideListElem *elem = ride->list;
     int count = 0;
-    union {
-        __int64 q;
-        int i[2];
-    } coords;
+    struct Point coords;
     if (elem != NULL) {
         do {
             if (*param_4 == elem->id) {
@@ -425,8 +419,8 @@ void FUN_00437c30(struct MapObject *param_1, unsigned int param_2, unsigned int 
             elem = elem->next;
         } while (elem != NULL);
         if (count != 0) {
-            coords.q = GetScreenCoordsForObject((unsigned char *)param_4, ride);
-            PrintSprite(DAT_0081cb38, coords.i[0], coords.i[1], param_6, NULL);
+            coords = GetScreenCoordsForObject((unsigned char *)param_4, ride);
+            PrintSprite(DAT_0081cb38, coords.x, coords.y, param_6, NULL);
         }
     }
 }
@@ -641,14 +635,8 @@ void FUN_00438150(struct MapObject *param_1, unsigned int param_2, unsigned int 
     int *p;
     int n;
     unsigned short id;
-    union {
-        __int64 q;
-        int i[2];
-    } coords;
-    union {
-        __int64 q;
-        int i[2];
-    } offset;
+    struct Point coords;
+    struct Point offset;
 
     {
         int *fill = array;
@@ -658,7 +646,7 @@ void FUN_00438150(struct MapObject *param_1, unsigned int param_2, unsigned int 
             *fill = 0;
         }
     }
-    coords.q = GetScreenCoordsForObject((unsigned char *)param_4, ride);
+    coords = GetScreenCoordsForObject((unsigned char *)param_4, ride);
     cell = FUN_00437f90(param_4);
     if (cell == NULL) {
         return;
@@ -696,9 +684,9 @@ void FUN_00438150(struct MapObject *param_1, unsigned int param_2, unsigned int 
                 } while (n != 0);
             }
             LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_0062fd40, 1), (char)cell->field_6);
-            offset.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd40, 1);
-            AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
-            PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_0062fd40, 1), coords.i[0] + offset.i[0], coords.i[1] + offset.i[1], param_6, NULL);
+            offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd40, 1);
+            AdjustOffsetForViewMode(&offset);
+            PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_0062fd40, 1), coords.x + offset.x, coords.y + offset.y, param_6, NULL);
             if (0 < count) {
                 p = array;
                 n = count;
@@ -732,9 +720,9 @@ void FUN_00438150(struct MapObject *param_1, unsigned int param_2, unsigned int 
                     }
                 }
             }
-            offset.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd40, 0);
-            AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
-            PrintSprite(DAT_0081cb0c, coords.i[0] + offset.i[0], coords.i[1] + offset.i[1], param_6, NULL);
+            offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd40, 0);
+            AdjustOffsetForViewMode(&offset);
+            PrintSprite(DAT_0081cb0c, coords.x + offset.x, coords.y + offset.y, param_6, NULL);
             if (count < 1) {
                 return;
             }
@@ -775,9 +763,9 @@ void FUN_00438150(struct MapObject *param_1, unsigned int param_2, unsigned int 
         }
     }
     LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_0062fd40, 1), (char)cell->field_6);
-    offset.q = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd40, 1);
-    AdjustOffsetForViewMode((struct AdjustStruct *)&offset);
-    PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_0062fd40, 1), coords.i[0] + offset.i[0], coords.i[1] + offset.i[1], param_6, NULL);
+    offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd40, 1);
+    AdjustOffsetForViewMode(&offset);
+    PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_0062fd40, 1), coords.x + offset.x, coords.y + offset.y, param_6, NULL);
 }
 
 // FUNCTION: LEGOLAND 0x00438430
@@ -1013,10 +1001,7 @@ void FUN_00438900(struct MapObject *param_1, unsigned int param_2, unsigned int 
     struct Building *ride = param_1->building;
     struct RideListElem *elem = ride->list;
     int count = 0;
-    union {
-        __int64 q;
-        int i[2];
-    } coords;
+    struct Point coords;
     if (elem != NULL) {
         do {
             if (*param_4 == elem->id) {
@@ -1026,8 +1011,8 @@ void FUN_00438900(struct MapObject *param_1, unsigned int param_2, unsigned int 
             elem = elem->next;
         } while (elem != NULL);
         if (count != 0) {
-            coords.q = GetScreenCoordsForObject((unsigned char *)param_4, ride);
-            PrintSprite(DAT_0081cb34, coords.i[0], coords.i[1], param_6, NULL);
+            coords = GetScreenCoordsForObject((unsigned char *)param_4, ride);
+            PrintSprite(DAT_0081cb34, coords.x, coords.y, param_6, NULL);
         }
     }
 }
@@ -1196,10 +1181,7 @@ void FUN_00438d00(struct MapObject *param_1, unsigned int param_2, unsigned int 
     int *p;
     int n;
     unsigned short id;
-    union {
-        __int64 q;
-        int i[2];
-    } coords;
+    struct Point coords;
 
     {
         int *fill = array;
@@ -1219,7 +1201,7 @@ void FUN_00438d00(struct MapObject *param_1, unsigned int param_2, unsigned int 
             elem = elem->next;
         } while (elem != NULL);
         if (count != 0) {
-            coords.q = GetScreenCoordsForObject((unsigned char *)param_4, ride);
+            coords = GetScreenCoordsForObject((unsigned char *)param_4, ride);
             if (0 < count) {
                 p = array;
                 n = count;
@@ -1253,7 +1235,7 @@ void FUN_00438d00(struct MapObject *param_1, unsigned int param_2, unsigned int 
                     }
                 }
             }
-            PrintSprite(DAT_0081cb04, coords.i[0], coords.i[1], param_6, NULL);
+            PrintSprite(DAT_0081cb04, coords.x, coords.y, param_6, NULL);
             if (0 < count) {
                 p = array;
                 n = count;
@@ -1298,7 +1280,7 @@ void FUN_00438d00(struct MapObject *param_1, unsigned int param_2, unsigned int 
                     }
                 }
             }
-            PrintSprite(DAT_0081cb00, coords.i[0], coords.i[1], param_6, NULL);
+            PrintSprite(DAT_0081cb00, coords.x, coords.y, param_6, NULL);
             if (0 < count) {
                 p = array;
                 n = count;

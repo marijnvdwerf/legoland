@@ -369,7 +369,7 @@ void FUN_0042c820(struct CarouselRideObj *param_1) {
     int local_30, local_2c;
     int local_18, local_14;
     int local_c, local_8;
-    __int64 coords;
+    struct Point coords;
 
     while (elem != NULL) {
         next = elem->next;
@@ -409,8 +409,8 @@ void FUN_0042c820(struct CarouselRideObj *param_1) {
                     iVar12 = (iVar10b - iVar10) * local_30;
                     sVar8 = Get_XScroll();
                     sVar9 = Get_YScroll();
-                    local_18 = (((((unsigned int)lpConfig->field_20 - (int)sVar8) + (iVar12 >> 9)) - DAT_00616078 / 2) - (int)coords) * 2;
-                    local_14 = ((((iVar13 >> 9) + ((unsigned int)lpConfig->field_22 - (int)sVar9)) - DAT_0061607c / 2) - (int)(coords >> 0x20)) * 2;
+                    local_18 = (((((unsigned int)lpConfig->field_20 - (int)sVar8) + (iVar12 >> 9)) - DAT_00616078 / 2) - coords.x) * 2;
+                    local_14 = ((((iVar13 >> 9) + ((unsigned int)lpConfig->field_22 - (int)sVar9)) - DAT_0061607c / 2) - coords.y) * 2;
                 }
                 *(struct Sprite **)(*(int *)(blokepos + 4) + 0x2c) = DAT_006160c0;
                 *(unsigned int *)(*(int *)(blokepos + 4) + 0x30) = 1;
@@ -516,7 +516,7 @@ void FUN_0042bcf0(struct CarouselRideObj *param_1, unsigned int param_2, unsigne
     unsigned int uVar7;
     struct LayerResult layerres;
     int local_68;
-    __int64 local_5c, local_54;
+    struct Point local_5c, local_54;
     unsigned int local_4c;
     int local_48;
     short local_44;
@@ -538,9 +538,9 @@ void FUN_0042bcf0(struct CarouselRideObj *param_1, unsigned int param_2, unsigne
     local_48 = (int)param_1;
     bloke = (int)FUN_0042bc60(param_4);
     if (bloke != 0) {
-        __int64 sc = GetScreenCoordsForObject((unsigned char *)param_4, ride);
-        iVar10 = (int)(sc >> 0x20);
-        iVar6 = (int)sc;
+        struct Point sc = GetScreenCoordsForObject((unsigned char *)param_4, ride);
+        iVar10 = sc.y;
+        iVar6 = sc.x;
         GetLayer((struct LayerOwner *)ride->layer, &layerres, 0);
         if (elem != NULL) {
             short sVar1 = *param_4;
@@ -556,18 +556,18 @@ void FUN_0042bcf0(struct CarouselRideObj *param_1, unsigned int param_2, unsigne
                 uVar7 = GetLLSForLayer((unsigned int)DAT_00616068, 0);
                 LLSSetFrame((struct LLS *)uVar7, (int)*(char *)(bloke + 8));
                 local_5c = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616068, 0);
-                AdjustOffsetForViewMode((struct AdjustStruct *)&local_5c);
+                AdjustOffsetForViewMode(&local_5c);
                 uVar7 = GetSpriteForLayer((struct LayerContainer *)DAT_00616068, 0);
-                PrintSprite((struct Sprite *)uVar7, (int)local_5c + iVar6, (int)(local_5c >> 0x20) + iVar10, param_6, (int *)&local_4c);
+                PrintSprite((struct Sprite *)uVar7, local_5c.x + iVar6, local_5c.y + iVar10, param_6, (int *)&local_4c);
                 local_54 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616068, 1);
-                AdjustOffsetForViewMode((struct AdjustStruct *)&local_54);
-                PrintSprite(DAT_00616070, (int)local_54 + iVar6, (int)(local_54 >> 0x20) + iVar10, param_6, (int *)&local_4c);
+                AdjustOffsetForViewMode(&local_54);
+                PrintSprite(DAT_00616070, local_54.x + iVar6, local_54.y + iVar10, param_6, (int *)&local_4c);
                 uVar7 = GetLLSForLayer((unsigned int)DAT_00616068, 2);
                 LLSSetFrame((struct LLS *)uVar7, (int)*(char *)(bloke + 8));
                 local_5c = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616068, 2);
-                AdjustOffsetForViewMode((struct AdjustStruct *)&local_5c);
+                AdjustOffsetForViewMode(&local_5c);
                 uVar7 = GetSpriteForLayer((struct LayerContainer *)DAT_00616068, 2);
-                PrintSprite((struct Sprite *)uVar7, (int)local_5c + iVar6, (int)(local_5c >> 0x20) + iVar10, param_6, (int *)&local_4c);
+                PrintSprite((struct Sprite *)uVar7, local_5c.x + iVar6, local_5c.y + iVar10, param_6, (int *)&local_4c);
                 if ('\0' < cVar5) {
                     int *p;
                     local_68 = (int)cVar5;
@@ -628,7 +628,7 @@ void FUN_0042bcf0(struct CarouselRideObj *param_1, unsigned int param_2, unsigne
                             *(int *)(unit + 0x24) = (int)*(short *)(b + 0x3c);
                             *(int *)(unit + 0x28) = (int)*(short *)(b + 0x3e);
                             AdjustBlokePosition((struct BlokePos *)(unit + 0x24));
-                            AdjustOffsetForViewMode((struct AdjustStruct *)&local_64);
+                            AdjustOffsetForViewMode((struct Point *)&local_64);
                             *(int *)(unit + 0x1c) = *(short *)(b + 0x3c) + local_64 + iVar6;
                             *(int *)(unit + 0x20) = *(short *)(b + 0x3e) + local_60 + iVar10;
                             AdjustBlokePosition((struct BlokePos *)(unit + 0x1c));
@@ -639,27 +639,27 @@ void FUN_0042bcf0(struct CarouselRideObj *param_1, unsigned int param_2, unsigne
                     }
                 }
                 local_54 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616068, 1);
-                AdjustOffsetForViewMode((struct AdjustStruct *)&local_54);
-                PrintSprite(DAT_0061606c, (int)local_54 + iVar6, (int)(local_54 >> 0x20) + iVar10, param_6, 0);
+                AdjustOffsetForViewMode(&local_54);
+                PrintSprite(DAT_0061606c, local_54.x + iVar6, local_54.y + iVar10, param_6, 0);
                 return;
             }
         }
         uVar7 = GetLLSForLayer((unsigned int)DAT_00616068, 0);
         LLSSetFrame((struct LLS *)uVar7, (int)*(char *)(bloke + 8));
         local_5c = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616068, 0);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&local_5c);
+        AdjustOffsetForViewMode(&local_5c);
         uVar7 = GetSpriteForLayer((struct LayerContainer *)DAT_00616068, 0);
-        PrintSprite((struct Sprite *)uVar7, (int)local_5c + iVar6, (int)(local_5c >> 0x20) + iVar10, param_6, (int *)&local_4c);
+        PrintSprite((struct Sprite *)uVar7, local_5c.x + iVar6, local_5c.y + iVar10, param_6, (int *)&local_4c);
         local_5c = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616068, 1);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&local_5c);
+        AdjustOffsetForViewMode(&local_5c);
         uVar7 = GetSpriteForLayer((struct LayerContainer *)DAT_00616068, 1);
-        PrintSprite((struct Sprite *)uVar7, (int)local_5c + iVar6, (int)(local_5c >> 0x20) + iVar10, param_6, (int *)&local_4c);
+        PrintSprite((struct Sprite *)uVar7, local_5c.x + iVar6, local_5c.y + iVar10, param_6, (int *)&local_4c);
         uVar7 = GetLLSForLayer((unsigned int)DAT_00616068, 2);
         LLSSetFrame((struct LLS *)uVar7, (int)*(char *)(bloke + 8));
         local_5c = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616068, 2);
-        AdjustOffsetForViewMode((struct AdjustStruct *)&local_5c);
+        AdjustOffsetForViewMode(&local_5c);
         uVar7 = GetSpriteForLayer((struct LayerContainer *)DAT_00616068, 2);
-        PrintSprite((struct Sprite *)uVar7, (int)local_5c + iVar6, (int)(local_5c >> 0x20) + iVar10, param_6, (int *)&local_4c);
+        PrintSprite((struct Sprite *)uVar7, local_5c.x + iVar6, local_5c.y + iVar10, param_6, (int *)&local_4c);
     }
 }
 

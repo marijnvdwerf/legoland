@@ -8,15 +8,28 @@
 #include "objclass.h"
 #include "temple.h"
 
-struct TempleObject {
-    unsigned char pad_0[12];
-    unsigned int field_c;
-};
-
+#include "bloke.h"
 #include "image_sprite.h"
+#include "math.h"
+#include "print_sprite.h"
+#include "render3d.h"
+#include "ride_queue.h"
 
 // FUNCTION: LEGOLAND 0x004169c0
-void FUN_004169c0(void) { STUB(); }
+void FUN_004169c0(struct TempleObject *obj) {
+    DAT_004cbf5c = obj->ride;
+    if (DAT_004cbf5c != NULL) {
+        DAT_004cbf5c->flags |= 0x20;
+        if (DAT_004cbf5c->layer != NULL) {
+            DAT_004cbf5c->layer->flags |= 0x2000;
+            DAT_004cbf64 = DAT_004cbf5c->layer;
+        }
+    }
+    // STRING: LEGOLAND 0x004b4edc
+    DAT_004cbf68 = LoadSprite("temple_matte1.lls", 1);
+    // STRING: LEGOLAND 0x004b4ec8
+    DAT_004cbf6c = LoadSprite("temple_matte2.lls", 1);
+}
 
 // FUNCTION: LEGOLAND 0x00416a30
 void FUN_00416a30(void) {
@@ -29,10 +42,103 @@ void FUN_00416a30(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00416a60
-void FUN_00416a60(void) { STUB(); }
+void FUN_00416a60(struct TempleObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *coords, unsigned int param_5, unsigned int clip) {
+    struct TempleRide *ride = obj->ride;
+    struct TempleNode *node;
+    struct Point pos;
+    struct Point offset;
+
+    RenderItems_New();
+    DAT_004cbf70 = NULL;
+    for (node = ride->list; node != NULL; node = node->next) {
+        if (*coords == node->tile.id) {
+            AddBlokeToRenderList(&DAT_004cbf70, (struct BlokeRenderSrc *)node, node->seat->depth);
+        }
+    }
+    RenderBlokeList((struct BlokeListHead *)&DAT_004cbf70);
+    pos = GetScreenCoordsForObject((unsigned char *)coords, ride);
+    offset = GetRenderOffsetForLayer(DAT_004cbf64, 0);
+    AdjustOffsetForViewMode(&offset);
+    PrintSprite(DAT_004cbf68, offset.x + pos.x, offset.y + pos.y, clip, 0);
+    offset = GetRenderOffsetForLayer(DAT_004cbf64, 3);
+    AdjustOffsetForViewMode(&offset);
+    PrintSprite(DAT_004cbf6c, offset.x + pos.x, offset.y + pos.y, clip, 0);
+}
 
 // FUNCTION: LEGOLAND 0x00416b50
-void FUN_00416b50(void) { STUB(); }
+void FUN_00416b50(struct TempleObject *obj) {
+    struct TempleRide *ride = obj->ride;
+    struct TempleNode *node;
+    struct TempleNode *next;
+    struct Bloke *bloke;
+    int x;
+    int y;
+    unsigned char dir;
+
+    for (node = ride->list; node != NULL; node = next) {
+        next = node->next;
+        bloke = node->bloke;
+        x = ride->x + node->tile.pos.x;
+        y = ride->y + node->tile.pos.y;
+        if (bloke->field_e != 0) {
+            continue;
+        }
+        switch (bloke->param_action) {
+        case 0:
+            bloke->flags |= 8;
+            bloke->field_24 = (x - 2) << 8;
+            bloke->field_28 = (y - 4) << 8;
+            break;
+        case 1:
+            bloke->field_24 = (x - 2) << 8;
+            bloke->field_28 = (y << 8) - 0x680;
+            break;
+        case 2:
+            bloke->field_24 = (x << 8) - 0x260;
+            bloke->field_28 = (y - 8) << 8;
+            break;
+        case 3:
+            bloke->field_24 = (x - 2) << 8;
+            bloke->field_28 = (y << 8) - 0x980;
+            break;
+        case 4:
+            bloke->field_24 = (x << 8) - 0x260;
+            bloke->field_28 = (y - 12) << 8;
+            break;
+        case 5:
+            bloke->field_24 = (x - 2) << 8;
+            bloke->field_28 = (y << 8) - 0x980;
+            break;
+        case 6:
+            bloke->field_24 = (x << 8) - 0x260;
+            bloke->field_28 = (y - 8) << 8;
+            break;
+        case 7:
+            bloke->field_24 = (x - 2) << 8;
+            bloke->field_28 = (y << 8) - 0x680;
+            break;
+        case 8:
+            bloke->field_28 = (y - 4) << 8;
+            bloke->field_24 = (x - 2) << 8;
+            break;
+        case 9:
+            bloke->field_24 = (x << 8) + 0x80;
+            bloke->field_28 = (y << 8) + 0x80;
+            break;
+        case 10:
+            RemoveBlokeFromRide((struct Ride *)ride, (struct RideNode *)node);
+            bloke->flags &= ~8;
+            continue;
+        default:
+            continue;
+        }
+        dir = CalcMoveLine(bloke->field_68, bloke->field_6c, bloke->field_24, bloke->field_28, bloke->field_98) + 0x10;
+        bloke->field_e = 7;
+        bloke->field_73 = dir;
+        NewDirForAction((struct ActionState *)bloke, (dir >> 5) + 3);
+        bloke->param_action++;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00416dc0
 void FUN_00416dc0(void) {
@@ -51,7 +157,7 @@ void FUN_00416e00(unsigned int param_1, unsigned int param_2) {
 // FUNCTION: LEGOLAND 0x00416e20
 void FUN_00416e20(struct TempleObject *a1, void *a2, unsigned int a3) {
     StandardRemoveObject((unsigned int)a1, (unsigned int)a2, a3);
-    RemoveAllBlokesFromRide(a1->field_c, a2);
+    RemoveAllBlokesFromRide((struct Ride *)a1->ride, (unsigned int)a2);
 }
 
 // FUNCTION: LEGOLAND 0x00416e50
