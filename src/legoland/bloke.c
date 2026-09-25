@@ -1067,17 +1067,22 @@ void FUN_00484090(struct TileWalker *walker) {
     short mapFlags;
     short rf2;
 
-    next = walker->pos;
-    next.y += d.y;
-    next.x += d.x;
+    d.x += walker->pos.x;
+    d.y += walker->pos.y;
+    next = d;
     FUN_004837a0((struct Walker *)walker, next.x, next.y);
     if (CrossTileCentre(walker, next.x, next.y) != 0) {
         walker->field_62 |= 4;
         rf = GetCurrentRFFlags(walker->pos.x, walker->pos.y);
         if (walker->pos.x < 0 || walker->pos.x >= (int)(lpConfig->width * 0x100) || walker->pos.y < 0 ||
-            walker->pos.y >= (int)(lpConfig->height * 0x100) ||
-            (mapFlags = Get_MapFlags(walker->pos.x, walker->pos.y), rf2 = GetCurrentRFFlags(walker->pos.x, walker->pos.y),
-                (rf2 & 1) == 0 && ((mapFlags & 0x10) == 0 || (rf2 & 2) != 0))) {
+            walker->pos.y >= (int)(lpConfig->height * 0x100)) {
+            walker->field_e = 0;
+            walker->field_64 |= 2;
+            return;
+        }
+        mapFlags = Get_MapFlags(walker->pos.x, walker->pos.y);
+        rf2 = GetCurrentRFFlags(walker->pos.x, walker->pos.y);
+        if ((rf2 & 1) == 0 && ((mapFlags & 0x10) == 0 || (rf2 & 2) != 0)) {
             walker->field_e = 0;
             walker->field_64 |= 2;
             return;
