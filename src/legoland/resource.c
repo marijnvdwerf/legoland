@@ -162,8 +162,8 @@ void FUN_004895a0(struct ResDirRecord *node, struct ResVolume *volume, struct Re
         DAT_0079862c = entry;
         entry->next_dir = (struct ResVolEntry *)master->pad_4;
         master->pad_4 = (unsigned int)entry;
-        entry->next = (struct ResVolEntry *)base->sibling;
-        base->sibling = (int)entry;
+        entry->next = volume->dir;
+        volume->dir = entry;
         entry->size = node->size;
         entry->base = node->base;
         entry->name = (char *)malloc(strlen(node->name) + 1);
@@ -222,7 +222,7 @@ LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) {
     }
 
     while (cur != 0) {
-        if (_stricmp(volume->name, cur->name) == 0) {
+        if (_stricmp(cur->name, volume->name) == 0) {
             free(volume);
             // STRING: LEGOLAND 0x004bddc8
             FUN_0047f870("Volume Already open");
@@ -301,28 +301,28 @@ LEGO_EXPORT struct ResFile *RES_OpenFileFromVolume(const char *path, const char 
     struct ResDirNode *dir;
     struct ResFile *file;
     char *last_bs;
-    char *file_name;
     char *scan;
     char *src;
     int prefix_len;
 
+    last_bs = 0;
     prefix[0] = '\0';
     memset(prefix + 1, 0, sizeof(prefix) - 1);
-    memcpy(path_copy, path, strlen(path) + 1);
+    strcpy(path_copy, path);
+    src = path_copy;
 
-    last_bs = 0;
-    scan = path_copy;
-    while (*scan != '\0') {
+    for (scan = path_copy; scan != 0; scan++) {
+        if (*scan == '\0') {
+            break;
+        }
         if (*scan == '\\') {
             last_bs = scan;
         }
-        scan++;
     }
 
     if (last_bs == 0) {
-        file_name = path_copy;
+        last_bs = path_copy;
     } else {
-        src = path_copy;
         prefix_len = (int)(last_bs - path_copy) + 1;
         if (path_copy[0] == '.') {
             while (src[1] == '\\') {
@@ -335,7 +335,7 @@ LEGO_EXPORT struct ResFile *RES_OpenFileFromVolume(const char *path, const char 
         }
         memcpy(prefix, src, prefix_len);
         prefix[prefix_len] = '\0';
-        file_name = last_bs + 1;
+        last_bs++;
     }
 
     dir = FUN_00489550(vol_name, prefix, &entry);
@@ -345,7 +345,7 @@ LEGO_EXPORT struct ResFile *RES_OpenFileFromVolume(const char *path, const char 
 
     while (entry != 0) {
         if (entry->dir == dir) {
-            if (_stricmp(entry->name, file_name) == 0) {
+            if (_stricmp(entry->name, last_bs) == 0) {
                 file = (struct ResFile *)malloc(0x10);
                 file->size = entry->size;
                 file->base = entry->base;
@@ -381,11 +381,14 @@ LEGO_EXPORT struct ResFile *RES_OpenFile(const char *path) {
         exit(1);
     }
 
-    memcpy(orig_str, path, strlen(path) + 1);
+    strcpy(orig_str, path);
 
     last_slash = 0;
-    scan = orig_str;
-    while (*scan != '\0') {
+    prefix = orig_str;
+    for (scan = orig_str; scan != 0; scan++) {
+        if (*scan == '\0') {
+            break;
+        }
         if (*scan == ':') {
             *scan = '\0';
             return RES_OpenFileFromVolume(scan + 1, orig_str);
@@ -393,13 +396,11 @@ LEGO_EXPORT struct ResFile *RES_OpenFile(const char *path) {
         if (*scan == '\\') {
             last_slash = scan;
         }
-        scan++;
     }
 
     if (last_slash == 0) {
         file_name = orig_str;
     } else {
-        prefix = orig_str;
         prefix_len = (int)(last_slash - orig_str) + 1;
         if (orig_str[0] == '.') {
             while (prefix[1] == '\\') {
