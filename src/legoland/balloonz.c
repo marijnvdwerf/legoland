@@ -149,22 +149,20 @@ void FUN_0042a9b0(struct BalloonNode *param_1) {
 
     if (DAT_00616060 == param_1) {
         DAT_00616060 = param_1->next;
-        free(param_1);
-        return;
-    }
-    cur = ((struct BalloonNode *)DAT_00616060)->next;
-    prev = DAT_00616060;
-    while (cur != param_1) {
-        prev = prev->next;
-        if (prev == NULL) {
-            goto done;
+    } else {
+        cur = ((struct BalloonNode *)DAT_00616060)->next;
+        prev = DAT_00616060;
+        while (cur != param_1) {
+            prev = prev->next;
+            if (prev == NULL) {
+                break;
+            }
+            cur = prev->next;
         }
-        cur = prev->next;
+        if (prev != NULL) {
+            prev->next = param_1->next;
+        }
     }
-    if (prev != NULL) {
-        prev->next = param_1->next;
-    }
-done:
     free(param_1);
 }
 

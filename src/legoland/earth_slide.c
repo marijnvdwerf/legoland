@@ -39,24 +39,21 @@ void FUN_0042cdc0(struct EarthNode *node) {
 
     if (DAT_006160e8 == node) {
         DAT_006160e8 = node->next;
-        free(node);
-        return;
-    }
-    cur = DAT_006160e8->next;
-    prev = DAT_006160e8;
-    while (cur != node) {
-        prev = prev->next;
-        if (prev == NULL) {
-            goto done;
+    } else {
+        cur = DAT_006160e8->next;
+        prev = DAT_006160e8;
+        while (cur != node) {
+            prev = prev->next;
+            if (prev == NULL) {
+                break;
+            }
+            cur = prev->next;
         }
-        cur = prev->next;
+        if (prev != NULL) {
+            prev->next = node->next;
+        }
     }
-    if (prev != NULL) {
-        prev->next = node->next;
-    }
-done:
     free(node);
-    return;
 }
 
 // FUNCTION: LEGOLAND 0x0042ce20

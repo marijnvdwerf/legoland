@@ -836,43 +836,37 @@ LEGO_EXPORT void *LLIDB_LoadTSMData(struct LLIDBHead *head) {
     // STRING: LEGOLAND 0x004bc3a8
     sprintf(filename, "TileData\\%s", head->name);
     file = RES_OpenFile(filename);
-    if (file == NULL) {
-        goto fail;
-    }
-
-    RES_ReadFile(file, &count, 4);
-    entries = (unsigned int *)malloc(count * 8 + 8);
-    if (entries == NULL) {
-        goto closefail;
-    }
-
-    RES_ReadFile(file, &len, 4);
-    RES_ReadFile(file, name, len);
-
-    i = 0;
-    if (count > 0) {
-        entry = entries;
-        do {
+    if (file != NULL) {
+        RES_ReadFile(file, &count, 4);
+        entries = (unsigned int *)malloc(count * 8 + 8);
+        if (entries != NULL) {
             RES_ReadFile(file, &len, 4);
             RES_ReadFile(file, name, len);
-            name[len] = '\0';
-            LLIDB_FindElement(name, &element, NULL);
-            entry[0] = element;
-            entry[1] = (unsigned int)LLIDB_LoadData((void *)element);
-            i++;
-            entry += 2;
-        } while (i < count);
-    }
 
-    entries[i * 2] = 0xffffffff;
-    entries[i * 2 + 1] = 0xffffffff;
-    RES_CloseFile(file);
-    head->flags |= LLIDB_FLAG_LOADED;
-    head->data = entries;
-    return entries;
-closefail:
-    RES_CloseFile(file);
-fail:
+            i = 0;
+            if (count > 0) {
+                entry = entries;
+                do {
+                    RES_ReadFile(file, &len, 4);
+                    RES_ReadFile(file, name, len);
+                    name[len] = '\0';
+                    LLIDB_FindElement(name, &element, NULL);
+                    entry[0] = element;
+                    entry[1] = (unsigned int)LLIDB_LoadData((void *)element);
+                    i++;
+                    entry += 2;
+                } while (i < count);
+            }
+
+            entries[i * 2] = 0xffffffff;
+            entries[i * 2 + 1] = 0xffffffff;
+            RES_CloseFile(file);
+            head->flags |= LLIDB_FLAG_LOADED;
+            head->data = entries;
+            return entries;
+        }
+        RES_CloseFile(file);
+    }
     return NULL;
 }
 

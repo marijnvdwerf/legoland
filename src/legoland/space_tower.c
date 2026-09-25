@@ -339,27 +339,25 @@ void FUN_0043ab70(unsigned short *param_1) {
 
 // FUNCTION: LEGOLAND 0x0043abc0
 void FUN_0043abc0(struct SpaceTowerCar *arg) {
-    struct SpaceTowerCar *cur;
     struct SpaceTowerCar *next;
+    struct SpaceTowerCar *prev;
 
     if (DAT_0062fda8 == arg) {
         DAT_0062fda8 = arg->next;
-        free(arg);
-        return;
-    }
-    next = DAT_0062fda8->next;
-    cur = DAT_0062fda8;
-    while (next != arg) {
-        cur = cur->next;
-        if (cur == NULL) {
-            goto done;
+    } else {
+        next = DAT_0062fda8->next;
+        prev = DAT_0062fda8;
+        while (next != arg) {
+            prev = prev->next;
+            if (prev == NULL) {
+                break;
+            }
+            next = prev->next;
         }
-        next = cur->next;
+        if (prev != NULL) {
+            prev->next = arg->next;
+        }
     }
-    if (cur != NULL) {
-        cur->next = arg->next;
-    }
-done:
     free(arg);
 }
 

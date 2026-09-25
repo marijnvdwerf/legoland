@@ -149,22 +149,20 @@ void FUN_00403c80(struct CopterNode *node) {
 
     if (DAT_004c11b4 == node) {
         DAT_004c11b4 = node->next;
-        free(node);
-        return;
-    }
-    cur = DAT_004c11b4->next;
-    prev = DAT_004c11b4;
-    while (cur != node) {
-        prev = prev->next;
-        if (prev == NULL) {
-            goto done;
+    } else {
+        cur = DAT_004c11b4->next;
+        prev = DAT_004c11b4;
+        while (cur != node) {
+            prev = prev->next;
+            if (prev == NULL) {
+                break;
+            }
+            cur = prev->next;
         }
-        cur = prev->next;
+        if (prev != NULL) {
+            prev->next = node->next;
+        }
     }
-    if (prev != NULL) {
-        prev->next = node->next;
-    }
-done:;
     free(node);
 }
 

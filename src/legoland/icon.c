@@ -917,16 +917,13 @@ skip:
 
 // FUNCTION: LEGOLAND 0x0046e670
 LEGO_EXPORT int RenderMoneyBar(struct IconNode *node) {
-    struct PrintCtx ctx;
+    struct PrintCtx ctx = {1};
     int fill;
     int width;
     int bricks;
     RECT clip;
     char buf[100];
 
-    ctx.flags = 1;
-    ctx.node = NULL;
-    ctx.field_8 = 0;
     if (FUN_00457890() == 0) {
         return 0;
     }
@@ -939,19 +936,17 @@ LEGO_EXPORT int RenderMoneyBar(struct IconNode *node) {
     if (fill > width) {
         fill = width;
     }
-    if (DAT_006688c4 < fill) {
-        DAT_006688c4 = DAT_006688c4 + 6;
-        if (DAT_006688c4 <= fill) {
-            goto skip;
+    if (fill > DAT_006688c4) {
+        DAT_006688c4 += 6;
+        if (DAT_006688c4 > fill) {
+            DAT_006688c4 = fill;
         }
     } else {
-        DAT_006688c4 = DAT_006688c4 - 6;
-        if (fill <= DAT_006688c4) {
-            goto skip;
+        DAT_006688c4 -= 6;
+        if (DAT_006688c4 < fill) {
+            DAT_006688c4 = fill;
         }
     }
-    DAT_006688c4 = fill;
-skip:
     StoreClipping();
     clip.left = node->x;
     clip.right = DAT_006688c4 + clip.left;

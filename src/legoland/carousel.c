@@ -42,22 +42,20 @@ void FUN_0042bc00(struct CarouselNode *node) {
 
     if (DAT_006160c4 == node) {
         DAT_006160c4 = node->next;
-        free(node);
-        return;
-    }
-    cur = DAT_006160c4->next;
-    prev = DAT_006160c4;
-    while (cur != node) {
-        prev = prev->next;
-        if (prev == NULL) {
-            goto done;
+    } else {
+        cur = DAT_006160c4->next;
+        prev = DAT_006160c4;
+        while (cur != node) {
+            prev = prev->next;
+            if (prev == NULL) {
+                break;
+            }
+            cur = prev->next;
         }
-        cur = prev->next;
+        if (prev != NULL) {
+            prev->next = node->next;
+        }
     }
-    if (prev != NULL) {
-        prev->next = node->next;
-    }
-done:
     free(node);
 }
 
