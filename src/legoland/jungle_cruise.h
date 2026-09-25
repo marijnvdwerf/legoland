@@ -55,7 +55,7 @@ struct JungleObj {
 
 struct JunglePath {
     /* 0x00 */ TileId tile;
-    /* 0x02 */ unsigned short owner;
+    /* 0x02 */ TileId owner;
     /* 0x04 */ unsigned int field_4;
     /* 0x08 */ unsigned int field_8;
     /* 0x0c */ unsigned int field_c;
@@ -118,6 +118,6 @@ int FUN_00436160(struct RideObject *obj, int param_2);
 void FUN_00436190(struct RideObject *obj);
 void FUN_004361a0();
 void FUN_00436200(struct RideObject *obj, unsigned int param_2, unsigned int param_3);
-void FUN_00436470(unsigned int param_1, unsigned int *param_2);
+void FUN_00436470(unsigned int param_1, int *coords);
 void FUN_004365f0(struct RideObject *obj, int *coords);
 void FUN_00436a40(struct RideObject *obj, TileId tile, struct Cursor *cursor);
