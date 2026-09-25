@@ -5,13 +5,6 @@
 struct Bloke;
 
 /* Map tile id as stored per bloke on a ride: x/y bytes, compared as one 16-bit value. */
-typedef union TileId {
-    unsigned short id;
-    struct {
-        unsigned char x;
-        unsigned char y;
-    } pos;
-} TileId;
 
 struct RideLayer {
     /* 0x00 */ unsigned char pad_0[0x10];

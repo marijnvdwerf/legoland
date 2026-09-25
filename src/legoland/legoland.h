@@ -13,4 +13,12 @@
 #define NULL ((void *)0)
 #endif
 
+typedef union TileId {
+    unsigned short id;
+    struct {
+        unsigned char x;
+        unsigned char y;
+    } pos;
+} TileId;
+
 #endif
