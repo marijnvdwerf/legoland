@@ -8,6 +8,7 @@
 #include "llidb.h"
 #include "man3d.h"
 #include "map_object.h"
+#include "obj_instance.h"
 #include "objclass.h"
 #include "render3d.h"
 #include "ride_queue.h"
@@ -455,11 +456,11 @@ void FUN_004048b0(struct CopterSfxNode *node) {
     struct SampleParams params;
     struct Sample *sample;
 
-    if (node->layer[1].field_18 != 0) node->layer[1].flags |= 1;
-    if (node->layer[0].field_18 != 0) node->layer[0].flags |= 1;
-    if (node->layer[2].field_18 != 0) node->layer[2].flags |= 1;
-    if (node->layer[3].field_18 != 0) node->layer[3].flags |= 1;
-    if (node->layer[4].field_18 != 0) node->layer[4].flags |= 1;
+    if (node->layer[1].rider != 0) node->layer[1].flags |= 1;
+    if (node->layer[0].rider != 0) node->layer[0].flags |= 1;
+    if (node->layer[2].rider != 0) node->layer[2].flags |= 1;
+    if (node->layer[3].rider != 0) node->layer[3].flags |= 1;
+    if (node->layer[4].rider != 0) node->layer[4].flags |= 1;
 
     node->field_3 = node->field_2;
     node->field_2 = 0;
@@ -513,60 +514,47 @@ void FUN_00404f20(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00404f60
 LEGO_EXPORT int Copters_Save(void) {
-    unsigned int *original;
-    unsigned int *cursor;
-    int i;
-    int *saved;
-    int *restore;
-    int *field;
+    struct CopterNode *node;
+    struct RideNode *cur;
+    struct RideNode *rider;
+    struct RideNode *saved[6];
     int index;
-    char *node;
+    int i;
     unsigned int one;
     unsigned int zero;
-    int saved_vals[6];
 
     one = 1;
     zero = 0;
-    node = (char *)DAT_004c11b4;
-    while (node != NULL) {
-        if (SaveGameWrite(&one, 4) == 0) {
-            return 0;
-        }
-        saved = saved_vals;
-        i = 6;
-        restore = (int *)(node + 0x30);
-        field = restore;
-        do {
-            original = (unsigned int *)*field;
-            index = 0;
-            *saved = (int)original;
-            for (cursor = *(unsigned int **)((char *)DAT_004c1198 + 0xcc); cursor != NULL; cursor = (unsigned int *)*cursor) {
-                if (cursor == original) {
-                    break;
+    node = DAT_004c11b4;
+    if (DAT_004c11b4 != NULL) {
+        while (node != NULL) {
+            if (SaveGameWrite(&one, 4) == 0) {
+                return 0;
+            }
+            for (i = 0; i < 6; i++) {
+                rider = node->layer[i].rider;
+                index = 0;
+                saved[i] = rider;
+                for (cur = ((struct Ride *)DAT_004c1198)->riders; cur != NULL; cur = cur->next) {
+                    if (cur == rider) {
+                        break;
+                    }
+                    index++;
                 }
-                index = index + 1;
+                if (cur != NULL) {
+                    node->layer[i].rider = (struct RideNode *)(index + 1);
+                } else {
+                    node->layer[i].rider = NULL;
+                }
             }
-            if (cursor != NULL) {
-                *field = index + 1;
-            } else {
-                *field = 0;
+            if (SaveGameWrite(node, 0xd8) == 0) {
+                return 0;
             }
-            saved++;
-            field += 8;
-            i--;
-        } while (i != 0);
-        if (SaveGameWrite(node, 0xd8) == 0) {
-            return 0;
+            for (i = 0; i < 6; i++) {
+                node->layer[i].rider = saved[i];
+            }
+            node = node->next;
         }
-        saved = saved_vals;
-        i = 6;
-        do {
-            *restore = *saved;
-            saved++;
-            restore += 8;
-            i--;
-        } while (i != 0);
-        node = *(char **)(node + 4);
     }
     return SaveGameWrite(&zero, 4) != 0;
 }

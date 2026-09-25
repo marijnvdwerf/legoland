@@ -3,6 +3,7 @@
 #include "legoland.h"
 #include "objclass.h"
 
+struct RideNode;
 struct Sprite;
 
 struct CopterLayer {
@@ -13,7 +14,7 @@ struct CopterLayer {
     /* 0x0c */ int field_c;
     /* 0x10 */ int field_10;
     /* 0x14 */ int field_14;
-    /* 0x18 */ struct Sprite *field_18;
+    /* 0x18 */ struct RideNode *rider;
     /* 0x1c */ char field_1c;
     /* 0x1d */ char field_1d;
     /* 0x1e */ unsigned char pad_1e[2];
