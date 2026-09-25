@@ -137,7 +137,7 @@ void FUN_00414f40(struct SafariEditObj *obj, struct SafariKey key, unsigned int 
         return;
     }
     FUN_00414a00((struct SafariNode *)node);
-    StandardRemoveObject((struct EditObject *)obj, *(unsigned int *)&key, (struct Cursor *)coords);
+    StandardRemoveObject((struct EditObject *)obj, *(union TileId *)&key, (struct Cursor *)coords);
     RemoveAllBlokesFromRide((struct Ride *)obj->field_c, *(unsigned int *)&key);
 
     src.type = 2;

@@ -449,7 +449,7 @@ void FUN_0042e9c0(unsigned int param_1, unsigned int *param_2) {
 void FUN_0042ea10(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
     unsigned char *b = (unsigned char *)&param_2;
     struct SampleParams params;
-    StandardRemoveObject(param_1, param_2, param_3);
+    StandardRemoveObject(param_1, *(union TileId *)&param_2, param_3);
     params.field_8 = b[0];
     params.field_c = b[1];
     params.field_0 = 2;
@@ -713,7 +713,7 @@ void FUN_0042efb0(unsigned int param_1, unsigned int param_2, unsigned int param
     if (node != NULL) {
         FUN_0042ef70(node);
     }
-    StandardRemoveObject(param_1, param_2, param_3);
+    StandardRemoveObject(param_1, *(union TileId *)&param_2, param_3);
     RemoveAllBlokesFromRide((unsigned int)((struct EateryObj *)param_1)->fx_c, (void *)param_2);
     params.field_8 = ((unsigned char *)&param_2)[0];
     params.field_c = ((unsigned char *)&param_2)[1];
@@ -1110,7 +1110,7 @@ void FUN_0042fa40(unsigned int arg1, unsigned int arg2, unsigned int arg3, unsig
     if (result != NULL) {
         FUN_0042fa00(result);
     }
-    StandardRemoveObject(arg1, arg2, arg3);
+    StandardRemoveObject(arg1, *(union TileId *)&arg2, arg3);
     RemoveAllBlokesFromRide((unsigned int)((struct EateryObj *)arg1)->fx_c, (void *)arg2);
 }
 
@@ -1844,7 +1844,7 @@ void FUN_00431170(int param_1) {
 
 // FUNCTION: LEGOLAND 0x004312c0
 void FUN_004312c0(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
-    StandardRemoveObject(param_1, param_2, param_3);
+    StandardRemoveObject(param_1, *(union TileId *)&param_2, param_3);
     RemoveAllBlokesFromRide(*(unsigned int *)(param_1 + 0xc), (void *)param_2);
     StopMoneySFX(&param_2);
 }

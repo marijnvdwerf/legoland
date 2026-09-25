@@ -170,7 +170,7 @@ void FUN_00402ff0(void) {
 
 // FUNCTION: LEGOLAND 0x00403030
 void FUN_00403030(struct RideObject *obj, unsigned int tile, struct Cursor *cursor) {
-    StandardRemoveObject((struct EditObject *)obj, tile, cursor);
+    StandardRemoveObject((struct EditObject *)obj, *(union TileId *)&tile, cursor);
     RemoveAllBlokesFromRide(obj->ride, tile);
 }
 

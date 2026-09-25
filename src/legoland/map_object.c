@@ -984,7 +984,7 @@ LEGO_EXPORT void RemoveObjectFromMap(unsigned int coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045f220
-LEGO_EXPORT void StandardRemoveObject(struct EditObject *editObj, unsigned int coords, struct Cursor *cursor) {
+LEGO_EXPORT void StandardRemoveObject(struct EditObject *editObj, union TileId coords, struct Cursor *cursor) {
     int cx;
     int cy;
     struct MapElement *tile;
@@ -996,8 +996,8 @@ LEGO_EXPORT void StandardRemoveObject(struct EditObject *editObj, unsigned int c
     int y;
     int instance;
 
-    cx = coords & 0xff;
-    cy = (coords >> 8) & 0xff;
+    cx = coords.pos.x;
+    cy = coords.pos.y;
     if (cx >= 0 && cx < lpConfig->width && cy >= 0 && cy < lpConfig->height) {
         tile = (struct MapElement *)((int)GameMap[cy] + cx * 0x14);
     } else {
@@ -1027,9 +1027,9 @@ LEGO_EXPORT void StandardRemoveObject(struct EditObject *editObj, unsigned int c
             rect = *next;
         }
     } else {
-        ApplyDestrTileMap(editObj, coords);
+        ApplyDestrTileMap(editObj, *(unsigned int *)&coords);
         FUN_0045e850((struct ObjNode *)editObj, (int *)&cx);
-        RemoveObjectFromMap(coords);
+        RemoveObjectFromMap(*(unsigned int *)&coords);
     }
     if (obj->type != 2) {
         ((unsigned char *)&cursor)[0] = (unsigned char)cx;

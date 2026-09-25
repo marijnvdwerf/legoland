@@ -40,7 +40,7 @@ void FUN_004529e0(unsigned int param_1, int *param_2) {
 LEGO_EXPORT void RemoveSoundObject(unsigned int a, unsigned int b, unsigned int c) {
     unsigned char *bb = (unsigned char *)&b;
     struct SampleParams params;
-    StandardRemoveObject(a, b, c);
+    StandardRemoveObject(a, *(union TileId *)&b, c);
     params.field_0 = 2;
     params.field_8 = bb[0];
     params.field_c = bb[1];

@@ -155,9 +155,6 @@ unsigned char Helicopter_SFX[0x70];
 // GLOBAL: LEGOLAND 0x004b43f8
 unsigned char DRIVING_SCHOOL_SFX[0xa8];
 
-// GLOBAL: LEGOLAND 0x004b4400
-void *DAT_004b4400;
-
 // GLOBAL: LEGOLAND 0x004b4440
 unsigned int DAT_004b4440[5];
 
@@ -4898,23 +4895,10 @@ struct Cursor DAT_0082df20;
 // GLOBAL: LEGOLAND 0x0082f760
 struct Cursor DAT_0082f760;
 
-// GLOBAL: LEGOLAND 0x00830b64
-unsigned int DAT_00830b64;
-
-// GLOBAL: LEGOLAND 0x00830b68
-unsigned int DAT_00830b68;
-
-// GLOBAL: LEGOLAND 0x00830b74
-unsigned int DAT_00830b74;
+// 0x00830b64/68/74, 0x00830f88/90 are DAT_0082f760 cursor fields.
 // 0x00811564, 0x00811568, 0x00811988, 0x00811574 are QueryCursor fields
 // (field_1404, field_1408, field_1828, field_1414[5]) — see struct Cursor.
 // 0x007fffc8 is EditCursor.field_1408 — see struct Cursor in gamemap.h.
-
-// GLOBAL: LEGOLAND 0x00830f88
-unsigned int DAT_00830f88;
-
-// GLOBAL: LEGOLAND 0x00830f90
-unsigned int DAT_00830f90;
 
 // GLOBAL: LEGOLAND 0x00830f94
 struct Sprite *DAT_00830f94;

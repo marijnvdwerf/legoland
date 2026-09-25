@@ -70,10 +70,10 @@ struct NeighborResult {
 };
 
 // FUNCTION: LEGOLAND 0x004132a0
-void FUN_004132a0(unsigned short param_1, int param_2, int param_3, unsigned int param_4, unsigned int param_5) {
+void FUN_004132a0(union TileId tile, int param_2, int param_3, unsigned int param_4, unsigned int param_5) {
     struct RoadQueueEntry *entry = malloc(0x20);
 
-    entry->field_8 = param_1;
+    entry->field_8 = tile.id;
     entry->x = param_2;
     entry->y = param_3;
     entry->field_14 = (unsigned char)param_4;
@@ -286,8 +286,8 @@ void FUN_00413ad0(void) {
     EditCursor.field_1828 |= 8;
     BuildCursorPtr(&EditCursor, 0x8f8, 0);
     DefaultCursor(&DAT_0082f760);
-    memcpy(&DAT_00830b74, &DAT_004b4bf0, 20);
-    DAT_00830f88 = 0x34;
+    memcpy(DAT_0082f760.field_1414, &DAT_004b4bf0, 20);
+    DAT_0082f760.field_1828 = 0x34;
 }
 
 // FUNCTION: LEGOLAND 0x00413b50

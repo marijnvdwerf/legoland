@@ -188,7 +188,7 @@ void FUN_0042aa10(struct BalloonRideObj *param_1, unsigned int param_2, unsigned
     if (node != NULL) {
         FUN_0042a9b0(node);
     }
-    StandardRemoveObject((unsigned int)param_1, param_2, param_3);
+    StandardRemoveObject((unsigned int)param_1, *(union TileId *)&param_2, param_3);
     RemoveAllBlokesFromRide((unsigned int)param_1->ride, (void *)param_2);
 }
 

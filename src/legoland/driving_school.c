@@ -59,7 +59,7 @@ struct DSCarInner {
 };
 
 struct CountNode {
-    unsigned short field_0;
+    union TileId tile;
     unsigned char pad_2[2];
     int field_4;
     struct CountNode *next;
@@ -179,20 +179,20 @@ void FUN_004051a0(short param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00405310
-void FUN_00405310(unsigned int param_1) {
+void FUN_00405310(union TileId tile) {
     struct RideQueueEntry *cur;
     struct RideQueueEntry *ret;
     struct RideQueueEntry *tmp;
 
     cur = DAT_004cbeac;
     while (cur != NULL) {
-        if (cur->field_8 == (unsigned short)param_1) {
+        if (cur->field_8 == tile.id) {
             cur->field_18 = NULL;
         }
         cur = cur->next;
     }
 
-    ret = FUN_00412650((unsigned short)param_1);
+    ret = FUN_00412650(tile.id);
     ret->field_15 = 0;
     ret->field_4 = NULL;
 
@@ -200,7 +200,7 @@ void FUN_00405310(unsigned int param_1) {
     DAT_004c11c8 = NULL;
 
     do {
-        FUN_004051a0(param_1);
+        FUN_004051a0(tile.id);
         tmp = DAT_004c11c8;
         DAT_004c11c4 = tmp;
         DAT_004c11c8 = NULL;
@@ -286,48 +286,44 @@ void FUN_00405570(void) {
     DefaultCursor(&EditCursor);
     SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
     DefaultCursor(&DAT_0082f760);
-    memcpy(&DAT_00830b74, DAT_004b4440, 20);
-    DAT_00830f88 |= 0x100;
+    memcpy(DAT_0082f760.field_1414, DAT_004b4440, 20);
+    DAT_0082f760.field_1828 |= 0x100;
     DefaultCursor(&DAT_0082c6e0);
     memcpy(DAT_0082c6e0.field_1414, DAT_004b4458, 20);
     DAT_0082c6e0.field_1828 |= 0x200;
     DefaultCursor(&DAT_0082df20);
     memcpy(DAT_0082df20.field_1414, DAT_004b4470, 20);
     EditCursor.field_1830 = (unsigned int)&DAT_0082f760;
-    DAT_00830f90 = (unsigned int)&DAT_0082c6e0;
+    DAT_0082f760.field_1830 = (unsigned int)&DAT_0082c6e0;
 }
 
 // FUNCTION: LEGOLAND 0x00405630
-void FUN_00405630(unsigned int param_1, unsigned char *param_2) {
-    unsigned char *src = param_2;
-    unsigned char b0 = param_2[0];
-    unsigned char b4 = param_2[4];
-    unsigned int id;
+void FUN_00405630(unsigned int param_1, int *coords) {
+    union TileId tile;
     struct CountNode *node;
     struct Cursor *cursor;
     int x;
     int y;
     struct DSRoadElem *elem;
 
-    *(unsigned char *)&param_2 = b0;
-    *((unsigned char *)&param_2 + 1) = b4;
-    AddBasicObject(param_1, (unsigned int)src);
+    tile.pos.x = coords[0];
+    tile.pos.y = coords[1];
+    AddBasicObject(param_1, coords);
 
     node = (struct CountNode *)malloc(sizeof(struct CountNode));
-    id = (unsigned int)param_2;
-    node->field_0 = id;
+    node->tile = tile;
     node->next = (struct CountNode *)DAT_004c11bc;
-    cursor = (struct Cursor *)EditCursor.field_1830;
     DAT_004c11bc = node;
+    cursor = (struct Cursor *)EditCursor.field_1830;
     y = cursor->field_1408;
     x = cursor->field_1404;
 
-    FUN_004132a0(id, x - 3, y - 4, 6, 1);
-    FUN_004132a0(id, x + 1, y - 4, 0, 1);
+    FUN_004132a0(tile, x - 3, y - 4, 6, 1);
+    FUN_004132a0(tile, x + 1, y - 4, 0, 1);
     x += 5;
-    FUN_004132a0(id, x, y - 4, 3, 1);
-    FUN_004132a0(id, x, y, 0, 0);
-    FUN_004132a0(id, x, y + 4, 0, 0);
+    FUN_004132a0(tile, x, y - 4, 3, 1);
+    FUN_004132a0(tile, x, y, 0, 0);
+    FUN_004132a0(tile, x, y + 4, 0, 0);
 
     // STRING: LEGOLAND 0x004b455c
     elem = (struct DSRoadElem *)ElemID("Driving School Roads");
@@ -340,7 +336,7 @@ void FUN_00405630(unsigned int param_1, unsigned char *param_2) {
     }
 
     node->field_4 = 5;
-    FUN_00405310(id);
+    FUN_00405310(tile);
 }
 
 // FUNCTION: LEGOLAND 0x00405740
@@ -357,12 +353,12 @@ void FUN_00405740(struct DSHead *param_1, unsigned int param_2, unsigned int par
 
     c694 = DAT_0082c694;
     mapx = EditCursor.field_1404;
-    memcpy(&DAT_00830b74, DAT_004b4440, 20);
-    DAT_00830f90 = 0;
+    memcpy(DAT_0082f760.field_1414, DAT_004b4440, 20);
+    DAT_0082f760.field_1830 = 0;
     mapy = EditCursor.field_1408;
-    DAT_00830f88 = 0x4108;
-    DAT_00830b64 = c694->field_3c + mapx;
-    DAT_00830b68 = c694->field_40 + mapy;
+    DAT_0082f760.field_1828 = 0x4108;
+    DAT_0082f760.field_1404 = c694->field_3c + mapx;
+    DAT_0082f760.field_1408 = c694->field_40 + mapy;
 
     memcpy(DAT_0082c6e0.field_1414, DAT_004b4458, 20);
     DAT_0082c6e0.field_1830 = 0;
@@ -382,7 +378,7 @@ void FUN_00405740(struct DSHead *param_1, unsigned int param_2, unsigned int par
     ValidateCursor(&EditCursor, (unsigned int)src);
 
     EditCursor.field_1830 = (unsigned int)&DAT_0082f760;
-    DAT_00830f90 = (unsigned int)&DAT_0082c6e0;
+    DAT_0082f760.field_1830 = (unsigned int)&DAT_0082c6e0;
     DAT_0082c6e0.field_1830 = (unsigned int)&DAT_0082df20;
     FUN_0045f4d0(&EditCursor);
 }
@@ -393,14 +389,14 @@ void FUN_004058a0(unsigned int param_1, unsigned int param_2) {
 
     BasicObjectDCalcCursor(param_1, param_2);
     DefaultCursor(&DAT_0082f760);
-    memcpy(&DAT_00830b74, DAT_004b4bf0, 20);
+    memcpy(DAT_0082f760.field_1414, DAT_004b4bf0, 20);
 
     while (node != NULL) {
         if (node->field_8 == QueryObj) {
-            DAT_00830b64 = node->x;
-            DAT_00830b68 = node->y;
+            DAT_0082f760.field_1404 = node->x;
+            DAT_0082f760.field_1408 = node->y;
             FUN_0045f460(&DAT_0082f760);
-            DAT_00830f88 = 0x18;
+            DAT_0082f760.field_1828 = 0x18;
             BuildCursorPtr(&DAT_0082f760, 0, 0);
             RenderCursor(&DAT_0082f760);
         }
@@ -409,48 +405,45 @@ void FUN_004058a0(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00405940
-void FUN_00405940(int param_1, unsigned int param_2, unsigned int param_3) {
+void FUN_00405940(struct RideObject *obj, union TileId tile, unsigned int param_3) {
     struct RideQueueEntry *queue = DAT_004cbeac;
     struct CountNode *count = (struct CountNode *)DAT_004c11bc;
     struct DSBlokeNode *blokes = (struct DSBlokeNode *)DAT_004c10d4;
-    short id = (short)param_2;
+    struct RideQueueEntry *next;
+    struct DSBlokeNode *nextBloke;
+    struct CountNode *cur;
 
-    StandardRemoveObject(param_1, param_2, param_3);
+    StandardRemoveObject((struct EditObject *)obj, tile, (struct Cursor *)param_3);
     DefaultCursor(&DAT_0082f760);
-    memcpy(&DAT_00830b74, DAT_004b4bf0, 20);
+    memcpy(DAT_0082f760.field_1414, DAT_004b4bf0, 20);
 
-    if ((short)count->field_0 == id) {
+    if (count->tile.id == tile.id) {
         DAT_004c11bc = count->next;
         free(count);
     } else {
-        struct CountNode *prev = count;
-        struct CountNode *cur = count->next;
-        if (cur != NULL) {
-            do {
-                if ((short)cur->field_0 == id) {
-                    prev->next = prev->next->next;
-                    free(cur);
-                    break;
-                }
-                prev = cur;
-                cur = cur->next;
-            } while (cur != NULL);
+        for (cur = count->next; cur != NULL; cur = cur->next) {
+            if (cur->tile.id == tile.id) {
+                count->next = count->next->next;
+                free(count->next);
+                break;
+            }
+            count = cur;
         }
     }
 
     FUN_00411ba0(QueryObj);
 
     while (queue != NULL) {
-        struct RideQueueEntry *next = queue->next;
+        next = queue->next;
         if (queue->field_8 == QueryObj) {
             if (queue->field_14 & 0x10) {
                 queue->field_14 &= 0xef;
                 FUN_00413650(queue->field_8, queue->x, queue->y);
                 AddBricks(((struct DSObjClass *)DAT_0082c678)->field_26);
             }
-            DAT_00830b64 = queue->x;
-            DAT_00830b68 = queue->y;
-            StandardRemoveObject(((struct DSObjClass *)DAT_0082c684)->field_c4, queue->field_8, (unsigned int)&DAT_0082f760);
+            DAT_0082f760.field_1404 = queue->x;
+            DAT_0082f760.field_1408 = queue->y;
+            StandardRemoveObject((struct EditObject *)((struct DSObjClass *)DAT_0082c684)->field_c4, *(union TileId *)&queue->field_8, &DAT_0082f760);
             FUN_004133e0(queue->x, queue->y);
         }
         queue = next;
@@ -459,14 +452,14 @@ void FUN_00405940(int param_1, unsigned int param_2, unsigned int param_3) {
     AddBricks(((struct DSObjClass *)DAT_0082c684)->field_26 * 5);
 
     while (blokes != NULL) {
-        struct DSBlokeNode *next = blokes->next;
+        nextBloke = blokes->next;
         if (blokes->field_4 == (short)QueryObj) {
             FUN_00401c60(blokes);
         }
-        blokes = next;
+        blokes = nextBloke;
     }
 
-    RemoveAllBlokesFromRide(*(unsigned int *)(param_1 + 0xc), param_2);
+    RemoveAllBlokesFromRide(obj->ride, *(unsigned int *)&tile);
 }
 
 // FUNCTION: LEGOLAND 0x00405ad0
@@ -486,28 +479,29 @@ unsigned int *FUN_00405ad0(struct DSCarLayer *arg1, unsigned short arg2) {
 }
 
 // FUNCTION: LEGOLAND 0x00405b10
-void FUN_00405b10(struct DSRenderRoot *param_1, unsigned int param_2, unsigned int param_3, unsigned char *param_4, unsigned int param_5, unsigned int param_6) {
-    struct DSRenderSub *sub = param_1->field_c;
-    struct DSRenderNode *node;
+void FUN_00405b10(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int clip) {
+    struct Ride *ride = obj->ride;
+    struct RideNode *node;
     struct Point ref;
     int bounds[4];
     int dx;
     int dy;
 
-    ref.x = param_4[0];
-    ref.y = param_4[1];
-    for (node = sub->field_cc; node != NULL; node = node->next) {
-        if (*(short *)param_4 == node->field_c) {
-            unsigned char state = *((unsigned char *)node->field_8 + 0x60);
+    node = ride->riders;
+    ref.x = ((unsigned char *)tile)[0];
+    ref.y = ((unsigned char *)tile)[1];
+    for (; node != NULL; node = node->next) {
+        if (*tile == node->tile.id) {
+            unsigned char state = node->rider->param_action;
             if (state <= 1 || state >= 3) {
-                IP_RenderBlokeIn3DNow(node->field_8);
+                IP_RenderBlokeIn3DNow(node->rider);
             }
         }
     }
     GetTileBounds(&ref, bounds);
     if (DAT_0082c6c0 != NULL) {
-        dx = sub->field_14;
-        dy = sub->field_18;
+        dx = ride->field_14;
+        dy = ride->field_18;
         if (dx < 0) {
             dx = -(-dx >> 1);
         } else {
@@ -518,92 +512,87 @@ void FUN_00405b10(struct DSRenderRoot *param_1, unsigned int param_2, unsigned i
         } else {
             dy = dy >> 1;
         }
-        PrintSprite(DAT_0082c6c0, bounds[0] + dx, bounds[1] + dy, param_6, 0);
+        PrintSprite(DAT_0082c6c0, bounds[0] + dx, bounds[1] + dy, clip, 0);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00405bd0
-void FUN_00405bd0(struct DSRenderRoot *param_1) {
-    struct DSRenderSub *sub = param_1->field_c;
-    struct DSRenderNode *node = sub->field_cc;
-    struct DSSampleConfig params;
-    struct DSSampleConfig params2;
+void FUN_00405bd0(struct RideObject *obj) {
+    struct Ride *ride = obj->ride;
+    struct RideNode *node = ride->riders;
+    struct RideNode *next;
+    struct Bloke *bloke;
+    struct SampleSource source;
+    struct SampleSource source2;
+    char move;
+    int res;
+    int count;
+    int r;
+    struct Sample *sample;
 
     FUN_00402c10();
     FUN_00414440();
-
     while (node != NULL) {
-        int bloke = (int)node->field_8;
-        struct DSRenderNode *next = node->next;
-        if (*(short *)(bloke + 0xe) == 0) {
-            char dir;
-            int frame;
-            switch (*(unsigned char *)(bloke + 0x60)) {
+        bloke = node->rider;
+        next = node->next;
+        if (bloke->field_e == 0) {
+            switch (bloke->param_action) {
             case 0:
-                *(unsigned int *)(bloke + 0x24) = (sub->field_c + (unsigned int)((unsigned char *)node)[0xc]) * 0x100;
-                frame = (((unsigned char *)node)[0xd] - 3 + sub->field_10) * 0x100;
-                *(int *)(bloke + 0x28) = frame;
-                dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(short *)(bloke + 0xe) = 7;
-                *(unsigned char *)(bloke + 0x73) = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
-                *(unsigned int *)(bloke + 0x58) = (rand() & 7) + 1;
-                *(char *)(bloke + 0x60) += 1;
+                bloke->dest.x = (node->tile.pos.x + ride->x) << 8;
+                bloke->dest.y = (node->tile.pos.y - 3 + ride->y) << 8;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->field_58 = (rand() & 7) + 1;
+                bloke->param_action++;
                 break;
             case 1:
-                if (*(int *)(bloke + 0x58) == 0) {
-                    int count = FUN_00401c40(node->field_c);
-                    unsigned int limit = FUN_00413970(node->field_c);
-                    if ((unsigned int)(count * 5) < limit) {
-                        int res = FUN_00401ae0(node->field_c, bloke);
+                if (bloke->field_58 == 0) {
+                    count = FUN_00401c40(node->tile.id);
+                    if (count * 5 < (int)FUN_00413970(node->tile.id)) {
+                        res = FUN_00401ae0(node->tile.id, (int)bloke);
                         if (res == 0) {
-                            struct Sample *sample;
-                            unsigned int r;
-                            params.field_0 = 1;
-                            params.field_4 = bloke;
-                            PlayInstanceOfSample(DAT_004b4400, 0, 1, &params);
-                            r = rand();
-                            r &= 0x80000003;
-                            if ((int)r < 0) {
-                                r = (r - 1 | 0xfffffffc) + 1;
-                            }
-                            sample = PlayInstanceOfSample((&DAT_004b4400)[(r + 1) * 3], 1, 1, &params);
+                            source.type = 1;
+                            source.field_4 = bloke;
+                            PlayInstanceOfSample(*(void **)(DRIVING_SCHOOL_SFX + 8), 0, 1, &source);
+                            r = rand() % 4 + 1;
+                            sample = PlayInstanceOfSample(((void **)(DRIVING_SCHOOL_SFX + 8))[r * 3], 1, 1, &source);
                             AdjustPSampleFreq(sample, 10);
                             BlokeSitAnim(bloke);
                             BlokeSetFrame(bloke, 0);
-                            *(unsigned char *)(bloke + 0x62) |= 0x80;
-                            *(char *)(bloke + 0x60) += 1;
+                            bloke->flags |= 0x80;
+                            bloke->param_action++;
                         } else if (res == -1) {
-                            *(unsigned char *)(bloke + 0x60) = 3;
+                            bloke->param_action = 3;
                         } else if (res == -2) {
-                            *(unsigned int *)(bloke + 0x58) = (rand() & 0x1f) + 2;
+                            bloke->field_58 = (rand() & 0x1f) + 2;
                         }
                     }
                 } else {
-                    *(int *)(bloke + 0x58) -= 1;
+                    bloke->field_58--;
                 }
                 break;
             case 3:
-                *(unsigned short *)(bloke + 0x62) &= 0xff7f;
+                bloke->flags &= 0xff7f;
                 BlokeWalkAnim(bloke);
                 BlokeSetFrame(bloke, 0);
-                *(unsigned int *)(bloke + 0x68) = ((unsigned int)((unsigned char *)node)[0xc] + sub->field_c) * 0x100;
-                *(unsigned int *)(bloke + 0x6c) = (((unsigned char *)node)[0xd] - 3 + sub->field_10) * 0x100;
-                *(unsigned int *)(bloke + 0x24) = ((unsigned int)((unsigned char *)node)[0xc] + sub->field_c) * 0x100 + 0x80;
-                frame = ((unsigned int)((unsigned char *)node)[0xd] + sub->field_10) * 0x100 + 0x80;
-                *(int *)(bloke + 0x28) = frame;
-                dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(short *)(bloke + 0xe) = 7;
-                *(unsigned char *)(bloke + 0x73) = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
-                *(char *)(bloke + 0x60) += 1;
+                bloke->pos.x = (node->tile.pos.x + ride->x) << 8;
+                bloke->pos.y = (node->tile.pos.y - 3 + ride->y) << 8;
+                bloke->dest.x = ((node->tile.pos.x + ride->x) << 8) + 0x80;
+                bloke->dest.y = ((node->tile.pos.y + ride->y) << 8) + 0x80;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = move + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->param_action++;
                 break;
             case 4:
-                RemoveBlokeFromRide(sub, node);
-                *(unsigned short *)(bloke + 0x62) &= 0xfff7;
-                params2.field_0 = 1;
-                params2.field_4 = bloke;
-                KillAllSamplesFromSource(&params2);
+                RemoveBlokeFromRide(ride, node);
+                bloke->flags &= 0xfff7;
+                source2.type = 1;
+                source2.field_4 = bloke;
+                KillAllSamplesFromSource(&source2);
                 break;
             }
         }
@@ -617,53 +606,53 @@ int FUN_00405e70(void) {
     struct RideQueueEntry *queue;
     struct PumpNode *pump;
     struct DSBlokeNode *bloke;
+    struct CountNode *countCur;
+    struct RideQueueEntry *queueCur;
+    struct PumpNode *pumpCur;
+    struct DSBlokeNode *blokeCur;
     int count;
     int buf[52];
 
     count = 0;
-    for (countNode = (struct CountNode *)DAT_004c11bc; countNode != NULL; countNode = countNode->next) {
+    for (countCur = (struct CountNode *)DAT_004c11bc; countCur != NULL; countCur = countCur->next) {
         count++;
     }
-    SaveGameWrite(&count, 4);
     countNode = (struct CountNode *)DAT_004c11bc;
-    while (count != 0) {
-        count--;
+    SaveGameWrite(&count, 4);
+    while (count--) {
         SaveGameWrite(countNode, 0xc);
         countNode = countNode->next;
     }
 
     count = 0;
-    for (queue = DAT_004cbeac; queue != NULL; queue = queue->next) {
+    for (queueCur = DAT_004cbeac; queueCur != NULL; queueCur = queueCur->next) {
         count++;
     }
-    SaveGameWrite(&count, 4);
     queue = DAT_004cbeac;
-    while (count != 0) {
-        count--;
+    SaveGameWrite(&count, 4);
+    while (count--) {
         SaveGameWrite(queue, 0x20);
         queue = queue->next;
     }
 
     count = 0;
-    for (pump = (struct PumpNode *)DAT_004cbea4; pump != NULL; pump = pump->next) {
+    for (pumpCur = (struct PumpNode *)DAT_004cbea4; pumpCur != NULL; pumpCur = pumpCur->next) {
         count++;
     }
-    SaveGameWrite(&count, 4);
     pump = (struct PumpNode *)DAT_004cbea4;
-    while (count != 0) {
-        count--;
+    SaveGameWrite(&count, 4);
+    while (count--) {
         SaveGameWrite(pump, 0x10);
         pump = pump->next;
     }
 
     count = 0;
-    for (bloke = (struct DSBlokeNode *)DAT_004c10d4; bloke != NULL; bloke = bloke->next) {
+    for (blokeCur = (struct DSBlokeNode *)DAT_004c10d4; blokeCur != NULL; blokeCur = blokeCur->next) {
         count++;
     }
-    SaveGameWrite(&count, 4);
     bloke = (struct DSBlokeNode *)DAT_004c10d4;
-    while (count != 0) {
-        count--;
+    SaveGameWrite(&count, 4);
+    while (count--) {
         memcpy(buf, bloke, 0xd0);
         buf[51] = GetBlokeNum(buf[51]);
         SaveGameWrite(buf, 0xd0);
@@ -677,7 +666,7 @@ int FUN_00405e70(void) {
 void FUN_00406020(unsigned short arg1, unsigned int arg2) {
     struct CountNode *current = (struct CountNode *)DAT_004c11bc;
     while (current != NULL) {
-        if (current->field_0 == arg1) {
+        if (current->tile.id == arg1) {
             if (current != NULL) {
                 current->field_4 += arg2;
             }
@@ -714,70 +703,70 @@ int FUN_00406070(void) {
     struct DSBlokeNode *blokeNode;
     int count;
 
+    countPrev = NULL;
+    queuePrev = NULL;
+    pumpPrev = NULL;
+    blokePrev = NULL;
+
     DAT_004c11bc = NULL;
     SaveGameRead(&count, 4);
-    countPrev = NULL;
-    while (count-- != 0) {
+    while (count--) {
         if (countPrev == NULL) {
-            countNode = (struct CountNode *)malloc(0xc);
-            DAT_004c11bc = countNode;
+            DAT_004c11bc = (struct CountNode *)malloc(0xc);
+            countPrev = DAT_004c11bc;
         } else {
             countNode = (struct CountNode *)malloc(0xc);
             countPrev->next = countNode;
+            countPrev = countNode;
         }
-        SaveGameRead(countNode, 0xc);
-        countPrev = countNode;
+        SaveGameRead(countPrev, 0xc);
     }
 
     DAT_004cbeac = NULL;
     SaveGameRead(&count, 4);
-    queuePrev = NULL;
-    while (count-- != 0) {
+    while (count--) {
         if (queuePrev == NULL) {
-            queueNode = (struct RideQueueEntry *)malloc(0x20);
-            DAT_004cbeac = queueNode;
+            DAT_004cbeac = (struct RideQueueEntry *)malloc(0x20);
+            queuePrev = DAT_004cbeac;
         } else {
             queueNode = (struct RideQueueEntry *)malloc(0x20);
             queuePrev->next = queueNode;
+            queuePrev = queueNode;
         }
-        SaveGameRead(queueNode, 0x20);
-        queuePrev = queueNode;
+        SaveGameRead(queuePrev, 0x20);
     }
 
     DAT_004cbea4 = NULL;
     SaveGameRead(&count, 4);
-    pumpPrev = NULL;
-    while (count-- != 0) {
+    while (count--) {
         if (pumpPrev == NULL) {
-            pumpNode = (struct PumpNode *)malloc(0x10);
-            DAT_004cbea4 = pumpNode;
+            DAT_004cbea4 = (struct PumpNode *)malloc(0x10);
+            pumpPrev = DAT_004cbea4;
         } else {
             pumpNode = (struct PumpNode *)malloc(0x10);
             pumpPrev->next = pumpNode;
+            pumpPrev = pumpNode;
         }
-        SaveGameRead(pumpNode, 0x10);
-        pumpPrev = pumpNode;
+        SaveGameRead(pumpPrev, 0x10);
     }
 
     DAT_004c10d4 = NULL;
     SaveGameRead(&count, 4);
-    blokePrev = NULL;
-    while (count-- != 0) {
+    while (count--) {
         if (blokePrev == NULL) {
-            blokeNode = (struct DSBlokeNode *)malloc(0xd0);
-            DAT_004c10d4 = blokeNode;
+            DAT_004c10d4 = (struct DSBlokeNode *)malloc(0xd0);
+            blokePrev = DAT_004c10d4;
         } else {
             blokeNode = (struct DSBlokeNode *)malloc(0xd0);
             blokePrev->next = blokeNode;
+            blokePrev = blokeNode;
         }
-        SaveGameRead(blokeNode, 0xd0);
-        *(int *)((char *)blokeNode + 0xcc) = GetBlokePtr(*(int *)((char *)blokeNode + 0xcc));
-        blokePrev = blokeNode;
+        SaveGameRead(blokePrev, 0xd0);
+        *(int *)((char *)blokePrev + 0xcc) = GetBlokePtr(*(int *)((char *)blokePrev + 0xcc));
     }
 
-    count = -1;
     for (countNode = (struct CountNode *)DAT_004c11bc; countNode != NULL; countNode = countNode->next) {
-        FUN_00405310(countNode->field_0);
+        FUN_00405310(countNode->tile);
     }
 
     return 1;

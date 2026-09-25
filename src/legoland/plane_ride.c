@@ -114,7 +114,7 @@ void FUN_0043df90(struct PlaneRideObject *a1, struct PlaneRideObject *a2, struct
     if (temp != 0) {
         FUN_0043d8c0((void *)temp);
     }
-    StandardRemoveObject((unsigned int)a1, (unsigned int)a2, (unsigned int)a3);
+    StandardRemoveObject((unsigned int)a1, *(union TileId *)&a2, (unsigned int)a3);
     RemoveAllBlokesFromRide(a1->field_c, a2);
 }
 

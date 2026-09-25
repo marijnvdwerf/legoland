@@ -867,7 +867,7 @@ void FUN_0041a530(int param_1, unsigned int param_2, int param_3) {
     void *local_8;
     unsigned char local_14[12];
 
-    StandardRemoveObject(param_1, param_2, param_3);
+    StandardRemoveObject(param_1, *(union TileId *)&param_2, param_3);
     y = DAT_004cc078[1];
     if (DAT_004cc078[1] <= DAT_004cc078[3]) {
         do {
@@ -1517,7 +1517,7 @@ void FUN_0041b6f0(void *param_1, unsigned short param_2, struct Cursor *param_3)
     int n;
     struct SampleParams params;
 
-    StandardRemoveObject((unsigned int)param_1, param_2, (unsigned int)param_3);
+    StandardRemoveObject((unsigned int)param_1, *(union TileId *)&param_2, (unsigned int)param_3);
     params.field_8 = param_2 & 0xff;
     params.field_c = param_2 >> 8 & 0xff;
     params.field_0 = 2;
@@ -2007,7 +2007,7 @@ void FUN_0041c620(void *param_1, unsigned short param_2, struct Cursor *param_3)
     struct PathNode *nxt;
     short key;
 
-    StandardRemoveObject((unsigned int)param_1, param_2, (unsigned int)param_3);
+    StandardRemoveObject((unsigned int)param_1, *(union TileId *)&param_2, (unsigned int)param_3);
     key = *(short *)node;
     while (key != (short)param_2) {
         nxt = node->next;

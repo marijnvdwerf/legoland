@@ -350,8 +350,6 @@ extern unsigned char Catapult_SFX[0x70];
 extern unsigned char Helicopter_SFX[0x70];
 // 0x004b43f8
 extern unsigned char DRIVING_SCHOOL_SFX[0xa8];
-// 0x004b4400
-extern void *DAT_004b4400;
 // 0x004b4440
 extern unsigned int DAT_004b4440[5];
 // 0x004b4458
@@ -3487,16 +3485,6 @@ extern struct Cursor DAT_0082c6e0;
 extern struct Cursor DAT_0082df20;
 // 0x0082f760
 extern struct Cursor DAT_0082f760;
-// 0x00830b64
-extern unsigned int DAT_00830b64;
-// 0x00830b68
-extern unsigned int DAT_00830b68;
-// 0x00830b74
-extern unsigned int DAT_00830b74;
-// 0x00830f88
-extern unsigned int DAT_00830f88;
-// 0x00830f90
-extern unsigned int DAT_00830f90;
 // 0x00830f94
 extern struct Sprite *DAT_00830f94;
 // 0x00830f98

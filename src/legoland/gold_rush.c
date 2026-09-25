@@ -282,7 +282,7 @@ void FUN_004076e0(struct GoldEditObject *editObj, unsigned int coords, struct Cu
         FUN_00406960((struct GoldNode *)found);
     }
 
-    StandardRemoveObject((struct EditObject *)editObj, coords, cursor);
+    StandardRemoveObject((struct EditObject *)editObj, *(union TileId *)&coords, cursor);
     RemoveAllBlokesFromRide((struct Ride *)ride, coords);
 
     p[0] = ((unsigned char *)&coords)[0] + ride->field_c - 1;

@@ -37,7 +37,8 @@ struct Ride {
     /* 0x00 */ unsigned char pad_0[0xc];
     /* 0x0c */ unsigned int x;
     /* 0x10 */ unsigned int y;
-    /* 0x14 */ unsigned char pad_14[0x1c - 0x14];
+    /* 0x14 */ int field_14;
+    /* 0x18 */ int field_18;
     /* 0x1c */ unsigned int flags;
     /* 0x20 */ short type;
     /* 0x22 */ unsigned char pad_22[0x2a - 0x22];

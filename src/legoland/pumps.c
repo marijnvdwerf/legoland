@@ -29,8 +29,8 @@ void FUN_00411a20(void) {
     EditCursor.field_1828 = EditCursor.field_1828 | 8;
     BuildCursorPtr(&EditCursor, 0x8f8, 0);
     DefaultCursor(&DAT_0082f760);
-    memcpy(&DAT_00830b74, DAT_004b4bd0, 0x14);
-    DAT_00830f88 = 0x34;
+    memcpy(DAT_0082f760.field_1414, DAT_004b4bd0, 0x14);
+    DAT_0082f760.field_1828 = 0x34;
 }
 
 // FUNCTION: LEGOLAND 0x00411aa0

@@ -593,7 +593,7 @@ void FUN_00438020(struct MapObject *editObj, unsigned int coords, struct Cursor 
     if (cell != NULL) {
         FUN_00437fc0(cell);
     }
-    StandardRemoveObject((struct EditObject *)editObj, coords, cursor);
+    StandardRemoveObject((struct EditObject *)editObj, *(union TileId *)&coords, cursor);
     RemoveAllBlokesFromRide((struct Ride *)editObj->building, coords);
 }
 
