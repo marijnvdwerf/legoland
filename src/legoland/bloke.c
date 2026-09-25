@@ -220,7 +220,7 @@ struct BinVMatrix {
     float m30;
 };
 
-struct Person {
+struct BlokeNameView {
     unsigned int field_0;
     struct PersonAnim *field_4;
     unsigned char pad_8[0x83 - 0x8];
@@ -266,7 +266,7 @@ int FUN_00482b60(struct InstancePos *pos) {
 
 // FUNCTION: LEGOLAND 0x00482ba0
 LEGO_EXPORT char *GetVisitorName(struct Bloke *bloke) {
-    struct Person *person = (struct Person *)bloke;
+    struct BlokeNameView *person = (struct BlokeNameView *)bloke;
     char *name;
     if (person->field_4->field_84 == 0) {
         name = PTR_s_Aaron_004bcecc[person->field_83];
@@ -280,7 +280,7 @@ LEGO_EXPORT char *GetVisitorName(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00482c60
-void FUN_00482c60(struct Person *person) {
+void FUN_00482c60(struct BlokeNameView *person) {
     if (person->field_4->field_84 != 0) {
         person->field_83 = (unsigned char)((unsigned int)rand() % 0x5a);
     } else {

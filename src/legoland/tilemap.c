@@ -401,7 +401,7 @@ LEGO_EXPORT void PointToIsoPlane(int *param_1, int *out) {
 }
 
 // FUNCTION: LEGOLAND 0x0045be00
-LEGO_EXPORT unsigned int ScreenToMapRef2(int *param_1, int *out) {
+LEGO_EXPORT unsigned int ScreenToMapRef2(struct Point *screen, struct Point *out) {
     struct TileSprite *sprite;
     short size;
     int twice;
@@ -414,10 +414,10 @@ LEGO_EXPORT unsigned int ScreenToMapRef2(int *param_1, int *out) {
     }
     size = sprite->size;
     twice = (short)(size * 2);
-    ix = (((twice + 1 >> 1) - lpConfig->field_20) + (ScrollX >> 8) + *param_1) * (0x100 / twice);
-    iy = (((ScrollY >> 8) - lpConfig->field_22) + param_1[1]) * (0x100 / (int)size);
-    *out = iy + ix;
-    out[1] = iy - ix;
+    ix = (((twice + 1 >> 1) - lpConfig->field_20) + (ScrollX >> 8) + screen->x) * (0x100 / twice);
+    iy = (((ScrollY >> 8) - lpConfig->field_22) + screen->y) * (0x100 / (int)size);
+    out->x = iy + ix;
+    out->y = iy - ix;
     return 0;
 }
 

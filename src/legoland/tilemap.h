@@ -14,7 +14,7 @@ LEGO_EXPORT void GetTileCentre(struct Point *ref, int *out);
 LEGO_EXPORT void FreeTileSpace(unsigned short index, unsigned short count);
 LEGO_EXPORT unsigned int *AllocTileSpace(void *manager, int count, unsigned int *out);
 LEGO_EXPORT unsigned int ScreenToMapRef(int *param_1, int *out, unsigned int param_3);
-LEGO_EXPORT unsigned int ScreenToMapRef2(int *param_1, int *out);
+LEGO_EXPORT unsigned int ScreenToMapRef2(struct Point *screen, struct Point *out);
 int FUN_0045ce10(struct MapTile *tile);
 int FUN_0045ce30(int *param_1);
 unsigned char FUN_0045ceb0(int *coords);

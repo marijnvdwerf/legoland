@@ -420,7 +420,7 @@ extern struct Footprint DAT_004b5260;
 // 0x004b5278
 extern struct Footprint DAT_004b5278;
 // 0x004b5290
-extern int DAT_004b5290[0xc];
+extern struct Point DAT_004b5290[6];
 // 0x004b52c0
 extern unsigned char PTR_s_Boat_Noise_wav[0x18];
 // 0x004b53c0
@@ -513,8 +513,8 @@ extern int DAT_004b7148[0x10];
 extern float DAT_004b7188[0x10];
 // 0x004b71c8
 extern float DAT_004b71c8[0x10];
-// 0x004b72b0
-extern int DAT_004b72b0[2];
+// 0x004b7290
+extern struct Point DAT_004b7290[5];
 // 0x004b7230
 extern struct Footprint DAT_004b7230;
 // 0x004b7248

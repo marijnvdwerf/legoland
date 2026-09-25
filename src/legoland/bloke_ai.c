@@ -199,7 +199,7 @@ LEGO_EXPORT void InitBlokeAI(struct Bloke *bloke) {
     if (DAT_004b8344 > 'Z') {
         DAT_004b8344 = 'A';
     }
-    FUN_00482c60((struct Person *)bloke);
+    FUN_00482c60((struct BlokeNameView *)bloke);
     bloke->favourite_attraction_0 = FUN_0044e790();
     bloke->favourite_attraction_1 = FUN_0044e790();
     bloke->favourite_attraction_2 = FUN_0044e790();

@@ -22,6 +22,8 @@ struct JungleRide {
     /* 0x3f4 */ struct JungleRide *next;
 };
 
+struct Bloke;
+
 struct JungleScore {
     /* 0x00 */ unsigned short field_0;
     /* 0x02 */ TileId start;
@@ -31,11 +33,11 @@ struct JungleScore {
     /* 0x0c */ unsigned int field_c;
     /* 0x10 */ unsigned int field_10;
     /* 0x14 */ unsigned int field_14;
-    /* 0x18 */ unsigned int blokes[5];
-    /* 0x2c */ unsigned int field_2c;
-    /* 0x30 */ unsigned int field_30[3];
+    /* 0x18 */ struct Bloke *blokes[5];
+    /* 0x2c */ int timer;
+    /* 0x30 */ struct Bloke *seats[3];
     /* 0x3c */ struct JungleScore *next;
-    /* 0x40 */ unsigned int field_40;
+    /* 0x40 */ int field_40;
 };
 
 struct JungleFish {

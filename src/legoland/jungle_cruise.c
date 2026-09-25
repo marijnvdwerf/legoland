@@ -1257,13 +1257,13 @@ void FUN_00434f90(struct EditObject *obj, int *coords) {
     score->field_c = 9999;
     score->field_10 = 0;
     score->field_14 = 0;
-    score->field_2c = 150;
+    score->timer = 150;
     score->field_40 = 3;
     for (x = 0; x < 5; x++) {
         score->blokes[x] = 0;
     }
     for (x = 0; x < 3; x++) {
-        score->field_30[x] = 0;
+        score->seats[x] = NULL;
     }
     score->next = DAT_00629c3c;
     DAT_00629c3c = score;
@@ -1478,162 +1478,147 @@ void FUN_00435470(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
 
 // FUNCTION: LEGOLAND 0x00435750
 void FUN_00435750(void) {
-    unsigned int *queue = *(unsigned int **)((char *)DAT_0081cb60 + 0xcc);
-    unsigned int *next;
+    struct RideNode *node = DAT_0081cb60->riders;
+    struct RideNode *next;
     struct JungleScore *score;
-    unsigned short id;
-    unsigned char hi;
-    int bloke;
+    struct Bloke *bloke;
+    struct Person *person;
+    TileId tile;
     int slot;
-    int person;
-    char cv;
-    int local_10;
-    int local_c;
-    unsigned int local_8;
-    unsigned int local_4;
     int i;
-    unsigned int *qp;
+    char dir;
+    struct Point pos;
+    struct Point map;
 
-    DAT_00629c54 = DAT_00629c54 + 1;
-    if (DAT_00629c54 == 0x50) {
+    if (++DAT_00629c54 == 0x50) {
         DAT_00629c54 = 0;
         FUN_004332f0();
     }
     FUN_00432d00(0);
     for (score = DAT_00629c3c; score != NULL; score = score->next) {
-        id = score->field_0;
-        if (score->field_30[0] != 0 && --score->field_2c < 1 && score->field_8 != 0 &&
-            (int)FUN_004332c0((unsigned short *)score) * 6 < (int)score->field_40 &&
-            FUN_00432b90(*(TileId *)&id, score->field_30[0], score->field_30[1], score->field_30[2]) != 0) {
-            *(unsigned char *)(score->field_30[0] + 0x62) |= 0x80;
-            *(char *)(score->field_30[0] + 0x60) += 1;
-            BlokeSitAnim((struct Bloke *)score->field_30[0]);
-            BlokeSetFrame((struct Bloke *)score->field_30[0], 0);
-            if (score->field_30[1] != 0) {
-                *(unsigned char *)(score->field_30[1] + 0x62) |= 0x80;
-                *(char *)(score->field_30[1] + 0x60) += 1;
-                BlokeSitAnim((struct Bloke *)score->field_30[1]);
-                BlokeSetFrame((struct Bloke *)score->field_30[1], 0);
+        tile.id = score->field_0;
+        if (score->seats[0] != NULL && --score->timer <= 0 && score->field_8 != 0 &&
+            score->field_40 > (int)FUN_004332c0(&score->field_0) * 6 &&
+            FUN_00432b90(tile, (unsigned int)score->seats[0], (unsigned int)score->seats[1], (unsigned int)score->seats[2]) != 0) {
+            score->seats[0]->flags |= 0x80;
+            score->seats[0]->param_action++;
+            BlokeSitAnim(score->seats[0]);
+            BlokeSetFrame(score->seats[0], 0);
+            if (score->seats[1] != NULL) {
+                score->seats[1]->flags |= 0x80;
+                score->seats[1]->param_action++;
+                BlokeSitAnim(score->seats[1]);
+                BlokeSetFrame(score->seats[1], 0);
             }
-            if (score->field_30[2] != 0) {
-                *(unsigned char *)(score->field_30[2] + 0x62) |= 0x80;
-                *(char *)(score->field_30[2] + 0x60) += 1;
-                BlokeSitAnim((struct Bloke *)score->field_30[2]);
-                BlokeSetFrame((struct Bloke *)score->field_30[2], 0);
+            if (score->seats[2] != NULL) {
+                score->seats[2]->flags |= 0x80;
+                score->seats[2]->param_action++;
+                BlokeSitAnim(score->seats[2]);
+                BlokeSetFrame(score->seats[2], 0);
             }
-            score->field_2c = 0x96;
-            score->field_30[0] = 0;
-            score->field_30[1] = 0;
-            score->field_30[2] = 0;
+            score->timer = 150;
+            score->seats[0] = NULL;
+            score->seats[1] = NULL;
+            score->seats[2] = NULL;
         }
     }
-    while (queue != NULL) {
-        next = (unsigned int *)*queue;
-        id = *(unsigned short *)(queue + 3);
-        hi = (unsigned char)(id >> 8);
-        for (score = DAT_00629c3c; score != NULL && score->field_0 != id; score = score->next) {
-        }
-        bloke = queue[2];
-        if (*(short *)(bloke + 0xe) == 0) {
-            switch (*(unsigned char *)(bloke + 0x60)) {
-            case 0:
-                i = 0;
-                qp = &score->blokes[0];
-                do {
-                    slot = i;
-                    if ((int)*qp == bloke) {
-                        break;
-                    }
-                    i = i + 1;
-                    qp = qp + 2;
-                    slot = 4;
-                } while (i < 5);
-                if (i == 5) {
-                    if (score->field_14 == 5 || score->field_2c != 0) {
-                        goto remove;
-                    }
-                    score->blokes[slot * 2] = bloke;
-                    score->field_14 = score->field_14 + 1;
-                } else {
-                    bloke = score->blokes[slot * 2];
-                    if (score->blokes[slot * 2 - 2] != 0) {
-                        break;
-                    }
-                    score->blokes[slot * 2 - 2] = bloke;
-                    score->blokes[slot * 2] = 0;
-                    slot = slot - 1;
-                    if (slot == 0) {
-                        *(char *)(bloke + 0x60) += 1;
-                    }
-                }
-                *(unsigned char *)(bloke + 0x62) |= 8;
-                *(unsigned int *)(bloke + 0x24) = (*(int *)((char *)DAT_0081cb60 + 0xc) + (id & 0xff)) * 0x100 +
-                    *(int *)((char *)&DAT_004b72b0 + slot * -8);
-                person = (*(int *)((char *)DAT_0081cb60 + 0x10) + hi) * 0x100 + *(int *)((char *)&DAT_004b72b0 + slot * -8 + 4);
-                *(int *)(bloke + 0x28) = person;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                *(short *)(bloke + 0xe) = 7;
-                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
+    for (; node != NULL; node = next) {
+        score = DAT_00629c3c;
+        next = node->next;
+        tile = node->tile;
+        for (; score != NULL; score = score->next) {
+            if (score->field_0 == tile.id) {
                 break;
-            case 1:
-                if (bloke == (int)score->blokes[0]) {
-                    i = 0;
-                    qp = &score->field_30[0];
-                    do {
-                        if (*qp == 0) {
-                            *(unsigned int *)(bloke + 0x68) = 0xffffd8f1;
-                            *(unsigned int *)(bloke + 0x6c) = 0xffffd8f1;
-                            score->field_30[i] = bloke;
-                            score->blokes[0] = 0;
-                            score->field_14 = score->field_14 - 1;
-                            break;
-                        }
-                        i = i + 1;
-                        qp = qp + 2;
-                    } while (i < 3);
-                }
-                break;
-            case 3:
-                local_10 = 0;
-                local_c = 0;
-                BlokeWalkAnim((struct Bloke *)bloke);
-                BlokeSetFrame((struct Bloke *)bloke, 0);
-                person = Find3DPersonFromBloke(bloke);
-                AdjustBlokePosition((struct BlokePos *)&local_10);
-                local_10 = (*(int *)(person + 0x1c) - local_10) + -0x10;
-                local_c = *(int *)(person + 0x20) - local_c;
-                ScreenToMapRef2(&local_10, (int *)&local_8, 0);
-                *(unsigned short *)(bloke + 0x62) &= 0xff7f;
-                *(unsigned int *)(bloke + 0x68) = local_8;
-                *(unsigned int *)(bloke + 0x6c) = local_4;
-                *(unsigned char *)(bloke + 0x72) = 10;
-                *(unsigned int *)(bloke + 0x24) = ((int)*(char *)((char *)DAT_0081cb60 + 0x24) + (id & 0xff)) * 0x100 + -0x180;
-                person = ((int)*(char *)((char *)DAT_0081cb60 + 0x25) + hi) * 0x100 + 0x80;
-                *(int *)(bloke + 0x28) = person;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(short *)(bloke + 0xe) = 7;
-                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
-                *(char *)(bloke + 0x60) += 1;
-                break;
-            case 4:
-                *(unsigned int *)(bloke + 0x24) = ((int)*(char *)((char *)DAT_0081cb60 + 0x24) + (id & 0xff)) * 0x100 + 0x80;
-                person = ((int)*(char *)((char *)DAT_0081cb60 + 0x25) + hi) * 0x100 + 0x80;
-                *(int *)(bloke + 0x28) = person;
-                cv = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                *(short *)(bloke + 0xe) = 7;
-                *(unsigned char *)(bloke + 0x73) = cv + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(cv + 0x10) >> 5) + 3);
-                *(char *)(bloke + 0x60) += 1;
-                break;
-            case 5:
-                *(unsigned short *)(bloke + 0x62) &= 0xfff7;
-            remove:
-                RemoveBlokeFromRide(DAT_0081cb60, queue);
             }
         }
-        queue = next;
+        bloke = node->rider;
+        if (bloke->field_e != 0) {
+            continue;
+        }
+        switch (bloke->param_action) {
+        case 0:
+            slot = 4;
+            for (i = 0; i < 5; i++) {
+                if (score->blokes[i] == bloke) {
+                    slot = i;
+                    break;
+                }
+            }
+            if (i == 5) {
+                if (score->field_14 == 5 || score->blokes[4] != NULL) {
+                    RemoveBlokeFromRide(DAT_0081cb60, node);
+                    break;
+                }
+                score->blokes[slot] = bloke;
+                score->field_14++;
+            } else {
+                bloke = score->blokes[slot];
+                if (score->blokes[slot - 1] != NULL) {
+                    break;
+                }
+                score->blokes[slot - 1] = bloke;
+                score->blokes[slot] = NULL;
+                if (--slot == 0) {
+                    bloke->param_action++;
+                }
+            }
+            bloke->flags |= 8;
+            bloke->dest.x = ((DAT_0081cb60->x + tile.pos.x) << 8) + DAT_004b7290[4 - slot].x;
+            bloke->dest.y = ((DAT_0081cb60->y + tile.pos.y) << 8) + DAT_004b7290[4 - slot].y;
+            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+            bloke->field_73 = dir + 0x10;
+            bloke->field_e = 7;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            break;
+        case 1:
+            if (bloke == score->blokes[0]) {
+                for (i = 0; i < 3; i++) {
+                    if (score->seats[i] == NULL) {
+                        bloke->pos.x = -9999;
+                        bloke->pos.y = -9999;
+                        score->seats[i] = bloke;
+                        score->blokes[0] = NULL;
+                        score->field_14--;
+                        break;
+                    }
+                }
+            }
+            break;
+        case 3:
+            pos.x = 0;
+            pos.y = 0;
+            BlokeWalkAnim(bloke);
+            BlokeSetFrame(bloke, 0);
+            person = Find3DPersonFromBloke((unsigned int)bloke);
+            AdjustBlokePosition((struct BlokePos *)&pos);
+            pos.x = person->field_1c - pos.x - 0x10;
+            pos.y = person->field_20 - pos.y;
+            ScreenToMapRef2(&pos, &map, 0);
+            bloke->flags &= 0xff7f;
+            bloke->pos = map;
+            bloke->field_72 = 10;
+            bloke->dest.x = ((DAT_0081cb60->field_24 + tile.pos.x) << 8) - 0x180;
+            bloke->dest.y = ((DAT_0081cb60->field_25 + tile.pos.y) << 8) + 0x80;
+            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+            bloke->field_e = 7;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            bloke->param_action++;
+            break;
+        case 4:
+            bloke->dest.x = ((DAT_0081cb60->field_24 + tile.pos.x) << 8) + 0x80;
+            bloke->dest.y = ((DAT_0081cb60->field_25 + tile.pos.y) << 8) + 0x80;
+            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+            bloke->field_e = 7;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            bloke->param_action++;
+            break;
+        case 5:
+            bloke->flags &= 0xfff7;
+            RemoveBlokeFromRide(DAT_0081cb60, node);
+            break;
+        }
     }
 }
 

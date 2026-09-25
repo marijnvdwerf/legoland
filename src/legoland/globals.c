@@ -238,7 +238,7 @@ struct Footprint DAT_004b5260;
 struct Footprint DAT_004b5278;
 
 // GLOBAL: LEGOLAND 0x004b5290
-int DAT_004b5290[0xc];
+struct Point DAT_004b5290[6];
 
 // GLOBAL: LEGOLAND 0x004b52c0
 unsigned char PTR_s_Boat_Noise_wav[0x18];
@@ -378,8 +378,8 @@ float DAT_004b7188[0x10];
 // GLOBAL: LEGOLAND 0x004b71c8
 float DAT_004b71c8[0x10];
 
-// GLOBAL: LEGOLAND 0x004b72b0
-int DAT_004b72b0[2];
+// GLOBAL: LEGOLAND 0x004b7290
+struct Point DAT_004b7290[5];
 
 // GLOBAL: LEGOLAND 0x004b7230
 struct Footprint DAT_004b7230;

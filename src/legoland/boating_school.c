@@ -871,8 +871,8 @@ void FUN_0041a720(void) {
                 }
             }
             bloke->flags |= 8;
-            bloke->dest.x = ((DAT_0082c658->x + tile.pos.x) << 8) + DAT_004b5290[(4 - slot) * 2];
-            bloke->dest.y = ((DAT_0082c658->y + tile.pos.y) << 8) + DAT_004b5290[(4 - slot) * 2 + 1];
+            bloke->dest.x = ((DAT_0082c658->x + tile.pos.x) << 8) + DAT_004b5290[4 - slot].x;
+            bloke->dest.y = ((DAT_0082c658->y + tile.pos.y) << 8) + DAT_004b5290[4 - slot].y;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_73 = dir + 0x10;
             bloke->field_e = 7;
