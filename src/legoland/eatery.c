@@ -971,7 +971,7 @@ void FUN_0042f4c0(int param_1, unsigned int param_2, unsigned int param_3, short
         offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0081cd2c, 1);
         AdjustOffsetForViewMode(&offset);
         PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_0081cd2c, 1),
-            offset.x + coords.x, offset.y + coords.y, param_6, (int *)&cfg);
+            coords.x + offset.x, coords.y + offset.y, param_6, (int *)&cfg);
         state->field_9 = frame;
     }
 }
