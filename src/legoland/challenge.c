@@ -1352,14 +1352,9 @@ void FUN_00445100(void) {
 
     a = DAT_006660a8;
     x = DAT_00813a44.x;
-    if (x >= a->x && x <= a->field_10 + a->x) {
-        y = DAT_00813a44.y;
-        if (y >= a->y && y <= a->field_12 + a->y) {
-            goto skip;
-        }
+    if (x < a->x || x > a->field_10 + a->x || (y = DAT_00813a44.y, y < a->y || y > a->field_12 + a->y)) {
+        FUN_0046d680(a, DAT_0081c02c);
     }
-    FUN_0046d680(a, DAT_0081c02c);
-skip:
     x = DAT_00813a44.x;
     y = DAT_00813a44.y;
     b = DAT_006660ac;

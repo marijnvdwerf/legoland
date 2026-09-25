@@ -1084,23 +1084,23 @@ struct SaveBlock *FUN_0042f9d0(unsigned short *param) {
 void FUN_0042fa00(struct SaveBlock *param) {
     struct SaveBlock *node;
     struct SaveBlock *prev;
+
     if (DAT_00616148 == param) {
         DAT_00616148 = param->next;
-        goto done;
-    }
-    node = DAT_00616148->next;
-    prev = DAT_00616148;
-    while (node != param) {
-        prev = prev->next;
-        if (prev == NULL) {
-            goto done;
+    } else {
+        node = DAT_00616148->next;
+        prev = DAT_00616148;
+        while (node != param) {
+            prev = prev->next;
+            if (prev == NULL) {
+                break;
+            }
+            node = prev->next;
         }
-        node = prev->next;
+        if (prev != NULL) {
+            prev->next = param->next;
+        }
     }
-    if (prev != NULL) {
-        prev->next = param->next;
-    }
-done:
     free(param);
 }
 
