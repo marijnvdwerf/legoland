@@ -49,7 +49,7 @@ int FUN_004738b0(void) {
         IDirectInputDevice_SetDataFormat((LPDIRECTINPUTDEVICEA)dinput_keyboard, &c_dfDIKeyboard);
         caps.dwSize = 0x2c;
         IDirectInputDevice_GetCapabilities((LPDIRECTINPUTDEVICEA)dinput_keyboard, &caps);
-        if (caps.dwFlags != 0) {
+        if (!((caps.dwFlags == 0) & 1)) {
             return IDirectInput_GetDeviceStatus((LPDIRECTINPUTA)dinput, &GUID_SysKeyboard) == 0;
         }
     }
@@ -91,7 +91,7 @@ int FUN_00473970(void) {
         }
         caps.dwSize = 0x2c;
         IDirectInputDevice_GetCapabilities((LPDIRECTINPUTDEVICEA)dintput_mouse, &caps);
-        if (caps.dwFlags != 0) {
+        if (!((caps.dwFlags == 0) & 1)) {
             return IDirectInput_GetDeviceStatus((LPDIRECTINPUTA)dinput, &GUID_SysMouse) == 0;
         }
     }
@@ -146,12 +146,9 @@ LEGO_EXPORT void KillInputSystem(void) {
 
 // FUNCTION: LEGOLAND 0x00473b00
 LEGO_EXPORT void UpdateControllerFromMouseData(struct CtrlBuffer *buffer) {
-    int x;
-    int y;
     int dx;
     int dy;
-    int lX;
-    int lY;
+    int mode;
     unsigned int flags;
 
     if (buffer == NULL) {
@@ -159,31 +156,30 @@ LEGO_EXPORT void UpdateControllerFromMouseData(struct CtrlBuffer *buffer) {
     }
     buffer->field_0 = buffer->field_8;
     buffer->field_4 = buffer->field_c;
-    lX = DAT_00668d78.lX;
-    lY = DAT_00668d78.lY;
-    dx = lX;
-    dy = lY;
-    if (buffer->field_24 != 0) {
-        if (abs(lX) > buffer->field_1c || abs(lY) > buffer->field_1c) {
-            dx = lX * 2;
-            dy = lY * 2;
+    mode = buffer->field_24;
+    dx = DAT_00668d78.lX;
+    dy = DAT_00668d78.lY;
+    if (mode != 0) {
+        if (abs(dx) > buffer->field_1c || abs(dy) > buffer->field_1c) {
+            dx += dx;
+            dy += dy;
         }
-        if (buffer->field_24 == 2 && (abs(dx) > buffer->field_20 || abs(dy) > buffer->field_20)) {
-            dx = dx << 1;
-            dy = dy << 1;
+        if (mode == 2) {
+            if (abs(dx) > buffer->field_20 || abs(dy) > buffer->field_20) {
+                dx <<= 1;
+                dy <<= 1;
+            }
         }
     }
-    x = buffer->field_8;
-    y = buffer->field_c;
-    buffer->field_8 = x + dx;
-    buffer->field_c = y + dy;
-    if ((int)(unsigned int)(unsigned short)lpConfig->field_0 <= x + dx) {
+    buffer->field_8 += dx;
+    buffer->field_c += dy;
+    if (buffer->field_8 >= lpConfig->field_0) {
         buffer->field_8 = lpConfig->field_0 - 1;
     }
     if (buffer->field_8 < 0) {
         buffer->field_8 = 0;
     }
-    if ((int)(unsigned int)(unsigned short)lpConfig->field_2 <= y + dy) {
+    if (buffer->field_c >= lpConfig->field_2) {
         buffer->field_c = lpConfig->field_2 - 1;
     }
     if (buffer->field_c < 0) {
@@ -348,7 +344,7 @@ LEGO_EXPORT char GetInputChar(void) {
     result = 0;
     i = 0;
     do {
-        prev = DAT_00668da8[i];
+        prev = (char)DAT_00668da8[i];
         state = DAT_007fdda0[DAT_004bad58[i].flags];
         prev = (prev >> 7) & 1;
         DAT_00668da8[i] = state;
@@ -377,7 +373,7 @@ char FUN_00474130(void) {
     result = 0;
     i = 0;
     do {
-        prev = DAT_00668de4[i];
+        prev = (char)DAT_00668de4[i];
         state = DAT_007fdda0[DAT_004bad58[i].flags];
         prev = (prev >> 7) & 1;
         DAT_00668de4[i] = state;

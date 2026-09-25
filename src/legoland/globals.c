@@ -680,7 +680,7 @@ unsigned int DAT_004ba9ac[1];
 int mouse_granularity;
 
 // GLOBAL: LEGOLAND 0x004bad58
-struct KeyMapping DAT_004bad58[0x3b];
+struct KeyMapping DAT_004bad58[0x3c];
 
 // GLOBAL: LEGOLAND 0x004bafa8
 unsigned int DAT_004bafa8[20];

@@ -693,7 +693,7 @@ struct KeyMapping {
     /* 0x01 */ signed char code;
 };
 // 0x004bad58
-extern struct KeyMapping DAT_004bad58[0x3b];
+extern struct KeyMapping DAT_004bad58[0x3c];
 // 0x004bafa8
 extern unsigned int DAT_004bafa8[20];
 // 0x004baff8

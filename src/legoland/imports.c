@@ -30,7 +30,10 @@ int __stdcall DirectSoundCreate(void *guid, void *dsound, void *unknown) {
 }
 
 // STUB: LEGOLAND 0x0049d320
-void DirectInputCreateA(void) { STUB(); }
+int __stdcall DirectInputCreateA(void *hinst, unsigned int version, void *out, void *outer) {
+    STUB();
+    return 0;
+}
 
 // STUB: LEGOLAND 0x0049e3a0
 void VerQueryValueA(void) { STUB(); }
