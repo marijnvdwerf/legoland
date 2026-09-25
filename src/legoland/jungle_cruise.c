@@ -26,14 +26,14 @@ void FUN_00432ac0(void) {
 
     for (i = 0; i < 16; i++) {
         a = (i * DAT_004ab3e8) * DAT_004ab3f4;
-        DAT_0081cb80[i * 2] = (int)(sin(a) * DAT_004ab4b0);
-        DAT_0081cb80[i * 2 + 1] = (int)(cos(a) * DAT_004ab4a8);
+        DAT_0081cb80[0][i].x = (int)(sin(a) * DAT_004ab4b0);
+        DAT_0081cb80[0][i].y = (int)(cos(a) * DAT_004ab4a8);
         a = (i * DAT_004ab3e8 + DAT_004ab3ec - DAT_004ab3fc) * DAT_004ab3f4;
-        DAT_0081cb80[i * 2 + 0x20] = (int)(sin(a) * DAT_004ab4b0);
-        DAT_0081cb80[i * 2 + 0x21] = (int)(cos(a) * DAT_004ab4a8);
+        DAT_0081cb80[1][i].x = (int)(sin(a) * DAT_004ab4b0);
+        DAT_0081cb80[1][i].y = (int)(cos(a) * DAT_004ab4a8);
         a = (i * DAT_004ab3e8 + DAT_004ab4a0) * DAT_004ab3f4;
-        DAT_0081cb80[i * 2 + 0x40] = (int)(sin(a) * DAT_004ab4b0);
-        DAT_0081cb80[i * 2 + 0x41] = (int)(cos(a) * DAT_004ab4a8);
+        DAT_0081cb80[2][i].x = (int)(sin(a) * DAT_004ab4b0);
+        DAT_0081cb80[2][i].y = (int)(cos(a) * DAT_004ab4a8);
     }
 }
 
@@ -188,8 +188,8 @@ void FUN_00432d00(int param_1) {
                     off = off + row;
                     if (ride->blokes[off] != 0) {
                         person = Find3DPersonFromBloke(ride->blokes[off]);
-                        local_10 = DAT_0081cb80[((ride->field_29c[DAT_00629c54] & 0xf) + off * 0x10) * 2] + 0x20;
-                        frame = DAT_0081cb80[((ride->field_29c[DAT_00629c54] & 0xf) + off * 0x10) * 2 + 1];
+                        local_10 = DAT_0081cb80[off][ride->field_29c[DAT_00629c54] & 0xf].x + 0x20;
+                        frame = DAT_0081cb80[off][ride->field_29c[DAT_00629c54] & 0xf].y;
                         local_c = frame + 0x18;
                         if (off == 0) {
                             *(float *)(person + 0x44) = ((float)(int)ride->field_29c[DAT_00629c54] * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3e0 * DAT_004ab3dc;
@@ -240,8 +240,8 @@ void FUN_00432d00(int param_1) {
                     off = off + row;
                     if (ride->blokes[off] != 0) {
                         person = Find3DPersonFromBloke(ride->blokes[off]);
-                        local_10 = DAT_0081cb80[((ride->field_29c[DAT_00629c54] & 0xf) + off * 0x10) * 2] + 0x20;
-                        frame = DAT_0081cb80[((ride->field_29c[DAT_00629c54] & 0xf) + off * 0x10) * 2 + 1];
+                        local_10 = DAT_0081cb80[off][ride->field_29c[DAT_00629c54] & 0xf].x + 0x20;
+                        frame = DAT_0081cb80[off][ride->field_29c[DAT_00629c54] & 0xf].y;
                         local_c = frame + 0x18;
                         if (off == 0) {
                             *(float *)(person + 0x44) = ((float)(int)ride->field_29c[DAT_00629c54] * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3e0 * DAT_004ab3dc;

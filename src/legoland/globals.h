@@ -3274,7 +3274,7 @@ extern struct Cursor *DAT_0081cb70;
 // 0x0081cb74
 extern struct Cursor *DAT_0081cb74;
 // 0x0081cb80
-extern int DAT_0081cb80[0x60];
+extern struct Point DAT_0081cb80[3][16];
 // 0x0081cd00
 extern void *DAT_0081cd00;
 // 0x0081cd04

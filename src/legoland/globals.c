@@ -4551,7 +4551,7 @@ struct Cursor *DAT_0081cb70;
 struct Cursor *DAT_0081cb74;
 
 // GLOBAL: LEGOLAND 0x0081cb80
-int DAT_0081cb80[0x60];
+struct Point DAT_0081cb80[3][16];
 
 // GLOBAL: LEGOLAND 0x0081cd00
 void *DAT_0081cd00;
