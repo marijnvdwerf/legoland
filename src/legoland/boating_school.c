@@ -867,166 +867,142 @@ void FUN_0041a530(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
 
 // FUNCTION: LEGOLAND 0x0041a720
 void FUN_0041a720(void) {
-    struct BoatRideNode **bloke_list;
-    struct BoatRideNode *node;
-    int lls;
-    int bloke;
-    unsigned short id;
-    unsigned char idhi;
+    struct RideNode *node = DAT_0082c658->riders;
+    struct RideNode *next;
     struct BoatRideNode *score;
+    struct Bloke *bloke;
+    struct LLS *lls;
+    TileId tile;
     int slot;
+    int i;
     int frame;
-    struct SampleParams params;
+    char dir;
+    struct SampleSource source;
+    struct SampleSource source2;
     struct Sample *sample;
 
-    bloke_list = (struct BoatRideNode **)DAT_0082c658->riders;
-    lls = GetLLSForSprite(DAT_0082ae00);
-    DAT_004cc08c = DAT_004cc08c + 1;
-    if (DAT_004cc08c == 0x50) {
+    lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_0082ae00);
+    if (++DAT_004cc08c == 0x50) {
         DAT_004cc08c = 0;
         FUN_00419300();
     }
     FUN_00418fe0(0);
-    while (bloke_list != NULL) {
-        struct BoatRideNode **next_bloke = (struct BoatRideNode **)*bloke_list;
-        id = *(unsigned short *)((char *)bloke_list + 0xc);
-        idhi = (unsigned char)(id >> 8);
+    for (; node != NULL; node = next) {
         score = DAT_004cc074;
-        while (score != NULL && score->id != id) {
-            score = score->next;
+        next = node->next;
+        tile = node->tile;
+        for (; score != NULL; score = score->next) {
+            if (score->id == tile.id) {
+                break;
+            }
         }
-        bloke = ((int *)bloke_list)[2];
-        if (*(short *)(bloke + 0xe) == 0) {
-            switch (*(unsigned char *)(bloke + 0x60)) {
-            case 0:
-                slot = 0;
-                while (slot < 5) {
-                    if (score->blokes[slot] == (unsigned int)bloke) {
-                        break;
-                    }
-                    slot = slot + 1;
+        bloke = node->rider;
+        if (bloke->field_e != 0) {
+            continue;
+        }
+        switch (bloke->param_action) {
+        case 0:
+            slot = 4;
+            for (i = 0; i < 5; i++) {
+                if (score->blokes[i] == (unsigned int)bloke) {
+                    slot = i;
+                    break;
                 }
-                if (slot == 5) {
-                    slot = 4;
-                    if (score->field_14 == 5 || score->blokes[4] != 0) {
-                        goto remove;
-                    }
-                    score->blokes[slot] = bloke;
-                    score->field_14 = score->field_14 + 1;
-                } else {
-                    if (score->blokes[slot] != 0 && slot != 0) {
-                    }
-                    if (slot != 0) {
-                    }
-                    {
-                        int prevbloke = score->blokes[slot];
-                        if (score->blokes[slot - 1] != 0) {
-                            break;
-                        }
-                        score->blokes[slot - 1] = prevbloke;
-                        score->blokes[slot] = 0;
-                        slot = slot - 1;
-                        if (slot == 0) {
-                            *(char *)(prevbloke + 0x60) += 1;
-                        }
-                        bloke = prevbloke;
-                    }
+            }
+            if (i == 5) {
+                if (score->field_14 == 5 || score->blokes[4] != 0) {
+                    RemoveBlokeFromRide(DAT_0082c658, node);
+                    break;
                 }
-                *(unsigned char *)(bloke + 0x62) |= 8;
-                *(unsigned int *)(bloke + 0x24) =
-                    ((int)(char)DAT_0082c658->x + (id & 0xff)) * 0x100 + DAT_004b5290[(4 - slot) * 2];
-                frame = ((int)(char)DAT_0082c658->y + (idhi & 0xff)) * 0x100 + DAT_004b5290[(4 - slot) * 2 + 1];
-                *(int *)(bloke + 0x28) = frame;
-                {
-                    char dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                    *(unsigned char *)(bloke + 0x73) = dir + 0x10;
-                    *(short *)(bloke + 0xe) = 7;
-                    NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                score->blokes[slot] = (unsigned int)bloke;
+                score->field_14++;
+            } else {
+                bloke = (struct Bloke *)score->blokes[slot];
+                if (score->blokes[slot - 1] != 0) {
+                    break;
                 }
-                break;
-            case 1:
-                if (bloke == (int)score->blokes[0] && score->start.pos.x != 0 &&
-                    (int)FUN_004192d0((struct BoatRide *)score) * 6 <= (int)score->blokes[3] &&
-                    FUN_00418e60(*(TileId *)&id, bloke) != 0) {
-                    BlokeSitAnim(bloke);
-                    BlokeSetFrame(bloke, 0);
-                    score->blokes[0] = 0;
-                    score->field_14 = score->field_14 - 1;
-                    *(unsigned char *)(bloke + 0x62) |= 0x80;
-                    *(char *)(bloke + 0x60) += 1;
-                    params.field_0 = 1;
-                    params.field_8 = bloke;
-                    sample = PlayInstanceOfSample(*(void **)(PTR_s_Boat_Noise_wav + 8), 1, 1, &params);
-                    AdjustPSampleFreq(sample, 10);
+                score->blokes[slot - 1] = (unsigned int)bloke;
+                score->blokes[slot] = 0;
+                if (--slot == 0) {
+                    bloke->param_action++;
                 }
-                break;
-            case 3:
-                BlokeWalkAnim(bloke);
+            }
+            bloke->flags |= 8;
+            bloke->dest.x = ((DAT_0082c658->x + tile.pos.x) << 8) + DAT_004b5290[(4 - slot) * 2];
+            bloke->dest.y = ((DAT_0082c658->y + tile.pos.y) << 8) + DAT_004b5290[(4 - slot) * 2 + 1];
+            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+            bloke->field_73 = dir + 0x10;
+            bloke->field_e = 7;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            break;
+        case 1:
+            if (bloke == (struct Bloke *)score->blokes[0] && score->field_8 != 0 && (int)score->value >= (int)FUN_004192d0((struct BoatRide *)score) * 6 && FUN_00418e60(tile, (unsigned int)bloke) != 0) {
+                BlokeSitAnim(bloke);
                 BlokeSetFrame(bloke, 0);
-                *(unsigned short *)(bloke + 0x62) &= 0xff7f;
-                *(unsigned int *)(bloke + 0x68) = (DAT_0082c658->field_24 - 4 + (id & 0xff)) * 0x100;
-                *(unsigned char *)(bloke + 0x72) = 10;
-                *(unsigned int *)(bloke + 0x6c) = (DAT_0082c658->field_25 + 2 + (idhi & 0xff)) * 0x100;
-                *(unsigned int *)(bloke + 0x24) = ((int)DAT_0082c658->field_24 + (id & 0xff)) * 0x100 - 0xc0;
-                frame = ((int)DAT_0082c658->field_25 + (idhi & 0xff)) * 0x100 + 0x240;
-                *(int *)(bloke + 0x28) = frame;
-                {
-                    char dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                    *(short *)(bloke + 0xe) = 7;
-                    *(unsigned char *)(bloke + 0x73) = dir + 0x10;
-                    NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
-                }
-                *(char *)(bloke + 0x60) += 1;
-                break;
-            case 4:
-                *(unsigned int *)(bloke + 0x24) = ((int)DAT_0082c658->field_24 + (id & 0xff)) * 0x100 - 0xc0;
-                frame = ((int)DAT_0082c658->field_25 + (idhi & 0xff)) * 0x100 + 0x80;
-                *(int *)(bloke + 0x28) = frame;
-                {
-                    char dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                    *(short *)(bloke + 0xe) = 7;
-                    *(unsigned char *)(bloke + 0x73) = dir + 0x10;
-                    NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
-                }
-                *(char *)(bloke + 0x60) += 1;
-                break;
-            case 5:
-                *(unsigned int *)(bloke + 0x24) = ((int)DAT_0082c658->field_24 + (id & 0xff)) * 0x100 + 0x80;
-                frame = ((int)DAT_0082c658->field_25 + (idhi & 0xff)) * 0x100 + 0x80;
-                *(int *)(bloke + 0x28) = frame;
-                {
-                    char dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
-                    *(short *)(bloke + 0xe) = 7;
-                    *(unsigned char *)(bloke + 0x73) = dir + 0x10;
-                    NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
-                }
-                params.field_0 = 1;
-                *(char *)(bloke + 0x60) += 1;
-                params.field_8 = bloke;
-                UnSourceAndFadeAllSamplesFromSource(&params, 0xffffffa6);
-                break;
-            case 6:
-                *(unsigned short *)(bloke + 0x62) &= 0xfff7;
-            remove:
-                RemoveBlokeFromRide(DAT_0082c658, bloke_list);
+                score->blokes[0] = 0;
+                score->field_14--;
+                bloke->param_action++;
+                bloke->flags |= 0x80;
+                source.type = 1;
+                source.field_4 = bloke;
+                sample = PlayInstanceOfSample(*(void **)(PTR_s_Boat_Noise_wav + 8), 1, 1, &source);
+                AdjustPSampleFreq(sample, 10);
+            }
+            break;
+        case 3:
+            BlokeWalkAnim(bloke);
+            BlokeSetFrame(bloke, 0);
+            bloke->flags &= 0xff7f;
+            bloke->pos.x = (DAT_0082c658->field_24 + tile.pos.x - 4) << 8;
+            bloke->pos.y = (DAT_0082c658->field_25 + tile.pos.y + 2) << 8;
+            bloke->field_72 = 10;
+            bloke->dest.x = ((DAT_0082c658->field_24 + tile.pos.x) << 8) - 0xc0;
+            bloke->dest.y = ((DAT_0082c658->field_25 + tile.pos.y) << 8) + 0x240;
+            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+            bloke->field_e = 7;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            bloke->param_action++;
+            break;
+        case 4:
+            bloke->dest.x = ((DAT_0082c658->field_24 + tile.pos.x) << 8) - 0xc0;
+            bloke->dest.y = ((DAT_0082c658->field_25 + tile.pos.y) << 8) + 0x80;
+            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+            bloke->field_e = 7;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            bloke->param_action++;
+            break;
+        case 5:
+            bloke->dest.x = ((DAT_0082c658->field_24 + tile.pos.x) << 8) + 0x80;
+            bloke->dest.y = ((DAT_0082c658->field_25 + tile.pos.y) << 8) + 0x80;
+            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+            bloke->field_e = 7;
+            bloke->field_73 = dir + 0x10;
+            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            bloke->param_action++;
+            source2.type = 1;
+            source2.field_4 = bloke;
+            UnSourceAndFadeAllSamplesFromSource(&source2, -0x5a);
+            break;
+        case 6:
+            bloke->flags &= 0xfff7;
+            RemoveBlokeFromRide(DAT_0082c658, node);
+            break;
+        }
+    }
+    for (score = DAT_004cc074; score != NULL; score = score->next) {
+        frame = ++score->field_c;
+        if (frame <= *(short *)((char *)lls + 0x10)) {
+            if (score->field_10 == 0) {
+                LLSSetFrame(lls, *(short *)((char *)lls + 0x10) - frame);
+            } else {
+                LLSSetFrame(lls, frame);
             }
         }
-        bloke_list = next_bloke;
-    }
-    if (bloke_list == NULL) {
-        for (node = DAT_004cc074; node != NULL; node = node->next) {
-            frame = node->field_c + 1;
-            node->field_c = frame;
-            if (frame <= *(short *)(lls + 0x10)) {
-                if (node->field_10 == 0) {
-                    frame = *(short *)(lls + 0x10) - frame;
-                }
-                LLSSetFrame((struct LLS *)lls, frame);
-            }
-            if (node->field_10 == 0 && node->field_c == 100) {
-                node->field_c = 0;
-                node->field_10 = 1;
-            }
+        if (score->field_10 == 0 && score->field_c == 100) {
+            score->field_c = 0;
+            score->field_10 = 1;
         }
     }
 }
