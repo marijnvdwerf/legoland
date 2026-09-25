@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "controller.h"
 #include "globals.h"
 #include "legoland.h"
 
@@ -305,12 +306,12 @@ LEGO_EXPORT void BasicObjectDCalcCursor(unsigned int param_1, struct Point *para
     } else {
         memcpy(buf, &GameMap[y][x], 20);
     }
-    memcpy(QueryCursor.field_1414, (char *)QueryClass + 0x3c, 20);
+    memcpy(QueryCursor.field_1414, &QueryClass->footprint, sizeof(QueryClass->footprint));
     QueryCursor.field_1828 = 8;
     if ((buf[3] & 0x8a0) != 0) {
         QueryCursor.field_1828 = 9;
-        QueryCursor.field_1404 = ((unsigned char *)&QueryObj)[0];
-        QueryCursor.field_1408 = ((unsigned char *)&QueryObj)[1];
+        QueryCursor.field_1404 = QueryObj.pos.x;
+        QueryCursor.field_1408 = QueryObj.pos.y;
     } else {
         QueryCursor.field_1404 = param_2->x;
         QueryCursor.field_1408 = param_2->y;

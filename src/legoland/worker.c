@@ -271,7 +271,7 @@ struct WorkOrder *FUN_00499780(struct EditObject *obj, int *coords, int mode) {
     order->var_2c = 1;
     order->var_28 = 0xffffffff;
 
-    memcpy(order->var_10, &cls->field_3c, 20);
+    memcpy(order->var_10, &cls->footprint.v[0], 20);
 
     FUN_00499720(order);
 
@@ -315,7 +315,7 @@ struct WorkOrder *FUN_00499830(struct EditObject *obj, int *coords, int mode) {
     if (mode == 2) {
         order->var_10 = malloc(0x14);
         order->var_14 = 1;
-        src = &cls->field_3c;
+        src = &cls->footprint.v[0];
         dst = order->var_10;
         for (i = 5; i != 0; i--) {
             *dst++ = *src++;
@@ -1804,7 +1804,7 @@ LEGO_EXPORT struct WorkOrder *AddRepairOrderForObject(struct ObjClass *cls, int 
     if ((cls->field_1c & 0x400000) != 0 && lpConfig->field_34 != 0) {
         return FUN_00499830((struct EditObject *)cls->field_c4, &x, 2);
     }
-    FUN_0049b690((struct Footprint *)&cls->field_3c, &x,
+    FUN_0049b690((struct Footprint *)&cls->footprint.v[0], &x,
         (float)cost / (float)(int)(*((unsigned char *)cls + 0x2c) - level));
 }
 

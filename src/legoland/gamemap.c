@@ -213,7 +213,7 @@ LEGO_EXPORT void PutObjOnMap(struct ObjClass *obj, unsigned int classid, struct 
         DAT_00667ce0 = DAT_00667ce0 + 1;
         DAT_00667d0c = 1;
     } else {
-        area = GetRectArea((struct RectNode *)&obj->field_3c);
+        area = GetRectArea((struct RectNode *)&obj->footprint);
         switch (obj->type) {
         case 1:
             FUN_00489f00(pos);
@@ -244,9 +244,9 @@ LEGO_EXPORT void PutObjOnMap(struct ObjClass *obj, unsigned int classid, struct 
         } else {
             cell = (struct MapCell *)((char *)GameMap[pos->y] + pos->x * 0x14);
         }
-        DAT_004b8320 = (cell->src.b.byte_4 + entrance->field_3c) * 0x100 + -0x100;
-        DAT_004b8324 = ((unsigned int)(entrance->field_48 - entrance->field_40) >> 1) * 0x100 +
-            (cell->src.b.byte_5 + entrance->field_40) * 0x100;
+        DAT_004b8320 = (cell->src.b.byte_4 + entrance->footprint.v[0]) * 0x100 + -0x100;
+        DAT_004b8324 = ((unsigned int)(entrance->footprint.v[3] - entrance->footprint.v[1]) >> 1) * 0x100 +
+            (cell->src.b.byte_5 + entrance->footprint.v[1]) * 0x100;
     }
     DAT_00668610 = DAT_00668610 | 1;
 }
@@ -279,7 +279,7 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsig
         DAT_00667ce0 = DAT_00667ce0 + -1;
         DAT_00667d0c = 1;
     } else {
-        area = GetRectArea((struct RectNode *)&obj->field_3c);
+        area = GetRectArea((struct RectNode *)&obj->footprint);
         switch (obj->type) {
         case 1:
             FUN_00489f50((struct ObjClassKey *)&blk);

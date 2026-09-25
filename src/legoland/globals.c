@@ -2211,10 +2211,10 @@ unsigned int DAT_00667c48;
 int DAT_00667c4c;
 
 // GLOBAL: LEGOLAND 0x00667c54
-LEGO_EXPORT unsigned short QueryObj;
+LEGO_EXPORT TileId QueryObj;
 
 // GLOBAL: LEGOLAND 0x00667c58
-LEGO_EXPORT void *QueryClass;
+LEGO_EXPORT struct ObjClass *QueryClass;
 
 // GLOBAL: LEGOLAND 0x00667c60
 unsigned int DAT_00667c60;

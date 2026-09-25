@@ -130,8 +130,8 @@ void FUN_00452030(void) {
             DAT_00813a70 = 1;
         } else {
             cls = (struct ObjClass *)DAT_0080ff6c;
-            DAT_00813a6c = (cls->field_44 - cls->field_3c) + 1;
-            DAT_00813a70 = (cls->field_48 - cls->field_40) + 1;
+            DAT_00813a6c = (cls->footprint.v[2] - cls->footprint.v[0]) + 1;
+            DAT_00813a70 = (cls->footprint.v[3] - cls->footprint.v[1]) + 1;
         }
     } else {
         local_14 = v74;
@@ -151,9 +151,9 @@ void FUN_00452030(void) {
             local_8 = v80;
         }
         cls = (struct ObjClass *)EditMode.unk8;
-        local_c = cls->field_44 - cls->field_3c;
+        local_c = cls->footprint.v[2] - cls->footprint.v[0];
         DAT_00813a6c = local_c + 1;
-        DAT_00813a70 = (cls->field_48 - cls->field_40) + 1;
+        DAT_00813a70 = (cls->footprint.v[3] - cls->footprint.v[1]) + 1;
         if (v74 == v7c && v78 == v80) {
             bValidate = 1;
             local_c = ((DAT_00813a6c - local_14) + iVar5) / DAT_00813a6c * DAT_00813a6c + -1 + local_14;
@@ -177,10 +177,10 @@ void FUN_00452030(void) {
         }
         if (EditMode.unk0 == 1 && EditMode.unk8 != NULL) {
             cls = (struct ObjClass *)EditMode.unk8;
-            DAT_00813a84 = cls->field_3c + local_14;
-            DAT_00813a88 = cls->field_40 + local_10;
-            DAT_00813a8c = cls->field_3c + local_c;
-            DAT_00813a90 = cls->field_40 + iVar5;
+            DAT_00813a84 = cls->footprint.v[0] + local_14;
+            DAT_00813a88 = cls->footprint.v[1] + local_10;
+            DAT_00813a8c = cls->footprint.v[0] + local_c;
+            DAT_00813a90 = cls->footprint.v[1] + iVar5;
         }
     }
     EditCursor.field_1414[2] = DAT_00813a8c - local_14;
@@ -203,16 +203,16 @@ void FUN_00452390(void) {
     struct ObjClass *cls;
 
     if (EditMode.unk0 == 2 && QueryClass != NULL) {
-        cls = (struct ObjClass *)QueryClass;
-        DAT_00813a34 = QueryObj;
-        DAT_00813af0 = cls->field_3c;
-        DAT_00813af8 = cls->field_44;
-        DAT_00813af4 = cls->field_40;
-        DAT_00813afc = cls->field_48;
+        cls = QueryClass;
+        DAT_00813a34 = QueryObj.id;
+        DAT_00813af0 = cls->footprint.v[0];
+        DAT_00813af8 = cls->footprint.v[2];
+        DAT_00813af4 = cls->footprint.v[1];
+        DAT_00813afc = cls->footprint.v[3];
         DAT_00813a38 = (DAT_00813af8 - DAT_00813af0) + 1;
         DAT_00813a3c = (DAT_00813afc - DAT_00813af4) + 1;
-        DAT_00813a74 = (unsigned char)QueryObj + DAT_00813af0;
-        DAT_00813a78 = (unsigned char)(QueryObj >> 8) + DAT_00813af4;
+        DAT_00813a74 = QueryObj.pos.x + DAT_00813af0;
+        DAT_00813a78 = QueryObj.pos.y + DAT_00813af4;
         DAT_00813a7c = DAT_00813a64;
         DAT_00813a80 = DAT_00813a68;
     } else {

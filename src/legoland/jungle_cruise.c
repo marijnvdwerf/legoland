@@ -1,5 +1,6 @@
 #include <math.h>
 #include <stdlib.h>
+#include "controller.h"
 #include "globals.h"
 #include "legoland.h"
 
@@ -1299,7 +1300,7 @@ void FUN_00435230(unsigned int param_1, struct Point *param_2) {
     DefaultCursor(&DAT_0082ae20);
     memcpy(DAT_0082ae20.field_1414, &DAT_004b7478, sizeof(DAT_004b7478));
     for (; p1 != NULL; p1 = p1->next) {
-        if (p1->owner == QueryObj) {
+        if (p1->owner == QueryObj.id) {
             DAT_0082ae20.field_1404 = p1->tile.pos.x;
             DAT_0082ae20.field_1408 = p1->tile.pos.y;
             FUN_0045f460(&DAT_0082ae20);
@@ -1309,7 +1310,7 @@ void FUN_00435230(unsigned int param_1, struct Point *param_2) {
         }
     }
     for (; p2 != NULL; p2 = p2->next) {
-        if (p2->owner == QueryObj) {
+        if (p2->owner == QueryObj.id) {
             DAT_0082ae20.field_1404 = p2->tile.pos.x;
             DAT_0082ae20.field_1408 = p2->tile.pos.y;
             FUN_0045f460(&DAT_0082ae20);
@@ -1320,7 +1321,7 @@ void FUN_00435230(unsigned int param_1, struct Point *param_2) {
     }
     DAT_0082ae20.field_1414[1] -= 5;
     for (; p3 != NULL; p3 = p3->next) {
-        if (p3->owner == QueryObj) {
+        if (p3->owner == QueryObj.id) {
             DAT_0082ae20.field_1404 = p3->tile.pos.x;
             DAT_0082ae20.field_1408 = p3->tile.pos.y;
             FUN_0045f460(&DAT_0082ae20);
@@ -1330,7 +1331,7 @@ void FUN_00435230(unsigned int param_1, struct Point *param_2) {
         }
     }
     for (; p4 != NULL; p4 = p4->next) {
-        if (p4->owner == QueryObj) {
+        if (p4->owner == QueryObj.id) {
             DAT_0082ae20.field_1414[1] = -1;
             DAT_0082ae20.field_1414[3] = 1;
             DAT_0082ae20.field_1414[0] = 0;
@@ -1953,10 +1954,10 @@ void FUN_00436470(unsigned int param_1, unsigned int *param_2) {
         do {
             if ((short)((bx) | (by << 8)) == score->start.id || (short)((bx) | (by << 8)) == score->end.id) {
                 path = FUN_004371b0(param_2[0], by);
-                QueryObj = path->owner;
-                param_2[0] = (unsigned char)QueryObj;
-                param_2[1] = (unsigned char)(QueryObj >> 8);
-                *(struct Footprint *)((char *)QueryClass + 0x3c) = DAT_004b7478;
+                QueryObj.id = path->owner;
+                param_2[0] = QueryObj.pos.x;
+                param_2[1] = QueryObj.pos.y;
+                QueryClass->footprint = DAT_004b7478;
                 local_8 = DAT_0081cb60;
                 FUN_00435230(local_14, param_2);
                 return;
@@ -1964,7 +1965,7 @@ void FUN_00436470(unsigned int param_1, unsigned int *param_2) {
             score = score->next;
         } while (score != NULL);
     }
-    *(struct Footprint *)((char *)QueryClass + 0x3c) = DAT_004b7478;
+    QueryClass->footprint = DAT_004b7478;
     BasicObjectDCalcCursor(param_1, (unsigned int)param_2);
     if (ride != NULL) {
         x = (unsigned char)((bx) | (by << 8)) & 0xff;

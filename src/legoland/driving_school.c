@@ -391,7 +391,7 @@ void FUN_004058a0(unsigned int param_1, unsigned int param_2) {
     memcpy(DAT_0082f760.field_1414, DAT_004b4bf0, 20);
 
     while (node != NULL) {
-        if (node->field_8 == QueryObj) {
+        if (node->field_8 == QueryObj.id) {
             DAT_0082f760.field_1404 = node->x;
             DAT_0082f760.field_1408 = node->y;
             FUN_0045f460(&DAT_0082f760);
@@ -429,11 +429,11 @@ void FUN_00405940(struct RideObject *obj, TileId tile, unsigned int param_3) {
         }
     }
 
-    FUN_00411ba0(QueryObj);
+    FUN_00411ba0(QueryObj.id);
 
     while (queue != NULL) {
         next = queue->next;
-        if (queue->field_8 == QueryObj) {
+        if (queue->field_8 == QueryObj.id) {
             if (queue->field_14 & 0x10) {
                 queue->field_14 &= 0xef;
                 FUN_00413650(queue->field_8, queue->x, queue->y);
@@ -451,7 +451,7 @@ void FUN_00405940(struct RideObject *obj, TileId tile, unsigned int param_3) {
 
     while (blokes != NULL) {
         nextBloke = blokes->next;
-        if (blokes->field_4 == (short)QueryObj) {
+        if (blokes->field_4 == (short)QueryObj.id) {
             FUN_00401c60(blokes);
         }
         blokes = nextBloke;

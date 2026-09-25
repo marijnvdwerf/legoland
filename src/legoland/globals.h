@@ -55,6 +55,7 @@ struct PathNode;
 struct BoatRideNode;
 struct MermaidNode;
 struct Ride;
+struct ObjClass;
 struct RideLayer;
 struct CatapultNode;
 struct Position;
@@ -1699,9 +1700,9 @@ extern struct Sprite *DAT_00667c34;
 // 0x00667c3c
 extern int DAT_00667c3c;
 // 0x00667c54
-extern LEGO_EXPORT unsigned short QueryObj;
+extern LEGO_EXPORT TileId QueryObj;
 // 0x00667c58
-extern LEGO_EXPORT void *QueryClass;
+extern LEGO_EXPORT struct ObjClass *QueryClass;
 // 0x00667c60
 extern unsigned int DAT_00667c60;
 // 0x00667c68

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "gamemap.h"
 #include "legoland.h"
 
 struct Point;
@@ -9,11 +10,8 @@ struct ObjClass {
     /* 0x1c */ unsigned int field_1c;
     /* 0x20 */ short type;
     /* 0x22 */ unsigned char pad_22[0x3c - 0x22];
-    /* 0x3c */ int field_3c;
-    /* 0x40 */ int field_40;
-    /* 0x44 */ int field_44;
-    /* 0x48 */ int field_48;
-    /* 0x4c */ unsigned char pad_4c[0x58 - 0x4c];
+    /* 0x3c */ struct Footprint footprint;
+    /* 0x50 */ unsigned char pad_50[0x58 - 0x50];
     /* 0x58 */ unsigned char *field_58;
     /* 0x5c */ unsigned char pad_5c[0x78 - 0x5c];
     /* 0x78 */ char *name;

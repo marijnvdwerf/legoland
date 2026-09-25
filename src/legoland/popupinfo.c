@@ -968,16 +968,16 @@ unsigned char FUN_004731e0(void *param_1, unsigned char flags) {
         local_8[1] = v >> 8;
         cls = *(struct ObjClass **)((char *)DAT_007fdec4 + 0xc);
         QueryCursor.field_1408 = v >> 8;
-        *((unsigned char *)&QueryObj + 1) = (unsigned char)(v >> 8);
+        QueryObj.pos.y = (unsigned char)(v >> 8);
         QueryClass = cls;
         QueryCursor.field_1404 = v & 0xff;
-        *(unsigned char *)&QueryObj = (unsigned char)(v & 0xff);
+        QueryObj.pos.x = (unsigned char)(v & 0xff);
         cls->method_94(cls->field_c4, local_8);
         BuildCursorPtr(&QueryCursor, 0, 0);
         if ((int)FUN_0045f4b0(&QueryCursor) != 0) {
             FUN_0045d3d0(QueryClass, local_8);
-            cls = (struct ObjClass *)QueryClass;
-            RemObjFromMap(cls, *cls->field_c4, QueryObj, &QueryCursor);
+            cls = QueryClass;
+            RemObjFromMap(cls, *cls->field_c4, QueryObj.id, &QueryCursor);
         }
         memcpy(&QueryCursor, &local_cursor, sizeof(struct Cursor));
         QueryClass = saved_class;

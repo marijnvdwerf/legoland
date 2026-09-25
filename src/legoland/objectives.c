@@ -1166,13 +1166,13 @@ int FUN_00469c80(struct MapRectArg *arg) {
                 cls = current->object->cls;
                 tile_y = current->tile_y;
                 tile_x = current->tile_x;
-                rect.top = cls->field_40;
-                rect.bottom = cls->field_48;
+                rect.top = cls->footprint.v[1];
+                rect.bottom = cls->footprint.v[3];
                 rect.top += tile_y;
-                rect.right = cls->field_44;
+                rect.right = cls->footprint.v[2];
                 rect.right += tile_x;
                 rect.bottom += tile_y;
-                rect.left = cls->field_3c + tile_x;
+                rect.left = cls->footprint.v[0] + tile_x;
                 if (rect.left <= arg->x1 && rect.right >= arg->x0 && rect.top <= arg->y1 && rect.bottom >= arg->y0) {
                     point.y = tile_y;
                     saved_class = QueryClass;
@@ -1180,14 +1180,14 @@ int FUN_00469c80(struct MapRectArg *arg) {
                     QueryCursor.field_1408 = tile_y;
                     point.x = tile_x;
                     QueryCursor.field_1404 = point.x;
-                    *(unsigned char *)&QueryObj = (unsigned char)point.x;
+                    QueryObj.pos.x = (unsigned char)point.x;
                     QueryClass = cls;
-                    *((unsigned char *)&QueryObj + 1) = (unsigned char)point.y;
+                    QueryObj.pos.y = (unsigned char)point.y;
                     cls->method_94(cls->field_c4, &point);
                     BuildCursorPtr(&QueryCursor, 0, 0);
                     if (FUN_0045f4b0(&QueryCursor) != 0) {
                         FUN_0045d3d0(QueryClass, &point.x);
-                        RemObjFromMap((struct ObjClass *)QueryClass, (unsigned int)((struct ObjClass *)QueryClass)->field_c4, QueryObj,
+                        RemObjFromMap(QueryClass, (unsigned int)(QueryClass)->field_c4, QueryObj.id,
                             &QueryCursor);
                     }
                     memcpy(&QueryCursor, &saved, sizeof(struct Cursor));

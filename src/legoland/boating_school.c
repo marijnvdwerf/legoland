@@ -1,5 +1,6 @@
 #include <math.h>
 #include <stdlib.h>
+#include "controller.h"
 #include "globals.h"
 #include "legoland.h"
 
@@ -712,7 +713,7 @@ void FUN_0041a3d0(void *param_1, unsigned int param_2) {
     DefaultCursor(&DAT_0082ae20);
     *(struct Footprint *)DAT_0082ae20.field_1414 = DAT_004b53c0;
     for (; path != NULL; path = path->next) {
-        if (path->owner.id == QueryObj) {
+        if (path->owner.id == QueryObj.id) {
             DAT_0082ae20.field_1404 = path->tile.pos.x;
             DAT_0082ae20.field_1408 = path->tile.pos.y;
             FUN_0045f460(&DAT_0082ae20);
@@ -722,7 +723,7 @@ void FUN_0041a3d0(void *param_1, unsigned int param_2) {
         }
     }
     for (; node != NULL; node = node->next) {
-        if (node->field_2 == QueryObj) {
+        if (node->field_2 == QueryObj.id) {
             DAT_0082ae20.field_1404 = node->tile.pos.x;
             DAT_0082ae20.field_1408 = node->tile.pos.y;
             FUN_0045f460(&DAT_0082ae20);
@@ -1607,18 +1608,18 @@ void FUN_0041bfb0(unsigned int param_1, int *coords) {
     for (; score != NULL; score = score->next) {
         if (tile.id == score->start.id || tile.id == score->end.id) {
             path = FUN_0041c890(coords[0], coords[1]);
-            ((TileId *)&QueryObj)->pos.x = path->owner.pos.x;
-            coords[0] = ((TileId *)&QueryObj)->pos.x;
-            ((TileId *)&QueryObj)->pos.y = path->owner.pos.y;
-            coords[1] = ((TileId *)&QueryObj)->pos.y;
-            memcpy((char *)QueryClass + 0x3c, DAT_004cc078.v, 20);
+            QueryObj.pos.x = path->owner.pos.x;
+            coords[0] = QueryObj.pos.x;
+            QueryObj.pos.y = path->owner.pos.y;
+            coords[1] = QueryObj.pos.y;
+            memcpy(&QueryClass->footprint, &DAT_004cc078, sizeof(DAT_004cc078));
             fake.ride = DAT_0082c658;
             FUN_0041a3d0(&fake, (unsigned int)coords);
             return;
         }
     }
     ride = DAT_004cc03c;
-    memcpy((char *)QueryClass + 0x3c, &DAT_004b53c0, sizeof(DAT_004b53c0));
+    memcpy(&QueryClass->footprint, &DAT_004b53c0, sizeof(DAT_004b53c0));
     BasicObjectDCalcCursor(param_1, (unsigned int)coords);
     for (; ride != NULL; ride = ride->next) {
         if ((tile.pos.x == ride->field_4 && tile.pos.y == ride->field_8) || (tile.pos.x == ride->field_c && tile.pos.y == ride->field_10)) {
