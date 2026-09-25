@@ -4,21 +4,16 @@
 
 #include "clipping.h"
 #include "globals.h"
+#include "profile_io.h"
 
 struct ClippedObject {
-    unsigned char pad_0[8];
+    char *name;
+    unsigned char pad_4[4];
     unsigned char flags;
 };
 
-struct ClipEntry {
-    char *name;
-    unsigned char pad_4[4];
-    unsigned int value;
-    unsigned char pad_c[4];
-};
-
-// GLOBAL: LEGOLAND 0x004bdebc
-struct ClipEntry DAT_004BDEBC[16];
+// GLOBAL: LEGOLAND 0x004bdeb8
+struct ClipQueryResult DAT_004bdeb8[16];
 
 struct ObjectClassNode {
     struct ObjectClassNode *next;
@@ -39,7 +34,12 @@ struct ClipNode {
 };
 
 // FUNCTION: LEGOLAND 0x0048a5c0
-LEGO_EXPORT void SetClipping(RECT *rect) { STUB(); }
+LEGO_EXPORT void SetClipping(RECT *rect) {
+    SPRITE_ClipRect.top = rect->top < 0 ? 0 : rect->top;
+    SPRITE_ClipRect.bottom = rect->bottom > (int)lpConfig->field_2 ? lpConfig->field_2 : rect->bottom;
+    SPRITE_ClipRect.left = rect->left < 0 ? 0 : rect->left;
+    SPRITE_ClipRect.right = rect->right > (int)lpConfig->field_0 ? lpConfig->field_0 : rect->right;
+}
 
 // FUNCTION: LEGOLAND 0x0048a630
 LEGO_EXPORT void GetClipping(RECT *dest) {
@@ -71,7 +71,19 @@ LEGO_EXPORT int ClipThisRect(RECT *lpRect) {
 }
 
 // FUNCTION: LEGOLAND 0x0048a6e0
-void FUN_0048a6e0(struct ClippedObject *object) { STUB(); }
+void FUN_0048a6e0(struct ClippedObject *object) {
+    struct ClipQueryResult *entry;
+
+    for (entry = DAT_004bdeb8; strlen(entry->name) != 0; entry++) {
+        if (_stricmp(object->name, entry->name) == 0) {
+            if (DAT_0080ffe6[entry->id] == 0) {
+                DAT_0080ffe6[entry->id] = 1;
+                UpDateCurrentProfile();
+            }
+            return;
+        }
+    }
+}
 
 // FUNCTION: LEGOLAND 0x0048a750
 void FUN_0048a750(void) {
@@ -111,17 +123,29 @@ void FUN_0048a790(void) {
 
 // FUNCTION: LEGOLAND 0x0048a800
 void FUN_0048a800(void) {
-    struct ClipEntry *entry;
+    struct ClipQueryResult *entry;
 
-    if (strlen(DAT_004BDEBC->name) == 0)
+    if (strlen(DAT_004bdeb8[0].name) == 0)
         return;
 
-    entry = DAT_004BDEBC;
+    entry = DAT_004bdeb8;
     do {
-        entry->value = 0;
+        entry->field_c = 0;
         entry++;
     } while (strlen(entry->name) != 0);
 }
 
 // FUNCTION: LEGOLAND 0x0048a840
-unsigned int FUN_0048a840(unsigned int arg, struct ClipQueryResult **out) { STUB(); }
+unsigned int FUN_0048a840(unsigned int arg, struct ClipQueryResult **out) {
+    struct ClipQueryResult *entry;
+
+    for (entry = DAT_004bdeb8; strlen(entry->name) != 0; entry++) {
+        if (_stricmp((char *)arg, entry->name) == 0) {
+            if (out != NULL) {
+                *out = entry;
+            }
+            return entry->field_8;
+        }
+    }
+    return 0;
+}
