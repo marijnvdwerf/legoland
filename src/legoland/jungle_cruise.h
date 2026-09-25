@@ -3,8 +3,10 @@
 struct Cursor;
 struct RideObject;
 
+struct Bloke;
+
 struct JungleRide {
-    /* 0x000 */ unsigned short field_0;
+    /* 0x000 */ TileId tile;
     /* 0x002 */ unsigned char field_2;
     /* 0x003 */ unsigned char field_3;
     /* 0x004 */ unsigned int field_4;
@@ -18,11 +20,9 @@ struct JungleRide {
     /* 0x3dc */ unsigned int field_3dc;
     /* 0x3e0 */ unsigned int field_3e0;
     /* 0x3e4 */ unsigned int field_3e4;
-    /* 0x3e8 */ unsigned int blokes[3];
+    /* 0x3e8 */ struct Bloke *blokes[3];
     /* 0x3f4 */ struct JungleRide *next;
 };
-
-struct Bloke;
 
 struct JungleScore {
     /* 0x00 */ unsigned short field_0;

@@ -3,11 +3,12 @@
 #include "legoland.h"
 
 struct Position;
+struct Bloke;
 struct Person {
     struct Person *prev;
     struct Person *next;
     unsigned int field_8;
-    unsigned int field_c;
+    struct Bloke *bloke;
     unsigned int field_10;
     unsigned int field_14;
     unsigned int field_18;
@@ -53,7 +54,7 @@ struct PosHeader;
 void FUN_0043f840(struct Person *person);
 void FUN_0043f870(struct PosHeader *param_1);
 
-LEGO_EXPORT struct Person *Find3DPersonFromBloke(unsigned int id);
+LEGO_EXPORT struct Person *Find3DPersonFromBloke(struct Bloke *bloke);
 LEGO_EXPORT void SetPersonRotation(struct Person *person, float *src);
 LEGO_EXPORT void SetPersonDirection(struct Person *person, unsigned int direction);
 LEGO_EXPORT void BlokeSetAnim(struct Bloke *bloke, int anim);

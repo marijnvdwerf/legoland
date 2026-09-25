@@ -174,14 +174,14 @@ void FUN_0043f870(struct PosHeader *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0043f890
-LEGO_EXPORT struct Person *Find3DPersonFromBloke(unsigned int id) {
+LEGO_EXPORT struct Person *Find3DPersonFromBloke(struct Bloke *bloke) {
     struct Person *person;
 
     person = DAT_00655a3c;
     if (person == 0) {
         return 0;
     }
-    while (person->field_c != id) {
+    while (person->bloke != bloke) {
         person = person->next;
         if (person == 0) {
             return 0;
@@ -191,7 +191,7 @@ LEGO_EXPORT struct Person *Find3DPersonFromBloke(unsigned int id) {
 }
 
 // FUNCTION: LEGOLAND 0x0043f8c0
-struct Person *FUN_0043f8c0(unsigned int param_1, unsigned int param_2) {
+struct Person *FUN_0043f8c0(struct Bloke *param_1, unsigned int param_2) {
     struct Person *person;
 
     person = malloc(0x94);
@@ -203,7 +203,7 @@ struct Person *FUN_0043f8c0(unsigned int param_1, unsigned int param_2) {
             person->random = 0;
         }
         person->field_8 = param_2;
-        person->field_c = param_1;
+        person->bloke = param_1;
         person->field_7c = 0xffffffff;
         person->field_80 = 0xffffffff;
         person->field_88 = 0xffffffff;
@@ -336,21 +336,21 @@ LEGO_EXPORT void Render3DPerson(struct Person *person) {
             __asm {fldcw word ptr[DAT_004b7abc]} FUN_00440a30(person);
             __asm { fldcw word ptr [DAT_00638358] }
             if (DAT_007feb14 != 0) {
-                if (DAT_00668954 != 0 && person->field_c == (unsigned int)FUN_004700f0()) {
+                if (DAT_00668954 != 0 && person->bloke == FUN_004700f0()) {
                     return;
                 }
                 switch (person->field_8) {
                 case 2:
                     DAT_004bdd00 = 0x307;
-                    DAT_004bdd04 = person->field_c;
+                    DAT_004bdd04 = person->bloke;
                     return;
                 case 3:
                     DAT_004bdd00 = 0x308;
-                    DAT_004bdd04 = person->field_c;
+                    DAT_004bdd04 = person->bloke;
                     return;
                 default:
                     DAT_004bdd00 = 0x306;
-                    DAT_004bdd04 = person->field_c;
+                    DAT_004bdd04 = person->bloke;
                 }
             }
         }
@@ -628,7 +628,7 @@ LEGO_EXPORT void UnInitMan(void) {
 LEGO_EXPORT void Add3DBlokeToList(struct Bloke *bloke, unsigned int param_2) {
     struct Person *person;
 
-    person = FUN_0043f8c0((unsigned int)bloke, param_2);
+    person = FUN_0043f8c0(bloke, param_2);
     bloke->person = person;
     if (person != 0) {
         FUN_0043f810(person);
