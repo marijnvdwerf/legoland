@@ -846,10 +846,13 @@ const int DAT_004bff28[24] = {0, 1, 0, -1, 1, 0, -1, 0, 0, 2, 0, -2,
 void *DAT_004c10d4;
 
 // GLOBAL: LEGOLAND 0x004c10dc
-void *DAT_004c10dc;
+struct Ride *DAT_004c10dc;
 
 // GLOBAL: LEGOLAND 0x004c10e4
 struct Sprite *DAT_004c10e4;
+
+// GLOBAL: LEGOLAND 0x004c10e8
+struct RenderItemNode *DAT_004c10e8;
 
 // GLOBAL: LEGOLAND 0x004c10f0
 void *DAT_004c10f0;
@@ -1272,7 +1275,7 @@ unsigned short DAT_004cbf4c;
 void *DAT_004cbf58;
 
 // GLOBAL: LEGOLAND 0x004cbf5c
-struct TempleRide *DAT_004cbf5c;
+struct Ride *DAT_004cbf5c;
 
 // GLOBAL: LEGOLAND 0x004cbf64
 void *DAT_004cbf64;
@@ -1824,7 +1827,7 @@ struct Sprite *DAT_0062fd80;
 struct Point DAT_0062fd88[4];
 
 // GLOBAL: LEGOLAND 0x0062fda8
-struct RideObject *DAT_0062fda8;
+struct SpaceTowerCar *DAT_0062fda8;
 
 // GLOBAL: LEGOLAND 0x0062fdb0
 unsigned int DAT_0062fdb0;
@@ -1893,13 +1896,13 @@ unsigned int DAT_0062fe38;
 unsigned short DAT_0062fe3c;
 
 // GLOBAL: LEGOLAND 0x0062fe48
-unsigned int DAT_0062fe48;
+struct RideLayer *DAT_0062fe48;
 
 // GLOBAL: LEGOLAND 0x0062fe4c
 struct Sprite *DAT_0062fe4c;
 
 // GLOBAL: LEGOLAND 0x0062fe50
-unsigned int DAT_0062fe50;
+struct RideLayer *DAT_0062fe50;
 
 // GLOBAL: LEGOLAND 0x0062fe54
 struct Sprite *DAT_0062fe54;
@@ -4455,10 +4458,10 @@ unsigned int DAT_0081c8dc;
 struct Sprite *DAT_0081cae0;
 
 // GLOBAL: LEGOLAND 0x0081caf0
-void *DAT_0081caf0;
+struct Ride *DAT_0081caf0;
 
 // GLOBAL: LEGOLAND 0x0081caf4
-void *DAT_0081caf4;
+struct Ride *DAT_0081caf4;
 
 // GLOBAL: LEGOLAND 0x0081cb00
 struct Sprite *DAT_0081cb00;
@@ -4812,13 +4815,13 @@ unsigned int DAT_0082ade8;
 unsigned int DAT_0082adec;
 
 // GLOBAL: LEGOLAND 0x0082adf0
-struct RideBuilding *DAT_0082adf0;
+struct Ride *DAT_0082adf0;
 
 // GLOBAL: LEGOLAND 0x0082adf4
 struct BoatTileMap *DAT_0082adf4;
 
 // GLOBAL: LEGOLAND 0x0082adf8
-struct RideBuilding *DAT_0082adf8;
+struct Ride *DAT_0082adf8;
 
 // GLOBAL: LEGOLAND 0x0082adfc
 struct Sprite *DAT_0082adfc;

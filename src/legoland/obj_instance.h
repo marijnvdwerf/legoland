@@ -2,8 +2,59 @@
 
 #include "legoland.h"
 
-struct Ride;
-struct RideNode;
+struct Bloke;
+
+/* Map tile id as stored per bloke on a ride: x/y bytes, compared as one 16-bit value. */
+union TileId {
+    unsigned short id;
+    struct {
+        unsigned char x;
+        unsigned char y;
+    } pos;
+};
+
+struct RideLayer {
+    /* 0x00 */ unsigned char pad_0[0x10];
+    /* 0x10 */ unsigned int flags;
+};
+
+struct RideSeat {
+    /* 0x00 */ unsigned char pad_0[0x20];
+    /* 0x20 */ int depth;
+};
+
+/* One bloke on a ride; linked from Ride.riders. */
+struct RideNode {
+    /* 0x00 */ struct RideNode *next;
+    /* 0x04 */ struct RideNode *prev;
+    /* 0x08 */ struct Bloke *rider;
+    /* 0x0c */ union TileId tile;
+    /* 0x10 */ struct RideSeat *seat;
+};
+
+/* A placed ride/attraction (the object behind RideObject.ride). */
+struct Ride {
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ unsigned int x;
+    /* 0x10 */ unsigned int y;
+    /* 0x14 */ unsigned char pad_14[0x1c - 0x14];
+    /* 0x1c */ unsigned int flags;
+    /* 0x20 */ short type;
+    /* 0x22 */ unsigned char pad_22[0x3c - 0x22];
+    /* 0x3c */ unsigned int footprint[5];
+    /* 0x50 */ unsigned char pad_50[0x64 - 0x50];
+    /* 0x64 */ struct RideLayer *layer;
+    /* 0x68 */ unsigned char pad_68[0xc4 - 0x68];
+    /* 0xc4 */ unsigned int field_c4;
+    /* 0xc8 */ unsigned char pad_c8[0xcc - 0xc8];
+    /* 0xcc */ struct RideNode *riders;
+};
+
+/* Map object of a placed ride; the parameter of the per-class ride callbacks. */
+struct RideObject {
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ struct Ride *ride;
+};
 struct ObjClassNode;
 struct ObjInstance;
 struct ObjClassKey;

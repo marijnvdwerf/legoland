@@ -4,6 +4,7 @@
 #include "legoland.h"
 
 #include <math.h>
+#include "bloke.h"
 #include "castle.h"
 #include "debug_alloc.h"
 #include "draw.h"
@@ -2247,30 +2248,14 @@ void FUN_00424df0(struct ListHost *esi) {
     }
 }
 
-struct RideNode {
-    struct RideNode *next;
-    unsigned char pad_4[4];
-    void *info;
-};
-
-struct RideStruct {
-    unsigned char pad_0[0xcc];
-    struct RideNode *first_node;
-};
-
-struct RideNodeInfo {
-    unsigned char pad_0[0x62];
-    unsigned short flags;
-};
-
 // FUNCTION: LEGOLAND 0x00424e20
 void FUN_00424e20(void) {
-    struct RideStruct *ride = (struct RideStruct *)FUN_0041ec00(0);
-    struct RideNode *node = ride->first_node;
+    struct Ride *ride = (struct Ride *)FUN_0041ec00(0);
+    struct RideNode *node = ride->riders;
     if (node != 0) {
         do {
             struct RideNode *next_node = node->next;
-            ((struct RideNodeInfo *)node->info)->flags &= 0xfff7;
+            node->rider->flags &= 0xfff7;
             RemoveBlokeFromRide(ride, node);
             node = next_node;
         } while (node != 0);

@@ -23,7 +23,7 @@ struct BoatRide {
     /* 0x3f0 */ struct BoatRide *next;
 };
 
-struct RideNode {
+struct BoatRideNode {
     /* 0x00 */ unsigned short id;
     /* 0x02 */ unsigned char field_2;
     /* 0x03 */ unsigned char field_3;
@@ -35,7 +35,7 @@ struct RideNode {
     /* 0x10 */ unsigned int field_10;
     /* 0x14 */ unsigned int field_14;
     /* 0x18 */ unsigned int blokes[5];
-    /* 0x2c */ struct RideNode *next;
+    /* 0x2c */ struct BoatRideNode *next;
     /* 0x30 */ unsigned int value;
 };
 
@@ -65,16 +65,6 @@ struct BoatHolder {
 struct BoatTileMap {
     /* 0x00 */ unsigned char pad_0[4];
     /* 0x04 */ short *tiles;
-};
-
-struct RideBuilding {
-    /* 0x00 */ unsigned char pad_0[0x3c];
-    /* 0x3c */ unsigned int footprint[5];
-};
-
-struct RideObject {
-    /* 0x00 */ unsigned char pad_0[0xc];
-    /* 0x0c */ struct RideBuilding *building;
 };
 
 int FUN_00418e60(unsigned int param_1, unsigned int param_2);

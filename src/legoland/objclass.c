@@ -74,8 +74,8 @@ struct EditObject {
     unsigned int flags;
 };
 
-struct RideNode {
-    struct RideNode *next;
+struct ClassRideNode {
+    struct ClassRideNode *next;
     unsigned int field_4;
     unsigned int field_8;
     unsigned char pad_c[0x14 - 0xc];
@@ -829,7 +829,7 @@ LEGO_EXPORT unsigned int Calc_Item_Attractiveness(unsigned int param_1, unsigned
 
 // FUNCTION: LEGOLAND 0x004815e0
 LEGO_EXPORT void CalculateRideCodes(unsigned int param_1) {
-    struct RideNode *node;
+    struct ClassRideNode *node;
 
     for (node = DAT_00669248; node != 0; node = node->next) {
         node->field_14 = Calc_Item_Attractiveness(node->field_4, param_1, 0);

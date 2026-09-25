@@ -37,31 +37,6 @@ struct ObjInstance {
     unsigned short uid;
 };
 
-struct RideRider {
-    unsigned char pad_0[0x60];
-    unsigned char count;
-    unsigned short flags;
-};
-
-struct RideNode {
-    struct RideNode *next;
-    unsigned int pad_4;
-    struct RideRider *rider;
-    unsigned short uid;
-};
-
-struct Ride {
-    /* 0x00 */ unsigned char pad_0[0xc];
-    /* 0x0c */ int field_c;
-    /* 0x10 */ int field_10;
-    /* 0x14 */ unsigned char pad_14[0x20 - 0x14];
-    /* 0x20 */ short type;
-    /* 0x22 */ unsigned char pad_22[0xc4 - 0x22];
-    /* 0xc4 */ unsigned int field_c4;
-    /* 0xc8 */ unsigned char pad_c8[0xcc - 0xc8];
-    /* 0xcc */ struct RideNode *riders;
-};
-
 // FUNCTION: LEGOLAND 0x00489e60
 char *FUN_00489e60(struct ResFile *file, char *dest, int maxlen) {
     int error;
@@ -252,11 +227,11 @@ LEGO_EXPORT void RemoveBlokeFromRide(struct Ride *ride, struct RideNode *node) {
     int counter;
     int code;
 
-    bloke = (struct Bloke *)node->rider;
+    bloke = node->rider;
     RemoveBlokeFromList((struct BlokeList *)ride, (struct Bloke *)node);
-    if (FUN_0044f3d0((struct BlokeList *)ride, &node->uid) == 0) {
-        int x = *(unsigned char *)&node->uid;
-        int y = *((unsigned char *)&node->uid + 1);
+    if (FUN_0044f3d0((struct BlokeList *)ride, &node->tile.id) == 0) {
+        int x = node->tile.pos.x;
+        int y = node->tile.pos.y;
         if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
             element = GameMap[y] + x;
         } else {
@@ -308,14 +283,14 @@ LEGO_EXPORT void RemoveAllBlokesFromRide(struct Ride *ride, unsigned int param_2
     struct Bloke *bloke;
     struct SampleSource source;
 
-    tx = ride->field_c + ((unsigned char *)&param_2)[0];
-    ty = ride->field_10 + ((unsigned char *)&param_2)[1];
+    tx = ride->x + ((unsigned char *)&param_2)[0];
+    ty = ride->y + ((unsigned char *)&param_2)[1];
     source.type = 1;
     next = ride->riders;
     while (node = next, node != 0) {
         next = node->next;
-        if ((short)node->uid == *(short *)&param_2) {
-            bloke = (struct Bloke *)node->rider;
+        if ((short)node->tile.id == *(short *)&param_2) {
+            bloke = node->rider;
             *(int *)(*(int *)((char *)bloke + 4) + 0x2c) = 0;
             bloke->pos.x = tx * 0x100;
             bloke->pos.y = ty * 0x100;
@@ -336,11 +311,11 @@ LEGO_EXPORT int GetAllBlokesOffRide(struct Ride *ride, unsigned short uid) {
 
     for (node = ride->riders; node != 0; node = next) {
         next = node->next;
-        if (node->uid == uid) {
-            struct RideRider *rider = node->rider;
+        if (node->tile.id == uid) {
+            struct Bloke *rider = node->rider;
             if ((rider->flags & 0x40) == 0) {
                 rider->flags |= 0x8;
-                rider->count++;
+                rider->param_action++;
             }
         }
     }

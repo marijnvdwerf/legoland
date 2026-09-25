@@ -26,7 +26,7 @@
 // FUNCTION: LEGOLAND 0x00418e60
 int FUN_00418e60(unsigned int param_1, unsigned int param_2) {
     short id = (short)param_1;
-    struct RideNode *score;
+    struct BoatRideNode *score;
     struct BoatRide *node;
     struct BoatRide *fresh;
     short *fill;
@@ -225,7 +225,7 @@ void FUN_00419300(void) {
 
 // FUNCTION: LEGOLAND 0x004193c0
 void FUN_004193c0(struct BoatRide *param_1) {
-    struct RideNode *node = DAT_004cc074;
+    struct BoatRideNode *node = DAT_004cc074;
     FUN_004198a0(param_1, param_1->field_3dc, 4);
     param_1->field_3e4 = 4;
     param_1->field_10 = param_1->field_8 + 5;
@@ -296,7 +296,7 @@ struct BoatRide *FUN_00419420(struct BoatRide *param_1) {
 
 // FUNCTION: LEGOLAND 0x00419520
 void FUN_00419520(struct BoatRide *param_1, int param_2) {
-    struct RideNode *score = DAT_004cc074;
+    struct BoatRideNode *score = DAT_004cc074;
     struct BoatRide *other = DAT_004cc03c;
     struct PathNode *path;
     unsigned int mask;
@@ -697,7 +697,7 @@ void FUN_00419ef0(void) {
         LLIDB_UnLoadData((unsigned int)handle);
     }
     while (DAT_004cc074 != NULL) {
-        struct RideNode *next = DAT_004cc074->next;
+        struct BoatRideNode *next = DAT_004cc074->next;
         free(DAT_004cc074);
         DAT_004cc074 = next;
     }
@@ -727,7 +727,7 @@ void FUN_0041a000(void) {
 
 // FUNCTION: LEGOLAND 0x0041a040
 void FUN_0041a040(unsigned int param_1, int *param_2) {
-    struct RideNode *score;
+    struct BoatRideNode *score;
     unsigned char temp[2];
     int x;
     int y;
@@ -735,7 +735,7 @@ void FUN_0041a040(unsigned int param_1, int *param_2) {
 
     temp[0] = (unsigned char)param_2[0];
     temp[1] = (unsigned char)param_2[1];
-    score = (struct RideNode *)malloc(sizeof(struct RideNode));
+    score = (struct BoatRideNode *)malloc(sizeof(struct BoatRideNode));
     if (score == NULL) {
         return;
     }
@@ -854,9 +854,9 @@ void FUN_0041a3d0(void *param_1, unsigned int param_2) {
 
 // FUNCTION: LEGOLAND 0x0041a530
 void FUN_0041a530(int param_1, unsigned int param_2, int param_3) {
-    struct RideNode *score = DAT_004cc074;
+    struct BoatRideNode *score = DAT_004cc074;
     struct BoatRide *ride = DAT_004cc03c;
-    struct RideNode *prev = NULL;
+    struct BoatRideNode *prev = NULL;
     struct PathNode *path;
     struct MermaidNode *mer;
     short id = (short)param_2;
@@ -937,19 +937,19 @@ void FUN_0041a530(int param_1, unsigned int param_2, int param_3) {
 
 // FUNCTION: LEGOLAND 0x0041a720
 void FUN_0041a720(void) {
-    struct RideNode **bloke_list;
-    struct RideNode *node;
+    struct BoatRideNode **bloke_list;
+    struct BoatRideNode *node;
     int lls;
     int bloke;
     unsigned short id;
     unsigned char idhi;
-    struct RideNode *score;
+    struct BoatRideNode *score;
     int slot;
     int frame;
     struct SampleParams params;
     struct Sample *sample;
 
-    bloke_list = *(struct RideNode ***)((char *)DAT_0082c658 + 0xcc);
+    bloke_list = *(struct BoatRideNode ***)((char *)DAT_0082c658 + 0xcc);
     lls = GetLLSForSprite(DAT_0082ae00);
     DAT_004cc08c = DAT_004cc08c + 1;
     if (DAT_004cc08c == 0x50) {
@@ -958,7 +958,7 @@ void FUN_0041a720(void) {
     }
     FUN_00418fe0(0);
     while (bloke_list != NULL) {
-        struct RideNode **next_bloke = (struct RideNode **)*bloke_list;
+        struct BoatRideNode **next_bloke = (struct BoatRideNode **)*bloke_list;
         id = *(unsigned short *)((char *)bloke_list + 0xc);
         idhi = (unsigned char)(id >> 8);
         score = DAT_004cc074;
@@ -1132,13 +1132,13 @@ void FUN_0041abd0(int param_1, unsigned int param_2, unsigned int param_3, short
 
 // FUNCTION: LEGOLAND 0x0041acf0
 int FUN_0041acf0(void) {
-    struct RideNode *score;
+    struct BoatRideNode *score;
     struct PathNode *path;
     struct MermaidNode *mer;
     struct BoatRide *ride;
     int count;
     int i;
-    struct RideNode scoreCopy;
+    struct BoatRideNode scoreCopy;
     struct BoatRide rideCopy;
 
     count = 0;
@@ -1196,8 +1196,8 @@ int FUN_0041acf0(void) {
 
 // FUNCTION: LEGOLAND 0x0041aee0
 int FUN_0041aee0(void) {
-    struct RideNode *score;
-    struct RideNode *prevScore;
+    struct BoatRideNode *score;
+    struct BoatRideNode *prevScore;
     struct PathNode *path;
     struct PathNode *prevPath;
     struct MermaidNode *mer;
@@ -1212,10 +1212,10 @@ int FUN_0041aee0(void) {
     while (count != 0) {
         count = count - 1;
         if (prevScore == NULL) {
-            score = (struct RideNode *)malloc(sizeof(struct RideNode));
+            score = (struct BoatRideNode *)malloc(sizeof(struct BoatRideNode));
             DAT_004cc074 = score;
         } else {
-            score = (struct RideNode *)malloc(sizeof(struct RideNode));
+            score = (struct BoatRideNode *)malloc(sizeof(struct BoatRideNode));
             prevScore->next = score;
         }
         SaveGameRead(score, 0x34);
@@ -1275,7 +1275,7 @@ int FUN_0041aee0(void) {
 
 // FUNCTION: LEGOLAND 0x0041b0d0
 void FUN_0041b0d0(unsigned short id, unsigned int value) {
-    struct RideNode *node = DAT_004cc074;
+    struct BoatRideNode *node = DAT_004cc074;
     if (node == NULL) {
         return;
     }
@@ -1291,7 +1291,7 @@ void FUN_0041b0d0(unsigned short id, unsigned int value) {
 
 // FUNCTION: LEGOLAND 0x0041b100
 int FUN_0041b100(int dummy, int arg) {
-    struct RideNode *node = DAT_004cc074;
+    struct BoatRideNode *node = DAT_004cc074;
     int result = 0;
 
     if (node != NULL) {
@@ -1353,7 +1353,7 @@ LEGO_EXPORT void GetInterface(struct ClassNode *head, struct CallbackTable *ifac
 
 // FUNCTION: LEGOLAND 0x0041b250
 void FUN_0041b250(struct RideObject *param_1) {
-    DAT_0082adf8 = param_1->building;
+    DAT_0082adf8 = param_1->ride;
 }
 
 // FUNCTION: LEGOLAND 0x0041b260
@@ -1562,7 +1562,7 @@ void FUN_0041b6f0(void *param_1, unsigned short param_2, struct Cursor *param_3)
 
 // FUNCTION: LEGOLAND 0x0041b830
 void FUN_0041b830(struct RideObject *arg) {
-    struct RideBuilding *building = arg->building;
+    struct Ride *building = arg->ride;
     DAT_0082adf0 = building;
     DAT_004b53c0[1] += building->footprint[1];
     DAT_004b53c0[0] += building->footprint[0];
@@ -1572,7 +1572,7 @@ void FUN_0041b830(struct RideObject *arg) {
 
 // FUNCTION: LEGOLAND 0x0041b880
 void FUN_0041b880(void) {
-    struct RideBuilding *state = DAT_0082adf0;
+    struct Ride *state = DAT_0082adf0;
     EditMode.unk0 = 1;
     EditMode.unk8 = state;
     memcpy(state->footprint, DAT_004b53c0, 20);
@@ -1584,7 +1584,7 @@ void FUN_0041b880(void) {
 // FUNCTION: LEGOLAND 0x0041b8e0
 void FUN_0041b8e0(int param_1, int *param_2) {
     int *piVar1 = param_2;
-    struct RideNode *score = DAT_004cc074;
+    struct BoatRideNode *score = DAT_004cc074;
     unsigned int mask;
     int dir;
 
@@ -1630,7 +1630,7 @@ void FUN_0041b8e0(int param_1, int *param_2) {
 
 // FUNCTION: LEGOLAND 0x0041bab0
 void FUN_0041bab0(int param_1, int param_2, unsigned short *param_3) {
-    struct RideNode *score = DAT_004cc074;
+    struct BoatRideNode *score = DAT_004cc074;
     struct PathNode *path;
     int other;
     unsigned int mask;
@@ -1781,7 +1781,7 @@ void FUN_0041bd40(int param_1, unsigned int param_2, unsigned int param_3) {
 
 // FUNCTION: LEGOLAND 0x0041bfb0
 void FUN_0041bfb0(unsigned int param_1, unsigned int *param_2) {
-    struct RideNode *score = DAT_004cc074;
+    struct BoatRideNode *score = DAT_004cc074;
     struct BoatRide *ride;
     unsigned char x;
     unsigned char y;
@@ -1837,8 +1837,8 @@ void FUN_0041bfb0(unsigned int param_1, unsigned int *param_2) {
 
 // FUNCTION: LEGOLAND 0x0041c130
 void FUN_0041c130(void *param_1, unsigned int param_2, struct Cursor *param_3) {
-    struct RideNode *score = DAT_004cc074;
-    struct RideNode *find = DAT_004cc074;
+    struct BoatRideNode *score = DAT_004cc074;
+    struct BoatRideNode *find = DAT_004cc074;
     int *tile;
     unsigned int mask;
     unsigned int u1;
@@ -2031,7 +2031,7 @@ void FUN_0041c620(void *param_1, unsigned short param_2, struct Cursor *param_3)
 
 // FUNCTION: LEGOLAND 0x0041c690
 unsigned int FUN_0041c690(int param_1, int param_2, unsigned short *param_3) {
-    struct RideNode *score = DAT_004cc074;
+    struct BoatRideNode *score = DAT_004cc074;
     struct PathNode *node;
     int n;
     unsigned int mask;
@@ -2202,7 +2202,7 @@ void FUN_0041c940(int param_1, int param_2, int param_3, int param_4, short *par
 
 // FUNCTION: LEGOLAND 0x0041caa0
 void FUN_0041caa0(unsigned short param_1) {
-    struct RideNode *score = DAT_004cc074;
+    struct BoatRideNode *score = DAT_004cc074;
     struct PathNode *node;
     int again;
 
@@ -2214,7 +2214,7 @@ void FUN_0041caa0(unsigned short param_1) {
     while (score != NULL && score->id != param_1) {
         score = score->next;
     }
-    DAT_004d8240 = (struct RideNode *)FUN_0041c890(score->field_4, score->field_5);
+    DAT_004d8240 = (struct BoatRideNode *)FUN_0041c890(score->field_4, score->field_5);
     *(unsigned int *)((char *)DAT_004d8240 + 8) = 0;
     *(unsigned int *)((char *)DAT_004d8240 + 0x14) = 0;
     do {
@@ -2242,26 +2242,26 @@ void FUN_0041cb20(short param_1) {
         if (n1 != 0 && *(short *)(n1 + 2) == param_1 && *(int *)(n1 + 0x18) == 0) {
             *(struct PathNode **)(n1 + 0x18) = p;
             *(int *)(n1 + 8) = *(int *)((char *)p + 8) + 1;
-            *(struct RideNode **)(n1 + 0x14) = DAT_004d8244;
-            DAT_004d8244 = (struct RideNode *)n1;
+            *(struct BoatRideNode **)(n1 + 0x14) = DAT_004d8244;
+            DAT_004d8244 = (struct BoatRideNode *)n1;
         }
         if (n2 != 0 && *(short *)(n2 + 2) == param_1 && *(int *)(n2 + 0x18) == 0) {
             *(struct PathNode **)(n2 + 0x18) = p;
             *(int *)(n2 + 8) = *(int *)((char *)p + 8) + 1;
-            *(struct RideNode **)(n2 + 0x14) = DAT_004d8244;
-            DAT_004d8244 = (struct RideNode *)n2;
+            *(struct BoatRideNode **)(n2 + 0x14) = DAT_004d8244;
+            DAT_004d8244 = (struct BoatRideNode *)n2;
         }
         if (n3 != 0 && *(short *)(n3 + 2) == param_1 && *(int *)(n3 + 0x18) == 0) {
             *(struct PathNode **)(n3 + 0x18) = p;
             *(int *)(n3 + 8) = *(int *)((char *)p + 8) + 1;
-            *(struct RideNode **)(n3 + 0x14) = DAT_004d8244;
-            DAT_004d8244 = (struct RideNode *)n3;
+            *(struct BoatRideNode **)(n3 + 0x14) = DAT_004d8244;
+            DAT_004d8244 = (struct BoatRideNode *)n3;
         }
         if (n4 != 0 && *(short *)(n4 + 2) == param_1 && *(int *)(n4 + 0x18) == 0) {
             *(struct PathNode **)(n4 + 0x18) = p;
             *(int *)(n4 + 8) = *(int *)((char *)p + 8) + 1;
-            *(struct RideNode **)(n4 + 0x14) = DAT_004d8244;
-            DAT_004d8244 = (struct RideNode *)n4;
+            *(struct BoatRideNode **)(n4 + 0x14) = DAT_004d8244;
+            DAT_004d8244 = (struct BoatRideNode *)n4;
         }
     }
 }

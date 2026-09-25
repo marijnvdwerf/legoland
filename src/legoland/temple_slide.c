@@ -58,22 +58,22 @@ struct BlokeData {
     struct BNVPath *path;
 };
 
-struct RideNode {
-    struct RideNode *next;
+struct SlideRideNode {
+    struct SlideRideNode *next;
     unsigned char pad_4[0x8 - 0x4];
     struct BlokeData *bloke;
     unsigned char pad_c[0x10 - 0xc];
     struct BlokeRender *render;
 };
 
-struct Ride {
+struct SlideRide {
     unsigned char pad_0[0xcc];
-    struct RideNode *blokes;
+    struct SlideRideNode *blokes;
 };
 
 struct SlideObject {
     unsigned char pad_0[0xc];
-    struct Ride *ride;
+    struct SlideRide *ride;
 };
 
 #include "image_sprite.h"
@@ -196,9 +196,9 @@ LEGO_EXPORT int SaveTempleSlide(void) {
 
 // FUNCTION: LEGOLAND 0x00417930
 LEGO_EXPORT int LoadTempleSlide(struct SlideObject *obj) {
-    struct Ride *ride = obj->ride;
+    struct SlideRide *ride = obj->ride;
     struct SaveNode *last = NULL;
-    struct RideNode *node;
+    struct SlideRideNode *node;
     unsigned int marker;
 
     if (!SaveGameRead(&marker, 4)) {

@@ -23,7 +23,6 @@ struct CtrlBuffer;
 // layout comes from gamemap.h, used by the EditCursor / QueryCursor instances.)
 // ---------------------------------------------------------------------------
 struct Sprite;
-struct TempleRide;
 struct Image;
 struct IconNode;
 struct Point;
@@ -55,7 +54,8 @@ struct BoatRide;
 struct RideNode;
 struct PathNode;
 struct MermaidNode;
-struct RideBuilding;
+struct Ride;
+struct RideLayer;
 struct BoatTileMap;
 struct CatapultNode;
 struct Position;
@@ -82,6 +82,7 @@ struct Element;
 struct SortNode;
 struct DSCursorSource;
 struct RideObject;
+struct SpaceTowerCar;
 
 // Full definitions needed by typed globals defined in globals.c.
 struct SpaceTowerLayout {
@@ -785,9 +786,11 @@ extern const int DAT_004bff28[24];
 // 0x004c10d4
 extern void *DAT_004c10d4;
 // 0x004c10dc
-extern void *DAT_004c10dc;
+extern struct Ride *DAT_004c10dc;
 // 0x004c10e4
 extern struct Sprite *DAT_004c10e4;
+// 0x004c10e8
+extern struct RenderItemNode *DAT_004c10e8;
 // 0x004c10f0
 extern void *DAT_004c10f0;
 // 0x004c10f4
@@ -1069,7 +1072,7 @@ extern unsigned short DAT_004cbf4c;
 // 0x004cbf58
 extern void *DAT_004cbf58;
 // 0x004cbf5c
-extern struct TempleRide *DAT_004cbf5c;
+extern struct Ride *DAT_004cbf5c;
 // 0x004cbf64
 extern void *DAT_004cbf64;
 // 0x004cbf68
@@ -1431,7 +1434,7 @@ extern struct Sprite *DAT_0062fd80;
 // 0x0062fd88
 extern struct Point DAT_0062fd88[4];
 // 0x0062fda8
-extern struct RideObject *DAT_0062fda8;
+extern struct SpaceTowerCar *DAT_0062fda8;
 // 0x0062fdb0
 extern unsigned int DAT_0062fdb0;
 // 0x0062fdb4
@@ -1477,11 +1480,11 @@ extern unsigned int DAT_0062fe38;
 // 0x0062fe3c
 extern unsigned short DAT_0062fe3c;
 // 0x0062fe48
-extern unsigned int DAT_0062fe48;
+extern struct RideLayer *DAT_0062fe48;
 // 0x0062fe4c
 extern struct Sprite *DAT_0062fe4c;
 // 0x0062fe50
-extern unsigned int DAT_0062fe50;
+extern struct RideLayer *DAT_0062fe50;
 // 0x0062fe54
 extern struct Sprite *DAT_0062fe54;
 // 0x0062fe58
@@ -3191,9 +3194,9 @@ extern unsigned int DAT_0081c8dc;
 // 0x0081cae0
 extern struct Sprite *DAT_0081cae0;
 // 0x0081caf0
-extern void *DAT_0081caf0;
+extern struct Ride *DAT_0081caf0;
 // 0x0081caf4
-extern void *DAT_0081caf4;
+extern struct Ride *DAT_0081caf4;
 // 0x0081cb00
 extern struct Sprite *DAT_0081cb00;
 // 0x0081cb04
@@ -3429,11 +3432,11 @@ extern unsigned int DAT_0082ade8;
 // 0x0082adec
 extern unsigned int DAT_0082adec;
 // 0x0082adf0
-extern struct RideBuilding *DAT_0082adf0;
+extern struct Ride *DAT_0082adf0;
 // 0x0082adf4
 extern struct BoatTileMap *DAT_0082adf4;
 // 0x0082adf8
-extern struct RideBuilding *DAT_0082adf8;
+extern struct Ride *DAT_0082adf8;
 // 0x0082adfc
 extern struct Sprite *DAT_0082adfc;
 // 0x0082ae00

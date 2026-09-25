@@ -43,7 +43,7 @@ struct RideBuilding {
     struct RideBuilding *field_64;
 };
 
-struct RideObject {
+struct ShopRideObject {
     unsigned char pad_0[0xc];
     struct RideBuilding *building;
 };
@@ -336,7 +336,7 @@ void FUN_0043a180(struct ShopObject *obj, unsigned int param2, unsigned int para
 void FUN_0043a1e0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0043a390
-unsigned int *FUN_0043a390(struct RideObject *obj, unsigned short param_2) {
+unsigned int *FUN_0043a390(struct ShopRideObject *obj, unsigned short param_2) {
     struct RideBuilding *building = obj->building;
     DAT_0082c6a0 = (unsigned int)building->field_64;
     DAT_0082c6a4 = building->field_14;
@@ -347,7 +347,7 @@ unsigned int *FUN_0043a390(struct RideObject *obj, unsigned short param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0043a3d0
-void FUN_0043a3d0(struct RideObject *obj, void *param_2, void *param_3) {
+void FUN_0043a3d0(struct ShopRideObject *obj, void *param_2, void *param_3) {
     StandardRemoveObject((unsigned int)obj, (unsigned int)param_2, (unsigned int)param_3);
     RemoveAllBlokesFromRide((unsigned int)obj->building, param_2);
 }

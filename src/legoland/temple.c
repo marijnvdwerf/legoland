@@ -16,7 +16,7 @@
 #include "ride_queue.h"
 
 // FUNCTION: LEGOLAND 0x004169c0
-void FUN_004169c0(struct TempleObject *obj) {
+void FUN_004169c0(struct RideObject *obj) {
     DAT_004cbf5c = obj->ride;
     if (DAT_004cbf5c != NULL) {
         DAT_004cbf5c->flags |= 0x20;
@@ -42,15 +42,15 @@ void FUN_00416a30(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00416a60
-void FUN_00416a60(struct TempleObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *coords, unsigned int param_5, unsigned int clip) {
-    struct TempleRide *ride = obj->ride;
-    struct TempleNode *node;
+void FUN_00416a60(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *coords, unsigned int param_5, unsigned int clip) {
+    struct Ride *ride = obj->ride;
+    struct RideNode *node;
     struct Point pos;
     struct Point offset;
 
     RenderItems_New();
     DAT_004cbf70 = NULL;
-    for (node = ride->list; node != NULL; node = node->next) {
+    for (node = ride->riders; node != NULL; node = node->next) {
         if (*coords == node->tile.id) {
             AddBlokeToRenderList(&DAT_004cbf70, (struct BlokeRenderSrc *)node, node->seat->depth);
         }
@@ -66,18 +66,18 @@ void FUN_00416a60(struct TempleObject *obj, unsigned int param_2, unsigned int p
 }
 
 // FUNCTION: LEGOLAND 0x00416b50
-void FUN_00416b50(struct TempleObject *obj) {
-    struct TempleRide *ride = obj->ride;
-    struct TempleNode *node;
-    struct TempleNode *next;
+void FUN_00416b50(struct RideObject *obj) {
+    struct Ride *ride = obj->ride;
+    struct RideNode *node;
+    struct RideNode *next;
     struct Bloke *bloke;
     unsigned int x;
     unsigned int y;
     char dir;
 
-    for (node = ride->list; node != NULL; node = next) {
+    for (node = ride->riders; node != NULL; node = next) {
         next = node->next;
-        bloke = node->bloke;
+        bloke = node->rider;
         x = ride->x + node->tile.pos.x;
         y = ride->y + node->tile.pos.y;
         if (bloke->field_e == 0) {
@@ -174,7 +174,7 @@ void FUN_00416b50(struct TempleObject *obj) {
                 bloke->param_action++;
                 break;
             case 10:
-                RemoveBlokeFromRide((struct Ride *)ride, (struct RideNode *)node);
+                RemoveBlokeFromRide(ride, node);
                 bloke->flags &= ~8;
                 break;
             }
@@ -197,9 +197,9 @@ void FUN_00416e00(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00416e20
-void FUN_00416e20(struct TempleObject *a1, void *a2, unsigned int a3) {
+void FUN_00416e20(struct RideObject *a1, void *a2, unsigned int a3) {
     StandardRemoveObject((unsigned int)a1, (unsigned int)a2, a3);
-    RemoveAllBlokesFromRide((struct Ride *)a1->ride, (unsigned int)a2);
+    RemoveAllBlokesFromRide(a1->ride, (unsigned int)a2);
 }
 
 // FUNCTION: LEGOLAND 0x00416e50

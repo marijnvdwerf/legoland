@@ -7,6 +7,7 @@
 #include "globals.h"
 #include "map_object.h"
 #include "mechanics_hut.h"
+#include "obj_instance.h"
 
 #include "image_sprite.h"
 #include "print_sprite.h"
@@ -14,14 +15,13 @@
 #include "worker.h"
 
 // FUNCTION: LEGOLAND 0x0043d250
-unsigned int FUN_0043d250(struct HutContext *ctx) {
-    DAT_0081caf4 = ctx->field_c;
-    ((struct HutObject *)DAT_0081caf4)->field_1c |= 0x420;
-    DAT_0062fe50 = ((struct HutObject *)DAT_0081caf4)->field_64;
-    ((struct HutObject *)DAT_0081caf4)->field_1c |= 0x2000;
+void FUN_0043d250(struct RideObject *ctx) {
+    DAT_0081caf4 = ctx->ride;
+    DAT_0081caf4->flags |= 0x420;
+    DAT_0062fe50 = DAT_0081caf4->layer;
+    DAT_0081caf4->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b79a4
     DAT_0062fe54 = LoadSprite("MechHutMask.lls", 1);
-    return (unsigned int)DAT_0062fe54;
 }
 
 // FUNCTION: LEGOLAND 0x0043d2a0
@@ -30,21 +30,21 @@ unsigned int FUN_0043d2a0(unsigned int param1, unsigned int param2) {
 }
 
 // FUNCTION: LEGOLAND 0x0043d2c0
-void FUN_0043d2c0(struct HutContext *obj, unsigned int tile, struct Cursor *cursor) {
+void FUN_0043d2c0(struct RideObject *obj, unsigned int tile, struct Cursor *cursor) {
     StandardRemoveObject((struct EditObject *)obj, tile, cursor);
-    FUN_0043d7c0(obj->field_c, tile, 0);
+    FUN_0043d7c0(obj->ride, tile, 0);
 }
 
 // FUNCTION: LEGOLAND 0x0043d2f0
-void FUN_0043d2f0(struct HutContext *obj) {
-    struct HutObject *hut = obj->field_c;
-    struct HutNode *node;
-    struct HutNode *next;
+void FUN_0043d2f0(struct RideObject *obj) {
+    struct Ride *hut = obj->ride;
+    struct RideNode *node;
+    struct RideNode *next;
     struct Bloke *bloke;
     char dir;
 
-    for (node = hut->list; node != NULL; node = next) {
-        bloke = node->bloke;
+    for (node = hut->riders; node != NULL; node = next) {
+        bloke = node->rider;
         next = node->next;
         if (bloke->field_e != 0) {
             continue;
@@ -118,17 +118,17 @@ void FUN_0043d2f0(struct HutContext *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0043d580
-void FUN_0043d580(struct HutContext *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile) {
-    struct HutObject *hut = obj->field_c;
-    struct HutNode *node = hut->list;
+void FUN_0043d580(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile) {
+    struct Ride *hut = obj->ride;
+    struct RideNode *node = hut->riders;
     struct Bloke *blokes[30] = {0};
     char count = 0;
     char i;
     struct Point pos;
 
     while (node != NULL) {
-        if (*tile == node->id) {
-            blokes[count++] = node->bloke;
+        if (*tile == node->tile.id) {
+            blokes[count++] = node->rider;
         }
         node = node->next;
     }
@@ -208,19 +208,19 @@ unsigned int *FUN_0043d780(void *ptr, unsigned short arg2) {
 }
 
 // FUNCTION: LEGOLAND 0x0043d7c0
-void FUN_0043d7c0(struct HutObject *hut, unsigned int tile, int flag) {
-    struct HutNode *node;
-    struct HutNode *next;
+void FUN_0043d7c0(struct Ride *hut, unsigned int tile, int flag) {
+    struct RideNode *node;
+    struct RideNode *next;
     struct Bloke *bloke;
     struct Point at;
 
     at.x = hut->x + (unsigned char)tile;
     at.y = hut->y + ((unsigned char *)&tile)[1];
 
-    for (node = hut->list; node != NULL; node = next) {
+    for (node = hut->riders; node != NULL; node = next) {
         next = node->next;
-        if (node->id == (unsigned short)tile) {
-            bloke = node->bloke;
+        if (node->tile.id == (unsigned short)tile) {
+            bloke = node->rider;
             if (bloke->param_action < 100) {
                 RemoveBlokeFromList((struct BlokeList *)hut, (struct Bloke *)node);
                 free(node);

@@ -31,13 +31,13 @@ struct SpaceTowerSeat {
     /* 0x21 */ unsigned char pad_21[3];
 };
 
-struct RideObject {
+struct SpaceTowerCar {
     /* 0x00 */ unsigned short var_0;
     /* 0x02 */ unsigned char var_2;
     /* 0x03 */ unsigned char var_3;
     /* 0x04 */ unsigned char var_4;
     /* 0x05 */ unsigned char pad_5[3];
-    /* 0x08 */ struct RideObject *next;
+    /* 0x08 */ struct SpaceTowerCar *next;
     /* 0x0c */ unsigned int var_c;
     /* 0x10 */ unsigned int var_10;
     /* 0x14 */ struct SpaceTowerSeat seats[4];
@@ -237,7 +237,7 @@ void FUN_0043a940(struct SpaceTowerSeat *seat) {
 }
 
 // FUNCTION: LEGOLAND 0x0043a9b0
-void FUN_0043a9b0(struct RideObject *arg) {
+void FUN_0043a9b0(struct SpaceTowerCar *arg) {
     struct SpaceTowerSeat *seat;
     int i;
 
@@ -282,7 +282,7 @@ void FUN_0043aa50(unsigned char *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0043aa90
-void FUN_0043aa90(struct RideObject *arg) {
+void FUN_0043aa90(struct SpaceTowerCar *arg) {
     unsigned char tmp = arg->var_2;
     arg->var_c |= 1;
     arg->var_3 = tmp;
@@ -292,7 +292,7 @@ void FUN_0043aa90(struct RideObject *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0043aac0
-void FUN_0043aac0(struct RideObject *arg) {
+void FUN_0043aac0(struct SpaceTowerCar *arg) {
     int r;
 
     arg->var_c = arg->var_c & 0xffffbffe;
@@ -319,11 +319,11 @@ void FUN_0043aac0(struct RideObject *arg) {
 
 // FUNCTION: LEGOLAND 0x0043ab70
 void FUN_0043ab70(unsigned short *param_1) {
-    struct RideObject *node;
+    struct SpaceTowerCar *node;
     unsigned int *fill;
     int i;
 
-    node = (struct RideObject *)malloc(0xb4);
+    node = (struct SpaceTowerCar *)malloc(0xb4);
     if (node != NULL) {
         fill = (unsigned int *)node;
         for (i = 0x2d; i != 0; i = i + -1) {
@@ -338,9 +338,9 @@ void FUN_0043ab70(unsigned short *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0043abc0
-void FUN_0043abc0(struct RideObject *arg) {
-    struct RideObject *cur;
-    struct RideObject *next;
+void FUN_0043abc0(struct SpaceTowerCar *arg) {
+    struct SpaceTowerCar *cur;
+    struct SpaceTowerCar *next;
 
     if (DAT_0062fda8 == arg) {
         DAT_0062fda8 = arg->next;
@@ -371,8 +371,8 @@ void FUN_0043ac20(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043ac40
-struct RideObject *FUN_0043ac40(unsigned short *param_1) {
-    struct RideObject *node;
+struct SpaceTowerCar *FUN_0043ac40(unsigned short *param_1) {
+    struct SpaceTowerCar *node;
 
     node = DAT_0062fda8;
     if (node != NULL) {
@@ -394,7 +394,7 @@ struct RideObject *FUN_0043ac40(unsigned short *param_1) {
 
 // FUNCTION: LEGOLAND 0x0043ac70
 void FUN_0043ac70(struct SpaceTowerRideNode *param_1, unsigned short *param_2) {
-    struct RideObject *ride;
+    struct SpaceTowerCar *ride;
     unsigned int slot;
 
     ride = FUN_0043ac40(param_2);
@@ -406,7 +406,7 @@ void FUN_0043ac70(struct SpaceTowerRideNode *param_1, unsigned short *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0043acb0
-unsigned int FUN_0043acb0(struct SpaceTowerRideNode *param_1, struct RideObject *param_2) {
+unsigned int FUN_0043acb0(struct SpaceTowerRideNode *param_1, struct SpaceTowerCar *param_2) {
     char slot_used;
     unsigned int slot;
 
@@ -458,7 +458,7 @@ int FUN_0043ad00(unsigned char *param_1, int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0043ad90
-void FUN_0043ad90(struct RideObject *param_1, int param_2, unsigned int param_3) {
+void FUN_0043ad90(struct SpaceTowerCar *param_1, int param_2, unsigned int param_3) {
     struct Point coords;
     int off_x;
     int off_y;
@@ -473,7 +473,7 @@ void FUN_0043ad90(struct RideObject *param_1, int param_2, unsigned int param_3)
 }
 
 // FUNCTION: LEGOLAND 0x0043ae20
-void FUN_0043ae20(struct RideObject *param_1, int param_2, unsigned int param_3) {
+void FUN_0043ae20(struct SpaceTowerCar *param_1, int param_2, unsigned int param_3) {
     struct Point coords;
     int off_x;
     int off_y;
@@ -503,7 +503,7 @@ void FUN_0043ae20(struct RideObject *param_1, int param_2, unsigned int param_3)
 }
 
 // FUNCTION: LEGOLAND 0x0043aee0
-void FUN_0043aee0(struct RideObject *param_1, int param_2, unsigned int param_3) {
+void FUN_0043aee0(struct SpaceTowerCar *param_1, int param_2, unsigned int param_3) {
     FUN_0043ae20(param_1, param_2, param_3);
     if ((param_1->seats[param_2].flags & 1) != 0) {
         FUN_0043ad00((unsigned char *)param_1, param_2);
@@ -521,7 +521,7 @@ void FUN_0043aee0(struct RideObject *param_1, int param_2, unsigned int param_3)
 void FUN_0043af50(struct SpaceTowerCtx *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6) {
     struct SpaceTowerRide *ride;
     struct SpaceTowerRideNode *node;
-    struct RideObject *obj;
+    struct SpaceTowerCar *obj;
     struct Bloke *bloke;
     int coord_x;
     int coord_y;
@@ -626,7 +626,7 @@ void FUN_0043b420(void) {
 
 // FUNCTION: LEGOLAND 0x0043b460
 void FUN_0043b460(struct EditObject *param_1, unsigned int param_2, struct Cursor *param_3) {
-    struct RideObject *node;
+    struct SpaceTowerCar *node;
 
     node = FUN_0043ac40((unsigned short *)&param_2);
     if (node != NULL) {
@@ -675,7 +675,7 @@ void FUN_0043b570(void) {
     KillSprite(DAT_0062fd64[2]);
     FUN_0043ac20();
     Kill_FXList(SPACE_TOWER_SFX, 1);
-    ((struct RideObject *)DAT_0062fd74)->var_cc = 0;
+    ((struct SpaceTowerCar *)DAT_0062fd74)->var_cc = 0;
 }
 
 // FUNCTION: LEGOLAND 0x0043b5d0
@@ -759,7 +759,7 @@ LEGO_EXPORT int SpaceTower_Load(void) {
         if (prev != NULL) {
             *(char **)(prev + 8) = node;
         } else {
-            DAT_0062fda8 = (struct RideObject *)node;
+            DAT_0062fda8 = (struct SpaceTowerCar *)node;
         }
         i = 0;
         do {
@@ -804,7 +804,7 @@ void SpaceTowerRide(struct ClassNode *name, struct CallbackTable *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0043b810
-void FUN_0043b810(struct RideObject *param_1) {
+void FUN_0043b810(struct SpaceTowerCar *param_1) {
     struct SpaceTowerRideNode *node;
     struct Bloke *bloke;
     struct SpaceTowerSeat *seat;
@@ -861,7 +861,7 @@ void FUN_0043b810(struct RideObject *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0043b990
-void FUN_0043b990(struct RideObject *esi) {
+void FUN_0043b990(struct SpaceTowerCar *esi) {
     esi->var_ad++;
     if ((signed char)esi->var_ad >= 16) {
         esi->var_ad = 0;
@@ -913,7 +913,7 @@ void FUN_0043baa0(void) {
     node = DAT_0062fda8;
     if (node != NULL) {
         do {
-            FUN_0043b990((struct RideObject *)node);
+            FUN_0043b990((struct SpaceTowerCar *)node);
             node = node->next;
         } while (node != NULL);
     }
@@ -925,7 +925,7 @@ void FUN_0043bac0(struct SpaceTowerCtx *param_1) {
     struct SpaceTowerRideNode *node;
     struct SpaceTowerRideNode *next;
     struct Bloke *bloke;
-    struct RideObject *obj;
+    struct SpaceTowerCar *obj;
     unsigned int x;
     unsigned char y;
     int ride_x;
