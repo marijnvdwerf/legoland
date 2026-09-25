@@ -56,11 +56,6 @@ struct MermaidNode {
 };
 
 /* LLIDB "BOATING SCHOOL BOATS" data: boat sprites with per-frame screen offsets. */
-struct BoatTileMap {
-    /* 0x00 */ unsigned char pad_0[4];
-    /* 0x04 */ short *tiles;
-};
-
 int FUN_00418e60(TileId tile, unsigned int bloke);
 void FUN_00418fe0(int param_1);
 void FUN_00419300(void);

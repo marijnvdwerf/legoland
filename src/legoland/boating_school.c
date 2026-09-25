@@ -543,7 +543,7 @@ void FUN_00419d10(struct RideObject *obj) {
     DAT_0082c658->layer->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b5334
     if (LLIDB_FindElement("BOATING SCHOOL TILE MAPPING", &handle, 0) == 0) {
-        DAT_0082adf4 = (struct BoatTileMap *)LLIDB_LoadData((void *)handle);
+        DAT_0082adf4 = (struct TileMap *)LLIDB_LoadData((void *)handle);
     }
     // STRING: LEGOLAND 0x004b531c
     if (LLIDB_FindElement("BOATING SCHOOL BOATS", &handle, 0) == 0) {

@@ -31,6 +31,12 @@ struct SpriteSet {
     /* 0x10 */ int *offset_y;
 };
 
+/* LLIDB tile mapping: tile id tables selected by the high byte of a map entry. */
+struct TileMap {
+    /* 0x00 */ unsigned char pad_0[4];
+    /* 0x04 */ short *tiles;
+};
+
 // The map edit cursor. EditCursor / QueryCursor / DAT_0082f760 are instances of
 // this 0x1834-byte structure. Only the fields actually touched are named; the
 // gaps are explicit padding so the layout matches the original byte-for-byte.

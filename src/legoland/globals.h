@@ -49,7 +49,6 @@ struct JungleFish;
 struct JungleScore;
 struct JungleObj;
 struct JunglePath;
-struct JungleTileMap;
 struct BoatRide;
 struct RideNode;
 struct PathNode;
@@ -57,7 +56,6 @@ struct BoatRideNode;
 struct MermaidNode;
 struct Ride;
 struct RideLayer;
-struct BoatTileMap;
 struct CatapultNode;
 struct Position;
 struct RinData;
@@ -1411,7 +1409,7 @@ extern struct JungleObj *DAT_00629c2c;
 // 0x00629c30
 extern struct JungleFish *DAT_00629c30;
 // 0x00629c34
-extern struct JungleFish *DAT_00629c34;
+extern struct JungleObj *DAT_00629c34;
 // 0x00629c3c
 extern struct JungleScore *DAT_00629c3c;
 // 0x00629c40
@@ -3257,13 +3255,13 @@ extern struct Sprite *DAT_0081cb50;
 // 0x0081cb54
 extern struct Ride *DAT_0081cb54;
 // 0x0081cb58
-extern struct JungleTileMap *DAT_0081cb58;
+extern struct TileMap *DAT_0081cb58;
 // 0x0081cb5c
 extern struct Sprite *DAT_0081cb5c;
 // 0x0081cb60
 extern struct Ride *DAT_0081cb60;
 // 0x0081cb64
-extern struct Cursor *DAT_0081cb64;
+extern struct Ride *DAT_0081cb64;
 // 0x0081cb68
 extern struct Sprite *DAT_0081cb68;
 // 0x0081cb6c
@@ -3449,7 +3447,7 @@ extern unsigned int DAT_0082adec;
 // 0x0082adf0
 extern struct Ride *DAT_0082adf0;
 // 0x0082adf4
-extern struct BoatTileMap *DAT_0082adf4;
+extern struct TileMap *DAT_0082adf4;
 // 0x0082adf8
 extern struct Ride *DAT_0082adf8;
 // 0x0082adfc

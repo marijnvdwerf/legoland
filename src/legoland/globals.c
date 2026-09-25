@@ -1767,7 +1767,7 @@ struct JungleObj *DAT_00629c2c;
 struct JungleFish *DAT_00629c30;
 
 // GLOBAL: LEGOLAND 0x00629c34
-struct JungleFish *DAT_00629c34;
+struct JungleObj *DAT_00629c34;
 
 // GLOBAL: LEGOLAND 0x00629c3c
 struct JungleScore *DAT_00629c3c;
@@ -4527,7 +4527,7 @@ struct Sprite *DAT_0081cb50;
 struct Ride *DAT_0081cb54;
 
 // GLOBAL: LEGOLAND 0x0081cb58
-struct JungleTileMap *DAT_0081cb58;
+struct TileMap *DAT_0081cb58;
 
 // GLOBAL: LEGOLAND 0x0081cb5c
 struct Sprite *DAT_0081cb5c;
@@ -4536,7 +4536,7 @@ struct Sprite *DAT_0081cb5c;
 struct Ride *DAT_0081cb60;
 
 // GLOBAL: LEGOLAND 0x0081cb64
-struct Cursor *DAT_0081cb64;
+struct Ride *DAT_0081cb64;
 
 // GLOBAL: LEGOLAND 0x0081cb68
 struct Sprite *DAT_0081cb68;
@@ -4815,7 +4815,7 @@ unsigned int DAT_0082adec;
 struct Ride *DAT_0082adf0;
 
 // GLOBAL: LEGOLAND 0x0082adf4
-struct BoatTileMap *DAT_0082adf4;
+struct TileMap *DAT_0082adf4;
 
 // GLOBAL: LEGOLAND 0x0082adf8
 struct Ride *DAT_0082adf8;
