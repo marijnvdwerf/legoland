@@ -1385,76 +1385,76 @@ void FUN_0041b2a0(int param_1, int *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0041b4c0
-void FUN_0041b4c0(int param_1, unsigned int param_2, unsigned int param_3) {
-    struct Cursor *cursor = *(struct Cursor **)(param_1 + 0xc);
+void FUN_0041b4c0(struct RideObject *obj, unsigned int param_2, unsigned int param_3) {
+    struct Ride *ride;
     unsigned int mask;
-    int valid;
+    int n;
     int x;
     int y;
-    unsigned int n;
-    int i;
+    struct Cursor *c;
 
-    *(struct Footprint *)EditCursor.field_1414 = cursor->field_3c;
+    n = 0;
+    ride = obj->ride;
+    memcpy(EditCursor.field_1414, ride->footprint, 20);
     ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
-    mask = FUN_0041c690(EditCursor.field_1404, EditCursor.field_1408, (unsigned short *)&param_1);
-    EditCursor.field_1830 = 0;
+    mask = FUN_0041c690(EditCursor.field_1404, EditCursor.field_1408, (unsigned short *)&obj);
+    EditCursor.field_1830 = n;
     if (mask == 0) {
         FUN_0045f480(&EditCursor, 0xe);
         return;
     }
-    ValidateCursor(&EditCursor, (unsigned int)cursor);
-    valid = FUN_0045f4b0(&EditCursor);
-    if (valid == 0) {
+    ValidateCursor(&EditCursor, (unsigned int)ride);
+    if (FUN_0045f4b0(&EditCursor) == 0) {
         return;
     }
     DefaultCursor(&DAT_004cc090[0]);
     DefaultCursor(&DAT_004cc090[1]);
     DefaultCursor(&DAT_004cc090[2]);
     DefaultCursor(&DAT_004cc090[3]);
-    *(struct Footprint *)DAT_004cc090[0].field_1414 = *(struct Footprint *)EditCursor.field_1414;
-    *(struct Footprint *)DAT_004cc090[1].field_1414 = *(struct Footprint *)EditCursor.field_1414;
-    *(struct Footprint *)DAT_004cc090[2].field_1414 = *(struct Footprint *)EditCursor.field_1414;
-    *(struct Footprint *)DAT_004cc090[3].field_1414 = *(struct Footprint *)EditCursor.field_1414;
+    memcpy(DAT_004cc090[0].field_1414, EditCursor.field_1414, 20);
+    memcpy(DAT_004cc090[1].field_1414, EditCursor.field_1414, 20);
+    memcpy(DAT_004cc090[2].field_1414, EditCursor.field_1414, 20);
+    memcpy(DAT_004cc090[3].field_1414, EditCursor.field_1414, 20);
     FUN_0045f460(&DAT_004cc090[0]);
     FUN_0045f460(&DAT_004cc090[1]);
     FUN_0045f460(&DAT_004cc090[2]);
     FUN_0045f460(&DAT_004cc090[3]);
-    y = EditCursor.field_1408;
     x = EditCursor.field_1404;
+    y = EditCursor.field_1408;
     DAT_004cc090[0].field_1828 = 0x2034;
     DAT_004cc090[1].field_1828 = 0x2034;
     DAT_004cc090[2].field_1828 = 0x2034;
     DAT_004cc090[3].field_1828 = 0x2034;
     if ((mask & 1) != 0) {
-        DAT_004cc090[0].field_1408 = EditCursor.field_1408 - 5;
-        DAT_004cc090[0].field_1404 = EditCursor.field_1404;
+        DAT_004cc090[0].field_1404 = x;
+        DAT_004cc090[0].field_1408 = y - 5;
+        n = 1;
     }
-    n = mask & 1;
     if ((mask & 2) != 0) {
-        DAT_004cc090[n].field_1404 = EditCursor.field_1404 + 5;
+        DAT_004cc090[n].field_1404 = x + 5;
         DAT_004cc090[n].field_1408 = y;
-        n = n + 1;
+        n++;
     }
     if ((mask & 4) != 0) {
         DAT_004cc090[n].field_1404 = x;
         DAT_004cc090[n].field_1408 = y + 5;
-        n = n + 1;
+        n++;
     }
     if ((mask & 8) != 0) {
         DAT_004cc090[n].field_1404 = x - 5;
         DAT_004cc090[n].field_1408 = y;
-        n = n + 1;
+        n++;
     }
     if (n != 0) {
         EditCursor.field_1830 = (unsigned int)&DAT_004cc090[0];
-        if (1 < n) {
-            struct Cursor *c = &DAT_004cc090[1];
-            i = n - 1;
+        if (n > 1) {
+            c = &DAT_004cc090[1];
+            n--;
             do {
                 c[-1].field_1830 = (unsigned int)c;
-                c = c + 1;
-                i = i - 1;
-            } while (i != 0);
+                c++;
+                n--;
+            } while (n != 0);
         }
     }
 }
@@ -1625,99 +1625,87 @@ void FUN_0041bab0(int param_1, int param_2, unsigned short *param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x0041bd40
-void FUN_0041bd40(int param_1, unsigned int param_2, unsigned int param_3) {
+void FUN_0041bd40(struct RideObject *obj, unsigned int param_2, unsigned int param_3) {
     unsigned int mask;
-    int valid;
+    int n;
     int x;
     int y;
-    unsigned int n;
-    int i;
-    int local_10;
-    int local_c;
-    int local_8;
-    int local_4;
     int result;
+    struct Cursor *c;
+    struct MapRect rect;
 
-    *(struct Footprint *)EditCursor.field_1414 = *(struct Footprint *)DAT_004b53c0;
+    memcpy(EditCursor.field_1414, DAT_004b53c0, 20);
+    n = 0;
     ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
     mask = FUN_0041c690(EditCursor.field_1404, EditCursor.field_1408, (unsigned short *)&param_3);
-    EditCursor.field_1830 = 0;
+    EditCursor.field_1830 = n;
     if (mask == 0) {
         FUN_0045f480(&EditCursor, 0xe);
-        return;
-    }
-    ValidateCursor(&EditCursor, *(unsigned int *)(param_1 + 0xc));
-    valid = FUN_0045f4b0(&EditCursor);
-    if (valid == 0) {
-        return;
-    }
-    local_10 = EditCursor.field_1414[0] + EditCursor.field_1404;
-    local_c = EditCursor.field_1414[1] + EditCursor.field_1408;
-    local_8 = EditCursor.field_1414[2] + EditCursor.field_1404;
-    local_4 = EditCursor.field_1414[3] + EditCursor.field_1408;
-    result = CheckForPeople(&local_10);
-    if (result == -1) {
-        FUN_0045f480(&EditCursor, 4);
-        return;
-    }
-    if (result == 1) {
-        FUN_0045f480(&EditCursor, 3);
-        return;
-    }
-    DefaultCursor(&DAT_004d2168[0]);
-    DefaultCursor(&DAT_004d2168[1]);
-    DefaultCursor(&DAT_004d2168[2]);
-    DefaultCursor(&DAT_004d2168[3]);
-    *(struct Footprint *)DAT_004d2168[0].field_1414 = *(struct Footprint *)EditCursor.field_1414;
-    *(struct Footprint *)DAT_004d2168[1].field_1414 = *(struct Footprint *)EditCursor.field_1414;
-    *(struct Footprint *)DAT_004d2168[2].field_1414 = *(struct Footprint *)EditCursor.field_1414;
-    *(struct Footprint *)DAT_004d2168[3].field_1414 = *(struct Footprint *)EditCursor.field_1414;
-    FUN_0045f460(&DAT_004d2168[0]);
-    FUN_0045f460(&DAT_004d2168[1]);
-    FUN_0045f460(&DAT_004d2168[2]);
-    FUN_0045f460(&DAT_004d2168[3]);
-    y = EditCursor.field_1408;
-    x = EditCursor.field_1404;
-    DAT_004d2168[0].field_1828 = 0x2034;
-    DAT_004d2168[1].field_1828 = 0x2034;
-    DAT_004d2168[2].field_1828 = 0x2034;
-    DAT_004d2168[3].field_1828 = 0x2034;
-    if ((mask & 1) != 0) {
-        DAT_004d2168[0].field_1408 = EditCursor.field_1408 - 5;
-        DAT_004d2168[0].field_1404 = EditCursor.field_1404;
-    }
-    n = mask & 1;
-    if ((mask & 2) != 0) {
-        DAT_004d2168[n].field_1404 = EditCursor.field_1404 + 5;
-        DAT_004d2168[n].field_1408 = y;
-        n = n + 1;
-    }
-    if ((mask & 4) != 0) {
-        DAT_004d2168[n].field_1404 = x;
-        DAT_004d2168[n].field_1408 = y + 5;
-        n = n + 1;
-    }
-    if ((mask & 8) != 0) {
-        DAT_004d2168[n].field_1404 = x - 5;
-        DAT_004d2168[n].field_1408 = y;
-        n = n + 1;
-    }
-    if (n == 0) {
-        return;
-    }
-    EditCursor.field_1830 = (unsigned int)&DAT_004d2168[0];
-    if (n < 2) {
-        EditCursor.field_1830 = (unsigned int)&DAT_004d2168[0];
-        return;
-    }
-    {
-        struct Cursor *c = &DAT_004d2168[1];
-        i = n - 1;
-        do {
-            c[-1].field_1830 = (unsigned int)c;
-            c = c + 1;
-            i = i - 1;
-        } while (i != 0);
+    } else {
+        ValidateCursor(&EditCursor, (unsigned int)obj->ride);
+        if (FUN_0045f4b0(&EditCursor) != 0) {
+            rect.x0 = EditCursor.field_1414[0] + EditCursor.field_1404;
+            rect.y0 = EditCursor.field_1414[1] + EditCursor.field_1408;
+            rect.x1 = EditCursor.field_1414[2] + EditCursor.field_1404;
+            rect.y1 = EditCursor.field_1414[3] + EditCursor.field_1408;
+            result = CheckForPeople(&rect);
+            if (result == -1) {
+                FUN_0045f480(&EditCursor, 4);
+            } else if (result == 1) {
+                FUN_0045f480(&EditCursor, 3);
+            } else {
+                DefaultCursor(&DAT_004d2168[0]);
+                DefaultCursor(&DAT_004d2168[1]);
+                DefaultCursor(&DAT_004d2168[2]);
+                DefaultCursor(&DAT_004d2168[3]);
+                memcpy(DAT_004d2168[0].field_1414, EditCursor.field_1414, 20);
+                memcpy(DAT_004d2168[1].field_1414, EditCursor.field_1414, 20);
+                memcpy(DAT_004d2168[2].field_1414, EditCursor.field_1414, 20);
+                memcpy(DAT_004d2168[3].field_1414, EditCursor.field_1414, 20);
+                FUN_0045f460(&DAT_004d2168[0]);
+                FUN_0045f460(&DAT_004d2168[1]);
+                FUN_0045f460(&DAT_004d2168[2]);
+                FUN_0045f460(&DAT_004d2168[3]);
+                x = EditCursor.field_1404;
+                y = EditCursor.field_1408;
+                DAT_004d2168[0].field_1828 = 0x2034;
+                DAT_004d2168[1].field_1828 = 0x2034;
+                DAT_004d2168[2].field_1828 = 0x2034;
+                DAT_004d2168[3].field_1828 = 0x2034;
+                if ((mask & 1) != 0) {
+                    DAT_004d2168[0].field_1404 = x;
+                    DAT_004d2168[0].field_1408 = y - 5;
+                    n = 1;
+                }
+                if ((mask & 2) != 0) {
+                    DAT_004d2168[n].field_1404 = x + 5;
+                    DAT_004d2168[n].field_1408 = y;
+                    n++;
+                }
+                if ((mask & 4) != 0) {
+                    DAT_004d2168[n].field_1404 = x;
+                    DAT_004d2168[n].field_1408 = y + 5;
+                    n++;
+                }
+                if ((mask & 8) != 0) {
+                    DAT_004d2168[n].field_1404 = x - 5;
+                    DAT_004d2168[n].field_1408 = y;
+                    n++;
+                }
+                if (n != 0) {
+                    EditCursor.field_1830 = (unsigned int)&DAT_004d2168[0];
+                    if (n > 1) {
+                        c = &DAT_004d2168[1];
+                        n--;
+                        do {
+                            c[-1].field_1830 = (unsigned int)c;
+                            c++;
+                            n--;
+                        } while (n != 0);
+                    }
+                }
+            }
+        }
     }
 }
 
