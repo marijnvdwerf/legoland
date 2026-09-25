@@ -1746,8 +1746,7 @@ void FUN_0041c4c0(int x, int y, int mask, unsigned short *owner) {
     unsigned char *map;
     int row;
     int col;
-    int cx;
-    int cy;
+    struct Point pt;
 
     tile.pos.x = x;
     tile.pos.y = y;
@@ -1770,10 +1769,10 @@ void FUN_0041c4c0(int x, int y, int mask, unsigned short *owner) {
     map = &DAT_004b53d4[mask * 0x19];
     for (row = 0; row < 5; row++) {
         for (col = 0; col < 5; col++) {
-            cy = row + y - 2;
-            cx = col + x - 2;
-            if (cx >= 0 && cx < lpConfig->width && cy >= 0 && cy < lpConfig->height) {
-                elem = &GameMap[cy][cx];
+            pt.y = row + y - 2;
+            pt.x = col + x - 2;
+            if (pt.x >= 0 && pt.x < lpConfig->width && pt.y >= 0 && pt.y < lpConfig->height) {
+                elem = &GameMap[pt.y][pt.x];
             } else {
                 elem = NULL;
             }
@@ -1781,7 +1780,7 @@ void FUN_0041c4c0(int x, int y, int mask, unsigned short *owner) {
             elem->field_10 = 2;
             elem->field_0 = DAT_0082adf0->field_c4;
             *(unsigned short *)&elem->field_4 = tile.id;
-            SetMapTile(cx, cy, *DAT_0082adf4[*map >> 8].tiles + (unsigned char)*map);
+            SetMapTile(pt.x, pt.y, *DAT_0082adf4[*map >> 8].tiles + (unsigned char)*map);
             map++;
         }
     }
