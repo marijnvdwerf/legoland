@@ -624,30 +624,28 @@ LEGO_EXPORT void BuildObjInfoList(void) {
     struct InfoNode *node;
     struct FootprintNode *fp;
     struct ClassObjNode *obj;
-    union TileId at;
-    int x;
-    int y;
+    union TileId tile;
+    struct Point pos;
     int best;
-    int ux;
-    int uy;
+    struct Point at;
 
     FUN_00481170();
-    for (y = 0; y < lpConfig->height; y++) {
-        for (x = 0; x < lpConfig->width; x++) {
-            if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
-                cell = &GameMap[y][x];
+    for (pos.y = 0; pos.y < lpConfig->height; pos.y++) {
+        for (pos.x = 0; pos.x < lpConfig->width; pos.x++) {
+            if (pos.x >= 0 && pos.x < lpConfig->width && pos.y >= 0 && pos.y < lpConfig->height) {
+                cell = &GameMap[pos.y][pos.x];
             } else {
                 cell = NULL;
             }
             if ((cell->flags & 0x80) == 0) {
                 continue;
             }
-            at.pos.x = cell->field_4;
-            at.pos.y = cell->field_5;
-            ux = at.pos.x;
-            uy = at.pos.y;
-            if (ux >= 0 && ux < lpConfig->width && uy >= 0 && uy < lpConfig->height) {
-                origin = &GameMap[uy][ux];
+            tile.pos.x = cell->field_4;
+            at.x = tile.pos.x;
+            tile.pos.y = cell->field_5;
+            at.y = tile.pos.y;
+            if (at.x >= 0 && at.x < lpConfig->width && at.y >= 0 && at.y < lpConfig->height) {
+                origin = &GameMap[at.y][at.x];
             } else {
                 origin = NULL;
             }
@@ -660,36 +658,36 @@ LEGO_EXPORT void BuildObjInfoList(void) {
                 }
                 if (node != NULL) {
                     if (rand() % 256 < 0x50) {
-                        node->x = cls->field_c + ux;
-                        node->y = cls->field_10 + uy;
-                        node->origin_x = cls->field_24 + at.pos.x;
-                        node->origin_y = cls->field_25 + at.pos.y;
+                        node->x = cls->field_c + at.x;
+                        node->y = cls->field_10 + at.y;
+                        node->origin_x = cls->field_24 + at.x;
+                        node->origin_y = cls->field_25 + at.y;
                     }
                 } else {
                     node = (struct InfoNode *)malloc(sizeof(struct InfoNode));
                     node->next = DAT_00669248;
                     DAT_00669248 = node;
                     node->classid = (int)cls;
-                    node->coords = at.id;
-                    node->x = cls->field_c + ux;
-                    node->y = cls->field_10 + uy;
-                    node->origin_x = cls->field_24 + at.pos.x;
-                    node->origin_y = cls->field_25 + at.pos.y;
+                    node->coords = tile.id;
+                    node->x = cls->field_c + at.x;
+                    node->y = cls->field_10 + at.y;
+                    node->origin_x = cls->field_24 + at.x;
+                    node->origin_y = cls->field_25 + at.y;
                 }
                 origin->flags |= 0x400;
             }
             fp = (struct FootprintNode *)&cls->footprint_base;
-            while (x < fp->x_min + ux || x > fp->x_max + ux) {
+            while (pos.x < fp->x_min + at.x || pos.x > fp->x_max + at.x) {
                 fp = fp->next;
             }
-            x = fp->x_max + ux;
+            pos.x = fp->x_max + at.x;
             best = cls->field_48;
             for (obj = cls->objlist; obj != NULL; obj = obj->next) {
                 if (obj->field_c > best) {
                     best = obj->field_c;
                 }
             }
-            if (y - uy == best) {
+            if (pos.y - at.y == best) {
                 origin->flags &= 0xfbff;
             }
         }
