@@ -170,7 +170,7 @@ struct EditObject {
 };
 
 // FUNCTION: LEGOLAND 0x0045dd80
-LEGO_EXPORT void AddObjectToMap(struct EditObject *param_1, unsigned int param_2, int param_3) {
+LEGO_EXPORT void AddObjectToMap(struct EditObject *param_1, TileId param_2, int param_3) {
     struct MapObject *obj;
     unsigned int flags;
     struct MapElement *tile;
@@ -190,8 +190,8 @@ LEGO_EXPORT void AddObjectToMap(struct EditObject *param_1, unsigned int param_2
     while (1) {
         for (; y <= rect.y1; y++) {
             if (rect.x0 <= rect.x1) {
-                int ty = ((param_2 >> 8) & 0xff) + y;
-                int tx = (param_2 & 0xff) + rect.x0;
+                int ty = param_2.pos.y + y;
+                int tx = param_2.pos.x + rect.x0;
                 count = (rect.x1 - rect.x0) + 1;
                 do {
                     if (tx >= 0 && tx < lpConfig->width && ty >= 0 && ty < lpConfig->height) {
@@ -199,7 +199,7 @@ LEGO_EXPORT void AddObjectToMap(struct EditObject *param_1, unsigned int param_2
                         if (tile != 0) {
                             tile->field_10 = 0;
                             tile->field_0 = (unsigned int)param_1;
-                            tile->field_4 = (unsigned short)param_2;
+                            tile->field_4 = param_2.id;
                             tile->flags = (unsigned short)(((tile->flags & 0x10) | param_3) | 0x80);
                             tile->field_11 = obj->field_2c;
                             if (obj->flags & 2) {
@@ -918,7 +918,7 @@ LEGO_EXPORT unsigned int AddBasicObject(struct EditObject *editObj, int *coords)
     } else {
         packed[0] = (unsigned char)coords[0];
         packed[1] = (unsigned char)coords[1];
-        AddObjectToMap(editObj, *(unsigned short *)packed, 0);
+        AddObjectToMap(editObj, *(TileId *)packed, 0);
         ApplyConsTileMap(editObj, *(unsigned short *)packed);
         if (obj->type != 2) {
             unsigned short id;

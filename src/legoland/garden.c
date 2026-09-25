@@ -87,9 +87,9 @@ void FUN_004328c0(void) {
 
 // FUNCTION: LEGOLAND 0x00432900
 void FUN_00432900(int param_1, int *param_2) {
-    unsigned short packed;
-    *((unsigned char *)&packed) = (unsigned char)param_2[0];
-    *((unsigned char *)&packed + 1) = (unsigned char)param_2[1];
+    TileId packed;
+    packed.pos.x = param_2[0];
+    packed.pos.y = param_2[1];
     AddObjectToMap(param_1, packed, 0);
     if (DAT_00616158 != 0) {
         int r = rand();

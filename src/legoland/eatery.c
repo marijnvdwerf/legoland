@@ -239,10 +239,10 @@ void FUN_0042e4c0(void) {
 
 // FUNCTION: LEGOLAND 0x0042e500
 void FUN_0042e500(int param_1, unsigned char *param_2) {
-    unsigned char id[2];
-    id[0] = param_2[0];
-    id[1] = param_2[4];
-    AddObjectToMap(param_1, *(unsigned short *)id, 0);
+    TileId id;
+    id.pos.x = param_2[0];
+    id.pos.y = param_2[4];
+    AddObjectToMap(param_1, id, 0);
     if (DAT_00616140 != NULL) {
         int r = rand();
         Set_UserFlags(*(int *)param_2 << 8, *(int *)(param_2 + 4) << 8, (unsigned short)(r % DAT_00616140->count_4));
