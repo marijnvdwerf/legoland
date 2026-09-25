@@ -250,7 +250,7 @@ void FUN_0044eae0(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044eb10
-unsigned char FUN_0044eb10(struct Bloke *bloke) {
+char FUN_0044eb10(struct Bloke *bloke) {
     int *entry;
     int index;
     int value;
@@ -1271,145 +1271,116 @@ LEGO_EXPORT void DoHighLevelAI(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00450500
-int FUN_00450500(int *a, int *b) {
-    unsigned int sx;
-    unsigned int sy;
-
-    sx = (unsigned int)(a[0] - b[0]) >> 0x1f;
-    sy = (unsigned int)(a[1] - b[1]) >> 0x1f;
-    return (((a[1] - b[1]) ^ sy) - sy) + (((a[0] - b[0]) ^ sx) - sx) == 1;
+int FUN_00450500(struct Point *a, struct Point *b) {
+    return abs(a->x - b->x) + abs(a->y - b->y) == 1;
 }
 
 // FUNCTION: LEGOLAND 0x00450530
 void FUN_00450530(struct Bloke *bloke) {
-    int *element;
-    unsigned char counter;
-    char rate;
-    int obj;
-    int tile_y;
-    int tile_x;
+    struct MapElement *element;
+    struct Ride *cls;
+    int counter;
     int dist;
-    int local_38;
-    int local_34;
-    int local_30;
-    int local_2c;
-    int local_28;
-    int row;
-    int col;
-    int center_x;
-    int spot[2];
-    int origin[2];
-    int food[2];
+    int dx;
+    struct Point t;
+    int dy;
+    float chance;
+    int rides;
+    int blocked;
+    int shops;
+    int food_score;
+    int toilets;
+    int rate;
+    struct Point pos;
+    struct Point origin;
+    struct Point food;
+    struct Point spot;
 
-    local_28 = 0;
-    local_38 = 0;
-    local_2c = 0;
-    local_30 = 0;
-    local_34 = 0;
-    tile_y = bloke->pos.y >> 8;
-    tile_x = bloke->pos.x >> 8;
-    row = tile_y - 4;
-    origin[0] = tile_x;
-    center_x = tile_y;
-    if (row <= tile_y + 4) {
-        do {
-            col = tile_x - 4;
-            if (col <= tile_x + 4) {
-                do {
-                    if (col < 0 || lpConfig->width <= col || row < 0 || lpConfig->height <= row ||
-                        (element = (int *)(GameMap[row] + col)) == 0) {
-                        local_34++;
-                        goto next_col;
-                    }
-                    obj = *element;
-                    if (obj == 0) {
-                        goto empty;
-                    }
-                    if ((*(unsigned char *)((char *)element + 0xc) & 0x80) == 0) {
-                        if (obj == 0) {
-                        empty:
-                            dist = abs(tile_x - col) + abs(center_x - row);
-                            if (dist != 0) {
-                                local_38 += (int)(-0x14 / (__int64)dist);
-                            }
-                        }
-                    } else {
-                        obj = *(int *)(obj + 0xc);
-                        if ((int)abs(origin[0] - col) <= (int)*(short *)(obj + 0x2a) &&
-                            (int)abs(center_x - row) <= (int)*(short *)(obj + 0x2a)) {
-                            switch (*(short *)(obj + 0x20)) {
-                            case 1:
-                                counter = GetBlokeCounter((struct ObjectClass *)obj, GetBlokeNum(bloke));
-                                spot[0] = *(unsigned char *)((char *)element + 4) + *(int *)(obj + 0xc);
-                                local_28 += *(short *)(obj + 0x36) >> (counter & 0x1f);
-                                spot[1] = *(unsigned char *)((char *)element + 5) + *(int *)(obj + 0x10);
-                                if (FUN_00450500(spot, origin) != 0 && FUN_00450500(&col, spot) != 0 &&
-                                    Calc_Item_Attractiveness(obj, (unsigned int)bloke, 1) > 0x32 && bloke->action == 6) {
-                                    tile_y = spot[0];
-                                    dist = spot[1];
-                                    if (bloke->field_2c >> 8 != spot[0] || bloke->field_30 >> 8 != dist) {
-                                        bloke->field_2c = tile_y << 8;
-                                        bloke->field_30 = dist << 8;
-                                        bloke->param_action = 1;
-                                        bloke->field_e = 0;
-                                        bloke->field_14 = *(unsigned int *)(obj + 0xc4);
-                                    }
-                                }
-                                break;
-                            case 2:
-                                local_38 += *(short *)(obj + 0x36);
-                                break;
-                            case 3:
-                                counter = GetBlokeCounter((struct ObjectClass *)obj, GetBlokeNum(bloke));
-                                local_30 += *(short *)(obj + 0x36) >> (counter & 0x1f);
-                                if ((bloke->flags & 0x20) == 0 && bloke->field_14 != *(unsigned int *)(obj + 0xc4)) {
-                                    dist = GetBlokeCounter((struct ObjectClass *)obj, GetBlokeNum(bloke));
-                                    if ((float)(rand() % 100) < (float)(int)(0xf / (__int64)(dist + 1)) &&
-                                        bloke->field_e != 0xf && FUN_00458930(0.0f) < 2) {
-                                        bloke->field_14 = *(unsigned int *)(obj + 0xc4);
-                                        bloke->field_2c = *(unsigned char *)((char *)element + 4);
-                                        bloke->field_30 = *(unsigned char *)((char *)element + 5);
-                                        NewLongTermAction(bloke, 0xf);
-                                    }
-                                }
-                                break;
-                            case 4:
-                            case 5:
-                                counter = GetBlokeCounter((struct ObjectClass *)obj, GetBlokeNum(bloke));
-                                food[0] = *(unsigned char *)((char *)element + 4) + *(int *)(obj + 0xc);
-                                local_2c += *(short *)(obj + 0x36) >> (counter & 0x1f);
-                                food[1] = *(unsigned char *)((char *)element + 5) + *(int *)(obj + 0x10);
-                                if (FUN_00450500(origin, food) != 0 && FUN_00450500(&col, food) != 0 &&
-                                    Calc_Item_Attractiveness(obj, (unsigned int)bloke, 1) > 0x32 && bloke->action == 6) {
-                                    tile_y = food[0];
-                                    dist = food[1];
-                                    if (bloke->field_2c >> 8 != food[0] || bloke->field_30 >> 8 != dist) {
-                                        bloke->field_2c = tile_y << 8;
-                                        bloke->field_30 = dist << 8;
-                                        bloke->param_action = 1;
-                                        bloke->field_e = 0;
-                                        bloke->field_14 = *(unsigned int *)(obj + 0xc4);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                next_col:
-                    col++;
-                    origin[0] = center_x;
-                    tile_x = bloke->pos.x >> 8;
-                } while (col <= origin[0] + 4);
+    toilets = 0;
+    rides = 0;
+    food_score = 0;
+    shops = 0;
+    blocked = 0;
+    origin.x = bloke->pos.x >> 8;
+    origin.y = bloke->pos.y >> 8;
+    for (pos.y = origin.y - 4; pos.y <= origin.y + 4; pos.y++) {
+        for (pos.x = origin.x - 4; pos.x <= origin.x + 4; pos.x++) {
+            if (pos.x < 0 || pos.x >= lpConfig->width || pos.y < 0 || pos.y >= lpConfig->height ||
+                (element = &GameMap[pos.y][pos.x]) == NULL) {
+                blocked++;
+                continue;
             }
-            row++;
-        } while (row <= center_x + 4);
+            if (element->field_0 != 0 && (element->flags & 0x80) != 0) {
+                cls = *(struct Ride **)(element->field_0 + 0xc);
+                if (abs(origin.x - pos.x) <= cls->range && abs(origin.y - pos.y) <= cls->range) {
+                    switch (cls->type) {
+                    case 2:
+                        rides += cls->value;
+                        break;
+                    case 3:
+                        shops += cls->value >> GetBlokeCounter((struct ObjectClass *)cls, GetBlokeNum(bloke));
+                        if ((bloke->flags & 0x20) == 0 && bloke->field_14 != cls->field_c4) {
+                            chance = 15 / (GetBlokeCounter((struct ObjectClass *)cls, GetBlokeNum(bloke)) + 1);
+                            if (rand() % 100 < chance && bloke->field_e != 0xf) {
+                                t.x = bloke->pos.x >> 8;
+                                t.y = bloke->pos.y >> 8;
+                                dx = abs(t.x - pos.x);
+                                dy = abs(t.y - pos.y);
+                                if ((int)sqrt(dy * dy + dx * dx) <= 1) {
+                                    bloke->field_14 = cls->field_c4;
+                                    bloke->field_2c = element->field_4;
+                                    bloke->field_30 = element->field_5;
+                                    NewLongTermAction(bloke, 0xf);
+                                }
+                            }
+                        }
+                        break;
+                    case 4:
+                    case 5:
+                        food_score += cls->value >> GetBlokeCounter((struct ObjectClass *)cls, GetBlokeNum(bloke));
+                        food.x = element->field_4 + cls->x;
+                        food.y = element->field_5 + cls->y;
+                        if (FUN_00450500(&origin, &food) != 0 && FUN_00450500(&pos, &food) != 0 &&
+                            (int)Calc_Item_Attractiveness((unsigned int)cls, (unsigned int)bloke, 1) > 0x32 && bloke->action == 6 &&
+                            (bloke->field_2c >> 8 != food.x || bloke->field_30 >> 8 != food.y)) {
+                            bloke->field_2c = food.x << 8;
+                            bloke->field_30 = food.y << 8;
+                            bloke->param_action = 1;
+                            bloke->field_e = 0;
+                            bloke->field_14 = cls->field_c4;
+                        }
+                        break;
+                    case 1:
+                        toilets += cls->value >> GetBlokeCounter((struct ObjectClass *)cls, GetBlokeNum(bloke));
+                        spot.x = element->field_4 + cls->x;
+                        spot.y = element->field_5 + cls->y;
+                        if (FUN_00450500(&spot, &origin) != 0 && FUN_00450500(&pos, &spot) != 0 &&
+                            (int)Calc_Item_Attractiveness((unsigned int)cls, (unsigned int)bloke, 1) > 0x32 && bloke->action == 6 &&
+                            (bloke->field_2c >> 8 != spot.x || bloke->field_30 >> 8 != spot.y)) {
+                            bloke->field_2c = spot.x << 8;
+                            bloke->field_30 = spot.y << 8;
+                            bloke->param_action = 1;
+                            bloke->field_e = 0;
+                            bloke->field_14 = cls->field_c4;
+                        }
+                        break;
+                    }
+                }
+            } else if (element->field_0 == 0) {
+                dist = abs(origin.x - pos.x) + abs(origin.y - pos.y);
+                if (dist != 0) {
+                    rides += -20 / dist;
+                }
+            }
+        }
     }
-    FUN_00482df0(bloke, 2, local_34);
-    FUN_00482df0(bloke, 3, local_38);
-    FUN_00482df0(bloke, 4, local_30);
-    FUN_00482df0(bloke, 5, local_2c);
-    FUN_00482df0(bloke, 6, local_28);
+    FUN_00482df0(bloke, 2, blocked);
+    FUN_00482df0(bloke, 3, rides);
+    FUN_00482df0(bloke, 4, shops);
+    FUN_00482df0(bloke, 5, food_score);
+    FUN_00482df0(bloke, 6, toilets);
     rate = FUN_0044eb10(bloke);
-    if (2 < rate) {
+    if (rate >= 3) {
         FUN_00482df0(bloke, 7, rate - 2);
     }
 }

@@ -40,7 +40,11 @@ struct Ride {
     /* 0x14 */ unsigned char pad_14[0x1c - 0x14];
     /* 0x1c */ unsigned int flags;
     /* 0x20 */ short type;
-    /* 0x22 */ unsigned char pad_22[0x3c - 0x22];
+    /* 0x22 */ unsigned char pad_22[0x2a - 0x22];
+    /* 0x2a */ short range;
+    /* 0x2c */ unsigned char pad_2c[0x36 - 0x2c];
+    /* 0x36 */ short value;
+    /* 0x38 */ unsigned char pad_38[0x3c - 0x38];
     /* 0x3c */ unsigned int footprint[5];
     /* 0x50 */ unsigned char pad_50[0x64 - 0x50];
     /* 0x64 */ struct RideLayer *layer;
