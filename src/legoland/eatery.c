@@ -252,11 +252,11 @@ void FUN_0042e500(int param_1, unsigned char *param_2) {
 // FUNCTION: LEGOLAND 0x0042e560
 unsigned int *FUN_0042e560(int param_1, unsigned int param_2) {
     unsigned char *b = (unsigned char *)&param_2;
-    int idx = (Get_UserFlags((unsigned int)b[0] << 8, (unsigned int)b[1] << 8) & 0xff) * 4;
+    int idx = ((unsigned short)Get_UserFlags((unsigned int)b[0] << 8, (unsigned int)b[1] << 8) & 0xff) * 4;
     DAT_0082c6a0 = *(int *)((char *)DAT_00616140->table_8 + idx);
     DAT_0082c6a4 = *(int *)((char *)DAT_00616140->table_c + idx) >> 1;
-    DAT_0082c6b0 = 0;
     DAT_0082c6a8 = *(int *)((char *)DAT_00616140->table_10 + idx) >> 1;
+    DAT_0082c6b0 = 0;
     return &DAT_0082c6a0;
 }
 

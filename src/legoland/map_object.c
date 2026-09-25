@@ -2220,7 +2220,7 @@ LEGO_EXPORT void Set_RFFlags(int x, int y, unsigned char value) {
 }
 
 // FUNCTION: LEGOLAND 0x00461710
-LEGO_EXPORT short Get_UserFlags(int x, int y) {
+LEGO_EXPORT unsigned short Get_UserFlags(int x, int y) {
     struct MapTile *tile;
 
     tile = MapTileGrid[y >> 8];
