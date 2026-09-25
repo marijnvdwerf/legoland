@@ -521,7 +521,7 @@ void FUN_00499d60(struct WorkOrder *order) {
     struct WorkOrder *next;
 
     cur = DAT_0079a8b0;
-    if (DAT_0079a8b0 == 0) {
+    if (cur == 0) {
         return;
     }
     // STRING: LEGOLAND 0x004c0034
@@ -538,25 +538,25 @@ void FUN_00499d60(struct WorkOrder *order) {
             DAT_0079a8b4 = 0;
         }
     } else {
-        do {
-            next = cur->next;
-            if (next == order) {
-                if (cur != 0) {
-                    cur->next = order->next;
-                    if (order->next == 0) {
-                        DAT_0079a8b4 = cur;
-                    }
-                    goto done;
-                }
+        next = cur->next;
+        while (next != order) {
+            cur = cur->next;
+            if (cur == 0) {
                 break;
             }
-            cur = next;
-        } while (next != 0);
-        // STRING: LEGOLAND 0x004bffa0
-        DBPrintf("    Work order not found (%x) at (%d,%d)", order->var_8, order->var_c);
-        return;
+            next = cur->next;
+        }
+        if (cur != 0) {
+            cur->next = order->next;
+            if (order->next == 0) {
+                DAT_0079a8b4 = cur;
+            }
+        } else {
+            // STRING: LEGOLAND 0x004bffa0
+            DBPrintf("    Work order not found (%x) at (%d,%d)", order->var_8, order->var_c);
+            return;
+        }
     }
-done:
     // STRING: LEGOLAND 0x004bffcc
     DBPrintf("    Work orders START (%x), END (%x)\n", DAT_0079a8b0, DAT_0079a8b4);
 }
@@ -625,32 +625,23 @@ void FUN_00499eb0(struct WorkOrder *order) {
 
 // FUNCTION: LEGOLAND 0x00499f40
 void FUN_00499f40(struct WorkOrder *order) {
-    struct WorkOrder *scan;
-    struct WorkOrder *prev;
-    struct WorkOrder *head;
-    struct WorkOrder *onext;
+    struct WorkOrder *scan = DAT_0079a8c0;
+    struct WorkOrder *onext = order->next;
 
-    scan = DAT_0079a8c0;
-    onext = order->next;
     order->var_18 = 0;
     if (onext != 0 && DAT_0079a8c0 != 0) {
-        head = onext;
-        if (DAT_0079a8c0 != order) {
-            do {
-                prev = scan;
-                head = DAT_0079a8c0;
-                if (prev == 0) {
-                    goto relink;
+        if (DAT_0079a8c0 == order) {
+            DAT_0079a8c0 = onext;
+        } else {
+            for (; scan != 0; scan = scan->next) {
+                if (scan->next == order) {
+                    break;
                 }
-                scan = prev->next;
-            } while (prev->next != order);
-            if (prev != 0) {
-                prev->next = onext;
-                head = DAT_0079a8c0;
+            }
+            if (scan != 0) {
+                scan->next = onext;
             }
         }
-    relink:
-        DAT_0079a8c0 = head;
         ((struct WorkOrder *)DAT_0079a8c4)->next = order;
         DAT_0079a8c4 = order;
         if (DAT_0079a8c0 == 0) {
