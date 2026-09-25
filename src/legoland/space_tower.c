@@ -678,52 +678,46 @@ void FUN_0043b570(void) {
 
 // FUNCTION: LEGOLAND 0x0043b5d0
 LEGO_EXPORT int SpaceTower_Save(void) {
-    int *field;
-    int *cursor;
-    int target;
+    struct SpaceTowerCar *car;
+    struct SpaceTowerRideNode **field;
+    struct SpaceTowerRideNode *cur;
     int index;
-    unsigned int i;
+    int i;
     unsigned int one;
     unsigned int zero;
-    char *node;
 
+    car = DAT_0062fda8;
     one = 1;
     zero = 0;
-    node = (char *)DAT_0062fda8;
-    while (node != NULL) {
-        if (SaveGameWrite(&one, 4) == 0) {
-            return 0;
-        }
-        i = 0;
-        do {
-            if (i & 1) {
-                field = (int *)(node + 0x30 + ((int)i >> 1) * 0x24);
-            } else {
-                field = (int *)(node + 0x2c + ((int)i >> 1) * 0x24);
+    if (DAT_0062fda8 != NULL) {
+        while (car != NULL) {
+            if (SaveGameWrite(&one, 4) == 0) {
+                return 0;
             }
-            index = 0;
-            cursor = *(int **)((char *)DAT_0062fd74 + 0xcc);
-            if (cursor != NULL) {
-                target = *field;
-                do {
-                    if (cursor == (int *)target) {
+            for (i = 0; i < 8; i++) {
+                if (i & 1) {
+                    field = &car->seats[i >> 1].field_1c;
+                } else {
+                    field = &car->seats[i >> 1].field_18;
+                }
+                index = 0;
+                for (cur = ((struct SpaceTowerRide *)DAT_0062fd74)->list; cur != NULL; cur = cur->next) {
+                    if (cur == *field) {
                         break;
                     }
-                    cursor = (int *)*cursor;
-                    index = index + 1;
-                } while (cursor != NULL);
+                    index++;
+                }
+                if (cur != NULL) {
+                    *field = (struct SpaceTowerRideNode *)(index + 1);
+                } else {
+                    *field = NULL;
+                }
             }
-            if (cursor != NULL) {
-                *field = index + 1;
-            } else {
-                *field = 0;
+            if (SaveGameWrite(car, 0xb4) == 0) {
+                return 0;
             }
-            i = i + 1;
-        } while ((int)i < 8);
-        if (SaveGameWrite(node, 0xb4) == 0) {
-            return 0;
+            car = car->next;
         }
-        node = *(char **)(node + 8);
     }
     return SaveGameWrite(&zero, 4) != 0;
 }
