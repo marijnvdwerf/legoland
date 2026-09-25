@@ -24,20 +24,18 @@
 #include "tilemap.h"
 
 // FUNCTION: LEGOLAND 0x00418e60
-int FUN_00418e60(unsigned int param_1, unsigned int param_2) {
-    short id = (short)param_1;
+int FUN_00418e60(TileId tile, unsigned int bloke) {
     struct BoatRideNode *score;
-    struct BoatRide *node;
+    struct BoatRide *node = DAT_004cc03c;
     struct BoatRide *fresh;
-    short *fill;
-    int i;
-    unsigned int r;
 
-    for (score = DAT_004cc074; node = DAT_004cc03c, score != NULL && score->id != (unsigned short)id;
-        score = score->next) {
+    for (score = DAT_004cc074; score != NULL; score = score->next) {
+        if (score->id == tile.id) {
+            break;
+        }
     }
-    while (node != NULL) {
-        if (node->id == (unsigned short)id) {
+    for (; node != NULL; node = node->next) {
+        if (node->id == tile.id) {
             if (node->field_4 == score->start.pos.x && node->field_8 == score->start.pos.y) {
                 return 0;
             }
@@ -48,39 +46,25 @@ int FUN_00418e60(unsigned int param_1, unsigned int param_2) {
                 return 0;
             }
         }
-        node = node->next;
     }
     fresh = (struct BoatRide *)malloc(sizeof(struct BoatRide));
     if (fresh == NULL) {
         return 0;
     }
-    fresh->id = id;
     fresh->next = DAT_004cc03c;
-    i = (param_1 >> 8 & 0xff) + 5;
-    fresh->field_4 = (param_1 & 0xff) - 1;
-    fresh->field_8 = i;
-    fresh->field_c = (param_1 & 0xff) - 1;
-    fresh->field_10 = i;
+    fresh->id = tile.id;
+    fresh->field_4 = tile.pos.x - 1;
+    fresh->field_8 = tile.pos.y + 5;
+    fresh->field_c = tile.pos.x - 1;
+    fresh->field_10 = tile.pos.y + 5;
     fresh->field_3dc = 1;
+    fresh->field_3e0 = rand() & 3;
     fresh->field_3e4 = 1;
-    r = rand();
-    fresh->field_3e0 = r & 3;
-    r = rand();
-    fresh->field_3ec = param_2;
-    fresh->field_3e8 = (r & 0xf) + 4;
-    fill = (short *)fresh->field_1c;
+    fresh->field_3e8 = (rand() & 0xf) + 4;
+    fresh->field_3ec = bloke;
     DAT_004cc03c = fresh;
-    for (i = 0xa0; i != 0; i = i - 1) {
-        fill[0] = -0xe0f;
-        fill[1] = -0xe0f;
-        fill = fill + 2;
-    }
-    fill = (short *)fresh->field_29c;
-    for (i = 0x50; i != 0; i = i - 1) {
-        fill[0] = 0;
-        fill[1] = 0;
-        fill = fill + 2;
-    }
+    memset(fresh->field_1c, 0xf1, sizeof(fresh->field_1c));
+    memset(fresh->field_29c, 0, sizeof(fresh->field_29c));
     if (fresh->field_3e0 == 3) {
         fresh->field_3e0 = 2;
     }
@@ -969,7 +953,7 @@ void FUN_0041a720(void) {
             case 1:
                 if (bloke == (int)score->blokes[0] && score->start.pos.x != 0 &&
                     (int)FUN_004192d0((struct BoatRide *)score) * 6 <= (int)score->blokes[3] &&
-                    FUN_00418e60((id & 0xff) | (idhi << 8) | (id & 0xffff0000), bloke) != 0) {
+                    FUN_00418e60(*(TileId *)&id, bloke) != 0) {
                     BlokeSitAnim(bloke);
                     BlokeSetFrame(bloke, 0);
                     score->blokes[0] = 0;
@@ -1869,53 +1853,52 @@ void FUN_0041c130(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
 }
 
 // FUNCTION: LEGOLAND 0x0041c4c0
-void FUN_0041c4c0(int param_1, int param_2, int param_3, unsigned short *param_4) {
+void FUN_0041c4c0(int x, int y, int mask, unsigned short *owner) {
+    TileId tile;
     struct PathNode *node;
-    int *tile;
+    struct MapElement *elem;
+    unsigned char *map;
     int row;
     int col;
     int cx;
-    unsigned char *map;
-    unsigned short coord;
+    int cy;
 
-    coord = (unsigned short)((unsigned char)param_1 | ((unsigned char)param_2 << 8));
-    node = FUN_0041c890(param_1, param_2);
+    tile.pos.x = x;
+    tile.pos.y = y;
+    node = FUN_0041c890(x, y);
     if (node == NULL) {
         node = (struct PathNode *)malloc(0x1c);
         if (node == NULL) {
             return;
         }
-        node->field_c = 0;
+        node->field_18 = NULL;
         node->next = DAT_004d823c;
         DAT_004d823c = node;
     }
-    node->tile.id = coord;
-    node->field_4 = param_3;
-    if (param_4 != NULL) {
-        node->field_2 = *param_4;
+    node->tile = tile;
+    node->field_4 = mask;
+    if (owner != NULL) {
+        node->field_2 = *owner;
     }
     BGFullUpdate = 1;
-    map = &DAT_004b53d4[param_3 * 0x19];
-    row = 0;
-    do {
-        int yy = param_2 - 2 + row;
-        cx = param_1 - 2;
-        do {
-            if (cx < 0 || (int)(unsigned int)lpConfig->width <= cx || yy < 0 || (int)(unsigned int)lpConfig->height <= yy) {
-                tile = NULL;
+    map = &DAT_004b53d4[mask * 0x19];
+    for (row = 0; row < 5; row++) {
+        for (col = 0; col < 5; col++) {
+            cy = row + y - 2;
+            cx = col + x - 2;
+            if (cx >= 0 && cx < lpConfig->width && cy >= 0 && cy < lpConfig->height) {
+                elem = &GameMap[cy][cx];
             } else {
-                tile = (int *)((char *)GameMap[yy] + cx * 0x14);
+                elem = NULL;
             }
-            *(unsigned short *)((char *)tile + 0xc) = 8;
-            *(unsigned char *)((char *)tile + 0x10) = 2;
-            *tile = (int)DAT_0082adf0->footprint[(0xc4 - 0x3c) / 4];
-            *(unsigned short *)((char *)tile + 4) = coord;
-            SetMapTile(cx, yy, *DAT_0082adf4->tiles + *map);
-            cx = cx + 1;
-            map = map + 1;
-        } while ((2 - param_1) + cx < 5);
-        row = row + 1;
-    } while (row < 5);
+            elem->flags = 8;
+            elem->field_10 = 2;
+            elem->field_0 = DAT_0082adf0->field_c4;
+            *(unsigned short *)&elem->field_4 = tile.id;
+            SetMapTile(cx, cy, *DAT_0082adf4[*map >> 8].tiles + (unsigned char)*map);
+            map++;
+        }
+    }
 }
 
 // FUNCTION: LEGOLAND 0x0041c620
