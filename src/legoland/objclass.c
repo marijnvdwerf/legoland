@@ -11,6 +11,7 @@
 #include "llidb.h"
 #include "map_object.h"
 #include "math.h"
+#include "obj_instance.h"
 #include "objclass.h"
 
 struct ObjectClass {
@@ -617,108 +618,82 @@ void FUN_00481170(void) {
 
 // FUNCTION: LEGOLAND 0x00481200
 LEGO_EXPORT void BuildObjInfoList(void) {
-    struct LegoConfig *config;
     struct MapElement *cell;
     struct MapElement *origin;
     struct ObjClassInfo *cls;
     struct InfoNode *node;
     struct FootprintNode *fp;
     struct ClassObjNode *obj;
-    unsigned char ox;
-    unsigned char oy;
-    short coords;
-    unsigned int x;
-    unsigned int y;
-    unsigned int ux;
-    unsigned int uy;
-    unsigned int width;
-    int offset;
+    union TileId at;
+    int x;
+    int y;
     int best;
-    int rng;
+    int ux;
+    int uy;
 
     FUN_00481170();
-    y = 0;
-    config = lpConfig;
-    if (config->height == 0) {
-        return;
-    }
-    do {
-        x = 0;
-        width = config->width;
-        if (width != 0) {
-            offset = 0;
-            do {
-                if ((int)x < 0 || (int)x >= (int)width || (int)y < 0 || (int)y >= (int)config->height) {
-                    cell = 0;
-                } else {
-                    cell = (struct MapElement *)((char *)GameMap[y] + offset);
-                }
-                if ((cell->flags & 0x80) != 0) {
-                    ox = cell->field_4;
-                    oy = cell->field_5;
-                    coords = *(short *)&cell->field_4;
-                    uy = oy;
-                    ux = ox;
-                    if (ux < width && uy < config->height) {
-                        origin = &GameMap[uy][ux];
-                    } else {
-                        origin = 0;
+    for (y = 0; y < lpConfig->height; y++) {
+        for (x = 0; x < lpConfig->width; x++) {
+            if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+                cell = &GameMap[y][x];
+            } else {
+                cell = NULL;
+            }
+            if ((cell->flags & 0x80) == 0) {
+                continue;
+            }
+            at.pos.x = cell->field_4;
+            at.pos.y = cell->field_5;
+            ux = at.pos.x;
+            uy = at.pos.y;
+            if (ux >= 0 && ux < lpConfig->width && uy >= 0 && uy < lpConfig->height) {
+                origin = &GameMap[uy][ux];
+            } else {
+                origin = NULL;
+            }
+            cls = (struct ObjClassInfo *)*(int *)(origin->field_0 + 0xc);
+            if (cls->type != 0 && cls->type != 2 && (origin->flags & 0x400) == 0) {
+                for (node = DAT_00669248; node != NULL; node = node->next) {
+                    if (node->classid == (int)cls) {
+                        break;
                     }
-                    cls = (struct ObjClassInfo *)*(int *)(origin->field_0 + 0xc);
-                    if (cls->type != 0 && cls->type != 2 && (*((unsigned char *)origin + 0xd) & 4) == 0) {
-                        node = DAT_00669248;
-                        while (node != 0) {
-                            if (node->classid == (int)cls) {
-                                rng = rand();
-                                rng = rng & 0x800000ff;
-                                if (rng < 0) {
-                                    rng = ((rng - 1) | 0xffffff00) + 1;
-                                }
-                                if (rng < 0x50) {
-                                    node->x = cls->field_c + ux;
-                                    node->y = cls->field_10 + uy;
-                                    *(unsigned char *)&node->origin_x = cls->field_24 + ox;
-                                    node->origin_y = cls->field_25 + oy;
-                                }
-                                goto marked;
-                            }
-                            node = node->next;
-                        }
-                        node = (struct InfoNode *)malloc(sizeof(struct InfoNode));
-                        node->next = DAT_00669248;
-                        DAT_00669248 = node;
-                        node->classid = (int)cls;
-                        node->coords = coords;
+                }
+                if (node != NULL) {
+                    if (rand() % 256 < 0x50) {
                         node->x = cls->field_c + ux;
                         node->y = cls->field_10 + uy;
-                        node->origin_x = cls->field_24 + ox;
-                        node->origin_y = cls->field_25 + oy;
-                    marked:
-                        *((unsigned char *)origin + 0xd) |= 4;
+                        node->origin_x = cls->field_24 + at.pos.x;
+                        node->origin_y = cls->field_25 + at.pos.y;
                     }
-                    fp = (struct FootprintNode *)&cls->footprint_base;
-                    while ((int)x < (int)(fp->x_min + ux) || (int)(fp->x_max + ux) < (int)x) {
-                        fp = fp->next;
-                    }
-                    best = cls->field_48;
-                    x = fp->x_max + ux;
-                    for (obj = cls->objlist; obj != 0; obj = obj->next) {
-                        if (best < obj->field_c) {
-                            best = obj->field_c;
-                        }
-                    }
-                    config = lpConfig;
-                    if ((int)(y - uy) == best) {
-                        *(unsigned short *)((char *)origin + 0xc) &= 0xfbff;
-                        config = lpConfig;
-                    }
+                } else {
+                    node = (struct InfoNode *)malloc(sizeof(struct InfoNode));
+                    node->next = DAT_00669248;
+                    DAT_00669248 = node;
+                    node->classid = (int)cls;
+                    node->coords = at.id;
+                    node->x = cls->field_c + ux;
+                    node->y = cls->field_10 + uy;
+                    node->origin_x = cls->field_24 + at.pos.x;
+                    node->origin_y = cls->field_25 + at.pos.y;
                 }
-                x++;
-                width = config->width;
-            } while ((int)x < (int)width);
+                origin->flags |= 0x400;
+            }
+            fp = (struct FootprintNode *)&cls->footprint_base;
+            while (x < fp->x_min + ux || x > fp->x_max + ux) {
+                fp = fp->next;
+            }
+            x = fp->x_max + ux;
+            best = cls->field_48;
+            for (obj = cls->objlist; obj != NULL; obj = obj->next) {
+                if (obj->field_c > best) {
+                    best = obj->field_c;
+                }
+            }
+            if (y - uy == best) {
+                origin->flags &= 0xfbff;
+            }
         }
-        y++;
-    } while ((int)y < (int)config->height);
+    }
 }
 
 // FUNCTION: LEGOLAND 0x00481410
@@ -1129,71 +1104,46 @@ void FUN_004819a0(int *param_1) {
 
 // FUNCTION: LEGOLAND 0x00481b10
 void FUN_00481b10(struct BestNode *node) {
-    struct BestNode **slot;
     struct BestNode *cur;
     int i;
 
-    do {
+    for (;;) {
         FUN_00481810((int *)&node->x_min);
         i = 0;
-        if (DAT_0066a45c[0] != 0) {
-            cur = DAT_0066a45c[0];
-            slot = (struct BestNode **)DAT_0066a45c;
-            do {
-                if (cur->x_min == node->x_min && (*slot)->x_max == node->x_max) {
-                    ((struct BestNode *)DAT_0066a45c[i])->y_max = node->y_max;
-                    goto matched;
-                }
-                cur = slot[1];
-                slot++;
-                i++;
-            } while (cur != 0);
+        for (cur = DAT_0066a45c[i]; cur != 0; cur = DAT_0066a45c[++i]) {
+            if (cur->x_min == node->x_min && ((struct BestNode *)DAT_0066a45c[i])->x_max == node->x_max) {
+                ((struct BestNode *)DAT_0066a45c[i])->y_max = node->y_max;
+                goto merged;
+            }
+        }
+        i++;
+        for (cur = DAT_0066a45c[i]; cur != 0; cur = DAT_0066a45c[++i]) {
+            if (cur->x_min == node->x_min && ((struct BestNode *)DAT_0066a45c[i])->x_max == node->x_max) {
+                ((struct BestNode *)DAT_0066a45c[i])->y_min = node->y_min;
+                goto merged;
+            }
+        }
+        i++;
+        for (cur = DAT_0066a45c[i]; cur != 0; cur = DAT_0066a45c[++i]) {
+            if (cur->y_min == node->y_min && ((struct BestNode *)DAT_0066a45c[i])->y_max == node->y_max) {
+                ((struct BestNode *)DAT_0066a45c[i])->x_max = node->x_max;
+                goto merged;
+            }
         }
         i++;
         cur = DAT_0066a45c[i];
-        slot = (struct BestNode **)&DAT_0066a45c[i];
-        if (cur != 0) {
-            do {
-                if (cur->x_min == node->x_min && (*slot)->x_max == node->x_max) {
-                    ((struct BestNode *)DAT_0066a45c[i])->y_min = node->y_min;
-                    goto matched;
-                }
-                cur = slot[1];
-                slot++;
-                i++;
-            } while (cur != 0);
-        }
-        i++;
-        cur = DAT_0066a45c[i];
-        slot = (struct BestNode **)&DAT_0066a45c[i];
-        if (cur != 0) {
-            do {
-                if (cur->y_min == node->y_min && (*slot)->y_max == node->y_max) {
-                    ((struct BestNode *)DAT_0066a45c[i])->x_max = node->x_max;
-                    goto matched;
-                }
-                cur = slot[1];
-                slot++;
-                i++;
-            } while (cur != 0);
-        }
-        i++;
-        cur = DAT_0066a45c[i];
-        slot = (struct BestNode **)&DAT_0066a45c[i];
         if (cur == 0) {
             return;
         }
-        while (cur->y_min != node->y_min || (*slot)->y_max != node->y_max) {
-            cur = slot[1];
-            slot++;
-            i++;
+        while (cur->y_min != node->y_min || ((struct BestNode *)DAT_0066a45c[i])->y_max != node->y_max) {
+            cur = DAT_0066a45c[++i];
             if (cur == 0) {
                 return;
             }
         }
         ((struct BestNode *)DAT_0066a45c[i])->x_min = node->x_min;
-    matched:
+    merged:
         FUN_00481750(node);
         node = DAT_0066a45c[i];
-    } while (1);
+    }
 }
