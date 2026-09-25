@@ -69,7 +69,7 @@ struct MusicComposerVtbl {
     int(__stdcall *ComposeSegmentFromTemplate)(struct MusicComposer *self, void *style, unsigned int templateMode, unsigned int activity, void *chordMap, struct MusicSegment **out);
     int(__stdcall *ComposeSegmentFromShape)(struct MusicComposer *self, unsigned int numMeasures, unsigned int shape, unsigned int activity, int intro, int end, void *style, void *chordMap, struct MusicSegment **out);
     unsigned char pad_14[0x18 - 0x14];
-    int(__stdcall *ComposeTransition)(struct MusicComposer *self, struct MusicPerformance *perf, unsigned int numMeasures, unsigned int activity, unsigned int command, void *chordMap, struct MusicSegment **out, int param8, int param9);
+    int(__stdcall *AutoTransition)(struct MusicComposer *self, struct MusicPerformance *perf, struct MusicSegment *to_segment, unsigned int command, unsigned int flags, void *chordMap, struct MusicSegment **out, void *seg_state_to, void *seg_state_transition);
 };
 
 struct MusicComposer {
@@ -395,7 +395,7 @@ LEGO_EXPORT unsigned int BlendMusic(unsigned int numMeasures, unsigned int unuse
     shape = 0xa;
     ((struct MusicComposer *)DAT_007cad44)->vtable->ComposeSegmentFromShape((struct MusicComposer *)DAT_007cad44, numMeasures, shape, 2, 3, 0, 0, chordMap, &segment);
     segment->vtable->SetRepeats(segment, 999);
-    ((struct MusicComposer *)DAT_007cad44)->vtable->ComposeTransition((struct MusicComposer *)DAT_007cad44, (struct MusicPerformance *)DAT_007cacdc, shape, 0, 0x2022, chordMap, &transition, 0, 0);
+    ((struct MusicComposer *)DAT_007cad44)->vtable->AutoTransition((struct MusicComposer *)DAT_007cad44, (struct MusicPerformance *)DAT_007cacdc, segment, 0, 0x2022, chordMap, &transition, 0, 0);
     segment->vtable->Release(segment);
     transition->vtable->Release(transition);
     return 1;
@@ -823,50 +823,38 @@ LEGO_EXPORT int CountSamplesFromSource(struct SampleParams *source) {
 LEGO_EXPORT void KillAllSamplesFromSource(struct SampleSource *source) {
     struct Sample *prev;
     struct Sample *sample;
-    int matched;
     struct Sample *next;
+    int matched;
 
     prev = 0;
-    sample = (struct Sample *)DAT_007988cc;
-    if (sample == 0) {
-        return;
-    }
-    matched = (int)source;
-    do {
+    for (sample = (struct Sample *)DAT_007988cc; sample != 0; sample = next) {
         next = sample->next;
         if (sample->field_c == source->type) {
             switch (source->type) {
             case 0:
                 matched = 1;
-                goto unlink;
+                break;
             case 1:
                 matched = sample->field_10 == source->field_4;
-            default:
-                if (matched != 0) {
-                unlink:
-                    if (prev != 0) {
-                        prev->next = next;
-                        FUN_00492b20(sample);
-                    } else {
-                        DAT_007988cc = next;
-                        FUN_00492b20(sample);
-                    }
-                    goto advance;
-                }
                 break;
             case 2:
             case 3:
-                if (sample->field_14 == source->field_8 && sample->field_18 == source->field_c) {
-                    matched = 1;
-                    goto unlink;
+                matched = sample->field_14 == source->field_8 && sample->field_18 == source->field_c;
+                break;
+            }
+            if (matched) {
+                if (prev != 0) {
+                    prev->next = next;
+                    FUN_00492b20(sample);
+                } else {
+                    DAT_007988cc = next;
+                    FUN_00492b20(sample);
                 }
-                matched = 0;
+                continue;
             }
         }
         prev = sample;
-    advance:
-        sample = next;
-    } while (sample != 0);
+    }
 }
 
 // FUNCTION: LEGOLAND 0x00496c20
@@ -893,35 +881,25 @@ LEGO_EXPORT void UnSourceAndFadeAllSamplesFromSource(void *source, int fade) {
     unsigned int matched;
 
     src = (struct SampleSource *)source;
-    sample = (struct Sample *)DAT_007988cc;
-    if (sample == 0) {
-        return;
-    }
-    matched = fade;
-    do {
+    for (sample = (struct Sample *)DAT_007988cc; sample != 0; sample = sample->next) {
         if (sample->field_c == src->type) {
             switch (src->type) {
+            case 0:
+                matched = 1;
+                break;
             case 1:
                 matched = sample->field_10 == src->field_4;
-            default:
-                if (matched != 0) {
-                    goto fade_it;
-                }
                 break;
             case 2:
             case 3:
-                if (sample->field_14 != src->field_8 || sample->field_18 != src->field_c) {
-                    matched = 0;
-                    break;
-                }
-            case 0:
-                matched = 1;
-            fade_it:
+                matched = sample->field_14 == src->field_8 && sample->field_18 == src->field_c;
+                break;
+            }
+            if (matched) {
                 UnSourceAndFadeSample(sample, fade);
             }
         }
-        sample = sample->next;
-    } while (sample != 0);
+    }
 }
 
 // FUNCTION: LEGOLAND 0x00496d10
@@ -967,22 +945,19 @@ LEGO_EXPORT void AddSFX_Callback(struct CallbackEntry *entry, unsigned int delay
 LEGO_EXPORT void Load_FXList(const unsigned char *list, int count) {
     char path[100];
     struct FXItem *item;
+    int i;
 
-    if (count > 0) {
-        item = (struct FXItem *)list;
-        do {
-            // STRING: LEGOLAND 0x004bfea0
-            sprintf(path, ".\\sfx\\%s", item->name);
-            item->sample = CreateSampleFromWAV(path);
-            if (item->sample != 0) {
-                item->sample->field_10 = item->name;
-            } else {
-                // STRING: LEGOLAND 0x004bfe88
-                DBPrintf("Failed to load SFX %s\n", item->name);
-            }
-            item = item + 1;
-            count = count - 1;
-        } while (count != 0);
+    for (i = 0; i < count; i++) {
+        item = &((struct FXItem *)list)[i];
+        // STRING: LEGOLAND 0x004bfea0
+        sprintf(path, ".\\sfx\\%s", item->name);
+        item->sample = CreateSampleFromWAV(path);
+        if (item->sample != 0) {
+            item->sample->field_10 = item->name;
+        } else {
+            // STRING: LEGOLAND 0x004bfe88
+            DBPrintf("Failed to load SFX %s\n", item->name);
+        }
     }
 }
 
