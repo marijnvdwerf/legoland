@@ -3442,7 +3442,7 @@ extern struct Cursor DAT_0082ae20;
 // 0x0082c654
 extern struct Sprite *DAT_0082c654;
 // 0x0082c658
-extern struct Cursor *DAT_0082c658;
+extern struct Ride *DAT_0082c658;
 // 0x0082c65c
 extern struct BoatSpriteSet *DAT_0082c65c;
 // 0x0082c668

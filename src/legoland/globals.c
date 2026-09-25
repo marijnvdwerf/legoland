@@ -4827,7 +4827,7 @@ struct Cursor DAT_0082ae20;
 struct Sprite *DAT_0082c654;
 
 // GLOBAL: LEGOLAND 0x0082c658
-struct Cursor *DAT_0082c658;
+struct Ride *DAT_0082c658;
 
 // GLOBAL: LEGOLAND 0x0082c65c
 struct BoatSpriteSet *DAT_0082c65c;

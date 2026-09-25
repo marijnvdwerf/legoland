@@ -64,10 +64,6 @@ struct BoatSpriteSet {
     /* 0x10 */ int *offset_y;
 };
 
-struct BoatHolder {
-    /* 0x00 */ unsigned char pad_0[0xc];
-    /* 0x0c */ struct Cursor *cursor;
-};
 
 struct BoatTileMap {
     /* 0x00 */ unsigned char pad_0[4];
@@ -97,13 +93,13 @@ void FUN_0041b6f0(void *param_1, TileId tile, struct Cursor *param_3);
 void FUN_0041a3d0(void *param_1, unsigned int param_2);
 void FUN_0041a530(struct RideObject *obj, TileId tile, struct Cursor *cursor);
 
-void FUN_00419d10(struct BoatHolder *param_1);
+void FUN_00419d10(struct RideObject *obj);
 void FUN_00419ef0();
 void FUN_0041a000();
 void FUN_0041a040(unsigned int param_1, int *param_2);
 void FUN_0041a2f0(int param_1, unsigned int param_2, unsigned int param_3);
 void FUN_0041a720();
-void FUN_0041abd0(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, void *param_5, unsigned int param_6);
+void FUN_0041abd0(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int clip);
 int FUN_0041acf0(void);
 int FUN_0041aee0(void);
 int FUN_0041b100(int dummy, int arg);

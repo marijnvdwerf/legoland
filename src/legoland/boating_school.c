@@ -605,16 +605,16 @@ void FUN_004198a0(struct BoatRide *param_1, unsigned int param_2, unsigned int p
 }
 
 // FUNCTION: LEGOLAND 0x00419d10
-void FUN_00419d10(struct BoatHolder *param_1) {
+void FUN_00419d10(struct RideObject *obj) {
     unsigned int handle;
     int i;
     struct Sprite *sprite;
     int lls;
 
     Load_FXList(PTR_s_Boat_Noise_wav, 2);
-    DAT_0082c658 = param_1->cursor;
-    DAT_0082c658->field_1c |= 0x20;
-    ((struct RideLayer *)DAT_0082c658->field_64)->flags |= 0x2000;
+    DAT_0082c658 = obj->ride;
+    DAT_0082c658->flags |= 0x20;
+    DAT_0082c658->layer->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b5334
     if (LLIDB_FindElement("BOATING SCHOOL TILE MAPPING", &handle, 0) == 0) {
         DAT_0082adf4 = (struct BoatTileMap *)LLIDB_LoadData((void *)handle);
@@ -631,10 +631,10 @@ void FUN_00419d10(struct BoatHolder *param_1) {
     DAT_0082adfc = LoadSprite("bs_hullmask.lls", 1);
     // STRING: LEGOLAND 0x004b52fc
     DAT_0082c654 = LoadSprite("bs_railm.lls", 1);
-    lls = GetLLSForSprite((struct SpriteLLS *)(DAT_0082ae00 = (void *)GetSpriteForLayer((struct LayerContainer *)DAT_0082c658->field_64, 5)));
+    lls = GetLLSForSprite((struct SpriteLLS *)(DAT_0082ae00 = (void *)GetSpriteForLayer((struct LayerContainer *)DAT_0082c658->layer, 5)));
     LLSStop(lls);
     LLSSetFrame((struct LLS *)lls, *(short *)(lls + 0x10));
-    DAT_004cc078 = DAT_0082c658->field_3c;
+    DAT_004cc078 = *(struct Footprint *)DAT_0082c658->footprint;
     DAT_004cc048 = DAT_004b5260;
     DAT_004cc048.v[1] = DAT_004b5260.v[1] + DAT_004cc078.v[1];
     DAT_004cc048.v[3] += DAT_004cc078.v[1];
@@ -911,7 +911,7 @@ void FUN_0041a720(void) {
     struct SampleParams params;
     struct Sample *sample;
 
-    bloke_list = *(struct BoatRideNode ***)((char *)DAT_0082c658 + 0xcc);
+    bloke_list = (struct BoatRideNode **)DAT_0082c658->riders;
     lls = GetLLSForSprite(DAT_0082ae00);
     DAT_004cc08c = DAT_004cc08c + 1;
     if (DAT_004cc08c == 0x50) {
@@ -966,8 +966,8 @@ void FUN_0041a720(void) {
                 }
                 *(unsigned char *)(bloke + 0x62) |= 8;
                 *(unsigned int *)(bloke + 0x24) =
-                    ((int)*(char *)((char *)DAT_0082c658 + 0xc) + (id & 0xff)) * 0x100 + DAT_004b5290[(4 - slot) * 2];
-                frame = ((int)*(char *)((char *)DAT_0082c658 + 0x10) + (idhi & 0xff)) * 0x100 + DAT_004b5290[(4 - slot) * 2 + 1];
+                    ((int)(char)DAT_0082c658->x + (id & 0xff)) * 0x100 + DAT_004b5290[(4 - slot) * 2];
+                frame = ((int)(char)DAT_0082c658->y + (idhi & 0xff)) * 0x100 + DAT_004b5290[(4 - slot) * 2 + 1];
                 *(int *)(bloke + 0x28) = frame;
                 {
                     char dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
@@ -996,11 +996,11 @@ void FUN_0041a720(void) {
                 BlokeWalkAnim(bloke);
                 BlokeSetFrame(bloke, 0);
                 *(unsigned short *)(bloke + 0x62) &= 0xff7f;
-                *(unsigned int *)(bloke + 0x68) = (*(char *)((char *)DAT_0082c658 + 0x24) - 4 + (id & 0xff)) * 0x100;
+                *(unsigned int *)(bloke + 0x68) = (DAT_0082c658->field_24 - 4 + (id & 0xff)) * 0x100;
                 *(unsigned char *)(bloke + 0x72) = 10;
-                *(unsigned int *)(bloke + 0x6c) = (*(char *)((char *)DAT_0082c658 + 0x25) + 2 + (idhi & 0xff)) * 0x100;
-                *(unsigned int *)(bloke + 0x24) = ((int)*(char *)((char *)DAT_0082c658 + 0x24) + (id & 0xff)) * 0x100 - 0xc0;
-                frame = ((int)*(char *)((char *)DAT_0082c658 + 0x25) + (idhi & 0xff)) * 0x100 + 0x240;
+                *(unsigned int *)(bloke + 0x6c) = (DAT_0082c658->field_25 + 2 + (idhi & 0xff)) * 0x100;
+                *(unsigned int *)(bloke + 0x24) = ((int)DAT_0082c658->field_24 + (id & 0xff)) * 0x100 - 0xc0;
+                frame = ((int)DAT_0082c658->field_25 + (idhi & 0xff)) * 0x100 + 0x240;
                 *(int *)(bloke + 0x28) = frame;
                 {
                     char dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
@@ -1011,8 +1011,8 @@ void FUN_0041a720(void) {
                 *(char *)(bloke + 0x60) += 1;
                 break;
             case 4:
-                *(unsigned int *)(bloke + 0x24) = ((int)*(char *)((char *)DAT_0082c658 + 0x24) + (id & 0xff)) * 0x100 - 0xc0;
-                frame = ((int)*(char *)((char *)DAT_0082c658 + 0x25) + (idhi & 0xff)) * 0x100 + 0x80;
+                *(unsigned int *)(bloke + 0x24) = ((int)DAT_0082c658->field_24 + (id & 0xff)) * 0x100 - 0xc0;
+                frame = ((int)DAT_0082c658->field_25 + (idhi & 0xff)) * 0x100 + 0x80;
                 *(int *)(bloke + 0x28) = frame;
                 {
                     char dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
@@ -1023,8 +1023,8 @@ void FUN_0041a720(void) {
                 *(char *)(bloke + 0x60) += 1;
                 break;
             case 5:
-                *(unsigned int *)(bloke + 0x24) = ((int)*(char *)((char *)DAT_0082c658 + 0x24) + (id & 0xff)) * 0x100 + 0x80;
-                frame = ((int)*(char *)((char *)DAT_0082c658 + 0x25) + (idhi & 0xff)) * 0x100 + 0x80;
+                *(unsigned int *)(bloke + 0x24) = ((int)DAT_0082c658->field_24 + (id & 0xff)) * 0x100 + 0x80;
+                frame = ((int)DAT_0082c658->field_25 + (idhi & 0xff)) * 0x100 + 0x80;
                 *(int *)(bloke + 0x28) = frame;
                 {
                     char dir = CalcMoveLine(*(struct Point *)(bloke + 0x68), *(struct Point *)(bloke + 0x24), (struct Navigator *)(bloke + 0x98));
@@ -1064,32 +1064,32 @@ void FUN_0041a720(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0041abd0
-void FUN_0041abd0(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, void *param_5, unsigned int param_6) {
-    unsigned int **bloke_list;
-    int cursor;
+void FUN_0041abd0(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int clip) {
+    struct Ride *ride = obj->ride;
+    struct RideNode *node = ride->riders;
     short *lls;
-    struct Point coords;
+    struct LLS *hull;
+    struct Point pos;
     struct Point offset;
 
-    cursor = *(int *)(param_1 + 0xc);
-    bloke_list = *(unsigned int ***)(cursor + 0xcc);
     FUN_00418fe0(1);
-    coords = GetScreenCoordsForObject((unsigned char *)param_4, (void *)cursor);
-    offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0082c658->field_64, 3);
+    pos = GetScreenCoordsForObject((unsigned char *)tile, ride);
+    offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0082c658->layer, 3);
     AdjustOffsetForViewMode(&offset);
-    lls = (short *)GetLLSForSprite((struct SpriteLLS *)GetSpriteForLayer((struct LayerContainer *)DAT_0082c658->field_64, 3));
-    LLSSetFrame((struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_0082adfc), *lls);
-    PrintSprite(DAT_0082adfc, offset.x + coords.x, offset.y + coords.y, param_6, 0);
-    for (; bloke_list != NULL; bloke_list = (unsigned int **)*bloke_list) {
-        if (*param_4 == *(short *)(bloke_list + 3) && *(char *)(((int *)bloke_list)[2] + 0x60) != 2) {
-            IP_RenderBlokeIn3DNow((struct Bloke *)((int *)bloke_list)[2]);
+    lls = (short *)GetLLSForSprite((struct SpriteLLS *)GetSpriteForLayer((struct LayerContainer *)DAT_0082c658->layer, 3));
+    hull = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)DAT_0082adfc);
+    LLSSetFrame(hull, *lls);
+    PrintSprite(DAT_0082adfc, pos.x + offset.x, pos.y + offset.y, clip, 0);
+    for (; node != NULL; node = node->next) {
+        if (*tile == node->tile.id && node->rider->param_action != 2) {
+            IP_RenderBlokeIn3DNow(node->rider);
         }
     }
-    offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0082c658->field_64, 3);
-    offset.x = offset.x + 0x71;
-    offset.y = offset.y + 0xac;
+    offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0082c658->layer, 3);
+    offset.x += 0x71;
+    offset.y += 0xac;
     AdjustOffsetForViewMode(&offset);
-    PrintSprite(DAT_0082c654, offset.x + coords.x, offset.y + coords.y, param_6, 0);
+    PrintSprite(DAT_0082c654, pos.x + offset.x, pos.y + offset.y, clip, 0);
 }
 
 // FUNCTION: LEGOLAND 0x0041acf0
