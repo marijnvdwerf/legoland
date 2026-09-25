@@ -2403,7 +2403,7 @@ void FUN_00437570(struct RideNode *node, struct RideObject *obj, TileId *tile, i
     struct Bloke *bloke = node->rider;
 
     if (bloke->field_58 == 0) {
-        bloke->param_action++;
+        node->rider->param_action++;
     }
     if ((bloke->field_58-- & 0x1f) == 0 && rand() % 100 <= 30) {
         BuyItem((struct BuyItemArg *)obj, tile, sfx);
