@@ -2333,55 +2333,39 @@ int FUN_004371e0(int a, int b, int c, int d) {
         return 0;
     }
     key.id = node->owner.id;
-    FUN_00437260(a, b, c, d, &key.id, &result);
+    FUN_00437260(a, b, c, d, &key, &result);
     return result;
 }
 
 // FUNCTION: LEGOLAND 0x00437260
-void FUN_00437260(int param_1, int param_2, int param_3, int param_4, unsigned short *param_5, int *param_6) {
-    struct JunglePath *cur;
-    struct JunglePath *adj;
+void FUN_00437260(int x, int y, int tx, int ty, TileId *owner, int *found) {
+    struct JunglePath *node;
+    struct JunglePath *next;
 
-    if (*param_6 == 1) {
+    if (*found == 1) {
         return;
     }
-    while (1) {
-        cur = FUN_004371b0(param_1, param_2);
-        if (cur == NULL) {
-            return;
-        }
-        if (cur->owner.id != *param_5) {
-            return;
-        }
-        if (param_1 == param_3 && param_2 == param_4) {
-            break;
-        }
-        cur->field_c = 1;
-        if ((cur->field_4 & 1) != 0 && (adj = FUN_004371b0(param_1, param_2 - 5)) != NULL && adj->field_c == 0) {
-            FUN_00437260(param_1, param_2 - 5, param_3, param_4, param_5, param_6);
-        }
-        if ((cur->field_4 & 2) != 0 && (adj = FUN_004371b0(param_1 + 5, param_2)) != NULL && adj->field_c == 0) {
-            FUN_00437260(param_1 + 5, param_2, param_3, param_4, param_5, param_6);
-        }
-        if ((cur->field_4 & 4) != 0 && (adj = FUN_004371b0(param_1, param_2 + 5)) != NULL && adj->field_c == 0) {
-            FUN_00437260(param_1, param_2 + 5, param_3, param_4, param_5, param_6);
-        }
-        if ((cur->field_4 & 8) == 0) {
-            return;
-        }
-        param_1 = param_1 - 5;
-        cur = FUN_004371b0(param_1, param_2);
-        if (cur == NULL) {
-            return;
-        }
-        if (cur->field_c != 0) {
-            return;
-        }
-        if (*param_6 == 1) {
-            return;
-        }
+    node = FUN_004371b0(x, y);
+    if (node == NULL || node->owner.id != owner->id) {
+        return;
     }
-    *param_6 = 1;
+    if (x == tx && y == ty) {
+        *found = 1;
+        return;
+    }
+    node->field_c = 1;
+    if ((node->field_4 & 1) != 0 && (next = FUN_004371b0(x, y - 5)) != NULL && next->field_c == 0) {
+        FUN_00437260(x, y - 5, tx, ty, owner, found);
+    }
+    if ((node->field_4 & 2) != 0 && (next = FUN_004371b0(x + 5, y)) != NULL && next->field_c == 0) {
+        FUN_00437260(x + 5, y, tx, ty, owner, found);
+    }
+    if ((node->field_4 & 4) != 0 && (next = FUN_004371b0(x, y + 5)) != NULL && next->field_c == 0) {
+        FUN_00437260(x, y + 5, tx, ty, owner, found);
+    }
+    if ((node->field_4 & 8) != 0 && (next = FUN_004371b0(x - 5, y)) != NULL && next->field_c == 0) {
+        FUN_00437260(x - 5, y, tx, ty, owner, found);
+    }
 }
 
 // FUNCTION: LEGOLAND 0x004373c0

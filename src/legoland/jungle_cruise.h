@@ -81,7 +81,7 @@ void FUN_00436f30(void *param_1, TileId tile, struct Cursor *param_3);
 unsigned int FUN_00436fb0(int param_1, int param_2, unsigned short *param_3);
 struct JunglePath *FUN_004371b0(int x, int y);
 int FUN_004371e0(int a, int b, int c, int d);
-void FUN_00437260(int param_1, int param_2, int param_3, int param_4, unsigned short *param_5, int *param_6);
+void FUN_00437260(int x, int y, int tx, int ty, TileId *owner, int *found);
 void FUN_004373c0(unsigned short param_1);
 void FUN_00437440(short param_1);
 void FUN_004367b0(int param_1, int param_2, unsigned short *param_3);
