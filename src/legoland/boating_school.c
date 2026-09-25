@@ -101,58 +101,52 @@ void FUN_00418fe0(int param_1) {
     int th2;
     int dx;
     int dy;
-    int baseX;
-    int baseY;
-    int local_18;
-    int local_14;
+    int bx;
+    int by;
+    int sx;
+    int sy;
     int person;
+    struct Point off;
+    struct Point pos;
+    struct Point seat;
 
     GetTileDimensions(&tw, &th);
-    while (ride != NULL) {
-        int mode = ride->field_3e4;
-        if (param_1 == 0) {
-            if (mode != 1 && mode != 0x10) {
-                goto next;
+    for (; ride != NULL; ride = ride->next) {
+        if ((param_1 != 0 && (ride->field_3e4 == 1 || ride->field_3e4 == 0x10)) ||
+            (param_1 == 0 && ride->field_3e4 != 1 && ride->field_3e4 != 0x10)) {
+            dy = ride->field_1c[DAT_004cc08c * 2 + 1];
+            dx = ride->field_1c[DAT_004cc08c * 2];
+            GetTileDimensions(&tw2, &th2);
+            bx = (dx - dy) * tw2 >> 9;
+            by = (dx + dy) * th2 >> 9;
+            sx = (ride->field_4 - ride->field_8) * (tw >> 1) - ((tw + 1) >> 1) - (ScrollX >> 8);
+            sy = (ride->field_4 + ride->field_8) * (th >> 1) - (ScrollY >> 8);
+            off.x = DAT_0082c65c->offset_x[ride->field_29c[DAT_004cc08c] & 0xff] >> 1;
+            off.y = DAT_0082c65c->offset_y[ride->field_29c[DAT_004cc08c] & 0xff] >> 1;
+            AdjustOffsetForViewMode(&off);
+            ride->field_14 = lpConfig->field_20 + bx + off.x + sx;
+            ride->field_18 = lpConfig->field_22 + by + off.y + sy;
+            PrintSprite(DAT_0082c65c->sprites[ride->field_29c[DAT_004cc08c] & 0xff], ride->field_14, ride->field_18, 0, 0);
+            if (ride->field_3ec != 0) {
+                person = (int)Find3DPersonFromBloke(ride->field_3ec);
+                *(float *)(person + 0x44) = ((float)(int)ride->field_29c[DAT_004cc08c] * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3e0 * DAT_004ab3dc;
+                SetPersonRotation((struct Person *)person, (float *)(person + 0x40));
+                pos.x = lpConfig->field_20 + bx + sx;
+                pos.y = lpConfig->field_22 + by + sy;
+                AdjustBlokePosition((struct BlokePos *)&pos);
+                seat.x = DAT_004b51d8[(ride->field_29c[DAT_004cc08c] & 0xf) * 2] + 0x44;
+                seat.y = DAT_004b51d8[(ride->field_29c[DAT_004cc08c] & 0xf) * 2 + 1] + 0x34;
+                AdjustOffsetForViewMode(&seat);
+                *(int *)(person + 0x1c) = seat.x + pos.x;
+                *(int *)(person + 0x20) = seat.y + pos.y;
+                IP_RenderBlokeIn3DNow((struct Bloke *)ride->field_3ec);
+                PrintSprite(DAT_0082c65c->sprites[(ride->field_29c[DAT_004cc08c] + 0x30) & 0xff], ride->field_14, ride->field_18, 0, 0);
             }
-        } else if (mode != 1 && mode != 0x10) {
-            goto next;
         }
-        dy = ride->field_1c[DAT_004cc08c * 2 + 1];
-        dx = ride->field_1c[DAT_004cc08c * 2];
-        GetTileDimensions(&tw2, &th2);
-        baseX = (dx - dy) * tw2 >> 9;
-        baseY = (dx + dy) * th2 >> 9;
-        local_18 = ((ride->field_4 - ride->field_8) * (tw >> 1) - ((tw + 1) >> 1)) - (ScrollX >> 8);
-        local_14 = (ride->field_4 + ride->field_8) * (th >> 1) - (ScrollY >> 8);
-        dx = DAT_0082c65c->offset_x[ride->field_29c[DAT_004cc08c] & 0xff] >> 1;
-        dy = DAT_0082c65c->offset_y[ride->field_29c[DAT_004cc08c] & 0xff] >> 1;
-        AdjustOffsetForViewMode((struct Point *)&dx);
-        ride->field_14 = (unsigned int)lpConfig->field_20 + baseX + dx + local_18;
-        ride->field_18 = (unsigned int)lpConfig->field_22 + baseY + dy + local_14;
-        PrintSprite(DAT_0082c65c->sprites[ride->field_29c[DAT_004cc08c] & 0xff],
-            ride->field_14, ride->field_18, 0, 0);
-        if (ride->field_3ec != 0) {
-            person = Find3DPersonFromBloke(ride->field_3ec);
-            *(float *)(person + 0x44) = ((float)(int)ride->field_29c[DAT_004cc08c] * DAT_004ab3e8 + DAT_004ab3e4) * DAT_004ab3e0 * DAT_004ab3dc;
-            SetPersonRotation(person, person + 0x40);
-            tw2 = (unsigned int)lpConfig->field_20 + baseX + local_18;
-            th2 = (unsigned int)lpConfig->field_22 + baseY + local_14;
-            AdjustBlokePosition((struct BlokePos *)&tw2);
-            local_18 = DAT_004b51d8[(ride->field_29c[DAT_004cc08c] & 0xf) * 8] + 0x44;
-            local_14 = DAT_004b51d8[(ride->field_29c[DAT_004cc08c] & 0xf) * 8 + 1] + 0x34;
-            AdjustOffsetForViewMode((struct Point *)&local_18);
-            *(int *)(person + 0x1c) = local_18 + tw2;
-            *(int *)(person + 0x20) = local_14 + th2;
-            IP_RenderBlokeIn3DNow((struct Bloke *)ride->field_3ec);
-            PrintSprite(DAT_0082c65c->sprites[(ride->field_29c[DAT_004cc08c] + 0x30) & 0xff],
-                ride->field_14, ride->field_18, 0, 0);
-        }
-    next:
         if (ride->field_3e4 == 0x10 && ride->field_3e8 == 2 && DAT_004cc08c == 0x4f && param_1 != 0 && ride->field_3ec != 0) {
-            *(char *)(ride->field_3ec + 0x60) += 1;
+            ((struct Bloke *)ride->field_3ec)->param_action++;
             ride->field_3ec = 0;
         }
-        ride = ride->next;
     }
 }
 
