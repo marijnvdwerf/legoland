@@ -1511,8 +1511,8 @@ void FUN_0041bd40(struct RideObject *obj, unsigned int param_2, unsigned int par
     struct Cursor *c;
     struct MapRect rect;
 
-    memcpy(EditCursor.field_1414, DAT_004b53c0, 20);
     n = 0;
+    memcpy(EditCursor.field_1414, DAT_004b53c0, 20);
     ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
     mask = FUN_0041c690(EditCursor.field_1404, EditCursor.field_1408, &owner);
     EditCursor.field_1830 = n;
@@ -1526,61 +1526,63 @@ void FUN_0041bd40(struct RideObject *obj, unsigned int param_2, unsigned int par
             rect.x1 = EditCursor.field_1414[2] + EditCursor.field_1404;
             rect.y1 = EditCursor.field_1414[3] + EditCursor.field_1408;
             result = CheckForPeople(&rect);
-            if (result == -1) {
-                FUN_0045f480(&EditCursor, 4);
-            } else if (result == 1) {
-                FUN_0045f480(&EditCursor, 3);
-            } else {
-                DefaultCursor(&DAT_004d2168[0]);
-                DefaultCursor(&DAT_004d2168[1]);
-                DefaultCursor(&DAT_004d2168[2]);
-                DefaultCursor(&DAT_004d2168[3]);
-                memcpy(DAT_004d2168[0].field_1414, EditCursor.field_1414, 20);
-                memcpy(DAT_004d2168[1].field_1414, EditCursor.field_1414, 20);
-                memcpy(DAT_004d2168[2].field_1414, EditCursor.field_1414, 20);
-                memcpy(DAT_004d2168[3].field_1414, EditCursor.field_1414, 20);
-                FUN_0045f460(&DAT_004d2168[0]);
-                FUN_0045f460(&DAT_004d2168[1]);
-                FUN_0045f460(&DAT_004d2168[2]);
-                FUN_0045f460(&DAT_004d2168[3]);
-                x = EditCursor.field_1404;
-                y = EditCursor.field_1408;
-                DAT_004d2168[0].field_1828 = 0x2034;
-                DAT_004d2168[1].field_1828 = 0x2034;
-                DAT_004d2168[2].field_1828 = 0x2034;
-                DAT_004d2168[3].field_1828 = 0x2034;
-                if ((mask & 1) != 0) {
-                    DAT_004d2168[0].field_1404 = x;
-                    DAT_004d2168[0].field_1408 = y - 5;
-                    n = 1;
-                }
-                if ((mask & 2) != 0) {
-                    DAT_004d2168[n].field_1404 = x + 5;
-                    DAT_004d2168[n].field_1408 = y;
-                    n++;
-                }
-                if ((mask & 4) != 0) {
-                    DAT_004d2168[n].field_1404 = x;
-                    DAT_004d2168[n].field_1408 = y + 5;
-                    n++;
-                }
-                if ((mask & 8) != 0) {
-                    DAT_004d2168[n].field_1404 = x - 5;
-                    DAT_004d2168[n].field_1408 = y;
-                    n++;
-                }
-                if (n != 0) {
-                    EditCursor.field_1830 = (unsigned int)&DAT_004d2168[0];
-                    if (n > 1) {
-                        c = &DAT_004d2168[1];
-                        n--;
-                        do {
-                            c[-1].field_1830 = (unsigned int)c;
-                            c++;
-                            n--;
-                        } while (n != 0);
+            if (result != -1) {
+                if (result != 1) {
+                    DefaultCursor(&DAT_004d2168[0]);
+                    DefaultCursor(&DAT_004d2168[1]);
+                    DefaultCursor(&DAT_004d2168[2]);
+                    DefaultCursor(&DAT_004d2168[3]);
+                    memcpy(DAT_004d2168[0].field_1414, EditCursor.field_1414, 20);
+                    memcpy(DAT_004d2168[1].field_1414, EditCursor.field_1414, 20);
+                    memcpy(DAT_004d2168[2].field_1414, EditCursor.field_1414, 20);
+                    memcpy(DAT_004d2168[3].field_1414, EditCursor.field_1414, 20);
+                    FUN_0045f460(&DAT_004d2168[0]);
+                    FUN_0045f460(&DAT_004d2168[1]);
+                    FUN_0045f460(&DAT_004d2168[2]);
+                    FUN_0045f460(&DAT_004d2168[3]);
+                    x = EditCursor.field_1404;
+                    y = EditCursor.field_1408;
+                    DAT_004d2168[0].field_1828 = 0x2034;
+                    DAT_004d2168[1].field_1828 = 0x2034;
+                    DAT_004d2168[2].field_1828 = 0x2034;
+                    DAT_004d2168[3].field_1828 = 0x2034;
+                    if ((mask & 1) != 0) {
+                        DAT_004d2168[0].field_1404 = x;
+                        DAT_004d2168[0].field_1408 = y - 5;
+                        n = 1;
                     }
+                    if ((mask & 2) != 0) {
+                        DAT_004d2168[n].field_1404 = x + 5;
+                        DAT_004d2168[n].field_1408 = y;
+                        n++;
+                    }
+                    if ((mask & 4) != 0) {
+                        DAT_004d2168[n].field_1404 = x;
+                        DAT_004d2168[n].field_1408 = y + 5;
+                        n++;
+                    }
+                    if ((mask & 8) != 0) {
+                        DAT_004d2168[n].field_1404 = x - 5;
+                        DAT_004d2168[n].field_1408 = y;
+                        n++;
+                    }
+                    if (n != 0) {
+                        EditCursor.field_1830 = (unsigned int)&DAT_004d2168[0];
+                        if (n > 1) {
+                            c = &DAT_004d2168[1];
+                            n--;
+                            do {
+                                c[-1].field_1830 = (unsigned int)c;
+                                c++;
+                                n--;
+                            } while (n != 0);
+                        }
+                    }
+                } else {
+                    FUN_0045f480(&EditCursor, 3);
                 }
+            } else {
+                FUN_0045f480(&EditCursor, 4);
             }
         }
     }
