@@ -40,7 +40,7 @@ struct BoatRideNode {
 
 struct PathNode {
     /* 0x00 */ TileId tile;
-    /* 0x02 */ unsigned short field_2;
+    /* 0x02 */ TileId owner;
     /* 0x04 */ unsigned int field_4;
     /* 0x08 */ unsigned int field_8;
     /* 0x0c */ unsigned int field_c;
@@ -111,5 +111,5 @@ void FUN_0041b830(struct RideObject *arg);
 void FUN_0041b880();
 void FUN_0041b8e0(struct RideObject *obj, int *coords);
 void FUN_0041bd40(struct RideObject *obj, unsigned int param_2, unsigned int param_3);
-void FUN_0041bfb0(unsigned int param_1, unsigned int *param_2);
+void FUN_0041bfb0(unsigned int param_1, int *coords);
 void FUN_0041c130(struct RideObject *obj, TileId tile, struct Cursor *cursor);
