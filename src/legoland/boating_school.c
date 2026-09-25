@@ -563,15 +563,15 @@ void FUN_00419d10(struct RideObject *obj) {
     LLSSetFrame((struct LLS *)lls, *(short *)(lls + 0x10));
     DAT_004cc078 = *(struct Footprint *)DAT_0082c658->footprint;
     DAT_004cc048 = DAT_004b5260;
-    DAT_004cc048.v[1] = DAT_004b5260.v[1] + DAT_004cc078.v[1];
-    DAT_004cc048.v[3] += DAT_004cc078.v[1];
+    DAT_004cc048.v[1] += DAT_004cc078.v[1];
     DAT_004cc048.v[0] += DAT_004cc078.v[0];
     DAT_004cc048.v[2] += DAT_004cc078.v[0];
+    DAT_004cc048.v[3] += DAT_004cc078.v[1];
     DAT_004cc060 = DAT_004b5278;
+    DAT_004cc060.v[1] += DAT_004cc078.v[3] + 1;
     DAT_004cc060.v[0] += DAT_004cc078.v[0];
-    DAT_004cc060.v[1] = DAT_004b5278.v[1] + 1 + DAT_004cc078.v[3];
     DAT_004cc060.v[2] += DAT_004cc078.v[0];
-    DAT_004cc060.v[3] += 1 + DAT_004cc078.v[3];
+    DAT_004cc060.v[3] += DAT_004cc078.v[3] + 1;
 }
 
 // FUNCTION: LEGOLAND 0x00419ef0
