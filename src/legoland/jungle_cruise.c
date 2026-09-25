@@ -904,67 +904,48 @@ void FUN_004340c0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00434100
-void FUN_00434100(unsigned int param_1, int *param_2) {
+void FUN_00434100(struct EditObject *obj, int *coords) {
+    TileId tile;
     struct JungleFish *fish;
-    unsigned char temp[2];
-    unsigned short coord;
-    short local_2;
+    unsigned short owner;
     int x;
     int y;
-    short tile;
-    struct Ride *ride;
 
-    temp[0] = (unsigned char)param_2[0];
-    temp[1] = (unsigned char)param_2[1];
-    coord = *(unsigned short *)temp;
-    if (FUN_00436fb0(param_2[0], param_2[1], (unsigned short *)&local_2) == 0) {
-        FUN_00436fb0(param_2[0], param_2[1] - 5, (unsigned short *)&local_2);
+    tile.pos.x = coords[0];
+    tile.pos.y = coords[1];
+    if (FUN_00436fb0(coords[0], coords[1], &owner) == 0) {
+        FUN_00436fb0(coords[0], coords[1] - 5, &owner);
     }
-    fish = (struct JungleFish *)malloc(0xc);
+    fish = (struct JungleFish *)malloc(sizeof(struct JungleFish));
     if (fish == NULL) {
         return;
     }
-    fish->tile.id = coord;
-    fish->owner = local_2;
+    fish->tile = tile;
+    fish->owner = owner;
     fish->next = DAT_00629c30;
     fish->field_4 = 0;
     DAT_00629c30 = fish;
     FUN_00436130(fish->owner, 2);
-    AddBasicObject(param_1, (unsigned int)param_2);
-    y = DAT_0081cb74->footprint.v[1];
-    ride = DAT_0081cb74;
-    if (y <= DAT_0081cb74->footprint.v[3]) {
-        do {
-            x = ride->footprint.v[0];
-            if (x <= ride->footprint.v[2]) {
-                do {
-                    if (x == ride->footprint.v[0]) {
-                        tile = DAT_0081cb58->tiles[0] + 9;
-                        SetMapTile(param_2[0] + x, param_2[1] + y, tile);
-                    } else if (x == ride->footprint.v[2]) {
-                        tile = DAT_0081cb58->tiles[0] + 0xc;
-                        SetMapTile(param_2[0] + x, param_2[1] + y, tile);
-                    } else if (y == ride->footprint.v[1]) {
-                        tile = DAT_0081cb58->tiles[0] + 10;
-                        SetMapTile(param_2[0] + x, param_2[1] + y, tile);
-                    } else if (y == ride->footprint.v[3]) {
-                        tile = DAT_0081cb58->tiles[0] + 0xb;
-                        SetMapTile(param_2[0] + x, param_2[1] + y, tile);
-                    } else {
-                        tile = DAT_0081cb58->tiles[0];
-                        SetMapTile(param_2[0] + x, param_2[1] + y, tile);
-                    }
-                    x = x + 1;
-                    ride = DAT_0081cb74;
-                } while (x <= DAT_0081cb74->footprint.v[2]);
+    AddBasicObject(obj, coords);
+    for (y = DAT_0081cb74->footprint.v[1]; y <= DAT_0081cb74->footprint.v[3]; y++) {
+        for (x = DAT_0081cb74->footprint.v[0]; x <= DAT_0081cb74->footprint.v[2]; x++) {
+            if (x == DAT_0081cb74->footprint.v[0]) {
+                SetMapTile(coords[0] + x, coords[1] + y, *DAT_0081cb58->tiles + 9);
+            } else if (x == DAT_0081cb74->footprint.v[2]) {
+                SetMapTile(coords[0] + x, coords[1] + y, *DAT_0081cb58->tiles + 0xc);
+            } else if (y == DAT_0081cb74->footprint.v[1]) {
+                SetMapTile(coords[0] + x, coords[1] + y, *DAT_0081cb58->tiles + 10);
+            } else if (y == DAT_0081cb74->footprint.v[3]) {
+                SetMapTile(coords[0] + x, coords[1] + y, *DAT_0081cb58->tiles + 0xb);
+            } else {
+                SetMapTile(coords[0] + x, coords[1] + y, *DAT_0081cb58->tiles);
             }
-            y = y + 1;
-        } while (y <= ride->footprint.v[3]);
+        }
     }
-    SetMapTile(ride->footprint.v[0] + param_2[0], ride->footprint.v[1] + param_2[1], DAT_0081cb58->tiles[0] + 5);
-    SetMapTile(DAT_0081cb74->footprint.v[2] + param_2[0], DAT_0081cb74->footprint.v[1] + param_2[1], DAT_0081cb58->tiles[0] + 8);
-    SetMapTile(DAT_0081cb74->footprint.v[0] + param_2[0], DAT_0081cb74->footprint.v[3] + param_2[1], DAT_0081cb58->tiles[0] + 6);
-    SetMapTile(DAT_0081cb74->footprint.v[2] + param_2[0], DAT_0081cb74->footprint.v[3] + param_2[1], DAT_0081cb58->tiles[0] + 7);
+    SetMapTile(DAT_0081cb74->footprint.v[0] + coords[0], DAT_0081cb74->footprint.v[1] + coords[1], *DAT_0081cb58->tiles + 5);
+    SetMapTile(DAT_0081cb74->footprint.v[2] + coords[0], DAT_0081cb74->footprint.v[1] + coords[1], *DAT_0081cb58->tiles + 8);
+    SetMapTile(DAT_0081cb74->footprint.v[0] + coords[0], DAT_0081cb74->footprint.v[3] + coords[1], *DAT_0081cb58->tiles + 6);
+    SetMapTile(DAT_0081cb74->footprint.v[2] + coords[0], DAT_0081cb74->footprint.v[3] + coords[1], *DAT_0081cb58->tiles + 7);
 }
 
 // FUNCTION: LEGOLAND 0x00434330
@@ -1268,64 +1249,50 @@ void FUN_00434f50(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00434f90
-void FUN_00434f90(unsigned int param_1, int *param_2) {
+void FUN_00434f90(struct EditObject *obj, int *coords) {
+    TileId tile;
     struct JungleScore *score;
-    unsigned char temp[2];
     int x;
     int y;
-    int tile;
-    int i;
 
-    temp[0] = (unsigned char)param_2[0];
-    temp[1] = (unsigned char)param_2[1];
-    score = (struct JungleScore *)malloc(0x44);
+    tile.pos.x = coords[0];
+    tile.pos.y = coords[1];
+    score = (struct JungleScore *)malloc(sizeof(struct JungleScore));
     if (score == NULL) {
         return;
     }
-    score->field_0 = *(unsigned short *)temp;
-    score->start.pos.x = (unsigned char)param_2[0] + (char)DAT_004b7278.v[0] + 2;
-    score->start.pos.y = (unsigned char)param_2[1] + (char)DAT_004b7278.v[1] + 2;
-    score->end.pos.x = (unsigned char)param_2[0] + (char)DAT_004b7260.v[0] + 2;
+    score->field_0 = tile.id;
+    score->start.pos.x = coords[0] + DAT_004b7278.v[0] + 2;
+    score->start.pos.y = coords[1] + DAT_004b7278.v[1] + 2;
+    score->end.pos.x = coords[0] + DAT_004b7260.v[0] + 2;
+    score->end.pos.y = coords[1] + DAT_004b7260.v[1] + 2;
     score->field_8 = 0;
     score->field_c = 9999;
     score->field_10 = 0;
-    score->end.pos.y = (unsigned char)param_2[1] + (char)DAT_004b7260.v[1] + 2;
     score->field_14 = 0;
-    score->field_2c = 0x96;
+    score->field_2c = 150;
     score->field_40 = 3;
-    score->blokes[0] = 0;
-    score->blokes[1] = 0;
-    score->blokes[2] = 0;
-    score->blokes[3] = 0;
-    score->blokes[4] = 0;
-    score->field_30[0] = 0;
-    score->field_30[1] = 0;
+    for (x = 0; x < 5; x++) {
+        score->blokes[x] = 0;
+    }
+    for (x = 0; x < 3; x++) {
+        score->field_30[x] = 0;
+    }
     score->next = DAT_00629c3c;
     DAT_00629c3c = score;
-    AddBasicObject(param_1, (unsigned int)param_2);
-    FUN_00436dc0(param_2[0] + 2 + DAT_004b7278.v[0], param_2[1] + 2 + DAT_004b7278.v[1], 1, &score->field_0);
-    FUN_00436dc0(param_2[0] + 2 + DAT_004b7260.v[0], param_2[1] + 2 + DAT_004b7260.v[1], 4, &score->field_0);
-    y = DAT_00629c40.v[1];
-    if (DAT_00629c40.v[1] <= DAT_00629c40.v[3]) {
-        do {
-            i = DAT_00629c40.v[2] - 1;
-            x = DAT_00629c40.v[0];
-            if (DAT_00629c40.v[0] <= i) {
-                do {
-                    if (x == DAT_00629c40.v[0]) {
-                        tile = DAT_0081cb58->tiles[0] + 9;
-                    } else if (x == i) {
-                        tile = DAT_0081cb58->tiles[0] + 0xc;
-                    } else {
-                        tile = DAT_0081cb58->tiles[0];
-                    }
-                    SetMapTile(param_2[0] + x, param_2[1] + y, tile);
-                    x = x + 1;
-                    i = DAT_00629c40.v[2] - 1;
-                } while (x <= i);
+    AddBasicObject(obj, coords);
+    FUN_00436dc0(coords[0] + DAT_004b7278.v[0] + 2, coords[1] + DAT_004b7278.v[1] + 2, 1, &score->field_0);
+    FUN_00436dc0(coords[0] + DAT_004b7260.v[0] + 2, coords[1] + DAT_004b7260.v[1] + 2, 4, &score->field_0);
+    for (y = DAT_00629c40.v[1]; y <= DAT_00629c40.v[3]; y++) {
+        for (x = DAT_00629c40.v[0]; x <= DAT_00629c40.v[2] - 1; x++) {
+            if (x == DAT_00629c40.v[0]) {
+                SetMapTile(coords[0] + x, coords[1] + y, *DAT_0081cb58->tiles + 9);
+            } else if (x == DAT_00629c40.v[2] - 1) {
+                SetMapTile(coords[0] + x, coords[1] + y, *DAT_0081cb58->tiles + 0xc);
+            } else {
+                SetMapTile(coords[0] + x, coords[1] + y, *DAT_0081cb58->tiles);
             }
-            y = y + 1;
-        } while (y <= DAT_00629c40.v[3]);
+        }
     }
 }
 
@@ -1354,15 +1321,15 @@ void FUN_00435150(struct RideObject *obj, unsigned int param_2, unsigned int par
 }
 
 // FUNCTION: LEGOLAND 0x00435230
-void FUN_00435230(unsigned int param_1, unsigned int param_2) {
+void FUN_00435230(unsigned int param_1, struct Point *param_2) {
     struct JunglePath *p1 = DAT_0062fd2c;
-    struct JungleObj *p4 = DAT_00629c34;
     struct JungleFish *p3 = DAT_00629c30;
+    struct JungleObj *p4 = DAT_00629c34;
     struct JungleObj *p2 = DAT_00629c2c;
 
     BasicObjectDCalcCursor(param_1, param_2);
     DefaultCursor(&DAT_0082ae20);
-    *(struct Footprint *)DAT_0082ae20.field_1414 = DAT_004b7478;
+    memcpy(DAT_0082ae20.field_1414, &DAT_004b7478, sizeof(DAT_004b7478));
     for (; p1 != NULL; p1 = p1->next) {
         if (p1->owner == QueryObj) {
             DAT_0082ae20.field_1404 = p1->tile.pos.x;
@@ -1396,7 +1363,7 @@ void FUN_00435230(unsigned int param_1, unsigned int param_2) {
     }
     for (; p4 != NULL; p4 = p4->next) {
         if (p4->owner == QueryObj) {
-            DAT_0082ae20.field_1414[1] = 0xffffffff;
+            DAT_0082ae20.field_1414[1] = -1;
             DAT_0082ae20.field_1414[3] = 1;
             DAT_0082ae20.field_1414[0] = 0;
             DAT_0082ae20.field_1414[2] = 0;
