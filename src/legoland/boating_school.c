@@ -460,7 +460,7 @@ void FUN_004198a0(struct BoatRide *ride, int from, int to) {
         if (to == 1) {
             to = 0x11;
         }
-        if ((to < from && (to & (from >> 2)) == 0) || (to > from && (from & (to >> 2)) == 0)) {
+        if ((to < from) ? (to & (from >> 2)) == 0 : (to != from && (from & (to >> 2)) == 0)) {
             if ((to & (from * 2)) != 0) {
                 arc = DAT_004b5158;
             } else if ((from & (to * 2)) != 0) {
