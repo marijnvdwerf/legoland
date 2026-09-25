@@ -241,52 +241,52 @@ struct BoatRide *FUN_00419420(struct BoatRide *param_1) {
     int *p;
     int i;
     struct BoatRide *result;
-    struct SampleParams params;
+    struct SampleSource source;
 
-    if (param_1->field_3e8 != 0) {
-        FUN_004198a0(param_1, 1, 4);
-        param_1->field_3dc = 1;
-        if (param_1->field_3e8 == 3) {
-            i = 0x10;
-            p = &param_1->field_1c[0x81];
-            do {
-                p[-1] = param_1->field_1c[0x80];
-                *p = param_1->field_1c[0x81];
-                p = p + 2;
-                i = i - 1;
-            } while (i != 0);
-        } else if (param_1->field_3e8 == 2) {
-            p = &param_1->field_1c[1];
-            i = 0x40;
-            do {
-                p[-1] = param_1->field_1c[0x80];
-                *p = param_1->field_1c[0x81];
-                p = p + 2;
-                i = i - 1;
-            } while (i != 0);
-        }
-        if (param_1->field_3e8 != 3) {
-            param_1->field_10 = param_1->field_8 + 5;
-        }
-        if (param_1->field_3e8 == 1) {
-            p = &param_1->field_1c[0x9e];
-            i = 7;
-            do {
-                p[0] = param_1->field_1c[0x90];
-                p[1] = param_1->field_1c[0x91];
-                p = p + -2;
-                i = i - 1;
-            } while (i != 0);
-        }
-        param_1->field_3e8 = param_1->field_3e8 - 1;
-        return param_1;
+    if (param_1->field_3e8 == 0) {
+        result = param_1->next;
+        source.type = 1;
+        source.field_4 = (void *)param_1->field_3ec;
+        UnSourceAndFadeAllSamplesFromSource(&source, -0x5a);
+        FUN_00418f90(param_1);
+        return result;
     }
-    params.field_8 = param_1->field_3ec;
-    result = param_1->next;
-    params.field_0 = 1;
-    UnSourceAndFadeAllSamplesFromSource(&params, 0xffffffa6);
-    FUN_00418f90(param_1);
-    return result;
+    FUN_004198a0(param_1, 1, 4);
+    param_1->field_3dc = 1;
+    if (param_1->field_3e8 == 3) {
+        i = 0x10;
+        p = &param_1->field_1c[0x81];
+        do {
+            p[-1] = param_1->field_1c[0x80];
+            *p = param_1->field_1c[0x81];
+            p = p + 2;
+            i = i - 1;
+        } while (i != 0);
+    } else if (param_1->field_3e8 == 2) {
+        p = &param_1->field_1c[1];
+        i = 0x40;
+        do {
+            p[-1] = param_1->field_1c[0x80];
+            *p = param_1->field_1c[0x81];
+            p = p + 2;
+            i = i - 1;
+        } while (i != 0);
+    }
+    if (param_1->field_3e8 != 3) {
+        param_1->field_10 = param_1->field_8 + 5;
+    }
+    if (param_1->field_3e8 == 1) {
+        p = &param_1->field_1c[0x9e];
+        i = 7;
+        do {
+            p[0] = param_1->field_1c[0x90];
+            p[1] = param_1->field_1c[0x91];
+            p = p + -2;
+            i = i - 1;
+        } while (i != 0);
+    }
+    param_1->field_3e8 = param_1->field_3e8 - 1;
+    return param_1;
 }
 
 // FUNCTION: LEGOLAND 0x00419520
@@ -787,20 +787,20 @@ void FUN_0041a2f0(int param_1, unsigned int param_2, unsigned int param_3) {
     struct Cursor *cursor = *(struct Cursor **)(param_1 + 0xc);
 
     DAT_004cc088 = DAT_004cc060;
-    *(struct Footprint *)EditCursor.field_1414 = *(struct Footprint *)DAT_004cc078;
     DAT_004cc070 = DAT_004cc048;
-    DAT_004cc048[4] = 0;
+    DAT_004cc070[4] = 0;
+    memcpy(EditCursor.field_1414, DAT_004cc078, 20);
     EditCursor.field_1830 = 0;
     ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
     PathCursor.field_1404 = EditCursor.field_1404;
     PathCursor.field_1408 = EditCursor.field_1408;
     PathCursor.field_1414[0] = EditCursor.field_1414[2] + 1;
     PathCursor.field_1414[1] = EditCursor.field_1414[1];
+    PathCursor.field_1414[2] = PathCursor.field_1414[0];
     PathCursor.field_1414[3] = EditCursor.field_1414[3];
     PathCursor.field_1828 = 0x1008;
     PathCursor.field_1830 = 0;
     EditCursor.field_1830 = (unsigned int)&PathCursor;
-    PathCursor.field_1414[2] = PathCursor.field_1414[0];
     FUN_0045f460(&EditCursor);
     FUN_0045f460(&PathCursor);
     ValidateCursor(&EditCursor, (unsigned int)cursor);
@@ -905,7 +905,7 @@ void FUN_0041a530(int param_1, unsigned int param_2, int param_3) {
             savedY = *(unsigned int *)(param_3 + 0x1408);
             *(unsigned int *)(param_3 + 0x1404) = (unsigned char)mer->field_0;
             *(unsigned int *)(param_3 + 0x1408) = (unsigned char)(mer->field_0 >> 8);
-            FUN_0041b6f0(local_14, mer->field_2, (struct Cursor *)param_3);
+            FUN_0041b6f0(local_14, *(TileId *)&mer->field_2, (struct Cursor *)param_3);
             *(unsigned int *)(param_3 + 0x1404) = savedX;
             *(unsigned int *)(param_3 + 0x1408) = savedY;
             mer = DAT_004d2164;
@@ -1502,55 +1502,42 @@ unsigned int FUN_0041b6d0(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0041b6f0
-void FUN_0041b6f0(void *param_1, unsigned short param_2, struct Cursor *param_3) {
+void FUN_0041b6f0(void *param_1, TileId tile, struct Cursor *param_3) {
     struct Cursor *cursor = *(struct Cursor **)((char *)param_1 + 0xc);
     struct MermaidNode *node = DAT_004d2164;
     struct MermaidNode *prev = NULL;
-    struct MermaidNode *nxt;
     int x;
     int y;
-    int n;
-    struct SampleParams params;
+    struct SampleSource source;
 
-    StandardRemoveObject((unsigned int)param_1, *(TileId *)&param_2, (unsigned int)param_3);
-    params.field_8 = param_2 & 0xff;
-    params.field_c = param_2 >> 8 & 0xff;
-    params.field_0 = 2;
-    n = CountSamplesFromSource(&params);
-    if (n != 1) {
+    StandardRemoveObject((struct EditObject *)param_1, tile, param_3);
+    source.type = 2;
+    source.field_8 = tile.pos.x;
+    source.field_c = tile.pos.y;
+    if (CountSamplesFromSource(&source) != 1) {
         // STRING: LEGOLAND 0x004b5398
         DBPrintf("Can't find samples for mermaid\n");
     }
-    UnSourceAndFadeAllSamplesFromSource(&params, 0xfffffe70);
-    y = cursor->field_3c.v[1];
-    if (cursor->field_3c.v[1] <= cursor->field_3c.v[3]) {
-        do {
-            x = cursor->field_3c.v[0];
-            if (cursor->field_3c.v[0] <= cursor->field_3c.v[2]) {
-                do {
-                    RestoreBaseMap(x + param_3->field_1404, y + param_3->field_1408);
-                    x = x + 1;
-                } while (x <= cursor->field_3c.v[2]);
-            }
-            y = y + 1;
-        } while (y <= cursor->field_3c.v[3]);
+    UnSourceAndFadeAllSamplesFromSource(&source, -400);
+    for (y = cursor->field_3c.v[1]; y <= cursor->field_3c.v[3]; y++) {
+        for (x = cursor->field_3c.v[0]; x <= cursor->field_3c.v[2]; x++) {
+            RestoreBaseMap(x + param_3->field_1404, y + param_3->field_1408);
+        }
     }
-    while (node->field_2 != param_2) {
-        nxt = node->next;
-        if (nxt == NULL) {
+    while (node->field_0 != tile.id) {
+        prev = node;
+        node = node->next;
+        if (node == NULL) {
             return;
         }
-        prev = node;
-        node = nxt;
     }
     if (node != NULL) {
-        FUN_0041b0d0(node->field_2, 0xffffffff);
+        FUN_0041b0d0(node->field_2, -1);
         if (prev != NULL) {
             prev->next = node->next;
-            free(node);
-            return;
+        } else {
+            DAT_004d2164 = node->next;
         }
-        DAT_004d2164 = node->next;
         free(node);
     }
 }
@@ -1631,13 +1618,10 @@ void FUN_0041bab0(int param_1, int param_2, unsigned short *param_3) {
     unsigned int mask;
 
     path = FUN_0041c890(param_1, param_2);
-    if (score != NULL) {
-        do {
-            if (score->id == *param_3) {
-                break;
-            }
-            score = score->next;
-        } while (score != NULL);
+    for (; score != NULL; score = score->next) {
+        if (score->id == *param_3) {
+            break;
+        }
     }
     if (path != NULL) {
         mask = path->field_4;
@@ -2194,7 +2178,7 @@ void FUN_0041c940(int param_1, int param_2, int param_3, int param_4, short *par
 void FUN_0041caa0(unsigned short param_1) {
     struct BoatRideNode *score = DAT_004cc074;
     struct PathNode *node;
-    int again;
+    struct PathNode *tmp;
 
     for (node = DAT_004d823c; node != NULL; node = node->next) {
         if (node->field_2 == param_1) {
@@ -2204,54 +2188,55 @@ void FUN_0041caa0(unsigned short param_1) {
     while (score != NULL && score->id != param_1) {
         score = score->next;
     }
-    DAT_004d8240 = (struct BoatRideNode *)FUN_0041c890(score->field_4, score->field_5);
-    *(unsigned int *)((char *)DAT_004d8240 + 8) = 0;
-    *(unsigned int *)((char *)DAT_004d8240 + 0x14) = 0;
+    node = FUN_0041c890(score->field_4, score->field_5);
+    node->field_8 = 0;
+    node->field_14 = NULL;
+    DAT_004d8240 = node;
+    DAT_004d8244 = NULL;
     do {
+        FUN_0041cb20(param_1);
+        tmp = DAT_004d8244;
+        DAT_004d8240 = tmp;
         DAT_004d8244 = NULL;
-        FUN_0041cb20((short)param_1);
-        again = DAT_004d8244 != NULL;
-        DAT_004d8240 = DAT_004d8244;
-        DAT_004d8244 = NULL;
-    } while (again);
+    } while (tmp != NULL);
 }
 
 // FUNCTION: LEGOLAND 0x0041cb20
 void FUN_0041cb20(short param_1) {
     struct PathNode *p;
-    int n1;
-    int n2;
-    int n3;
-    int n4;
+    struct PathNode *n1;
+    struct PathNode *n2;
+    struct PathNode *n3;
+    struct PathNode *n4;
 
-    for (p = (struct PathNode *)DAT_004d8240; p != NULL; p = *(struct PathNode **)((char *)p + 0x14)) {
-        n1 = (int)FUN_0041c890(p->x, p->y - 5);
-        n2 = (int)FUN_0041c890(p->x + 5, p->y);
-        n3 = (int)FUN_0041c890(p->x, p->y + 5);
-        n4 = (int)FUN_0041c890(p->x - 5, p->y);
-        if (n1 != 0 && *(short *)(n1 + 2) == param_1 && *(int *)(n1 + 0x18) == 0) {
-            *(struct PathNode **)(n1 + 0x18) = p;
-            *(int *)(n1 + 8) = *(int *)((char *)p + 8) + 1;
-            *(struct BoatRideNode **)(n1 + 0x14) = DAT_004d8244;
-            DAT_004d8244 = (struct BoatRideNode *)n1;
+    for (p = DAT_004d8240; p != NULL; p = p->field_14) {
+        n1 = FUN_0041c890(p->x, p->y - 5);
+        n2 = FUN_0041c890(p->x + 5, p->y);
+        n3 = FUN_0041c890(p->x, p->y + 5);
+        n4 = FUN_0041c890(p->x - 5, p->y);
+        if (n1 != NULL && (short)n1->field_2 == param_1 && n1->field_18 == NULL) {
+            n1->field_18 = p;
+            n1->field_8 = p->field_8 + 1;
+            n1->field_14 = DAT_004d8244;
+            DAT_004d8244 = n1;
         }
-        if (n2 != 0 && *(short *)(n2 + 2) == param_1 && *(int *)(n2 + 0x18) == 0) {
-            *(struct PathNode **)(n2 + 0x18) = p;
-            *(int *)(n2 + 8) = *(int *)((char *)p + 8) + 1;
-            *(struct BoatRideNode **)(n2 + 0x14) = DAT_004d8244;
-            DAT_004d8244 = (struct BoatRideNode *)n2;
+        if (n2 != NULL && (short)n2->field_2 == param_1 && n2->field_18 == NULL) {
+            n2->field_18 = p;
+            n2->field_8 = p->field_8 + 1;
+            n2->field_14 = DAT_004d8244;
+            DAT_004d8244 = n2;
         }
-        if (n3 != 0 && *(short *)(n3 + 2) == param_1 && *(int *)(n3 + 0x18) == 0) {
-            *(struct PathNode **)(n3 + 0x18) = p;
-            *(int *)(n3 + 8) = *(int *)((char *)p + 8) + 1;
-            *(struct BoatRideNode **)(n3 + 0x14) = DAT_004d8244;
-            DAT_004d8244 = (struct BoatRideNode *)n3;
+        if (n3 != NULL && (short)n3->field_2 == param_1 && n3->field_18 == NULL) {
+            n3->field_18 = p;
+            n3->field_8 = p->field_8 + 1;
+            n3->field_14 = DAT_004d8244;
+            DAT_004d8244 = n3;
         }
-        if (n4 != 0 && *(short *)(n4 + 2) == param_1 && *(int *)(n4 + 0x18) == 0) {
-            *(struct PathNode **)(n4 + 0x18) = p;
-            *(int *)(n4 + 8) = *(int *)((char *)p + 8) + 1;
-            *(struct BoatRideNode **)(n4 + 0x14) = DAT_004d8244;
-            DAT_004d8244 = (struct BoatRideNode *)n4;
+        if (n4 != NULL && (short)n4->field_2 == param_1 && n4->field_18 == NULL) {
+            n4->field_18 = p;
+            n4->field_8 = p->field_8 + 1;
+            n4->field_14 = DAT_004d8244;
+            DAT_004d8244 = n4;
         }
     }
 }

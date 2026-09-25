@@ -53,6 +53,7 @@ struct JungleTileMap;
 struct BoatRide;
 struct RideNode;
 struct PathNode;
+struct BoatRideNode;
 struct MermaidNode;
 struct Ride;
 struct RideLayer;
@@ -1150,13 +1151,13 @@ extern int DAT_004cc048[5];
 // 0x004cc060
 extern int DAT_004cc060[4];
 // 0x004cc070
-extern void *DAT_004cc070;
+extern int *DAT_004cc070;
 // 0x004cc074
-extern struct RideNode *DAT_004cc074;
+extern struct BoatRideNode *DAT_004cc074;
 // 0x004cc078
 extern int DAT_004cc078[4];
 // 0x004cc088
-extern void *DAT_004cc088;
+extern int *DAT_004cc088;
 // 0x004cc08c
 extern unsigned int DAT_004cc08c;
 // 0x004cc090
@@ -1168,9 +1169,9 @@ extern struct Cursor DAT_004d2168[4];
 // 0x004d823c
 extern struct PathNode *DAT_004d823c;
 // 0x004d8240
-extern struct RideNode *DAT_004d8240;
+extern struct PathNode *DAT_004d8240;
 // 0x004d8244
-extern struct RideNode *DAT_004d8244;
+extern struct PathNode *DAT_004d8244;
 // 0x004d8250
 extern const unsigned char DAT_004d8250[1];
 // 0x004d8268

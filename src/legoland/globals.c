@@ -1401,16 +1401,16 @@ int DAT_004cc048[5];
 int DAT_004cc060[4];
 
 // GLOBAL: LEGOLAND 0x004cc070
-void *DAT_004cc070;
+int *DAT_004cc070;
 
 // GLOBAL: LEGOLAND 0x004cc074
-struct RideNode *DAT_004cc074;
+struct BoatRideNode *DAT_004cc074;
 
 // GLOBAL: LEGOLAND 0x004cc078
 int DAT_004cc078[4];
 
 // GLOBAL: LEGOLAND 0x004cc088
-void *DAT_004cc088;
+int *DAT_004cc088;
 
 // GLOBAL: LEGOLAND 0x004cc08c
 unsigned int DAT_004cc08c;
@@ -1428,10 +1428,10 @@ struct Cursor DAT_004d2168[4];
 struct PathNode *DAT_004d823c;
 
 // GLOBAL: LEGOLAND 0x004d8240
-struct RideNode *DAT_004d8240;
+struct PathNode *DAT_004d8240;
 
 // GLOBAL: LEGOLAND 0x004d8244
-struct RideNode *DAT_004d8244;
+struct PathNode *DAT_004d8244;
 
 // GLOBAL: LEGOLAND 0x004d8250
 const unsigned char DAT_004d8250[1];

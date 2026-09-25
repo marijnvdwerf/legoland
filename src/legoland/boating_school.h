@@ -87,7 +87,7 @@ void FUN_0041caa0(unsigned short param_1);
 void FUN_0041cb20(short param_1);
 int FUN_0041c8c0(unsigned char a, unsigned char b, unsigned char c, unsigned char d);
 void FUN_0041c940(int param_1, int param_2, int param_3, int param_4, short *param_5, int *param_6);
-void FUN_0041b6f0(void *param_1, unsigned short param_2, struct Cursor *param_3);
+void FUN_0041b6f0(void *param_1, TileId tile, struct Cursor *param_3);
 void FUN_0041a3d0(void *param_1, unsigned int param_2);
 void FUN_0041a530(int param_1, unsigned int param_2, int param_3);
 
