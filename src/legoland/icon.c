@@ -846,72 +846,63 @@ LEGO_EXPORT int RenderScroll_Icons(struct IconNode *node) {
 
 // FUNCTION: LEGOLAND 0x0046e4d0
 LEGO_EXPORT int RenderEnergyBar(struct IconNode *node) {
-    struct PrintCtx ctx;
+    struct PrintCtx ctx = {1};
     int fill1;
     int fill2;
+    int scale;
     RECT clip;
 
-    ctx.node = NULL;
-    ctx.flags = 1;
-    ctx.field_8 = 0;
     if (DAT_00832bd0 == 0 && DAT_00832bd4 == 0) {
         fill1 = 0;
         fill2 = 0;
     } else {
-        fill2 = DAT_00832bd4 * 2;
-        if (DAT_00832bd0 > DAT_00832bd4 * 2) {
-            fill2 = DAT_00832bd0;
+        scale = DAT_00832bd4 * 2;
+        if (DAT_00832bd0 > scale) {
+            scale = DAT_00832bd0;
         }
-        if (fill2 == 0) {
-            fill2 = 1;
+        if (scale == 0) {
+            scale = 1;
         }
-        fill1 = (node->field_10 * DAT_00832bd0) / fill2;
-        fill2 = (node->field_10 * DAT_00832bd4) / fill2;
+        fill1 = (node->field_10 * DAT_00832bd0) / scale;
+        fill2 = (node->field_10 * DAT_00832bd4) / scale;
     }
-    if (node->sprite == NULL) {
-        if (DAT_0083298c != 0) {
-            return 0;
+    if (node->sprite != NULL && DAT_0083298c != 0) {
+        StoreClipping();
+        if (fill1 > DAT_006688c0) {
+            DAT_006688c0 += 6;
+            if (DAT_006688c0 > fill1) {
+                DAT_006688c0 = fill1;
+            }
+        } else {
+            DAT_006688c0 -= 6;
+            if (DAT_006688c0 < fill1) {
+                DAT_006688c0 = fill1;
+            }
         }
-        PrintSprite(DAT_00668e6c, node->x - 0x15, node->y - 6, 0, (int *)&ctx);
+        if (fill2 > DAT_006688bc) {
+            DAT_006688bc += 6;
+            if (DAT_006688bc > fill2) {
+                DAT_006688bc = fill2;
+            }
+        } else {
+            DAT_006688bc -= 6;
+            if (DAT_006688bc < fill2) {
+                DAT_006688bc = fill2;
+            }
+        }
+        clip.left = node->x;
+        clip.top = node->y;
+        clip.right = DAT_006688c0 + clip.left;
+        clip.bottom = node->field_12 + clip.top;
+        SetClipping(&clip);
+        PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
+        RestoreClipping();
+        PrintSprite(DAT_00668e70, (node->x - DAT_00668e70->width / 2) + DAT_006688bc, node->field_12 / 2 + node->y, 0, (int *)&ctx);
         return 0;
     }
     if (DAT_0083298c == 0) {
         PrintSprite(DAT_00668e6c, node->x - 0x15, node->y - 6, 0, (int *)&ctx);
-        return 0;
     }
-    StoreClipping();
-    if (DAT_006688c0 < fill1) {
-        DAT_006688c0 = DAT_006688c0 + 6;
-        if (fill1 < DAT_006688c0) {
-            DAT_006688c0 = fill1;
-        }
-    } else {
-        DAT_006688c0 = DAT_006688c0 - 6;
-        if (DAT_006688c0 < fill1) {
-            DAT_006688c0 = fill1;
-        }
-    }
-    if (DAT_006688bc < fill2) {
-        DAT_006688bc = DAT_006688bc + 6;
-        if (DAT_006688bc <= fill2) {
-            goto skip;
-        }
-    } else {
-        DAT_006688bc = DAT_006688bc - 6;
-        if (fill2 <= DAT_006688bc) {
-            goto skip;
-        }
-    }
-    DAT_006688bc = fill2;
-skip:
-    clip.left = node->x;
-    clip.top = node->y;
-    clip.right = DAT_006688c0 + clip.left;
-    clip.bottom = node->field_12 + clip.top;
-    SetClipping(&clip);
-    PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
-    RestoreClipping();
-    PrintSprite(DAT_00668e70, (node->x - DAT_00668e70->width / 2) + DAT_006688bc, node->field_12 / 2 + node->y, 0, (int *)&ctx);
     return 0;
 }
 

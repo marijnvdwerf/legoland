@@ -32,7 +32,7 @@ struct Sprite {
         unsigned int flags;
         struct LayerHost *host;
     };
-    /* 0x14 */ unsigned short width;
+    /* 0x14 */ short width;
     /* 0x16 */ unsigned short height;
     /* 0x18 */ unsigned short src_x;
     /* 0x1a */ unsigned short src_y;
