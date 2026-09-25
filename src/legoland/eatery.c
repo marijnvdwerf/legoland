@@ -1114,13 +1114,12 @@ void FUN_0042fa40(unsigned int arg1, unsigned int arg2, unsigned int arg3, unsig
 
 // FUNCTION: LEGOLAND 0x0042fa90
 void FUN_0042fa90(int param_1, int param_2, int param_3) {
-    int bloke = *(int *)(param_1 + 8);
     if (param_2 == 1) {
-        *(int *)(bloke + 0x68) = *(int *)(bloke + 0x68) + DAT_004b6860[param_3] * -8;
-        *(int *)(*(int *)(param_1 + 8) + 0x6c) = *(int *)(*(int *)(param_1 + 8) + 0x6c) + DAT_004b6860[param_3] * -8;
+        (*(struct Bloke **)(param_1 + 8))->pos.x += DAT_004b6860[param_3] * -8;
+        (*(struct Bloke **)(param_1 + 8))->pos.y += DAT_004b6860[param_3] * -8;
     } else {
-        *(int *)(bloke + 0x68) = *(int *)(bloke + 0x68) + DAT_004b68e0[param_3] * 8;
-        *(int *)(*(int *)(param_1 + 8) + 0x6c) = *(int *)(*(int *)(param_1 + 8) + 0x6c) + DAT_004b68e0[param_3] * 8;
+        (*(struct Bloke **)(param_1 + 8))->pos.x += DAT_004b68e0[param_3] * 8;
+        (*(struct Bloke **)(param_1 + 8))->pos.y += DAT_004b68e0[param_3] * 8;
     }
 }
 
