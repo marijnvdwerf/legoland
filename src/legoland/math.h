@@ -2,11 +2,8 @@
 
 #include "legoland.h"
 
-// CRT math (the CRT <math.h> is shadowed by this header)
-double atan2(double y, double x);
-double cos(double x);
-double sin(double x);
-double floor(double x);
+// This header shadows the CRT <math.h>; pull the real one in explicitly.
+#include "../../toolchain/msvc6/Include/math.h"
 
 struct Point {
     /* 0x00 */ int x;
