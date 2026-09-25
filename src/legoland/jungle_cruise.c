@@ -2631,7 +2631,7 @@ int FUN_00437570(struct JungleScore *param_1, unsigned int param_2, unsigned int
         r = rand();
         result = r / 100;
         if (r % 100 < 0x1f) {
-            BuyItem(param_2, param_3, param_4);
+            BuyItem((struct BuyItemArg *)param_2, (TileId *)param_3, param_4);
             bloke = (struct Bloke *)param_1->field_8;
             result = (int)bloke;
             bloke->param_action = bloke->param_action + 1;

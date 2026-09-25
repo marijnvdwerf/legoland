@@ -144,8 +144,8 @@ void FUN_0042e260(struct BlokeArg *arg, unsigned int param2, unsigned int param3
 }
 
 // FUNCTION: LEGOLAND 0x0042e2a0
-void FUN_0042e2a0(int param_1) {
-    struct Ride *ride = ((struct RideObject *)param_1)->ride;
+void FUN_0042e2a0(struct RideObject *obj) {
+    struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
     struct Bloke *bloke;
@@ -188,7 +188,7 @@ void FUN_0042e2a0(int param_1) {
             case 3:
                 if (bloke->field_58 == 0) {
                     bloke->param_action++;
-                    BuyItem((struct BuyItemArg *)param_1, (int)tile, 0);
+                    BuyItem((struct BuyItemArg *)obj, tile, 0);
                 }
                 bloke->field_58--;
                 break;
@@ -273,8 +273,8 @@ void FUN_0042e5d0(struct EateryObj *obj) {
 void FUN_0042e600(void) { KillMoneySFX(); }
 
 // FUNCTION: LEGOLAND 0x0042e610
-void FUN_0042e610(int param_1) {
-    struct Ride *ride = ((struct RideObject *)param_1)->ride;
+void FUN_0042e610(struct RideObject *obj) {
+    struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
     struct Bloke *bloke;
@@ -309,7 +309,7 @@ void FUN_0042e610(int param_1) {
             case 2:
                 if (bloke->field_58 == 0) {
                     bloke->param_action++;
-                    BuyItem((struct BuyItemArg *)param_1, (int)tile, 1);
+                    BuyItem((struct BuyItemArg *)obj, tile, 1);
                 }
                 bloke->field_58--;
                 break;
@@ -458,8 +458,8 @@ void FUN_0042ea10(unsigned int param_1, unsigned int param_2, unsigned int param
 }
 
 // FUNCTION: LEGOLAND 0x0042ea60
-void FUN_0042ea60(int param_1) {
-    struct Ride *ride = ((struct RideObject *)param_1)->ride;
+void FUN_0042ea60(struct RideObject *obj) {
+    struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
     struct Bloke *bloke;
@@ -502,7 +502,7 @@ void FUN_0042ea60(int param_1) {
             case 3:
                 if (bloke->field_58 == 0) {
                     bloke->param_action++;
-                    PlayMoneySFX((unsigned char *)tile, 0, 0);
+                    PlayMoneySFX(tile, 0, 0);
                 }
                 bloke->field_58--;
                 break;
@@ -535,8 +535,8 @@ void FUN_0042ea60(int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0042ec10
-void FUN_0042ec10(int param_1) {
-    struct Ride *ride = ((struct RideObject *)param_1)->ride;
+void FUN_0042ec10(struct RideObject *obj) {
+    struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
     struct Bloke *bloke;
@@ -571,7 +571,7 @@ void FUN_0042ec10(int param_1) {
             case 2:
                 if (bloke->field_58 == 0) {
                     bloke->param_action++;
-                    BuyItem((struct BuyItemArg *)param_1, (int)tile, 1);
+                    BuyItem((struct BuyItemArg *)obj, tile, 1);
                 }
                 bloke->field_58--;
                 break;
@@ -596,8 +596,8 @@ void FUN_0042ec10(int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x0042ed70
-void FUN_0042ed70(int param_1) {
-    struct Ride *ride = ((struct RideObject *)param_1)->ride;
+void FUN_0042ed70(struct RideObject *obj) {
+    struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
     struct Bloke *bloke;
@@ -632,7 +632,7 @@ void FUN_0042ed70(int param_1) {
             case 2:
                 if (bloke->field_58 == 0) {
                     bloke->param_action++;
-                    BuyItem((struct BuyItemArg *)param_1, (int)tile, 1);
+                    BuyItem((struct BuyItemArg *)obj, tile, 1);
                 }
                 bloke->field_58--;
                 break;
@@ -750,28 +750,27 @@ void FUN_0042f030(struct EateryObj *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0042f0f0
-void FUN_0042f0f0(int param_1, int param_2, int param_3, int param_4) {
-    int idx = (param_4 + (unsigned int)*(unsigned char *)(param_1 + 0x36) * 5) * 6;
+void FUN_0042f0f0(struct Bloke *bloke, int x, int y, int step) {
+    int idx = (step + bloke->field_36 * 5) * 6;
     int y_add = DAT_004b66f4[idx + 1];
     int dir_flag = DAT_004b66f4[idx + 4];
     int frame = DAT_004b66f4[idx + 5];
-    char cv;
-    int y;
-    *(int *)(param_1 + 0x24) = (DAT_004b66f4[idx] + param_2) * 0x100 + DAT_004b66f4[idx + 2];
-    y = (param_3 + y_add) * 0x100 + DAT_004b66f4[idx + 3];
-    *(int *)(param_1 + 0x28) = y;
-    cv = CalcMoveLine(*(struct Point *)(param_1 + 0x68), *(struct Point *)(param_1 + 0x24), (struct Navigator *)(param_1 + 0x98));
-    *(unsigned char *)(param_1 + 0x73) = cv + 0x10;
-    *(short *)(param_1 + 0xe) = 7;
-    *(char *)(param_1 + 0x37) = (char)frame;
+    char dir;
+
+    bloke->dest.x = (DAT_004b66f4[idx] + x) * 0x100 + DAT_004b66f4[idx + 2];
+    bloke->dest.y = (y + y_add) * 0x100 + DAT_004b66f4[idx + 3];
+    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+    bloke->field_73 = dir + 0x10;
+    bloke->field_e = 7;
+    bloke->field_37 = (unsigned char)frame;
     if (dir_flag == 1) {
-        NewDirForAction(param_1, ((unsigned char)(cv + 0x10) >> 5) + 3);
+        NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0042f1a0
-void FUN_0042f1a0(int param_1) {
-    struct Ride *ride = ((struct RideObject *)param_1)->ride;
+void FUN_0042f1a0(struct RideObject *obj) {
+    struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
     struct Bloke *bloke;
@@ -835,20 +834,20 @@ void FUN_0042f1a0(int param_1) {
                 }
                 break;
             case 1:
-                BuyItem((struct BuyItemArg *)param_1, (int)tile, 1);
+                BuyItem((struct BuyItemArg *)obj, tile, 1);
                 if (bloke->field_46 == 4) {
                     bloke->param_action = 8;
                 } else {
-                    FUN_0042f0f0((int)bloke, x, y, 0);
+                    FUN_0042f0f0(bloke, x, y, 0);
                     bloke->param_action++;
                 }
                 break;
             case 2:
-                FUN_0042f0f0((int)bloke, x, y, 1);
+                FUN_0042f0f0(bloke, x, y, 1);
                 bloke->param_action++;
                 break;
             case 3:
-                FUN_0042f0f0((int)bloke, x, y, 2);
+                FUN_0042f0f0(bloke, x, y, 2);
                 bloke->param_action++;
                 break;
             case 4:
@@ -867,11 +866,11 @@ void FUN_0042f1a0(int param_1) {
                 bloke->flags &= 0xfeff;
                 bloke->field_70 = 0;
                 BlokeWalkAnim(bloke);
-                FUN_0042f0f0((int)bloke, x, y, 3);
+                FUN_0042f0f0(bloke, x, y, 3);
                 bloke->param_action++;
                 break;
             case 7:
-                FUN_0042f0f0((int)bloke, x, y, 4);
+                FUN_0042f0f0(bloke, x, y, 4);
                 bloke->param_action += 2;
                 seats.c[bloke->field_36] = 0;
                 break;
@@ -1113,13 +1112,13 @@ void FUN_0042fa40(unsigned int arg1, unsigned int arg2, unsigned int arg3, unsig
 }
 
 // FUNCTION: LEGOLAND 0x0042fa90
-void FUN_0042fa90(int param_1, int param_2, int param_3) {
-    if (param_2 == 1) {
-        (*(struct Bloke **)(param_1 + 8))->pos.x += DAT_004b6860[param_3] * -8;
-        (*(struct Bloke **)(param_1 + 8))->pos.y += DAT_004b6860[param_3] * -8;
+void FUN_0042fa90(struct RideNode *node, int dir, int idx) {
+    if (dir == 1) {
+        node->rider->pos.x += DAT_004b6860[idx] * -8;
+        node->rider->pos.y += DAT_004b6860[idx] * -8;
     } else {
-        (*(struct Bloke **)(param_1 + 8))->pos.x += DAT_004b68e0[param_3] * 8;
-        (*(struct Bloke **)(param_1 + 8))->pos.y += DAT_004b68e0[param_3] * 8;
+        node->rider->pos.x += DAT_004b68e0[idx] * 8;
+        node->rider->pos.y += DAT_004b68e0[idx] * 8;
     }
 }
 
@@ -1276,7 +1275,7 @@ void FUN_0042fbb0(int param_1) {
             case 6:
                 if (f18 == 2) {
                     if (f28 == 0) {
-                        FUN_0042fa90((int)node, 1, (int)f7);
+                        FUN_0042fa90((struct RideNode *)node, 1, (int)f7);
                     } else {
                         *(char *)(bloke + 0x60) = cv + 1;
                     }
@@ -1338,7 +1337,7 @@ void FUN_0042fbb0(int param_1) {
                             *(char *)(bloke + 0x60) = cv + 1;
                         }
                     } else if (f28 == 0) {
-                        FUN_0042fa90((int)node, 2, (int)f7);
+                        FUN_0042fa90((struct RideNode *)node, 2, (int)f7);
                     } else {
                         *(char *)(bloke + 0x60) = cv + 1;
                     }
@@ -1349,7 +1348,7 @@ void FUN_0042fbb0(int param_1) {
                     f3c = 0;
                     f2c = 0;
                     f28 = 0;
-                    FUN_0042fa90((int)node, 2, (int)f7);
+                    FUN_0042fa90((struct RideNode *)node, 2, (int)f7);
                 }
                 break;
             case 13:
@@ -1784,8 +1783,8 @@ void FUN_00431120(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00431170
-void FUN_00431170(int param_1) {
-    struct Ride *ride = ((struct RideObject *)param_1)->ride;
+void FUN_00431170(struct RideObject *obj) {
+    struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
     struct Bloke *bloke;
@@ -1819,7 +1818,7 @@ void FUN_00431170(int param_1) {
             case 2:
                 if (bloke->field_58 == 0) {
                     bloke->param_action++;
-                    BuyItem((struct BuyItemArg *)param_1, (int)tile, 1);
+                    BuyItem((struct BuyItemArg *)obj, tile, 1);
                 }
                 bloke->field_58--;
                 break;
