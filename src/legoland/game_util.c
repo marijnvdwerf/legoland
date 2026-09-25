@@ -198,17 +198,18 @@ int FUN_00478ac0(unsigned int param_1, unsigned int param_2) {
 // FUNCTION: LEGOLAND 0x00478b20
 int FUN_00478b20(unsigned int arg) {
     struct GameObject *obj = (struct GameObject *)ElemID((const char *)arg);
-    if (obj == NULL) {
-        return 0;
-    }
-    if ((obj->flags & 4) == 0) {
-        if (LoadObjectClass(obj) == 0) {
-            return 0;
+
+    if (obj != NULL) {
+        if ((obj->flags & 4) == 0) {
+            if (LoadObjectClass(obj) == 0) {
+                return 0;
+            }
+            obj->flags |= 4;
+            FUN_00469ab0(obj);
         }
-        obj->flags |= 4;
-        FUN_00469ab0(obj);
+        return 1;
     }
-    return 1;
+    return 0;
 }
 
 // FUNCTION: LEGOLAND 0x00478b70
@@ -367,7 +368,6 @@ int FUN_00478f00(struct CommandArgs *arg, int argc) {
         }
         if (v2 >= 0) {
             lpConfig->field_34 = v2 != 0;
-            return 1;
         }
     } else {
         FUN_0046bb10(v1, v2);
@@ -551,8 +551,9 @@ int FUN_004793e0(struct CommandArgs *arg, int argc) {
             return 0;
         }
         // STRING: LEGOLAND 0x004bc0bc
-        id = _stricmp((char *)arg->field_4, "ALL");
-        if (id != 0) {
+        if (_stricmp((char *)arg->field_4, "ALL") == 0) {
+            id = 0;
+        } else {
             id = ElemID((const char *)arg->field_4);
             if (id == 0) {
                 return 0;
