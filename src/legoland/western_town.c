@@ -550,32 +550,41 @@ void FUN_00437f60(struct EditObject *editObj, int *coords) {
 
 // FUNCTION: LEGOLAND 0x00437f90
 struct JailCell *FUN_00437f90(unsigned short *key) {
-    struct JailCell *cell = DAT_0062fd3c;
-    while (cell != NULL) {
-        if (cell->field_4 == *key) {
-            return cell;
-        }
-        cell = cell->next;
+    struct JailCell *cell;
+
+    cell = DAT_0062fd3c;
+    if (cell == NULL) {
+        return NULL;
     }
-    return NULL;
+    while (memcmp(&cell->field_4, key, 2) != 0) {
+        cell = cell->next;
+        if (cell == NULL) {
+            return NULL;
+        }
+    }
+    return cell;
 }
 
 // FUNCTION: LEGOLAND 0x00437fc0
 void FUN_00437fc0(struct JailCell *cell) {
-    struct JailCell *prev = DAT_0062fd3c;
-    if (prev == cell) {
+    struct JailCell *cur;
+    struct JailCell *prev;
+
+    if (DAT_0062fd3c == cell) {
         DAT_0062fd3c = cell->next;
-        free(cell);
-        return;
-    }
-    if (prev->next != cell) {
-        prev = prev->next;
-        while (prev != NULL && prev->next != cell) {
+    } else {
+        cur = DAT_0062fd3c->next;
+        prev = DAT_0062fd3c;
+        while (cur != cell) {
             prev = prev->next;
+            if (prev == NULL) {
+                break;
+            }
+            cur = prev->next;
         }
-    }
-    if (prev != NULL) {
-        prev->next = cell->next;
+        if (prev != NULL) {
+            prev->next = cell->next;
+        }
     }
     free(cell);
 }
