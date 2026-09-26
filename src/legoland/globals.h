@@ -271,7 +271,6 @@ struct ScreenState {
 // initializers) live in globals.c. This phase only collects the declarations;
 // per-TU inline externs are migrated to use this header in a later phase.
 // ---------------------------------------------------------------------------
-// 0x004ab38c
 /* Per object-type map statistics (0x2c bytes). The scan_* fields accumulate during DoMapAI's
    tile sweep and are latched into built/capacity/tiles/salvage when the sweep completes. */
 struct MapAIClass {
@@ -334,13 +333,10 @@ struct MapStats {
     /* 0x3e0 */ int field_3e0[4];
 };
 
-extern float DAT_004ab38c;
 // 0x004ab390
 extern float FLOAT_004ab390;
 // 0x004ab398
 extern double DOUBLE_004ab398;
-// 0x004ab3a8
-extern double DAT_004ab3a8;
 // 0x004ab3d0
 extern float DAT_004ab3d0;
 // 0x004ab3dc
@@ -375,18 +371,10 @@ extern float FLOAT_004ab454;
 extern float FLOAT_004ab458;
 // 0x004ab45c
 extern float FLOAT_004ab45c;
-// 0x004ab460
-extern double DOUBLE_004ab460;
-
 // 0x004ab480
 extern float FLOAT_004ab480;
 // 0x004ab4c8
 extern double DAT_004ab4c8;
-// 0x004ab4d0
-extern double DOUBLE_004ab4d0;
-
-// 0x004ab4d8
-extern float DAT_004ab4d8;
 // 0x004ab518
 extern float DAT_004ab518;
 // 0x004ab520

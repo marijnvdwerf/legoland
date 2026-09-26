@@ -265,13 +265,13 @@ void FUN_0043fa10(float *param_1, int param_2) {
             if (*param_1 < FLOAT_004ab390) {
                 *param_1 = 0.0f;
             }
-            if (*param_1 > DAT_004ab38c) {
+            if (*param_1 > 1.0f) {
                 *param_1 = 1.0f;
             }
             if (param_1[1] < FLOAT_004ab390) {
                 param_1[1] = 0.0f;
             }
-            if (param_1[1] > DAT_004ab38c) {
+            if (param_1[1] > 1.0f) {
                 param_1[1] = 1.0f;
             }
             param_1 = param_1 + 2;

@@ -5,17 +5,11 @@
 #include "math.h"
 #include "objclass.h"
 
-// GLOBAL: LEGOLAND 0x004ab38c
-float DAT_004ab38c;
-
 // GLOBAL: LEGOLAND 0x004ab390
 float FLOAT_004ab390;
 
 // GLOBAL: LEGOLAND 0x004ab398
 double DOUBLE_004ab398;
-
-// GLOBAL: LEGOLAND 0x004ab3a8
-double DAT_004ab3a8;
 
 // GLOBAL: LEGOLAND 0x004ab3d0
 float DAT_004ab3d0;
@@ -68,20 +62,11 @@ float FLOAT_004ab458;
 // GLOBAL: LEGOLAND 0x004ab45c
 float FLOAT_004ab45c;
 
-// GLOBAL: LEGOLAND 0x004ab460
-double DOUBLE_004ab460;
-
 // GLOBAL: LEGOLAND 0x004ab480
 float FLOAT_004ab480;
 
 // GLOBAL: LEGOLAND 0x004ab4c8
 double DAT_004ab4c8;
-
-// GLOBAL: LEGOLAND 0x004ab4d0
-double DOUBLE_004ab4d0;
-
-// GLOBAL: LEGOLAND 0x004ab4d8
-float DAT_004ab4d8;
 
 // GLOBAL: LEGOLAND 0x004ab518
 float DAT_004ab518;

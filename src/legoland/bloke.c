@@ -162,7 +162,7 @@ struct OrientPerson {
 };
 
 struct BNVPath {
-    /* 0x00 */ struct BinVFile *file;
+    /* 0x00 */ BinVFile *file;
     /* 0x04 */ unsigned int field_4;
     /* 0x08 */ char name[0x14];
     /* 0x1c */ float field_1c;
@@ -192,24 +192,6 @@ struct BNVBloke {
     short field_3e;
     unsigned char pad_40[0x7f - 0x40];
     unsigned char field_7f;
-};
-
-struct BinVFileHdr {
-    short magic;
-    unsigned short frameCount;
-};
-
-struct BinVMatrix {
-    unsigned char pad_0[0x10];
-    float m10;
-    float m14;
-    float m18;
-    float m1c;
-    float m20;
-    float m24;
-    float m28;
-    float m2c;
-    float m30;
 };
 
 struct BlokeNameView {
@@ -1389,50 +1371,49 @@ LEGO_EXPORT void ApplyObjectOrientationToPerson(struct OrientPerson *person, flo
 }
 
 // FUNCTION: LEGOLAND 0x00484a70
-LEGO_EXPORT void SetBlokePositionFromBNV(struct BinVFile *file, struct Bloke *bloke, char *name, int frame, float near_z, float far_z, float *orient) {
-    struct BinVFrame *binFrame = GetBinVFrame(file, frame);
-    struct BinVMatrix *object = (struct BinVMatrix *)GetObjectFromName(binFrame, name);
-    struct Vertex *vertex = NULL;
+LEGO_EXPORT void SetBlokePositionFromBNV(BinVFile *file, struct Bloke *bloke, char *name, int frame, float near_z, float far_z, float *orient) {
+    BinVFrame *binFrame = GetBinVFrame(file, frame);
+    BinVObject *object = GetObjectFromName(binFrame, name);
+    Vertex *vertex = NULL;
     int sumX = 0;
     int sumY = 0;
     int i;
     float scale;
 
-    scale = DAT_004ab38c / (float)sqrt(object->m18 * object->m18 + object->m14 * object->m14 + object->m10 * object->m10);
+    scale = 1.0f / (float)sqrt(object->m18 * object->m18 + object->m14 * object->m14 + object->m10 * object->m10);
     object->m10 = scale * object->m10;
     object->m14 = scale * object->m14;
     object->m18 = scale * object->m18;
-    scale = DAT_004ab38c / (float)sqrt(object->m24 * object->m24 + object->m20 * object->m20 + object->m1c * object->m1c);
+    scale = 1.0f / (float)sqrt(object->m24 * object->m24 + object->m20 * object->m20 + object->m1c * object->m1c);
     object->m1c = scale * object->m1c;
     object->m20 = scale * object->m20;
     object->m24 = scale * object->m24;
-    scale = DAT_004ab38c / (float)sqrt(object->m2c * object->m2c + object->m28 * object->m28 + object->m30 * object->m30);
+    scale = 1.0f / (float)sqrt(object->m2c * object->m2c + object->m28 * object->m28 + object->m30 * object->m30);
     object->m28 = scale * object->m28;
     object->m2c = scale * object->m2c;
     object->m30 = scale * object->m30;
     for (i = 0; i < 8; i++) {
-        short *v = (short *)GetVertex((struct BinVObject *)object, i);
-        vertex = (struct Vertex *)v;
-        sumX += v[0];
-        sumY += v[1];
+        vertex = GetVertex(object, i);
+        sumX += vertex->x;
+        sumY += vertex->y;
     }
-    GetZSkew(file, (struct BinVObject *)object, vertex);
+    GetZSkew(file, object, vertex);
     bloke->person->field_34 = FUN_00458930(0) >> 8;
     sumX = sumX + (sumX >> 0x1f & 7);
     bloke->screen_x = (short)(((sumX >> 3) - (sumX >> 0x1f)) >> 1);
     sumY = sumY + (sumY >> 0x1f & 7);
     bloke->screen_y = (short)(((sumY >> 3) - (sumY >> 0x1f)) >> 1);
-    bloke->person->field_38 = (float)GetZSkew(file, (struct BinVObject *)object, vertex) * 2.0f;
+    bloke->person->field_38 = GetZSkew(file, object, vertex) * 2.0f;
     ApplyObjectOrientationToPerson((struct OrientPerson *)bloke->person, &object->m10, orient);
 }
 
 // FUNCTION: LEGOLAND 0x00484c20
-LEGO_EXPORT struct BNVPath *NewBNVPath(struct BinVFile *file, unsigned int param_2, char *name, float param_4, float param_5, int *coords) {
+LEGO_EXPORT struct BNVPath *NewBNVPath(BinVFile *file, unsigned int param_2, char *name, float param_4, float param_5, int *coords) {
     struct BNVPath *path = (struct BNVPath *)malloc(sizeof(struct BNVPath));
-    struct BinVFrame *frame;
-    struct BinVObject *object;
-    struct Vertex *vertex;
-    float scale = (float)(DAT_004ab4d8 / (param_4 - param_5));
+    BinVFrame *frame;
+    BinVObject *object;
+    Vertex *vertex;
+    float scale = (float)(49152.0f / (param_4 - param_5));
     path->file = file;
     strcpy(path->name, name);
     path->field_1c = scale;
@@ -1444,7 +1425,7 @@ LEGO_EXPORT struct BNVPath *NewBNVPath(struct BinVFile *file, unsigned int param
     frame = GetBinVFrame(file, 0);
     object = GetObjectFromName(frame, name);
     vertex = GetVertex(object, 0);
-    path->field_3c = (float)GetZSkew(file, object, vertex);
+    path->field_3c = GetZSkew(file, object, vertex);
     path->field_4 = param_2;
     return path;
 }
@@ -1455,22 +1436,22 @@ LEGO_EXPORT int UpdateBlokeFromBNVPath(struct BNVBloke *bloke, struct BNVPath *p
     unsigned int frame = path->frame_index;
     float sumX = 0.0f;
     float sumY = 0.0f;
-    struct BinVFrame *binFrame;
-    struct BinVMatrix *object;
+    BinVFrame *binFrame;
+    BinVObject *object;
     float dx;
     float dy;
     int i;
     float scale;
 
-    if (frame == ((struct BinVFileHdr *)path->file)->frameCount) {
+    if (frame == path->file->frameCount) {
         return 0;
     }
     binFrame = GetBinVFrame(path->file, frame);
-    object = (struct BinVMatrix *)GetObjectFromName(binFrame, path->name);
+    object = GetObjectFromName(binFrame, path->name);
     for (i = 0; i < 8; i++) {
-        short *v = (short *)GetVertex((struct BinVObject *)object, i);
-        sumX += (float)v[0];
-        sumY += (float)v[1];
+        Vertex *v = GetVertex(object, i);
+        sumX += (float)v->x;
+        sumY += (float)v->y;
     }
     dx = sumX * (float)DAT_004ab548 - path->x;
     dy = sumY * (float)DAT_004ab548 - path->y;
@@ -1484,8 +1465,8 @@ LEGO_EXPORT int UpdateBlokeFromBNVPath(struct BNVBloke *bloke, struct BNVPath *p
         }
     }
     binFrame = GetBinVFrame(path->file, (int)frame < 1 ? 0 : frame - 1);
-    object = (struct BinVMatrix *)GetObjectFromName(binFrame, path->name);
-    scale = DAT_004ab38c / (float)sqrt(object->m18 * object->m18 + object->m14 * object->m14 + object->m10 * object->m10);
+    object = GetObjectFromName(binFrame, path->name);
+    scale = 1.0f / (float)sqrt(object->m18 * object->m18 + object->m14 * object->m14 + object->m10 * object->m10);
     object->m10 = scale * object->m10;
     object->m14 = scale * object->m14;
     object->m18 = scale * object->m18;
@@ -1498,13 +1479,13 @@ LEGO_EXPORT int UpdateBlokeFromBNVPath(struct BNVBloke *bloke, struct BNVPath *p
     ApplyObjectOrientationToPerson((struct OrientPerson *)bloke->render, &object->m10, 0);
     if (path->field_44 != 0) {
         path->field_44 = 0;
-        if (frame == ((struct BinVFileHdr *)path->file)->frameCount) {
+        if (frame == path->file->frameCount) {
             return 0;
         }
         binFrame = GetBinVFrame(path->file, frame);
-        object = (struct BinVMatrix *)GetObjectFromName(binFrame, path->name);
+        object = GetObjectFromName(binFrame, path->name);
         for (i = 0; i < 8; i++) {
-            GetVertex((struct BinVObject *)object, i);
+            GetVertex(object, i);
         }
         render->field_34 = FUN_00458930(0) >> 8;
         {
@@ -1528,8 +1509,8 @@ LEGO_EXPORT unsigned int BNVPath_GetDFrame(struct BNVPath *path) {
 // FUNCTION: LEGOLAND 0x00485000
 LEGO_EXPORT struct Point BNVPath_GetBINVScreenCoords(struct BNVPath *path, int frame) {
     struct Point result;
-    struct BinVFrame *binFrame = GetBinVFrame(path->file, frame);
-    struct BinVObject *object = GetObjectFromName(binFrame, path->name);
+    BinVFrame *binFrame = GetBinVFrame(path->file, frame);
+    BinVObject *object = GetObjectFromName(binFrame, path->name);
     int i;
     for (i = 0; i < 8; i++) {
         GetVertex(object, i);
@@ -1542,9 +1523,9 @@ LEGO_EXPORT struct Point BNVPath_GetBINVScreenCoords(struct BNVPath *path, int f
 // FUNCTION: LEGOLAND 0x004850b0
 LEGO_EXPORT void BNVPath_SetDFrame(struct BNVBloke *bloke, struct BNVPath *path, float dframe) {
     int frame = (int)dframe;
-    struct BinVFile *file = path->file;
-    struct BinVFrame *binFrame;
-    struct BinVMatrix *object;
+    BinVFile *file = path->file;
+    BinVFrame *binFrame;
+    BinVObject *object;
     float sumX = 0.0f;
     float sumY = 0.0f;
     int i;
@@ -1553,19 +1534,19 @@ LEGO_EXPORT void BNVPath_SetDFrame(struct BNVBloke *bloke, struct BNVPath *path,
     path->frame_index = (unsigned int)dframe;
     path->field_44 = 0;
     binFrame = GetBinVFrame(file, frame);
-    object = (struct BinVMatrix *)GetObjectFromName(binFrame, path->name);
+    object = GetObjectFromName(binFrame, path->name);
     for (i = 0; i < 8; i++) {
-        short *v = (short *)GetVertex((struct BinVObject *)object, i);
-        sumX += (float)v[0];
-        sumY += (float)v[1];
+        Vertex *v = GetVertex(object, i);
+        sumX += (float)v->x;
+        sumY += (float)v->y;
     }
     path->x = sumX * (float)DAT_004ab548;
     path->field_44 = 0;
     path->y = sumY * (float)DAT_004ab548;
     binFrame = GetBinVFrame(path->file, frame + 1);
-    object = (struct BinVMatrix *)GetObjectFromName(binFrame, path->name);
+    object = GetObjectFromName(binFrame, path->name);
     for (i = 0; i < 8; i++) {
-        GetVertex((struct BinVObject *)object, i);
+        GetVertex(object, i);
     }
     bloke->render->field_34 = FUN_00458930(0) >> 8;
     angle = atan2(0.0, 0.0);

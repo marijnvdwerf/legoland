@@ -1754,7 +1754,7 @@ LEGO_EXPORT void IterateNoneWorkersRepairOrders(void) {
         GetTileBounds((struct Point *)point, bounds);
         iVar7 = (iVar7 + iVar4) / 2;
         iVar4 = (bounds[3] + iVar3) / 2;
-        if (order->var_20 < (float)DAT_004ab3a8) {
+        if (order->var_20 < (float)1.0) {
             cost = 0;
         } else {
             cost = FUN_00458930(order->var_20);
@@ -1882,7 +1882,7 @@ LEGO_EXPORT void Garderner_Repair(struct Worker *worker) {
             tile = (struct MapElement *)((char *)GameMap[order->var_c] + order->var_8 * 0x14);
         }
         if ((tile->flags & 0x88) != 0) {
-            if (order->var_34 < (float)DAT_004ab3a8) {
+            if (order->var_34 < (float)1.0) {
                 cost = 0;
             } else {
                 cost = FUN_00458930(order->var_34);
@@ -1998,7 +1998,7 @@ LEGO_EXPORT void Mechanics_Repair(struct Worker *worker) {
             worker->var_60++;
             return;
         }
-        if (order->var_34 < (float)DAT_004ab3a8) {
+        if (order->var_34 < (float)1.0) {
             cost = 0;
         } else {
             cost = FUN_00458930(order->var_34);

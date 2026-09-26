@@ -6,67 +6,48 @@
 
 #include "binv.h"
 
-struct Vertex {
-    unsigned char data[20];
-};
-
-struct BinVObject {
-    int count;
-    struct BinVObject *next;
-    struct Vertex *vertices;
-    char *name;
-};
-
-struct BinVFrame {
-    int count;
-    struct BinVObject *objects;
-    struct BinVFrame *next;
-};
-
-struct BinVFile {
-    short magic;
-    unsigned short frameCount;
-    unsigned char pad_4[0x1c];
-    struct BinVFrame *frames;
-};
-
 // FUNCTION: LEGOLAND 0x0044dc90
-LEGO_EXPORT struct BinVFile *LoadBinV(const char *filename) {
-    void *stream;
+LEGO_EXPORT BinVFile *LoadBinV(const char *filename) {
+    FILE *stream;
     unsigned int size;
-    struct BinVFile *file;
-    struct BinVFrame *frame;
-    struct BinVObject *object;
+    union {
+        BinVFile *file;
+        unsigned int base;
+    } mem;
+    BinVFile *file;
+    BinVFrame *frame;
+    BinVObject *object;
     int i;
     int j;
 
     // STRING: LEGOLAND 0x004b81b8
     stream = fopen(filename, "rb");
     if (stream != NULL) {
-        fseek(stream, 0, 2);
+        fseek(stream, 0, SEEK_END);
         size = ftell(stream);
-        fseek(stream, 0, 0);
-        file = (struct BinVFile *)malloc(size);
+        fseek(stream, 0, SEEK_SET);
+        mem.file = malloc(size);
+        file = mem.file;
         fread(file, 1, size, stream);
         fclose(stream);
         if (file->magic != 0x101) {
             free(file);
         } else {
-            file->frames = (struct BinVFrame *)((int)file->frames + (int)file);
+            file->frames_ofs += mem.base;
             frame = file->frames;
             for (i = 0; i < file->frameCount; i++) {
-                object = (struct BinVObject *)((int)frame->objects + (int)file);
-                frame->objects = object;
+                frame->objects_ofs += mem.base;
+                object = frame->objects;
                 for (j = 0; j < frame->count; j++) {
-                    object->vertices = (struct Vertex *)((int)object->vertices + (int)file);
-                    object->name = (char *)((int)object->name + (int)file);
+                    object->vertices_ofs += mem.base;
+                    object->name_ofs += mem.base;
                     if (object->next != NULL) {
-                        object->next = (struct BinVObject *)((int)object->next + (int)file);
+                        object->next_ofs += mem.base;
                         object = object->next;
                     }
                 }
                 if (frame->next != NULL) {
-                    frame->next = (struct BinVFrame *)((int)frame->next + (int)file);
+                    frame->next_ofs += mem.base;
                     frame = frame->next;
                 }
             }
@@ -77,15 +58,15 @@ LEGO_EXPORT struct BinVFile *LoadBinV(const char *filename) {
 }
 
 // FUNCTION: LEGOLAND 0x0044dd60
-LEGO_EXPORT void FreeBinV(void *binv) {
+LEGO_EXPORT void FreeBinV(BinVFile *binv) {
     if (binv != NULL) {
         free(binv);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0044dd70
-LEGO_EXPORT struct BinVFrame *GetBinVFrame(struct BinVFile *file, int index) {
-    struct BinVFrame *frame;
+LEGO_EXPORT BinVFrame *GetBinVFrame(BinVFile *file, int index) {
+    BinVFrame *frame;
     int remaining;
 
     if (file == NULL) {
@@ -96,7 +77,7 @@ LEGO_EXPORT struct BinVFrame *GetBinVFrame(struct BinVFile *file, int index) {
         return NULL;
     }
     remaining = file->frameCount - 1;
-    if (index < remaining) {
+    if (remaining > index) {
         remaining = remaining - index;
         do {
             frame = frame->next;
@@ -107,8 +88,8 @@ LEGO_EXPORT struct BinVFrame *GetBinVFrame(struct BinVFile *file, int index) {
 }
 
 // FUNCTION: LEGOLAND 0x0044dda0
-LEGO_EXPORT struct BinVObject *GetObjectFromName(struct BinVFrame *frame, const char *name) {
-    struct BinVObject *object;
+LEGO_EXPORT BinVObject *GetObjectFromName(BinVFrame *frame, const char *name) {
+    BinVObject *object;
     int i;
 
     if (frame == NULL) {
@@ -125,7 +106,7 @@ LEGO_EXPORT struct BinVObject *GetObjectFromName(struct BinVFrame *frame, const 
 }
 
 // FUNCTION: LEGOLAND 0x0044ddf0
-LEGO_EXPORT struct Vertex *GetVertex(struct BinVObject *object, int index) {
+LEGO_EXPORT Vertex *GetVertex(BinVObject *object, int index) {
     if (object == NULL) {
         return NULL;
     }
@@ -136,18 +117,15 @@ LEGO_EXPORT struct Vertex *GetVertex(struct BinVObject *object, int index) {
 }
 
 // FUNCTION: LEGOLAND 0x0044de20
-LEGO_EXPORT double GetZSkew(struct BinVFile *file, struct BinVObject *object, struct Vertex *vertex) {
-    float *v = (float *)vertex;
-    float *f = (float *)file;
-
-    return v[4] * v[4] / ((f[5] + f[5] - DAT_004ab38c) * v[4] - v[3] * f[5]);
+LEGO_EXPORT float GetZSkew(BinVFile *file, BinVObject *object, Vertex *vertex) {
+    return vertex->depth * vertex->depth / ((file->field_14 + file->field_14 - 1.0f) * vertex->depth - vertex->field_c * file->field_14);
 }
 
 // FUNCTION: LEGOLAND 0x0044de50
 LEGO_EXPORT float GetUnitDepth(float near_z, float far_z) {
-    float scale = DAT_004ab4d8 / (near_z - far_z);
-    float a = scale * (DOUBLE_004ab460 - far_z) + DOUBLE_004ab4d0;
-    float b = scale * (DAT_004ab3a8 - far_z) + DOUBLE_004ab4d0;
+    float scale = 49152.0f / (near_z - far_z);
+    float a = scale * (2.0 - far_z) + 8192.0;
+    float b = scale * (1.0 - far_z) + 8192.0;
 
     return a - b;
 }
