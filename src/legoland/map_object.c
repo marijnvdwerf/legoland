@@ -2861,30 +2861,24 @@ void FUN_00462c60(void) {
     int sample;
     int *lls;
 
-    node = (struct Overlay *)OverlayList;
-    while (node != 0) {
-        if ((char)(node->field_10 >> 8) == 0) {
-            sample = *(int *)(*(int *)(OverlayILF + 8) + (node->field_10 & 0xff) * 4);
-            node->field_20 = sample;
-            if (sample != 0) {
-                lls = *(int **)(sample + 8);
-                if ((lls[5] == 2 || lls[5] == 3) && 1 < *(short *)(*lls + 0x10)) {
-                    LLSPlay((struct LLS *)*lls, (unsigned int)lls);
-                }
-            }
-        } else if (DAT_00667cb0 != 0) {
-            sample = *(int *)(*(int *)((int)DAT_00667cb0 + 8) + (node->field_10 & 0xff) * 4);
-            node->field_20 = sample;
-            if (sample != 0) {
-                lls = *(int **)(sample + 8);
-                if ((lls[5] == 2 || lls[5] == 3) && 1 < *(short *)(*lls + 0x10)) {
-                    LLSPlay((struct LLS *)*lls, (unsigned int)lls);
-                }
+    for (node = (struct Overlay *)OverlayList; node != 0; node = node->next) {
+        if (*(short *)&node->field_10 & 0xff00) {
+            if (DAT_00667cb0 != 0) {
+                sample = *(int *)(*(int *)((int)DAT_00667cb0 + 8) + (node->field_10 & 0xff) * 4);
+            } else {
+                node->field_20 = 0;
+                continue;
             }
         } else {
-            node->field_20 = 0;
+            sample = *(int *)(*(int *)(OverlayILF + 8) + (node->field_10 & 0xff) * 4);
         }
-        node = node->next;
+        node->field_20 = sample;
+        if (sample != 0) {
+            lls = *(int **)(sample + 8);
+            if ((lls[5] == 2 || lls[5] == 3) && *(short *)(*lls + 0x10) > 1) {
+                LLSPlay((struct LLS *)*lls, (unsigned int)lls);
+            }
+        }
     }
 }
 
