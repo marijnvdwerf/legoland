@@ -400,45 +400,45 @@ unsigned int FUN_0043acb0(struct SpaceTowerRideNode *param_1, struct SpaceTowerC
 
 // FUNCTION: LEGOLAND 0x0043ad00
 int FUN_0043ad00(unsigned char *param_1, int param_2) {
-    short y_scroll;
-    unsigned int x;
-    unsigned int y;
-    int dim;
-    int width;
-    int height;
+    int y;
+    int x;
+    struct Point p;
+    int w;
+    int h;
 
-    y = param_1[1];
     x = param_1[0];
+    y = param_1[1];
     switch (param_2) {
     case 0:
     case 3:
-        x = x + 2;
-        y = y + 2;
+        x += 2;
+        y += 2;
         break;
     case 1:
     case 2:
-        x = x - 2;
-        y = y - 2;
+        x -= 2;
+        y -= 2;
+        break;
     }
-    GetTileDimensions(&width, &height);
-    dim = (y * 0x100 + x * 0x100) * height;
+    p.y = y << 8;
+    p.x = x << 8;
+    GetTileDimensions(&w, &h);
+    p.y = ((p.y + p.x) * h) >> 9;
     Get_XScroll();
-    y_scroll = (short)Get_YScroll();
-    return ((unsigned int)lpConfig->field_22 - (int)y_scroll) + (dim >> 9);
+    return lpConfig->field_22 - (short)Get_YScroll() + p.y;
 }
 
 // FUNCTION: LEGOLAND 0x0043ad90
 void FUN_0043ad90(struct SpaceTowerCar *param_1, int param_2, unsigned int param_3) {
     struct Point coords;
-    int off_x;
-    int off_y;
+    struct Point off;
 
     coords = GetScreenCoordsForObject((unsigned char *)param_1, DAT_0062fd74);
     if (DAT_0062fd64[param_2] != NULL) {
-        off_x = DAT_0062fd88[param_2].x;
-        off_y = DAT_0062fd88[param_2].y - param_1->seats[param_2].pos;
-        AdjustOffsetForViewMode((struct Point *)&off_x);
-        PrintSprite(DAT_0062fd64[param_2], off_x + coords.x, off_y + coords.y, param_3, 0);
+        off = DAT_0062fd88[param_2];
+        off.y -= param_1->seats[param_2].pos;
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(DAT_0062fd64[param_2], coords.x + off.x, coords.y + off.y, param_3, 0);
     }
 }
 
