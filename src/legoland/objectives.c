@@ -1187,7 +1187,7 @@ int FUN_00469c80(struct MapRectArg *arg) {
                     BuildCursorPtr(&QueryCursor, 0, 0);
                     if (FUN_0045f4b0(&QueryCursor) != 0) {
                         FUN_0045d3d0(QueryClass, &point.x);
-                        RemObjFromMap(QueryClass, (unsigned int)(QueryClass)->field_c4, QueryObj.id,
+                        RemObjFromMap(QueryClass, (unsigned int)(QueryClass)->field_c4, QueryObj,
                             &QueryCursor);
                     }
                     memcpy(&QueryCursor, &saved, sizeof(struct Cursor));

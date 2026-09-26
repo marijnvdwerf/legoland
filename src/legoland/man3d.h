@@ -10,9 +10,14 @@ struct Person {
     struct Person *next;
     unsigned int field_8;
     struct Bloke *bloke;
-    unsigned int field_10;
-    unsigned int field_14;
-    unsigned int field_18;
+    union {
+        struct {
+            unsigned int field_10;
+            unsigned int field_14;
+            unsigned int field_18;
+        };
+        Vector3 scale;
+    };
     union {
         struct {
             unsigned int field_1c;
@@ -29,9 +34,14 @@ struct Person {
     unsigned int field_34;
     float field_38;
     float depth;
-    float field_40;
-    float field_44;
-    float field_48;
+    union {
+        struct {
+            float field_40;
+            float field_44;
+            float field_48;
+        };
+        Vector3 rotation;
+    };
     int field_4c;
     void *field_50;
     unsigned int sort_id;

@@ -117,6 +117,6 @@ LEGO_EXPORT struct MapElement *GetFirstRenderObject(void);
 LEGO_EXPORT struct MapElement *GetNextRenderObject(struct MapElement *object);
 LEGO_EXPORT struct MapElement *GetFirstObjectMatching(struct Element *cls);
 LEGO_EXPORT struct MapElement *GetNextObjectMatching(struct MapElement *object, struct Element *cls);
-LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsigned short coords, void *cursor);
+LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, TileId tile, void *cursor);
 void FUN_00459880(void);
 LEGO_EXPORT struct Point PlayfieldToMap(struct Point pos);

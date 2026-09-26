@@ -11,6 +11,12 @@ struct Point {
 };
 typedef struct Point Point;
 
+typedef struct Vector3 {
+    float x;
+    float y;
+    float z;
+} Vector3;
+
 /* Fixed-point line walker filled in by CalcMoveLine and stepped by NavigMoveLine. */
 struct Navigator {
     /* 0x00 */ int x;

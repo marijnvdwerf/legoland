@@ -977,7 +977,7 @@ unsigned char FUN_004731e0(void *param_1, unsigned char flags) {
         if ((int)FUN_0045f4b0(&QueryCursor) != 0) {
             FUN_0045d3d0(QueryClass, local_8);
             cls = QueryClass;
-            RemObjFromMap(cls, *cls->field_c4, QueryObj.id, &QueryCursor);
+            RemObjFromMap(cls, *cls->field_c4, QueryObj, &QueryCursor);
         }
         memcpy(&QueryCursor, &local_cursor, sizeof(struct Cursor));
         QueryClass = saved_class;

@@ -227,7 +227,7 @@ LEGO_EXPORT void PutObjOnMap(struct ObjClass *obj, unsigned int classid, struct 
 }
 
 // FUNCTION: LEGOLAND 0x00459c90
-LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsigned short coords, void *cursor) {
+LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, TileId tile, void *cursor) {
     int area;
     struct MapCell *cell;
     struct Cursor *query;
@@ -235,20 +235,20 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsig
     unsigned int y;
     struct RemBlock blk;
 
-    FUN_0049b270(obj, coords);
+    FUN_0049b270(obj, tile);
     if (classid == DAT_0080ff64) {
         DAT_0079a8d0 = 0;
     }
     if (DAT_00667cd8 == 0) {
-        blk.f8 = coords & 0xff;
-        blk.fc = coords >> 8 & 0xff;
+        blk.f8 = tile.pos.x;
+        blk.fc = tile.pos.y;
         blk.f0 = 2;
         PlayInstanceOfSample(DAT_004b9248, 0, 1, &blk);
     } else {
         DAT_00667cdc = 1;
     }
-    RemoveObjectsPowerStats(classid, coords);
-    obj->method_9c(classid, coords, cursor);
+    RemoveObjectsPowerStats(classid, tile.id);
+    obj->method_9c(classid, tile.id, cursor);
     if (obj == DAT_007fd624) {
         DAT_00667cf4 = DAT_00667cf4 + -1;
         DAT_00667ce0 = DAT_00667ce0 + -1;
@@ -277,8 +277,8 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsig
         }
         DAT_00667ce0 = DAT_00667ce0 - area;
     }
-    x = coords & 0xff;
-    y = coords >> 8 & 0xff;
+    x = tile.pos.x;
+    y = tile.pos.y;
     if (x < lpConfig->width && y < lpConfig->height) {
         cell = (struct MapCell *)((char *)GameMap[y] + x * 0x14);
     } else {
