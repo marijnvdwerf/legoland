@@ -488,66 +488,67 @@ void FUN_0043aee0(struct SpaceTowerCar *param_1, int param_2, unsigned int param
 void FUN_0043af50(struct SpaceTowerCtx *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6) {
     struct SpaceTowerRide *ride;
     struct SpaceTowerRideNode *node;
-    struct SpaceTowerCar *obj;
+    struct SpaceTowerCar *car;
     struct Bloke *bloke;
-    int coord_x;
-    int coord_y;
     struct Point coords;
-    struct Point local_8;
-    struct Point local_10;
+    struct Point off1;
+    struct Point off2;
 
     ride = param_1->ride;
     node = ride->list;
-    obj = FUN_0043ac40(param_4);
-    if (obj != NULL) {
-        coords = GetScreenCoordsForObject((unsigned char *)param_4, ride);
-        coord_x = coords.x;
-        coord_y = coords.y;
-        local_8 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 1);
-        AdjustOffsetForViewMode(&local_8);
-        if (node == NULL) {
-            FUN_0043aee0(obj, 1, param_6);
-            FUN_0043aee0(obj, 2, param_6);
-            PrintSprite(DAT_0062fd7c, local_8.x + coord_x, local_8.y + coord_y, param_6, 0);
-            FUN_0043aee0(obj, 0, param_6);
-            FUN_0043aee0(obj, 3, param_6);
-        } else {
-            do {
-                if (node->id == *param_4) {
-                    bloke = node->bloke;
-                    if ((bloke->flags & 0x80) == 0 &&
-                        DAT_004b7758[bloke->field_50].field_4 == &DAT_004b7750) {
-                        IP_RenderBlokeIn3DNow(bloke);
-                    }
+    car = FUN_0043ac40(param_4);
+    if (car == NULL) {
+        return;
+    }
+    coords = GetScreenCoordsForObject((unsigned char *)param_4, ride);
+    off1 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 1);
+    AdjustOffsetForViewMode(&off1);
+    if (node != NULL) {
+        for (; node != NULL; node = node->next) {
+            if (memcmp(&node->id, param_4, 2) == 0) {
+                bloke = node->bloke;
+                if ((bloke->flags & 0x80) == 0 && DAT_004b7758[bloke->field_50].field_4 == &DAT_004b7750) {
+                    IP_RenderBlokeIn3DNow(bloke);
                 }
-                node = node->next;
-            } while (node != NULL);
-            FUN_0043aee0(obj, 1, param_6);
-            FUN_0043aee0(obj, 2, param_6);
-            PrintSprite(DAT_0062fd7c, local_8.x + coord_x, local_8.y + coord_y, param_6, 0);
-            FUN_0043aee0(obj, 0, param_6);
-            FUN_0043aee0(obj, 3, param_6);
-            node = ride->list;
-            while (node != NULL) {
-                if (node->id == *param_4) {
-                    bloke = node->bloke;
-                    if ((bloke->flags & 0x80) == 0 &&
-                        DAT_004b7758[bloke->field_50].field_4 == &DAT_004b76b8) {
-                        IP_RenderBlokeIn3DNow(bloke);
-                    }
-                }
-                node = node->next;
             }
-            PrintSprite(DAT_0062fd80, local_8.x + coord_x, local_8.y + coord_y, param_6, 0);
         }
-        LLSSetFrame(GetLLSForLayer(DAT_0062fd60, 5), (int)obj->var_ad);
-        local_10 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 5);
-        AdjustOffsetForViewMode(&local_10);
-        PrintSprite(GetSpriteForLayer((struct LayerContainer *)DAT_0062fd60, 5), local_10.x + coord_x, local_10.y + coord_y, param_6, 0);
-        LLSSetFrame(GetLLSForLayer(DAT_0062fd60, 3), (int)obj->var_ac);
-        local_10 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 3);
-        AdjustOffsetForViewMode(&local_10);
-        PrintSprite(GetSpriteForLayer((struct LayerContainer *)DAT_0062fd60, 3), local_10.x + coord_x, local_10.y + coord_y, param_6, 0);
+        FUN_0043aee0(car, 1, param_6);
+        FUN_0043aee0(car, 2, param_6);
+        PrintSprite(DAT_0062fd7c, coords.x + off1.x, coords.y + off1.y, param_6, 0);
+        FUN_0043aee0(car, 0, param_6);
+        FUN_0043aee0(car, 3, param_6);
+        node = ride->list;
+        for (; node != NULL; node = node->next) {
+            if (memcmp(&node->id, param_4, 2) == 0) {
+                bloke = node->bloke;
+                if ((bloke->flags & 0x80) == 0 && DAT_004b7758[bloke->field_50].field_4 == &DAT_004b76b8) {
+                    IP_RenderBlokeIn3DNow(bloke);
+                }
+            }
+        }
+        PrintSprite(DAT_0062fd80, coords.x + off1.x, coords.y + off1.y, param_6, 0);
+        LLSSetFrame(GetLLSForLayer(DAT_0062fd60, 5), (char)car->var_ad);
+        off2 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 5);
+        AdjustOffsetForViewMode(&off2);
+        PrintSprite(GetSpriteForLayer((struct LayerContainer *)DAT_0062fd60, 5), off2.x + coords.x, off2.y + coords.y, param_6, 0);
+        LLSSetFrame(GetLLSForLayer(DAT_0062fd60, 3), (char)car->var_ac);
+        off2 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 3);
+        AdjustOffsetForViewMode(&off2);
+        PrintSprite(GetSpriteForLayer((struct LayerContainer *)DAT_0062fd60, 3), off2.x + coords.x, off2.y + coords.y, param_6, 0);
+    } else {
+        FUN_0043aee0(car, 1, param_6);
+        FUN_0043aee0(car, 2, param_6);
+        PrintSprite(DAT_0062fd7c, coords.x + off1.x, coords.y + off1.y, param_6, 0);
+        FUN_0043aee0(car, 0, param_6);
+        FUN_0043aee0(car, 3, param_6);
+        LLSSetFrame(GetLLSForLayer(DAT_0062fd60, 5), (char)car->var_ad);
+        off2 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 5);
+        AdjustOffsetForViewMode(&off2);
+        PrintSprite(GetSpriteForLayer((struct LayerContainer *)DAT_0062fd60, 5), off2.x + coords.x, off2.y + coords.y, param_6, 0);
+        LLSSetFrame(GetLLSForLayer(DAT_0062fd60, 3), (char)car->var_ac);
+        off2 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd60, 3);
+        AdjustOffsetForViewMode(&off2);
+        PrintSprite(GetSpriteForLayer((struct LayerContainer *)DAT_0062fd60, 3), off2.x + coords.x, off2.y + coords.y, param_6, 0);
     }
 }
 
