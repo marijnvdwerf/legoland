@@ -172,58 +172,47 @@ struct EditObject {
 // FUNCTION: LEGOLAND 0x0045dd80
 LEGO_EXPORT void AddObjectToMap(struct EditObject *param_1, TileId param_2, int param_3) {
     struct MapObject *obj;
-    unsigned int flags;
     struct MapElement *tile;
+    int x;
     int y;
-    int count;
     struct FootprintNode rect;
-    struct FootprintNode *next;
 
     obj = param_1->obj;
-    flags = obj->flags;
     rect = obj->footprint;
-    if (flags & 0x20000) {
+    if (obj->flags & 0x20000) {
         BGFullUpdate = 1;
     }
     IncrementObjectCount((struct ObjectCount *)obj);
-    y = rect.y0;
-    while (1) {
-        for (; y <= rect.y1; y++) {
-            if (rect.x0 <= rect.x1) {
+    for (;;) {
+        for (y = rect.y0; y <= rect.y1; y++) {
+            for (x = rect.x0; x <= rect.x1; x++) {
+                int tx = param_2.pos.x + x;
                 int ty = param_2.pos.y + y;
-                int tx = param_2.pos.x + rect.x0;
-                count = (rect.x1 - rect.x0) + 1;
-                do {
-                    if (tx >= 0 && tx < lpConfig->width && ty >= 0 && ty < lpConfig->height) {
-                        tile = (struct MapElement *)((int)GameMap[ty] + tx * 0x14);
-                        if (tile != 0) {
-                            tile->field_10 = 0;
-                            tile->field_0 = (unsigned int)param_1;
-                            tile->field_4 = param_2.id;
-                            tile->flags = (unsigned short)(((tile->flags & 0x10) | param_3) | 0x80);
-                            tile->field_11 = obj->field_2c;
-                            if (obj->flags & 2) {
-                                tile->field_10 = 2;
-                            }
-                            if (obj->flags & 1) {
-                                tile->field_10 = 1;
-                            }
-                            if (obj->flags & 0x800000) {
-                                *((unsigned char *)&tile->flags + 1) |= 0x80;
-                            }
+                if (tx >= 0 && tx < lpConfig->width && ty >= 0 && ty < lpConfig->height) {
+                    tile = &GameMap[ty][tx];
+                    if (tile != 0) {
+                        tile->field_10 = 0;
+                        tile->field_0 = (unsigned int)param_1;
+                        *(unsigned short *)&tile->field_4 = param_2.id;
+                        tile->flags = (unsigned short)(((tile->flags & 0x10) | param_3) | 0x80);
+                        tile->field_11 = obj->field_2c;
+                        if (obj->flags & 2) {
+                            tile->field_10 = 2;
+                        }
+                        if (obj->flags & 1) {
+                            tile->field_10 = 1;
+                        }
+                        if (obj->flags & 0x800000) {
+                            *((unsigned char *)&tile->flags + 1) |= 0x80;
                         }
                     }
-                    tx++;
-                    count--;
-                } while (count != 0);
+                }
             }
         }
-        next = rect.next;
-        if (next == 0) {
+        if (rect.next == 0) {
             break;
         }
-        rect = *next;
-        y = rect.y0;
+        rect = *rect.next;
     }
     if (DAT_00667cd8 == 0 && DAT_00667ca0 == 0) {
         CalculateMapRenderOrder();
