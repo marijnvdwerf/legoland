@@ -1483,27 +1483,22 @@ void FUN_004762f0(void) {
 // FUNCTION: LEGOLAND 0x004763d0
 LEGO_EXPORT void CleanUpReseachList(void) {
     struct InterfaceResearchNode *node;
-    struct InterfaceResearchNode *current;
     struct InterfaceResearchNode *prev;
 
     node = DAT_00668ed8;
-    if (DAT_00668ed8->field_8 == 0) {
-        DAT_00668ed8 = DAT_00668ed8->next;
+    if (node->field_8 == 0) {
+        DAT_00668ed8 = node->next;
         free(node);
         return;
     }
-    node = DAT_00668ed8->next;
-    prev = DAT_00668ed8;
-    if (DAT_00668ed8->next != NULL) {
-        while (current = node, current->field_8 != 0) {
-            prev = current;
-            node = current->next;
-            if (node == NULL) {
-                return;
-            }
+    prev = node;
+    for (node = node->next; node != NULL; node = node->next) {
+        if (node->field_8 == 0) {
+            prev->next = node->next;
+            free(node);
+            return;
         }
-        prev->next = current->next;
-        free(current);
+        prev = node;
     }
 }
 
