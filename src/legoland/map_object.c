@@ -2970,13 +2970,13 @@ void FUN_00462e70(unsigned int index, unsigned int value) {
 // FUNCTION: LEGOLAND 0x00462e90
 void FUN_00462e90(void) {
     MapStats.field_24[0] = 0x32;
-    MapStats.field_54 = 0x32;
     MapStats.field_28[0] = 0x14;
+    MapStats.field_50 = 0x21;
+    MapStats.field_54 = 0x32;
     MapStats.field_7c = 0;
     MapStats.field_80 = 0;
     MapStats.field_a8 = 0;
     MapStats.field_ac = 0;
-    MapStats.field_50 = 0x21;
     MapStats.field_d4 = 0x21;
     MapStats.field_d8 = 0x28;
     MapStats.field_100 = 0x21;
