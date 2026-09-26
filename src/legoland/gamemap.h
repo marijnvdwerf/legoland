@@ -1,6 +1,7 @@
 #pragma once
 
 #include "legoland.h"
+#include "math.h"
 
 // Opaque types; full definitions live in gamemap.c (only its bodies need them).
 struct RenderObject;
@@ -98,4 +99,4 @@ LEGO_EXPORT struct RenderObject *GetFirstObjectMatching(struct RenderObjectVtabl
 LEGO_EXPORT struct RenderObject *GetNextObjectMatching(struct RenderObject *object, struct RenderObjectVtable *vtable);
 LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsigned short coords, void *cursor);
 void FUN_00459880(void);
-LEGO_EXPORT struct Point PlayfieldToMap(int a, int b);
+LEGO_EXPORT struct Point PlayfieldToMap(struct Point pos);

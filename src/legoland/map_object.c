@@ -1952,51 +1952,39 @@ void FUN_00461080(int *coord, unsigned int param2, unsigned int param3, unsigned
 }
 
 // FUNCTION: LEGOLAND 0x004610f0
-void FUN_004610f0(int *param_1, int *param_2) {
+void FUN_004610f0(struct Point *param_1, int *param_2) {
     short size;
     int dbl;
-    int x0;
+    short half_x;
+    short half_y;
+    struct Point start;
     struct Point coord;
-    struct Point row_start;
+    struct Point row;
     int out[2];
     int ix;
     int iy;
-    int half_x;
-    short half_y;
 
     size = ((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
     dbl = (short)(size * 2);
-    x0 = param_1[0];
-    param_1[0] = x0 - dbl;
-    coord = PlayfieldToMap(x0 - dbl, param_1[1]);
+    half_x = (dbl + 1) >> 1;
+    half_y = (size + 1) >> 1;
+    start.x = param_1->x - dbl;
+    param_1->x = start.x;
+    start.y = param_1->y;
+    coord = PlayfieldToMap(start);
     GetTileBounds(&coord, out);
-    if (out[1] < param_2[3]) {
-        half_x = (short)((dbl + 1) >> 1);
-        iy = out[1];
-        ix = out[0];
-        do {
-            int saved_ix = ix;
-            struct Point saved = coord;
-            if (ix < half_x + param_2[2]) {
-                half_y = (short)((size + 1) >> 1);
-                row_start = coord;
-                do {
-                    FUN_00461080((int *)&coord, ix, iy, 0);
-                    coord.y = coord.y + 1;
-                    FUN_00461080((int *)&coord, ix - half_x, half_y + iy, 0);
-                    coord.x = coord.x + 1;
-                    coord.y = coord.y - 2;
-                    ix = ix + dbl;
-                    saved_ix = out[0];
-                    saved = row_start;
-                } while (ix < half_x + param_2[2]);
-            }
-            coord = saved;
-            coord.x = coord.x + 1;
-            coord.y = coord.y + 1;
-            iy = iy + size;
-            ix = saved_ix;
-        } while (iy < param_2[3]);
+    row = coord;
+    for (iy = out[1]; iy < param_2[3]; iy += size) {
+        for (ix = out[0]; ix < half_x + param_2[2]; ix += dbl) {
+            FUN_00461080((int *)&coord, ix, iy, 0);
+            coord.y++;
+            FUN_00461080((int *)&coord, ix - half_x, half_y + iy, 0);
+            coord.y -= 2;
+            coord.x++;
+        }
+        row.x++;
+        row.y++;
+        coord = row;
     }
 }
 
@@ -2010,7 +1998,7 @@ void FUN_00461220(void) {
     local[3] = lpConfig->field_22;
     local[4] = lpConfig->field_10 + local[2];
     local[5] = lpConfig->field_12 + local[3];
-    FUN_004610f0(&local[0], &local[2]);
+    FUN_004610f0((struct Point *)&local[0], &local[2]);
 }
 
 // FUNCTION: LEGOLAND 0x00461290
