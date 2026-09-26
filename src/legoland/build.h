@@ -6,5 +6,5 @@
 
 struct ObjClass;
 
-LEGO_EXPORT int AddObjectToBuildList(struct ObjClass *obj, short param_2);
+LEGO_EXPORT int AddObjectToBuildList(struct ObjClass *obj, TileId coords);
 LEGO_EXPORT void ClearBuildObjList(void);
