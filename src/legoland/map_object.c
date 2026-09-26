@@ -1996,12 +1996,12 @@ void FUN_00461290(int param_1, int param_2, int param_3, int param_4) {
     int v18;
     int v20;
     int iv4;
-    int dim[2];
-    int tile;
+    int w;
+    int h;
     int wfull;
-    int hhalf;
     int whalf;
     int hneg;
+    int sum;
     int ix;
     int iy;
     int adj;
@@ -2014,45 +2014,57 @@ void FUN_00461290(int param_1, int param_2, int param_3, int param_4) {
     v18 = DAT_004b9610 >> 1;
     v20 = DAT_004b9608 >> 1;
     iv4 = DAT_004b9604 >> 1;
-    GetTileDimensions(dim, &tile);
-    dim[0] = dim[0] * 0x80;
-    wfull = lpConfig->width * dim[0];
-    hhalf = lpConfig->height * (dim[0] >> 1);
-    whalf = lpConfig->width * (dim[0] >> 1);
-    hneg = -(lpConfig->height * dim[0]);
-    iv4 = iv4 + (wfull - param_1);
+    GetTileDimensions(&w, &h);
+    w *= 0x80;
+    h = w >> 1;
+    wfull = lpConfig->width * w;
+    whalf = lpConfig->width * h;
+    hneg = -(lpConfig->height * w);
+    w = lpConfig->height * h;
+    h = hneg + wfull;
+    sum = w + whalf;
     ix = param_3 + ScrollX;
-    if (iv4 < param_3 + ScrollX) {
+    iy = param_4 + ScrollY;
+    iv4 += wfull - param_1;
+    if (ix > iv4) {
         ix = iv4;
     }
     if (ix < hneg - v20) {
         ix = hneg - v20;
     }
-    v18 = ((hhalf + whalf) - param_2) + v18;
-    iy = param_4 + ScrollY;
-    if (v18 < param_4 + ScrollY) {
-        iy = v18;
+    if (iy > sum - param_2 + v18) {
+        iy = sum - param_2 + v18;
     }
     if (iy < -v14) {
         iy = -v14;
     }
-    if (iy < whalf && 0 < param_1 + ix && (adj = ((ix + iy * -2) - v10) + param_1, 0 < adj)) {
-        ix = ix - (adj >> 1);
-        iy = iy + (adj >> 2);
+    if (iy < whalf && param_1 + ix > 0) {
+        adj = ix - iy * 2 - v10 + param_1;
+        if (adj > 0) {
+            ix -= adj >> 1;
+            iy += adj >> 2;
+        }
     }
-    if (iy < hhalf && ix < 0 && (vc = (iy * -2 - ix) - vc, 0 < vc)) {
-        ix = ix + (vc >> 1);
-        iy = iy + (vc >> 2);
+    if (iy < w && ix < 0) {
+        adj = -ix - iy * 2 - vc;
+        if (adj > 0) {
+            ix += adj >> 1;
+            iy += adj >> 2;
+        }
     }
-    if (whalf < param_2 + iy && hneg + wfull < param_1 + ix &&
-        (param_1 = ((((iy - whalf) + param_2) * 2 - wfull) - v8) + ix + param_1, 0 < param_1)) {
-        ix = ix - (param_1 >> 1);
-        iy = iy - (param_1 >> 2);
+    if (param_2 + iy > whalf && param_1 + ix > h) {
+        adj = (iy - whalf + param_2) * 2 - wfull - v8 + ix + param_1;
+        if (adj > 0) {
+            ix -= adj >> 1;
+            iy -= adj >> 2;
+        }
     }
-    if (hhalf < param_2 + iy && ix < hneg + wfull &&
-        (hneg = ((((iy - hhalf) + param_2) * 2 - ix) - v4) + hneg, 0 < hneg)) {
-        ix = ix + (hneg >> 1);
-        iy = iy - (hneg >> 2);
+    if (param_2 + iy > w && ix < h) {
+        adj = (iy - w + param_2) * 2 - ix - v4 + hneg;
+        if (adj > 0) {
+            ix += adj >> 1;
+            iy -= adj >> 2;
+        }
     }
     ScrollX = ix - param_3;
     ScrollY = iy - param_4;
