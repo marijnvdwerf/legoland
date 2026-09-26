@@ -1463,21 +1463,18 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
     struct FootprintNode *nextp;
     struct FootprintNode rect;
     struct MapElement *tile;
-    struct Sprite *sprite;
     struct ObjBox *editing;
     short size;
     int code;
-    unsigned int color;
     unsigned char *pat;
-    unsigned char fbits;
     int bx;
     int by;
     int x;
     int y;
     int i;
     RECT clip;
-    int tilept[2];
-    int screen[2];
+    struct Point tilept;
+    int screen[4];
     RECT saved_clip;
     struct VideoArg surf;
 
@@ -1493,29 +1490,25 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
         if ((cursor->field_1828 & 0x10) == 0) {
             for (y = rect.y0; y <= rect.y1; y++) {
                 for (x = rect.x0; x <= rect.x1; x++) {
-                    tilept[0] = cursor->field_1404 + x;
-                    tilept[1] = cursor->field_1408 + y;
-                    GetTileBounds((struct Point *)tilept, screen);
-                    if ((cursor->field_1828 & 6) == 0) {
-                        if (tilept[0] < 0 || lpConfig->width <= tilept[0] || tilept[1] < 0 ||
-                            lpConfig->height <= tilept[1] ||
-                            (tile = (struct MapElement *)((int)GameMap[tilept[1]] + tilept[0] * 0x14)) == 0 ||
-                            (tile->flags & 0x8f8) != 0) {
-                            color = 0xff0000;
-                            sprite = (struct Sprite *)((struct Sprite **)TileSpriteArray)[(DAT_00805f48 & 0xff) + *(int *)DAT_00801a6c];
-                        } else {
-                            color = 0;
-                            if ((*(unsigned char *)((char *)cursor + 0x1428) & 0xc) == 0) {
-                                sprite = (struct Sprite *)((struct Sprite **)TileSpriteArray)[(DAT_00801b20 & 0xff) + *(int *)DAT_00801a6c];
-                            } else {
-                                sprite = (struct Sprite *)((struct Sprite **)TileSpriteArray)[(DAT_008003f8 & 0xff) + *(int *)DAT_00801a6c];
-                            }
-                        }
+                    tilept.x = cursor->field_1404 + x;
+                    tilept.y = cursor->field_1408 + y;
+                    GetTileBounds(&tilept, screen);
+                    if (cursor->field_1828 & 6) {
+                        PrintSprite(TileSpriteArray[(DAT_0080ff60 & 0xff) + *(int *)DAT_00801a6c], screen[0], screen[1], 0, 0);
                     } else {
-                        color = 0;
-                        sprite = (struct Sprite *)((struct Sprite **)TileSpriteArray)[(DAT_0080ff60 & 0xff) + *(int *)DAT_00801a6c];
+                        if (tilept.x >= 0 && tilept.x < lpConfig->width && tilept.y >= 0 && tilept.y < lpConfig->height) {
+                            tile = &GameMap[tilept.y][tilept.x];
+                        } else {
+                            tile = 0;
+                        }
+                        if (tile == 0 || (tile->flags & 0x8f8)) {
+                            PrintSprite(TileSpriteArray[(DAT_00805f48 & 0xff) + *(int *)DAT_00801a6c], screen[0], screen[1], 0xff0000, 0);
+                        } else if (*(unsigned char *)((char *)cursor + 0x1428) & 0xc) {
+                            PrintSprite(TileSpriteArray[(DAT_008003f8 & 0xff) + *(int *)DAT_00801a6c], screen[0], screen[1], 0, 0);
+                        } else {
+                            PrintSprite(TileSpriteArray[(DAT_00801b20 & 0xff) + *(int *)DAT_00801a6c], screen[0], screen[1], 0, 0);
+                        }
                     }
-                    PrintSprite(sprite, screen[0], screen[1], color, 0);
                 }
             }
         }
@@ -1530,30 +1523,39 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
         GetTileBounds((struct Point *)&cursor->field_1404, screen);
         bx = (short)pts->xpts[i] + screen[0];
         by = (short)pts->ypts[i] + screen[1];
-        fbits = pts->fpts[i];
         if (cursor->field_1828 & 4) {
             pat = DAT_004b95cc;
         } else if (cursor->field_1828 & 2) {
             pat = DAT_004b95c4;
-        } else if ((fbits & 0xc) == 0) {
-            pat = DAT_004b95dc;
-        } else {
+        } else if (pts->fpts[i] & 0xc) {
             pat = DAT_004b95d4;
+        } else {
+            pat = DAT_004b95dc;
         }
-        if ((cursor->field_1828 & 0x20) == 0) {
-            if ((fbits & 3) == 0) {
-                FUN_0045fad0((int *)&surf, 0, bx, by, pat, lpConfig->field_18);
-            } else if ((fbits & 3) == 1) {
-                FUN_0045fad0((int *)&surf, 1, bx, by, pat, size);
-            } else if ((fbits & 3) == 2) {
-                FUN_0045fad0((int *)&surf, 2, bx, by, pat, size);
+        if (cursor->field_1828 & 0x20) {
+            switch (pts->fpts[i] & 3) {
+            case 0:
+                FUN_0045fca0((int *)&surf, 0, bx, by, pat, lpConfig->field_18);
+                break;
+            case 1:
+                FUN_0045fca0((int *)&surf, 1, bx, by, pat, size);
+                break;
+            case 2:
+                FUN_0045fca0((int *)&surf, 2, bx, by, pat, size);
+                break;
             }
-        } else if ((fbits & 3) == 0) {
-            FUN_0045fca0((int *)&surf, 0, bx, by, pat, lpConfig->field_18);
-        } else if ((fbits & 3) == 1) {
-            FUN_0045fca0((int *)&surf, 1, bx, by, pat, size);
-        } else if ((fbits & 3) == 2) {
-            FUN_0045fca0((int *)&surf, 2, bx, by, pat, size);
+        } else {
+            switch (pts->fpts[i] & 3) {
+            case 0:
+                FUN_0045fad0((int *)&surf, 0, bx, by, pat, lpConfig->field_18);
+                break;
+            case 1:
+                FUN_0045fad0((int *)&surf, 1, bx, by, pat, size);
+                break;
+            case 2:
+                FUN_0045fad0((int *)&surf, 2, bx, by, pat, size);
+                break;
+            }
         }
     }
     SetClipping(&saved_clip);
@@ -1570,42 +1572,42 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
     if (EditMode.unk0 != 1) {
         return;
     }
-    tilept[0] = ((struct ObjBox *)EditMode.unk8)->pos.x + cursor->field_1404;
-    tilept[1] = ((struct ObjBox *)EditMode.unk8)->pos.y + cursor->field_1408;
-    GetTileBounds((struct Point *)tilept, screen);
+    tilept.x = ((struct ObjBox *)EditMode.unk8)->pos.x + cursor->field_1404;
+    tilept.y = ((struct ObjBox *)EditMode.unk8)->pos.y + cursor->field_1408;
+    GetTileBounds(&tilept, screen);
     code = FUN_0045e6b0((struct ObjBox *)EditMode.unk8);
     switch (code) {
-    case 1:
-        PrintSprite(DAT_00667c8c, screen[0], screen[1], 0, 0);
-        break;
-    case 2:
-        PrintSprite(DAT_00667c94, screen[0], screen[1], 0, 0);
+    case 8:
+        PrintSprite(DAT_00667c88, screen[0], screen[1], 0, 0);
         break;
     case 4:
         PrintSprite(DAT_00667c90, screen[0], screen[1], 0, 0);
         break;
-    case 8:
-        PrintSprite(DAT_00667c88, screen[0], screen[1], 0, 0);
+    case 2:
+        PrintSprite(DAT_00667c94, screen[0], screen[1], 0, 0);
+        break;
+    case 1:
+        PrintSprite(DAT_00667c8c, screen[0], screen[1], 0, 0);
         break;
     }
     if ((cursor->field_1828 & 0x800) != 0 && FUN_0045e690((struct ObjInfo *)EditMode.unk8) != 0) {
-        tilept[0] = ((signed char *)EditMode.unk8)[0x24] + cursor->field_1404;
-        tilept[1] = ((signed char *)EditMode.unk8)[0x25] + cursor->field_1408;
-        GetTileBounds((struct Point *)tilept, screen);
+        tilept.x = ((signed char *)EditMode.unk8)[0x24] + cursor->field_1404;
+        tilept.y = ((signed char *)EditMode.unk8)[0x25] + cursor->field_1408;
+        GetTileBounds(&tilept, screen);
         code = FUN_0045e710((struct ObjBox *)EditMode.unk8);
         switch (code) {
-        case 0x10:
-            PrintSprite(DAT_00667c8c, screen[0], screen[1], 0, 0);
-            break;
-        case 0x20:
-            PrintSprite(DAT_00667c94, screen[0], screen[1], 0, 0);
+        case 0x80:
+            PrintSprite(DAT_00667c88, screen[0], screen[1], 0, 0);
             return;
         case 0x40:
             PrintSprite(DAT_00667c90, screen[0], screen[1], 0, 0);
             return;
-        case 0x80:
-            PrintSprite(DAT_00667c88, screen[0], screen[1], 0, 0);
+        case 0x20:
+            PrintSprite(DAT_00667c94, screen[0], screen[1], 0, 0);
             return;
+        case 0x10:
+            PrintSprite(DAT_00667c8c, screen[0], screen[1], 0, 0);
+            break;
         }
     }
 }
@@ -1943,7 +1945,7 @@ void FUN_004610f0(struct Point *param_1, int *param_2) {
     struct Point start;
     struct Point coord;
     struct Point row;
-    int out[2];
+    int out[4];
     int ix;
     int iy;
 
