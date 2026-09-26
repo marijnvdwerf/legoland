@@ -400,42 +400,31 @@ LEGO_EXPORT int NewDirForAction(Bloke *bloke, unsigned char dir) {
 }
 
 // FUNCTION: LEGOLAND 0x00483400
-LEGO_EXPORT unsigned int Random_Dir_From_Bits(unsigned int bits) {
-    unsigned char mask = (unsigned char)bits;
+LEGO_EXPORT unsigned char Random_Dir_From_Bits(unsigned char bits) {
     unsigned char count;
-    unsigned char remaining;
+    unsigned char rest;
     unsigned char bit;
+    unsigned char dir;
     int n;
-    unsigned int dir;
 
-    if (mask == 0) {
+    if (bits == 0) {
         return 8;
     }
     count = 1;
-    remaining = (mask - 1) & mask;
-    if (remaining != 0) {
-        do {
-            count++;
-            remaining = remaining & (remaining - 1);
-        } while (remaining != 0);
+    for (rest = (bits - 1) & bits; rest != 0; rest &= rest - 1) {
+        count++;
     }
-    n = Rand_Max((count & 0xff) - 1);
-    bit = 1;
-    if ((bits & 1) == 0) {
-        do {
-            bit = bit << 1;
-        } while ((mask & bit) == 0);
+    n = Rand_Max(count - 1);
+    for (bit = 1; (bits & bit) == 0; bit <<= 1) {
     }
-    if (n != 0) {
-        do {
-            mask = mask & ~bit;
-            for (; (mask & bit) == 0; bit = bit << 1) {
-            }
-            n--;
-        } while (n != 0);
+    for (; n != 0; n--) {
+        bits &= ~bit;
+        while ((bits & bit) == 0) {
+            bit <<= 1;
+        }
     }
     dir = Bit_To_Dir(bit);
-    DAT_0066b580[dir & 0xff]++;
+    DAT_0066b580[dir]++;
     return dir;
 }
 
@@ -505,14 +494,20 @@ LEGO_EXPORT int OverNewTile(Bloke *bloke, unsigned int x, unsigned int y) {
 void FUN_00483680(Bloke *bloke, unsigned int x, unsigned int y) {
     MapElement *elem;
     struct FXSpriteList *set;
+    unsigned int ux;
+    unsigned int uy;
+    int tx;
+    int ty;
     Point p;
 
     if (OverNewTile(bloke, x, y) == 0) {
         return;
     }
     if ((Get_RFFlags(bloke->pos.x, bloke->pos.y) & 3) == 3) {
-        int tx = bloke->pos.x >> 8;
-        int ty = bloke->pos.y >> 8;
+        uy = bloke->pos.y;
+        ux = bloke->pos.x;
+        tx = ux >> 8;
+        ty = uy >> 8;
         if (tx >= 0 && tx < lpConfig->width && ty >= 0 && ty < lpConfig->height) {
             elem = &GameMap[ty][tx];
         } else {
@@ -520,13 +515,15 @@ void FUN_00483680(Bloke *bloke, unsigned int x, unsigned int y) {
         }
         set = TileSpriteInfo[elem->field_8].src;
         if (set->on_enter != NULL) {
-            set->on_leave(bloke->pos.x, bloke->pos.y);
+            set->on_leave(ux, uy);
         }
         bloke->flags &= 0xfff7;
     }
     if ((Get_RFFlags(x, y) & 3) == 3) {
-        if ((x >> 8) < lpConfig->width && (y >> 8) < lpConfig->height) {
-            elem = &GameMap[y >> 8][x >> 8];
+        tx = x >> 8;
+        ty = y >> 8;
+        if (tx >= 0 && tx < lpConfig->width && ty >= 0 && ty < lpConfig->height) {
+            elem = &GameMap[ty][tx];
         } else {
             elem = NULL;
         }
@@ -621,47 +618,45 @@ void FUN_004838e0(Bloke *bloke) {
 
 // FUNCTION: LEGOLAND 0x00483920
 LEGO_EXPORT int DoRndWalkPathTileAction(Bloke *bloke) {
-    int coords[2];
-    unsigned char rf;
+    Point tile;
+    short rf;
+    short mapFlags;
+    short rf2;
+    unsigned char paths;
     unsigned char dirs;
+    unsigned char dir;
 
-    coords[0] = bloke->pos.x >> 8;
-    coords[1] = bloke->pos.y >> 8;
+    tile.x = bloke->pos.x >> 8;
+    tile.y = bloke->pos.y >> 8;
     rf = GetCurrentRFFlags(bloke->pos.x, bloke->pos.y);
-    if (bloke->pos.x >= 0 && bloke->pos.x < lpConfig->width * 0x100 &&
-        bloke->pos.y >= 0 && bloke->pos.y < lpConfig->height * 0x100) {
-        short mapFlags = Get_MapFlags(bloke->pos.x, bloke->pos.y);
-        unsigned char rf2 = GetCurrentRFFlags(bloke->pos.x, bloke->pos.y);
+    if (bloke->pos.x >= 0 && bloke->pos.x < lpConfig->width * 0x100 && bloke->pos.y >= 0 && bloke->pos.y < lpConfig->height * 0x100) {
+        mapFlags = Get_MapFlags(bloke->pos.x, bloke->pos.y);
+        rf2 = GetCurrentRFFlags(bloke->pos.x, bloke->pos.y);
         if ((rf2 & 1) != 0 || ((mapFlags & 0x10) != 0 && (rf2 & 2) == 0)) {
             if ((rf & 8) != 0) {
-                dirs = Get_Path_Directions(coords, 0, 0);
-                dirs = ExcludeIsolatedDiags(dirs);
-                dirs = dirs & ~Dir_To_Bit(bloke->field_72 + 4);
+                paths = Get_Path_Directions(&tile, 0, 0);
+                dirs = ExcludeIsolatedDiags(paths);
+                dirs &= ~Dir_To_Bit(bloke->field_72 + 4);
+                dir = Bit_To_Dir(dirs);
                 bloke->flags |= 4;
-                return NewDirForAction(bloke, Bit_To_Dir(dirs));
+                return NewDirForAction(bloke, dir);
             }
             if ((rf & 0x24) != 0) {
-                unsigned char b5;
-                unsigned char b4;
-                unsigned char b3;
-                dirs = Get_Path_Directions(coords, 0, 0);
-                dirs = ExcludeIsolatedDiags(dirs);
-                b5 = Dir_To_Bit(bloke->field_72 + 5);
-                b4 = Dir_To_Bit(bloke->field_72 + 4);
-                b3 = Dir_To_Bit(bloke->field_72 + 3);
-                dirs = dirs & ~(b5 | b4 | b3);
+                paths = Get_Path_Directions(&tile, 0, 0);
+                dirs = ExcludeIsolatedDiags(paths);
+                dirs &= ~(Dir_To_Bit(bloke->field_72 + 5) | Dir_To_Bit(bloke->field_72 + 4) | Dir_To_Bit(bloke->field_72 + 3));
+                dir = Random_Dir_From_Bits(dirs);
                 bloke->flags |= 4;
-                return NewDirForAction(bloke, Random_Dir_From_Bits(dirs));
+                return NewDirForAction(bloke, dir);
             }
             if ((rf & 0x10) != 0) {
-                unsigned char dir;
-                dirs = Get_Path_Directions(coords, 0, 0);
-                dirs = ExcludeIsolatedDiags(dirs);
+                paths = Get_Path_Directions(&tile, 0, 0);
+                dirs = ExcludeIsolatedDiags(paths);
                 bloke->flags |= 4;
-                if (dirs == 0) {
-                    dir = rand() & 7;
-                } else {
+                if (dirs != 0) {
                     dir = Bit_To_Dir(dirs);
+                } else {
+                    dir = rand() & 7;
                 }
                 return NewDirForAction(bloke, dir);
             }
@@ -682,14 +677,17 @@ LEGO_EXPORT int Handle_RndWalk_TileSpecifics(Bloke *bloke, unsigned int x, unsig
 
 // FUNCTION: LEGOLAND 0x00483b60
 int FUN_00483b60(Bloke *bloke, unsigned int x, unsigned int y) {
-    if (FUN_004837a0(bloke, x, y) == 0 &&
-        CrossTileCentre(bloke, x, y) != 0 && (bloke->flags & 4) == 0) {
-        if (bloke->pos.x >= 0 && bloke->pos.x < lpConfig->width * 0x100 &&
-            bloke->pos.y >= 0 && bloke->pos.y < lpConfig->height * 0x100) {
-            short mapFlags = Get_MapFlags(bloke->pos.x, bloke->pos.y);
-            unsigned char rf = GetCurrentRFFlags(bloke->pos.x, bloke->pos.y);
+    Point *pos;
+    short mapFlags;
+    short rf;
+
+    if (FUN_004837a0(bloke, x, y) == 0 && CrossTileCentre(bloke, x, y) != 0 && (bloke->flags & 4) == 0) {
+        pos = &bloke->pos;
+        if (pos->x >= 0 && pos->x < lpConfig->width * 0x100 && pos->y >= 0 && pos->y < lpConfig->height * 0x100) {
+            mapFlags = Get_MapFlags(pos->x, pos->y);
+            rf = GetCurrentRFFlags(pos->x, pos->y);
             if ((rf & 1) != 0 || ((mapFlags & 0x10) != 0 && (rf & 2) == 0)) {
-                if (FUN_00481790(&bloke->pos) != NULL) {
+                if (FUN_00481790(pos) != NULL) {
                     bloke->field_e = 0;
                     return 1;
                 }
@@ -701,33 +699,32 @@ int FUN_00483b60(Bloke *bloke, unsigned int x, unsigned int y) {
 
 // FUNCTION: LEGOLAND 0x00483c20
 int FUN_00483c20(Bloke *bloke, int x, int y) {
-    unsigned char flags = bloke->flags;
-    int threshold = (int)((-(int)((flags & 2) != 0) & 0xffffffec) + 0x14);
-    int state = bloke->person->field_8;
+    int chance;
+    int state;
     unsigned char dir;
 
-    if (state == 2 || state == 3) {
-        if (HitPathEdge(bloke, x, y) == 0 &&
-            FUN_00483580(bloke, x, y) == 0) {
-            return 0;
+    chance = (bloke->flags & 2) ? 0 : 20;
+    state = bloke->person->field_8;
+    if (state != 2 && state != 3) {
+        if (HitPathEdge(bloke, x, y) != 0 || HitObstacle(bloke, x, y) != 0 || (rand() & 0x3ff) < chance) {
+            dir = rand() & 7;
+            if ((bloke->flags & 2) != 0) {
+                dir |= 1;
+            }
+            NewDirForAction(bloke, dir);
+            return 1;
         }
-        dir = rand() & 7;
-        if ((bloke->flags & 2) != 0) {
-            dir = dir | 1;
+    } else {
+        if (HitPathEdge(bloke, x, y) != 0 || FUN_00483580(bloke, x, y) != 0) {
+            dir = rand() & 7;
+            if ((bloke->flags & 2) != 0) {
+                dir |= 1;
+            }
+            NewDirForAction(bloke, dir);
+            return 1;
         }
-        NewDirForAction(bloke, dir);
-        return 1;
     }
-    if (HitPathEdge(bloke, x, y) == 0 &&
-        HitObstacle(bloke, x, y) == 0 && threshold <= (int)(rand() & 0x3ff)) {
-        return 0;
-    }
-    dir = rand() & 7;
-    if ((bloke->flags & 2) != 0) {
-        dir = dir | 1;
-    }
-    NewDirForAction(bloke, dir);
-    return 1;
+    return 0;
 }
 
 // FUNCTION: LEGOLAND 0x00483d10
@@ -939,33 +936,35 @@ void FUN_00484220(Bloke *bloke) {
 // FUNCTION: LEGOLAND 0x00484350
 void FUN_00484350(Bloke *bloke) {
     Point target;
+    short mapFlags;
+    short rf;
+
     if ((bloke->flags & 2) != 0) {
         bloke->field_e = 0;
         return;
     }
-    if (FUN_004841a0(bloke, (unsigned int)bloke->field_7f << 1) != 0) {
+    if (FUN_004841a0(bloke, bloke->field_7f << 1) != 0) {
         bloke->field_e = 0;
         return;
     }
     NavigMoveLine(&bloke->nav, bloke->field_7f, &target);
     if (FUN_004837a0(bloke, target.x, target.y) != 0) {
-        if (HitObstacle(bloke, target.x, target.y) != 0) {
+        if (HitObstacle(bloke, target.x, target.y) == 0) {
+            if (target.x >= 0 && target.x < lpConfig->width * 0x100 && target.y >= 0 && target.y < lpConfig->height * 0x100) {
+                mapFlags = Get_MapFlags(target.x, target.y);
+                rf = GetCurrentRFFlags(target.x, target.y);
+                if ((rf & 1) != 0 || ((mapFlags & 0x10) != 0 && (rf & 2) == 0)) {
+                    bloke->field_e = 0;
+                    return;
+                }
+            }
+        } else {
             bloke->field_e = 0;
             return;
         }
-        if (target.x >= 0 && target.x < lpConfig->width * 0x100 && target.y >= 0 &&
-            target.y < lpConfig->height * 0x100) {
-            short mapFlags = Get_MapFlags(target.x, target.y);
-            unsigned char rf = GetCurrentRFFlags(target.x, target.y);
-            if ((rf & 1) != 0 || ((mapFlags & 0x10) != 0 && (rf & 2) == 0)) {
-                bloke->field_e = 0;
-                return;
-            }
-        }
     }
     FUN_00483680(bloke, target.x, target.y);
-    bloke->pos.x = target.x;
-    bloke->pos.y = target.y;
+    bloke->pos = target;
     FUN_00483830(bloke);
 }
 
@@ -985,8 +984,7 @@ void FUN_00484470(Bloke *bloke) {
         }
     }
     FUN_00483680(bloke, target.x, target.y);
-    bloke->pos.x = target.x;
-    bloke->pos.y = target.y;
+    bloke->pos = target;
     FUN_00483830(bloke);
 }
 
@@ -1006,8 +1004,7 @@ void FUN_00484520(Bloke *bloke) {
         }
     }
     FUN_00483680(bloke, target.x, target.y);
-    bloke->pos.x = target.x;
-    bloke->pos.y = target.y;
+    bloke->pos = target;
     FUN_00483830(bloke);
 }
 
@@ -1019,8 +1016,7 @@ void FUN_004845d0(Bloke *bloke) {
         return;
     }
     NavigMoveLine(&bloke->nav, bloke->field_7f, &target);
-    bloke->pos.x = target.x;
-    bloke->pos.y = target.y;
+    bloke->pos = target;
     FUN_00483830(bloke);
 }
 

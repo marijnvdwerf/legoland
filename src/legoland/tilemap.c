@@ -506,7 +506,7 @@ LEGO_EXPORT unsigned char Bit_To_Dir(unsigned char bit) {
 }
 
 // FUNCTION: LEGOLAND 0x0045c050
-LEGO_EXPORT unsigned char Get_Path_Directions(int *param_1, char *param_2, char *param_3) {
+LEGO_EXPORT unsigned char Get_Path_Directions(struct Point *pos, char *param_2, char *param_3) {
     int x;
     int y;
     int ym1;
@@ -517,8 +517,8 @@ LEGO_EXPORT unsigned char Get_Path_Directions(int *param_1, char *param_2, char 
     unsigned char local_17;
     struct MapTile tile;
 
-    y = param_1[1];
-    x = *param_1;
+    y = pos->y;
+    x = pos->x;
     ym1 = y + -1;
     local_15 = '\0';
     local_16 = '\0';
