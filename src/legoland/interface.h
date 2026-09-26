@@ -1,6 +1,7 @@
 #pragma once
 
 #include "legoland.h"
+#include "movie_pool.h"
 
 struct CastleObj;
 struct IconNode;
@@ -71,14 +72,6 @@ int FUN_00476bf0(struct MovieHandle *handle);
 int FUN_00476c90(void);
 int FUN_00476d20(unsigned int param_1, int param_2);
 int FUN_004771f0(char *filename, unsigned int param_2, int param_3);
-/* Both are STUBs with unverified signatures, called only from castle.c — the call
- * sites pass 4 args to FUN_004775b0 (and that 4-push form is what matches the
- * original at 100%), and FUN_004775d0 is passed mixed pointer/int values. Declare
- * with unspecified params (K&R) so callers don't get a forced-prototype mismatch
- * (C4020 / int-conversion) and codegen is preserved. Set real signatures when
- * these get decompiled. */
-void *FUN_004775b0(unsigned int size);
-void FUN_004775d0(void *param);
 LEGO_EXPORT void DisableSidePanelIcons(void);
 LEGO_EXPORT void EnableSidePanelIcons(void);
 LEGO_EXPORT void ListChildrenBar(void *node, int group, short x, short y);

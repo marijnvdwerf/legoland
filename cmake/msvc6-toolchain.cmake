@@ -18,16 +18,18 @@ set(CMAKE_INCLUDE_FLAG_C "/I")
 set(CMAKE_C_DEFINE_FLAG "/D")
 set(CMAKE_DEPFILE_FLAGS_C "")
 
-# Match the original build: /O2. /Z7 embeds CodeView debug in each .obj (so there
-# is no shared vc60.pdb to race on across parallel compiles); LINK /DEBUG then
-# produces the program PDB that reccmp reads.
-set(CMAKE_C_FLAGS_INIT "/nologo /W3")
+# Match the original build: /O2. It lives in CMAKE_C_FLAGS so that per-file
+# COMPILE_OPTIONS (e.g. /Od), which come later on the command line, override it.
+# /Z7 embeds CodeView debug in each .obj (so there is no shared vc60.pdb to race
+# on across parallel compiles); LINK /DEBUG then produces the program PDB that
+# reccmp reads.
+set(CMAKE_C_FLAGS_INIT "/nologo /W3 /O2")
 set(CMAKE_C_FLAGS_DEBUG_INIT "")
 set(CMAKE_C_FLAGS_RELEASE_INIT "")
 
 # Fully explicit rules (bypass any compiler-id-specific CMake machinery).
 set(CMAKE_C_COMPILE_OBJECT
-    "<CMAKE_C_COMPILER> <DEFINES> <INCLUDES> <FLAGS> /O2 /Z7 /c /Fo<OBJECT> <SOURCE>")
+    "<CMAKE_C_COMPILER> <DEFINES> <INCLUDES> <FLAGS> /Z7 /c /Fo<OBJECT> <SOURCE>")
 
 # Runnability is a non-goal: /NODEFAULTLIB (stubs reference nothing external),
 # a dummy /ENTRY so the image links, /DEBUG for the PDB reccmp needs.
