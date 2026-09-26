@@ -2777,57 +2777,57 @@ unsigned int FUN_004629e0(void) {
     struct Element *elem;
     struct Element *elem2;
 
-    if (DAT_00667d50 != 0) {
-        FUN_00459880();
-        row = 0;
-        if (lpConfig->height != 0) {
-            do {
-                col = 0;
-                if (lpConfig->width != 0) {
-                    off = 0;
-                    do {
-                        col = col + 1;
-                        off = off + 0x14;
-                        *(unsigned short *)(*(int *)((int)GameMap + row * 4) + -8 + off) = 0;
-                    } while (col < (int)(unsigned int)lpConfig->width);
-                }
-                row = row + 1;
-            } while (row < (int)(unsigned int)lpConfig->height);
-        }
-        LLIDB_UnLoadData((unsigned int)DAT_0080140c);
-        LLIDB_UnLoadData((unsigned int)DAT_00801410);
-        if (DAT_00801404 != 0) {
-            LLIDB_UnLoadData((unsigned int)DAT_00801404);
-            DAT_00801404 = 0;
-        }
-        count = LLIDB_GetCount();
-        i = 0;
-        if (0 < count) {
-            do {
-                LLIDB_GetElement(i, &elem);
-                if ((*(unsigned int *)((char *)elem + 8) & 0x10) != 0 && (*(unsigned int *)((char *)elem + 8) & 1) != 0) {
-                    LLIDB_UnLoadData((unsigned int)elem);
-                }
-                i = i + 1;
-            } while (i < count);
-        }
-        free(DAT_00801a68);
-        i = 0;
-        if (0 < DAT_00801a74) {
-            do {
-                LLIDB_FindElementFromDataPtr(*(void **)((char *)DAT_00801a70 + i * 4), (unsigned int *)&elem2, 0);
-                *(unsigned int *)((char *)elem2 + 8) = *(unsigned int *)((char *)elem2 + 8) & 0xfffcfff1;
-                LLIDB_UnLoadData((unsigned int)elem2);
-                i = i + 1;
-            } while (i < DAT_00801a74);
-        }
-        free(DAT_00801a70);
-        ClearOverlays();
-        FUN_004828f0();
-        DAT_00667d50 = 0;
-        return 1;
+    if (DAT_00667d50 == 0) {
+        return 0;
     }
-    return 0;
+    FUN_00459880();
+    row = 0;
+    if (lpConfig->height > 0) {
+        do {
+            col = 0;
+            if (lpConfig->width > 0) {
+                off = 0;
+                do {
+                    col = col + 1;
+                    off = off + 0x14;
+                    *(unsigned short *)(*(int *)((int)GameMap + row * 4) + -8 + off) = 0;
+                } while (col < (int)(unsigned int)lpConfig->width);
+            }
+            row = row + 1;
+        } while (row < (int)(unsigned int)lpConfig->height);
+    }
+    LLIDB_UnLoadData((unsigned int)DAT_0080140c);
+    LLIDB_UnLoadData((unsigned int)DAT_00801410);
+    if (DAT_00801404 != 0) {
+        LLIDB_UnLoadData((unsigned int)DAT_00801404);
+        DAT_00801404 = 0;
+    }
+    count = LLIDB_GetCount();
+    i = 0;
+    if (0 < count) {
+        do {
+            LLIDB_GetElement(i, &elem);
+            if ((*(unsigned int *)((char *)elem + 8) & 0x10) != 0 && (*(unsigned int *)((char *)elem + 8) & 1) != 0) {
+                LLIDB_UnLoadData((unsigned int)elem);
+            }
+            i = i + 1;
+        } while (i < count);
+    }
+    free(DAT_00801a68);
+    i = 0;
+    if (0 < DAT_00801a74) {
+        do {
+            LLIDB_FindElementFromDataPtr(*(void **)((char *)DAT_00801a70 + i * 4), (unsigned int *)&elem2, 0);
+            *(unsigned int *)((char *)elem2 + 8) = *(unsigned int *)((char *)elem2 + 8) & 0xfffcfff1;
+            LLIDB_UnLoadData((unsigned int)elem2);
+            i = i + 1;
+        } while (i < DAT_00801a74);
+    }
+    free(DAT_00801a70);
+    ClearOverlays();
+    FUN_004828f0();
+    DAT_00667d50 = 0;
+    return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00462b30
@@ -3358,14 +3358,14 @@ void FUN_00463680(void) {
 // FUNCTION: LEGOLAND 0x004636c0
 int FUN_004636c0(void) {
     int total;
-    unsigned int rows;
+    int rows;
 
     total = 0;
     rows = lpConfig->height;
-    if (rows != 0) {
-        unsigned int width = lpConfig->width;
+    if (rows > 0) {
+        int width = lpConfig->width;
         do {
-            if (width != 0) {
+            if (width > 0) {
                 total = total + width;
             }
             rows = rows - 1;
