@@ -39,7 +39,7 @@ struct EditTarget {
 #include "worker.h"
 
 // FUNCTION: LEGOLAND 0x0043ce60
-void FUN_0043ce60(struct RideObject *obj) {
+void FUN_0043ce60(Element *obj) {
     DAT_0081caf0 = obj->ride;
     DAT_0081caf0->flags |= 0x420;
     DAT_0062fe48 = DAT_0081caf0->layer;
@@ -54,13 +54,13 @@ unsigned int FUN_0043ceb0(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0043ced0
-void FUN_0043ced0(struct RideObject *obj, unsigned int tile, struct Cursor *cursor) {
-    StandardRemoveObject((struct RideObject *)obj, *(TileId *)&tile, cursor);
+void FUN_0043ced0(Element *obj, unsigned int tile, struct Cursor *cursor) {
+    StandardRemoveObject((Element *)obj, *(TileId *)&tile, cursor);
     FUN_0043d7c0(obj->ride, tile, 1);
 }
 
 // FUNCTION: LEGOLAND 0x0043cf00
-void FUN_0043cf00(struct RideObject *obj) {
+void FUN_0043cf00(Element *obj) {
     struct Ride *shed = obj->ride;
     struct RideNode *node;
     struct RideNode *next;
@@ -108,7 +108,7 @@ void FUN_0043cf00(struct RideObject *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0043d0b0
-void FUN_0043d0b0(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile) {
+void FUN_0043d0b0(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile) {
     struct Ride *shed = obj->ride;
     struct RideNode *node = shed->riders;
     struct Bloke *blokes[30] = {0};

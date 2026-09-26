@@ -18,7 +18,7 @@
 #include "render3d.h"
 
 // FUNCTION: LEGOLAND 0x0042a7b0
-void FUN_0042a7b0(RideObject *obj) {
+void FUN_0042a7b0(Element *obj) {
     DAT_0081cde4 = obj->ride;
     DAT_0081cde4->flags |= 0x420;
     DAT_00616044 = DAT_0081cde4->layer;
@@ -73,7 +73,7 @@ void FUN_0042a8f0(TileId *tile) {
 }
 
 // FUNCTION: LEGOLAND 0x0042a950
-void FUN_0042a950(RideObject *obj, int *coords) {
+void FUN_0042a950(Element *obj, int *coords) {
     TileId tile;
 
     tile.pos.x = coords[0];
@@ -138,7 +138,7 @@ void FUN_0042a9f0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0042aa10
-void FUN_0042aa10(RideObject *obj, TileId tile, Cursor *cursor) {
+void FUN_0042aa10(Element *obj, TileId tile, Cursor *cursor) {
     BalloonNode *node;
 
     node = FUN_0042a980(&tile);
@@ -158,7 +158,7 @@ int FUN_0042aa60(char pos, char lap) {
 }
 
 // FUNCTION: LEGOLAND 0x0042aa90
-void FUN_0042aa90(RideObject *obj) {
+void FUN_0042aa90(Element *obj) {
     Ride *ride;
     RideNode *elem;
     RideNode *next;
@@ -450,7 +450,7 @@ void FUN_0042aa90(RideObject *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0042b2a0
-RideSpriteInfo *FUN_0042b2a0(RideObject *obj, unsigned short id) {
+RideSpriteInfo *FUN_0042b2a0(Element *obj, unsigned short id) {
     Ride *ride = obj->ride;
 
     DAT_00616028.sprite = ride->layer;
@@ -462,7 +462,7 @@ RideSpriteInfo *FUN_0042b2a0(RideObject *obj, unsigned short id) {
 }
 
 // FUNCTION: LEGOLAND 0x0042b2e0
-void FUN_0042b2e0(RideObject *obj, void *param_2, void *param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
+void FUN_0042b2e0(Element *obj, void *param_2, void *param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
     Ride *ride = obj->ride;
     RideNode *elem;
     RideNode *riders;
@@ -683,7 +683,7 @@ unsigned int FUN_0042ba80(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0042baf0
-unsigned int FUN_0042baf0(RideObject *obj) {
+unsigned int FUN_0042baf0(Element *obj) {
     Ride *ride = obj->ride;
     BalloonNode *node;
     BalloonNode *prev;

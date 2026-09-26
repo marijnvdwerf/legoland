@@ -282,7 +282,7 @@ void FUN_004076e0(struct GoldEditObject *editObj, TileId coords, struct Cursor *
         FUN_00406960((struct GoldNode *)found);
     }
 
-    StandardRemoveObject((struct RideObject *)editObj, coords, cursor);
+    StandardRemoveObject((Element *)editObj, coords, cursor);
     RemoveAllBlokesFromRide((struct Ride *)ride, coords);
 
     p[0] = coords.pos.x + ride->field_c - 1;

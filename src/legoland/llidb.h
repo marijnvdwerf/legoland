@@ -12,12 +12,18 @@ struct LLS {
 };
 typedef struct LLS LLS;
 
+/* An LLIDB element (0x14 bytes).  For object classes `data` is the class's Ride
+   record; placed-object code (map_object.c, the ride TUs) reaches it as `ride`. */
 struct Element {
-    char *name;
-    char *path;
-    unsigned int flags;
-    void *data;
-    unsigned int field_10;
+    /* 0x00 */ char *name;
+    /* 0x04 */ char *path;
+    /* 0x08 */ unsigned int flags;
+    /* 0x0c */ union {
+        void *data;
+        struct Ride *ride;
+        struct MapObject *obj; /* map_object.c's view of the class */
+    };
+    /* 0x10 */ unsigned int field_10;
 };
 typedef struct Element Element;
 

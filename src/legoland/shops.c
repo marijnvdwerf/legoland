@@ -149,7 +149,7 @@ void FUN_00439350(struct ShopRemoveObject *obj, TileId coords, void *cursor) {
     void *ride = obj->ride;
     struct Point local;
 
-    StandardRemoveObject((struct RideObject *)obj, coords, (struct Cursor *)cursor);
+    StandardRemoveObject((Element *)obj, coords, (struct Cursor *)cursor);
     RemoveAllBlokesFromRide((struct Ride *)ride, coords);
 
     local.x = coords.pos.x;
@@ -253,7 +253,7 @@ void FUN_00439c90(struct ShopRemoveObject *obj, TileId coords, void *cursor) {
     void *ride = obj->ride;
     struct Point local;
 
-    StandardRemoveObject((struct RideObject *)obj, coords, (struct Cursor *)cursor);
+    StandardRemoveObject((Element *)obj, coords, (struct Cursor *)cursor);
     RemoveAllBlokesFromRide((struct Ride *)ride, coords);
 
     local.x = coords.pos.x;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "legoland.h"
+#include "llidb.h"
 
 #include "gamemap.h"
 #include "obj_instance.h"
@@ -31,13 +32,13 @@ void FUN_0042a9b0(BalloonNode *node);
 void FUN_0042a9f0(void);
 int FUN_0042aa60(char pos, char lap);
 
-void FUN_0042a7b0(RideObject *obj);
-void FUN_0042a950(RideObject *obj, int *coords);
-void FUN_0042aa10(RideObject *obj, TileId tile, Cursor *cursor);
-void FUN_0042aa90(RideObject *obj);
-RideSpriteInfo *FUN_0042b2a0(RideObject *obj, unsigned short id);
-void FUN_0042b2e0(RideObject *obj, void *param_2, void *param_3, TileId *tile, unsigned int param_5, unsigned int param_6);
+void FUN_0042a7b0(Element *obj);
+void FUN_0042a950(Element *obj, int *coords);
+void FUN_0042aa10(Element *obj, TileId tile, Cursor *cursor);
+void FUN_0042aa90(Element *obj);
+RideSpriteInfo *FUN_0042b2a0(Element *obj, unsigned short id);
+void FUN_0042b2e0(Element *obj, void *param_2, void *param_3, TileId *tile, unsigned int param_5, unsigned int param_6);
 void FUN_0042b9d0(void);
 void FUN_0042ba40(void);
 unsigned int FUN_0042ba80(void);
-unsigned int FUN_0042baf0(RideObject *obj);
+unsigned int FUN_0042baf0(Element *obj);

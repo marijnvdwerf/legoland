@@ -1,6 +1,7 @@
 #pragma once
 
 #include "legoland.h"
+#include "llidb.h"
 #include "obj_instance.h"
 
 // Per-TU header for map_object.c — canonical declarations for functions that are
@@ -9,7 +10,6 @@
 
 struct Cursor;
 struct CursorObj;
-struct RideObject;
 struct Point;
 struct ObjClass;
 struct ObjInstance;
@@ -23,23 +23,23 @@ struct WorkOrder;
 LEGO_EXPORT void RateBlokeOnLeaving(int param_1);
 LEGO_EXPORT void SetMapFlags(int x, int y, short value);
 LEGO_EXPORT void Set_RFFlags(int x, int y, unsigned char value);
-LEGO_EXPORT void ApplyConsTileMap(struct RideObject *editObj, TileId coords);
-LEGO_EXPORT void ApplyDestrTileMap(struct RideObject *editObj, TileId coords);
-LEGO_EXPORT int BuildObject(struct RideObject *editObj, int *coords);
+LEGO_EXPORT void ApplyConsTileMap(Element *editObj, TileId coords);
+LEGO_EXPORT void ApplyDestrTileMap(Element *editObj, TileId coords);
+LEGO_EXPORT int BuildObject(Element *editObj, int *coords);
 LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, TileId coords);
 LEGO_EXPORT void ObjectIsBuilding(struct ObjClass *obj, TileId coords);
 LEGO_EXPORT void PlayAppropriateBuildEffect(struct ObjClass *obj, int *coords);
-void FUN_0045e300(struct RideObject *editObj, struct Point *pos);
-void FUN_0045e4a0(struct RideObject *editObj, struct Point *pos);
-LEGO_EXPORT unsigned int AddBasicObject(struct RideObject *editObj, int *coords);
-LEGO_EXPORT void AddObjectToMap(struct RideObject *param_1, TileId param_2, int param_3);
+void FUN_0045e300(Element *editObj, struct Point *pos);
+void FUN_0045e4a0(Element *editObj, struct Point *pos);
+LEGO_EXPORT unsigned int AddBasicObject(Element *editObj, int *coords);
+LEGO_EXPORT void AddObjectToMap(Element *param_1, TileId param_2, int param_3);
 LEGO_EXPORT void RemoveObjectFromMap(TileId coords);
 LEGO_EXPORT unsigned int GetObjectClassAndInstance(int *coords, unsigned short *out);
 void FUN_004618d0(const char *param_1);
-LEGO_EXPORT void StandardRemoveObject(struct RideObject *editObj, TileId coords, struct Cursor *cursor);
+LEGO_EXPORT void StandardRemoveObject(Element *editObj, TileId coords, struct Cursor *cursor);
 LEGO_EXPORT void SetEditCursorFootPrint(void *src);
 int FUN_0045f4b0(struct Cursor *cursor);
-LEGO_EXPORT void SetObjRectFlags(struct RideObject *editObj, struct Point *pos, unsigned short flags);
+LEGO_EXPORT void SetObjRectFlags(Element *editObj, struct Point *pos, unsigned short flags);
 void FUN_0045f460(struct Cursor *cursor);
 void FUN_0045f480(struct Cursor *cursor, int param);
 void FUN_0045f4d0(struct Cursor *cursor);

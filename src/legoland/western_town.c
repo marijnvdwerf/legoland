@@ -88,7 +88,7 @@ void FUN_00437630(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00437670
-void FUN_00437670(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6) {
+void FUN_00437670(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     char count = 0;
@@ -250,7 +250,7 @@ void FUN_004378e0(struct MapObject *param_1) {
                 bloke->param_action++;
                 break;
             case 7:
-                FUN_00437570((struct RideNode *)node, (struct RideObject *)param_1, (TileId *)&node->pos, 1);
+                FUN_00437570((struct RideNode *)node, (Element *)param_1, (TileId *)&node->pos, 1);
                 break;
             case 8:
                 bloke->dest.x = x * 0x100 + 0x80;
@@ -390,7 +390,7 @@ void FUN_00437c90(struct MapObject *param_1) {
                 bloke->param_action++;
                 break;
             case 3:
-                FUN_00437570((struct RideNode *)node, (struct RideObject *)param_1, (TileId *)&node->pos, 1);
+                FUN_00437570((struct RideNode *)node, (Element *)param_1, (TileId *)&node->pos, 1);
                 break;
             case 4:
                 bloke->dest.x = (x - 3) * 0x100;
@@ -517,7 +517,7 @@ void FUN_00438020(struct MapObject *editObj, TileId coords, struct Cursor *curso
     if (cell != NULL) {
         FUN_00437fc0(cell);
     }
-    StandardRemoveObject((struct RideObject *)editObj, coords, cursor);
+    StandardRemoveObject((Element *)editObj, coords, cursor);
     RemoveAllBlokesFromRide((struct Ride *)editObj->building, coords);
 }
 
@@ -550,7 +550,7 @@ void FUN_00438110(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00438150
-void FUN_00438150(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6) {
+void FUN_00438150(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct Bloke *blokes[10] = {0};
@@ -628,7 +628,7 @@ void FUN_00438150(struct RideObject *obj, unsigned int param_2, unsigned int par
 }
 
 // FUNCTION: LEGOLAND 0x00438430
-void FUN_00438430(struct RideObject *obj) {
+void FUN_00438430(Element *obj) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
@@ -868,7 +868,7 @@ void FUN_00438900(struct MapObject *param_1, unsigned int param_2, unsigned int 
 }
 
 // FUNCTION: LEGOLAND 0x00438960
-void FUN_00438960(struct RideObject *obj) {
+void FUN_00438960(Element *obj) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
@@ -1008,7 +1008,7 @@ void FUN_00438cc0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00438d00
-void FUN_00438d00(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6) {
+void FUN_00438d00(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6) {
     struct Ride *ride = obj->ride;
     char count = 0;
     struct RideNode *node = ride->riders;
@@ -1081,7 +1081,7 @@ void FUN_00438d00(struct RideObject *obj, unsigned int param_2, unsigned int par
 }
 
 // FUNCTION: LEGOLAND 0x00438f10
-void FUN_00438f10(struct RideObject *obj) {
+void FUN_00438f10(Element *obj) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;

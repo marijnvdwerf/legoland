@@ -17,7 +17,7 @@
 #include "render3d.h"
 
 // FUNCTION: LEGOLAND 0x00402ca0
-void FUN_00402ca0(struct RideObject *obj) {
+void FUN_00402ca0(Element *obj) {
     struct Ride *ride = obj->ride;
 
     DAT_004c10dc = ride;
@@ -39,7 +39,7 @@ void FUN_00402ce0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00402d00
-void FUN_00402d00(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int clip) {
+void FUN_00402d00(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int clip) {
     struct Ride *ride = obj->ride;
     struct RideNode *node;
     struct Point pos;
@@ -62,7 +62,7 @@ void FUN_00402d00(struct RideObject *obj, unsigned int param_2, unsigned int par
 }
 
 // FUNCTION: LEGOLAND 0x00402dc0
-void FUN_00402dc0(struct RideObject *obj) {
+void FUN_00402dc0(Element *obj) {
     struct Ride *ride = obj->ride;
     struct RideNode *node;
     struct RideNode *next;
@@ -170,8 +170,8 @@ void FUN_00402ff0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00403030
-void FUN_00403030(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
-    StandardRemoveObject((struct RideObject *)obj, tile, cursor);
+void FUN_00403030(Element *obj, TileId tile, struct Cursor *cursor) {
+    StandardRemoveObject((Element *)obj, tile, cursor);
     RemoveAllBlokesFromRide(obj->ride, tile);
 }
 

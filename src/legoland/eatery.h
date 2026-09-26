@@ -1,7 +1,8 @@
 #pragma once
 
+#include "llidb.h"
+
 struct BlokeArg;
-struct RideObject;
 struct RideNode;
 struct EateryObj;
 struct EditArg;
@@ -13,7 +14,7 @@ struct SaveBlock *FUN_0042f9d0(unsigned short *param);
 void FUN_0042e220(struct EateryObj *obj);
 void FUN_0042e250();
 void FUN_0042e260(struct BlokeArg *arg, unsigned int param2, unsigned int param3, unsigned short *value);
-void FUN_0042e2a0(struct RideObject *obj);
+void FUN_0042e2a0(Element *obj);
 void FUN_0042e460(struct EateryObj *obj);
 void FUN_0042e4b0();
 void FUN_0042e4c0();
@@ -21,7 +22,7 @@ void FUN_0042e500(int param_1, unsigned char *param_2);
 struct RideSpriteInfo *FUN_0042e560(int param_1, unsigned int param_2);
 void FUN_0042e5d0(struct EateryObj *obj);
 void FUN_0042e600();
-void FUN_0042e610(struct RideObject *obj);
+void FUN_0042e610(Element *obj);
 void FUN_0042e770(struct EateryObj *obj);
 void FUN_0042e7a0();
 void FUN_0042e7b0(struct EateryObj *obj);
@@ -35,13 +36,13 @@ void FUN_0042e8d0(struct EditArg *arg);
 void FUN_0042e910(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6);
 void FUN_0042e9c0(unsigned int param_1, unsigned int *param_2);
 void FUN_0042ea10(unsigned int param_1, unsigned int param_2, unsigned int param_3);
-void FUN_0042ea60(struct RideObject *obj);
-void FUN_0042ec10(struct RideObject *obj);
-void FUN_0042ed70(struct RideObject *obj);
+void FUN_0042ea60(Element *obj);
+void FUN_0042ec10(Element *obj);
+void FUN_0042ed70(Element *obj);
 void FUN_0042ef10(unsigned int param_1, unsigned char *param_2);
 void FUN_0042efb0(unsigned int param_1, TileId tile, unsigned int param_3);
 void FUN_0042f030(struct EateryObj *obj);
-void FUN_0042f1a0(struct RideObject *obj);
+void FUN_0042f1a0(Element *obj);
 void FUN_0042f4c0(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6);
 void FUN_0042f720();
 void FUN_0042f770(struct EateryObj *obj);
@@ -51,7 +52,7 @@ void FUN_0042fbb0(int param_1);
 void *FUN_004304a0(struct EateryObj *obj, unsigned short a2);
 void FUN_00430b10(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6);
 void FUN_00431120();
-void FUN_00431170(struct RideObject *obj);
+void FUN_00431170(Element *obj);
 void FUN_004312c0(unsigned int param_1, TileId tile, unsigned int param_3);
 void FUN_00431300(struct EateryObj *obj);
 void FUN_004314f0(unsigned int param_1, struct UserFlagsArg *param_2);

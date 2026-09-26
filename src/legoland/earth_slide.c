@@ -425,7 +425,7 @@ void FUN_0042d560(unsigned short *param_1) {
         }
         Put3DBlokesOnRide((struct ViewportEntry *)DAT_006160d0, (unsigned char *)param_1, (int)*(char *)((char *)param_1 + 0xb), (int *)DAT_006160e4);
     }
-    Put3DBlokesOnRide2((struct RideObject *)DAT_006160d0, (struct RideObject *)param_1);
+    Put3DBlokesOnRide2((Element *)DAT_006160d0, (Element *)param_1);
 }
 
 // FUNCTION: LEGOLAND 0x0042d5f0

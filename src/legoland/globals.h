@@ -84,7 +84,6 @@ struct InfoObjData;
 struct Element;
 struct SortNode;
 struct DSCursorSource;
-struct RideObject;
 struct SpaceTowerCar;
 
 // Full definitions needed by typed globals defined in globals.c.

@@ -167,7 +167,7 @@ struct MapObject {
 };
 
 // FUNCTION: LEGOLAND 0x0045dd80
-LEGO_EXPORT void AddObjectToMap(struct RideObject *param_1, TileId param_2, int param_3) {
+LEGO_EXPORT void AddObjectToMap(Element *param_1, TileId param_2, int param_3) {
     struct MapObject *obj;
     struct MapElement *tile;
     int x;
@@ -217,7 +217,7 @@ LEGO_EXPORT void AddObjectToMap(struct RideObject *param_1, TileId param_2, int 
 }
 
 // FUNCTION: LEGOLAND 0x0045dee0
-LEGO_EXPORT void SetObjRectFlags(struct RideObject *editObj, struct Point *pos, unsigned short flags) {
+LEGO_EXPORT void SetObjRectFlags(Element *editObj, struct Point *pos, unsigned short flags) {
     struct MapObject *obj;
     TileId coords;
     struct Cursor *node;
@@ -276,7 +276,7 @@ LEGO_EXPORT void SetObjRectFlags(struct RideObject *editObj, struct Point *pos, 
 }
 
 // FUNCTION: LEGOLAND 0x0045e080
-void FUN_0045e080(struct RideObject *editObj, struct Point *pos, unsigned short flags) {
+void FUN_0045e080(Element *editObj, struct Point *pos, unsigned short flags) {
     struct MapObject *obj;
     TileId coords;
     struct Cursor *node;
@@ -360,7 +360,7 @@ void FUN_0045e080(struct RideObject *editObj, struct Point *pos, unsigned short 
 }
 
 // FUNCTION: LEGOLAND 0x0045e300
-void FUN_0045e300(struct RideObject *editObj, struct Point *pos) {
+void FUN_0045e300(Element *editObj, struct Point *pos) {
     struct MapObject *obj;
     struct Cursor *node;
     struct LegoConfig *cfg;
@@ -418,7 +418,7 @@ void FUN_0045e300(struct RideObject *editObj, struct Point *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x0045e4a0
-void FUN_0045e4a0(struct RideObject *editObj, struct Point *pos) {
+void FUN_0045e4a0(Element *editObj, struct Point *pos) {
     struct MapObject *obj;
     TileId coords;
     struct Cursor *node;
@@ -672,7 +672,7 @@ int FUN_0045eaf0(struct ObjData *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0045eb30
-LEGO_EXPORT int BuildObject(struct RideObject *editObj, int *coords) {
+LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
     struct MapObject *obj;
     TileId packed;
     int cost;
@@ -686,7 +686,7 @@ LEGO_EXPORT int BuildObject(struct RideObject *editObj, int *coords) {
     if (GetBrickCount() < cost) {
         return 0;
     }
-    if (editObj == (struct RideObject *)DAT_0080ff64) {
+    if (editObj == (Element *)DAT_0080ff64) {
         DAT_0079a8d0 = 1;
     }
     if (DAT_00667cd8 == 0) {
@@ -839,15 +839,15 @@ LEGO_EXPORT void ObjectIsBuilding(struct ObjClass *obj, TileId coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045efc0
-LEGO_EXPORT void ApplyConsTileMap(struct RideObject *editObj, TileId coords) {
+LEGO_EXPORT void ApplyConsTileMap(Element *editObj, TileId coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045efd0
-LEGO_EXPORT void ApplyDestrTileMap(struct RideObject *editObj, TileId coords) {
+LEGO_EXPORT void ApplyDestrTileMap(Element *editObj, TileId coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045efe0
-LEGO_EXPORT unsigned int AddBasicObject(struct RideObject *editObj, int *coords) {
+LEGO_EXPORT unsigned int AddBasicObject(Element *editObj, int *coords) {
     struct MapObject *obj;
     struct MapElement *tile;
     TileId packed;
@@ -913,7 +913,7 @@ LEGO_EXPORT void RemoveObjectFromMap(TileId coords) {
     } else {
         tile = 0;
     }
-    obj = ((struct RideObject *)tile->field_0)->obj;
+    obj = ((Element *)tile->field_0)->obj;
     if (obj->flags & 0x20000) {
         BGFullUpdate = 1;
     }
@@ -936,7 +936,7 @@ LEGO_EXPORT void RemoveObjectFromMap(TileId coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045f220
-LEGO_EXPORT void StandardRemoveObject(struct RideObject *editObj, TileId coords, struct Cursor *cursor) {
+LEGO_EXPORT void StandardRemoveObject(Element *editObj, TileId coords, struct Cursor *cursor) {
     struct Point pos;
     struct MapElement *tile;
     struct MapObject *obj;
@@ -1212,7 +1212,7 @@ LEGO_EXPORT void ValidateCursor(struct Cursor *cursor, unsigned int param) {
                         FUN_0045f480(cursor, 1);
                     }
                     if ((tile->flags & 0xa8) == 0 ||
-                        (obj = ((struct RideObject *)tile->field_0)->obj) == (struct MapObject *)DAT_007fd624) {
+                        (obj = ((Element *)tile->field_0)->obj) == (struct MapObject *)DAT_007fd624) {
                         obj = 0;
                     }
                     if (obj != 0 && (obj->flags & 0x200000) == 0) {
@@ -1760,7 +1760,7 @@ void FUN_004608c0(struct Point *pos, RECT *clip) {
             }
             if (tile != 0 && tile->field_8 != 0) {
                 if ((tile->flags & 3) && (tile->flags & 8) && tile->field_0 != 0) {
-                    if (((struct RideObject *)tile->field_0)->obj->field_a0 == 0) {
+                    if (((Element *)tile->field_0)->obj->field_a0 == 0) {
                         FUN_00485f00((struct Sprite *)TileSpriteArray[tile->field_8], col, draw_y);
                     }
                 } else {
@@ -1786,7 +1786,7 @@ void FUN_004608c0(struct Point *pos, RECT *clip) {
             }
             if (tile != 0 && tile->field_8 != 0) {
                 if ((tile->flags & 3) && (tile->flags & 8) && tile->field_0 != 0) {
-                    if (((struct RideObject *)tile->field_0)->obj->field_a0 == 0) {
+                    if (((Element *)tile->field_0)->obj->field_a0 == 0) {
                         FUN_00485f00((struct Sprite *)TileSpriteArray[tile->field_8], col, draw_y);
                     }
                 } else {
@@ -3020,7 +3020,7 @@ LEGO_EXPORT void DoMapAI(void) {
                     MapStats.classes[0].scan_tiles++;
                     MapStats.classes[0].scan_capacity++;
                 } else if ((tile->flags & 0x88) && tile->field_0 != 0) {
-                    obj = ((struct RideObject *)tile->field_0)->obj;
+                    obj = ((Element *)tile->field_0)->obj;
                     if (obj->type != 0) {
                         MapStats.classes[obj->type].scan_tiles++;
                         tx = tile->field_4;
@@ -3158,7 +3158,7 @@ void FUN_00463460(struct MapElement *tile, int *coords) {
     int power;
 
     if (tile->field_11 != 0) {
-        obj = ((struct RideObject *)tile->field_0)->obj;
+        obj = ((Element *)tile->field_0)->obj;
         flags = tile->flags;
         tile->flags &= 0xfdff;
         threshold = obj->field_2c >> 2;

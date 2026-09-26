@@ -337,7 +337,7 @@ void FUN_00403970(struct EditObject *edit2, struct CatapultEdit *edit) {
 void FUN_004039a0(struct CatapultRemoveEdit *edit, TileId key, void *cursor, unsigned int param_4) {
     struct CatapultRideNode *node;
 
-    StandardRemoveObject((struct RideObject *)edit, key, (struct Cursor *)cursor);
+    StandardRemoveObject((Element *)edit, key, (struct Cursor *)cursor);
     RemoveAllBlokesFromRide((struct Ride *)edit->ride, key);
     node = FUN_004031b0(&key.id);
     if (node != NULL) {

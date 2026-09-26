@@ -121,7 +121,7 @@ LEGO_EXPORT void Put3DBlokesOnRide(struct ViewportEntry *param_1, unsigned char 
 }
 
 // FUNCTION: LEGOLAND 0x00441ad0
-LEGO_EXPORT void Put3DBlokesOnRide2(struct RideObject *ride, struct RideObject *obj) {
+LEGO_EXPORT void Put3DBlokesOnRide2(Element *ride, Element *obj) {
     struct BlokeRideNode *node = (struct BlokeRideNode *)FUN_00441870((struct ViewportEntry *)ride, (short *)obj);
     if (node != NULL) {
         while ((node->inner->flags & 0x80) != 0) {

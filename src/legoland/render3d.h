@@ -1,13 +1,13 @@
 #pragma once
 
 #include "legoland.h"
+#include "llidb.h"
 #include "math.h"
 
 struct Sprite;
 struct LLS;
 struct Ride;
 
-struct RideObject;
 struct RinData;
 struct SpriteLLS;
 struct LayerContainer;
@@ -28,7 +28,7 @@ struct RenderItemNode {
 };
 
 LEGO_EXPORT void Put3DBlokesOnRide(struct ViewportEntry *param_1, unsigned char *param_2, int param_3, int *param_4);
-LEGO_EXPORT void Put3DBlokesOnRide2(struct RideObject *ride, struct RideObject *obj);
+LEGO_EXPORT void Put3DBlokesOnRide2(Element *ride, Element *obj);
 LEGO_EXPORT void RenderBlokesNotInSeats(unsigned int a1, unsigned int a2);
 LEGO_EXPORT void RenderUsingRin(struct RinRender *param_1, int param_2, struct ViewportEntry *param_3, unsigned char *param_4);
 LEGO_EXPORT struct RinData *LoadRin(const char *path, const char *dir);

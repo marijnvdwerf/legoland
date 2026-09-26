@@ -532,7 +532,7 @@ void FUN_004198a0(struct BoatRide *ride, int from, int to) {
 }
 
 // FUNCTION: LEGOLAND 0x00419d10
-void FUN_00419d10(struct RideObject *obj) {
+void FUN_00419d10(Element *obj) {
     unsigned int handle;
     int i;
     struct Sprite *sprite;
@@ -735,19 +735,19 @@ void FUN_0041a3d0(void *param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0041a530
-void FUN_0041a530(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
+void FUN_0041a530(Element *obj, TileId tile, struct Cursor *cursor) {
     struct BoatRideNode *score = DAT_004cc074;
     struct BoatRideNode *prev = NULL;
     struct BoatRide *ride = DAT_004cc03c;
     struct PathNode *path;
     struct MermaidNode *mer;
-    struct RideObject fake;
+    Element fake;
     int x;
     int y;
     int savedX;
     int savedY;
 
-    StandardRemoveObject((struct RideObject *)obj, tile, cursor);
+    StandardRemoveObject((Element *)obj, tile, cursor);
     for (y = DAT_004cc078.v[1]; y <= DAT_004cc078.v[3]; y++) {
         for (x = DAT_004cc078.v[0]; x <= DAT_004cc078.v[2]; x++) {
             RestoreBaseMap(cursor->field_1404 + x, cursor->field_1408 + y);
@@ -952,7 +952,7 @@ void FUN_0041a720(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0041abd0
-void FUN_0041abd0(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int clip) {
+void FUN_0041abd0(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int clip) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     short *lls;
@@ -1198,7 +1198,7 @@ LEGO_EXPORT void GetInterface(struct ClassNode *head, struct CallbackTable *ifac
 }
 
 // FUNCTION: LEGOLAND 0x0041b250
-void FUN_0041b250(struct RideObject *param_1) {
+void FUN_0041b250(Element *param_1) {
     DAT_0082adf8 = param_1->ride;
 }
 
@@ -1213,7 +1213,7 @@ void FUN_0041b260(void) {
 
 // FUNCTION: LEGOLAND 0x0041b2a0
 void FUN_0041b2a0(struct EditObject *obj, int *coords) {
-    struct Ride *ride = ((struct RideObject *)obj)->ride;
+    struct Ride *ride = ((Element *)obj)->ride;
     TileId tile;
     struct MermaidNode *node;
     unsigned short owner;
@@ -1260,7 +1260,7 @@ void FUN_0041b2a0(struct EditObject *obj, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0041b4c0
-void FUN_0041b4c0(struct RideObject *obj, unsigned int param_2, unsigned int param_3) {
+void FUN_0041b4c0(Element *obj, unsigned int param_2, unsigned int param_3) {
     struct Ride *ride;
     unsigned int mask;
     unsigned short owner;
@@ -1349,7 +1349,7 @@ void FUN_0041b6f0(void *param_1, TileId tile, struct Cursor *param_3) {
     int y;
     struct SampleSource source;
 
-    StandardRemoveObject((struct RideObject *)param_1, tile, param_3);
+    StandardRemoveObject((Element *)param_1, tile, param_3);
     source.type = 2;
     source.field_8 = tile.pos.x;
     source.field_c = tile.pos.y;
@@ -1382,7 +1382,7 @@ void FUN_0041b6f0(void *param_1, TileId tile, struct Cursor *param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x0041b830
-void FUN_0041b830(struct RideObject *arg) {
+void FUN_0041b830(Element *arg) {
     struct Ride *building = arg->ride;
     DAT_0082adf0 = building;
     DAT_004b53c0.v[1] += building->footprint.v[1];
@@ -1403,7 +1403,7 @@ void FUN_0041b880(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0041b8e0
-void FUN_0041b8e0(struct RideObject *obj, int *coords) {
+void FUN_0041b8e0(Element *obj, int *coords) {
     struct BoatRideNode *score = DAT_004cc074;
     unsigned int mask;
     unsigned short owner;
@@ -1500,7 +1500,7 @@ void FUN_0041bab0(int param_1, int param_2, unsigned short *param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x0041bd40
-void FUN_0041bd40(struct RideObject *obj, unsigned int param_2, unsigned int param_3) {
+void FUN_0041bd40(Element *obj, unsigned int param_2, unsigned int param_3) {
     unsigned int mask;
     unsigned short owner;
     int n;
@@ -1594,7 +1594,7 @@ void FUN_0041bfb0(unsigned int param_1, int *coords) {
     struct MapElement *elem;
     struct PathNode *path;
     TileId tile;
-    struct RideObject fake;
+    Element fake;
 
     if (coords[0] >= 0 && coords[0] < lpConfig->width && coords[1] >= 0 && coords[1] < lpConfig->height) {
         elem = &GameMap[coords[1]][coords[0]];
@@ -1630,7 +1630,7 @@ void FUN_0041bfb0(unsigned int param_1, int *coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0041c130
-void FUN_0041c130(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
+void FUN_0041c130(Element *obj, TileId tile, struct Cursor *cursor) {
     struct BoatRideNode *score = DAT_004cc074;
     struct MapElement *elem;
     int ex;
@@ -1645,7 +1645,7 @@ void FUN_0041c130(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
     int y1;
     unsigned short owner;
     unsigned short other;
-    struct RideObject fake;
+    Element fake;
 
     ex = tile.pos.x;
     ey = tile.pos.y;
@@ -1789,7 +1789,7 @@ void FUN_0041c620(void *param_1, TileId tile, struct Cursor *param_3) {
     struct PathNode *node = DAT_004d823c;
     struct PathNode *prev = NULL;
 
-    StandardRemoveObject((struct RideObject *)param_1, tile, param_3);
+    StandardRemoveObject((Element *)param_1, tile, param_3);
     while (node->tile.id != tile.id) {
         prev = node;
         node = node->next;

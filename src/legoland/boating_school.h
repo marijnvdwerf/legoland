@@ -1,6 +1,7 @@
 #pragma once
 
 #include "legoland.h"
+#include "llidb.h"
 #include "obj_instance.h"
 
 struct Cursor;
@@ -77,26 +78,26 @@ int FUN_0041c8c0(int a, int b, int c, int d);
 void FUN_0041c940(int x, int y, int tx, int ty, TileId *owner, int *found);
 void FUN_0041b6f0(void *param_1, TileId tile, struct Cursor *param_3);
 void FUN_0041a3d0(void *param_1, unsigned int param_2);
-void FUN_0041a530(struct RideObject *obj, TileId tile, struct Cursor *cursor);
+void FUN_0041a530(Element *obj, TileId tile, struct Cursor *cursor);
 
-void FUN_00419d10(struct RideObject *obj);
+void FUN_00419d10(Element *obj);
 void FUN_00419ef0();
 void FUN_0041a000();
 void FUN_0041a040(struct EditObject *obj, int *coords);
 void FUN_0041a2f0(int param_1, unsigned int param_2, unsigned int param_3);
 void FUN_0041a720();
-void FUN_0041abd0(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int clip);
+void FUN_0041abd0(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int clip);
 int FUN_0041acf0(void);
 int FUN_0041aee0(void);
 int FUN_0041b100(int dummy, int arg);
-void FUN_0041b250(struct RideObject *param_1);
+void FUN_0041b250(Element *param_1);
 void FUN_0041b260();
 void FUN_0041b2a0(struct EditObject *obj, int *coords);
-void FUN_0041b4c0(struct RideObject *obj, unsigned int param_2, unsigned int param_3);
+void FUN_0041b4c0(Element *obj, unsigned int param_2, unsigned int param_3);
 unsigned int FUN_0041b6d0(unsigned int param_1, unsigned int param_2);
-void FUN_0041b830(struct RideObject *arg);
+void FUN_0041b830(Element *arg);
 void FUN_0041b880();
-void FUN_0041b8e0(struct RideObject *obj, int *coords);
-void FUN_0041bd40(struct RideObject *obj, unsigned int param_2, unsigned int param_3);
+void FUN_0041b8e0(Element *obj, int *coords);
+void FUN_0041bd40(Element *obj, unsigned int param_2, unsigned int param_3);
 void FUN_0041bfb0(unsigned int param_1, int *coords);
-void FUN_0041c130(struct RideObject *obj, TileId tile, struct Cursor *cursor);
+void FUN_0041c130(Element *obj, TileId tile, struct Cursor *cursor);

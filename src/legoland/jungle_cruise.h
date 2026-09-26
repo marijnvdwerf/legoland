@@ -1,7 +1,8 @@
 #pragma once
 
+#include "llidb.h"
+
 struct Cursor;
-struct RideObject;
 
 struct Bloke;
 
@@ -75,7 +76,7 @@ struct JungleRide *FUN_004333e0(struct JungleRide *param_1);
 void FUN_004334c0(struct JungleRide *param_1, int param_2);
 void FUN_00433840(struct JungleRide *ride, int from, int to);
 void FUN_00436130(unsigned short owner, int delta);
-void FUN_00437570(struct RideNode *node, struct RideObject *obj, TileId *tile, int sfx);
+void FUN_00437570(struct RideNode *node, Element *obj, TileId *tile, int sfx);
 void FUN_00436dc0(int x, int y, int mask, unsigned short *owner);
 void FUN_00436f30(void *param_1, TileId tile, struct Cursor *param_3);
 unsigned int FUN_00436fb0(int param_1, int param_2, unsigned short *param_3);
@@ -90,34 +91,34 @@ void FUN_00434670(void *param_1, TileId tile, struct Cursor *param_3);
 void FUN_00434b40(void *param_1, TileId tile, struct Cursor *param_3);
 int FUN_00435c70(void);
 int FUN_00435ec0(void);
-void FUN_00435470(struct RideObject *obj, TileId tile, struct Cursor *cursor);
+void FUN_00435470(Element *obj, TileId tile, struct Cursor *cursor);
 
-void FUN_00433ca0(struct RideObject *obj);
+void FUN_00433ca0(Element *obj);
 void FUN_00433cd0();
 void FUN_00433ce0();
 void FUN_00433d20(unsigned int param_1, int *param_2);
-void FUN_00433d90(struct RideObject *obj, unsigned int param_2, unsigned int param_3);
+void FUN_00433d90(Element *obj, unsigned int param_2, unsigned int param_3);
 unsigned int FUN_00433fa0(unsigned int param_1, unsigned int param_2);
-struct RideSpriteInfo *FUN_00434040(struct RideObject *obj, unsigned short param_2);
-void FUN_00434080(struct RideObject *obj);
+struct RideSpriteInfo *FUN_00434040(Element *obj, unsigned short param_2);
+void FUN_00434080(Element *obj);
 void FUN_004340b0();
 void FUN_004340c0();
 void FUN_00434100(struct EditObject *obj, int *coords);
-void FUN_00434330(struct RideObject *obj, unsigned int param_2, int *param_3);
+void FUN_00434330(Element *obj, unsigned int param_2, int *param_3);
 unsigned int FUN_00434650(unsigned int param_1, unsigned int param_2);
-struct RideSpriteInfo *FUN_00434740(struct RideObject *obj, short param_2);
-void FUN_00434cb0(struct RideObject *obj);
-void FUN_00434e50(struct RideObject *obj);
+struct RideSpriteInfo *FUN_00434740(Element *obj, short param_2);
+void FUN_00434cb0(Element *obj);
+void FUN_00434e50(Element *obj);
 void FUN_00434f50();
 void FUN_00434f90(struct EditObject *obj, int *coords);
-void FUN_00435150(struct RideObject *obj, unsigned int param_2, unsigned int param_3);
+void FUN_00435150(Element *obj, unsigned int param_2, unsigned int param_3);
 void FUN_00435230(unsigned int param_1, struct Point *param_2);
 void FUN_00435750();
 void FUN_00435bd0(int param_1, unsigned int param_2, unsigned int param_3, short *param_4, unsigned int param_5, unsigned int param_6);
-int FUN_00436160(struct RideObject *obj, int param_2);
-void FUN_00436190(struct RideObject *obj);
+int FUN_00436160(Element *obj, int param_2);
+void FUN_00436190(Element *obj);
 void FUN_004361a0();
-void FUN_00436200(struct RideObject *obj, unsigned int param_2, unsigned int param_3);
+void FUN_00436200(Element *obj, unsigned int param_2, unsigned int param_3);
 void FUN_00436470(unsigned int param_1, int *coords);
-void FUN_004365f0(struct RideObject *obj, int *coords);
-void FUN_00436a40(struct RideObject *obj, TileId tile, struct Cursor *cursor);
+void FUN_004365f0(Element *obj, int *coords);
+void FUN_00436a40(Element *obj, TileId tile, struct Cursor *cursor);

@@ -2,6 +2,7 @@
 
 #include "gamemap.h"
 #include "legoland.h"
+#include "llidb.h"
 
 struct Bloke;
 struct Element;
@@ -31,7 +32,7 @@ struct RideNode {
 };
 typedef struct RideNode RideNode;
 
-/* A placed ride/attraction (the object behind RideObject.ride). */
+/* A placed ride/attraction (the object behind Element.ride). */
 struct Ride {
     /* 0x00 */ struct Ride *next; /* ObjectClassList */
     /* 0x04 */ struct ObjInstance *instances;
@@ -67,15 +68,6 @@ typedef struct Ride Ride;
 
 /* Map object of a placed ride; the parameter of the per-class ride callbacks. */
 struct MapObject;
-struct RideObject {
-    /* 0x00 */ unsigned char pad_0[0xc];
-    /* 0x0c */ union {
-        struct Ride *ride;
-        struct MapObject *obj; /* map_object.c's view of the same instance */
-    };
-    /* 0x10 */ unsigned int field_10;
-};
-typedef struct RideObject RideObject;
 struct ObjInstance;
 struct Point;
 struct ResFile;

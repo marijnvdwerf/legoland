@@ -144,7 +144,7 @@ void FUN_0042e260(struct BlokeArg *arg, unsigned int param2, unsigned int param3
 }
 
 // FUNCTION: LEGOLAND 0x0042e2a0
-void FUN_0042e2a0(struct RideObject *obj) {
+void FUN_0042e2a0(Element *obj) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
@@ -273,7 +273,7 @@ void FUN_0042e5d0(struct EateryObj *obj) {
 void FUN_0042e600(void) { KillMoneySFX(); }
 
 // FUNCTION: LEGOLAND 0x0042e610
-void FUN_0042e610(struct RideObject *obj) {
+void FUN_0042e610(Element *obj) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
@@ -458,7 +458,7 @@ void FUN_0042ea10(unsigned int param_1, unsigned int param_2, unsigned int param
 }
 
 // FUNCTION: LEGOLAND 0x0042ea60
-void FUN_0042ea60(struct RideObject *obj) {
+void FUN_0042ea60(Element *obj) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
@@ -535,7 +535,7 @@ void FUN_0042ea60(struct RideObject *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0042ec10
-void FUN_0042ec10(struct RideObject *obj) {
+void FUN_0042ec10(Element *obj) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
@@ -596,7 +596,7 @@ void FUN_0042ec10(struct RideObject *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0042ed70
-void FUN_0042ed70(struct RideObject *obj) {
+void FUN_0042ed70(Element *obj) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
@@ -769,7 +769,7 @@ void FUN_0042f0f0(struct Bloke *bloke, int x, int y, int step) {
 }
 
 // FUNCTION: LEGOLAND 0x0042f1a0
-void FUN_0042f1a0(struct RideObject *obj) {
+void FUN_0042f1a0(Element *obj) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
@@ -1783,7 +1783,7 @@ void FUN_00431120(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00431170
-void FUN_00431170(struct RideObject *obj) {
+void FUN_00431170(Element *obj) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;

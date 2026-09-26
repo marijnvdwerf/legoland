@@ -17,7 +17,7 @@
 #include "ride_queue.h"
 
 // FUNCTION: LEGOLAND 0x004169c0
-void FUN_004169c0(struct RideObject *obj) {
+void FUN_004169c0(Element *obj) {
     DAT_004cbf5c = obj->ride;
     if (DAT_004cbf5c != NULL) {
         DAT_004cbf5c->flags |= 0x20;
@@ -43,7 +43,7 @@ void FUN_00416a30(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00416a60
-void FUN_00416a60(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *coords, unsigned int param_5, unsigned int clip) {
+void FUN_00416a60(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *coords, unsigned int param_5, unsigned int clip) {
     struct Ride *ride = obj->ride;
     struct RideNode *node;
     struct Point pos;
@@ -67,7 +67,7 @@ void FUN_00416a60(struct RideObject *obj, unsigned int param_2, unsigned int par
 }
 
 // FUNCTION: LEGOLAND 0x00416b50
-void FUN_00416b50(struct RideObject *obj) {
+void FUN_00416b50(Element *obj) {
     struct Ride *ride = obj->ride;
     struct RideNode *node;
     struct RideNode *next;
@@ -198,7 +198,7 @@ void FUN_00416e00(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00416e20
-void FUN_00416e20(struct RideObject *a1, TileId tile, unsigned int a3) {
+void FUN_00416e20(Element *a1, TileId tile, unsigned int a3) {
     StandardRemoveObject((unsigned int)a1, tile, a3);
     RemoveAllBlokesFromRide(a1->ride, tile);
 }
