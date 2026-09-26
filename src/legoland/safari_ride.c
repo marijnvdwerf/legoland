@@ -129,7 +129,7 @@ struct SafariEditObj {
 };
 
 // FUNCTION: LEGOLAND 0x00414f40
-void FUN_00414f40(struct SafariEditObj *obj, struct SafariKey key, unsigned int coords, unsigned int cursor) {
+void FUN_00414f40(struct SafariEditObj *obj, TileId key, unsigned int coords, unsigned int cursor) {
     void *node = FUN_00414a80(&key);
     struct SampleSource src;
 
@@ -137,12 +137,12 @@ void FUN_00414f40(struct SafariEditObj *obj, struct SafariKey key, unsigned int 
         return;
     }
     FUN_00414a00((struct SafariNode *)node);
-    StandardRemoveObject((struct EditObject *)obj, *(TileId *)&key, (struct Cursor *)coords);
-    RemoveAllBlokesFromRide((struct Ride *)obj->field_c, *(unsigned int *)&key);
+    StandardRemoveObject((struct RideObject *)obj, key, (struct Cursor *)coords);
+    RemoveAllBlokesFromRide((struct Ride *)obj->field_c, key);
 
     src.type = 2;
-    src.field_8 = key.g;
-    src.field_c = key.h;
+    src.field_8 = key.pos.x;
+    src.field_c = key.pos.y;
     UnSourceAndFadeAllSamplesFromSource(&src, 0xffffff38);
 }
 
@@ -158,7 +158,7 @@ void FUN_00414fc0(unsigned int uid, struct SafariBasicObject *a1) {
 
     *(unsigned char *)&local = a1->field_0;
     *((unsigned char *)&local + 1) = a1->field_4;
-    AddBasicObject((struct EditObject *)uid, (int *)a1);
+    AddBasicObject((struct RideObject *)uid, (int *)a1);
     FUN_004149c0((struct SafariNode *)&local);
 }
 

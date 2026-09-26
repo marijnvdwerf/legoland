@@ -21,7 +21,7 @@ void FUN_00437bf0(void);
 void FUN_00437c30(struct MapObject *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6);
 void FUN_00437c90(struct MapObject *param_1);
 void FUN_00437f60(struct EditObject *editObj, int *coords);
-void FUN_00438020(struct MapObject *editObj, unsigned int coords, struct Cursor *cursor);
+void FUN_00438020(struct MapObject *editObj, TileId coords, struct Cursor *cursor);
 void FUN_00438070(struct MapObject *obj);
 void FUN_004380f0(void);
 void FUN_00438110(void);

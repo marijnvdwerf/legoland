@@ -166,7 +166,7 @@ void FUN_0043a820(struct AnimEntry *param_1, struct SpaceTowerRideNode *param_2)
     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
     bloke->field_e = 7;
     bloke->field_73 = dir + 0x10;
-    NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+    NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
     param_2->bloke->field_38++;
 }
 
@@ -590,16 +590,16 @@ void FUN_0043b420(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043b460
-void FUN_0043b460(struct EditObject *param_1, unsigned int param_2, struct Cursor *param_3) {
+void FUN_0043b460(struct EditObject *param_1, TileId tile, struct Cursor *param_3) {
     struct SpaceTowerCar *node;
 
-    node = FUN_0043ac40((unsigned short *)&param_2);
+    node = FUN_0043ac40(&tile.id);
     if (node != NULL) {
         FUN_0043abc0(node);
     }
-    StandardRemoveObject(param_1, *(TileId *)&param_2, param_3);
-    RemoveAllBlokesFromRide(*(struct Ride **)((char *)param_1 + 0xc), param_2);
-    FUN_0043aa50((unsigned char *)&param_2);
+    StandardRemoveObject(param_1, tile, param_3);
+    RemoveAllBlokesFromRide(*(struct Ride **)((char *)param_1 + 0xc), tile);
+    FUN_0043aa50(&tile.pos.x);
 }
 
 // FUNCTION: LEGOLAND 0x0043b4b0
@@ -799,7 +799,7 @@ void FUN_0043b810(struct SpaceTowerCar *param_1) {
             AdjustOffsetForViewMode(&dat);
             pos.x += dat.x;
             pos.y += dat.y;
-            AdjustBlokePosition((struct BlokePos *)&pos);
+            AdjustBlokePosition((struct Point *)&pos);
             person = node->person;
             SetPersonPosition(person, pos.x, pos.y);
             SetPersonDirection(person, DAT_004b7798[idx].field_10);
@@ -910,7 +910,7 @@ void FUN_0043bac0(struct SpaceTowerCtx *param_1) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 1:
@@ -925,7 +925,7 @@ void FUN_0043bac0(struct SpaceTowerCtx *param_1) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction((struct ActionState *)bloke, (char)DAT_004b7798[seat >> 1].field_10);
+                NewDirForAction(bloke, (char)DAT_004b7798[seat >> 1].field_10);
                 bloke->param_action++;
                 break;
             case 4:
@@ -958,7 +958,7 @@ void FUN_0043bac0(struct SpaceTowerCtx *param_1) {
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = dir + 0x10;
-                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 9:

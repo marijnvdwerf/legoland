@@ -148,7 +148,7 @@ void FUN_00432d00(int param_1) {
             PrintSprite(DAT_0081cd00->sprites[ride->field_29c[DAT_00629c54] & 0xff], ride->field_14, ride->field_18, 0, 0);
             off.x = lpConfig->field_20 + dx + baseX;
             off.y = lpConfig->field_22 + dy + baseY;
-            AdjustBlokePosition((struct BlokePos *)&off);
+            AdjustBlokePosition((struct Point *)&off);
             if ((int)ride->field_29c[DAT_00629c54] >= 4 && (int)ride->field_29c[DAT_00629c54] < 12) {
                 for (row = 0; row < 3; row++) {
                     struct Point pos;
@@ -751,7 +751,7 @@ void FUN_00433fc0(void *param_1, TileId tile, struct Cursor *param_3) {
     struct JungleObj *node = DAT_00629c2c;
     struct JungleObj *prev = NULL;
 
-    StandardRemoveObject((struct EditObject *)param_1, tile, param_3);
+    StandardRemoveObject((struct RideObject *)param_1, tile, param_3);
     while (node->tile.id != tile.id) {
         prev = node;
         node = node->next;
@@ -945,7 +945,7 @@ void FUN_00434670(void *param_1, TileId tile, struct Cursor *param_3) {
             RestoreBaseMap(param_3->field_1404 + x, param_3->field_1408 + y);
         }
     }
-    StandardRemoveObject((struct EditObject *)param_1, tile, param_3);
+    StandardRemoveObject((struct RideObject *)param_1, tile, param_3);
     while (node->tile.id != tile.id) {
         prev = node;
         node = node->next;
@@ -1010,7 +1010,7 @@ void FUN_00434b40(void *param_1, TileId tile, struct Cursor *param_3) {
     param_3->field_1414[3] = 1;
     param_3->field_1414[0] = 0;
     param_3->field_1414[2] = 0;
-    StandardRemoveObject((struct EditObject *)param_1, tile, param_3);
+    StandardRemoveObject((struct RideObject *)param_1, tile, param_3);
     x = param_3->field_1404 - 6;
     y = param_3->field_1408;
     if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
@@ -1278,7 +1278,7 @@ void FUN_00435470(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
     int savedX;
     int savedY;
 
-    StandardRemoveObject((struct EditObject *)obj, tile, cursor);
+    StandardRemoveObject((struct RideObject *)obj, tile, cursor);
     for (y = DAT_00629c40.v[1]; y <= DAT_00629c40.v[3]; y++) {
         for (x = DAT_00629c40.v[0]; x <= DAT_00629c40.v[2] - 1; x++) {
             RestoreBaseMap(cursor->field_1404 + x, cursor->field_1408 + y);
@@ -1368,7 +1368,7 @@ void FUN_00435470(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
                 ride = ride->next;
             }
         }
-        RemoveAllBlokesFromRide(obj->ride, *(unsigned int *)&tile);
+        RemoveAllBlokesFromRide(obj->ride, tile);
         free(score);
     }
 }
@@ -1465,7 +1465,7 @@ void FUN_00435750(void) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_73 = dir + 0x10;
             bloke->field_e = 7;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             break;
         case 1:
             if (bloke == score->blokes[0]) {
@@ -1487,7 +1487,7 @@ void FUN_00435750(void) {
             BlokeWalkAnim(bloke);
             BlokeSetFrame(bloke, 0);
             person = Find3DPersonFromBloke(bloke);
-            AdjustBlokePosition((struct BlokePos *)&pos);
+            AdjustBlokePosition((struct Point *)&pos);
             pos.x = person->field_1c - pos.x - 0x10;
             pos.y = person->field_20 - pos.y;
             ScreenToMapRef2(&pos, &map, 0);
@@ -1499,7 +1499,7 @@ void FUN_00435750(void) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_e = 7;
             bloke->field_73 = dir + 0x10;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 4:
@@ -1508,7 +1508,7 @@ void FUN_00435750(void) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_e = 7;
             bloke->field_73 = dir + 0x10;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 5:
@@ -2138,7 +2138,7 @@ void FUN_00436f30(void *param_1, TileId tile, struct Cursor *param_3) {
     struct JunglePath *node = DAT_0062fd2c;
     struct JunglePath *prev = NULL;
 
-    StandardRemoveObject((struct EditObject *)param_1, tile, param_3);
+    StandardRemoveObject((struct RideObject *)param_1, tile, param_3);
     while (node->tile.id != tile.id) {
         prev = node;
         node = node->next;

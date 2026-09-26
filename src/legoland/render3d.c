@@ -336,57 +336,31 @@ LEGO_EXPORT unsigned int GetLLSForSprite(struct SpriteLLS *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x00441ea0
-LEGO_EXPORT unsigned int GetLLSForLayer(unsigned int a, unsigned int b) {
-    unsigned int c = *(unsigned int *)(a + 8);
-    unsigned int d = *(unsigned int *)(c + 8);
-    unsigned int e = *(unsigned int *)(d + b * 4);
-    if (e == 0)
-        return 0;
-    e = *(unsigned int *)(e + 8);
-    return *(unsigned int *)e;
+LEGO_EXPORT struct LLS *GetLLSForLayer(struct Sprite *sprite, unsigned int index) {
+    struct Sprite *layer = sprite->group->subs[index];
+    if (layer == NULL) {
+        return NULL;
+    }
+    return *layer->lls;
 }
-
-struct LayerContainer {
-    unsigned char pad_0[8];
-    struct SpriteListContainer *field_8;
-};
-
-struct SpriteListContainer {
-    unsigned char pad_0[8];
-    unsigned int *field_8;
-};
 
 // FUNCTION: LEGOLAND 0x00441ec0
-LEGO_EXPORT unsigned int GetSpriteForLayer(struct LayerContainer *arg1, unsigned int arg2) {
-    struct SpriteListContainer *container = arg1->field_8;
-    unsigned int *sprite_array = container->field_8;
-    return sprite_array[arg2];
+LEGO_EXPORT struct Sprite *GetSpriteForLayer(struct Sprite *sprite, unsigned int index) {
+    return sprite->group->subs[index];
 }
 
-struct LayerOffsets {
-    unsigned char pad_0[0xc];
-    int *x_offsets;
-    int *y_offsets;
-};
-
-struct LayerOffsetHolder {
-    unsigned char pad_0[8];
-    struct LayerOffsets *field_8;
-};
-
 // FUNCTION: LEGOLAND 0x00441ee0
-LEGO_EXPORT struct Point GetRenderOffsetForLayer(struct LayerOffsetHolder *param_1, int param_2) {
-    struct LayerOffsets *o = param_1->field_8;
+LEGO_EXPORT struct Point GetRenderOffsetForLayer(struct Sprite *sprite, int index) {
+    struct SpriteGroup *group = sprite->group;
     struct Point r;
-    r.x = o->x_offsets[param_2];
-    r.y = o->y_offsets[param_2];
+    r.x = group->xoffs[index];
+    r.y = group->yoffs[index];
     return r;
 }
 
 // FUNCTION: LEGOLAND 0x00441f00
-LEGO_EXPORT void StopLayerPlaying(unsigned int layerID, unsigned int someValue) {
-    unsigned int lls_handle = GetLLSForLayer(layerID, someValue);
-    LLSStop(lls_handle);
+LEGO_EXPORT void StopLayerPlaying(struct Sprite *sprite, unsigned int index) {
+    LLSStop((unsigned int)GetLLSForLayer(sprite, index));
 }
 
 #pragma intrinsic(memset)
@@ -672,25 +646,19 @@ unsigned int FUN_00442c70(void) {
     return 0;
 }
 
-struct ScreenObj {
-    unsigned char pad_0[0x14];
-    int field_14;
-    int field_18;
-};
-
 // FUNCTION: LEGOLAND 0x00442cc0
-LEGO_EXPORT struct Point GetScreenCoordsForObject(unsigned char *param_1, void *param_2) {
+LEGO_EXPORT struct Point GetScreenCoordsForObject(TileId *tile, struct Ride *ride) {
     int bounds[2];
     struct Point ref;
     int iVar1;
     int iVar2;
     struct Point r;
 
-    ref.x = param_1[0];
-    ref.y = param_1[1];
+    ref.x = tile->pos.x;
+    ref.y = tile->pos.y;
     GetTileBounds(&ref, bounds);
-    iVar2 = ((struct ScreenObj *)param_2)->field_14;
-    iVar1 = ((struct ScreenObj *)param_2)->field_18;
+    iVar2 = ride->field_14;
+    iVar1 = ride->field_18;
     if (iVar2 < 0) {
         iVar2 = -(-iVar2 >> 1);
     } else {
@@ -729,15 +697,15 @@ LEGO_EXPORT void AdjustOffsetForViewMode(struct Point *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00442d60
-LEGO_EXPORT void AdjustBlokePosition(struct BlokePos *pBloke) {
-    pBloke->field_0 -= 0x4b;
-    pBloke->field_4 -= 0x4d;
+LEGO_EXPORT void AdjustBlokePosition(struct Point *pos) {
+    pos->x -= 0x4b;
+    pos->y -= 0x4d;
 }
 
 // FUNCTION: LEGOLAND 0x00442d80
-LEGO_EXPORT void UnAdjustBlokePosition(struct BlokePos *pBloke) {
-    pBloke->field_0 += 0x4b;
-    pBloke->field_4 += 0x4d;
+LEGO_EXPORT void UnAdjustBlokePosition(struct Point *pos) {
+    pos->x += 0x4b;
+    pos->y += 0x4d;
 }
 
 struct Vec3 {

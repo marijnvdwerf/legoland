@@ -3,6 +3,10 @@
 #include "legoland.h"
 #include "math.h"
 
+struct Sprite;
+struct LLS;
+struct Ride;
+
 struct RideObject;
 struct RinData;
 struct SpriteLLS;
@@ -15,11 +19,6 @@ struct ViewportEntry;
 struct RinRender;
 struct BlokeRenderSrc;
 struct BlokeListHead;
-
-struct BlokePos {
-    unsigned int field_0;
-    unsigned int field_4;
-};
 
 struct RenderItemNode {
     /* 0x00 */ int key;
@@ -36,10 +35,10 @@ LEGO_EXPORT struct RinData *LoadRin(const char *path, const char *dir);
 LEGO_EXPORT void UnLoadRin(struct RinData *rin);
 LEGO_EXPORT unsigned short *LoadPalette(unsigned int path);
 LEGO_EXPORT unsigned int GetLLSForSprite(struct SpriteLLS *sprite);
-LEGO_EXPORT unsigned int GetLLSForLayer(unsigned int a, unsigned int b);
-LEGO_EXPORT void StopLayerPlaying(unsigned int layerID, unsigned int someValue);
-LEGO_EXPORT struct Point GetRenderOffsetForLayer(struct LayerOffsetHolder *param_1, int param_2);
-LEGO_EXPORT unsigned int GetSpriteForLayer(struct LayerContainer *arg1, unsigned int arg2);
+LEGO_EXPORT struct LLS *GetLLSForLayer(struct Sprite *sprite, unsigned int index);
+LEGO_EXPORT void StopLayerPlaying(struct Sprite *sprite, unsigned int index);
+LEGO_EXPORT struct Point GetRenderOffsetForLayer(struct Sprite *sprite, int index);
+LEGO_EXPORT struct Sprite *GetSpriteForLayer(struct Sprite *sprite, unsigned int index);
 LEGO_EXPORT void MatrixMultiply(float *A, float *B, float *C);
 LEGO_EXPORT void BuildYRotationMatrix(float angle, float *out);
 LEGO_EXPORT void CopyMatrix(struct Matrix3x3 *src, struct Matrix3x3 *dest);
@@ -48,9 +47,9 @@ unsigned int FUN_00442f50(void);
 struct ResFile;
 char *FUN_004427e0(struct ResFile *param_1, char *param_2, int param_3);
 int FUN_00442860(char *param_1, char *param_2);
-LEGO_EXPORT struct Point GetScreenCoordsForObject(unsigned char *param_1, void *param_2);
-LEGO_EXPORT void AdjustBlokePosition(struct BlokePos *pBloke);
-LEGO_EXPORT void UnAdjustBlokePosition(struct BlokePos *pBloke);
+LEGO_EXPORT struct Point GetScreenCoordsForObject(TileId *tile, struct Ride *ride);
+LEGO_EXPORT void AdjustBlokePosition(struct Point *pos);
+LEGO_EXPORT void UnAdjustBlokePosition(struct Point *pos);
 LEGO_EXPORT void Ride_SetFlagToNotLetAnyoneOn(void *param_1);
 LEGO_EXPORT void Ride_ClearFlagToNotLetAnyoneOn(void *param_1);
 unsigned int FUN_00443120(void);

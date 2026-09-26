@@ -136,8 +136,8 @@ void FUN_0042c280(struct CarouselRideObj *param_1) {
     DAT_00616068 = DAT_006160bc->layer;
     *(unsigned int *)((char *)DAT_00616068 + 0x10) |= 0x2000;
     GetLayer((struct LayerOwner *)DAT_006160bc->layer, &layer, 0);
-    DAT_00616078 = (int)layer.field_4 + -0x58;
-    DAT_0061607c = (int)layer.field_8 + -0xcd;
+    DAT_00616078 = layer.x + -0x58;
+    DAT_0061607c = layer.y + -0xcd;
     // STRING: LEGOLAND 0x004b65a4
     DAT_006160b8 = LoadSprite("z_Carousel.lls", 1);
     DAT_006160c0 = DAT_006160b8;
@@ -185,18 +185,18 @@ void FUN_0042c460(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0042c4a0
-void FUN_0042c4a0(struct CarouselRideObj *param_1, unsigned int param_2, unsigned int param_3) {
+void FUN_0042c4a0(struct CarouselRideObj *param_1, TileId tile, unsigned int param_3) {
     struct CarouselNode *node;
     struct SampleParams params;
 
-    node = FUN_0042bc60((unsigned short *)&param_2);
+    node = FUN_0042bc60(&tile.id);
     if (node != NULL) {
         FUN_0042bc00(node);
     }
-    StandardRemoveObject((unsigned int)param_1, *(TileId *)&param_2, param_3);
-    RemoveAllBlokesFromRide((unsigned int)param_1->ride, param_2);
-    params.field_8 = param_2 & 0xff;
-    params.field_c = *((unsigned char *)&param_2 + 1);
+    StandardRemoveObject((unsigned int)param_1, tile, param_3);
+    RemoveAllBlokesFromRide(param_1->ride, tile);
+    params.field_8 = tile.pos.x;
+    params.field_c = tile.pos.y;
     params.field_0 = 2;
     UnSourceAndFadeAllSamplesFromSource(&params, 0xffffff38);
 }
@@ -338,7 +338,7 @@ void FUN_0042c6d0(struct CarouselNode *node) {
             // STRING: LEGOLAND 0x004b4704
             sprintf(DAT_004b64d4, "%02d", *(unsigned char *)((char *)elem->bloke + 0x36));
             // STRING: LEGOLAND 0x004b64cc
-            SetBlokePositionFromBNV(DAT_0061608c, elem->bloke, "BlokeBox??", (int)(char)node->field_8, 0xc9c57dea, 0xc9c585e8, 0);
+            SetBlokePositionFromBNV(DAT_0061608c, elem->bloke, "BlokeBox??", (int)(char)node->field_8, -1617853.25f, -1618109.0f, 0);
         }
     }
     *(short *)**(int **)((char *)DAT_006160b8 + 8) = (short)(char)node->field_8;
@@ -412,10 +412,10 @@ void FUN_0042c820(struct CarouselRideObj *param_1) {
                 }
                 *(struct Sprite **)(*(int *)(blokepos + 4) + 0x2c) = DAT_006160c0;
                 *(unsigned int *)(*(int *)(blokepos + 4) + 0x30) = 1;
-                *(float *)(*(int *)(blokepos + 4) + 0x3c) = (float)GetUnitDepth(0xc9c57dea, 0xc9c585e8);
+                *(float *)(*(int *)(blokepos + 4) + 0x3c) = GetUnitDepth(-1617853.25f, -1618109.0f);
                 *(unsigned char *)(blokepos + 0x35) = 0;
                 sprintf(DAT_004b64d4, "%02d", FUN_0042cd20(elem, (struct CarouselNode *)bloke, *(unsigned char *)((char *)DAT_006160bc + 0x2e)));
-                *(unsigned int *)(blokepos + 0x54) = (unsigned int)NewBNVPath(DAT_00616090, 0, "BlokeBox??", 0xc9c57dea, 0xc9c585e8, &local_18);
+                *(unsigned int *)(blokepos + 0x54) = (unsigned int)NewBNVPath(DAT_00616090, 0, "BlokeBox??", -1617853.25f, -1618109.0f, &local_18);
                 UpdateBlokeFromBNVPath(blokepos, *(unsigned int *)(blokepos + 0x54));
                 *(unsigned char *)(blokepos + 0x62) |= 0x80;
                 *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
@@ -435,7 +435,7 @@ void FUN_0042c820(struct CarouselRideObj *param_1) {
                 *(unsigned char *)(blokepos + 0x35) = 1;
                 *(struct Sprite **)(*(int *)(blokepos + 4) + 0x2c) = DAT_006160c0;
                 *(unsigned int *)(*(int *)(blokepos + 4) + 0x30) = 1;
-                *(float *)(*(int *)(blokepos + 4) + 0x3c) = (float)GetUnitDepth(0xc9c57dea, 0xc9c585e8);
+                *(float *)(*(int *)(blokepos + 4) + 0x3c) = GetUnitDepth(-1617853.25f, -1618109.0f);
                 *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
                 cVar7 = *(char *)(bloke + 6) + '\x01';
                 *(char *)(bloke + 6) = cVar7;
@@ -451,10 +451,10 @@ void FUN_0042c820(struct CarouselRideObj *param_1) {
                 *(unsigned char *)(blokepos + 0x62) |= 0x80;
                 *(struct Sprite **)(*(int *)(blokepos + 4) + 0x2c) = DAT_006160c0;
                 *(unsigned int *)(*(int *)(blokepos + 4) + 0x30) = 1;
-                *(float *)(*(int *)(blokepos + 4) + 0x3c) = (float)GetUnitDepth(0xc9c57dea, 0xc9c585e8);
+                *(float *)(*(int *)(blokepos + 4) + 0x3c) = GetUnitDepth(-1617853.25f, -1618109.0f);
                 *(unsigned char *)(blokepos + 0x35) = 2;
                 sprintf(DAT_004b64d4, "%02d", *(unsigned char *)(blokepos + 0x36));
-                *(unsigned int *)(blokepos + 0x54) = (unsigned int)NewBNVPath(DAT_00616098, 2, "BlokeBox??", 0xc9c57dea, 0xc9c585e8, &local_c);
+                *(unsigned int *)(blokepos + 0x54) = (unsigned int)NewBNVPath(DAT_00616098, 2, "BlokeBox??", -1617853.25f, -1618109.0f, &local_c);
                 *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
                 break;
             case 8:
@@ -625,11 +625,11 @@ void FUN_0042bcf0(struct CarouselRideObj *param_1, unsigned int param_2, unsigne
                             int unit = *(int *)(b + 4);
                             *(int *)(unit + 0x24) = (int)*(short *)(b + 0x3c);
                             *(int *)(unit + 0x28) = (int)*(short *)(b + 0x3e);
-                            AdjustBlokePosition((struct BlokePos *)(unit + 0x24));
+                            AdjustBlokePosition((struct Point *)(unit + 0x24));
                             AdjustOffsetForViewMode((struct Point *)&local_64);
                             *(int *)(unit + 0x1c) = *(short *)(b + 0x3c) + local_64 + iVar6;
                             *(int *)(unit + 0x20) = *(short *)(b + 0x3e) + local_60 + iVar10;
-                            AdjustBlokePosition((struct BlokePos *)(unit + 0x1c));
+                            AdjustBlokePosition((struct Point *)(unit + 0x1c));
                             IP_RenderBlokeIn3DNow(e->bloke);
                         }
                         iVar3 = DAT_00616078;

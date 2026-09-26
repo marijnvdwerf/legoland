@@ -19,6 +19,17 @@ struct Image {
 };
 
 struct LayerHost;
+struct LLS;
+
+/* Sub-sprites of a layered sprite (Sprite.group) and their draw offsets. */
+struct SpriteGroup {
+    /* 0x00 */ unsigned char pad_0[4];
+    /* 0x04 */ int count;
+    /* 0x08 */ struct Sprite **subs;
+    /* 0x0c */ int *xoffs;
+    /* 0x10 */ int *yoffs;
+};
+typedef struct SpriteGroup SpriteGroup;
 
 struct Sprite {
     /* 0x00 */ struct Sprite *next;
@@ -26,6 +37,8 @@ struct Sprite {
     /* 0x08 */ union {
         struct Image *image;
         int (*render_fn)(struct Sprite *);
+        struct SpriteGroup *group; /* layered sprites (flags & 0x8000) */
+        struct LLS **lls; /* animated (.lls) sprites */
     };
     /* 0x0c */ unsigned int field_c;
     /* 0x10 */ union {
@@ -38,6 +51,7 @@ struct Sprite {
     /* 0x1a */ unsigned short src_y;
     /* 0x1c */ unsigned short refcount;
 };
+typedef struct Sprite Sprite;
 
 LEGO_EXPORT struct Image *CreateSourceImage(const char *str, unsigned char type);
 LEGO_EXPORT int KillImage(struct Image *image);
@@ -54,13 +68,17 @@ LEGO_EXPORT int KillSprite(struct Sprite *sprite);
 LEGO_EXPORT int GetSprite(unsigned int *param_1, struct Sprite *param_2);
 LEGO_EXPORT void ReleaseSprite(struct Sprite *sprite);
 
-struct LayerOwner;
-LEGO_EXPORT void HideLayer(struct LayerOwner *owner, unsigned int index);
-LEGO_EXPORT void ShowLayer(struct LayerOwner *owner, unsigned int index);
+LEGO_EXPORT void HideLayer(struct Sprite *sprite, unsigned int index);
+LEGO_EXPORT void ShowLayer(struct Sprite *sprite, unsigned int index);
 
+/* GetLayer fills the first three fields; callers clear field_10. */
 struct LayerResult {
-    /* 0x00 */ void *field_0;
-    /* 0x04 */ void *field_4;
-    /* 0x08 */ void *field_8;
+    /* 0x00 */ struct Sprite *sprite;
+    /* 0x04 */ int x;
+    /* 0x08 */ int y;
+    /* 0x0c */ unsigned int field_c;
+    /* 0x10 */ unsigned int field_10;
+    /* 0x14 */ unsigned int field_14;
 };
-LEGO_EXPORT void GetLayer(struct LayerOwner *owner, struct LayerResult *result, int index);
+typedef struct LayerResult LayerResult;
+LEGO_EXPORT void GetLayer(struct Sprite *sprite, struct LayerResult *result, int index);

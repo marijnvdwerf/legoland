@@ -53,11 +53,6 @@ struct ShopRemoveObject {
     void *ride;
 };
 
-struct ShopCoords2 {
-    unsigned char x;
-    unsigned char y;
-};
-
 struct BlokeNode {
     struct BlokeNode *next;
     unsigned char pad_4[4];
@@ -150,15 +145,15 @@ void FUN_00439320(struct MapObject *obj, void *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00439350
-void FUN_00439350(struct ShopRemoveObject *obj, struct ShopCoords2 coords, void *cursor) {
+void FUN_00439350(struct ShopRemoveObject *obj, TileId coords, void *cursor) {
     void *ride = obj->ride;
     struct Point local;
 
-    StandardRemoveObject((struct EditObject *)obj, *(TileId *)&coords, (struct Cursor *)cursor);
-    RemoveAllBlokesFromRide((struct Ride *)ride, *(unsigned int *)&coords);
+    StandardRemoveObject((struct RideObject *)obj, coords, (struct Cursor *)cursor);
+    RemoveAllBlokesFromRide((struct Ride *)ride, coords);
 
-    local.x = coords.x & 0xff;
-    local.y = coords.y & 0xff;
+    local.x = coords.pos.x;
+    local.y = coords.pos.y;
     FUN_004392b0((struct PathArea *)ride, &local);
 }
 
@@ -254,15 +249,15 @@ void FUN_00439c60(struct MapObject *obj, void *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00439c90
-void FUN_00439c90(struct ShopRemoveObject *obj, struct ShopCoords2 coords, void *cursor) {
+void FUN_00439c90(struct ShopRemoveObject *obj, TileId coords, void *cursor) {
     void *ride = obj->ride;
     struct Point local;
 
-    StandardRemoveObject((struct EditObject *)obj, *(TileId *)&coords, (struct Cursor *)cursor);
-    RemoveAllBlokesFromRide((struct Ride *)ride, *(unsigned int *)&coords);
+    StandardRemoveObject((struct RideObject *)obj, coords, (struct Cursor *)cursor);
+    RemoveAllBlokesFromRide((struct Ride *)ride, coords);
 
-    local.x = coords.x & 0xff;
-    local.y = coords.y & 0xff;
+    local.x = coords.pos.x;
+    local.y = coords.pos.y;
     FUN_004392b0((struct PathArea *)ride, &local);
 }
 
@@ -347,9 +342,9 @@ unsigned int *FUN_0043a390(struct ShopRideObject *obj, unsigned short param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0043a3d0
-void FUN_0043a3d0(struct ShopRideObject *obj, void *param_2, void *param_3) {
-    StandardRemoveObject((unsigned int)obj, *(TileId *)&param_2, (unsigned int)param_3);
-    RemoveAllBlokesFromRide((unsigned int)obj->building, param_2);
+void FUN_0043a3d0(struct ShopRideObject *obj, TileId tile, void *param_3) {
+    StandardRemoveObject((unsigned int)obj, tile, (unsigned int)param_3);
+    RemoveAllBlokesFromRide((unsigned int)obj->building, tile);
 }
 
 // FUNCTION: LEGOLAND 0x0043a400

@@ -275,7 +275,7 @@ LEGO_EXPORT void RemoveBlokeFromRide(struct Ride *ride, struct RideNode *node) {
 LEGO_EXPORT void UpdateBlokesOnRide(void) {}
 
 // FUNCTION: LEGOLAND 0x0048a2e0
-LEGO_EXPORT void RemoveAllBlokesFromRide(struct Ride *ride, unsigned int param_2) {
+LEGO_EXPORT void RemoveAllBlokesFromRide(struct Ride *ride, TileId tile) {
     int tx;
     int ty;
     struct RideNode *node;
@@ -283,18 +283,18 @@ LEGO_EXPORT void RemoveAllBlokesFromRide(struct Ride *ride, unsigned int param_2
     struct Bloke *bloke;
     struct SampleSource source;
 
-    tx = ride->x + ((unsigned char *)&param_2)[0];
-    ty = ride->y + ((unsigned char *)&param_2)[1];
+    tx = ride->x + tile.pos.x;
+    ty = ride->y + tile.pos.y;
     source.type = 1;
     next = ride->riders;
     while (node = next, node != 0) {
         next = node->next;
-        if ((short)node->tile.id == *(short *)&param_2) {
+        if (node->tile.id == tile.id) {
             bloke = node->rider;
-            *(int *)(*(int *)((char *)bloke + 4) + 0x2c) = 0;
+            bloke->person->sprite = NULL;
             bloke->pos.x = tx * 0x100;
             bloke->pos.y = ty * 0x100;
-            *(short *)((char *)bloke + 0x70) = 0;
+            bloke->field_70 = 0;
             RemoveBlokeFromRide(ride, node);
             BlokeWalkAnim(bloke);
             bloke->flags &= 0xff7f;

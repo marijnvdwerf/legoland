@@ -9,6 +9,7 @@ struct Point {
     /* 0x00 */ int x;
     /* 0x04 */ int y;
 };
+typedef struct Point Point;
 
 /* Fixed-point line walker filled in by CalcMoveLine and stepped by NavigMoveLine. */
 struct Navigator {

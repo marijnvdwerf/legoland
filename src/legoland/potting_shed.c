@@ -55,7 +55,7 @@ unsigned int FUN_0043ceb0(unsigned int param_1, unsigned int param_2) {
 
 // FUNCTION: LEGOLAND 0x0043ced0
 void FUN_0043ced0(struct RideObject *obj, unsigned int tile, struct Cursor *cursor) {
-    StandardRemoveObject((struct EditObject *)obj, *(TileId *)&tile, cursor);
+    StandardRemoveObject((struct RideObject *)obj, *(TileId *)&tile, cursor);
     FUN_0043d7c0(obj->ride, tile, 1);
 }
 
@@ -80,7 +80,7 @@ void FUN_0043cf00(struct RideObject *obj) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_73 = dir + 0x10;
             bloke->field_e = 7;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 1:
@@ -95,7 +95,7 @@ void FUN_0043cf00(struct RideObject *obj) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_73 = dir + 0x10;
             bloke->field_e = 7;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 101:

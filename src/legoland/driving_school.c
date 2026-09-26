@@ -411,7 +411,7 @@ void FUN_00405940(struct RideObject *obj, TileId tile, unsigned int param_3) {
     struct RideQueueEntry *next;
     struct DSBlokeNode *nextBloke;
 
-    StandardRemoveObject((struct EditObject *)obj, tile, (struct Cursor *)param_3);
+    StandardRemoveObject((struct RideObject *)obj, tile, (struct Cursor *)param_3);
     DefaultCursor(&DAT_0082f760);
     memcpy(DAT_0082f760.field_1414, DAT_004b4bf0, 20);
 
@@ -441,7 +441,7 @@ void FUN_00405940(struct RideObject *obj, TileId tile, unsigned int param_3) {
             }
             DAT_0082f760.field_1404 = queue->x;
             DAT_0082f760.field_1408 = queue->y;
-            StandardRemoveObject((struct EditObject *)((struct DSObjClass *)DAT_0082c684)->field_c4, *(TileId *)&queue->field_8, &DAT_0082f760);
+            StandardRemoveObject((struct RideObject *)((struct DSObjClass *)DAT_0082c684)->field_c4, *(TileId *)&queue->field_8, &DAT_0082f760);
             FUN_004133e0(queue->x, queue->y);
         }
         queue = next;
@@ -457,7 +457,7 @@ void FUN_00405940(struct RideObject *obj, TileId tile, unsigned int param_3) {
         blokes = nextBloke;
     }
 
-    RemoveAllBlokesFromRide(obj->ride, *(unsigned int *)&tile);
+    RemoveAllBlokesFromRide(obj->ride, tile);
 }
 
 // FUNCTION: LEGOLAND 0x00405ad0
@@ -541,7 +541,7 @@ void FUN_00405bd0(struct RideObject *obj) {
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
-                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
                 bloke->field_58 = (rand() & 7) + 1;
                 bloke->param_action++;
                 break;
@@ -582,7 +582,7 @@ void FUN_00405bd0(struct RideObject *obj) {
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
                 bloke->field_73 = move + 0x10;
-                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 4:

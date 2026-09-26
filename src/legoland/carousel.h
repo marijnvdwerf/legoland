@@ -61,7 +61,7 @@ void FUN_0042bcf0(struct CarouselRideObj *param_1, unsigned int param_2, unsigne
 void FUN_0042c280(struct CarouselRideObj *param_1);
 void FUN_0042c3f0(struct CarouselRideObj *input);
 void FUN_0042c460();
-void FUN_0042c4a0(struct CarouselRideObj *param_1, unsigned int param_2, unsigned int param_3);
+void FUN_0042c4a0(struct CarouselRideObj *param_1, TileId tile, unsigned int param_3);
 void FUN_0042c520(unsigned int param_1, unsigned char *param_2);
 struct RideSpriteInfo *FUN_0042c550(struct CarouselRideObj *param1, unsigned short param2);
 int FUN_0042c590(void);

@@ -12,9 +12,23 @@
    byte (progress@0x36); a single non-union struct cannot name both.
    man3d.c keeps its own thin render-handle view too (its offset 4 is the owned
    Person*, not this list's prev pointer). */
+struct Person;
+struct BinVFile;
+
+/* A bloke's reference into a loaded BNV file: the file pointer is re-resolved
+   from the owning ride's table by index after a save game is loaded. */
+struct BNVRef {
+    struct BinVFile *file;
+    int index;
+};
+typedef struct BNVRef BNVRef;
+
 struct Bloke {
     struct Bloke *next;
-    struct Bloke *prev;
+    union {
+        struct Bloke *prev;
+        struct Person *person; /* ride code: the bloke's 3D render person */
+    };
     unsigned char prev_action;
     unsigned char pad_9[0x1];
     unsigned short prev_param;
@@ -35,7 +49,8 @@ struct Bloke {
     unsigned char field_37;
     short field_38;
     short field_3a;
-    unsigned char pad_3c[0x40 - 0x3c];
+    short screen_x;
+    short screen_y;
     unsigned short field_40;
     unsigned char pad_42[0x46 - 0x42];
     unsigned short field_46;
@@ -44,7 +59,10 @@ struct Bloke {
     unsigned short field_4c;
     unsigned char pad_4e[0x50 - 0x4e];
     int field_50;
-    unsigned int field_54;
+    union {
+        unsigned int field_54;
+        struct BNVRef *bnv; /* ride code: BNV file slot of the bloke's path */
+    };
     int field_58;
     unsigned int field_5c;
     unsigned char param_action;
@@ -75,6 +93,7 @@ struct Bloke {
     struct Navigator nav;
     unsigned char pad_a4[0xac - 0xa4];
 };
+typedef struct Bloke Bloke;
 
 struct InstancePos;
 struct Point;
@@ -83,10 +102,10 @@ struct ActionState;
 struct BNVPerson;
 struct BNVPath;
 struct BNVBloke;
-LEGO_EXPORT int NewDirForAction(struct ActionState *state, unsigned char dir);
+LEGO_EXPORT int NewDirForAction(struct Bloke *bloke, unsigned char dir);
 LEGO_EXPORT struct Bloke *GetBlokePtr(int index);
 int CheckForPeople(struct MapRect *rect);
-LEGO_EXPORT void SetBlokePositionFromBNV(struct BinVFile *file, struct BNVPerson *person, char *name, int frame, int param_5, int param_6, float *orient);
+LEGO_EXPORT void SetBlokePositionFromBNV(struct BinVFile *file, struct Bloke *bloke, char *name, int frame, float near_z, float far_z, float *orient);
 LEGO_EXPORT struct BNVPath *NewBNVPath(struct BinVFile *file, unsigned int param_2, char *name, float param_4, float param_5, int *coords);
 LEGO_EXPORT int UpdateBlokeFromBNVPath(struct BNVBloke *bloke, struct BNVPath *path);
 struct Point FUN_004831a0(unsigned char dir, short dist);

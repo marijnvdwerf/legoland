@@ -824,12 +824,12 @@ LEGO_EXPORT void ReleaseSprite(struct Sprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x00497de0
-LEGO_EXPORT void HideLayer(struct LayerOwner *owner, unsigned int index) {
+LEGO_EXPORT void HideLayer(struct Sprite *sprite, unsigned int index) {
     struct Sprite *layer;
 
-    if ((owner->flags & 0x8000) != 0) {
-        if (index < (unsigned int)owner->arrays->count) {
-            layer = (struct Sprite *)owner->arrays->array_8[index];
+    if ((sprite->flags & 0x8000) != 0) {
+        if (index < (unsigned int)sprite->group->count) {
+            layer = sprite->group->subs[index];
             if (layer != NULL) {
                 layer->flags |= 0x4000;
             }
@@ -838,12 +838,12 @@ LEGO_EXPORT void HideLayer(struct LayerOwner *owner, unsigned int index) {
 }
 
 // FUNCTION: LEGOLAND 0x00497e10
-LEGO_EXPORT void ShowLayer(struct LayerOwner *owner, unsigned int index) {
+LEGO_EXPORT void ShowLayer(struct Sprite *sprite, unsigned int index) {
     struct Sprite *layer;
 
-    if ((owner->flags & 0x8000) != 0) {
-        if (index < (unsigned int)owner->arrays->count) {
-            layer = (struct Sprite *)owner->arrays->array_8[index];
+    if ((sprite->flags & 0x8000) != 0) {
+        if (index < (unsigned int)sprite->group->count) {
+            layer = sprite->group->subs[index];
             if (layer != NULL) {
                 layer->flags &= ~0x4000;
             }
@@ -852,24 +852,24 @@ LEGO_EXPORT void ShowLayer(struct LayerOwner *owner, unsigned int index) {
 }
 
 // FUNCTION: LEGOLAND 0x00497e80
-LEGO_EXPORT void GetLayer(struct LayerOwner *owner, struct LayerResult *result, int index) {
-    struct LayerArrays *arrays;
-    void *layer;
+LEGO_EXPORT void GetLayer(struct Sprite *sprite, struct LayerResult *result, int index) {
+    struct SpriteGroup *group;
+    struct Sprite *layer;
 
-    if ((owner->flags & 0x8000) == 0) {
+    if ((sprite->flags & 0x8000) == 0) {
         return;
     }
-    arrays = owner->arrays;
-    if ((unsigned int)index >= (unsigned int)arrays->count) {
+    group = sprite->group;
+    if ((unsigned int)index >= (unsigned int)group->count) {
         return;
     }
-    layer = arrays->array_8[index];
+    layer = group->subs[index];
     if (layer == NULL) {
         return;
     }
-    result->field_0 = layer;
-    result->field_4 = owner->arrays->array_c[index];
-    result->field_8 = owner->arrays->array_10[index];
+    result->sprite = layer;
+    result->x = sprite->group->xoffs[index];
+    result->y = sprite->group->yoffs[index];
 }
 
 // FUNCTION: LEGOLAND 0x00497ed0

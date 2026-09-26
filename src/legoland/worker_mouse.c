@@ -10,7 +10,7 @@
 
 struct WorkerInner {
     unsigned char pad_0[0x1c];
-    struct BlokePos pos;
+    struct Point pos;
 };
 
 struct WorkerOuter {
@@ -53,10 +53,10 @@ LEGO_EXPORT void SetWorkersPositionAtMouse(void) {
     worker->var_e = 13;
     worker = DAT_007fdff0;
     inner = worker->inner;
-    inner->pos.field_0 = DAT_00813a44.x;
+    inner->pos.x = DAT_00813a44.x;
     worker = DAT_007fdff0;
     inner = worker->inner;
-    inner->pos.field_4 = DAT_00813a44.y;
+    inner->pos.y = DAT_00813a44.y;
     worker = DAT_007fdff0;
     inner = worker->inner;
     AdjustBlokePosition(&inner->pos);

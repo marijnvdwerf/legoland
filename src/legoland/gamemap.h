@@ -41,6 +41,7 @@ struct RideSpriteInfo {
     /* 0x0e */ unsigned short pad_e;
     /* 0x10 */ unsigned int field_10;
 };
+typedef struct RideSpriteInfo RideSpriteInfo;
 
 /* LLIDB tile mapping: tile id tables selected by the high byte of a map entry. */
 struct TileMap {
@@ -75,6 +76,7 @@ struct Cursor {
     unsigned char pad_182c[0x1830 - 0x182c];
     unsigned int field_1830;
 };
+typedef struct Cursor Cursor;
 
 struct Point;
 struct ObjClass;

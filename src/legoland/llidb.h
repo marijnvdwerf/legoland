@@ -10,6 +10,7 @@ struct LLS {
     short loop_delay;
     unsigned int flags;
 };
+typedef struct LLS LLS;
 
 struct Element {
     char *name;

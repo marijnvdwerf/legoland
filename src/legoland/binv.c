@@ -144,9 +144,7 @@ LEGO_EXPORT double GetZSkew(struct BinVFile *file, struct BinVObject *object, st
 }
 
 // FUNCTION: LEGOLAND 0x0044de50
-LEGO_EXPORT double GetUnitDepth(unsigned int param_1, unsigned int param_2) {
-    float near_z = *(float *)&param_1;
-    float far_z = *(float *)&param_2;
+LEGO_EXPORT float GetUnitDepth(float near_z, float far_z) {
     float scale = DAT_004ab4d8 / (near_z - far_z);
     float a = scale * (DOUBLE_004ab460 - far_z) + DOUBLE_004ab4d0;
     float b = scale * (DAT_004ab3a8 - far_z) + DOUBLE_004ab4d0;

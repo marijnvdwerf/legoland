@@ -1,6 +1,7 @@
 #pragma once
 
 #include "legoland.h"
+#include "math.h"
 
 struct Position;
 struct Bloke;
@@ -12,14 +13,22 @@ struct Person {
     unsigned int field_10;
     unsigned int field_14;
     unsigned int field_18;
-    unsigned int field_1c;
-    unsigned int field_20;
-    unsigned char pad_24[0x2c - 0x24];
-    unsigned int field_2c;
+    union {
+        struct {
+            unsigned int field_1c;
+            unsigned int field_20;
+        };
+        struct Point screen;
+    };
+    struct Point offset;
+    union {
+        unsigned int field_2c;
+        struct Sprite *sprite;
+    };
     unsigned int field_30;
     unsigned int field_34;
-    unsigned int field_38;
-    unsigned char pad_3c[0x40 - 0x3c];
+    float field_38;
+    float depth;
     float field_40;
     float field_44;
     float field_48;
@@ -48,6 +57,7 @@ struct Person {
     unsigned int field_8c;
     unsigned int field_90;
 };
+typedef struct Person Person;
 struct Bloke;
 struct PosHeader;
 

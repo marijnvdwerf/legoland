@@ -184,14 +184,6 @@ struct BNVRenderObj {
     float field_38;
 };
 
-struct BNVPerson {
-    unsigned char pad_0[0x4];
-    struct BNVRenderObj *person;
-    unsigned char pad_8[0x3c - 0x8];
-    short field_3c;
-    short field_3e;
-};
-
 struct BNVBloke {
     unsigned char pad_0[0x4];
     struct BNVRenderObj *render;
@@ -592,7 +584,7 @@ int FUN_00483300(struct TileWalker *walker, int x, int y) {
 }
 
 // FUNCTION: LEGOLAND 0x004833d0
-LEGO_EXPORT int NewDirForAction(struct ActionState *state, unsigned char dir) {
+LEGO_EXPORT int NewDirForAction(struct Bloke *state, unsigned char dir) {
     unsigned char masked = dir & 0x7;
     if (state->field_72 != masked) {
         state->field_10 = state->field_e;
@@ -838,7 +830,7 @@ LEGO_EXPORT int DoRndWalkPathTileAction(struct TileWalker *walker) {
                 dirs = ExcludeIsolatedDiags(dirs);
                 dirs = dirs & ~Dir_To_Bit(walker->field_72 + 4);
                 *(unsigned char *)&walker->field_62 |= 4;
-                return NewDirForAction((struct ActionState *)walker, Bit_To_Dir(dirs));
+                return NewDirForAction(walker, Bit_To_Dir(dirs));
             }
             if ((rf & 0x24) != 0) {
                 unsigned char b5;
@@ -851,7 +843,7 @@ LEGO_EXPORT int DoRndWalkPathTileAction(struct TileWalker *walker) {
                 b3 = Dir_To_Bit(walker->field_72 + 3);
                 dirs = dirs & ~(b5 | b4 | b3);
                 *(unsigned char *)&walker->field_62 |= 4;
-                return NewDirForAction((struct ActionState *)walker, Random_Dir_From_Bits(dirs));
+                return NewDirForAction(walker, Random_Dir_From_Bits(dirs));
             }
             if ((rf & 0x10) != 0) {
                 unsigned char dir;
@@ -863,7 +855,7 @@ LEGO_EXPORT int DoRndWalkPathTileAction(struct TileWalker *walker) {
                 } else {
                     dir = Bit_To_Dir(dirs);
                 }
-                return NewDirForAction((struct ActionState *)walker, dir);
+                return NewDirForAction(walker, dir);
             }
         }
     }
@@ -915,7 +907,7 @@ int FUN_00483c20(struct TileWalker *walker, int x, int y) {
         if ((*(unsigned char *)&walker->field_62 & 2) != 0) {
             dir = dir | 1;
         }
-        NewDirForAction((struct ActionState *)walker, dir);
+        NewDirForAction(walker, dir);
         return 1;
     }
     if (HitPathEdge((struct OverTile *)walker, x, y) == 0 &&
@@ -926,7 +918,7 @@ int FUN_00483c20(struct TileWalker *walker, int x, int y) {
     if ((*(unsigned char *)&walker->field_62 & 2) != 0) {
         dir = dir | 1;
     }
-    NewDirForAction((struct ActionState *)walker, dir);
+    NewDirForAction(walker, dir);
     return 1;
 }
 
@@ -1040,7 +1032,7 @@ void FUN_00483ef0(struct TileWalker *walker) {
             dirs = ExcludeIsolatedDiags(dirs);
             dirs = dirs & ~Dir_To_Bit(walker->field_72 + 4);
             dirs = Bit_To_Dir(dirs);
-            NewDirForAction((struct ActionState *)walker, dirs);
+            NewDirForAction(walker, dirs);
         }
     }
     FUN_00483680(walker, d.x, d.y);
@@ -1397,7 +1389,7 @@ LEGO_EXPORT void ApplyObjectOrientationToPerson(struct OrientPerson *person, flo
 }
 
 // FUNCTION: LEGOLAND 0x00484a70
-LEGO_EXPORT void SetBlokePositionFromBNV(struct BinVFile *file, struct BNVPerson *person, char *name, int frame, int param_5, int param_6, float *orient) {
+LEGO_EXPORT void SetBlokePositionFromBNV(struct BinVFile *file, struct Bloke *bloke, char *name, int frame, float near_z, float far_z, float *orient) {
     struct BinVFrame *binFrame = GetBinVFrame(file, frame);
     struct BinVMatrix *object = (struct BinVMatrix *)GetObjectFromName(binFrame, name);
     struct Vertex *vertex = NULL;
@@ -1425,13 +1417,13 @@ LEGO_EXPORT void SetBlokePositionFromBNV(struct BinVFile *file, struct BNVPerson
         sumY += v[1];
     }
     GetZSkew(file, (struct BinVObject *)object, vertex);
-    person->person->field_34 = FUN_00458930(0) >> 8;
+    bloke->person->field_34 = FUN_00458930(0) >> 8;
     sumX = sumX + (sumX >> 0x1f & 7);
-    person->field_3c = (short)(((sumX >> 3) - (sumX >> 0x1f)) >> 1);
+    bloke->screen_x = (short)(((sumX >> 3) - (sumX >> 0x1f)) >> 1);
     sumY = sumY + (sumY >> 0x1f & 7);
-    person->field_3e = (short)(((sumY >> 3) - (sumY >> 0x1f)) >> 1);
-    person->person->field_38 = (float)GetZSkew(file, (struct BinVObject *)object, vertex) * 2.0f;
-    ApplyObjectOrientationToPerson((struct OrientPerson *)person->person, &object->m10, orient);
+    bloke->screen_y = (short)(((sumY >> 3) - (sumY >> 0x1f)) >> 1);
+    bloke->person->field_38 = (float)GetZSkew(file, (struct BinVObject *)object, vertex) * 2.0f;
+    ApplyObjectOrientationToPerson((struct OrientPerson *)bloke->person, &object->m10, orient);
 }
 
 // FUNCTION: LEGOLAND 0x00484c20

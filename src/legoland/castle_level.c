@@ -11,6 +11,7 @@
 #include "objclass.h"
 
 #include "image_sprite.h"
+#include "man3d.h"
 #include "math.h"
 #include "print_sprite.h"
 #include "render3d.h"
@@ -48,7 +49,7 @@ void FUN_00402d00(struct RideObject *obj, unsigned int param_2, unsigned int par
     DAT_004c10e8 = NULL;
     for (node = ride->riders; node != NULL; node = node->next) {
         if (*tile == node->tile.id) {
-            AddBlokeToRenderList(&DAT_004c10e8, (struct BlokeRenderSrc *)node, node->seat->depth);
+            AddBlokeToRenderList(&DAT_004c10e8, (struct BlokeRenderSrc *)node, node->person->field_20);
         }
     }
     RenderBlokeList((struct BlokeListHead *)&DAT_004c10e8);
@@ -89,7 +90,7 @@ void FUN_00402dc0(struct RideObject *obj) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_e = 7;
             bloke->field_73 = dir + 0x10;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 1:
@@ -114,7 +115,7 @@ void FUN_00402dc0(struct RideObject *obj) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_e = 7;
             bloke->field_73 = dir + 0x10;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 2:
@@ -139,7 +140,7 @@ void FUN_00402dc0(struct RideObject *obj) {
             dir = CalcMoveLine(bloke->pos, to, &bloke->nav);
             bloke->field_e = 7;
             bloke->field_73 = dir + 0x10;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 5:
@@ -149,7 +150,7 @@ void FUN_00402dc0(struct RideObject *obj) {
             dir = CalcMoveLine(bloke->pos, to, &bloke->nav);
             bloke->field_e = 7;
             bloke->field_73 = dir + 0x10;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 6:
@@ -169,8 +170,8 @@ void FUN_00402ff0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00403030
-void FUN_00403030(struct RideObject *obj, unsigned int tile, struct Cursor *cursor) {
-    StandardRemoveObject((struct EditObject *)obj, *(TileId *)&tile, cursor);
+void FUN_00403030(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
+    StandardRemoveObject((struct RideObject *)obj, tile, cursor);
     RemoveAllBlokesFromRide(obj->ride, tile);
 }
 

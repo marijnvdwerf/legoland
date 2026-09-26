@@ -133,7 +133,7 @@ void FUN_00418fe0(int param_1) {
                 SetPersonRotation((struct Person *)person, (float *)(person + 0x40));
                 off.x = lpConfig->field_20 + bx + sx;
                 off.y = lpConfig->field_22 + by + sy;
-                AdjustBlokePosition((struct BlokePos *)&off);
+                AdjustBlokePosition((struct Point *)&off);
                 seat.x = DAT_004b51d8[(ride->field_29c[DAT_004cc08c] & 0xf) * 2] + 0x44;
                 seat.y = DAT_004b51d8[(ride->field_29c[DAT_004cc08c] & 0xf) * 2 + 1] + 0x34;
                 AdjustOffsetForViewMode(&seat);
@@ -747,7 +747,7 @@ void FUN_0041a530(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
     int savedX;
     int savedY;
 
-    StandardRemoveObject((struct EditObject *)obj, tile, cursor);
+    StandardRemoveObject((struct RideObject *)obj, tile, cursor);
     for (y = DAT_004cc078.v[1]; y <= DAT_004cc078.v[3]; y++) {
         for (x = DAT_004cc078.v[0]; x <= DAT_004cc078.v[2]; x++) {
             RestoreBaseMap(cursor->field_1404 + x, cursor->field_1408 + y);
@@ -804,7 +804,7 @@ void FUN_0041a530(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
                 ride = ride->next;
             }
         }
-        RemoveAllBlokesFromRide(obj->ride, *(unsigned int *)&tile);
+        RemoveAllBlokesFromRide(obj->ride, tile);
         free(score);
     }
 }
@@ -877,7 +877,7 @@ void FUN_0041a720(void) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_73 = dir + 0x10;
             bloke->field_e = 7;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             break;
         case 1:
             if (bloke == (struct Bloke *)score->blokes[0] && score->field_8 != 0 && (int)score->value >= (int)FUN_004192d0((struct BoatRide *)score) * 6 && FUN_00418e60(tile, (unsigned int)bloke) != 0) {
@@ -905,7 +905,7 @@ void FUN_0041a720(void) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_e = 7;
             bloke->field_73 = dir + 0x10;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 4:
@@ -914,7 +914,7 @@ void FUN_0041a720(void) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_e = 7;
             bloke->field_73 = dir + 0x10;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 5:
@@ -923,7 +923,7 @@ void FUN_0041a720(void) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_e = 7;
             bloke->field_73 = dir + 0x10;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             source2.type = 1;
             source2.field_4 = bloke;
@@ -1349,7 +1349,7 @@ void FUN_0041b6f0(void *param_1, TileId tile, struct Cursor *param_3) {
     int y;
     struct SampleSource source;
 
-    StandardRemoveObject((struct EditObject *)param_1, tile, param_3);
+    StandardRemoveObject((struct RideObject *)param_1, tile, param_3);
     source.type = 2;
     source.field_8 = tile.pos.x;
     source.field_c = tile.pos.y;
@@ -1789,7 +1789,7 @@ void FUN_0041c620(void *param_1, TileId tile, struct Cursor *param_3) {
     struct PathNode *node = DAT_004d823c;
     struct PathNode *prev = NULL;
 
-    StandardRemoveObject((struct EditObject *)param_1, tile, param_3);
+    StandardRemoveObject((struct RideObject *)param_1, tile, param_3);
     while (node->tile.id != tile.id) {
         prev = node;
         node = node->next;

@@ -30,14 +30,6 @@ struct SortNode {
     /* 0x40 */ int field_40;
 };
 
-struct SpriteGroup {
-    /* 0x00 */ unsigned char pad_0[4];
-    /* 0x04 */ int count;
-    /* 0x08 */ struct Sprite **subs;
-    /* 0x0c */ int *xoffs;
-    /* 0x10 */ int *yoffs;
-};
-
 struct SpriteExArg {
     /* 0x00 */ struct Sprite *sprite;
     /* 0x04 */ int xoff;
@@ -58,11 +50,11 @@ LEGO_EXPORT unsigned int PrintSprite(struct Sprite *sprite, unsigned int x, unsi
     DAT_007feb14 = 0;
     if ((sprite->flags & 0x8000) != 0) {
         i = 0;
-        if (((struct SpriteGroup *)sprite->image)->count > 0) {
+        if (sprite->group->count > 0) {
             do {
-                if ((((struct SpriteGroup *)sprite->image)->subs[i]->flags & 0x4000) == 0) {
-                    xoff = ((struct SpriteGroup *)sprite->image)->xoffs[i];
-                    yoff = ((struct SpriteGroup *)sprite->image)->yoffs[i];
+                if ((sprite->group->subs[i]->flags & 0x4000) == 0) {
+                    xoff = sprite->group->xoffs[i];
+                    yoff = sprite->group->yoffs[i];
                     if (xoff < 0) {
                         xoff = -(-xoff >> 1);
                     } else {
@@ -74,21 +66,21 @@ LEGO_EXPORT unsigned int PrintSprite(struct Sprite *sprite, unsigned int x, unsi
                         yoff = yoff >> 1;
                     }
                     if (param_4 == 0) {
-                        if (*GetVRAMAddress(((struct SpriteGroup *)sprite->image)->subs[i]) == 0) {
-                            if (FUN_00499500(((struct SpriteGroup *)sprite->image)->subs[i]) == 0) {
+                        if (*GetVRAMAddress(sprite->group->subs[i]) == 0) {
+                            if (FUN_00499500(sprite->group->subs[i]) == 0) {
                                 goto cont;
                             }
                         }
-                        RenderSprite(((struct SpriteGroup *)sprite->image)->subs[i], xoff + x, yoff + y);
+                        RenderSprite(sprite->group->subs[i], xoff + x, yoff + y);
                     } else {
-                        if (*GetVRAMAddress(((struct SpriteGroup *)sprite->image)->subs[i]) != 0 || FUN_00499500(((struct SpriteGroup *)sprite->image)->subs[i]) != 0) {
-                            RenderSpriteX(((struct SpriteGroup *)sprite->image)->subs[i], xoff + x, yoff + y, param_4);
+                        if (*GetVRAMAddress(sprite->group->subs[i]) != 0 || FUN_00499500(sprite->group->subs[i]) != 0) {
+                            RenderSpriteX(sprite->group->subs[i], xoff + x, yoff + y, param_4);
                         }
                     }
                 }
             cont:
                 i = i + 1;
-            } while (i < ((struct SpriteGroup *)sprite->image)->count);
+            } while (i < sprite->group->count);
         }
         goto writeback;
     }
@@ -240,19 +232,19 @@ LEGO_EXPORT unsigned int PrintSpriteEx(struct SpriteExArg *arg, int x, int y) {
             }
             if (arg->mode != 0) {
                 if (*GetVRAMAddress(group->subs[i]) == 0) {
-                    if (FUN_00499500(((struct SpriteGroup *)sprite->image)->subs[i]) != 0) {
-                        RenderSpriteX(((struct SpriteGroup *)sprite->image)->subs[i], xoff + x, yoff + y, arg->mode);
+                    if (FUN_00499500(sprite->group->subs[i]) != 0) {
+                        RenderSpriteX(sprite->group->subs[i], xoff + x, yoff + y, arg->mode);
                     }
                 } else {
-                    RenderSpriteX(((struct SpriteGroup *)sprite->image)->subs[i], xoff + x, yoff + y, arg->mode);
+                    RenderSpriteX(sprite->group->subs[i], xoff + x, yoff + y, arg->mode);
                 }
             } else {
                 if (*GetVRAMAddress(group->subs[i]) == 0) {
-                    if (FUN_00499500(((struct SpriteGroup *)sprite->image)->subs[i]) != 0) {
-                        RenderSprite(((struct SpriteGroup *)sprite->image)->subs[i], xoff + x, yoff + y);
+                    if (FUN_00499500(sprite->group->subs[i]) != 0) {
+                        RenderSprite(sprite->group->subs[i], xoff + x, yoff + y);
                     }
                 } else {
-                    RenderSprite(((struct SpriteGroup *)sprite->image)->subs[i], xoff + x, yoff + y);
+                    RenderSprite(sprite->group->subs[i], xoff + x, yoff + y);
                 }
             }
         }

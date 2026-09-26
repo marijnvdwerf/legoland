@@ -31,7 +31,7 @@ unsigned int FUN_0043d2a0(unsigned int param1, unsigned int param2) {
 
 // FUNCTION: LEGOLAND 0x0043d2c0
 void FUN_0043d2c0(struct RideObject *obj, unsigned int tile, struct Cursor *cursor) {
-    StandardRemoveObject((struct EditObject *)obj, *(TileId *)&tile, cursor);
+    StandardRemoveObject((struct RideObject *)obj, *(TileId *)&tile, cursor);
     FUN_0043d7c0(obj->ride, tile, 0);
 }
 
@@ -56,7 +56,7 @@ void FUN_0043d2f0(struct RideObject *obj) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_73 = dir + 0x10;
             bloke->field_e = 7;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 1:
@@ -65,7 +65,7 @@ void FUN_0043d2f0(struct RideObject *obj) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_73 = dir + 0x10;
             bloke->field_e = 7;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 2:
@@ -73,7 +73,7 @@ void FUN_0043d2f0(struct RideObject *obj) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_73 = dir + 0x10;
             bloke->field_e = 7;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 3:
@@ -88,7 +88,7 @@ void FUN_0043d2f0(struct RideObject *obj) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_73 = dir + 0x10;
             bloke->field_e = 7;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 101:
@@ -97,7 +97,7 @@ void FUN_0043d2f0(struct RideObject *obj) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_73 = dir + 0x10;
             bloke->field_e = 7;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 102:
@@ -105,7 +105,7 @@ void FUN_0043d2f0(struct RideObject *obj) {
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
             bloke->field_73 = dir + 0x10;
             bloke->field_e = 7;
-            NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 103:

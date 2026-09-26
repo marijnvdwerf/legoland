@@ -334,12 +334,12 @@ void FUN_00403970(struct EditObject *edit2, struct CatapultEdit *edit) {
 }
 
 // FUNCTION: LEGOLAND 0x004039a0
-void FUN_004039a0(struct CatapultRemoveEdit *edit, unsigned int key, void *cursor, unsigned int param_4) {
+void FUN_004039a0(struct CatapultRemoveEdit *edit, TileId key, void *cursor, unsigned int param_4) {
     struct CatapultRideNode *node;
 
-    StandardRemoveObject((struct EditObject *)edit, *(TileId *)&key, (struct Cursor *)cursor);
+    StandardRemoveObject((struct RideObject *)edit, key, (struct Cursor *)cursor);
     RemoveAllBlokesFromRide((struct Ride *)edit->ride, key);
-    node = FUN_004031b0((const unsigned short *)&key);
+    node = FUN_004031b0(&key.id);
     if (node != NULL) {
         FUN_00403130((struct CatapultNode *)node);
     }

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "globals.h"
 #include "legoland.h"
 
@@ -16,42 +17,12 @@
 #include "print_sprite.h"
 #include "render3d.h"
 
-struct BalloonRideObj {
-    /* 0x00 */ unsigned char pad_0[0xc];
-    /* 0x0c */ struct BalloonRide *ride;
-};
-
-struct BalloonRide {
-    /* 0x00 */ unsigned char pad_0[0xc];
-    /* 0x0c */ unsigned int x;
-    /* 0x10 */ unsigned int y;
-    /* 0x14 */ unsigned int field_14;
-    /* 0x18 */ unsigned int field_18;
-    /* 0x1c */ unsigned int flags;
-    /* 0x20 */ unsigned char pad_20[0x64 - 0x20];
-    /* 0x64 */ void *layer;
-    /* 0x68 */ unsigned char pad_68[0xcc - 0x68];
-    /* 0xcc */ struct BalloonListElem *list;
-};
-
-struct BalloonListElem {
-    /* 0x00 */ struct BalloonListElem *next;
-    /* 0x04 */ unsigned char pad_4[0x8 - 0x4];
-    /* 0x08 */ struct Bloke *bloke;
-    /* 0x0c */ unsigned short id;
-};
-
-struct CursorState {
-    unsigned char pad_0[0x3c];
-    unsigned int var_3c;
-};
-
 // FUNCTION: LEGOLAND 0x0042a7b0
-void FUN_0042a7b0(struct BalloonRideObj *param_1) {
-    DAT_0081cde4 = param_1->ride;
-    ((struct BalloonRide *)DAT_0081cde4)->flags |= 0x420;
-    DAT_00616044 = ((struct BalloonRide *)DAT_0081cde4)->layer;
-    ((struct BalloonRide *)DAT_0081cde4)->flags |= 0x2000;
+void FUN_0042a7b0(RideObject *obj) {
+    DAT_0081cde4 = obj->ride;
+    DAT_0081cde4->flags |= 0x420;
+    DAT_00616044 = DAT_0081cde4->layer;
+    DAT_0081cde4->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b64ac
     DAT_00616048 = LoadSprite("Ballbasem1.lls", 1);
     // STRING: LEGOLAND 0x004b649c
@@ -65,94 +36,80 @@ void FUN_0042a7b0(struct BalloonRideObj *param_1) {
     // STRING: LEGOLAND 0x004b6458
     DAT_0061605c = LoadSprite("BZBlueCarM1.lls", 1);
     // STRING: LEGOLAND 0x004b6448
-    DAT_00616040 = LoadSprite("z_Balloon2.lls", 1);
-    DAT_0081cde8 = DAT_00616040;
+    DAT_0081cde8 = LoadSprite("z_Balloon2.lls", 1);
+    DAT_00616040 = DAT_0081cde8;
     // STRING: LEGOLAND 0x004b6430
     DAT_00616010 = LoadBinV("Zbuffers\\balloonz.bnv");
-    DAT_00616018 = DAT_00616010;
+    DAT_00616018[0] = DAT_00616010;
     HideLayer(DAT_00616044, 2);
-    StopLayerPlaying((unsigned int)DAT_00616044, 2);
-    LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_00616044, 2), 0);
+    StopLayerPlaying(DAT_00616044, 2);
+    LLSSetFrame(GetLLSForLayer(DAT_00616044, 2), 0);
     HideLayer(DAT_00616044, 1);
-    StopLayerPlaying((unsigned int)DAT_00616044, 1);
-    LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_00616044, 1), 0);
+    StopLayerPlaying(DAT_00616044, 1);
+    LLSSetFrame(GetLLSForLayer(DAT_00616044, 1), 0);
 }
 
 // FUNCTION: LEGOLAND 0x0042a8f0
-void FUN_0042a8f0(unsigned short *param_1) {
-    struct BalloonNode *node;
-    unsigned int *fill;
-    int i;
+void FUN_0042a8f0(TileId *tile) {
+    BalloonNode *node;
 
-    node = (struct BalloonNode *)malloc(sizeof(struct BalloonNode));
+    node = malloc(sizeof(BalloonNode));
     if (node != NULL) {
-        fill = (unsigned int *)node;
-        for (i = 8; i != 0; i--) {
-            *fill = 0;
-            fill++;
-        }
-        node->id = *param_1;
+        memset(node, 0, sizeof(BalloonNode));
+        node->tile = *tile;
         node->next = DAT_00616060;
-        *(int *)((char *)node + 8) = 0;
-        *(char *)((char *)node + 0xc) = 0;
-        *(int *)((char *)node + 0xd) = 0;
-        *(short *)((char *)node + 0x11) = 0;
-        *(char *)((char *)node + 0x13) = 0;
-        *(char *)((char *)node + 0x14) = 0;
-        *(char *)((char *)node + 0x15) = 0;
-        *(char *)((char *)node + 0x16) = 0;
-        *(char *)((char *)node + 0x17) = 0;
-        *(int *)((char *)node + 0x18) = 0;
-        *(int *)((char *)node + 0x1c) = 0;
+        node->queued = 0;
+        node->riders = 0;
+        memset(node->cars, 0, sizeof(node->cars));
+        node->lap = 0;
+        node->pos = 0;
+        node->frame = 0;
+        node->anim = 0;
+        node->leaving = 0;
+        node->can_board = 0;
+        node->can_unload = 0;
         DAT_00616060 = node;
     }
 }
 
 // FUNCTION: LEGOLAND 0x0042a950
-void FUN_0042a950(unsigned int param_1, unsigned char *param_2) {
-    unsigned char *src = param_2;
-    unsigned char b0 = param_2[0];
-    unsigned char b4 = param_2[4];
+void FUN_0042a950(RideObject *obj, int *coords) {
+    TileId tile;
 
-    *(unsigned char *)&param_2 = b0;
-    *((unsigned char *)&param_2 + 1) = b4;
-    AddBasicObject(param_1, (unsigned int)src);
-    FUN_0042a8f0((unsigned short *)&param_2);
+    tile.pos.x = coords[0];
+    tile.pos.y = coords[1];
+    AddBasicObject(obj, coords);
+    FUN_0042a8f0(&tile);
 }
 
 // FUNCTION: LEGOLAND 0x0042a980
-struct BalloonNode *FUN_0042a980(unsigned short *param_1) {
-    struct BalloonNode *node;
+BalloonNode *FUN_0042a980(TileId *tile) {
+    BalloonNode *node;
 
-    if (DAT_00616060 != NULL) {
-        node = DAT_00616060;
-        if (*param_1 == ((struct BalloonNode *)DAT_00616060)->id) {
-            return DAT_00616060;
-        }
-        while (1) {
-            node = node->next;
-            if (node == NULL) {
-                break;
-            }
-            if (*param_1 == node->id) {
-                return node;
-            }
+    node = DAT_00616060;
+    if (node == NULL) {
+        return NULL;
+    }
+    while (memcmp(&node->tile, tile, sizeof(TileId)) != 0) {
+        node = node->next;
+        if (node == NULL) {
+            return NULL;
         }
     }
-    return NULL;
+    return node;
 }
 
 // FUNCTION: LEGOLAND 0x0042a9b0
-void FUN_0042a9b0(struct BalloonNode *param_1) {
-    struct BalloonNode *cur;
-    struct BalloonNode *prev;
+void FUN_0042a9b0(BalloonNode *node) {
+    BalloonNode *cur;
+    BalloonNode *prev;
 
-    if (DAT_00616060 == param_1) {
-        DAT_00616060 = param_1->next;
+    if (DAT_00616060 == node) {
+        DAT_00616060 = node->next;
     } else {
-        cur = ((struct BalloonNode *)DAT_00616060)->next;
+        cur = DAT_00616060->next;
         prev = DAT_00616060;
-        while (cur != param_1) {
+        while (cur != node) {
             prev = prev->next;
             if (prev == NULL) {
                 break;
@@ -160,653 +117,524 @@ void FUN_0042a9b0(struct BalloonNode *param_1) {
             cur = prev->next;
         }
         if (prev != NULL) {
-            prev->next = param_1->next;
+            prev->next = node->next;
         }
     }
-    free(param_1);
+    free(node);
 }
 
 // FUNCTION: LEGOLAND 0x0042a9f0
 void FUN_0042a9f0(void) {
-    void *current_handle;
+    BalloonNode *node;
 
-    current_handle = DAT_00616060;
-    if (current_handle == NULL) {
+    node = DAT_00616060;
+    if (node == NULL) {
         return;
     }
     do {
-        FUN_0042a9b0(current_handle);
-        current_handle = DAT_00616060;
-    } while (current_handle != NULL);
+        FUN_0042a9b0(node);
+        node = DAT_00616060;
+    } while (node != NULL);
 }
 
 // FUNCTION: LEGOLAND 0x0042aa10
-void FUN_0042aa10(struct BalloonRideObj *param_1, unsigned int param_2, unsigned int param_3) {
-    struct BalloonNode *node;
+void FUN_0042aa10(RideObject *obj, TileId tile, Cursor *cursor) {
+    BalloonNode *node;
 
-    node = FUN_0042a980((unsigned short *)&param_2);
+    node = FUN_0042a980(&tile);
     if (node != NULL) {
         FUN_0042a9b0(node);
     }
-    StandardRemoveObject((unsigned int)param_1, *(TileId *)&param_2, param_3);
-    RemoveAllBlokesFromRide((unsigned int)param_1->ride, (void *)param_2);
+    StandardRemoveObject(obj, tile, cursor);
+    RemoveAllBlokesFromRide(obj->ride, tile);
 }
 
 // FUNCTION: LEGOLAND 0x0042aa60
-int FUN_0042aa60(char param_1, char param_2) {
-    if (param_2 == '\x01' && '\x17' < param_1) {
+int FUN_0042aa60(char pos, char lap) {
+    if (lap == 1 && pos > 23) {
         return 0;
     }
-    return (int)param_1 / 8 + param_2 * 3;
+    return pos / 8 + lap * 3;
 }
 
 // FUNCTION: LEGOLAND 0x0042aa90
-void FUN_0042aa90(struct BalloonRideObj *param_1) {
-    struct BalloonRide *ride;
-    struct BalloonListElem *elem;
-    struct BalloonListElem *nextNode;
-    struct BalloonNode *node;
-    struct BalloonNode *aiNode;
-    int blokepos;
-    char cVar9;
-    char cVar15;
-    char cVar1;
-    char cVar11;
-    char cVar10;
-    unsigned char bVar8;
-    int iVar4;
-    int iVar5;
-    int iVar16;
-    int iVar18;
-    int local_2c;
-    unsigned int uVar13;
-    int bVar6;
-    int randv;
-    char local_32;
-    unsigned int local_10;
-    unsigned short local_c;
+void FUN_0042aa90(RideObject *obj) {
+    Ride *ride;
+    RideNode *elem;
+    RideNode *next;
+    Bloke *bloke;
+    BalloonNode *state;
+    TileId *tile;
+    unsigned int x;
+    unsigned int y;
+    int queued;
+    char riders;
+    char cars[6];
+    char pos;
+    char lap;
+    char leaving;
+    int can_board;
+    int can_unload;
+    char car;
+    unsigned char dir;
     // STRING: LEGOLAND 0x004b64bc
     char buf[8] = "Bloke??";
 
-    ride = param_1->ride;
-    elem = ride->list;
-    while (1) {
-        node = DAT_00616060;
-        if (elem == NULL) {
-            for (; node != NULL; node = node->next) {
-                blokepos = *(int *)((char *)node + 8);
-                cVar9 = *(char *)((char *)node + 0xc);
-                cVar15 = *(char *)((char *)node + 0x14);
-                iVar5 = *(int *)((char *)node + 0x1c);
-                local_10 = *(unsigned int *)((char *)node + 0xd);
-                bVar6 = 0;
-                cVar1 = *(char *)((char *)node + 0x17);
-                local_c = *(unsigned short *)((char *)node + 0x11);
-                cVar11 = *(char *)((char *)node + 0x13);
-                uVar13 = (int)cVar15 & 0x80000007;
-                iVar4 = 0;
-                if (((int)uVar13 < 0 ? (uVar13 - 1 | 0xfffffff8) == 0xffffffff : uVar13 == 0) ||
-                    cVar15 == '\0') {
-                    cVar10 = (char)FUN_0042aa60(cVar15, cVar11);
-                    if (blokepos != 0 && cVar9 < '\x06' &&
-                        *((char *)&local_10 + (int)cVar10) == '\0' && rand() % 3 == 0) {
-                        iVar4 = 1;
-                        bVar6 = 1;
-                    }
-                    if (*((char *)&local_10 + (int)cVar10) == '\x01') {
-                        bVar6 = 1;
-                    }
-                    if (cVar1 != '\0' && *((char *)&local_10 + (int)cVar10) == '\x03') {
-                        iVar5 = 1;
-                        bVar6 = 1;
-                    }
-                }
-                if (cVar9 != '\0' && bVar6 == 0) {
-                    cVar15 = cVar15 + '\x01';
-                    if ('\x17' < cVar15) {
-                        cVar15 = '\0';
-                        cVar11 = cVar11 + '\x01';
-                        if ('\x01' < cVar11) {
-                            cVar11 = '\0';
-                        }
-                    }
-                    iVar5 = 0;
-                    iVar4 = 0;
-                }
-                *(char *)((char *)node + 0xc) = cVar9;
-                *(unsigned int *)((char *)node + 0xd) = local_10;
-                *(int *)((char *)node + 8) = blokepos;
-                *(unsigned short *)((char *)node + 0x11) = local_c;
-                *(char *)((char *)node + 0x13) = cVar11;
-                *(char *)((char *)node + 0x14) = cVar15;
-                *(char *)((char *)node + 0x17) = cVar1;
-                *(int *)((char *)node + 0x18) = iVar4;
-                *(int *)((char *)node + 0x1c) = iVar5;
-            }
+    ride = obj->ride;
+    elem = ride->riders;
+    while (elem != NULL) {
+        next = elem->next;
+        bloke = elem->rider;
+        tile = &elem->tile;
+        state = FUN_0042a980(tile);
+        if (state == NULL) {
             return;
         }
-        nextNode = elem->next;
-        blokepos = (int)elem->bloke;
-        aiNode = FUN_0042a980(&elem->id);
-        if (aiNode == NULL) {
-            return;
-        }
-        cVar9 = *(char *)((int)aiNode + 0xc);
-        local_2c = *(int *)((int)aiNode + 8);
-        local_10 = *(unsigned int *)((int)aiNode + 0xd);
-        cVar15 = *(char *)((int)aiNode + 0x14);
-        local_c = *(unsigned short *)((int)aiNode + 0x11);
-        cVar1 = *(char *)((int)aiNode + 0x13);
-        iVar4 = *(int *)((int)aiNode + 0x1c);
-        local_32 = *(char *)((int)aiNode + 0x17);
-        iVar5 = *(int *)((int)aiNode + 0x18);
-        *(short *)**(int **)((char *)DAT_0081cde8 + 8) = (short)*(char *)((int)aiNode + 0x15);
-        iVar18 = ride->x + (unsigned int)*(unsigned char *)((int)elem + 0xc);
-        iVar16 = (unsigned int)*(unsigned char *)((int)&elem->id + 1) + ride->y;
-        if (*(short *)(blokepos + 0xe) == 0) {
-            switch (*(unsigned char *)(blokepos + 0x60)) {
+        riders = state->riders;
+        queued = state->queued;
+        memcpy(cars, state->cars, sizeof(cars));
+        pos = state->pos;
+        lap = state->lap;
+        leaving = state->leaving;
+        can_unload = state->can_unload;
+        can_board = state->can_board;
+        (*DAT_0081cde8->lls)->frame = state->frame;
+        x = ride->x + tile->pos.x;
+        y = tile->pos.y + ride->y;
+        if (bloke->field_e == 0) {
+            switch (bloke->param_action) {
             case 0:
-                *(unsigned char *)(blokepos + 0x62) |= 8;
-                iVar16 = iVar16 * 0x100 + 0xfa;
-                iVar18 = iVar18 * 0x100 + -0x9c;
-                *(int *)(blokepos + 0x24) = iVar18;
-                *(int *)(blokepos + 0x28) = iVar16;
-                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
-                *(short *)(blokepos + 0xe) = 7;
-                *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
-                NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
-                *(unsigned int *)(blokepos + 0x5c) = 500;
-                *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
+                bloke->flags |= 8;
+                y = (y << 8) + 0xfa;
+                x = (x << 8) - 0x9c;
+                bloke->dest.x = x;
+                bloke->dest.y = y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->field_5c = 500;
+                bloke->param_action++;
                 break;
             case 1:
-                *(int *)(blokepos + 0x24) = iVar18 * 0x100 + -0x100;
-                iVar16 = (iVar16 + 7) * 0x100;
-                *(int *)(blokepos + 0x28) = iVar16;
-                iVar18 = *(int *)(blokepos + 0x24);
-                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
-                *(short *)(blokepos + 0xe) = 7;
-                *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
-                NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
-                *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
+                bloke->dest.x = (x << 8) - 0x100;
+                y = (y + 7) << 8;
+                bloke->dest.y = y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
                 break;
             case 2:
-                *(int *)(blokepos + 0x24) = (iVar18 + -2) * 0x100;
-                iVar16 = iVar16 + 7;
-                iVar16 = iVar16 << 8;
-                *(int *)(blokepos + 0x28) = iVar16;
-                iVar18 = *(int *)(blokepos + 0x24);
-                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
-                *(short *)(blokepos + 0xe) = 7;
-                *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
-                NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
-                *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
+                bloke->dest.x = (x - 2) << 8;
+                y += 7;
+                y <<= 8;
+                bloke->dest.y = y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
                 break;
             case 3:
-                iVar18 = (iVar18 + -2) * 0x100;
-                iVar16 = (iVar16 + 1) * 0x100;
-                *(int *)(blokepos + 0x24) = iVar18;
-                *(int *)(blokepos + 0x28) = iVar16;
-                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
-                *(short *)(blokepos + 0xe) = 7;
-                *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
-                NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
-                *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
+                x = (x - 2) << 8;
+                y = (y + 1) << 8;
+                bloke->dest.x = x;
+                bloke->dest.y = y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
                 break;
             case 4:
-                iVar18 = (iVar18 + -4) * 0x100;
-                iVar16 = (iVar16 + 1) * 0x100;
-                *(int *)(blokepos + 0x24) = iVar18;
-                *(int *)(blokepos + 0x28) = iVar16;
-                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
-                *(short *)(blokepos + 0xe) = 7;
-                *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
-                NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
-                *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
+                x = (x - 4) << 8;
+                y = (y + 1) << 8;
+                bloke->dest.x = x;
+                bloke->dest.y = y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
                 break;
             case 5:
-                *(int *)(blokepos + 0x24) = (iVar18 + -6) * 0x100;
-                iVar16 = iVar16 + 2;
-                iVar16 = iVar16 << 8;
-                *(int *)(blokepos + 0x28) = iVar16;
-                iVar18 = *(int *)(blokepos + 0x24);
-                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
-                *(short *)(blokepos + 0xe) = 7;
-                *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
-                NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
-                *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
+                bloke->dest.x = (x - 6) << 8;
+                y += 2;
+                y <<= 8;
+                bloke->dest.y = y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
                 break;
             case 6:
-                iVar16 = (iVar16 + 3) * 0x100;
-                iVar18 = iVar18 * 0x100 + -0x632;
-                *(int *)(blokepos + 0x24) = iVar18;
-                *(int *)(blokepos + 0x28) = iVar16;
-                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
-                *(short *)(blokepos + 0xe) = 7;
-                *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
-                NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
-                local_2c = local_2c + 1;
-                *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
+                y = (y + 3) << 8;
+                x = (x << 8) - 0x632;
+                bloke->dest.x = x;
+                bloke->dest.y = y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                queued++;
                 break;
             case 7:
-                *(unsigned char *)(blokepos + 0x72) = 3;
-                if (iVar5 == 1) {
-                    iVar16 = (iVar16 + 3) * 0x100;
-                    iVar18 = iVar18 * 0x100 + -0x564;
-                    *(int *)(blokepos + 0x24) = iVar18;
-                    *(int *)(blokepos + 0x28) = iVar16;
-                    cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
-                    *(short *)(blokepos + 0xe) = 7;
-                    *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
-                    NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
-                    bVar8 = (unsigned char)FUN_0042aa60(cVar15, cVar1);
-                    *(unsigned char *)(blokepos + 0x36) = bVar8;
-                    *((char *)&local_10 + (unsigned int)bVar8) = 1;
-                    randv = rand();
-                    *(int *)(blokepos + 0x58) = (randv % 3 + 4) * 0x32;
-                    cVar9 = cVar9 + '\x01';
-                    local_2c = local_2c + -1;
-                    *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
+                bloke->field_72 = 3;
+                if (can_board == 1) {
+                    y = (y + 3) << 8;
+                    x = (x << 8) - 0x564;
+                    bloke->dest.x = x;
+                    bloke->dest.y = y;
+                    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                    bloke->field_e = 7;
+                    bloke->field_73 = dir + 0x10;
+                    NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                    bloke->field_36 = FUN_0042aa60(pos, lap);
+                    cars[bloke->field_36] = 1;
+                    bloke->field_58 = (rand() % 3 + 4) * 50;
+                    riders++;
+                    queued--;
+                    bloke->param_action++;
                 }
                 break;
             case 8:
-                *(int *)(blokepos + 0x24) = (iVar18 + -5) * 0x100;
-                iVar16 = iVar16 * 0x100 + 0x26a;
-                *(int *)(blokepos + 0x28) = iVar16;
-                iVar18 = *(int *)(blokepos + 0x24);
-                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
-                *(short *)(blokepos + 0xe) = 7;
-                *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
-                NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
-                *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
+                bloke->dest.x = (x - 5) << 8;
+                y = (y << 8) + 0x26a;
+                bloke->dest.y = y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
                 break;
             case 9:
-                *(unsigned char *)(blokepos + 0x62) |= 0x80;
-                *(struct Sprite **)(*(int *)(blokepos + 4) + 0x2c) = DAT_00616040;
-                *(unsigned int *)(*(int *)(blokepos + 4) + 0x30) = 1;
-                *(float *)(*(int *)(blokepos + 4) + 0x3c) = (float)GetUnitDepth(0xc9c578e3, 0xc9c57f82);
-                sprintf(&buf[1], "%02d", *(unsigned char *)(blokepos + 0x36));
-                SetBlokePositionFromBNV(DAT_00616010, blokepos, buf, 0, 0xc9c578e3, 0xc9c57f82, 0);
-                *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
+                bloke->flags |= 0x80;
+                bloke->person->sprite = DAT_00616040;
+                bloke->person->field_30 = 1;
+                bloke->person->depth = GetUnitDepth(-1617692.375f, -1617904.25f);
+                sprintf(&buf[5], "%02d", bloke->field_36);
+                SetBlokePositionFromBNV(DAT_00616010, bloke, buf, 0, -1617692.375f, -1617904.25f, 0);
+                bloke->param_action++;
                 break;
             case 10:
-                bVar8 = *(unsigned char *)(blokepos + 0x36);
-                *((char *)&local_10 + (unsigned int)bVar8) = 2;
-                sprintf(&buf[1], "%02d", (unsigned int)bVar8);
-                SetBlokePositionFromBNV(DAT_00616010, blokepos, buf, (int)cVar15 + cVar1 * 0x18, 0xc9c578e3, 0xc9c57f82, 0);
-                iVar16 = *(int *)(blokepos + 0x58) + -1;
-                *(int *)(blokepos + 0x58) = iVar16;
-                if (iVar16 == 0) {
-                    *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
+                cars[bloke->field_36] = 2;
+                sprintf(&buf[5], "%02d", bloke->field_36);
+                SetBlokePositionFromBNV(DAT_00616010, bloke, buf, pos + lap * 24, -1617692.375f, -1617904.25f, 0);
+                if (--bloke->field_58 == 0) {
+                    bloke->param_action++;
                 }
                 break;
-            case 0xb:
-                sprintf(&buf[1], "%02d", *(unsigned char *)(blokepos + 0x36));
-                SetBlokePositionFromBNV(DAT_00616010, blokepos, buf, (int)cVar15 + cVar1 * 0x18, 0xc9c578e3, 0xc9c57f82, 0);
-                local_32 = local_32 + '\x01';
-                *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
-                *((char *)&local_10 + (unsigned int)*(unsigned char *)(blokepos + 0x36)) = 3;
+            case 11:
+                sprintf(&buf[5], "%02d", bloke->field_36);
+                SetBlokePositionFromBNV(DAT_00616010, bloke, buf, pos + lap * 24, -1617692.375f, -1617904.25f, 0);
+                bloke->param_action++;
+                leaving++;
+                cars[bloke->field_36] = 3;
                 break;
-            case 0xc:
-                sprintf(&buf[1], "%02d", *(unsigned char *)(blokepos + 0x36));
-                SetBlokePositionFromBNV(DAT_00616010, blokepos, buf, (int)cVar15 + cVar1 * 0x18, 0xc9c578e3, 0xc9c57f82, 0);
-                if (iVar4 == 1) {
-                    cVar11 = (char)FUN_0042aa60(cVar15, cVar1);
-                    if ((int)cVar11 == (unsigned int)*(unsigned char *)(blokepos + 0x36)) {
-                        *(unsigned short *)(blokepos + 0x62) &= 0xff7f;
-                        iVar16 = (iVar16 + 3) * 0x100;
-                        iVar18 = iVar18 * 0x100 + -0x564;
-                        *(int *)(blokepos + 0x24) = iVar18;
-                        *(int *)(blokepos + 0x28) = iVar16;
-                        cVar10 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
-                        *(unsigned char *)(blokepos + 0x73) = cVar10 + '\x10';
-                        *(short *)(blokepos + 0xe) = 7;
-                        *(unsigned int *)(*(int *)(blokepos + 4) + 0x2c) = 0;
-                        *(unsigned int *)(*(int *)(blokepos + 4) + 0x30) = 0;
-                        NewDirForAction(blokepos, (*(unsigned char *)(blokepos + 0x73) >> 5) + 3);
-                        *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
-                        cVar9 = cVar9 + -1;
-                        *((char *)&local_10 + (int)cVar11) = 1;
+            case 12:
+                sprintf(&buf[5], "%02d", bloke->field_36);
+                SetBlokePositionFromBNV(DAT_00616010, bloke, buf, pos + lap * 24, -1617692.375f, -1617904.25f, 0);
+                if (can_unload == 1) {
+                    car = FUN_0042aa60(pos, lap);
+                    if (car == bloke->field_36) {
+                        bloke->flags &= 0xff7f;
+                        y = (y + 3) << 8;
+                        x = (x << 8) - 0x564;
+                        bloke->dest.x = x;
+                        bloke->dest.y = y;
+                        dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                        bloke->field_73 = dir + 0x10;
+                        bloke->field_e = 7;
+                        bloke->person->sprite = NULL;
+                        bloke->person->field_30 = 0;
+                        NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                        bloke->param_action++;
+                        riders--;
+                        cars[car] = 1;
                     }
                 }
                 break;
-            case 0xd:
-                iVar16 = iVar16 + 3;
-                *(int *)(blokepos + 0x24) = iVar18 * 0x100 + -0x632;
-                iVar16 = iVar16 << 8;
-                *(int *)(blokepos + 0x28) = iVar16;
-                iVar18 = *(int *)(blokepos + 0x24);
-                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
-                *(short *)(blokepos + 0xe) = 7;
-                *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
-                NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
-                *(char *)(blokepos + 0x60) = *(char *)(blokepos + 0x60) + '\x01';
+            case 13:
+                y += 3;
+                bloke->dest.x = (x << 8) - 0x632;
+                y <<= 8;
+                bloke->dest.y = y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
                 break;
-            case 0xe:
-                iVar16 = (iVar16 + 9) * 0x100;
-                iVar18 = (iVar18 + -5) * 0x100;
-                *(int *)(blokepos + 0x24) = iVar18;
-                *(int *)(blokepos + 0x28) = iVar16;
-                cVar11 = CalcMoveLine(*(struct Point *)(blokepos + 0x68), *(struct Point *)(blokepos + 0x24), (struct Navigator *)(blokepos + 0x98));
-                *(short *)(blokepos + 0xe) = 7;
-                *(unsigned char *)(blokepos + 0x73) = cVar11 + 0x10;
-                NewDirForAction(blokepos, ((unsigned char)(cVar11 + 0x10) >> 5) + 3);
-                cVar11 = *(char *)(blokepos + 0x60);
-                *((char *)&local_10 + (unsigned int)*(unsigned char *)(blokepos + 0x36)) = 0;
-                local_32 = local_32 + -1;
-                *(char *)(blokepos + 0x60) = cVar11 + '\x01';
+            case 14:
+                y = (y + 9) << 8;
+                x = (x - 5) << 8;
+                bloke->dest.x = x;
+                bloke->dest.y = y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->field_e = 7;
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction(bloke, (bloke->field_73 >> 5) + 3);
+                bloke->param_action++;
+                cars[bloke->field_36] = 0;
+                leaving--;
                 break;
-            case 0xf:
+            case 15:
                 RemoveBlokeFromRide(ride, elem);
-                *(unsigned short *)(blokepos + 0x62) &= 0xfff7;
+                bloke->flags &= 0xfff7;
                 break;
             }
         }
-        *(char *)((int)aiNode + 0xc) = cVar9;
-        *(int *)((int)aiNode + 8) = local_2c;
-        *(char *)((int)aiNode + 0x13) = cVar1;
-        *(unsigned int *)((int)aiNode + 0xd) = local_10;
-        *(int *)((int)aiNode + 0x18) = iVar5;
-        *(unsigned short *)((int)aiNode + 0x11) = local_c;
-        *(char *)((int)aiNode + 0x15) = cVar15;
-        *(char *)((int)aiNode + 0x17) = local_32;
-        *(int *)((int)aiNode + 0x1c) = iVar4;
-        elem = nextNode;
+        state->queued = queued;
+        state->lap = lap;
+        memcpy(state->cars, cars, sizeof(cars));
+        state->riders = riders;
+        state->leaving = leaving;
+        state->frame = pos;
+        state->can_board = can_board;
+        state->can_unload = can_unload;
+        elem = next;
+    }
+    for (state = DAT_00616060; state != NULL; state = state->next) {
+        char pos;
+        int stop;
+        char car;
+
+        queued = state->queued;
+        riders = state->riders;
+        stop = 0;
+        can_unload = state->can_unload;
+        memcpy(cars, state->cars, sizeof(cars));
+        leaving = state->leaving;
+        pos = state->pos;
+        lap = state->lap;
+        can_board = 0;
+        if (pos % 8 == 0 || pos == 0) {
+            car = FUN_0042aa60(pos, lap);
+            if (queued != 0 && riders < 6 && cars[car] == 0 && rand() % 3 == 0) {
+                can_board = 1;
+                stop = 1;
+            }
+            if (cars[car] == 1) {
+                stop = 1;
+            }
+            if (leaving != 0 && cars[car] == 3) {
+                can_unload = 1;
+                stop = 1;
+            }
+        }
+        if (riders != 0 && !stop) {
+            pos++;
+            if (pos > 23) {
+                pos = 0;
+                lap++;
+                if (lap > 1) {
+                    lap = 0;
+                }
+            }
+            can_unload = 0;
+            can_board = 0;
+        }
+        state->riders = riders;
+        state->queued = queued;
+        memcpy(state->cars, cars, sizeof(cars));
+        state->lap = lap;
+        state->pos = pos;
+        state->leaving = leaving;
+        state->can_board = can_board;
+        state->can_unload = can_unload;
     }
 }
 
 // FUNCTION: LEGOLAND 0x0042b2a0
-struct RideSpriteInfo *FUN_0042b2a0(struct BalloonRideObj *arg1, unsigned short arg2) {
-    struct BalloonRide *ride = arg1->ride;
+RideSpriteInfo *FUN_0042b2a0(RideObject *obj, unsigned short id) {
+    Ride *ride = obj->ride;
 
     DAT_00616028.sprite = ride->layer;
     DAT_00616028.x = ride->field_14;
     DAT_00616028.y = ride->field_18;
-    DAT_00616028.id = arg2;
-    *(unsigned int *)((char *)ride->layer + 0x10) |= 0x2000;
+    DAT_00616028.id = id;
+    ride->layer->flags |= 0x2000;
     return &DAT_00616028;
 }
 
 // FUNCTION: LEGOLAND 0x0042b2e0
-void FUN_0042b2e0(struct BalloonRideObj *param_1, void *param_2, void *param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6) {
-    struct BalloonRide *ride = param_1->ride;
-    struct BalloonListElem *elem;
-    struct BalloonListElem *list2;
-    int blokes[6];
+void FUN_0042b2e0(RideObject *obj, void *param_2, void *param_3, TileId *tile, unsigned int param_5, unsigned int param_6) {
+    Ride *ride = obj->ride;
+    RideNode *elem;
+    RideNode *riders;
+    Bloke *blokes[6] = {0};
+    Bloke *bloke;
+    Person *person;
+    BalloonNode *state;
+    Point screen;
+    Point off;
+    LayerResult layer;
     char count;
-    char cVar1;
-    char cVar4;
-    int local_4c;
-    int local_44;
-    struct Point local_40;
-    struct Point local_38;
-    struct LayerResult local_18;
-    int *p;
-    int i;
-    int iVar6, iVar7;
-    unsigned int sprcase;
-    unsigned int uVar10;
-    unsigned int uVar8;
-    int bVar13;
+    char frame;
+    char anim;
+    char lap;
+    char i;
 
-    blokes[1] = 0;
-    blokes[2] = 0;
-    elem = ride->list;
-    blokes[3] = 0;
-    blokes[4] = 0;
+    elem = ride->riders;
     count = 0;
-    blokes[0] = 0;
-    blokes[5] = 0;
-    AdjustOffsetForViewMode(&local_40);
-    local_44 = (int)FUN_0042a980(param_4);
-    if (local_44 == 0) {
+    AdjustOffsetForViewMode(&off);
+    state = FUN_0042a980(tile);
+    if (state == NULL) {
         return;
     }
-    cVar1 = *(char *)(local_44 + 0x15);
-    cVar4 = *(char *)(local_44 + 0x16);
-    local_4c = *(unsigned char *)(local_44 + 0x13);
-    local_38 = GetScreenCoordsForObject((unsigned char *)param_4, ride);
-    GetLayer((struct LayerOwner *)ride->layer, &local_18, 1);
-    if (elem != NULL) {
-        short id = *param_4;
-        do {
-            if (id == (short)elem->id) {
-                blokes[count] = (int)elem->bloke;
-                count++;
-            }
-            elem = elem->next;
-        } while (elem != NULL);
-        if ((char)count != '\0') {
-            list2 = ride->list;
-            local_40 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616044, 0);
-            AdjustOffsetForViewMode(&local_40);
-            if ('\0' < (char)count) {
-                p = blokes;
-                i = count;
-                do {
-                    if (*(char *)(*p + 0x60) == '\x06') {
-                        IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                    }
-                    p++;
-                    i--;
-                } while (i != 0);
-                if ('\0' < (char)count) {
-                    p = blokes;
-                    i = count;
-                    do {
-                        if (*(char *)(*p + 0x60) == '\x05') {
-                            IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                        }
-                        p++;
-                        i--;
-                    } while (i != 0);
-                }
-            }
-            iVar6 = local_38.x;
-            iVar7 = local_38.y;
-            PrintSprite(DAT_00616048, local_40.x + iVar6, local_40.y + iVar7, param_6, 0);
-            if ('\0' < (char)count) {
-                p = blokes;
-                i = count;
-                do {
-                    if (*(char *)(*p + 0x60) == '\x04') {
-                        IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                    }
-                    p++;
-                    i--;
-                } while (i != 0);
-            }
-            PrintSprite(DAT_0061604c, local_40.x + iVar6, local_40.y + iVar7, param_6, 0);
-            if ('\0' < (char)count) {
-                p = blokes;
-                i = count;
-                do {
-                    if (*(char *)(*p + 0x60) == '\0') {
-                        IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                    }
-                    p++;
-                    i--;
-                } while (i != 0);
-                if ('\0' < (char)count) {
-                    p = blokes;
-                    i = count;
-                    do {
-                        if (*(char *)(*p + 0x60) == '\x01') {
-                            IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                        }
-                        p++;
-                        i--;
-                    } while (i != 0);
-                    if ('\0' < (char)count) {
-                        p = blokes;
-                        i = count;
-                        do {
-                            if (*(char *)(*p + 0x60) == '\x02') {
-                                IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                            }
-                            p++;
-                            i--;
-                        } while (i != 0);
-                        if ('\0' < (char)count) {
-                            p = blokes;
-                            i = count;
-                            do {
-                                if (*(char *)(*p + 0x60) == '\x03') {
-                                    IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                                }
-                                p++;
-                                i--;
-                            } while (i != 0);
-                        }
-                    }
-                }
-            }
-            PrintSprite(DAT_00616050, local_40.x + iVar6, local_40.y + iVar7, param_6, 0);
-            if ('\0' < (char)count) {
-                p = blokes;
-                i = count;
-                do {
-                    if (*(char *)(*p + 0x60) == '\x07') {
-                        IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                    }
-                    p++;
-                    i--;
-                } while (i != 0);
-                if ('\0' < (char)count) {
-                    p = blokes;
-                    i = count;
-                    do {
-                        if (*(char *)(*p + 0x60) == '\x0e') {
-                            IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                        }
-                        p++;
-                        i--;
-                    } while (i != 0);
-                    if ('\0' < (char)count) {
-                        p = blokes;
-                        i = count;
-                        do {
-                            if (*(char *)(*p + 0x60) == '\x0f') {
-                                IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                            }
-                            p++;
-                            i--;
-                        } while (i != 0);
-                    }
-                }
-            }
-            uVar10 = (unsigned int)cVar1;
-            LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_00616044, 1), uVar10);
-            local_40 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616044, 1);
-            AdjustOffsetForViewMode(&local_40);
-            PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616044, 1), local_40.x + iVar6, local_40.y + iVar7, param_6, 0);
-            uVar8 = uVar10 & 0x80000007;
-            bVar13 = uVar8 == 0;
-            if ((int)uVar8 < 0) {
-                bVar13 = (uVar8 - 1 | 0xfffffff8) == 0xffffffff;
-            }
-            if (bVar13 || cVar1 == '\0') {
-                LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_00616044, 1), uVar10);
-                local_40 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616044, 1);
-                AdjustOffsetForViewMode(&local_40);
-                if ('\0' < (char)count) {
-                    p = blokes;
-                    i = count;
-                    do {
-                        if (*(char *)(*p + 0x60) == '\x08') {
-                            IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                        }
-                        p++;
-                        i--;
-                    } while (i != 0);
-                    if ('\0' < (char)count) {
-                        i = count;
-                        p = blokes;
-                        do {
-                            if (*(char *)(*p + 0x60) == '\x09') {
-                                IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                            }
-                            p++;
-                            i--;
-                        } while (i != 0);
-                        if ('\0' < (char)count) {
-                            i = count;
-                            p = blokes;
-                            do {
-                                if (*(char *)(*p + 0x60) == '\x0d') {
-                                    IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                                }
-                                p++;
-                                i--;
-                            } while (i != 0);
-                            if ('\0' < (char)count) {
-                                p = blokes;
-                                i = count;
-                                do {
-                                    if (*(char *)(*p + 0x60) == '\x0e') {
-                                        IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                                    }
-                                    p++;
-                                    i--;
-                                } while (i != 0);
-                            }
-                        }
-                    }
-                }
-                sprcase = FUN_0042aa60(cVar1, (char)local_4c);
-                switch (sprcase) {
-                case 0:
-                case 3:
-                    PrintSprite(DAT_00616054, local_40.x + local_38.x, local_40.y + iVar7, param_6, 0);
-                    break;
-                case 1:
-                case 4:
-                    PrintSprite(DAT_00616058, local_40.x + local_38.x, local_40.y + iVar7, param_6, 0);
-                    break;
-                case 2:
-                case 5:
-                    PrintSprite(DAT_0061605c, local_40.x + local_38.x, local_40.y + iVar7, param_6, 0);
-                    break;
-                }
-            }
-            for (; list2 != NULL; list2 = list2->next) {
-                int b;
-                if (*param_4 == (short)list2->id && (b = (int)list2->bloke, (*(unsigned char *)(b + 0x62) & 0x80) != 0)) {
-                    int unit;
-                    int local_54, local_50;
-                    local_54 = (int)local_18.field_4 + 0xc;
-                    local_50 = (int)local_18.field_8 + -6;
-                    local_4c = 0x12;
-                    local_44 = 0;
-                    AdjustOffsetForViewMode((struct Point *)&local_4c);
-                    local_44 = local_44 + -8;
-                    unit = *(int *)(b + 4);
-                    *(int *)(unit + 0x24) = *(short *)(b + 0x3c) - local_4c;
-                    *(int *)(unit + 0x28) = *(short *)(b + 0x3e) - local_44;
-                    AdjustBlokePosition((struct BlokePos *)(unit + 0x24));
-                    AdjustOffsetForViewMode((struct Point *)&local_54);
-                    *(int *)(unit + 0x1c) = local_54 + local_38.x + (*(short *)(b + 0x3c) - local_4c);
-                    *(int *)(unit + 0x20) = (*(short *)(b + 0x3e) - local_44) + local_50 + local_38.y;
-                    AdjustBlokePosition((struct BlokePos *)(unit + 0x1c));
-                    IP_RenderBlokeIn3DNow(list2->bloke);
-                }
-            }
-            goto draw_layer2;
+    frame = state->frame;
+    anim = state->anim;
+    lap = state->lap;
+    screen = GetScreenCoordsForObject(tile, ride);
+    GetLayer(ride->layer, &layer, 1);
+    layer.field_10 = 0;
+    for (; elem != NULL; elem = elem->next) {
+        if (tile->id == elem->tile.id) {
+            blokes[count++] = elem->rider;
         }
     }
-    LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_00616044, 1), (int)cVar1);
-    local_40 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616044, 1);
-    AdjustOffsetForViewMode(&local_40);
-    PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616044, 1), local_40.x + local_38.x, local_40.y + local_38.y, param_6, 0);
-draw_layer2:
-    cVar4 = cVar4 + '\x01';
-    if ('0' < cVar4) {
-        cVar4 = '\0';
+    if (count != 0) {
+        riders = ride->riders;
+        off = GetRenderOffsetForLayer(DAT_00616044, 0);
+        AdjustOffsetForViewMode(&off);
+        for (i = 0; i < count; i++) {
+            if (blokes[i]->param_action == 6) {
+                IP_RenderBlokeIn3DNow(blokes[i]);
+            }
+        }
+        for (i = 0; i < count; i++) {
+            if (blokes[i]->param_action == 5) {
+                IP_RenderBlokeIn3DNow(blokes[i]);
+            }
+        }
+        PrintSprite(DAT_00616048, screen.x + off.x, screen.y + off.y, param_6, 0);
+        for (i = 0; i < count; i++) {
+            if (blokes[i]->param_action == 4) {
+                IP_RenderBlokeIn3DNow(blokes[i]);
+            }
+        }
+        PrintSprite(DAT_0061604c, screen.x + off.x, screen.y + off.y, param_6, 0);
+        for (i = 0; i < count; i++) {
+            if (blokes[i]->param_action == 0) {
+                IP_RenderBlokeIn3DNow(blokes[i]);
+            }
+        }
+        for (i = 0; i < count; i++) {
+            if (blokes[i]->param_action == 1) {
+                IP_RenderBlokeIn3DNow(blokes[i]);
+            }
+        }
+        for (i = 0; i < count; i++) {
+            if (blokes[i]->param_action == 2) {
+                IP_RenderBlokeIn3DNow(blokes[i]);
+            }
+        }
+        for (i = 0; i < count; i++) {
+            if (blokes[i]->param_action == 3) {
+                IP_RenderBlokeIn3DNow(blokes[i]);
+            }
+        }
+        PrintSprite(DAT_00616050, screen.x + off.x, screen.y + off.y, param_6, 0);
+        for (i = 0; i < count; i++) {
+            if (blokes[i]->param_action == 7) {
+                IP_RenderBlokeIn3DNow(blokes[i]);
+            }
+        }
+        for (i = 0; i < count; i++) {
+            if (blokes[i]->param_action == 14) {
+                IP_RenderBlokeIn3DNow(blokes[i]);
+            }
+        }
+        for (i = 0; i < count; i++) {
+            if (blokes[i]->param_action == 15) {
+                IP_RenderBlokeIn3DNow(blokes[i]);
+            }
+        }
+        LLSSetFrame(GetLLSForLayer(DAT_00616044, 1), frame);
+        off = GetRenderOffsetForLayer(DAT_00616044, 1);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(GetSpriteForLayer(DAT_00616044, 1), screen.x + off.x, screen.y + off.y, param_6, 0);
+        if (frame % 8 == 0 || frame == 0) {
+            LLSSetFrame(GetLLSForLayer(DAT_00616044, 1), frame);
+            off = GetRenderOffsetForLayer(DAT_00616044, 1);
+            AdjustOffsetForViewMode(&off);
+            for (i = 0; i < count; i++) {
+                if (blokes[i]->param_action == 8) {
+                    IP_RenderBlokeIn3DNow(blokes[i]);
+                }
+            }
+            for (i = 0; i < count; i++) {
+                if (blokes[i]->param_action == 9) {
+                    IP_RenderBlokeIn3DNow(blokes[i]);
+                }
+            }
+            for (i = 0; i < count; i++) {
+                if (blokes[i]->param_action == 13) {
+                    IP_RenderBlokeIn3DNow(blokes[i]);
+                }
+            }
+            for (i = 0; i < count; i++) {
+                if (blokes[i]->param_action == 14) {
+                    IP_RenderBlokeIn3DNow(blokes[i]);
+                }
+            }
+            switch (FUN_0042aa60(frame, lap)) {
+            case 0:
+            case 3:
+                PrintSprite(DAT_00616054, screen.x + off.x, screen.y + off.y, param_6, 0);
+                break;
+            case 1:
+            case 4:
+                PrintSprite(DAT_00616058, screen.x + off.x, screen.y + off.y, param_6, 0);
+                break;
+            case 2:
+            case 5:
+                PrintSprite(DAT_0061605c, screen.x + off.x, screen.y + off.y, param_6, 0);
+                break;
+            }
+        }
+        for (; riders != NULL; riders = riders->next) {
+            if (tile->id == riders->tile.id && (riders->rider->flags & 0x80) != 0) {
+                Point seat;
+                Point adjust;
+
+                bloke = riders->rider;
+                seat.x = layer.x + 0xc;
+                seat.y = layer.y - 6;
+                adjust.x = 0x12;
+                adjust.y = 0;
+                AdjustOffsetForViewMode(&adjust);
+                adjust.y -= 8;
+                person = bloke->person;
+                person->offset.x = bloke->screen_x - adjust.x;
+                person->offset.y = bloke->screen_y - adjust.y;
+                AdjustBlokePosition(&person->offset);
+                AdjustOffsetForViewMode(&seat);
+                person->screen.x = bloke->screen_x - adjust.x + seat.x + screen.x;
+                person->screen.y = bloke->screen_y - adjust.y + seat.y + screen.y;
+                AdjustBlokePosition(&person->screen);
+                IP_RenderBlokeIn3DNow(riders->rider);
+            }
+        }
+    } else {
+        LLSSetFrame(GetLLSForLayer(DAT_00616044, 1), frame);
+        off = GetRenderOffsetForLayer(DAT_00616044, 1);
+        AdjustOffsetForViewMode(&off);
+        PrintSprite(GetSpriteForLayer(DAT_00616044, 1), screen.x + off.x, screen.y + off.y, param_6, 0);
     }
-    *(char *)(local_44 + 0x16) = cVar4;
-    LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_00616044, 2), (int)cVar4);
-    local_40 = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_00616044, 2);
-    AdjustOffsetForViewMode(&local_40);
-    PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_00616044, 2), local_40.x + local_38.x, local_40.y + local_38.y, param_6, 0);
+    anim++;
+    if (anim > 48) {
+        anim = 0;
+    }
+    state->anim = anim;
+    LLSSetFrame(GetLLSForLayer(DAT_00616044, 2), anim);
+    off = GetRenderOffsetForLayer(DAT_00616044, 2);
+    AdjustOffsetForViewMode(&off);
+    PrintSprite(GetSpriteForLayer(DAT_00616044, 2), screen.x + off.x, screen.y + off.y, param_6, 0);
 }
 
 // FUNCTION: LEGOLAND 0x0042b9d0
@@ -818,38 +646,35 @@ void FUN_0042b9d0(void) {
     KillSprite(DAT_00616058);
     KillSprite(DAT_0061605c);
     KillSprite(DAT_0081cde8);
-    FreeBinV(DAT_00616018);
+    FreeBinV(DAT_00616018[0]);
     FUN_0042a9f0();
 }
 
 // FUNCTION: LEGOLAND 0x0042ba40
 void FUN_0042ba40(void) {
-    struct CursorState *temp;
-
-    temp = DAT_0081cde4;
     EditMode.unk0 = 1;
-    EditMode.unk8 = temp;
+    EditMode.unk8 = DAT_0081cde4;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(&((struct CursorState *)EditMode.unk8)->var_3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x0042ba80
 unsigned int FUN_0042ba80(void) {
     unsigned int marker;
     unsigned int terminator;
-    struct BalloonNode *current;
+    BalloonNode *node;
 
     marker = 1;
     terminator = 0;
-    current = (struct BalloonNode *)DAT_00616060;
-    while (current != NULL) {
+    node = DAT_00616060;
+    while (node != NULL) {
         if (SaveGameWrite(&marker, 4) == 0) {
             return 0;
         }
-        if (SaveGameWrite(current, 0x20) == 0) {
+        if (SaveGameWrite(node, sizeof(BalloonNode)) == 0) {
             return 0;
         }
-        current = current->next;
+        node = node->next;
     }
     if (SaveGameWrite(&terminator, 4) != 0) {
         return 1;
@@ -858,21 +683,21 @@ unsigned int FUN_0042ba80(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0042baf0
-unsigned int FUN_0042baf0(struct BalloonRideObj *param_1) {
-    struct BalloonRide *ride = param_1->ride;
-    struct BalloonListElem *elem;
-    struct BalloonNode *node;
-    struct BalloonNode *prev;
-    int comp;
-    unsigned int *h;
+unsigned int FUN_0042baf0(RideObject *obj) {
+    Ride *ride = obj->ride;
+    BalloonNode *node;
+    BalloonNode *prev;
+    RideNode *rider;
+    BNVRef *bnv;
+    int more;
 
-    if (SaveGameRead(&param_1, 4) == 0) {
+    prev = NULL;
+    if (SaveGameRead(&more, 4) == 0) {
         return 0;
     }
-    prev = NULL;
-    while (param_1 != NULL) {
-        node = (struct BalloonNode *)malloc(sizeof(struct BalloonNode));
-        if (SaveGameRead(node, 0x20) == 0) {
+    while (more != 0) {
+        node = malloc(sizeof(BalloonNode));
+        if (SaveGameRead(node, sizeof(BalloonNode)) == 0) {
             return 0;
         }
         node->next = NULL;
@@ -881,22 +706,21 @@ unsigned int FUN_0042baf0(struct BalloonRideObj *param_1) {
         } else {
             DAT_00616060 = node;
         }
-        if (SaveGameRead(&param_1, 4) == 0) {
+        prev = node;
+        if (SaveGameRead(&more, 4) == 0) {
             return 0;
         }
-        prev = node;
     }
-    for (elem = ride->list; elem != NULL; elem = elem->next) {
-        comp = *(int *)((char *)elem + 0x10);
-        if (*(int *)(comp + 0x30) != 0) {
-            *(unsigned int *)(comp + 0x2c) = (&DAT_0061603c)[*(int *)(comp + 0x30)];
+    for (rider = ride->riders; rider != NULL; rider = rider->next) {
+        if (rider->person->field_30 != 0) {
+            rider->person->sprite = DAT_0061603c[rider->person->field_30];
         } else {
-            *(unsigned int *)(comp + 0x2c) = 0;
-            *(unsigned int *)(*(int *)((char *)elem + 0x10) + 0x30) = 0;
+            rider->person->sprite = NULL;
+            rider->person->field_30 = 0;
         }
-        h = *(unsigned int **)((char *)elem->bloke + 0x54);
-        if (h != NULL) {
-            *h = ((unsigned int *)&DAT_00616018)[h[1]];
+        bnv = rider->rider->bnv;
+        if (bnv != NULL) {
+            bnv->file = DAT_00616018[bnv->index];
         }
     }
     return 1;

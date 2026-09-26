@@ -109,12 +109,12 @@ void FUN_0043df50(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0043df90
-void FUN_0043df90(struct PlaneRideObject *a1, struct PlaneRideObject *a2, struct PlaneRideObject *a3) {
+void FUN_0043df90(struct PlaneRideObject *a1, TileId a2, struct PlaneRideObject *a3) {
     unsigned int temp = FUN_0043d960(&a2);
     if (temp != 0) {
         FUN_0043d8c0((void *)temp);
     }
-    StandardRemoveObject((unsigned int)a1, *(TileId *)&a2, (unsigned int)a3);
+    StandardRemoveObject((unsigned int)a1, a2, (unsigned int)a3);
     RemoveAllBlokesFromRide(a1->field_c, a2);
 }
 

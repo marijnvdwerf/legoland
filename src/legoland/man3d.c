@@ -460,7 +460,7 @@ void FUN_004401b0(int param_1, int param_2) {
     iVar3->sort_id = local_4 - sVar5;
     local_8 = local_8 + lpConfig->field_20;
     local_4 = (local_4 - sVar5) + (lpConfig->field_22 - (iVar4->field_70 >> 1));
-    AdjustBlokePosition((struct BlokePos *)&local_8);
+    AdjustBlokePosition((struct Point *)&local_8);
     SetPersonPosition(iVar3, local_8, local_4);
     if ((iVar4->field_63 & 1) == 0) {
         iVar3->field_4c = iVar4->field_74;

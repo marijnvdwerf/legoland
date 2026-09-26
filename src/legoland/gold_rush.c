@@ -273,7 +273,7 @@ void FUN_004075b0(void) {
 void FUN_004075f0(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004076e0
-void FUN_004076e0(struct GoldEditObject *editObj, unsigned int coords, struct Cursor *cursor) {
+void FUN_004076e0(struct GoldEditObject *editObj, TileId coords, struct Cursor *cursor) {
     int p[2];
     struct GoldRide *ride = editObj->ride;
     void *found = FUN_004069e0(&coords);
@@ -282,23 +282,23 @@ void FUN_004076e0(struct GoldEditObject *editObj, unsigned int coords, struct Cu
         FUN_00406960((struct GoldNode *)found);
     }
 
-    StandardRemoveObject((struct EditObject *)editObj, *(TileId *)&coords, cursor);
+    StandardRemoveObject((struct RideObject *)editObj, coords, cursor);
     RemoveAllBlokesFromRide((struct Ride *)ride, coords);
 
-    p[0] = ((unsigned char *)&coords)[0] + ride->field_c - 1;
-    p[1] = ((unsigned char *)&coords)[1] + ride->field_10;
+    p[0] = coords.pos.x + ride->field_c - 1;
+    p[1] = coords.pos.y + ride->field_10;
     RemoveRollerCoasterPath(p);
 
-    p[0] = ((unsigned char *)&coords)[0] + ride->field_c - 2;
-    p[1] = ((unsigned char *)&coords)[1] + ride->field_10;
+    p[0] = coords.pos.x + ride->field_c - 2;
+    p[1] = coords.pos.y + ride->field_10;
     RemoveRollerCoasterPath(p);
 
-    p[0] = ((unsigned char *)&coords)[0] + ride->field_c - 2;
-    p[1] = ((unsigned char *)&coords)[1] + ride->field_10 - 1;
+    p[0] = coords.pos.x + ride->field_c - 2;
+    p[1] = coords.pos.y + ride->field_10 - 1;
     RemoveRollerCoasterPath(p);
 
-    p[0] = ((unsigned char *)&coords)[0] + ride->field_c - 2;
-    p[1] = ((unsigned char *)&coords)[1] + ride->field_10 - 2;
+    p[0] = coords.pos.x + ride->field_c - 2;
+    p[1] = coords.pos.y + ride->field_10 - 2;
     RemoveRollerCoasterPath(p);
 }
 
