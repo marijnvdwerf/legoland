@@ -5,16 +5,14 @@
 
 /* Canonical "bloke" record (one 0xac allocation).  Shared by the AI code
    (bloke_ai.c) and the visitor allocator (bloke.c), which previously each
-   declared their own private view of the same object.  The gardener/mechanic
-   worker code (worker.c) views the same record through struct Worker — a worker
-   is just a bloke — but keeps a separate view because some worker fields
-   (e.g. the 0x34/0x38 float pair) overlap AI pad bytes that a worker uses as a
-   byte (progress@0x36); a single non-union struct cannot name both.
+   declared their own private view of the same object.  Gardeners and mechanics
+   (worker.c) are blokes too.
    man3d.c keeps its own thin render-handle view too (its offset 4 is the owned
    Person*, not this list's prev pointer). */
 struct Person;
 struct Element;
 struct BinVFile;
+struct WorkOrder;
 
 /* A bloke's reference into a loaded BNV file: the file pointer is re-resolved
    from the owning ride's table by index after a save game is loaded. */
@@ -62,7 +60,7 @@ struct Bloke {
     int field_20;
     Point dest;
     Point goal; /* where the bloke is walking to */
-    unsigned char pad_34[0x35 - 0x34];
+    unsigned char field_34;
     unsigned char field_35;
     unsigned char field_36;
     unsigned char field_37;
@@ -81,7 +79,10 @@ struct Bloke {
     short field_4a;
     unsigned short field_4c;
     unsigned char pad_4e[0x50 - 0x4e];
-    int field_50;
+    union {
+        int field_50;
+        struct WorkOrder *order; /* gardeners and mechanics */
+    };
     union {
         unsigned int field_54;
         struct BNVRef *bnv; /* ride code: BNV file slot of the bloke's path */
@@ -116,7 +117,6 @@ struct Bloke {
     struct Element *favourite_attraction_2;
     struct Element *favourite_food;
     Navigator nav;
-    unsigned char pad_a4[0xac - 0xa4];
 };
 typedef struct Bloke Bloke;
 
@@ -170,7 +170,6 @@ LEGO_EXPORT Bloke *NewBlokeWOList(int type);
 LEGO_EXPORT Bloke *NewBloke(void);
 LEGO_EXPORT int GetBlokeNum(Bloke *bloke);
 LEGO_EXPORT void DestroyBloke(Bloke *bloke);
-struct Worker;
 LEGO_EXPORT void DoLowLevelAI(Bloke *bloke);
 struct MapRect;
 struct BinVFile;

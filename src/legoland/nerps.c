@@ -243,7 +243,7 @@ unsigned int FUN_0046a230(struct NerpsArg *arg) {
         }
         if (tile->field_11 > threshold) {
             tile->field_11 = threshold;
-            FUN_00463460(tile, &x);
+            FUN_00463460(tile, (struct Point *)&x);
             DAT_00668610 |= 0x200;
         }
         node = node->next;

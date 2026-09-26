@@ -883,7 +883,7 @@ LEGO_EXPORT void InsertChildIntoList(struct BuildObject *param_1) {
                 if (((struct BuildObject *)node->data)->field_58 != ((struct BuildObject *)current->data)->field_58) {
                     break;
                 }
-                if (GetObjCost((struct CostInfo *)node->data) <= GetObjCost((struct CostInfo *)current->data)) {
+                if (GetObjCost(node->data) <= GetObjCost(current->data)) {
                     break;
                 }
                 prev = current;

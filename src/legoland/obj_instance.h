@@ -46,9 +46,11 @@ struct Ride {
     /* 0x22 */ unsigned char pad_22[0x24 - 0x22];
     /* 0x24 */ char field_24;
     /* 0x25 */ char field_25;
-    /* 0x26 */ unsigned char pad_26[0x2a - 0x26];
+    /* 0x26 */ short cost; /* bricks to build */
+    /* 0x28 */ unsigned char pad_28[0x2a - 0x28];
     /* 0x2a */ short range;
-    /* 0x2c */ unsigned char pad_2c[0x2e - 0x2c];
+    /* 0x2c */ unsigned char durability; /* repair levels (MapElement.field_11 when new) */
+    /* 0x2d */ unsigned char pad_2d;
     /* 0x2e */ short seats; /* riders allowed per tile */
     /* 0x30 */ unsigned char pad_30[0x36 - 0x30];
     /* 0x36 */ short value;
@@ -57,7 +59,8 @@ struct Ride {
     /* 0x3c */ struct Footprint footprint;
     /* 0x50 */ unsigned char pad_50[0x64 - 0x50];
     /* 0x64 */ struct Sprite *layer;
-    /* 0x68 */ unsigned char pad_68[0x78 - 0x68];
+    /* 0x68 */ struct Sprite *icon; /* drawn over pending work orders */
+    /* 0x6c */ unsigned char pad_6c[0x78 - 0x6c];
     /* 0x78 */ char *name;
     /* 0x7c */ unsigned char pad_7c[0xc4 - 0x7c];
     /* 0xc4 */ struct Element *element; /* this ride's LLIDB element */

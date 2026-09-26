@@ -49,13 +49,6 @@ struct ObjCountWrap {
     struct ObjectCount *inner;
 };
 
-struct CostInfo {
-    unsigned char pad_0[0x26];
-    short cost;
-    unsigned char pad_28[0x2c - 0x28];
-    unsigned char divisor;
-};
-
 struct EditObject {
     unsigned char pad_0[0x1c];
     unsigned int flags;
@@ -334,30 +327,28 @@ LEGO_EXPORT void CreateObjectClasses(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00480da0
-LEGO_EXPORT int GetObjCost(struct CostInfo *info) {
-    return info->cost;
+LEGO_EXPORT int GetObjCost(Ride *ride) {
+    return ride->cost;
 }
 
 // FUNCTION: LEGOLAND 0x00480db0
-LEGO_EXPORT unsigned int GetObjSalvageValue(unsigned int param_1, unsigned int param_2) {
-    struct CostInfo *info;
+LEGO_EXPORT unsigned int GetObjSalvageValue(Ride *ride, unsigned int level) {
     int cost;
 
-    info = (struct CostInfo *)param_1;
-    if (info->divisor == 0) {
-        return GetObjCost(info);
+    if (ride->durability == 0) {
+        return GetObjCost(ride);
     }
-    cost = GetObjCost(info);
-    return (cost * (int)param_2) / (int)info->divisor;
+    cost = GetObjCost(ride);
+    return (cost * (int)level) / (int)ride->durability;
 }
 
 // FUNCTION: LEGOLAND 0x00480de0
-LEGO_EXPORT unsigned int GetObjRepairCost(unsigned int param_1, unsigned int param_2) {
+LEGO_EXPORT int GetObjRepairCost(Ride *ride, unsigned int level) {
     unsigned int salvage;
     unsigned int cost;
 
-    salvage = GetObjSalvageValue(param_1, param_2);
-    cost = GetObjCost((struct CostInfo *)param_1);
+    salvage = GetObjSalvageValue(ride, level);
+    cost = GetObjCost(ride);
     return cost - salvage;
 }
 

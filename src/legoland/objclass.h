@@ -2,7 +2,6 @@
 
 #include "legoland.h"
 
-struct CostInfo;
 struct ObjCountWrap;
 struct ObjectCount;
 struct ObjInstance;
@@ -55,10 +54,10 @@ struct LibraryNode {
 
 LEGO_EXPORT void IncrementObjectCount(struct ObjectCount *count);
 LEGO_EXPORT void DecrementObjectCount(struct ObjectCount *count);
-LEGO_EXPORT unsigned int GetObjSalvageValue(unsigned int param_1, unsigned int param_2);
+LEGO_EXPORT unsigned int GetObjSalvageValue(struct Ride *ride, unsigned int level);
 LEGO_EXPORT struct ObjInstance *CreateObjectInstance(unsigned int param_1, unsigned short *param_2);
-LEGO_EXPORT int GetObjCost(struct CostInfo *info);
-LEGO_EXPORT unsigned int GetObjRepairCost(unsigned int param_1, unsigned int param_2);
+LEGO_EXPORT int GetObjCost(struct Ride *ride);
+LEGO_EXPORT int GetObjRepairCost(struct Ride *ride, unsigned int level);
 struct Point;
 LEGO_EXPORT void BasicObjectDCalcCursor(unsigned int param_1, struct Point *param_2);
 LEGO_EXPORT void ClearObjectCounters(void);

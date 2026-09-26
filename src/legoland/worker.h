@@ -1,82 +1,121 @@
 #pragma once
 
+#include "bloke.h"
+#include "gamemap.h"
 #include "legoland.h"
+#include "llidb.h"
 #include "math.h"
+#include "obj_instance.h"
 
-struct WorkOrder;
-struct EditObject;
-struct Person;
+/* Gardeners and mechanics are ordinary Blokes kept on their own lists
+   (GardenerList / MechanicList). */
 
-struct Worker {
-    /* 0x00 */ struct Worker *next;
-    /* 0x04 */ struct Person *field_4;
-    /* 0x08 */ unsigned char field_8;
-    /* 0x09 */ unsigned char pad_9[1];
-    /* 0x0a */ unsigned short field_a;
-    /* 0x0c */ unsigned short flags_c;
-    /* 0x0e */ unsigned short state;
-    /* 0x10 */ unsigned char field_10;
-    /* 0x11 */ unsigned char counter_11;
-    /* 0x12 */ unsigned char pad_12[10];
-    /* 0x1c */ unsigned int flags_1c;
-    /* 0x20 */ unsigned int field_20;
-    /* 0x24 */ struct Point dest;
-    /* 0x2c */ int var_2c;
-    /* 0x30 */ int var_30;
-    /* 0x34 */ unsigned char pad_34[0x36 - 0x34];
-    /* 0x36 */ unsigned char progress;
-    /* 0x37 */ unsigned char pad_37[0x46 - 0x37];
-    /* 0x46 */ unsigned short var_46;
-    /* 0x48 */ unsigned char pad_48[0x50 - 0x48];
-    /* 0x50 */ struct WorkOrder *var_50;
-    /* 0x54 */ unsigned char pad_54[0x5c - 0x54];
-    /* 0x5c */ unsigned int ticks;
-    /* 0x60 */ unsigned char var_60;
-    /* 0x61 */ unsigned char pad_61[1];
-    /* 0x62 */ unsigned short flags;
-    /* 0x64 */ unsigned char var_64;
-    /* 0x65 */ unsigned char pad_65[0x68 - 0x65];
-    /* 0x68 */ struct Point pos;
-    /* 0x70 */ unsigned short var_70;
-    /* 0x72 */ unsigned char var_72;
-    /* 0x73 */ unsigned char var_73;
-    /* 0x74 */ unsigned char var_74;
-    /* 0x75 */ unsigned char var_75;
-    /* 0x76 */ unsigned char pad_76[0x7f - 0x76];
-    /* 0x7f */ unsigned char var_7f;
-    /* 0x80 */ unsigned char pad_80[0x82 - 0x80];
-    /* 0x82 */ unsigned char var_82;
-    /* 0x83 */ unsigned char pad_83[0x98 - 0x83];
-    /* 0x98 */ struct Navigator nav;
-    /* 0xa4 */ unsigned char pad_a4[0xac - 0xa4];
+typedef struct WorkOrder WorkOrder;
+
+/* A gardener's or mechanic's job: build (type 1) or repair (type 2) the object of
+   class `element` at `pos`. Gardener orders are listed at DAT_0079a8b0..b4, mechanic
+   orders at DAT_0079a8c0..c4. */
+struct WorkOrder {
+    /* 0x00 */ WorkOrder *next;
+    /* 0x04 */ Element *element;
+    /* 0x08 */ Point pos;
+    /* 0x10 */ Footprint *footprints;
+    /* 0x14 */ int count; /* footprints */
+    /* 0x18 */ int assigned;
+    /* 0x1c */ union {
+        Bloke *worker;
+        int worker_index; /* in save games */
+    };
+    /* 0x20 */ char type; /* 1 build, 2 repair */
+    /* 0x21 */ unsigned char pad_21[3];
+    /* 0x24 */ int step_x; /* where on the footprint's rim the worker stands */
+    /* 0x28 */ int step_y;
+    /* 0x2c */ unsigned char walk_dir; /* 1, 7, 5, 3: which rim edge step_x/y walks */
+    /* 0x2d */ unsigned char pad_2d[3];
+    /* 0x30 */ int no_bricks; /* repair stalled for lack of bricks */
+    /* 0x34 */ float bricks; /* bricks owed, paid a whole brick at a time */
+    /* 0x38 */ float bricks_per_step;
 };
 
-LEGO_EXPORT struct Worker *GenerateGardener(int *coords, int param_2);
-LEGO_EXPORT struct Worker *GenerateMechanic(int *coords, int param_2);
-LEGO_EXPORT void RemoveAGardener(struct Worker *worker);
+typedef struct RepairOrder RepairOrder;
+
+/* A repair nobody works on (the class needs no worker): paid from the brick
+   supply while drawn. List head DAT_0079a8d4. */
+struct RepairOrder {
+    /* 0x00 */ RepairOrder *next;
+    /* 0x04 */ Footprint footprint;
+    /* 0x18 */ Point pos;
+    /* 0x20 */ float bricks;
+    /* 0x24 */ float bricks_per_step;
+};
+
+typedef struct WorkerSave WorkerSave;
+
+/* The 0xdc-byte save-game record of a worker and its Person. */
+struct WorkerSave {
+    /* 0x00 */ unsigned short action;
+    /* 0x02 */ unsigned short field_e;
+    /* 0x04 */ unsigned short field_10;
+    /* 0x06 */ unsigned char pad_6[0x10 - 0x06];
+    /* 0x10 */ unsigned int field_1c;
+    /* 0x14 */ int field_20;
+    /* 0x18 */ Point dest;
+    /* 0x20 */ Point goal;
+    /* 0x28 */ unsigned int block_34[10]; /* Bloke 0x34..0x5c; [7] is the order */
+    /* 0x50 */ int field_5c;
+    /* 0x54 */ unsigned char param_action;
+    /* 0x55 */ unsigned char pad_55[1];
+    /* 0x56 */ unsigned short flags;
+    /* 0x58 */ unsigned char field_64;
+    /* 0x59 */ unsigned char field_7f;
+    /* 0x5a */ unsigned char field_82;
+    /* 0x5b */ unsigned char pad_5b[1];
+    /* 0x5c */ Point pos;
+    /* 0x64 */ unsigned short field_70;
+    /* 0x66 */ unsigned char field_72;
+    /* 0x67 */ unsigned char field_73;
+    /* 0x68 */ unsigned char field_74;
+    /* 0x69 */ unsigned char field_75;
+    /* 0x6a */ unsigned char pad_6a[2];
+    /* 0x6c */ Navigator nav;
+    /* 0x80 */ unsigned int person_8;
+    /* 0x84 */ unsigned int person_10;
+    /* 0x88 */ unsigned int person_14;
+    /* 0x8c */ unsigned int person_18;
+    /* 0x90 */ unsigned int person_1c;
+    /* 0x94 */ unsigned int person_20;
+    /* 0x98 */ float person_40;
+    /* 0x9c */ float person_44;
+    /* 0xa0 */ float person_48;
+    /* 0xa4 */ int person_4c;
+    /* 0xa8 */ unsigned int anim; /* Person.field_88 */
+    /* 0xac */ unsigned int sort_id;
+    /* 0xb0 */ int m[9];
+    /* 0xd4 */ unsigned int prev_param;
+    /* 0xd8 */ unsigned int prev_action;
+};
+
+LEGO_EXPORT Bloke *GenerateGardener(int *coords, int param_2);
+LEGO_EXPORT Bloke *GenerateMechanic(int *coords, int param_2);
+LEGO_EXPORT void RemoveAGardener(Bloke *worker);
 LEGO_EXPORT void RefundGardener(void);
 LEGO_EXPORT void RefundMechanic(void);
-LEGO_EXPORT void RemoveAMechanic(struct Worker *worker);
+LEGO_EXPORT void RemoveAMechanic(Bloke *worker);
 LEGO_EXPORT void IterateNoneWorkersRepairOrders(void);
 LEGO_EXPORT void RemoveGardenersWorkOrderAt(unsigned int x, unsigned int y);
 LEGO_EXPORT void RemoveMechanicsWorkOrderAt(unsigned int x, unsigned int y);
-LEGO_EXPORT void RemoveNoneWorkersRepairOrderAT(unsigned int x, unsigned int y);
-LEGO_EXPORT void RemoveRepairOrderAT(struct Worker *worker, unsigned int x, unsigned int y);
+LEGO_EXPORT void RemoveNoneWorkersRepairOrderAT(int x, int y);
+LEGO_EXPORT void RemoveRepairOrderAT(Ride *ride, unsigned int x, unsigned int y);
 void FUN_0049b270(int param_1, unsigned int param_2);
-void FUN_00499eb0(struct WorkOrder *order);
+void FUN_00499eb0(WorkOrder *order);
 int FUN_0049a120(void);
 int FUN_0049a160(void);
 void FUN_0049cfc0(void);
 
-struct Worker;
-struct Bloke;
-struct ActionState;
-struct MapRect;
 void FUN_0049cf00(struct MapRect *rect);
-void *FUN_00499c40(int *point);
-void FUN_00499ac0(struct Worker *worker, struct WorkOrder *order);
-struct WorkOrder *FUN_00499780(struct EditObject *obj, int *coords, int mode);
-struct ObjClass;
-LEGO_EXPORT struct WorkOrder *AddRepairOrderForObject(struct ObjClass *cls, int x, int y);
+Bloke *FUN_00499c40(int *coords);
+void FUN_00499ac0(Bloke *worker, WorkOrder *order);
+WorkOrder *FUN_00499780(Element *element, int *coords, int mode);
+LEGO_EXPORT WorkOrder *AddRepairOrderForObject(Ride *ride, int x, int y);
 int FUN_00499550(void);
 int FUN_00499560(void);

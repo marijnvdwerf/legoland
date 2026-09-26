@@ -77,7 +77,7 @@ LEGO_EXPORT void UnloadPos(struct Position *pos);
 LEGO_EXPORT void RenderBlokeIn3D(struct Bloke *bloke);
 LEGO_EXPORT void SortBlokeIn3D(struct Bloke *bloke);
 LEGO_EXPORT void IP_RenderBlokeIn3DNow(struct Bloke *bloke);
-LEGO_EXPORT void UpdatePerson(struct Person *person);
+LEGO_EXPORT void UpdatePerson(struct Bloke *bloke);
 LEGO_EXPORT void Control3DPeople(void);
 LEGO_EXPORT void Add3DBlokeToList(struct Bloke *bloke, unsigned int param_2);
 LEGO_EXPORT void BlokeWalkAnim(struct Bloke *bloke);

@@ -2,6 +2,7 @@
 
 #include "build.h"
 #include "globals.h"
+#include "obj_instance.h"
 #include "objclass.h"
 
 // FUNCTION: LEGOLAND 0x00450b90
@@ -11,7 +12,7 @@ LEGO_EXPORT int AddObjectToBuildList(struct ObjClass *obj, TileId coords) { STUB
 void FUN_00450c00(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00450c40
-LEGO_EXPORT int GetBuildTime(struct CostInfo *objClass) {
+LEGO_EXPORT int GetBuildTime(Ride *objClass) {
     int cost = GetObjCost(objClass);
     if (cost < 50) {
         return 50;

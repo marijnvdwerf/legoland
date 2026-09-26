@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "bloke.h"
 #include "challenge.h"
 #include "draw.h"
 #include "globals.h"
@@ -56,11 +57,6 @@ struct Mesh {
     /* 0x00 */ int count;
     /* 0x04 */ struct MeshElem *elems;
     /* 0x08 */ void *field_8;
-};
-
-struct Bloke {
-    unsigned char pad_0[4];
-    struct Person *person;
 };
 
 // FUNCTION: LEGOLAND 0x0043f660
@@ -463,28 +459,28 @@ void FUN_004401b0(int param_1, int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x00440290
-LEGO_EXPORT void UpdatePerson(struct Person *person) {
-    if ((person->flags & 0x80) != 0) {
+LEGO_EXPORT void UpdatePerson(Bloke *bloke) {
+    if ((bloke->flags & 0x80) != 0) {
         return;
     }
-    if (person->next == 0) {
+    if (bloke->person == 0) {
         return;
     }
-    FUN_004401b0((int)person->next, (int)person);
+    FUN_004401b0((int)bloke->person, (int)bloke);
 }
 
 // FUNCTION: LEGOLAND 0x004402b0
 LEGO_EXPORT void Control3DPeople(void) {
-    struct Person *person;
+    Bloke *bloke;
 
-    person = FirstBloke;
-    if (person == 0) {
+    bloke = FirstBloke;
+    if (bloke == 0) {
         return;
     }
     do {
-        UpdatePerson(person);
-        person = person->prev;
-    } while (person != 0);
+        UpdatePerson(bloke);
+        bloke = bloke->next;
+    } while (bloke != 0);
 }
 
 // FUNCTION: LEGOLAND 0x004402d0

@@ -17,6 +17,8 @@ struct Navigator {
     /* 0x04 */ int y;
     /* 0x08 */ short dx;
     /* 0x0a */ short dy;
+    /* 0x0c */ int field_c;
+    /* 0x10 */ int field_10;
 };
 typedef struct Navigator Navigator;
 

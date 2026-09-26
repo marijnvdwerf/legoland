@@ -285,7 +285,7 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsig
         cell = NULL;
     }
     if (cell->flags.bytes[1] & 0x40) {
-        RemoveRepairOrderAT((struct Worker *)obj, x, y);
+        RemoveRepairOrderAT(obj, x, y);
         cell->flags.word = cell->flags.word & 0xbfff;
     }
     query = &QueryCursor;

@@ -60,9 +60,6 @@ float FLOAT_004ab458;
 // GLOBAL: LEGOLAND 0x004ab45c
 float FLOAT_004ab45c;
 
-// GLOBAL: LEGOLAND 0x004ab480
-float FLOAT_004ab480;
-
 // GLOBAL: LEGOLAND 0x004ab4c8
 double DAT_004ab4c8;
 
@@ -810,8 +807,8 @@ unsigned int DAT_004bf774;
 unsigned int DAT_004bf778;
 
 // GLOBAL: LEGOLAND 0x004bff28
-const int DAT_004bff28[24] = {0, 1, 0, -1, 1, 0, -1, 0, 0, 2, 0, -2,
-    2, 0, -2, 0, 1, 1, 1, -1, -1, 1, -1, -1};
+const int DAT_004bff28[12][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {0, 2}, {0, -2},
+    {2, 0}, {-2, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 
 // GLOBAL: LEGOLAND 0x004c10d4
 void *DAT_004c10d4;
@@ -3391,16 +3388,16 @@ unsigned int DAT_0079a89c;
 unsigned int DAT_0079a8a0;
 
 // GLOBAL: LEGOLAND 0x0079a8a8
-LEGO_EXPORT void *GardenerList;
+LEGO_EXPORT struct Bloke *GardenerList;
 
 // GLOBAL: LEGOLAND 0x0079a8ac
-LEGO_EXPORT void *MechanicList;
+LEGO_EXPORT struct Bloke *MechanicList;
 
 // GLOBAL: LEGOLAND 0x0079a8b0
-void *DAT_0079a8b0;
+struct WorkOrder *DAT_0079a8b0;
 
 // GLOBAL: LEGOLAND 0x0079a8b4
-void *DAT_0079a8b4;
+struct WorkOrder *DAT_0079a8b4;
 
 // GLOBAL: LEGOLAND 0x0079a8b8
 int DAT_0079a8b8;
@@ -3409,10 +3406,10 @@ int DAT_0079a8b8;
 int DAT_0079a8bc;
 
 // GLOBAL: LEGOLAND 0x0079a8c0
-void *DAT_0079a8c0;
+struct WorkOrder *DAT_0079a8c0;
 
 // GLOBAL: LEGOLAND 0x0079a8c4
-void *DAT_0079a8c4;
+struct WorkOrder *DAT_0079a8c4;
 
 // GLOBAL: LEGOLAND 0x0079a8c8
 int DAT_0079a8c8;
@@ -3424,10 +3421,10 @@ int DAT_0079a8cc;
 unsigned int DAT_0079a8d0;
 
 // GLOBAL: LEGOLAND 0x0079a8d4
-void *DAT_0079a8d4;
+struct RepairOrder *DAT_0079a8d4;
 
 // GLOBAL: LEGOLAND 0x0079abfc
-void *DAT_0079abfc;
+struct Element *DAT_0079abfc;
 
 // GLOBAL: LEGOLAND 0x0079ac04
 unsigned int DAT_0079ac04;
@@ -3955,7 +3952,7 @@ int DAT_00801a64;
 void *DAT_00801a68;
 
 // GLOBAL: LEGOLAND 0x00801a6c
-void *DAT_00801a6c;
+int *DAT_00801a6c;
 
 // GLOBAL: LEGOLAND 0x00801a70
 void *DAT_00801a70;
@@ -3988,7 +3985,7 @@ int DAT_00805f44;
 unsigned int DAT_00805f48;
 
 // GLOBAL: LEGOLAND 0x00805f60
-LEGO_EXPORT void *TileSpriteArray[2048];
+LEGO_EXPORT struct Sprite *TileSpriteArray[2048];
 
 // GLOBAL: LEGOLAND 0x00807f60
 struct MapRenderOrderEntry MapRenderOrderList[4096];
@@ -3997,7 +3994,7 @@ struct MapRenderOrderEntry MapRenderOrderList[4096];
 unsigned int DAT_0080ff60;
 
 // GLOBAL: LEGOLAND 0x0080ff64
-unsigned int DAT_0080ff64;
+struct Element *DAT_0080ff64;
 
 // GLOBAL: LEGOLAND 0x0080ff68
 unsigned int DAT_0080ff68;

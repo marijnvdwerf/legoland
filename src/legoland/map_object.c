@@ -682,11 +682,11 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
     packed.pos.x = (unsigned char)coords[0];
     packed.pos.y = (unsigned char)coords[1];
     obj = editObj->obj;
-    cost = GetObjCost((struct CostInfo *)obj);
+    cost = GetObjCost(obj);
     if (GetBrickCount() < cost) {
         return 0;
     }
-    if (editObj == (Element *)DAT_0080ff64) {
+    if (editObj == DAT_0080ff64) {
         DAT_0079a8d0 = 1;
     }
     if (DAT_00667cd8 == 0) {
@@ -698,7 +698,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
         if (AddObjectToBuildList((struct ObjClass *)obj, packed) == 0) {
             return 0;
         }
-        UseBricks(GetObjCost((struct CostInfo *)obj));
+        UseBricks(GetObjCost(obj));
         if (FUN_0045eab0((struct ObjFlags *)obj) != 0 || FUN_0045eaf0((struct ObjData *)obj) != 0) {
             FUN_0045e080(editObj, (struct Point *)coords, 0x20);
         } else {
@@ -717,7 +717,7 @@ LEGO_EXPORT int BuildObject(Element *editObj, int *coords) {
             CalculateMapRenderOrder();
         }
     } else {
-        UseBricks(GetObjCost((struct CostInfo *)obj));
+        UseBricks(GetObjCost(obj));
         if (FUN_0045eab0((struct ObjFlags *)obj) != 0 || FUN_0045eaf0((struct ObjData *)obj) != 0) {
             FUN_0045e080(editObj, (struct Point *)coords, 0);
         }
@@ -957,7 +957,7 @@ LEGO_EXPORT void StandardRemoveObject(Element *editObj, TileId coords, struct Cu
     if (obj->flags & 0x20000) {
         BGFullUpdate = 1;
     }
-    AddBricks(GetObjSalvageValue((unsigned int)obj, tile->field_11));
+    AddBricks(GetObjSalvageValue(obj, tile->field_11));
     if (tile->flags & 0x80) {
         ApplyDestrTileMap(editObj, coords);
         FUN_0045e850((struct ObjNode *)editObj, (int *)&pos);
@@ -3030,7 +3030,7 @@ LEGO_EXPORT void DoMapAI(void) {
                             if (FUN_0044f360((unsigned int)obj, (unsigned char *)&id) != 0) {
                                 MapStats.classes[obj->type].scan_built++;
                                 MapStats.classes[obj->type].scan_salvage +=
-                                    GetObjSalvageValue((unsigned int)obj, tile->field_11);
+                                    GetObjSalvageValue(obj, tile->field_11);
                                 MapStats.classes[obj->type].scan_capacity += obj->field_2e;
                             }
                         }
@@ -3151,17 +3151,17 @@ LEGO_EXPORT void RateBlokeOnLeaving(int param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00463460
-void FUN_00463460(struct MapElement *tile, int *coords) {
+void FUN_00463460(struct MapElement *tile, struct Point *pos) {
     unsigned int flags;
-    struct MapObject *obj;
+    Ride *ride;
     int threshold;
     int power;
 
     if (tile->field_11 != 0) {
-        obj = ((Element *)tile->field_0)->obj;
+        ride = tile->field_0->ride;
         flags = tile->flags;
         tile->flags &= 0xfdff;
-        threshold = obj->field_2c >> 2;
+        threshold = ride->durability >> 2;
         if (tile->field_11 < threshold) {
             if (tile->flags & 4) {
                 tile->flags |= 0x200;
@@ -3169,12 +3169,12 @@ void FUN_00463460(struct MapElement *tile, int *coords) {
                 return;
             }
             if (lpConfig->field_3c != 0 && (tile->flags & 0x4000) == 0) {
-                if (AddRepairOrderForObject((int)obj, coords[0], coords[1]) != 0) {
+                if (AddRepairOrderForObject(ride, pos->x, pos->y) != 0) {
                     tile->flags |= 0x4000;
                 }
             }
             if ((flags & 0x200) == 0) {
-                power = FindObjectsPower(obj);
+                power = FindObjectsPower(ride);
                 if (power > 0) {
                     MapStats.field_3d0 -= power;
                     if (MapStats.field_3d0 < MapStats.field_3d4 - (int)MapStats.field_3d8) {
@@ -3250,7 +3250,7 @@ LEGO_EXPORT void ProcessDamage(void) {
                         tile->field_11 = 1;
                     }
                 }
-                FUN_00463460(tile, (int *)&pt);
+                FUN_00463460(tile, &pt);
             }
             id = tile->next;
         } while (id.id != 0);

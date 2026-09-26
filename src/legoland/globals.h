@@ -397,8 +397,6 @@ extern float FLOAT_004ab454;
 extern float FLOAT_004ab458;
 // 0x004ab45c
 extern float FLOAT_004ab45c;
-// 0x004ab480
-extern float FLOAT_004ab480;
 // 0x004ab4c8
 extern double DAT_004ab4c8;
 // 0x004ab518
@@ -861,7 +859,7 @@ extern unsigned int DAT_004bf774;
 // 0x004bf778
 extern unsigned int DAT_004bf778;
 // 0x004bff28
-extern const int DAT_004bff28[24];
+extern const int DAT_004bff28[12][2];
 // 0x004c10d4
 extern void *DAT_004c10d4;
 // 0x004c10dc
@@ -2582,21 +2580,21 @@ extern unsigned int DAT_0079a89c;
 // 0x0079a8a0
 extern unsigned int DAT_0079a8a0;
 // 0x0079a8a8
-extern LEGO_EXPORT void *GardenerList;
+extern LEGO_EXPORT struct Bloke *GardenerList;
 // 0x0079a8ac
-extern LEGO_EXPORT void *MechanicList;
+extern LEGO_EXPORT struct Bloke *MechanicList;
 // 0x0079a8b0
-extern void *DAT_0079a8b0;
+extern struct WorkOrder *DAT_0079a8b0;
 // 0x0079a8b4
-extern void *DAT_0079a8b4;
+extern struct WorkOrder *DAT_0079a8b4;
 // 0x0079a8b8
 extern int DAT_0079a8b8;
 // 0x0079a8bc
 extern int DAT_0079a8bc;
 // 0x0079a8c0
-extern void *DAT_0079a8c0;
+extern struct WorkOrder *DAT_0079a8c0;
 // 0x0079a8c4
-extern void *DAT_0079a8c4;
+extern struct WorkOrder *DAT_0079a8c4;
 // 0x0079a8c8
 extern int DAT_0079a8c8;
 // 0x0079a8cc
@@ -2604,9 +2602,9 @@ extern int DAT_0079a8cc;
 // 0x0079a8d0
 extern unsigned int DAT_0079a8d0;
 // 0x0079a8d4
-extern void *DAT_0079a8d4;
+extern struct RepairOrder *DAT_0079a8d4;
 // 0x0079abfc
-extern void *DAT_0079abfc;
+extern struct Element *DAT_0079abfc;
 // 0x0079ac04
 extern unsigned int DAT_0079ac04;
 // 0x007caca8
@@ -2958,7 +2956,7 @@ extern int DAT_00801a64;
 // 0x00801a68
 extern void *DAT_00801a68;
 // 0x00801a6c
-extern void *DAT_00801a6c;
+extern int *DAT_00801a6c;
 // 0x00801a70
 extern void *DAT_00801a70;
 // 0x00801a74
@@ -2980,13 +2978,13 @@ extern int DAT_00805f44;
 // 0x00805f48
 extern unsigned int DAT_00805f48;
 // 0x00805f60
-extern LEGO_EXPORT void *TileSpriteArray[2048];
+extern LEGO_EXPORT struct Sprite *TileSpriteArray[2048];
 // 0x00807f60
 extern struct MapRenderOrderEntry MapRenderOrderList[4096];
 // 0x0080ff60
 extern unsigned int DAT_0080ff60;
 // 0x0080ff64
-extern unsigned int DAT_0080ff64;
+extern struct Element *DAT_0080ff64;
 // 0x0080ff68
 extern unsigned int DAT_0080ff68;
 // 0x0080ff6c

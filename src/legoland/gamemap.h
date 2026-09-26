@@ -82,11 +82,17 @@ struct Cursor {
     unsigned int field_1408;
     int field_140c;
     int field_1410;
-    unsigned int field_1414[5];
+    union {
+        unsigned int field_1414[5];
+        struct Footprint footprint;
+    };
     unsigned char pad_1428[0x1828 - 0x1428];
     unsigned int field_1828;
     unsigned char pad_182c[0x1830 - 0x182c];
-    unsigned int field_1830;
+    union {
+        unsigned int field_1830;
+        struct Cursor *next; /* further cursors placed together (e.g. PathCursor) */
+    };
 };
 typedef struct Cursor Cursor;
 
