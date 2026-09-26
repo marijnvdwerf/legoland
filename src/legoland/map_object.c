@@ -1069,17 +1069,15 @@ struct Cursor *FUN_0045f540(struct Cursor *cursor) {
     struct Cursor *node;
     struct Cursor *last;
 
-    node = cursor;
     if (cursor == 0) {
         return 0;
     }
-    do {
+    for (node = cursor; node != 0; node = (struct Cursor *)node->field_1830) {
         last = node;
-        if ((last->field_1828 & 0x1000) != 0) {
-            return last;
+        if ((node->field_1828 & 0x1000) != 0) {
+            return node;
         }
-        node = (struct Cursor *)last->field_1830;
-    } while (node != 0);
+    }
     FUN_0045f460(&PathCursor);
     PathCursor.field_1404 = cursor->field_1404;
     PathCursor.field_1408 = cursor->field_1408;
