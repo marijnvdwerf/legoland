@@ -901,23 +901,20 @@ LEGO_EXPORT unsigned int AddBasicObject(struct EditObject *editObj, int *coords)
 }
 
 // FUNCTION: LEGOLAND 0x0045f100
-LEGO_EXPORT void RemoveObjectFromMap(unsigned int coords) {
-    int cx;
-    int cy;
+LEGO_EXPORT void RemoveObjectFromMap(TileId coords) {
+    short cx;
+    short cy;
     struct MapElement *tile;
     struct MapObject *obj;
     struct FootprintNode rect;
     struct FootprintNode *next;
+    int x;
     int y;
-    int off;
-    int count;
-    unsigned short *flagsp;
-    unsigned char *flag10;
 
-    cx = coords & 0xff;
-    cy = (coords >> 8) & 0xff;
+    cx = coords.pos.x;
+    cy = coords.pos.y;
     if (cx >= 0 && cx < lpConfig->width && cy >= 0 && cy < lpConfig->height) {
-        tile = (struct MapElement *)((int)GameMap[cy] + cx * 0x14);
+        tile = &GameMap[cy][cx];
     } else {
         tile = 0;
     }
@@ -930,21 +927,13 @@ LEGO_EXPORT void RemoveObjectFromMap(unsigned int coords) {
     do {
         rect = *next;
         for (y = rect.y0; y <= rect.y1; y++) {
-            if (rect.x0 <= rect.x1) {
-                off = (cx + rect.x0) * 0x14;
-                count = (rect.x1 - rect.x0) + 1;
-                do {
-                    flagsp = (unsigned short *)((int)GameMap[cy + y] + 0xc + off);
-                    *flagsp &= 0xff5f;
-                    flag10 = (unsigned char *)((int)GameMap[cy + y] + 0x10 + off);
-                    *flag10 &= 0xfc;
-                    off += 0x14;
-                    count--;
-                } while (count != 0);
+            for (x = rect.x0; x <= rect.x1; x++) {
+                GameMap[cy + y][cx + x].flags &= 0xff5f;
+                GameMap[cy + y][cx + x].field_10 &= 0xfc;
             }
         }
         next = rect.next;
-    } while (rect.next != 0);
+    } while (next != 0);
     if (DAT_00667cd8 == 0) {
         CalculateMapRenderOrder();
         DAT_00667cdc = 1;
@@ -997,7 +986,7 @@ LEGO_EXPORT void StandardRemoveObject(struct EditObject *editObj, TileId coords,
     } else {
         ApplyDestrTileMap(editObj, *(unsigned int *)&coords);
         FUN_0045e850((struct ObjNode *)editObj, (int *)&cx);
-        RemoveObjectFromMap(*(unsigned int *)&coords);
+        RemoveObjectFromMap(coords);
     }
     if (obj->type != 2) {
         ((unsigned char *)&cursor)[0] = (unsigned char)cx;
