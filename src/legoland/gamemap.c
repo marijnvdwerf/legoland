@@ -15,16 +15,6 @@
 #include "timer.h"
 #include "worker.h"
 
-struct RenderObjectVtable {
-    unsigned char pad_0[0xc];
-    void *get_power;
-};
-
-struct PowerObject {
-    unsigned char pad_0[0xc4];
-    struct ClassNode *field_c4;
-};
-
 struct PowerEntry {
     const char *name;
     int value;
@@ -78,21 +68,6 @@ struct RemBlock {
     /* 0x04 */ int f4;
     /* 0x08 */ int f8;
     /* 0x0c */ int fc;
-};
-
-struct RenderObject {
-    struct RenderObjectVtable *vtable;
-    unsigned char pad_4[2];
-    union {
-        unsigned short word;
-        unsigned char bytes[2];
-    } coords;
-    unsigned char pad_8[4];
-    union {
-        unsigned short word;
-        unsigned char bytes[2];
-    } flags;
-    unsigned char pad_e[2];
 };
 
 // FUNCTION: LEGOLAND 0x00459850
@@ -244,8 +219,8 @@ LEGO_EXPORT void PutObjOnMap(struct ObjClass *obj, unsigned int classid, struct 
         } else {
             cell = (struct MapCell *)((char *)GameMap[pos->y] + pos->x * 0x14);
         }
-        DAT_004b8320 = (cell->src.b.byte_4 + entrance->footprint.v[0]) * 0x100 + -0x100;
-        DAT_004b8324 = ((unsigned int)(entrance->footprint.v[3] - entrance->footprint.v[1]) >> 1) * 0x100 +
+        DAT_004b8320.x = (cell->src.b.byte_4 + entrance->footprint.v[0]) * 0x100 + -0x100;
+        DAT_004b8320.y = ((unsigned int)(entrance->footprint.v[3] - entrance->footprint.v[1]) >> 1) * 0x100 +
             (cell->src.b.byte_5 + entrance->footprint.v[1]) * 0x100;
     }
     DAT_00668610 = DAT_00668610 | 1;
@@ -282,7 +257,7 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsig
         area = GetRectArea((struct RectNode *)&obj->footprint);
         switch (obj->type) {
         case 1:
-            FUN_00489f50((struct ObjClassKey *)&blk);
+            FUN_00489f50((struct Point *)&blk);
             DAT_00667ce4 = DAT_00667ce4 - area;
             break;
         case 2:
@@ -293,11 +268,11 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsig
             DAT_00667cf0 = DAT_00667cf0 - area;
             break;
         case 4:
-            FUN_00489f50((struct ObjClassKey *)&blk);
+            FUN_00489f50((struct Point *)&blk);
             DAT_00667ce8 = DAT_00667ce8 - area;
             break;
         case 5:
-            FUN_00489f50((struct ObjClassKey *)&blk);
+            FUN_00489f50((struct Point *)&blk);
             DAT_00667cec = DAT_00667cec - area;
         }
         DAT_00667ce0 = DAT_00667ce0 - area;
@@ -408,11 +383,11 @@ static const struct PowerEntry PTR_s_Small_Power_Station_004b9340[] = {
 };
 
 // FUNCTION: LEGOLAND 0x00459fa0
-LEGO_EXPORT int FindObjectsPower(void *object) {
+LEGO_EXPORT int FindObjectsPower(struct Ride *ride) {
     const struct PowerEntry *entry;
 
     for (entry = PTR_s_Small_Power_Station_004b9340; strlen(entry->name) != 0; entry++) {
-        if (_stricmp(((struct PowerObject *)object)->field_c4->name, entry->name) == 0) {
+        if (_stricmp(ride->element->name, entry->name) == 0) {
             return entry->value;
         }
     }
@@ -420,29 +395,29 @@ LEGO_EXPORT int FindObjectsPower(void *object) {
 }
 
 // FUNCTION: LEGOLAND 0x0045a000
-void FUN_0045a000(int power, struct RenderObject *object) {
-    object->flags.word &= 0xfeff;
+void FUN_0045a000(int power, MapElement *object) {
+    object->flags &= 0xfeff;
     MapStats.field_3d8 = MapStats.field_3d8 - power;
     MapStats.field_3dc = MapStats.field_3dc - 1;
 }
 
 // FUNCTION: LEGOLAND 0x0045a030
-void FUN_0045a030(int power, struct RenderObject *object) {
-    object->flags.bytes[1] |= 1;
+void FUN_0045a030(int power, MapElement *object) {
+    object->flags |= 0x100;
     MapStats.field_3d8 = MapStats.field_3d8 + power;
     MapStats.field_3dc = MapStats.field_3dc + 1;
 }
 
 // FUNCTION: LEGOLAND 0x0045a060
 void FUN_0045a060(void) {
-    struct RenderObject *object = GetFirstRenderObject();
+    MapElement *object = GetFirstRenderObject();
     int power;
     if (object == NULL) {
         return;
     }
     while (object != NULL) {
-        if (object->flags.bytes[1] & 1) {
-            power = -FindObjectsPower(object->vtable->get_power);
+        if (object->flags & 0x100) {
+            power = -FindObjectsPower(object->field_0->data);
             if (MapStats.field_3d4 - (int)MapStats.field_3d8 + power <= MapStats.field_3d0) {
                 FUN_0045a000(power, object);
                 if (MapStats.field_3d4 - (int)MapStats.field_3d8 == MapStats.field_3d0) {
@@ -456,11 +431,11 @@ void FUN_0045a060(void) {
 
 // FUNCTION: LEGOLAND 0x0045a0d0
 void FUN_0045a0d0(void) {
-    struct RenderObject *object = GetFirstRenderObject();
+    MapElement *object = GetFirstRenderObject();
     int power;
     while (object != NULL) {
-        if ((object->flags.bytes[1] & 1) == 0) {
-            power = -FindObjectsPower(object->vtable->get_power);
+        if ((object->flags & 0x100) == 0) {
+            power = -FindObjectsPower(object->field_0->data);
             if (power > 0) {
                 FUN_0045a030(power, object);
                 if (MapStats.field_3d4 - (int)MapStats.field_3d8 <= MapStats.field_3d0) {
@@ -763,47 +738,47 @@ void FUN_0045a660(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0045a850
-LEGO_EXPORT struct RenderObject *GetFirstRenderObject(void) {
+LEGO_EXPORT MapElement *GetFirstRenderObject(void) {
     int x;
     int y;
-    struct RenderObject *element;
+    MapElement *element;
 
     x = (unsigned char)DAT_007febb8;
     y = (unsigned char)(DAT_007febb8 >> 8);
     if (x < 0 || x >= (int)lpConfig->width || y < 0 || y >= (int)lpConfig->height) {
         return 0;
     }
-    element = (struct RenderObject *)((char *)GameMap[y] + x * 0x14);
+    element = &GameMap[y][x];
     if (element == 0) {
         return 0;
     }
-    if (DAT_007febb8 == 0 && (element->flags.bytes[0] & 0xa8) == 0) {
+    if (DAT_007febb8 == 0 && (element->flags & 0xa8) == 0) {
         return 0;
     }
     return element;
 }
 
 // FUNCTION: LEGOLAND 0x0045a8b0
-LEGO_EXPORT struct RenderObject *GetNextRenderObject(struct RenderObject *object) {
+LEGO_EXPORT MapElement *GetNextRenderObject(MapElement *object) {
     int x;
     int y;
 
-    if (object == 0 || object->coords.word == 0) {
+    if (object == 0 || object->next.id == 0) {
         return 0;
     }
-    x = object->coords.bytes[0];
-    y = object->coords.bytes[1];
+    x = object->next.pos.x;
+    y = object->next.pos.y;
     if (x >= 0 && x < (int)lpConfig->width && y >= 0 && y < (int)lpConfig->height) {
-        return (struct RenderObject *)((char *)GameMap[y] + x * 0x14);
+        return &GameMap[y][x];
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0045a910
-LEGO_EXPORT struct RenderObject *GetFirstObjectMatching(struct RenderObjectVtable *vtable) {
-    struct RenderObject *object = GetFirstRenderObject();
+LEGO_EXPORT MapElement *GetFirstObjectMatching(Element *cls) {
+    MapElement *object = GetFirstRenderObject();
     while (object != NULL) {
-        if (object->vtable == vtable) {
+        if (object->field_0 == cls) {
             return object;
         }
         object = GetNextRenderObject(object);
@@ -812,10 +787,10 @@ LEGO_EXPORT struct RenderObject *GetFirstObjectMatching(struct RenderObjectVtabl
 }
 
 // FUNCTION: LEGOLAND 0x0045a940
-LEGO_EXPORT struct RenderObject *GetNextObjectMatching(struct RenderObject *object, struct RenderObjectVtable *vtable) {
+LEGO_EXPORT MapElement *GetNextObjectMatching(MapElement *object, Element *cls) {
     object = GetNextRenderObject(object);
     while (object != NULL) {
-        if (object->vtable == vtable) {
+        if (object->field_0 == cls) {
             return object;
         }
         object = GetNextRenderObject(object);

@@ -15,21 +15,6 @@
 #include "obj_instance.h"
 #include "objclass.h"
 
-struct ObjectClass {
-    struct ObjectClass *next;
-    unsigned int field_4;
-    unsigned int field_8;
-    unsigned char pad_c[0x1c - 0xc];
-    unsigned int field_1c;
-    short flags;
-    unsigned char pad_22[0x36 - 0x22];
-    short field_36;
-    short field_38;
-    unsigned char pad_3a[0xc8 - 0x3a];
-    void *counters;
-    unsigned char pad_cc[0xd0 - 0xcc];
-};
-
 struct ObjClassNames {
     char *name;
     unsigned char pad_4[0xc - 0x4];
@@ -78,10 +63,10 @@ struct EditObject {
 
 struct ClassRideNode {
     struct ClassRideNode *next;
-    unsigned int field_4;
+    void *ride;
     unsigned int field_8;
     unsigned char pad_c[0x14 - 0xc];
-    unsigned int field_14;
+    int score;
     unsigned char pad_18[0x20 - 0x18];
 };
 
@@ -107,15 +92,6 @@ struct RideStats {
     /* 0x34 */ short base_code;
     /* 0x36 */ unsigned char pad_36[2];
     /* 0x38 */ short rating;
-};
-
-struct ObjInstance {
-    unsigned int field_0;
-    unsigned int field_4;
-    unsigned int field_8;
-    unsigned char pad_c[0xe - 0xc];
-    unsigned short uid;
-    unsigned int field_10;
 };
 
 struct FootprintNode {
@@ -150,7 +126,7 @@ struct ObjClassInfo {
 
 struct InfoNode {
     /* 0x00 */ struct InfoNode *next;
-    /* 0x04 */ int classid;
+    /* 0x04 */ void *classid; /* the object's class (Ride) */
     /* 0x08 */ short coords;
     /* 0x0a */ unsigned char pad_a[0xc - 0xa];
     /* 0x0c */ int x;
@@ -162,19 +138,19 @@ struct InfoNode {
 };
 
 // FUNCTION: LEGOLAND 0x00480990
-LEGO_EXPORT struct ObjectClass *AddNewObjectClass(void) {
-    struct ObjectClass *cls;
+LEGO_EXPORT struct Ride *AddNewObjectClass(void) {
+    struct Ride *cls;
 
-    cls = (struct ObjectClass *)malloc(0xd0);
-    memset(cls, 0, 0xd0);
+    cls = malloc(sizeof(struct Ride));
+    memset(cls, 0, sizeof(struct Ride));
     if (cls == 0) {
         return cls;
     }
     cls->next = ObjectClassList;
     ObjectClassList = cls;
-    cls->field_4 = 0;
+    cls->instances = NULL;
     cls->field_8 = 0;
-    cls->field_1c = 0;
+    cls->flags = 0;
     return cls;
 }
 
@@ -340,7 +316,7 @@ LEGO_EXPORT void SetStandardCallbacks(struct CallbackTable *table) {
 
 // FUNCTION: LEGOLAND 0x00480d10
 LEGO_EXPORT void ClearObjectCounters(void) {
-    struct ObjectClass *cls;
+    struct Ride *cls;
 
     for (cls = ObjectClassList; cls != 0; cls = cls->next) {
         cls->field_8 = 0;
@@ -404,10 +380,10 @@ LEGO_EXPORT unsigned int GetObjRepairCost(unsigned int param_1, unsigned int par
 
 // FUNCTION: LEGOLAND 0x00480e10
 LEGO_EXPORT void AllocBlokeCounters(unsigned int size) {
-    struct ObjectClass *cls;
+    struct Ride *cls;
 
     for (cls = ObjectClassList; cls != 0; cls = cls->next) {
-        if (cls->flags != 0 && cls->flags != 2) {
+        if (cls->type != 0 && cls->type != 2) {
             cls->counters = malloc(size);
         } else {
             cls->counters = 0;
@@ -417,7 +393,7 @@ LEGO_EXPORT void AllocBlokeCounters(unsigned int size) {
 
 // FUNCTION: LEGOLAND 0x00480e60
 LEGO_EXPORT void FreeBlokeCounters(void) {
-    struct ObjectClass *cls;
+    struct Ride *cls;
 
     for (cls = ObjectClassList; cls != 0; cls = cls->next) {
         if (cls->counters != 0) {
@@ -429,30 +405,30 @@ LEGO_EXPORT void FreeBlokeCounters(void) {
 
 // FUNCTION: LEGOLAND 0x00480e90
 LEGO_EXPORT void ClearBlokeCounters(unsigned int index) {
-    struct ObjectClass *cls;
+    struct Ride *cls;
 
     for (cls = ObjectClassList; cls != 0; cls = cls->next) {
         if (cls->counters != 0) {
-            ((unsigned char *)cls->counters)[index] = 0;
+            cls->counters[index] = 0;
         }
     }
 }
 
 // FUNCTION: LEGOLAND 0x00480ec0
-LEGO_EXPORT void IncrementBlokeCounter(struct ObjectClass *cls, unsigned int index) {
+LEGO_EXPORT void IncrementBlokeCounter(struct Ride *cls, unsigned int index) {
     unsigned char *counters;
 
-    counters = (unsigned char *)cls->counters;
+    counters = cls->counters;
     if (counters != 0) {
         counters[index]++;
     }
 }
 
 // FUNCTION: LEGOLAND 0x00480ee0
-LEGO_EXPORT int GetBlokeCounter(struct ObjectClass *cls, int index) {
+LEGO_EXPORT int GetBlokeCounter(struct Ride *cls, int index) {
     unsigned char *counters;
 
-    counters = (unsigned char *)cls->counters;
+    counters = cls->counters;
     if (counters != 0) {
         return counters[index];
     }
@@ -653,7 +629,7 @@ LEGO_EXPORT void BuildObjInfoList(void) {
             cls = origin->field_0->data;
             if (cls->type != 0 && cls->type != 2 && (origin->flags & 0x400) == 0) {
                 for (node = DAT_00669248; node != NULL; node = node->next) {
-                    if (node->classid == (int)cls) {
+                    if (node->classid == cls) {
                         break;
                     }
                 }
@@ -668,7 +644,7 @@ LEGO_EXPORT void BuildObjInfoList(void) {
                     node = (struct InfoNode *)malloc(sizeof(struct InfoNode));
                     node->next = DAT_00669248;
                     DAT_00669248 = node;
-                    node->classid = (int)cls;
+                    node->classid = cls;
                     node->coords = tile.id;
                     node->x = cls->field_c + at.x;
                     node->y = cls->field_10 + at.y;
@@ -696,10 +672,10 @@ LEGO_EXPORT void BuildObjInfoList(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00481410
-LEGO_EXPORT int CalculateViewRideCode(int param_1, struct ObjectClass *param_2, int param_3) {
+LEGO_EXPORT int CalculateViewRideCode(int param_1, struct Ride *param_2, int param_3) {
     int value;
 
-    value = param_2->field_38;
+    value = param_2->intensity;
     if (value > param_1) {
         value = (value - param_1) * 3;
     } else {
@@ -712,9 +688,9 @@ LEGO_EXPORT int CalculateViewRideCode(int param_1, struct ObjectClass *param_2, 
         value = 100;
     }
     if (param_3 != 0) {
-        return ((4 - (1 << param_3)) * 0x19 + param_2->field_36) - value;
+        return ((4 - (1 << param_3)) * 0x19 + param_2->value) - value;
     }
-    return (param_2->field_36 - value) + 100;
+    return (param_2->value - value) + 100;
 }
 
 // FUNCTION: LEGOLAND 0x00481480
@@ -737,20 +713,16 @@ LEGO_EXPORT unsigned int CalculateRideCode(unsigned int param_1, struct RideStat
 }
 
 // FUNCTION: LEGOLAND 0x004814c0
-LEGO_EXPORT unsigned int Calc_Item_Attractiveness(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
-    struct ObjectClass *item;
-    struct Bloke *bloke;
+LEGO_EXPORT int Calc_Item_Attractiveness(struct Ride *item, struct Bloke *bloke, int param_3) {
     unsigned int fatigue;
     unsigned char category;
     int rating;
     int blokenum;
     int counter;
 
-    item = (struct ObjectClass *)param_1;
-    bloke = (struct Bloke *)param_2;
     fatigue = bloke->field_7e;
     category = FUN_0044eb10(bloke);
-    rating = item->field_38;
+    rating = item->intensity;
     blokenum = GetBlokeNum(bloke);
     counter = GetBlokeCounter(item, blokenum);
     if ((int)fatigue < rating) {
@@ -763,23 +735,23 @@ LEGO_EXPORT unsigned int Calc_Item_Attractiveness(unsigned int param_1, unsigned
         rating = 0;
     }
     if (counter == 0) {
-        rating = (item->field_36 - rating) + 100;
+        rating = (item->value - rating) + 100;
     } else {
-        rating = ((4 - (1 << (counter & 0x1f))) * 0x19 + item->field_36) - rating;
+        rating = ((4 - (1 << (counter & 0x1f))) * 0x19 + item->value) - rating;
     }
     switch (category) {
     case 0:
-        if (item->flags == 5) {
+        if (item->type == 5) {
             return -100;
         }
         break;
     case 1:
-        if (item->flags == 5 && param_3 == 0) {
+        if (item->type == 5 && param_3 == 0) {
             return -100;
         }
         break;
     case 2:
-        if (item->flags == 5) {
+        if (item->type == 5) {
             if (rating < 0x14) {
                 rating = 0x14;
             }
@@ -790,7 +762,7 @@ LEGO_EXPORT unsigned int Calc_Item_Attractiveness(unsigned int param_1, unsigned
         break;
     case 3:
     case 4:
-        if (item->flags == 5) {
+        if (item->type == 5) {
             if (rating < 0x14) {
                 rating = 0x32;
             }
@@ -802,16 +774,16 @@ LEGO_EXPORT unsigned int Calc_Item_Attractiveness(unsigned int param_1, unsigned
 }
 
 // FUNCTION: LEGOLAND 0x004815e0
-LEGO_EXPORT void CalculateRideCodes(unsigned int param_1) {
+LEGO_EXPORT void CalculateRideCodes(struct Bloke *bloke) {
     struct ClassRideNode *node;
 
     for (node = DAT_00669248; node != 0; node = node->next) {
-        node->field_14 = Calc_Item_Attractiveness(node->field_4, param_1, 0);
+        node->score = Calc_Item_Attractiveness(node->ride, bloke, 0);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00481610
-LEGO_EXPORT int ShuffleObjKeys(int *param_1, void **param_2) {
+LEGO_EXPORT int ShuffleObjKeys(struct Point *goal, struct Ride **ride) {
     struct InfoNode **slot;
     struct InfoNode *node;
     struct InfoNode *next;
@@ -823,9 +795,9 @@ LEGO_EXPORT int ShuffleObjKeys(int *param_1, void **param_2) {
             node = next->next;
             if ((unsigned int)node == DAT_0066924c) {
                 DAT_0066924c = (unsigned int)next;
-                param_1[0] = next->x << 8;
-                param_1[1] = next->y << 8;
-                *param_2 = (void *)next->classid;
+                goal->x = next->x << 8;
+                goal->y = next->y << 8;
+                *ride = next->classid;
                 return 1;
             }
             if ((int)node->sort_key < (int)next->sort_key) {
@@ -851,7 +823,7 @@ LEGO_EXPORT void ResetBestPtr(void) {
 LEGO_EXPORT struct ObjInstance *CreateObjectInstance(unsigned int param_1, unsigned short *param_2) {
     struct ObjInstance *obj;
 
-    obj = (struct ObjInstance *)malloc(sizeof(struct ObjInstance));
+    obj = malloc(sizeof(struct ObjInstance));
     if (obj != 0) {
         memset(obj, 0, sizeof(struct ObjInstance));
         obj->uid = *param_2;

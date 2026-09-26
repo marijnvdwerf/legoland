@@ -752,7 +752,7 @@ LEGO_EXPORT void PutWorkerOnRide(struct Worker *worker, int *object) {
         passenger->person = worker->field_4;
         worker->flags |= 0x20;
         passenger->field_c = (short)object[1];
-        PutBlokeInList(*(struct BlokeList **)(*(char **)object + 0xc), (struct Bloke *)passenger);
+        PutBlokeInList(*(struct Ride **)(*(char **)object + 0xc), (struct RideNode *)passenger);
     }
 }
 
@@ -2040,13 +2040,13 @@ LEGO_EXPORT void Mechanics_Repair(struct Worker *worker) {
 void FUN_0049c140(void) {
     struct Worker *cur;
     struct Worker *node;
-    struct BlokeList *list;
+    struct Ride *list;
     void *bnode;
     int count;
     struct BlokeSave rec;
     char *person;
 
-    list = (struct BlokeList *)ElemID("POTTING SHED")->data;
+    list = ElemID("POTTING SHED")->data;
     count = 0;
     node = GardenerList;
     do {
@@ -2111,7 +2111,7 @@ void FUN_0049c140(void) {
         } while (cur->flags_c != 5);
         for (bnode = *(void **)((char *)list + 0xcc); bnode != 0; bnode = *(void **)bnode) {
             if (*(struct Worker **)((char *)bnode + 8) == cur) {
-                RemoveBlokeFromList(list, (struct Bloke *)bnode);
+                RemoveBlokeFromList(list, (struct RideNode *)bnode);
                 break;
             }
         }
@@ -2213,13 +2213,13 @@ void FUN_0049c3c0(void) {
 void FUN_0049c630(void) {
     struct Worker *cur;
     struct Worker *node;
-    struct BlokeList *list;
+    struct Ride *list;
     void *bnode;
     int count;
     struct BlokeSave rec;
     char *person;
 
-    list = (struct BlokeList *)ElemID("MECHANICS HUT")->data;
+    list = ElemID("MECHANICS HUT")->data;
     count = 0;
     node = MechanicList;
     do {
@@ -2284,7 +2284,7 @@ void FUN_0049c630(void) {
         } while (cur->flags_c != 5);
         for (bnode = *(void **)((char *)list + 0xcc); bnode != 0; bnode = *(void **)bnode) {
             if (*(struct Worker **)((char *)bnode + 8) == cur) {
-                RemoveBlokeFromList(list, (struct Bloke *)bnode);
+                RemoveBlokeFromList(list, (struct RideNode *)bnode);
                 break;
             }
         }

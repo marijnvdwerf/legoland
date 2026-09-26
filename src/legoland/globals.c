@@ -454,22 +454,13 @@ char *DAT_004b81d4 = ".\\graphics\\icons\\";
 char *DAT_004b81d8 = ".\\graphics\\models\\";
 
 // GLOBAL: LEGOLAND 0x004b8318
-int DAT_004b8318;
-
-// GLOBAL: LEGOLAND 0x004b831c
-int DAT_004b831c;
+struct Point DAT_004b8318; /* offset of the park entrance walk-in start */
 
 // GLOBAL: LEGOLAND 0x004b8320
-int DAT_004b8320;
-
-// GLOBAL: LEGOLAND 0x004b8324
-int DAT_004b8324;
+struct Point DAT_004b8320; /* park exit (goal of leaving blokes) */
 
 // GLOBAL: LEGOLAND 0x004b8328
-int DAT_004b8328;
-
-// GLOBAL: LEGOLAND 0x004b832c
-int DAT_004b832c;
+struct Point DAT_004b8328; /* step past the exit */
 
 // GLOBAL: LEGOLAND 0x004b8334
 int DAT_004b8334[4] = {0}; /* bloke tiredness thresholds */
@@ -2922,7 +2913,7 @@ HWND DAT_00669210;
 unsigned int DAT_00669238;
 
 // GLOBAL: LEGOLAND 0x00669240
-LEGO_EXPORT void *ObjectClassList;
+LEGO_EXPORT struct Ride *ObjectClassList;
 
 // GLOBAL: LEGOLAND 0x00669244
 struct LibraryNode *DAT_00669244;

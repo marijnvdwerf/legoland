@@ -100,11 +100,17 @@ struct SpaceTowerSeatData {
     /* 0x10 */ int field_10;
 };
 
+typedef struct MapElement MapElement;
 struct MapElement {
     /* 0x00 */ struct Element *field_0; /* class of the object on this tile */
-    /* 0x04 */ unsigned char field_4;
-    /* 0x05 */ unsigned char field_5;
-    /* 0x06 */ unsigned short field_6;
+    /* 0x04 */ union {
+        struct {
+            unsigned char field_4;
+            unsigned char field_5;
+        };
+        TileId anchor; /* tile of the object's origin */
+    };
+    /* 0x06 */ TileId next; /* anchor tile of the next object on the map */
     /* 0x08 */ unsigned short field_8;
     /* 0x0a */ unsigned short field_a;
     /* 0x0c */ unsigned short flags;
@@ -622,17 +628,11 @@ extern char *DAT_004b81d4;
 // 0x004b81d8
 extern char *DAT_004b81d8;
 // 0x004b8318
-extern int DAT_004b8318;
-// 0x004b831c
-extern int DAT_004b831c;
+extern struct Point DAT_004b8318;
 // 0x004b8320
-extern int DAT_004b8320;
-// 0x004b8324
-extern int DAT_004b8324;
+extern struct Point DAT_004b8320;
 // 0x004b8328
-extern int DAT_004b8328;
-// 0x004b832c
-extern int DAT_004b832c;
+extern struct Point DAT_004b8328;
 // 0x004b8334
 extern int DAT_004b8334[4];
 // 0x004b8344
@@ -2249,7 +2249,7 @@ extern HWND DAT_00669210;
 // 0x00669238
 extern unsigned int DAT_00669238;
 // 0x00669240
-extern LEGO_EXPORT void *ObjectClassList;
+extern LEGO_EXPORT struct Ride *ObjectClassList;
 // 0x00669244
 struct LibraryNode;
 extern struct LibraryNode *DAT_00669244;

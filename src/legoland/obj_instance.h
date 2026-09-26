@@ -10,6 +10,17 @@ struct Person;
 
 /* Map tile id as stored per bloke on a ride: x/y bytes, compared as one 16-bit value. */
 
+/* One placed instance of an object class; linked from Ride.instances. */
+struct ObjInstance {
+    /* 0x00 */ struct ObjInstance *next;
+    /* 0x04 */ unsigned int field_4;
+    /* 0x08 */ unsigned int field_8;
+    /* 0x0c */ unsigned short flags;
+    /* 0x0e */ unsigned short uid; /* anchor tile id */
+    /* 0x10 */ unsigned int field_10;
+};
+typedef struct ObjInstance ObjInstance;
+
 /* One bloke on a ride; linked from Ride.riders. */
 struct RideNode {
     /* 0x00 */ struct RideNode *next;
@@ -22,7 +33,9 @@ typedef struct RideNode RideNode;
 
 /* A placed ride/attraction (the object behind RideObject.ride). */
 struct Ride {
-    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x00 */ struct Ride *next; /* ObjectClassList */
+    /* 0x04 */ struct ObjInstance *instances;
+    /* 0x08 */ unsigned int field_8;
     /* 0x0c */ unsigned int x;
     /* 0x10 */ unsigned int y;
     /* 0x14 */ int field_14;
@@ -34,15 +47,20 @@ struct Ride {
     /* 0x25 */ char field_25;
     /* 0x26 */ unsigned char pad_26[0x2a - 0x26];
     /* 0x2a */ short range;
-    /* 0x2c */ unsigned char pad_2c[0x36 - 0x2c];
+    /* 0x2c */ unsigned char pad_2c[0x2e - 0x2c];
+    /* 0x2e */ short seats; /* riders allowed per tile */
+    /* 0x30 */ unsigned char pad_30[0x36 - 0x30];
     /* 0x36 */ short value;
-    /* 0x38 */ unsigned char pad_38[0x3c - 0x38];
+    /* 0x38 */ short intensity; /* compared with a bloke's thrill preference */
+    /* 0x3a */ short field_3a;
     /* 0x3c */ struct Footprint footprint;
     /* 0x50 */ unsigned char pad_50[0x64 - 0x50];
     /* 0x64 */ struct Sprite *layer;
-    /* 0x68 */ unsigned char pad_68[0xc4 - 0x68];
+    /* 0x68 */ unsigned char pad_68[0x78 - 0x68];
+    /* 0x78 */ char *name;
+    /* 0x7c */ unsigned char pad_7c[0xc4 - 0x7c];
     /* 0xc4 */ struct Element *element; /* this ride's LLIDB element */
-    /* 0xc8 */ unsigned char pad_c8[0xcc - 0xc8];
+    /* 0xc8 */ unsigned char *counters; /* per-bloke visit counts */
     /* 0xcc */ struct RideNode *riders;
 };
 typedef struct Ride Ride;
@@ -58,9 +76,8 @@ struct RideObject {
     /* 0x10 */ unsigned int field_10;
 };
 typedef struct RideObject RideObject;
-struct ObjClassNode;
 struct ObjInstance;
-struct ObjClassKey;
+struct Point;
 struct ResFile;
 struct InstanceNode;
 
@@ -69,14 +86,13 @@ LEGO_EXPORT void RemoveInstanceFromList(struct InstanceNode *node);
 
 char *FUN_00489e60(struct ResFile *file, char *dest, int maxlen);
 
-int FUN_00489f00(const struct ObjClassKey *key);
-int FUN_00489f50(const struct ObjClassKey *key);
-int FUN_00489f90(const struct ObjClassKey *key);
-unsigned short FUN_00489fd0(const struct ObjClassKey *key);
+int FUN_00489f00(const struct Point *pos);
+int FUN_00489f50(const struct Point *pos);
+int FUN_00489f90(const struct Point *pos);
+unsigned short FUN_00489fd0(const struct Point *pos);
 
-LEGO_EXPORT struct ObjInstance *GetInstanceOfClass(struct ObjClassNode *cls, const unsigned short *uid);
-struct ClassOffset;
-LEGO_EXPORT int GetObjectUID(int *param_1, struct ClassOffset *param_2);
+LEGO_EXPORT struct ObjInstance *GetInstanceOfClass(struct Ride *ride, const TileId *tile);
+LEGO_EXPORT TileId GetObjectUID(struct Point *pos, struct Ride *ride);
 void FUN_00489ee0(void);
 void FUN_0048a040(void);
 LEGO_EXPORT void RemoveBlokeFromRide(struct Ride *ride, struct RideNode *node);

@@ -858,7 +858,7 @@ LEGO_EXPORT void Ride_SetFlagToNotLetAnyoneOn(void *param_1) {
     } else {
         cell = 0;
     }
-    instance = (struct RideInstance *)GetInstanceOfClass(cell->vtable->class_node, (const unsigned short *)param_1);
+    instance = (struct RideInstance *)GetInstanceOfClass((struct Ride *)cell->vtable->class_node, (const TileId *)param_1);
     if (instance != 0) {
         *(unsigned char *)&instance->flags |= 2;
     }
@@ -877,7 +877,7 @@ LEGO_EXPORT void Ride_ClearFlagToNotLetAnyoneOn(void *param_1) {
     } else {
         cell = 0;
     }
-    instance = (struct RideInstance *)GetInstanceOfClass(cell->vtable->class_node, (const unsigned short *)param_1);
+    instance = (struct RideInstance *)GetInstanceOfClass((struct Ride *)cell->vtable->class_node, (const TileId *)param_1);
     if (instance != 0) {
         instance->flags &= 0xfffd;
     }

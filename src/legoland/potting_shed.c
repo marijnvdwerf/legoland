@@ -85,7 +85,7 @@ void FUN_0043cf00(struct RideObject *obj) {
             break;
         case 1:
             bloke->flags &= 0xffd7;
-            RemoveBlokeFromList((struct BlokeList *)shed, (struct Bloke *)node);
+            RemoveBlokeFromList((struct Ride *)shed, (struct RideNode *)node);
             NewLongTermAction(bloke, 0x10);
             free(node);
             break;
@@ -99,7 +99,7 @@ void FUN_0043cf00(struct RideObject *obj) {
             bloke->param_action++;
             break;
         case 101:
-            RemoveBlokeFromList((struct BlokeList *)shed, (struct Bloke *)node);
+            RemoveBlokeFromList((struct Ride *)shed, (struct RideNode *)node);
             bloke->field_36 = 100;
             RefundGardener();
             break;

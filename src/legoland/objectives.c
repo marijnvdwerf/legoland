@@ -1148,18 +1148,18 @@ int FUN_00469c80(struct MapRectArg *arg) {
             case 0:
                 next = current;
                 do {
-                    next = (struct SweepInstance *)GetNextRenderObject((struct RenderObject *)next);
+                    next = (struct SweepInstance *)GetNextRenderObject((MapElement *)next);
                 } while (next != NULL && (cls = next->object->cls, power = FindObjectsPower(cls), cls->field_58 != NULL) &&
                     (cls->field_58[8] & 0x10) != 0 && power <= 0);
                 break;
             case 1:
                 next = current;
                 do {
-                    next = (struct SweepInstance *)GetNextRenderObject((struct RenderObject *)next);
+                    next = (struct SweepInstance *)GetNextRenderObject((MapElement *)next);
                 } while (next != NULL && FindObjectsPower(next->object->cls) <= 0);
                 break;
             case 2:
-                next = (struct SweepInstance *)GetNextRenderObject((struct RenderObject *)current);
+                next = (struct SweepInstance *)GetNextRenderObject((MapElement *)current);
                 break;
             }
             if (current->flags_c & 0x80) {

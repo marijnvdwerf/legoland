@@ -141,7 +141,7 @@ void FUN_00481ee0(void) {
 void FUN_00481f00(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482050
-LEGO_EXPORT int SuggestNextMove(int *param_1, int *param_2, int *param_3) { STUB(); }
+LEGO_EXPORT int SuggestNextMove(struct Point *pos, struct Point *goal, struct Point *out) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x004821c0
 void FUN_004821c0(void) {
@@ -285,7 +285,7 @@ int FUN_00482430(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004824d0
-LEGO_EXPORT int PTPSuggestNextMove(int *param_1, int *param_2, int *param_3) {
+LEGO_EXPORT int PTPSuggestNextMove(struct Point *pos, struct Point *goal, struct Point *out) {
     int start_x;
     int start_y;
     int goal_x;
@@ -293,10 +293,10 @@ LEGO_EXPORT int PTPSuggestNextMove(int *param_1, int *param_2, int *param_3) {
     int wave;
     struct DirNode *node;
 
-    start_x = param_1[0] >> 8;
-    start_y = param_1[1] >> 8;
-    goal_x = param_2[0] >> 8;
-    goal_y = param_2[1] >> 8;
+    start_x = pos->x >> 8;
+    start_y = pos->y >> 8;
+    goal_x = goal->x >> 8;
+    goal_y = goal->y >> 8;
 
     FUN_004821e0();
     FUN_00482210();
@@ -315,14 +315,14 @@ LEGO_EXPORT int PTPSuggestNextMove(int *param_1, int *param_2, int *param_3) {
             if (node->x == goal_x && node->y == goal_y) {
                 DAT_0066b454 = node;
                 if (FUN_00482430()) {
-                    param_3[0] = param_2[0];
-                    param_3[1] = param_2[1];
+                    out->x = goal->x;
+                    out->y = goal->y;
                     FUN_004821e0();
                     FUN_00482210();
                     return 2;
                 }
-                param_3[0] = (DAT_0066b458->x << 8) + 0x80;
-                param_3[1] = (DAT_0066b458->y << 8) + 0x80;
+                out->x = (DAT_0066b458->x << 8) + 0x80;
+                out->y = (DAT_0066b458->y << 8) + 0x80;
                 FUN_004821e0();
                 FUN_00482210();
                 return 1;
@@ -552,7 +552,7 @@ void FUN_00482a90(void) {
     }
 
     match = (struct MatchResult *)GetFirstObjectMatching(
-        (struct RenderObjectVtable *)DAT_006661c4);
+        (Element *)DAT_006661c4);
     obj = ((struct ElemInfo *)DAT_006661c4)->obj;
 
     DAT_0066b460 = match->field_4 + obj->field_3c - 1;

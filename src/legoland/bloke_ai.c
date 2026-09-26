@@ -1,6 +1,7 @@
 #include "bloke_ai.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "bloke.h"
 #include "debug_alloc.h"
 #include "gamemap.h"
@@ -17,32 +18,6 @@
 #include "screens.h"
 #include "worker.h"
 #include "worker_mouse.h"
-
-struct BlokeList {
-    unsigned char pad_0[0x2e];
-    short field_2e;
-    unsigned char pad_30[0xcc - 0x30];
-    struct Bloke *head;
-};
-
-struct BlokeRideState {
-    unsigned char pad_0[0x4];
-    int *ride;
-    unsigned char pad_8[0xe - 0x8];
-    unsigned short field_e;
-    unsigned char pad_10[0x14 - 0x10];
-    struct ClassNode *field_14;
-    unsigned char pad_18[0x54 - 0x18];
-    unsigned int field_54;
-    int field_58;
-    unsigned char pad_5c[0x60 - 0x5c];
-    unsigned char field_60;
-    unsigned char pad_61[0x1];
-    unsigned short flags;
-    unsigned char field_64;
-    unsigned char pad_65[0x73 - 0x65];
-    unsigned char field_73;
-};
 
 // FUNCTION: LEGOLAND 0x0044e760
 LEGO_EXPORT void NewLongTermAction(struct Bloke *bloke, unsigned short action) {
@@ -169,8 +144,8 @@ LEGO_EXPORT void InitBlokeAI(struct Bloke *bloke) {
     bloke->field_7e = Rand_Tween(0, 140) - 0x14;
     bloke->field_80 = Rand_Tween(5, 10);
     bloke->field_7c = Rand_Tween(0, DAT_004b8334[1]);
-    bloke->field_14 = 0;
-    bloke->field_18 = 0;
+    bloke->target = NULL;
+    bloke->last_ride = NULL;
     bloke->field_81 = DAT_004b8344;
     DAT_004b8344++;
     if (DAT_004b8344 > 'Z') {
@@ -275,37 +250,29 @@ LEGO_EXPORT void PopLongTermAction(struct Bloke *bloke) {
     bloke->param_action = param;
 }
 
-struct RideOrigin {
-    unsigned char pad_0[0x44];
-    int field_44;
-    int field_48;
-};
-
 // FUNCTION: LEGOLAND 0x0044ebf0
-void FUN_0044ebf0(struct Bloke *bloke) {
-    int obj;
-    struct RideOrigin *origin;
-    int ty;
-    char dir;
+void FUN_0044ebf0(Bloke *bloke) {
+    MapElement *object;
+    Ride *ride;
+    unsigned char dir;
 
     switch (bloke->param_action) {
     case 0:
-        obj = (int)GetFirstObjectMatching((struct RenderObjectVtable *)DAT_006661c4);
-        origin = (struct RideOrigin *)*(int *)(DAT_006661c4 + 0xc);
-        *(unsigned char *)((char *)bloke + 0x62) |= 8;
-        bloke->dest.x = (*(unsigned char *)(obj + 4) + 6 + origin->field_44) * 0x100;
-        ty = ((*(unsigned char *)(obj + 5) - 5) + origin->field_48) * 0x100;
-        bloke->dest.y = ty;
-        bloke->pos.x = bloke->dest.x + DAT_004b8318;
-        bloke->pos.y = ty + DAT_004b831c;
-        dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+        object = GetFirstObjectMatching(DAT_006661c4);
+        ride = DAT_006661c4->data;
+        bloke->flags |= 8;
+        bloke->dest.x = (object->field_4 + ride->footprint.x1 + 6) << 8;
+        bloke->dest.y = (object->field_5 + ride->footprint.y1 - 5) << 8;
+        bloke->pos.x = bloke->dest.x + DAT_004b8318.x;
+        bloke->pos.y = bloke->dest.y + DAT_004b8318.y;
+        dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
         bloke->field_e = 7;
-        bloke->field_72 = ((unsigned char)(dir + 0x10) >> 5) + 3;
+        bloke->field_72 = (dir >> 5) + 3;
         bloke->param_action++;
         break;
     case 1:
-        bloke->field_14 = DAT_006661c4;
-        if (FUN_0044f4a0(bloke, *(int *)(DAT_006661c4 + 0xc), 0) != 0) {
+        bloke->target = DAT_006661c4;
+        if (FUN_0044f4a0(bloke, DAT_006661c4->data, 0) != 0) {
             bloke->param_action++;
             PushLongTermAction(bloke);
             NewLongTermAction(bloke, 5);
@@ -335,46 +302,40 @@ void FUN_0044ed00(char *msg) {
 }
 
 // FUNCTION: LEGOLAND 0x0044ed70
-void FUN_0044ed70(struct Bloke *bloke) {
-    int obj;
-    int iface;
-    char dir;
-    int result;
-    int tx;
-    int ty;
-    int out[2];
+void FUN_0044ed70(Bloke *bloke) {
+    MapElement *object;
+    Ride *ride;
+    unsigned char dir;
+    struct Point out;
     char msg[100];
 
     switch (bloke->param_action) {
     case 0:
-        *(unsigned char *)((char *)bloke + 0x62) |= 8;
+        bloke->flags |= 8;
         bloke->field_82 = 0;
         bloke->param_action = 1;
         /* fallthrough */
     case 1:
-        result = SuggestNextMove(&bloke->pos.x, &DAT_004b8320, out);
-        switch (result) {
-        case 1:
-            bloke->dest.x = out[0];
-            bloke->dest.y = out[1];
-            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_e = 6;
-            bloke->field_73 = dir + 0x10;
-            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
-            if (bloke->field_64 != 0) {
-                bloke->field_e = 4;
-                bloke->param_action = 2;
+        switch (SuggestNextMove(&bloke->pos, &DAT_004b8320, &out)) {
+        case -2:
+            bloke->param_action = 5;
+            return;
+        case -3:
+        case -1:
+        case 0:
+            bloke->field_e = 4;
+            bloke->param_action = 2;
+            if (++bloke->field_82 == 8) {
+                bloke->param_action = 5;
                 return;
             }
-            bloke->param_action = 0;
-            return;
+            break;
         case 2:
-            bloke->dest.x = out[0];
-            bloke->dest.y = out[1];
-            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+            bloke->dest = out;
+            dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
             bloke->field_e = 6;
-            bloke->field_73 = dir + 0x10;
-            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            bloke->field_73 = dir;
+            NewDirForAction(bloke, (dir >> 5) + 3);
             if (bloke->field_64 != 0) {
                 bloke->field_e = 4;
                 bloke->param_action = 2;
@@ -382,56 +343,53 @@ void FUN_0044ed70(struct Bloke *bloke) {
             }
             bloke->param_action = 10;
             return;
-        case -3:
-        case -1:
-        case 0:
-            bloke->field_e = 4;
-            bloke->field_82++;
-            bloke->param_action = 2;
-            if (bloke->field_82 == 8) {
-                bloke->param_action = 5;
+        case 1:
+            bloke->dest = out;
+            dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
+            bloke->field_e = 6;
+            bloke->field_73 = dir;
+            NewDirForAction(bloke, (dir >> 5) + 3);
+            if (bloke->field_64 != 0) {
+                bloke->field_e = 4;
+                bloke->param_action = 2;
                 return;
             }
-            break;
-        case -2:
-            bloke->param_action = 5;
+            bloke->param_action = 0;
             return;
         }
         break;
     case 2:
-        *(unsigned char *)((char *)bloke + 0x62) |= 8;
+        bloke->flags |= 8;
         bloke->param_action = 1;
         return;
     case 5:
-        *(unsigned char *)((char *)bloke + 0x62) |= 8;
+        bloke->flags |= 8;
         // STRING: LEGOLAND 0x004b8434
         sprintf(msg, "Stuck, Routing Point To Point...");
         FUN_0044ed00(msg);
-        result = PTPSuggestNextMove(&bloke->pos.x, &DAT_004b8320, out);
-        if (result == 0) {
-            bloke->field_e = 4;
-            bloke->param_action = 6;
-            return;
-        }
-        if (result == 1) {
-            bloke->dest.x = out[0];
-            bloke->dest.y = out[1];
-            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+        switch (PTPSuggestNextMove(&bloke->pos, &DAT_004b8320, &out)) {
+        case 2:
+            bloke->dest = out;
+            dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
             bloke->field_e = 0xb;
-            bloke->field_73 = dir + 0x10;
-            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            bloke->field_73 = dir;
+            NewDirForAction(bloke, (dir >> 5) + 3);
+            bloke->param_action = (bloke->field_64 & 1) ? 6 : 10;
+            return;
+        case 1:
+            bloke->dest = out;
+            dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
+            bloke->field_e = 0xb;
+            bloke->field_73 = dir;
+            NewDirForAction(bloke, (dir >> 5) + 3);
             if ((bloke->field_64 & 1) != 0) {
                 bloke->param_action = 6;
                 return;
             }
-        } else if (result == 2) {
-            bloke->dest.x = out[0];
-            bloke->dest.y = out[1];
-            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_e = 0xb;
-            bloke->field_73 = dir + 0x10;
-            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
-            bloke->param_action = (-((bloke->field_64 & 1) != 0) & 0xfc) + 10;
+            break;
+        case 0:
+            bloke->field_e = 4;
+            bloke->param_action = 6;
             return;
         }
         break;
@@ -443,41 +401,37 @@ void FUN_0044ed70(struct Bloke *bloke) {
         bloke->param_action = 5;
         return;
     case 10:
-        if (FUN_0044f4a0(bloke, *(int *)(bloke->field_14 + 0xc), 0) != 0) {
-            *(unsigned char *)((char *)bloke + 0x62) |= 8;
-            bloke->field_14 = DAT_006661c4;
+        if (FUN_0044f4a0(bloke, DAT_006661c4->data, 0) != 0) {
+            bloke->flags |= 8;
+            bloke->target = DAT_006661c4;
             bloke->param_action++;
             PushLongTermAction(bloke);
             NewLongTermAction(bloke, 5);
             return;
         }
         break;
-    case 0xb:
-        obj = (int)GetFirstObjectMatching((struct RenderObjectVtable *)DAT_006661c4);
-        iface = *(int *)(DAT_006661c4 + 0xc);
-        bloke->dest.x = (*(unsigned char *)(obj + 4) + 6 + *(int *)(iface + 0x44)) * 0x100;
-        ty = (*(unsigned char *)(obj + 5) + 8 + *(int *)(iface + 0x40)) * 0x100;
-        bloke->dest.y = ty;
-        tx = bloke->dest.x;
-        dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+    case 11:
+        object = GetFirstObjectMatching(DAT_006661c4);
+        ride = DAT_006661c4->data;
+        bloke->dest.x = (object->field_4 + ride->footprint.x1 + 6) << 8;
+        bloke->dest.y = (object->field_5 + ride->footprint.y0 + 8) << 8;
+        dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
         bloke->field_e = 7;
-        bloke->field_73 = dir + 0x10;
-        NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+        bloke->field_73 = dir;
+        NewDirForAction(bloke, (dir >> 5) + 3);
+        bloke->param_action++;
+        break;
+    case 12:
+        RateBlokeOnLeaving(bloke->field_7a);
+        bloke->dest.x += DAT_004b8328.x;
+        bloke->dest.y += DAT_004b8328.y;
+        dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
+        bloke->field_e = 7;
+        bloke->field_73 = dir;
+        NewDirForAction(bloke, (dir >> 5) + 3);
         bloke->param_action++;
         return;
-    case 0xc:
-        RateBlokeOnLeaving((int)bloke->field_7a);
-        tx = bloke->dest.x + DAT_004b8328;
-        bloke->dest.x = tx;
-        bloke->dest.y = bloke->dest.y + DAT_004b832c;
-        ty = bloke->dest.y;
-        dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-        bloke->field_e = 7;
-        bloke->field_73 = dir + 0x10;
-        NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
-        bloke->param_action++;
-        return;
-    case 0xd:
+    case 13:
         // STRING: LEGOLAND 0x004b840c
         DBPrintf("Killing MiniFig: $%x\n", bloke);
         DestroyBloke(bloke);
@@ -490,69 +444,78 @@ void FUN_0044f170(struct Bloke *bloke) {
     bloke->field_e = 4;
 }
 
-struct MapObj {
-    unsigned char pad_0[0xc];
-    struct ClassOffset *field_c;
-};
-
-struct ClassOffset {
-    unsigned char pad_0[0xc];
-    int field_c;
-    int field_10;
-};
-
 // FUNCTION: LEGOLAND 0x0044f180
-int FUN_0044f180(int *pos, struct ClassOffset *cls) {
-    struct MapElement *element;
+int FUN_0044f180(struct Point *pos, Ride *ride) {
+    MapElement *element;
+    struct Point origin;
     int x;
     int y;
-    int row;
 
-    x = pos[0] >> 8;
-    y = pos[1] >> 8;
-    row = y - 1;
-    if (x >= 0 && x < lpConfig->width && row >= 0 && row < lpConfig->height &&
-        (element = GameMap[row] + x) != 0 && (element->flags & 0x80) != 0 && element->field_0 != 0 &&
-        ((struct MapObj *)element->field_0)->field_c == cls && element->field_4 + cls->field_c == x &&
-        element->field_5 + cls->field_10 == y) {
-        return 1;
+    x = pos->x >> 8;
+    y = pos->y >> 8;
+    if (x >= 0 && x < lpConfig->width && y - 1 >= 0 && y - 1 < lpConfig->height) {
+        element = &GameMap[y - 1][x];
+    } else {
+        element = NULL;
     }
-    row = y + 1;
-    if (x >= 0 && x < lpConfig->width && row >= 0 && row < lpConfig->height &&
-        (element = GameMap[row] + x) != 0 && (element->flags & 0x80) != 0 && element->field_0 != 0 &&
-        ((struct MapObj *)element->field_0)->field_c == cls && element->field_4 + cls->field_c == x &&
-        element->field_5 + cls->field_10 == y) {
-        return 1;
+    if (element != NULL && (element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
+        origin.x = element->field_4 + ride->x;
+        origin.y = element->field_5 + ride->y;
+        if (origin.x == x && origin.y == y) {
+            return 1;
+        }
     }
-    row = x - 1;
-    if (row >= 0 && row < lpConfig->width && y >= 0 && y < lpConfig->height &&
-        (element = GameMap[y] + row) != 0 && (element->flags & 0x80) != 0 && element->field_0 != 0 &&
-        ((struct MapObj *)element->field_0)->field_c == cls && element->field_4 + cls->field_c == x &&
-        element->field_5 + cls->field_10 == y) {
-        return 1;
+    if (x >= 0 && x < lpConfig->width && y + 1 >= 0 && y + 1 < lpConfig->height) {
+        element = &GameMap[y + 1][x];
+    } else {
+        element = NULL;
     }
-    row = x + 1;
-    if (row >= 0 && row < lpConfig->width && y >= 0 && y < lpConfig->height &&
-        (element = GameMap[y] + row) != 0 && (element->flags & 0x80) != 0 && element->field_0 != 0 &&
-        ((struct MapObj *)element->field_0)->field_c == cls && element->field_4 + cls->field_c == x &&
-        element->field_5 + cls->field_10 == y) {
-        return 1;
+    if (element != NULL && (element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
+        origin.x = element->field_4 + ride->x;
+        origin.y = element->field_5 + ride->y;
+        if (origin.x == x && origin.y == y) {
+            return 1;
+        }
+    }
+    if (x - 1 >= 0 && x - 1 < lpConfig->width && y >= 0 && y < lpConfig->height) {
+        element = &GameMap[y][x - 1];
+    } else {
+        element = NULL;
+    }
+    if (element != NULL && (element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
+        origin.x = element->field_4 + ride->x;
+        origin.y = element->field_5 + ride->y;
+        if (origin.x == x && origin.y == y) {
+            return 1;
+        }
+    }
+    if (x + 1 >= 0 && x + 1 < lpConfig->width && y >= 0 && y < lpConfig->height) {
+        element = &GameMap[y][x + 1];
+    } else {
+        element = NULL;
+    }
+    if (element != NULL && (element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
+        origin.x = element->field_4 + ride->x;
+        origin.y = element->field_5 + ride->y;
+        if (origin.x == x && origin.y == y) {
+            return 1;
+        }
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0044f360
-int FUN_0044f360(unsigned int param_1, unsigned char *param_2) {
-    struct MapElement *element;
+int FUN_0044f360(Ride *ride, TileId *tile) {
+    MapElement *element;
     int x;
     int y;
 
-    x = param_2[0];
-    y = param_2[1];
+    x = tile->pos.x;
+    y = tile->pos.y;
     if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
-        element = GameMap[y] + x;
+        element = &GameMap[y][x];
     } else {
-        element = 0;
+        element = NULL;
     }
     if ((element->flags & 0x200) != 0) {
         return 0;
@@ -564,174 +527,161 @@ int FUN_0044f360(unsigned int param_1, unsigned char *param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0044f3d0
-unsigned int FUN_0044f3d0(struct BlokeList *list, unsigned short *value) {
-    struct Bloke *node;
-    unsigned short target;
+unsigned int FUN_0044f3d0(Ride *ride, TileId *tile) {
+    RideNode *node;
+    unsigned short id;
     unsigned int count;
 
     count = 0;
-    node = list->head;
-    if (node == 0) {
+    node = ride->riders;
+    if (node == NULL) {
         return 0;
     }
-    target = *value;
+    id = tile->id;
     do {
-        if (node->action == target) {
+        if (node->tile.id == id) {
             count++;
         }
         node = node->next;
-    } while (node != 0);
+    } while (node != NULL);
     return count;
 }
 
 // FUNCTION: LEGOLAND 0x0044f400
-unsigned int FUN_0044f400(struct BlokeList *list, unsigned short *value) {
+unsigned int FUN_0044f400(Ride *ride, TileId *tile) {
     int count;
 
-    count = FUN_0044f3d0(list, value);
-    return count >= list->field_2e;
+    count = FUN_0044f3d0(ride, tile);
+    return count >= ride->seats;
 }
 
 // FUNCTION: LEGOLAND 0x0044f430
-LEGO_EXPORT void PutBlokeInList(struct BlokeList *list, struct Bloke *bloke) {
-    struct Bloke *tail;
+LEGO_EXPORT void PutBlokeInList(Ride *ride, RideNode *node) {
+    RideNode *tail;
 
-    if (list->head == 0) {
-        list->head = bloke;
+    if (ride->riders == NULL) {
+        ride->riders = node;
         return;
     }
-    tail = list->head;
-    while (tail->next != 0) {
+    tail = ride->riders;
+    while (tail->next != NULL) {
         tail = tail->next;
     }
-    tail->next = bloke;
-    bloke->prev = tail;
+    tail->next = node;
+    node->prev = tail;
 }
 
 // FUNCTION: LEGOLAND 0x0044f470
-LEGO_EXPORT void RemoveBlokeFromList(struct BlokeList *list, struct Bloke *bloke) {
-    if (bloke->prev == 0) {
-        list->head = bloke->next;
+LEGO_EXPORT void RemoveBlokeFromList(Ride *ride, RideNode *node) {
+    if (node->prev == NULL) {
+        ride->riders = node->next;
     } else {
-        bloke->prev->next = bloke->next;
+        node->prev->next = node->next;
     }
-    if (bloke->next != 0) {
-        bloke->next->prev = bloke->prev;
+    if (node->next != NULL) {
+        node->next->prev = node->prev;
     }
 }
 
 // FUNCTION: LEGOLAND 0x0044f4a0
-int FUN_0044f4a0(struct Bloke *bloke, int objclass, int param_3) {
-    int *node;
-    int obj;
-    unsigned short uid;
-    struct MapElement *element;
-    unsigned int x;
-    unsigned int y;
+int FUN_0044f4a0(Bloke *bloke, Ride *ride, int wait) {
+    RideNode *node;
+    MapElement *object;
+    MapElement *element;
+    struct Point at;
 
-    node = (int *)malloc(0x14);
-    if (node == 0) {
-        // STRING: LEGOLAND 0x004b8458
-        DBPrintf("Couldn't allocate BlokeOnRide for %s\n", *(unsigned int *)((char *)bloke + 0x78));
-        return 0;
-    }
-    obj = (int)GetFirstObjectMatching(*(struct RenderObjectVtable **)(objclass + 0xc4));
-    if (obj == 0) {
+    node = malloc(sizeof(RideNode));
+    if (node != NULL) {
+        object = GetFirstObjectMatching(ride->element);
+        if (object != NULL) {
+            at.x = object->field_4;
+            at.y = object->field_5;
+            FUN_00489f90(&at);
+            memset(node, 0, sizeof(RideNode));
+            node->rider = bloke;
+            bloke->field_58 = wait;
+            node->person = bloke->person;
+            bloke->flags |= 0x20;
+            bloke->field_e = 0;
+            bloke->field_10 = 0;
+            bloke->field_35 = 0;
+            if (ride == DAT_006661c4->data) {
+                object = GetFirstObjectMatching(DAT_006661c4);
+                node->tile.pos.x = object->field_4;
+                node->tile.pos.y = object->field_5;
+            } else {
+                node->tile = GetObjectUID(&bloke->pos, ride);
+            }
+            at.x = node->tile.pos.x;
+            at.y = node->tile.pos.y;
+            if (at.x >= 0 && at.x < lpConfig->width && at.y >= 0 && at.y < lpConfig->height) {
+                element = &GameMap[at.y][at.x];
+            } else {
+                element = NULL;
+            }
+            element->flags |= 4;
+            PutBlokeInList(ride, node);
+            DAT_00668610 |= 0x20;
+            return 1;
+        }
         // STRING: LEGOLAND 0x004b8480
-        DBPrintf("Couldn't find instance of %s\n", *(unsigned int *)((char *)bloke + 0x78));
+        DBPrintf("Couldn't find instance of %s\n", ride->name);
         return 0;
     }
-    x = *(unsigned char *)(obj + 4);
-    y = *(unsigned char *)(obj + 5);
-    FUN_00489f90((const struct ObjClassKey *)&x);
-    node[0] = 0;
-    node[1] = 0;
-    node[2] = 0;
-    node[3] = 0;
-    node[4] = 0;
-    node[2] = (int)bloke;
-    bloke->field_58 = param_3;
-    node[4] = *(int *)((char *)bloke + 4);
-    *(unsigned char *)&bloke->flags |= 0x20;
-    bloke->field_e = 0;
-    bloke->field_10 = 0;
-    bloke->field_35 = 0;
-    if (objclass == *(int *)(DAT_006661c4 + 0xc)) {
-        obj = (int)GetFirstObjectMatching((struct RenderObjectVtable *)DAT_006661c4);
-        *(unsigned char *)(node + 3) = *(unsigned char *)(obj + 4);
-        *((unsigned char *)node + 0xd) = *(unsigned char *)(obj + 5);
-    } else {
-        uid = (unsigned short)GetObjectUID((int *)((char *)bloke + 0x68), objclass);
-        *(unsigned short *)(node + 3) = uid;
-    }
-    x = *(unsigned char *)(node + 3);
-    y = *((unsigned char *)node + 0xd);
-    if (x < lpConfig->width && y < lpConfig->height) {
-        element = GameMap[y] + x;
-    } else {
-        element = 0;
-    }
-    *(unsigned char *)&element->flags |= 4;
-    PutBlokeInList((struct BlokeList *)objclass, (struct Bloke *)node);
-    DAT_00668610 |= 0x20;
-    return 1;
+    // STRING: LEGOLAND 0x004b8458
+    DBPrintf("Couldn't allocate BlokeOnRide for %s\n", ride->name);
+    return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0044f610
-void FUN_0044f610(struct Bloke *bloke) {
-    int key;
-    int rate;
-    int result;
-    int iface;
-    char dir;
-    int num;
-    int counter;
-    int rnd;
-    short sval;
-    int kind;
-    unsigned char uid[2];
-    int out[2];
+void FUN_0044f610(Bloke *bloke) {
+    Ride *candidate;
+    Ride *ride;
+    int x;
+    int y;
+    MapElement *element;
+    MapElement *object;
+    ObjInstance *instance;
+    unsigned char dir;
+    int more;
+    TileId tile;
+    struct Point out;
     char msg[100];
-    int *element;
 
     DAT_00813b08 = bloke->field_81;
     switch (bloke->param_action) {
     case 0:
         BuildObjInfoList();
-        CalculateRideCodes((unsigned int)bloke);
+        CalculateRideCodes(bloke);
         ResetBestPtr();
-        if (ShuffleObjKeys(&bloke->field_2c, (void **)&key) != 0) {
-            result = 1;
+        if (ShuffleObjKeys(&bloke->goal, &candidate) != 0) {
+            more = 1;
             do {
-                if (bloke->field_18 == *(unsigned int *)(key + 0xc4)) {
+                if (bloke->last_ride == candidate->element) {
                     // STRING: LEGOLAND 0x004b858c
-                    sprintf(msg, "I've just been on the %s.", *(unsigned int *)(key + 0x78));
+                    sprintf(msg, "I've just been on the %s.", candidate->name);
                     FUN_0044ed00(msg);
-                } else {
-                    rate = Calc_Item_Attractiveness(key, (unsigned int)bloke, 0);
-                    if (10 < rate) {
-                        // STRING: LEGOLAND 0x004b8554
-                        sprintf(msg, "(%d) I'll go to the %s", Calc_Item_Attractiveness(key, (unsigned int)bloke, 0), *(unsigned int *)(key + 0x78));
-                        bloke->field_14 = *(unsigned int *)(key + 0xc4);
-                        FUN_0044ed00(msg);
-                        bloke->param_action = 1;
-                        bloke->field_82 = 0;
-                        if (result != 0) {
-                            return;
-                        }
-                        break;
+                } else if (Calc_Item_Attractiveness(candidate, bloke, 0) > 10) {
+                    // STRING: LEGOLAND 0x004b8554
+                    sprintf(msg, "(%d) I'll go to the %s", Calc_Item_Attractiveness(candidate, bloke, 0), candidate->name);
+                    bloke->target = candidate->element;
+                    FUN_0044ed00(msg);
+                    bloke->param_action = 1;
+                    bloke->field_82 = 0;
+                    if (more != 0) {
+                        return;
                     }
+                    break;
+                } else {
                     // STRING: LEGOLAND 0x004b856c
-                    sprintf(msg, "The %s is not worth going on.");
+                    sprintf(msg, "The %s is not worth going on.", candidate->name);
                     FUN_0044ed00(msg);
-                    num = GetBlokeNum(bloke);
-                    if (GetBlokeCounter((struct ObjectClass *)key, num) == 0) {
-                        num = GetBlokeNum(bloke);
-                        IncrementBlokeCounter((struct ObjectClass *)key, num);
+                    if (GetBlokeCounter(candidate, GetBlokeNum(bloke)) == 0) {
+                        IncrementBlokeCounter(candidate, GetBlokeNum(bloke));
                     }
                 }
-                result = ShuffleObjKeys(&bloke->field_2c, (void **)&key);
-            } while (result != 0);
+                more = ShuffleObjKeys(&bloke->goal, &candidate);
+            } while (more != 0);
             // STRING: LEGOLAND 0x004b8524
             sprintf(msg, "I've been on everything and I want to go home.");
             FUN_0044ed00(msg);
@@ -741,57 +691,62 @@ void FUN_0044f610(struct Bloke *bloke) {
         bloke->param_action = 2;
         return;
     case 1:
-        result = SuggestNextMove(&bloke->pos.x, &bloke->field_2c, out);
-        switch (result) {
-        case 1:
-            bloke->dest.x = out[0];
-            bloke->dest.y = out[1];
-            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_e = 6;
-            bloke->field_73 = dir + 0x10;
-            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
-            bloke->param_action = bloke->field_64 == 0;
-            return;
-        case 2:
-            bloke->dest.x = out[0];
-            bloke->dest.y = out[1];
-            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_e = 6;
-            bloke->field_73 = dir + 0x10;
-            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
-            bloke->param_action = (-(bloke->field_64 != 0) & 0xf6) + 10;
+        switch (SuggestNextMove(&bloke->pos, &bloke->goal, &out)) {
+        case -2:
+            bloke->field_e = 10;
             return;
         case -3:
         case -1:
         case 0:
-            result = FUN_0044f180((int *)&bloke->field_2c, *(int *)(bloke->field_14 + 0xc));
-            if (result != 0) {
-                iface = *(int *)(bloke->field_14 + 0xc);
-                num = (bloke->field_2c >> 8) - *(int *)(iface + 0xc);
-                counter = (bloke->field_30 >> 8) - *(int *)(iface + 0x10);
-                if (num < 0 || lpConfig->width <= num || counter < 0 || lpConfig->height <= counter) {
-                    element = 0;
+            if (FUN_0044f180(&bloke->goal, bloke->target->data) != 0) {
+                Ride *ride;
+                int ox;
+                int oy;
+
+                ride = bloke->target->data;
+                x = (bloke->goal.x >> 8) - ride->x;
+                y = (bloke->goal.y >> 8) - ride->y;
+                if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+                    element = &GameMap[y][x];
                 } else {
-                    element = (int *)(GameMap[counter] + num);
+                    element = NULL;
                 }
-                element = (int *)GetNextObjectMatching((struct RenderObject *)element, (struct RenderObjectVtable *)bloke->field_14);
-                if (element == 0 && (element = (int *)GetFirstObjectMatching((struct RenderObjectVtable *)bloke->field_14)) == 0) {
+                object = GetNextObjectMatching(element, bloke->target);
+                if (object == NULL && (object = GetFirstObjectMatching(bloke->target)) == NULL) {
+                    // STRING: LEGOLAND 0x004b8424
                     sprintf(msg, "Wandering...");
                     FUN_0044ed00(msg);
                     bloke->field_e = 4;
                     bloke->param_action++;
                     return;
                 }
-                if (*(unsigned char *)((char *)element + 4) != num || *(unsigned char *)((char *)element + 5) != counter) {
-                    bloke->field_2c = (*(int *)(iface + 0xc) + *(unsigned char *)((char *)element + 4)) * 0x100 + 0x80;
-                    bloke->field_30 = (*(int *)(iface + 0x10) + *(unsigned char *)((char *)element + 5)) * 0x100 + 0x80;
+                ox = object->field_4;
+                oy = object->field_5;
+                if (ox == x && oy == y) {
+                    bloke->field_e = 4;
                     return;
                 }
+                bloke->goal.x = ((ride->x + ox) << 8) + 0x80;
+                bloke->goal.y = ((ride->y + oy) << 8) + 0x80;
+                return;
             }
             bloke->field_e = 4;
             return;
-        case -2:
-            bloke->field_e = 10;
+        case 2:
+            bloke->dest = out;
+            dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
+            bloke->field_e = 6;
+            bloke->field_73 = dir;
+            NewDirForAction(bloke, (dir >> 5) + 3);
+            bloke->param_action = bloke->field_64 != 0 ? 0 : 10;
+            return;
+        case 1:
+            bloke->dest = out;
+            dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
+            bloke->field_e = 6;
+            bloke->field_73 = dir;
+            NewDirForAction(bloke, (dir >> 5) + 3);
+            bloke->param_action = bloke->field_64 == 0;
             return;
         }
         break;
@@ -806,33 +761,32 @@ void FUN_0044f610(struct Bloke *bloke) {
         bloke->param_action = 0;
         return;
     case 5:
+        // STRING: LEGOLAND 0x004b8434
         sprintf(msg, "Stuck, Routing Point To Point...");
         FUN_0044ed00(msg);
-        result = PTPSuggestNextMove(&bloke->pos.x, &bloke->field_2c, out);
-        if (result == 0) {
-            bloke->field_e = 4;
-            bloke->param_action = 6;
-            return;
-        }
-        if (result == 1) {
-            bloke->dest.x = out[0];
-            bloke->dest.y = out[1];
-            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+        switch (PTPSuggestNextMove(&bloke->pos, &bloke->goal, &out)) {
+        case 2:
+            bloke->dest = out;
+            dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
             bloke->field_e = 0xb;
-            bloke->field_73 = dir + 0x10;
-            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            bloke->field_73 = dir;
+            NewDirForAction(bloke, (dir >> 5) + 3);
+            bloke->param_action = (bloke->field_64 & 1) ? 6 : 10;
+            return;
+        case 1:
+            bloke->dest = out;
+            dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
+            bloke->field_e = 0xb;
+            bloke->field_73 = dir;
+            NewDirForAction(bloke, (dir >> 5) + 3);
             if ((bloke->field_64 & 1) != 0) {
                 bloke->param_action = 6;
                 return;
             }
-        } else if (result == 2) {
-            bloke->dest.x = out[0];
-            bloke->dest.y = out[1];
-            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_e = 0xb;
-            bloke->field_73 = dir + 0x10;
-            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
-            bloke->param_action = (-((bloke->field_64 & 1) != 0) & 0xfc) + 10;
+            break;
+        case 0:
+            bloke->field_e = 4;
+            bloke->param_action = 6;
             return;
         }
         break;
@@ -843,79 +797,87 @@ void FUN_0044f610(struct Bloke *bloke) {
         bloke->param_action = 5;
         return;
     case 10:
-        if (FUN_0044f180((int *)&bloke->pos.x, *(int *)(bloke->field_14 + 0xc)) != 0) {
-            uid[0] = (unsigned char)GetObjectUID((int *)&bloke->pos.x, *(int *)(bloke->field_14 + 0xc));
-            uid[1] = (unsigned char)(GetObjectUID((int *)&bloke->pos.x, *(int *)(bloke->field_14 + 0xc)) >> 8);
-            if (FUN_0044f400((struct BlokeList *)*(int *)(bloke->field_14 + 0xc), (unsigned short *)uid) == 0) {
-                if (FUN_0044f360(*(int *)(bloke->field_14 + 0xc), uid) != 0) {
-                    if (uid[0] < lpConfig->width && uid[1] < lpConfig->height) {
-                        element = (int *)(GameMap[uid[1]] + uid[0]);
-                    } else {
-                        element = 0;
-                    }
-                    result = (int)GetInstanceOfClass((struct ObjClassNode *)*element, (const unsigned short *)uid);
-                    if ((*(unsigned char *)(result + 0xc) & 2) == 0) {
-                        // STRING: LEGOLAND 0x004b84bc
-                        sprintf(msg, "I'm going on the ride");
-                        FUN_0044ed00(msg);
-                        NewLongTermAction(bloke, 5);
-                        if ((*(unsigned int *)(bloke->field_14 + 0x1c) & 0x100000) == 0) {
-                            if (uid[0] < lpConfig->width && uid[1] < lpConfig->height) {
-                                element = (int *)(GameMap[uid[1]] + uid[0]);
-                            } else {
-                                element = 0;
-                            }
-                            GetInstanceOfClass((struct ObjClassNode *)*element, (const unsigned short *)uid);
-                            rnd = rand();
-                            if (FUN_0044f4a0(bloke, *(int *)(bloke->field_14 + 0xc), (rnd & 0x1ff) + 200) != 0) {
-                                return;
-                            }
+        if (FUN_0044f180(&bloke->pos, bloke->target->data) != 0) {
+            tile = GetObjectUID(&bloke->pos, bloke->target->data);
+            if (FUN_0044f400(bloke->target->data, &tile) != 0) {
+                // STRING: LEGOLAND 0x004b8500
+                sprintf(msg, "I can't go on this ride. It is full");
+                FUN_0044ed00(msg);
+                ride = bloke->target->data;
+                FUN_00482df0(bloke, 0, ride->field_3a);
+                if (GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke)) == 0) {
+                    IncrementBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
+                }
+                bloke->param_action = 2;
+                return;
+            }
+            if (FUN_0044f360(bloke->target->data, &tile) == 0) {
+                // STRING: LEGOLAND 0x004b84d4
+                sprintf(msg, "I can't go on this ride. It's not working");
+                FUN_0044ed00(msg);
+                ride = bloke->target->data;
+                FUN_00482df0(bloke, 1, ride->field_3a);
+                if (GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke)) == 0) {
+                    IncrementBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
+                }
+                bloke->param_action = 2;
+                return;
+            }
+            x = tile.pos.x;
+            y = tile.pos.y;
+            if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+                element = &GameMap[y][x];
+            } else {
+                element = NULL;
+            }
+            instance = GetInstanceOfClass(element->field_0->data, &tile);
+            if ((instance->flags & 2) == 0) {
+                // STRING: LEGOLAND 0x004b84bc
+                sprintf(msg, "I'm going on the ride");
+                FUN_0044ed00(msg);
+                NewLongTermAction(bloke, 5);
+                /* reads the flags of the *next* LLIDB element; the ride's own flags were
+                   presumably meant */
+                if ((bloke->target[1].flags & 0x100000) != 0) {
+                    if (FUN_0044f4a0(bloke, bloke->target->data, 0) != 0) {
+                        if (FUN_0044f400(bloke->target->data, &tile) == 0) {
+                            return;
+                        }
+                        x = tile.pos.x;
+                        y = tile.pos.y;
+                        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+                            element = &GameMap[y][x];
                         } else {
-                            if (FUN_0044f4a0(bloke, *(int *)(bloke->field_14 + 0xc), 0) != 0) {
-                                if (FUN_0044f400((struct BlokeList *)*(int *)(bloke->field_14 + 0xc), (unsigned short *)uid) == 0) {
-                                    return;
-                                }
-                                if (uid[0] < lpConfig->width && uid[1] < lpConfig->height) {
-                                    element = (int *)(GameMap[uid[1]] + uid[0]);
-                                } else {
-                                    element = 0;
-                                }
-                                result = (int)GetInstanceOfClass((struct ObjClassNode *)*element, (const unsigned short *)uid);
-                                *(unsigned short *)(result + 0xc) |= 2;
-                                return;
-                            }
+                            element = NULL;
                         }
-                        // STRING: LEGOLAND 0x004b84a0
-                        sprintf(msg, "I can't get on the ride.");
-                        FUN_0044ed00(msg);
-                        FUN_00482df0(bloke, 0, *(short *)(*(int *)(bloke->field_14 + 0xc) + 0x3a));
-                        num = GetBlokeNum(bloke);
-                        if (GetBlokeCounter((struct ObjectClass *)*(int *)(bloke->field_14 + 0xc), num) == 0) {
-                            num = GetBlokeNum(bloke);
-                            IncrementBlokeCounter((struct ObjectClass *)*(int *)(bloke->field_14 + 0xc), num);
-                        }
-                        bloke->param_action = 2;
+                        instance = GetInstanceOfClass(element->field_0->data, &tile);
+                        instance->flags |= 2;
                         return;
                     }
-                    // STRING: LEGOLAND 0x004b84d4
-                    sprintf(msg, "I can't go on this ride. It's not working");
-                    FUN_0044ed00(msg);
-                    sval = *(short *)(*(int *)(bloke->field_14 + 0xc) + 0x3a);
-                    kind = 1;
                 } else {
-                    // STRING: LEGOLAND 0x004b8500
-                    sprintf(msg, "I can't go on this ride. It is full");
-                    FUN_0044ed00(msg);
-                    sval = *(short *)(*(int *)(bloke->field_14 + 0xc) + 0x3a);
-                    kind = 0;
-                }
-                FUN_00482df0(bloke, kind, sval);
-                num = GetBlokeNum(bloke);
-                if (GetBlokeCounter((struct ObjectClass *)*(int *)(bloke->field_14 + 0xc), num) == 0) {
-                    num = GetBlokeNum(bloke);
-                    IncrementBlokeCounter((struct ObjectClass *)*(int *)(bloke->field_14 + 0xc), num);
+                    x = tile.pos.x;
+                    y = tile.pos.y;
+                    if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+                        element = &GameMap[y][x];
+                    } else {
+                        element = NULL;
+                    }
+                    GetInstanceOfClass(element->field_0->data, &tile);
+                    if (FUN_0044f4a0(bloke, bloke->target->data, (rand() & 0x1ff) + 200) != 0) {
+                        return;
+                    }
                 }
             }
+            // STRING: LEGOLAND 0x004b84a0
+            sprintf(msg, "I can't get on the ride.");
+            FUN_0044ed00(msg);
+            ride = bloke->target->data;
+            FUN_00482df0(bloke, 0, ride->field_3a);
+            if (GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke)) == 0) {
+                IncrementBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
+            }
+            bloke->param_action = 2;
+            return;
         }
         bloke->param_action = 2;
     }
@@ -944,107 +906,105 @@ void FUN_0044fe10(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044fe80
-void FUN_0044fe80(struct Bloke *bloke) {
-    int obj;
-    struct MapElement *element;
+void FUN_0044fe80(Bloke *bloke) {
+    MapElement *object;
+    MapElement *element;
+    Ride *ride;
     unsigned short flags;
-    int result;
-    char dir;
-    int out[2];
+    unsigned char dir;
+    int x;
+    int y;
+    struct Point out;
 
     switch (bloke->param_action) {
     case 0:
-        obj = (int)GetFirstObjectMatching((struct RenderObjectVtable *)DAT_006661c0);
-        if (obj != 0) {
-            while (result = *(int *)(*(int *)obj + 0xc), (*(unsigned char *)(obj + 0xc) & 1) != 0) {
-                obj = (int)GetNextObjectMatching((struct RenderObject *)obj, (struct RenderObjectVtable *)DAT_006661c0);
-                if (obj == 0) {
-                    NewLongTermAction(bloke, 6);
-                    return;
-                }
+        for (object = GetFirstObjectMatching(DAT_006661c0); object != NULL; object = GetNextObjectMatching(object, DAT_006661c0)) {
+            ride = object->field_0->data;
+            if ((object->flags & 1) == 0) {
+                bloke->brolly = object->anchor;
+                bloke->goal.x = (ride->x + object->field_4) << 8;
+                bloke->goal.y = (object->field_5 + ride->y) << 8;
+                bloke->param_action++;
+                break;
             }
-            bloke->field_46 = (short)*(int *)(obj + 4);
-            bloke->field_2c = (*(int *)(result + 0xc) + *(unsigned char *)(obj + 4)) * 0x100;
-            bloke->field_30 = (*(unsigned char *)(obj + 5) + *(int *)(result + 0x10)) * 0x100;
-            bloke->param_action++;
-            if (obj != 0) {
-                return;
-            }
-            NewLongTermAction(bloke, 6);
+        }
+        if (object != NULL) {
             return;
         }
-        break;
+        NewLongTermAction(bloke, 6);
+        return;
     case 1:
-        result = SuggestNextMove(&bloke->pos.x, &bloke->field_2c, out);
-        switch (result) {
-        case 1:
-            bloke->dest.x = out[0];
-            bloke->dest.y = out[1];
-            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_e = 6;
-            bloke->field_73 = dir + 0x10;
-            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
-            if (bloke->field_64 == 0) {
-                bloke->param_action = 1;
-                return;
-            }
-            break;
-        case 2:
-            bloke->dest.x = out[0];
-            bloke->dest.y = out[1];
-            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_e = 6;
-            bloke->field_73 = dir + 0x10;
-            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
-            if (bloke->field_64 == 0) {
-                bloke->param_action = 2;
-                return;
-            }
-            break;
+        switch (SuggestNextMove(&bloke->pos, &bloke->goal, &out)) {
+        case -2:
+            bloke->field_e = 10;
+            return;
         case -3:
         case -1:
         case 0:
             bloke->field_e = 4;
             return;
-        case -2:
-            bloke->field_e = 10;
-            return;
+        case 2:
+            bloke->dest = out;
+            dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
+            bloke->field_e = 6;
+            bloke->field_73 = dir;
+            NewDirForAction(bloke, (dir >> 5) + 3);
+            if (bloke->field_64 == 0) {
+                bloke->param_action = 2;
+                return;
+            }
+            break;
+        case 1:
+            bloke->dest = out;
+            dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
+            bloke->field_e = 6;
+            bloke->field_73 = dir;
+            NewDirForAction(bloke, (dir >> 5) + 3);
+            if (bloke->field_64 == 0) {
+                bloke->param_action = 1;
+                return;
+            }
+            break;
         default:
             return;
         }
         break;
     case 2:
-        if ((unsigned char)bloke->field_46 < lpConfig->width && *((unsigned char *)&bloke->field_46 + 1) < lpConfig->height) {
-            element = GameMap[*((unsigned char *)&bloke->field_46 + 1)] + (unsigned char)bloke->field_46;
+        x = bloke->brolly.pos.x;
+        y = bloke->brolly.pos.y;
+        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+            element = &GameMap[y][x];
         } else {
-            element = 0;
+            element = NULL;
         }
-        if (*(int *)element == DAT_006661c0 && (flags = element->flags, (flags & 0x80) != 0)) {
-            if ((flags & 1) == 0) {
-                element->flags = flags | 1;
-                *(unsigned char *)((char *)bloke + 0x62) |= 8;
-                bloke->dest.x = bloke->field_2c - 0x80;
-                bloke->dest.y = bloke->field_30;
-                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_73 = dir + 0x10;
-                bloke->field_e = 7;
-                NewDirForAction(bloke, 7);
-                bloke->field_5c = 0;
-                bloke->param_action++;
+        if (element->field_0 == DAT_006661c0 && (flags = element->flags, (flags & 0x80) != 0)) {
+            if ((flags & 1) != 0) {
+                bloke->param_action = 0;
                 return;
             }
-            bloke->param_action = 0;
+            element->flags = flags | 1;
+            bloke->flags |= 8;
+            bloke->dest.x = bloke->goal.x - 0x80;
+            bloke->dest.y = bloke->goal.y;
+            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
+            bloke->field_73 = dir;
+            bloke->field_e = 7;
+            NewDirForAction(bloke, 7);
+            bloke->field_5c = 0;
+            bloke->param_action++;
             return;
         }
         break;
     case 3:
-        if ((unsigned char)bloke->field_46 < lpConfig->width && *((unsigned char *)&bloke->field_46 + 1) < lpConfig->height) {
-            element = GameMap[*((unsigned char *)&bloke->field_46 + 1)] + (unsigned char)bloke->field_46;
+        x = bloke->brolly.pos.x;
+        y = bloke->brolly.pos.y;
+        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+            element = &GameMap[y][x];
         } else {
-            element = 0;
+            element = NULL;
         }
-        if (*(int *)element == DAT_006661c0 && (element->flags & 0x80) != 0) {
-            if ((int)bloke->field_5c < 0x12d) {
+        if (element->field_0 == DAT_006661c0 && (element->flags & 0x80) != 0) {
+            if (bloke->field_5c <= 300) {
                 return;
             }
             bloke->param_action++;
@@ -1052,19 +1012,21 @@ void FUN_0044fe80(struct Bloke *bloke) {
         }
         break;
     case 4:
-        if ((unsigned char)bloke->field_46 < lpConfig->width && *((unsigned char *)&bloke->field_46 + 1) < lpConfig->height) {
-            element = GameMap[*((unsigned char *)&bloke->field_46 + 1)] + (unsigned char)bloke->field_46;
+        x = bloke->brolly.pos.x;
+        y = bloke->brolly.pos.y;
+        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+            element = &GameMap[y][x];
         } else {
-            element = 0;
+            element = NULL;
         }
-        if (*(int *)element == DAT_006661c0 && (element->flags & 0x80) != 0) {
+        if (element->field_0 == DAT_006661c0 && (element->flags & 0x80) != 0) {
             element->flags &= 0xfffe;
-            bloke->dest.x = bloke->field_2c + 0x80;
-            bloke->dest.y = bloke->field_30;
-            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+            bloke->dest.x = bloke->goal.x + 0x80;
+            bloke->dest.y = bloke->goal.y;
+            dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
             bloke->field_e = 7;
-            bloke->field_73 = dir + 0x10;
-            NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+            bloke->field_73 = dir;
+            NewDirForAction(bloke, (dir >> 5) + 3);
             bloke->param_action++;
             return;
         }
@@ -1079,110 +1041,110 @@ void FUN_0044fe80(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00450250
-void FUN_00450250(struct BlokeRideState *bloke) {
+void FUN_00450250(Bloke *bloke) {
     int state;
 
-    switch (bloke->field_60) {
+    switch (bloke->param_action) {
     case 0:
         NewDirForAction(bloke, 4);
-        if (bloke->ride[2] == 1) {
-            *((unsigned char *)&bloke->flags + 1) |= 1;
-            BlokeSetAnim((struct Bloke *)bloke, 2);
-            BlokeSetFrame((struct Bloke *)bloke, 0);
-            bloke->field_60++;
+        if (bloke->person->field_8 == 1) {
+            bloke->flags |= 0x100;
+            BlokeSetAnim(bloke, 2);
+            BlokeSetFrame(bloke, 0);
+            bloke->param_action++;
             return;
         }
-        bloke->field_60 = 2;
+        bloke->param_action = 2;
         return;
     case 1:
-        if (PlayBlokeAnim((struct Bloke *)bloke) != 0) {
-            BlokeWalkAnim((struct Bloke *)bloke);
-            BlokeSetFrame((struct Bloke *)bloke, 0);
+        if (PlayBlokeAnim(bloke) != 0) {
+            BlokeWalkAnim(bloke);
+            BlokeSetFrame(bloke, 0);
             bloke->flags &= 0xfeff;
-            bloke->field_60++;
+            bloke->param_action++;
             return;
         }
         break;
     case 2:
         bloke->field_e = 0xd;
-        bloke->field_60++;
+        bloke->param_action++;
         return;
     case 3:
-        state = bloke->ride[2];
+        state = bloke->person->field_8;
         switch (state) {
         case 2:
-            NewLongTermAction((struct Bloke *)bloke, 0x10);
+            NewLongTermAction(bloke, 0x10);
             return;
         case 3:
-            NewLongTermAction((struct Bloke *)bloke, 0x11);
+            NewLongTermAction(bloke, 0x11);
             return;
         }
-        NewLongTermAction((struct Bloke *)bloke, 6);
+        NewLongTermAction(bloke, 6);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00450330
-void FUN_00450330(struct BlokeRideState *bloke) {
+void FUN_00450330(Bloke *bloke) {
     int state;
 
-    switch (bloke->field_60) {
+    switch (bloke->param_action) {
     case 0:
         NewDirForAction(bloke, 4);
-        bloke->field_60++;
+        bloke->param_action++;
         break;
     case 1:
         bloke->field_e = 0xd;
-        bloke->field_60++;
+        bloke->param_action++;
         return;
     case 2:
-        state = bloke->ride[2];
+        state = bloke->person->field_8;
         switch (state) {
         case 2:
-            NewLongTermAction((struct Bloke *)bloke, 0x10);
+            NewLongTermAction(bloke, 0x10);
             return;
         case 3:
-            NewLongTermAction((struct Bloke *)bloke, 0x11);
+            NewLongTermAction(bloke, 0x11);
             return;
         }
     }
 }
 
 // FUNCTION: LEGOLAND 0x004503a0
-void FUN_004503a0(struct Bloke *bloke, int *box) {
-    int x0;
-    int y0;
+void FUN_004503a0(Bloke *bloke, struct Footprint *box) {
+    int ox;
+    int oy;
     int tx;
     int ty;
 
-    x0 = bloke->field_2c;
+    ox = bloke->goal.x;
     tx = bloke->pos.x >> 8;
     ty = bloke->pos.y >> 8;
-    y0 = bloke->field_30;
-    if (tx > box[2] + x0) {
-        if (ty < box[1] + y0) {
+    oy = bloke->goal.y;
+    if (tx > box->x1 + ox) {
+        if (ty < box->y0 + oy) {
             bloke->field_72 = 6;
             return;
         }
-        if (ty > box[3] + y0) {
+        if (ty > box->y1 + oy) {
             bloke->field_72 = 0;
             return;
         }
         bloke->field_72 = 7;
         return;
     }
-    if (tx < box[0] + x0) {
-        if (ty < box[1] + y0) {
+    if (tx < box->x0 + ox) {
+        if (ty < box->y0 + oy) {
             bloke->field_72 = 4;
             return;
         }
-        if (ty > box[3] + y0) {
+        if (ty > box->y1 + oy) {
             bloke->field_72 = 2;
             return;
         }
         bloke->field_72 = 3;
         return;
     }
-    if (ty < box[1] + y0) {
+    if (ty < box->y0 + oy) {
         bloke->field_72 = 5;
         return;
     }
@@ -1190,28 +1152,25 @@ void FUN_004503a0(struct Bloke *bloke, int *box) {
 }
 
 // FUNCTION: LEGOLAND 0x00450450
-void FUN_00450450(struct BlokeRideState *bloke) {
-    int num;
-    int counter;
+void FUN_00450450(Bloke *bloke) {
+    Ride *ride;
 
-    switch (bloke->field_60) {
+    switch (bloke->param_action) {
     case 0:
-        FUN_004503a0((struct Bloke *)bloke, (int *)((char *)bloke->field_14->iface + 0x3c));
+        ride = bloke->target->data;
+        FUN_004503a0(bloke, &ride->footprint);
         bloke->field_58 = (rand() & 0x1f) + 10;
-        bloke->field_60++;
+        bloke->param_action++;
         break;
     case 1:
-        counter = bloke->field_58 - 1;
-        bloke->field_58 = counter;
-        if (counter < 0) {
-            bloke->field_60++;
+        if (--bloke->field_58 < 0) {
+            bloke->param_action++;
             return;
         }
         break;
     case 2:
-        num = GetBlokeNum((struct Bloke *)bloke);
-        IncrementBlokeCounter((struct ObjectClass *)bloke->field_14->iface, num);
-        NewLongTermAction((struct Bloke *)bloke, 6);
+        IncrementBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
+        NewLongTermAction(bloke, 6);
         return;
     }
 }
@@ -1276,18 +1235,18 @@ void FUN_00450530(struct Bloke *bloke) {
                         rides += cls->value;
                         break;
                     case 3:
-                        shops += cls->value >> GetBlokeCounter((struct ObjectClass *)cls, GetBlokeNum(bloke));
-                        if ((bloke->flags & 0x20) == 0 && bloke->field_14 != cls->element) {
-                            chance = 15 / (GetBlokeCounter((struct ObjectClass *)cls, GetBlokeNum(bloke)) + 1);
+                        shops += cls->value >> GetBlokeCounter(cls, GetBlokeNum(bloke));
+                        if ((bloke->flags & 0x20) == 0 && bloke->target != cls->element) {
+                            chance = 15 / (GetBlokeCounter(cls, GetBlokeNum(bloke)) + 1);
                             if (rand() % 100 < chance && bloke->field_e != 0xf) {
                                 t.x = bloke->pos.x >> 8;
                                 t.y = bloke->pos.y >> 8;
                                 dx = abs(t.x - pos.x);
                                 dy = abs(t.y - pos.y);
                                 if ((int)sqrt(dy * dy + dx * dx) <= 1) {
-                                    bloke->field_14 = cls->element;
-                                    bloke->field_2c = element->field_4;
-                                    bloke->field_30 = element->field_5;
+                                    bloke->target = cls->element;
+                                    bloke->goal.x = element->field_4;
+                                    bloke->goal.y = element->field_5;
                                     NewLongTermAction(bloke, 0xf);
                                 }
                             }
@@ -1295,31 +1254,31 @@ void FUN_00450530(struct Bloke *bloke) {
                         break;
                     case 4:
                     case 5:
-                        food_score += cls->value >> GetBlokeCounter((struct ObjectClass *)cls, GetBlokeNum(bloke));
+                        food_score += cls->value >> GetBlokeCounter(cls, GetBlokeNum(bloke));
                         food.x = element->field_4 + cls->x;
                         food.y = element->field_5 + cls->y;
                         if (FUN_00450500(&origin, &food) != 0 && FUN_00450500(&pos, &food) != 0 &&
-                            (int)Calc_Item_Attractiveness((unsigned int)cls, (unsigned int)bloke, 1) > 0x32 && bloke->action == 6 &&
-                            (bloke->field_2c >> 8 != food.x || bloke->field_30 >> 8 != food.y)) {
-                            bloke->field_2c = food.x << 8;
-                            bloke->field_30 = food.y << 8;
+                            Calc_Item_Attractiveness(cls, bloke, 1) > 0x32 && bloke->action == 6 &&
+                            (bloke->goal.x >> 8 != food.x || bloke->goal.y >> 8 != food.y)) {
+                            bloke->goal.x = food.x << 8;
+                            bloke->goal.y = food.y << 8;
                             bloke->param_action = 1;
                             bloke->field_e = 0;
-                            bloke->field_14 = cls->element;
+                            bloke->target = cls->element;
                         }
                         break;
                     case 1:
-                        toilets += cls->value >> GetBlokeCounter((struct ObjectClass *)cls, GetBlokeNum(bloke));
+                        toilets += cls->value >> GetBlokeCounter(cls, GetBlokeNum(bloke));
                         spot.x = element->field_4 + cls->x;
                         spot.y = element->field_5 + cls->y;
                         if (FUN_00450500(&spot, &origin) != 0 && FUN_00450500(&pos, &spot) != 0 &&
-                            (int)Calc_Item_Attractiveness((unsigned int)cls, (unsigned int)bloke, 1) > 0x32 && bloke->action == 6 &&
-                            (bloke->field_2c >> 8 != spot.x || bloke->field_30 >> 8 != spot.y)) {
-                            bloke->field_2c = spot.x << 8;
-                            bloke->field_30 = spot.y << 8;
+                            Calc_Item_Attractiveness(cls, bloke, 1) > 0x32 && bloke->action == 6 &&
+                            (bloke->goal.x >> 8 != spot.x || bloke->goal.y >> 8 != spot.y)) {
+                            bloke->goal.x = spot.x << 8;
+                            bloke->goal.y = spot.y << 8;
                             bloke->param_action = 1;
                             bloke->field_e = 0;
-                            bloke->field_14 = cls->element;
+                            bloke->target = cls->element;
                         }
                         break;
                     }

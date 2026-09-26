@@ -239,7 +239,7 @@ unsigned int FUN_00417c90(void) {
     // DAT_004cbfe4 is an int-typed global that stores an object pointer (set to a
     // WaterArg*); pass it as the match vtable. Cast justified: the global is genuinely
     // used as both an int and various struct pointers, so it stays unsigned int.
-    return GetFirstObjectMatching((struct RenderObjectVtable *)DAT_004cbfe4) != 0;
+    return GetFirstObjectMatching((Element *)DAT_004cbfe4) != 0;
 }
 
 // FUNCTION: LEGOLAND 0x00417cb0

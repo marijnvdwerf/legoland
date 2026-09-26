@@ -78,7 +78,7 @@ void FUN_0043d2f0(struct RideObject *obj) {
             break;
         case 3:
             bloke->flags &= 0xffd7;
-            RemoveBlokeFromList((struct BlokeList *)hut, (struct Bloke *)node);
+            RemoveBlokeFromList((struct Ride *)hut, (struct RideNode *)node);
             free(node);
             NewLongTermAction(bloke, 0x11);
             break;
@@ -109,7 +109,7 @@ void FUN_0043d2f0(struct RideObject *obj) {
             bloke->param_action++;
             break;
         case 103:
-            RemoveBlokeFromList((struct BlokeList *)hut, (struct Bloke *)node);
+            RemoveBlokeFromList((struct Ride *)hut, (struct RideNode *)node);
             bloke->field_36 = 100;
             RefundMechanic();
             break;
@@ -222,7 +222,7 @@ void FUN_0043d7c0(struct Ride *hut, unsigned int tile, int flag) {
         if (node->tile.id == (unsigned short)tile) {
             bloke = node->rider;
             if (bloke->param_action < 100) {
-                RemoveBlokeFromList((struct BlokeList *)hut, (struct Bloke *)node);
+                RemoveBlokeFromList((struct Ride *)hut, (struct RideNode *)node);
                 free(node);
                 bloke->flags &= 0xffd7;
                 bloke->pos.x = at.x << 8;
@@ -233,7 +233,7 @@ void FUN_0043d7c0(struct Ride *hut, unsigned int tile, int flag) {
                     NewLongTermAction(bloke, 0x11);
                 }
             } else {
-                RemoveBlokeFromList((struct BlokeList *)hut, (struct Bloke *)node);
+                RemoveBlokeFromList((struct Ride *)hut, (struct RideNode *)node);
                 bloke->field_36 = 100;
             }
         }

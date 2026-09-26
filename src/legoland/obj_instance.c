@@ -4,16 +4,11 @@
 #include "bloke_ai.h"
 #include "globals.h"
 #include "legoland.h"
+#include "llidb.h"
 #include "man3d.h"
 #include "objclass.h"
 #include "resource.h"
 #include "sound_music.h"
-
-struct ObjClassKey {
-    unsigned short hi;
-    unsigned char pad_2[2];
-    unsigned short lo;
-};
 
 struct InstanceNode {
     struct InstanceNode *prev;
@@ -24,17 +19,6 @@ struct InstanceNode {
 struct InstanceList {
     unsigned int pad_0;
     struct InstanceNode *next;
-};
-
-struct ObjClassNode {
-    struct ObjClassNode *next;
-    void *instances;
-};
-
-struct ObjInstance {
-    struct ObjInstance *next;
-    unsigned char pad_4[10];
-    unsigned short uid;
 };
 
 // FUNCTION: LEGOLAND 0x00489e60
@@ -81,14 +65,14 @@ void FUN_00489ee0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00489f00
-int FUN_00489f00(const struct ObjClassKey *key) {
+int FUN_00489f00(const struct Point *pos) {
     int index;
     struct ObjTableEntry *entry;
 
     index = 0;
     for (entry = DAT_007cb3e0; (int)entry < (int)&DAT_007cb5e0; entry++) {
         if (entry->key == 0xffff) {
-            DAT_007cb3e0[index].key = (key->hi << 8) + key->lo;
+            DAT_007cb3e0[index].key = (pos->x << 8) + pos->y;
             DAT_007cb3e2[index].key = 0;
             return 1;
         }
@@ -98,13 +82,13 @@ int FUN_00489f00(const struct ObjClassKey *key) {
 }
 
 // FUNCTION: LEGOLAND 0x00489f50
-int FUN_00489f50(const struct ObjClassKey *key) {
+int FUN_00489f50(const struct Point *pos) {
     int index;
     unsigned short target;
     struct ObjTableEntry *entry;
 
     index = 0;
-    target = (key->hi << 8) + key->lo;
+    target = (pos->x << 8) + pos->y;
     for (entry = DAT_007cb3e0; (int)entry < (int)&DAT_007cb5e0; entry++) {
         if (entry->key == target) {
             DAT_007cb3e0[index].key = 0xffff;
@@ -116,13 +100,13 @@ int FUN_00489f50(const struct ObjClassKey *key) {
 }
 
 // FUNCTION: LEGOLAND 0x00489f90
-int FUN_00489f90(const struct ObjClassKey *key) {
+int FUN_00489f90(const struct Point *pos) {
     int index;
     unsigned short target;
     struct ObjTableEntry *entry;
 
     index = 0;
-    target = (key->hi << 8) + key->lo;
+    target = (pos->x << 8) + pos->y;
     for (entry = DAT_007cb3e0; (int)entry < (int)&DAT_007cb5e0; entry++) {
         if (entry->key == target) {
             DAT_007cb3e2[index].key++;
@@ -134,13 +118,13 @@ int FUN_00489f90(const struct ObjClassKey *key) {
 }
 
 // FUNCTION: LEGOLAND 0x00489fd0
-unsigned short FUN_00489fd0(const struct ObjClassKey *key) {
+unsigned short FUN_00489fd0(const struct Point *pos) {
     int index;
     unsigned short target;
     struct ObjTableEntry *entry;
 
     index = 0;
-    target = (key->hi << 8) + key->lo;
+    target = (pos->x << 8) + pos->y;
     for (entry = DAT_007cb3e0; (int)entry < (int)&DAT_007cb5e0; entry++) {
         if (entry->key == target) {
             return DAT_007cb3e2[index].key;
@@ -168,9 +152,9 @@ LEGO_EXPORT void AddInstanceToList(struct InstanceNode *node) {
 
 // FUNCTION: LEGOLAND 0x0048a040
 void FUN_0048a040(void) {
-    struct ObjClassNode *node;
+    struct Ride *node;
 
-    for (node = (struct ObjClassNode *)ObjectClassList; node != 0; node = node->next) {
+    for (node = ObjectClassList; node != 0; node = node->next) {
         void *obj = node->instances;
         while (obj != 0) {
             void *next = *(void **)obj;
@@ -201,14 +185,14 @@ LEGO_EXPORT void RemoveInstanceFromList(struct InstanceNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0048a0c0
-LEGO_EXPORT struct ObjInstance *GetInstanceOfClass(struct ObjClassNode *cls, const unsigned short *uid) {
+LEGO_EXPORT struct ObjInstance *GetInstanceOfClass(struct Ride *ride, const TileId *tile) {
     struct ObjInstance *instance;
 
-    instance = (struct ObjInstance *)cls->instances;
+    instance = ride->instances;
     if (instance == 0) {
         return 0;
     }
-    while (instance->uid != *uid) {
+    while (instance->uid != tile->id) {
         instance = instance->next;
         if (instance == 0) {
             return 0;
@@ -228,8 +212,8 @@ LEGO_EXPORT void RemoveBlokeFromRide(struct Ride *ride, struct RideNode *node) {
     int code;
 
     bloke = node->rider;
-    RemoveBlokeFromList((struct BlokeList *)ride, (struct Bloke *)node);
-    if (FUN_0044f3d0((struct BlokeList *)ride, &node->tile.id) == 0) {
+    RemoveBlokeFromList(ride, node);
+    if (FUN_0044f3d0(ride, &node->tile) == 0) {
         int x = node->tile.pos.x;
         int y = node->tile.pos.y;
         if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
@@ -243,31 +227,31 @@ LEGO_EXPORT void RemoveBlokeFromRide(struct Ride *ride, struct RideNode *node) {
     bloke->flags &= 0xffdf;
     if (ride->type == 5) {
         if (IsFavouriteFood(bloke, ride->element)) {
-            counter = GetBlokeCounter(*(struct ObjectClass **)(bloke->field_14 + 0xc), GetBlokeNum(bloke));
-            code = CalculateRideCode(bloke->field_7e, *(struct RideStats **)(bloke->field_14 + 0xc), counter);
+            counter = GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
+            code = CalculateRideCode(bloke->field_7e, bloke->target->data, counter);
             FUN_00482df0(bloke, 9, code);
             bloke->field_7c = 0;
         } else {
-            counter = GetBlokeCounter(*(struct ObjectClass **)(bloke->field_14 + 0xc), GetBlokeNum(bloke));
-            code = CalculateRideCode(bloke->field_7e, *(struct RideStats **)(bloke->field_14 + 0xc), counter);
+            counter = GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
+            code = CalculateRideCode(bloke->field_7e, bloke->target->data, counter);
             FUN_00482df0(bloke, 10, code);
             bloke->field_7c = 0;
         }
     } else {
         if (IsFavouriteAttraction(bloke, ride->element)) {
-            counter = GetBlokeCounter(*(struct ObjectClass **)(bloke->field_14 + 0xc), GetBlokeNum(bloke));
-            code = CalculateRideCode(bloke->field_7e, *(struct RideStats **)(bloke->field_14 + 0xc), counter);
+            counter = GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
+            code = CalculateRideCode(bloke->field_7e, bloke->target->data, counter);
             FUN_00482df0(bloke, 0xb, code);
         } else {
-            counter = GetBlokeCounter(*(struct ObjectClass **)(bloke->field_14 + 0xc), GetBlokeNum(bloke));
-            code = CalculateRideCode(bloke->field_7e, *(struct RideStats **)(bloke->field_14 + 0xc), counter);
+            counter = GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
+            code = CalculateRideCode(bloke->field_7e, bloke->target->data, counter);
             FUN_00482df0(bloke, 0xc, code);
         }
     }
-    counter = GetBlokeCounter(*(struct ObjectClass **)(bloke->field_14 + 0xc), GetBlokeNum(bloke));
+    counter = GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
     bloke->field_78 = bloke->field_78 + (short)(counter * 0x32);
-    bloke->field_18 = bloke->field_14;
-    IncrementBlokeCounter(*(struct ObjectClass **)(bloke->field_14 + 0xc), GetBlokeNum(bloke));
+    bloke->last_ride = bloke->target;
+    IncrementBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
     NewLongTermAction(bloke, 0x17);
 }
 
@@ -322,54 +306,46 @@ LEGO_EXPORT int GetAllBlokesOffRide(struct Ride *ride, unsigned short uid) {
     return 1;
 }
 
-struct MapObj {
-    unsigned char pad_0[0xc];
-    struct ClassOffset *field_c;
-};
-
-struct ClassOffset {
-    unsigned char pad_0[0xc];
-    int field_c;
-    int field_10;
-};
-
 // FUNCTION: LEGOLAND 0x0048a3e0
-LEGO_EXPORT int GetObjectUID(int *param_1, struct ClassOffset *param_2) {
+LEGO_EXPORT TileId GetObjectUID(struct Point *pos, struct Ride *ride) {
     int x;
     int y;
     int row;
     struct MapElement *element;
 
-    x = *param_1 >> 8;
-    y = param_1[1] >> 8;
+    TileId none;
+
+    x = pos->x >> 8;
+    y = pos->y >> 8;
     row = y - 1;
-    if (x >= 0 && x < lpConfig->width && row >= 0 && row < lpConfig->height && (element = GameMap[row] + x) != 0) {
-        if ((element->flags & 0x80) != 0 && element->field_0 != 0 && ((struct MapObj *)element->field_0)->field_c == param_2 &&
-            element->field_4 + param_2->field_c == x && element->field_5 + param_2->field_10 == y) {
-            return (x & 0xffff0000) | *(unsigned short *)&element->field_4;
+    if (x >= 0 && x < lpConfig->width && row >= 0 && row < lpConfig->height && (element = &GameMap[row][x]) != 0) {
+        if ((element->flags & 0x80) != 0 && element->field_0 != 0 && element->field_0->data == ride &&
+            element->field_4 + ride->x == x && element->field_5 + ride->y == y) {
+            return element->anchor;
         }
         row = y + 1;
         if (x < 0 || lpConfig->width <= x || row < 0 || lpConfig->height <= row) {
             element = 0;
         } else {
-            element = GameMap[row] + x;
+            element = &GameMap[row][x];
         }
-        if ((element->flags & 0x80) != 0 && element->field_0 != 0 && ((struct MapObj *)element->field_0)->field_c == param_2 &&
-            element->field_4 + param_2->field_c == x && element->field_5 + param_2->field_10 == y) {
-            return (x & 0xffff0000) | *(unsigned short *)&element->field_4;
+        if ((element->flags & 0x80) != 0 && element->field_0 != 0 && element->field_0->data == ride &&
+            element->field_4 + ride->x == x && element->field_5 + ride->y == y) {
+            return element->anchor;
         }
     }
     row = x - 1;
-    if (row >= 0 && row < lpConfig->width && y >= 0 && y < lpConfig->height && (element = GameMap[y] + row) != 0 &&
-        (element->flags & 0x80) != 0 && element->field_0 != 0 && ((struct MapObj *)element->field_0)->field_c == param_2 &&
-        element->field_4 + param_2->field_c == x && element->field_5 + param_2->field_10 == y) {
-        return (x & 0xffff0000) | *(unsigned short *)&element->field_4;
+    if (row >= 0 && row < lpConfig->width && y >= 0 && y < lpConfig->height && (element = &GameMap[y][row]) != 0 &&
+        (element->flags & 0x80) != 0 && element->field_0 != 0 && element->field_0->data == ride &&
+        element->field_4 + ride->x == x && element->field_5 + ride->y == y) {
+        return element->anchor;
     }
     row = x + 1;
-    if (row >= 0 && row < lpConfig->width && y >= 0 && y < lpConfig->height && (element = GameMap[y] + row) != 0 &&
-        (element->flags & 0x80) != 0 && element->field_0 != 0 && ((struct MapObj *)element->field_0)->field_c == param_2 &&
-        element->field_4 + param_2->field_c == x && element->field_5 + param_2->field_10 == y) {
-        return (x & 0xffff0000) | *(unsigned short *)&element->field_4;
+    if (row >= 0 && row < lpConfig->width && y >= 0 && y < lpConfig->height && (element = &GameMap[y][row]) != 0 &&
+        (element->flags & 0x80) != 0 && element->field_0 != 0 && element->field_0->data == ride &&
+        element->field_4 + ride->x == x && element->field_5 + ride->y == y) {
+        return element->anchor;
     }
-    return x & 0xffff0000;
+    none.id = 0;
+    return none;
 }

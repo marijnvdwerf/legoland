@@ -1221,7 +1221,7 @@ int FUN_00444df0(void) {
                     }
                 }
             }
-            obj = (struct RenderObj *)GetNextRenderObject((struct RenderObject *)obj);
+            obj = (struct RenderObj *)GetNextRenderObject((MapElement *)obj);
         } while (obj != NULL);
         if (total != 0) {
             return (linked * 100) / total;
@@ -2451,7 +2451,7 @@ LAB_00446b71:
                             if (((coord != 0) && (coord != 2)) && (iVar4 = FUN_0044f360(*(int *)(*piVar10 + 0xc), &coord), iVar4 != 0)) {
                                 tmp8 = tmp8 + 1;
                             }
-                            piVar10 = (int *)GetNextRenderObject((struct RenderObject *)piVar10);
+                            piVar10 = (int *)GetNextRenderObject((MapElement *)piVar10);
                         }
                         total = total + 1;
                         flatp = (int *)((int)DAT_00666060 <= tmp8);

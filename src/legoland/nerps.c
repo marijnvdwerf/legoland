@@ -523,7 +523,7 @@ unsigned int FUN_0046a750(struct NerpsArg *arg) {
                     total++;
                 }
             }
-            robj = (struct RenderObj *)GetNextRenderObject((struct RenderObject *)robj);
+            robj = (struct RenderObj *)GetNextRenderObject((MapElement *)robj);
         } while (robj != NULL);
     }
     if (blocked == 0) {
@@ -768,10 +768,10 @@ unsigned int FUN_0046ac50(struct NerpsArg *arg) {
             return 0;
         }
         if (_stricmp(*(char **)node->iface->context, *(char **)arg->field_4) == 0 &&
-            (robj = (struct RenderObj *)GetFirstObjectMatching((struct RenderObjectVtable *)node->iface->context)) != NULL) {
+            (robj = (struct RenderObj *)GetFirstObjectMatching((Element *)node->iface->context)) != NULL) {
             x = robj->field_4;
             y = robj->field_5;
-            value = FUN_00489fd0((const struct ObjClassKey *)&x) & 0xffff;
+            value = FUN_00489fd0((const struct Point *)&x) & 0xffff;
             if ((int)value >= (int)arg->field_1c) {
                 return 1;
             }
@@ -968,7 +968,7 @@ unsigned int FUN_0046afe0(struct NerpsArg *arg) {
 
     count = 0;
     for (robj = (struct RenderObj *)GetFirstRenderObject(); robj != NULL;
-        robj = (struct RenderObj *)GetNextRenderObject((struct RenderObject *)robj)) {
+        robj = (struct RenderObj *)GetNextRenderObject((MapElement *)robj)) {
         if (robj->field_11 != 0) {
             denom = robj->field_0->group->field_2c;
             if (denom != 0) {

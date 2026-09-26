@@ -993,7 +993,7 @@ LEGO_EXPORT void StandardRemoveObject(struct RideObject *editObj, TileId coords,
         } else {
             tile = 0;
         }
-        instance = GetInstanceOfClass((struct ObjClassNode *)((struct RideObject *)tile->field_0)->obj, &id.id);
+        instance = GetInstanceOfClass(tile->field_0->data, &id);
         if (instance != 0) {
             RemoveInstanceFromList((struct InstanceNode *)instance);
             free(instance);
@@ -3257,7 +3257,7 @@ LEGO_EXPORT void ProcessDamage(void) {
                 }
                 FUN_00463460(tile, (int *)&pt);
             }
-            id.id = tile->field_6;
+            id = tile->next;
         } while (id.id != 0);
     }
 }

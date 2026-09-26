@@ -2,14 +2,16 @@
 
 #include "legoland.h"
 
+struct Point;
+
 struct InstancePos {
     unsigned int x;
     unsigned int y;
 };
 
 int FUN_00482710(int *a, int *b, int *out);
-LEGO_EXPORT int SuggestNextMove(int *param_1, int *param_2, int *param_3);
-LEGO_EXPORT int PTPSuggestNextMove(int *param_1, int *param_2, int *param_3);
+LEGO_EXPORT int SuggestNextMove(struct Point *pos, struct Point *goal, struct Point *out);
+LEGO_EXPORT int PTPSuggestNextMove(struct Point *pos, struct Point *goal, struct Point *out);
 LEGO_EXPORT void AddPathSquare(struct InstancePos *pos);
 LEGO_EXPORT void RemovePathSquare(struct InstancePos *pos);
 void FUN_00482a40(struct InstancePos *pos);

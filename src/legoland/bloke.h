@@ -37,13 +37,12 @@ struct Bloke {
     unsigned short field_e;
     unsigned short field_10;
     unsigned char pad_12[0x14 - 0x12];
-    unsigned int field_14;
-    unsigned int field_18;
+    struct Element *target; /* class of the ride/shop the bloke is heading for */
+    struct Element *last_ride; /* class of the last ride the bloke went on */
     unsigned int field_1c;
     unsigned char pad_20[0x24 - 0x20];
     struct Point dest;
-    int field_2c;
-    int field_30;
+    struct Point goal; /* where the bloke is walking to */
     unsigned char pad_34[0x35 - 0x34];
     unsigned char field_35;
     unsigned char field_36;
@@ -54,7 +53,10 @@ struct Bloke {
     short screen_y;
     unsigned short field_40;
     unsigned char pad_42[0x46 - 0x42];
-    unsigned short field_46;
+    union {
+        unsigned short field_46;
+        TileId brolly; /* Shark Cafe brolly tile being walked to */
+    };
     unsigned char pad_48[0x4a - 0x48];
     short field_4a;
     unsigned short field_4c;
@@ -65,7 +67,7 @@ struct Bloke {
         struct BNVRef *bnv; /* ride code: BNV file slot of the bloke's path */
     };
     int field_58;
-    unsigned int field_5c;
+    int field_5c;
     unsigned char param_action;
     unsigned char pad_61[0x1];
     unsigned short flags;
