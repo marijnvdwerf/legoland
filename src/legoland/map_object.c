@@ -2800,7 +2800,6 @@ unsigned int FUN_004629e0(void) {
 LEGO_EXPORT void AddOvSav(struct OverlayParam *param) {
     struct Overlay *cur;
     struct Overlay *node;
-    int tbl;
     int sample;
     int *lls;
 
@@ -2808,7 +2807,7 @@ LEGO_EXPORT void AddOvSav(struct OverlayParam *param) {
     while (cur != 0 && cur->next != 0) {
         cur = cur->next;
     }
-    if (OverlayILF != 0 && ((char)(param->field_10 >> 8) == 0 || DAT_00667cb0 != 0)) {
+    if (OverlayILF != 0 && ((param->field_10 & 0xff00) == 0 || DAT_00667cb0 != 0)) {
         node = (struct Overlay *)malloc(sizeof(struct Overlay));
         node->next = 0;
         if (cur != 0) {
@@ -2819,11 +2818,11 @@ LEGO_EXPORT void AddOvSav(struct OverlayParam *param) {
         node->field_14 = param->field_0;
         node->field_18 = param->field_4;
         *(struct OverlayParam *)node = *param;
-        tbl = OverlayILF;
-        if ((char)(param->field_10 >> 8) != 0) {
-            tbl = (int)DAT_00667cb0;
+        if (param->field_10 & 0xff00) {
+            sample = *(int *)(*(int *)((int)DAT_00667cb0 + 8) + (param->field_10 & 0xff) * 4);
+        } else {
+            sample = *(int *)(*(int *)(OverlayILF + 8) + (param->field_10 & 0xff) * 4);
         }
-        sample = *(int *)(*(int *)(tbl + 8) + (param->field_10 & 0xff) * 4);
         node->field_20 = sample;
         lls = *(int **)(sample + 8);
         if ((lls[5] == 2 || lls[5] == 3) && 1 < *(short *)(*lls + 0x10)) {
