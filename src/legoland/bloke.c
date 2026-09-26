@@ -136,25 +136,23 @@ void FUN_00482d70(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00482df0
-short FUN_00482df0(Bloke *bloke, int index, int mul) {
-    int value = (MapStats.field_13c[index] * mul) / 100 + bloke->field_7a;
+int FUN_00482df0(Bloke *bloke, int index, int mul) {
+    int value = MapStats.field_13c[index] * mul / 100 + bloke->field_7a;
     if (value < -30000) {
         value = -30000;
     } else if (value > 30000) {
         value = 30000;
     }
-    bloke->field_7a = (short)value;
-    return (short)value;
+    bloke->field_7a = value;
+    return bloke->field_7a;
 }
 
 // FUNCTION: LEGOLAND 0x00482e50
 void FUN_00482e50(void) {
     int i;
     DAT_0066b57c = malloc(lpConfig->field_1a * sizeof(Bloke));
-    if (lpConfig->field_1a != 0) {
-        for (i = 0; i < lpConfig->field_1a; i++) {
-            memset(&DAT_0066b57c[i], 0, sizeof(Bloke));
-        }
+    for (i = 0; i < lpConfig->field_1a; i++) {
+        memset(&DAT_0066b57c[i], 0, sizeof(Bloke));
     }
 }
 
@@ -292,9 +290,8 @@ int FUN_00483160(int x, int y) {
 // FUNCTION: LEGOLAND 0x004831a0
 Point FUN_004831a0(unsigned char dir, short dist) {
     Point result;
-    int index = (dir & 0xff) * 2;
-    result.x = (int)DAT_004bd32c[index] * (int)dist >> 8;
-    result.y = (int)DAT_004bd32c[index + 1] * (int)dist >> 8;
+    result.x = DAT_004bd32c[dir][0] * dist >> 8;
+    result.y = DAT_004bd32c[dir][1] * dist >> 8;
     return result;
 }
 
@@ -325,6 +322,8 @@ LEGO_EXPORT unsigned short DoPendingAction(Bloke *bloke) {
 // FUNCTION: LEGOLAND 0x00483260
 void FUN_00483260(Bloke *bloke) {
     Point tile;
+    unsigned int ux;
+    unsigned int uy;
     int x;
     int y;
     MapElement *elem;
@@ -334,9 +333,11 @@ void FUN_00483260(Bloke *bloke) {
     bloke->field_10 = bloke->field_e;
     bloke->field_e = 9;
     bloke->field_20 = 0;
-    tile = GetTileInDir(bloke->pos.x, bloke->pos.y, bloke->field_72);
-    x = tile.x >> 8;
-    y = tile.y >> 8;
+    tile = GetTileInDir(bloke->pos, bloke->field_72);
+    ux = tile.x;
+    uy = tile.y;
+    x = ux >> 8;
+    y = uy >> 8;
     if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
         elem = &GameMap[y][x];
     } else {
@@ -441,13 +442,12 @@ LEGO_EXPORT unsigned int Random_Dir_From_Bits(unsigned int bits) {
 // FUNCTION: LEGOLAND 0x004834a0
 LEGO_EXPORT int HitPathEdge(Bloke *bloke, int x, int y) {
     if ((bloke->flags & 2) != 0) {
-        if (x < 0 || x >= lpConfig->width * 0x100 || y < 0 ||
-            y >= lpConfig->height * 0x100) {
+        if (x < 0 || x >= lpConfig->width * 0x100 || y < 0 || y >= lpConfig->height * 0x100) {
             return 1;
         }
         {
             short mapFlags = Get_MapFlags(x, y);
-            unsigned char rf = GetCurrentRFFlags(x, y);
+            short rf = GetCurrentRFFlags(x, y);
             if ((rf & 1) != 0) {
                 return 0;
             }
@@ -474,14 +474,19 @@ LEGO_EXPORT int HitObstacle(Bloke *bloke, int x, int y) {
 
 // FUNCTION: LEGOLAND 0x00483580
 int FUN_00483580(Bloke *bloke, int x, int y) {
+    int rf;
+    int mapFlags;
+    int from;
+    int to;
+
     if (x >= 0 && x < lpConfig->width * 0x100 && y >= 0 && y < lpConfig->height * 0x100) {
-        unsigned char rf1 = GetCurrentRFFlags(bloke->pos.x, bloke->pos.y);
-        unsigned short mf1 = Get_MapFlags(bloke->pos.x, bloke->pos.y);
-        int blocked1 = ((rf1 & 2) == 0 || (mf1 & 0x8800) != 0) ? 0 : 1;
-        unsigned char rf2 = GetCurrentRFFlags(x, y);
-        unsigned short mf2 = Get_MapFlags(x, y);
-        int blocked2 = ((rf2 & 2) == 0 || (mf2 & 0x8800) != 0) ? 0 : 1;
-        if (blocked1 || !blocked2) {
+        rf = GetCurrentRFFlags(bloke->pos.x, bloke->pos.y);
+        mapFlags = Get_MapFlags(bloke->pos.x, bloke->pos.y);
+        from = (rf & 2) != 0 && (mapFlags & 0x8800) == 0;
+        rf = GetCurrentRFFlags(x, y);
+        mapFlags = Get_MapFlags(x, y);
+        to = (rf & 2) != 0 && (mapFlags & 0x8800) == 0;
+        if (from || !to) {
             return 0;
         }
     }
@@ -574,11 +579,12 @@ void FUN_00483830(Bloke *bloke) {
 
 // FUNCTION: LEGOLAND 0x00483850
 void FUN_00483850(Bloke *bloke) {
-    bloke->field_75 = bloke->field_75 - 1;
-    if (bloke->field_75 == 0) {
+    char step;
+
+    if (--bloke->field_75 == 0) {
         bloke->field_75 = 3;
-        bloke->field_72 =
-            (((-(((bloke->field_72 - bloke->field_73) & 4) != 0) & 2) - 1) + bloke->field_72) & 7;
+        step = ((bloke->field_72 - bloke->field_73) & 4) ? 1 : -1;
+        bloke->field_72 = (step + bloke->field_72) & 7;
     }
 }
 
@@ -1020,20 +1026,15 @@ void FUN_004845d0(Bloke *bloke) {
 
 // FUNCTION: LEGOLAND 0x00484630
 void FUN_00484630(Bloke *bloke) {
-    short value;
     if (bloke->field_70 == 0) {
         bloke->field_46 = bloke->field_44;
-        value = bloke->field_3a;
-        bloke->field_3a = value - 1;
-        if (value == 0) {
+        if (bloke->field_3a-- == 0) {
             DoPendingAction(bloke);
             return;
         }
     }
-    value = bloke->field_70 + bloke->field_46;
-    bloke->field_70 = value;
-    bloke->field_46 = bloke->field_46 - 1;
-    if (value == 0) {
+    bloke->field_70 += bloke->field_46--;
+    if (bloke->field_70 <= 0) {
         bloke->field_70 = 0;
     }
     bloke->field_74 = 0;
@@ -1042,77 +1043,76 @@ void FUN_00484630(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x004846a0
-LEGO_EXPORT Point GetTileInDir(int x, int y, unsigned int dir) {
-    Point result;
+LEGO_EXPORT Point GetTileInDir(Point pos, unsigned char dir) {
     switch (dir & 7) {
-    case 0:
-        y = y - 0x100;
-        break;
     case 1:
-        result.x = x;
-        result.y = y - 0x100;
-        return result;
-    case 2:
-        result.x = x + 0x100;
-        result.y = y - 0x100;
-        return result;
-    case 3:
-        result.x = x + 0x100;
-        result.y = y;
-        return result;
-    case 4:
-        result.x = x + 0x100;
-        result.y = y + 0x100;
-        return result;
+        pos.y -= 0x100;
+        break;
     case 5:
-        result.x = x;
-        result.y = y + 0x100;
-        return result;
-    case 6:
-        y = y + 0x100;
+        pos.y += 0x100;
+        break;
+    case 3:
+        pos.x += 0x100;
         break;
     case 7:
-        result.x = x - 0x100;
-        result.y = y;
-        return result;
+        pos.x -= 0x100;
+        break;
+    case 2:
+        pos.y -= 0x100;
+        pos.x += 0x100;
+        break;
+    case 0:
+        pos.y -= 0x100;
+        pos.x -= 0x100;
+        break;
+    case 4:
+        pos.y += 0x100;
+        pos.x += 0x100;
+        break;
+    case 6:
+        pos.y += 0x100;
+        pos.x -= 0x100;
+        break;
     }
-    result.x = x - 0x100;
-    result.y = y;
-    return result;
+    return pos;
 }
 
 // FUNCTION: LEGOLAND 0x00484790
 void FUN_00484790(Bloke *bloke) {
-    Point tile = GetTileInDir(bloke->pos.x, bloke->pos.y, bloke->field_72);
-    unsigned char rf = Get_RFFlags(tile.x, tile.y);
+    Point tile;
     MapElement *elem;
     struct FXSpriteList *set;
-    unsigned char result;
-    int tx;
-    int ty;
+    int result;
+    unsigned int ux;
+    unsigned int uy;
+    int x;
+    int y;
 
-    if ((rf & 3) != 3) {
+    tile = GetTileInDir(bloke->pos, bloke->field_72);
+    if ((Get_RFFlags(tile.x, tile.y) & 3) != 3) {
         bloke->flags &= 0xfff7;
         DoPendingAction(bloke);
     }
-    tx = tile.x >> 8;
-    ty = tile.y >> 8;
-    if (tx < 0 || tx >= lpConfig->width || ty < 0 || ty >= lpConfig->height) {
-        elem = NULL;
+    x = tile.x >> 8;
+    y = tile.y >> 8;
+    if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+        elem = &GameMap[y][x];
     } else {
-        elem = &GameMap[ty][tx];
+        elem = NULL;
     }
     set = TileSpriteInfo[elem->field_8].src;
-    if (set->get_rf_flags == NULL) {
-        result = 2;
-    } else {
+    if (set->get_rf_flags != NULL) {
         result = set->get_rf_flags(tile.x, tile.y);
+    } else {
+        result = 2;
     }
-    if ((result & 3) != 0 && (result & 3) < 3) {
-        unsigned int ux = (unsigned int)tile.x >> 8;
-        unsigned int uy = (unsigned int)tile.y >> 8;
-        if (ux < lpConfig->width && uy < lpConfig->height) {
-            elem = &GameMap[uy][ux];
+    if ((result & 3) > 0 && (result & 3) <= 2) {
+        ux = tile.x;
+        uy = tile.y;
+        x = ux >> 8;
+        y = uy >> 8;
+        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+            elem = &GameMap[y][x];
         } else {
             elem = NULL;
         }
@@ -1125,7 +1125,7 @@ void FUN_00484790(Bloke *bloke) {
         PTR_FUN_004bd34c[bloke->field_e](bloke);
         return;
     }
-    bloke->field_20 = bloke->field_20 + 1;
+    bloke->field_20++;
     FUN_00483890(bloke);
 }
 
@@ -1140,26 +1140,6 @@ void FUN_004848e0(Bloke *bloke) {
 // FUNCTION: LEGOLAND 0x00484910
 LEGO_EXPORT void Bloke_DoNothing(void) {
 }
-
-// GLOBAL: LEGOLAND 0x004bd34c
-void (*PTR_FUN_004bd34c[16])(Bloke *) = {
-    FUN_004838a0,
-    FUN_004838c0,
-    FUN_00483ef0,
-    FUN_00484090,
-    FUN_00483d10,
-    FUN_004838e0,
-    FUN_00484220,
-    FUN_004845d0,
-    FUN_00484630,
-    FUN_00484790,
-    FUN_00483e20,
-    FUN_00484470,
-    FUN_00484520,
-    FUN_004848e0,
-    FUN_00483d90,
-    FUN_00484350,
-};
 
 // FUNCTION: LEGOLAND 0x00484920
 LEGO_EXPORT void DoLowLevelAI(Bloke *bloke) {

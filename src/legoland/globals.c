@@ -1,5 +1,6 @@
 #include "globals.h"
 #include <dinput.h> /* this TU defines the DInput data symbols (c_dfDI*, GUID_Sys*, DAT_00668d78) */
+#include "bloke.h"
 #include "icon.h"
 #include "interface.h"
 #include "math.h"
@@ -750,23 +751,35 @@ char *PTR_s_Abbie_004bd018[0x5a];
 char *PTR_s_Adams_004bd180[0x6b];
 
 // GLOBAL: LEGOLAND 0x004bd32c
-short DAT_004bd32c[16] = {
-    -181,
-    -181,
-    0,
-    -256,
-    181,
-    -181,
-    256,
-    0,
-    181,
-    181,
-    0,
-    256,
-    -181,
-    181,
-    -256,
-    0,
+short DAT_004bd32c[8][2] = {
+    {-181, -181},
+    {0, -256},
+    {181, -181},
+    {256, 0},
+    {181, 181},
+    {0, 256},
+    {-181, 181},
+    {-256, 0},
+};
+
+// GLOBAL: LEGOLAND 0x004bd34c
+BlokeAction PTR_FUN_004bd34c[16] = {
+    FUN_004838a0,
+    FUN_004838c0,
+    FUN_00483ef0,
+    FUN_00484090,
+    FUN_00483d10,
+    FUN_004838e0,
+    FUN_00484220,
+    FUN_004845d0,
+    FUN_00484630,
+    FUN_00484790,
+    FUN_00483e20,
+    FUN_00484470,
+    FUN_00484520,
+    FUN_004848e0,
+    FUN_00483d90,
+    FUN_00484350,
 };
 
 // GLOBAL: LEGOLAND 0x004bdd00

@@ -75,7 +75,7 @@ struct Bloke {
     unsigned char field_64;
     unsigned char pad_65[0x68 - 0x65];
     struct Point pos;
-    short field_70;
+    unsigned short field_70;
     unsigned char field_72;
     unsigned char field_73;
     unsigned char field_74;
@@ -101,6 +101,27 @@ struct Bloke {
 };
 typedef struct Bloke Bloke;
 
+/* A per-state low-level AI handler (indexed by Bloke.field_e). */
+typedef void (*BlokeAction)(struct Bloke *bloke);
+
+/* Low-level AI handlers (PTR_FUN_004bd34c). */
+void FUN_004838a0(struct Bloke *bloke);
+void FUN_004838c0(struct Bloke *bloke);
+void FUN_00483ef0(struct Bloke *bloke);
+void FUN_00484090(struct Bloke *bloke);
+void FUN_00483d10(struct Bloke *bloke);
+void FUN_004838e0(struct Bloke *bloke);
+void FUN_00484220(struct Bloke *bloke);
+void FUN_004845d0(struct Bloke *bloke);
+void FUN_00484630(struct Bloke *bloke);
+void FUN_00484790(struct Bloke *bloke);
+void FUN_00483e20(struct Bloke *bloke);
+void FUN_00484470(struct Bloke *bloke);
+void FUN_00484520(struct Bloke *bloke);
+void FUN_004848e0(struct Bloke *bloke);
+void FUN_00483d90(struct Bloke *bloke);
+void FUN_00484350(struct Bloke *bloke);
+
 struct Point;
 struct Point;
 struct OverTile;
@@ -114,7 +135,7 @@ LEGO_EXPORT void SetBlokePositionFromBNV(struct BinVFile *file, struct Bloke *bl
 LEGO_EXPORT struct BNVPath *NewBNVPath(struct BinVFile *file, unsigned int param_2, char *name, float param_4, float param_5, int *coords);
 LEGO_EXPORT int UpdateBlokeFromBNVPath(struct Bloke *bloke, struct BNVPath *path);
 struct Point FUN_004831a0(unsigned char dir, short dist);
-LEGO_EXPORT struct Point GetTileInDir(int x, int y, unsigned int dir);
+LEGO_EXPORT struct Point GetTileInDir(struct Point pos, unsigned char dir);
 LEGO_EXPORT int OverNewTile(struct OverTile *tile, unsigned int x, unsigned int y);
 void FUN_00482b10(void);
 void FUN_00482b20(int force);
@@ -124,7 +145,7 @@ LEGO_EXPORT char *GetVisitorName(struct Bloke *bloke);
 int FUN_00482cb0(struct Bloke *bloke);
 struct BlokeNameView;
 void FUN_00482c60(struct Bloke *bloke);
-short FUN_00482df0(struct Bloke *bloke, int index, int mul);
+int FUN_00482df0(struct Bloke *bloke, int index, int mul);
 void FUN_00482d60(unsigned int index, int value);
 void FUN_00482d70(void);
 void FUN_00483090(void);

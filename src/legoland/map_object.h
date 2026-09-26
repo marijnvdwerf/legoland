@@ -59,7 +59,7 @@ LEGO_EXPORT void MouseScrollMap(void);
 LEGO_EXPORT void ProcessScrolling(unsigned int a, unsigned int b);
 LEGO_EXPORT unsigned char Get_RFFlags(int x, int y);
 LEGO_EXPORT unsigned char GetCurrentRFFlags(int x, int y);
-LEGO_EXPORT short Get_MapFlags(int x, int y);
+LEGO_EXPORT unsigned short Get_MapFlags(int x, int y);
 LEGO_EXPORT unsigned short Get_UserFlags(int x, int y);
 LEGO_EXPORT void Set_UserFlags(int x, int y, unsigned short value);
 LEGO_EXPORT void SetMapTile(int x, int y, unsigned short value);

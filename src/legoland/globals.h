@@ -838,9 +838,9 @@ extern char *PTR_s_Abbie_004bd018[0x5a];
 // 0x004bd180
 extern char *PTR_s_Adams_004bd180[0x6b];
 // 0x004bd32c
-extern short DAT_004bd32c[16];
+extern short DAT_004bd32c[8][2]; /* unit step (x, y) per direction, 8.8 fixed point */
 // 0x004bd34c
-extern void (*PTR_FUN_004bd34c[16])(void *);
+extern void (*PTR_FUN_004bd34c[16])(struct Bloke *);
 // 0x004bdd00
 extern unsigned int DAT_004bdd00;
 // 0x004bdd04
