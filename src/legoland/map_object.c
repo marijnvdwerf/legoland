@@ -1616,79 +1616,56 @@ LEGO_EXPORT void GetTileDimensions(int *width, int *height) {
 // FUNCTION: LEGOLAND 0x00460560
 void FUN_00460560(int index) {
     struct Overlay *ov;
-    int coord[2];
+    struct Point pt;
     int sc[2];
-    int row;
     int inner;
     int outer;
 
-    ov = (struct Overlay *)OverlayList;
-    if (OverlayList == 0) {
-        MapStats.field_3e0[index] = 1;
-        return;
-    }
-    do {
+    for (ov = (struct Overlay *)OverlayList; ov != 0; ov = ov->next) {
         if (ov->field_10 >> 8 == index + 1) {
             sc[0] = (lpConfig->field_20 - (ScrollX >> 8)) + ov->field_14;
             sc[1] = (lpConfig->field_22 - (ScrollY >> 8)) + ov->field_18;
-            ScreenToMapRef(sc, coord, 0);
+            ScreenToMapRef(sc, (int *)&pt, 0);
             if ((char)ov->field_10 == 0) {
-                coord[1] = coord[1] + 0xf;
-                outer = 10;
-                do {
-                    inner = 2;
-                    row = coord[1];
-                    do {
-                        struct MapElement *t;
-                        coord[1] = row;
-                        t = (struct MapElement *)((int)GameMap[coord[0]] + coord[1] * 0x14);
-                        t->field_0 = ((struct MapObject *)DAT_007fd624)->field_c4;
-                        t->field_10 |= 1;
-                        t->field_10 &= 0xfd;
-                        *(unsigned char *)&t->flags |= 0x48;
-                        t->flags &= 0x7fff;
-                        t->field_8 = *(unsigned short *)PathSprite;
-                        *((unsigned char *)&t->field_4) = (unsigned char)coord[1];
-                        *((unsigned char *)&t->field_4 + 1) = (unsigned char)coord[0];
-                        AddPathTile((struct Point *)coord, *(unsigned short *)PathSprite);
-                        inner--;
-                        row = coord[1] + 1;
-                    } while (inner != 0);
-                    coord[1]--;
-                    coord[0]++;
-                    outer--;
-                } while (outer != 0);
+                pt.x += 0xf;
+                for (outer = 10; outer != 0; outer--) {
+                    for (inner = 2; inner != 0; inner--) {
+                        GameMap[pt.y][pt.x].field_0 = ((struct MapObject *)DAT_007fd624)->field_c4;
+                        GameMap[pt.y][pt.x].field_10 |= 1;
+                        GameMap[pt.y][pt.x].field_10 &= 0xfd;
+                        GameMap[pt.y][pt.x].flags |= 0x48;
+                        GameMap[pt.y][pt.x].flags &= 0x7fff;
+                        GameMap[pt.y][pt.x].field_8 = *(unsigned short *)PathSprite;
+                        GameMap[pt.y][pt.x].field_4 = (unsigned char)pt.x;
+                        GameMap[pt.y][pt.x].field_5 = (unsigned char)pt.y;
+                        AddPathTile(&pt, *(unsigned short *)PathSprite);
+                        pt.x++;
+                    }
+                    pt.x -= 2;
+                    pt.y++;
+                }
             } else {
-                coord[1] = coord[1] + 10;
-                coord[0] = coord[0] + 6;
-                outer = 2;
-                do {
-                    inner = 10;
-                    row = coord[1];
-                    do {
-                        struct MapElement *t;
-                        coord[1] = row;
-                        t = (struct MapElement *)((int)GameMap[coord[0]] + coord[1] * 0x14);
-                        t->field_0 = ((struct MapObject *)DAT_007fd624)->field_c4;
-                        t->field_10 |= 1;
-                        t->field_10 &= 0xfd;
-                        *(unsigned char *)&t->flags |= 0x48;
-                        t->flags &= 0x7fff;
-                        t->field_8 = *(unsigned short *)PathSprite;
-                        *((unsigned char *)&t->field_4) = (unsigned char)coord[1];
-                        *((unsigned char *)&t->field_4 + 1) = (unsigned char)coord[0];
-                        AddPathTile((struct Point *)coord, *(unsigned short *)PathSprite);
-                        inner--;
-                        row = coord[1] + 1;
-                    } while (inner != 0);
-                    coord[1] = coord[1] - 9;
-                    coord[0]++;
-                    outer--;
-                } while (outer != 0);
+                pt.x += 10;
+                pt.y += 6;
+                for (outer = 2; outer != 0; outer--) {
+                    for (inner = 10; inner != 0; inner--) {
+                        GameMap[pt.y][pt.x].field_0 = ((struct MapObject *)DAT_007fd624)->field_c4;
+                        GameMap[pt.y][pt.x].field_10 |= 1;
+                        GameMap[pt.y][pt.x].field_10 &= 0xfd;
+                        GameMap[pt.y][pt.x].flags |= 0x48;
+                        GameMap[pt.y][pt.x].flags &= 0x7fff;
+                        GameMap[pt.y][pt.x].field_8 = *(unsigned short *)PathSprite;
+                        GameMap[pt.y][pt.x].field_4 = (unsigned char)pt.x;
+                        GameMap[pt.y][pt.x].field_5 = (unsigned char)pt.y;
+                        AddPathTile(&pt, *(unsigned short *)PathSprite);
+                        pt.x++;
+                    }
+                    pt.x -= 10;
+                    pt.y++;
+                }
             }
         }
-        ov = ov->next;
-    } while (ov != 0);
+    }
     MapStats.field_3e0[index] = 1;
 }
 
