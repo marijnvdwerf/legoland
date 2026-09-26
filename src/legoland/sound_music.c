@@ -467,7 +467,7 @@ LEGO_EXPORT void KLIBAUDIO_StopAVISoundBuffer(struct AVISoundBuffer *buffer) {
 }
 
 // FUNCTION: LEGOLAND 0x004964e0
-LEGO_EXPORT void KLIBAUDIO_SetAVIVolume(struct AVISoundBuffer *buffer) {
+LEGO_EXPORT void KLIBAUDIO_SetAVIVolume(struct AVISoundBuffer *buffer, int volume) {
     buffer->vtable->SetVolume(buffer, 0);
 }
 

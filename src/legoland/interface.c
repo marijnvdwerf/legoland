@@ -1649,17 +1649,21 @@ int FUN_00476680(void) {
     state = DAT_00668fac;
     if (state == 0) {
         if (QueryPerformanceFrequency(&freq) == 0) {
-            DAT_00668fac = state = 1;
+            state = 1;
+            DAT_00668fac = state;
         } else {
-            DAT_00668fac = state = 2;
+            state = 2;
+            DAT_00668fac = state;
             DAT_007fdca8 = DAT_004ab528 / (float)freq.QuadPart;
         }
     }
-    if (state == 2) {
+    switch (state) {
+    case 2:
         QueryPerformanceCounter(&count);
-        return FUN_00458930((float)count.QuadPart * DAT_007fdca8);
+        return (float)count.QuadPart * DAT_007fdca8;
+    default:
+        return GetTickCount();
     }
-    return GetTickCount();
 }
 
 // FUNCTION: LEGOLAND 0x004766f0
@@ -1850,7 +1854,7 @@ int FUN_00476bf0(struct MovieHandle *handle) {
         DAT_00668f88 = len_start;
         DAT_00668f9c = 1;
         FUN_00476d20(0, 0);
-        KLIBAUDIO_SetAVIVolume(DAT_00668f48, FUN_00458930(DAT_004bb4dc));
+        KLIBAUDIO_SetAVIVolume(DAT_00668f48, (int)DAT_004bb4dc);
         KLIBAUDIO_PlayAVISoundBuffer(DAT_00668f48, 0);
         return 1;
     }
@@ -2064,7 +2068,7 @@ int FUN_00476d20(unsigned int param_1, int param_2) {
     } while (loops != 0);
     if (play != 0) {
         KLIBAUDIO_PlayAVISoundBuffer(DAT_00668f48, play_pos);
-        KLIBAUDIO_SetAVIVolume(DAT_00668f48, FUN_00458930(DAT_004bb4dc));
+        KLIBAUDIO_SetAVIVolume(DAT_00668f48, (int)DAT_004bb4dc);
     }
     return 1;
 }
