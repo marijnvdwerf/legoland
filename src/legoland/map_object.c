@@ -84,8 +84,7 @@ struct ObjRect {
 
 struct ObjBox {
     unsigned char pad_0[12];
-    int field_c;
-    int field_10;
+    struct Point pos;
     unsigned char pad_14[0x20 - 0x14];
     short state;
     unsigned char pad_22[0x24 - 0x22];
@@ -480,8 +479,8 @@ int FUN_0045e620(struct ObjBox *obj) {
     if (obj != 0) {
         rect = obj->rect;
         if (obj->state != 3 && obj->state != 2 && obj->state != 0 &&
-            (rect.v[0] > obj->field_c || obj->field_c > rect.v[2] ||
-                rect.v[1] > obj->field_10 || obj->field_10 > rect.v[3])) {
+            (rect.v[0] > obj->pos.x || obj->pos.x > rect.v[2] ||
+                rect.v[1] > obj->pos.y || obj->pos.y > rect.v[3])) {
             return 1;
         }
     }
@@ -501,7 +500,7 @@ int FUN_0045e6b0(struct ObjBox *obj) {
     int x;
     struct ObjRect rect;
 
-    x = obj->field_c;
+    x = obj->pos.x;
     rect = obj->rect;
     if (rect.v[2] < x) {
         return 4;
@@ -509,7 +508,7 @@ int FUN_0045e6b0(struct ObjBox *obj) {
     if (x < rect.v[0]) {
         return 8;
     }
-    return (rect.v[3] >= obj->field_10) + 1;
+    return (rect.v[3] >= obj->pos.y) + 1;
 }
 
 // FUNCTION: LEGOLAND 0x0045e710
@@ -535,8 +534,8 @@ void FUN_0045e770(struct ObjNode *node, int *offset) {
 
     obj = node->field_c;
     if (FUN_0045e620(obj) != 0) {
-        x = obj->field_c + offset[0];
-        y = obj->field_10 + offset[1];
+        x = obj->pos.x + offset[0];
+        y = obj->pos.y + offset[1];
         if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
             tile = (struct MapTile *)((int)MapTileGrid[y] + x * 0x14);
             if (tile != 0) {
@@ -565,8 +564,8 @@ void FUN_0045e850(struct ObjNode *node, int *offset) {
 
     obj = node->field_c;
     if (FUN_0045e620(obj) != 0) {
-        x = obj->field_c + offset[0];
-        y = obj->field_10 + offset[1];
+        x = obj->pos.x + offset[0];
+        y = obj->pos.y + offset[1];
         if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
             tile = (struct MapTile *)((int)MapTileGrid[y] + x * 0x14);
             if (tile != 0) {
@@ -611,8 +610,8 @@ int FUN_0045e960(struct ObjNode *node, int *offset) {
 
     obj = node->field_c;
     if (FUN_0045e620(obj) != 0) {
-        x = offset[0] + obj->field_c;
-        y = offset[1] + obj->field_10;
+        x = offset[0] + obj->pos.x;
+        y = offset[1] + obj->pos.y;
         if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
             tile = (struct MapTile *)((int)MapTileGrid[y] + x * 0x14);
             if (tile != 0 && FUN_0045e930((struct ObjEntry *)tile) == 0) {
@@ -620,8 +619,8 @@ int FUN_0045e960(struct ObjNode *node, int *offset) {
             }
         }
         if (FUN_0045e690((struct ObjInfo *)obj) != 0) {
-            x = offset[0] + obj->field_c;
-            y = offset[1] + obj->field_10;
+            x = offset[0] + obj->pos.x;
+            y = offset[1] + obj->pos.y;
             if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
                 tile = (struct MapTile *)((int)MapTileGrid[y] + x * 0x14);
                 if (tile != 0 && FUN_0045e930((struct ObjEntry *)tile) == 0) {
@@ -634,16 +633,16 @@ int FUN_0045e960(struct ObjNode *node, int *offset) {
 }
 
 // FUNCTION: LEGOLAND 0x0045ea40
-void FUN_0045ea40(struct ObjBox *obj, int *out) {
-    if ((obj->field_c < obj->rect.v[0] || obj->field_c > obj->rect.v[2] ||
-            obj->field_10 < obj->rect.v[1] || obj->field_10 > obj->rect.v[3]) &&
-        (obj->state == 1 || obj->state == 4 || obj->state == 5)) {
-        out[0] = obj->field_c;
-        out[1] = obj->field_10;
-        return;
+void FUN_0045ea40(struct ObjBox *obj, struct Point *out) {
+    if (obj->pos.x < obj->rect.v[0] || obj->pos.x > obj->rect.v[2] || obj->pos.y < obj->rect.v[1] ||
+        obj->pos.y > obj->rect.v[3]) {
+        if (obj->state == 1 || obj->state == 4 || obj->state == 5) {
+            *out = obj->pos;
+            return;
+        }
     }
-    out[0] = obj->rect.v[2] + 1;
-    out[1] = (obj->rect.v[3] + obj->rect.v[1]) / 2;
+    out->x = obj->rect.v[2] + 1;
+    out->y = (obj->rect.v[3] + obj->rect.v[1]) / 2;
 }
 
 // FUNCTION: LEGOLAND 0x0045eab0
@@ -680,7 +679,7 @@ LEGO_EXPORT int BuildObject(struct EditObject *editObj, int *coords) {
     unsigned char packed[2];
     int cost;
     unsigned int *effect;
-    int out[2];
+    struct Point out;
 
     obj = editObj->obj;
     packed[0] = (unsigned char)coords[0];
@@ -702,15 +701,15 @@ LEGO_EXPORT int BuildObject(struct EditObject *editObj, int *coords) {
         if (FUN_0045eab0((struct ObjFlags *)obj) != 0 || FUN_0045eaf0((struct ObjData *)obj) != 0) {
             FUN_0045e080(editObj, (struct Point *)coords, 0);
         }
-        FUN_0045ea40((struct ObjBox *)obj, out);
-        out[0] = out[0] + coords[0];
-        out[1] = out[1] + coords[1];
+        FUN_0045ea40((struct ObjBox *)obj, &out);
+        out.x = out.x + coords[0];
+        out.y = out.y + coords[1];
         PutObjOnMap((struct ObjClass *)obj, (unsigned int)editObj, (struct Point *)coords);
         if ((obj->flags & 0x400000) != 0) {
             FUN_00482a90();
             FUN_00482b20(1);
             effect = FUN_00482b00();
-            FUN_00477bd0(out[0], out[1], effect[0], effect[1]);
+            FUN_00477bd0(out.x, out.y, effect[0], effect[1]);
         }
     } else {
         if (AddObjectToBuildList((struct ObjClass *)obj, (short)(unsigned int)editObj) == 0) {
@@ -722,14 +721,14 @@ LEGO_EXPORT int BuildObject(struct EditObject *editObj, int *coords) {
         } else {
             SetObjRectFlags(editObj, (struct Point *)coords, 0x20);
         }
-        FUN_0045ea40((struct ObjBox *)obj, out);
-        out[0] = out[0] + coords[0];
-        out[1] = out[1] + coords[1];
+        FUN_0045ea40((struct ObjBox *)obj, &out);
+        out.x = out.x + coords[0];
+        out.y = out.y + coords[1];
         if ((obj->flags & 0x400000) != 0) {
             FUN_00482a90();
             FUN_00482b20(1);
             effect = FUN_00482b00();
-            FUN_00477bd0(out[0], out[1], effect[0], effect[1]);
+            FUN_00477bd0(out.x, out.y, effect[0], effect[1]);
         }
         if (DAT_00667cd8 == 0) {
             CalculateMapRenderOrder();
@@ -1571,8 +1570,8 @@ LEGO_EXPORT void RenderCursor(struct Cursor *cursor) {
     if (EditMode.unk0 != 1) {
         return;
     }
-    tilept[0] = ((struct ObjBox *)EditMode.unk8)->field_c + cursor->field_1404;
-    tilept[1] = ((struct ObjBox *)EditMode.unk8)->field_10 + cursor->field_1408;
+    tilept[0] = ((struct ObjBox *)EditMode.unk8)->pos.x + cursor->field_1404;
+    tilept[1] = ((struct ObjBox *)EditMode.unk8)->pos.y + cursor->field_1408;
     GetTileBounds((struct Point *)tilept, screen);
     code = FUN_0045e6b0((struct ObjBox *)EditMode.unk8);
     switch (code) {
