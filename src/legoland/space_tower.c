@@ -373,18 +373,13 @@ struct SpaceTowerCar *FUN_0043ac40(unsigned short *param_1) {
     struct SpaceTowerCar *node;
 
     node = DAT_0062fda8;
-    if (node != NULL) {
-        if (node->var_0 == *param_1) {
-            return node;
-        }
-        while (1) {
-            node = node->next;
-            if (node == NULL) {
-                break;
-            }
-            if (node->var_0 == *param_1) {
-                return node;
-            }
+    if (node == NULL) {
+        return NULL;
+    }
+    while (memcmp(node, param_1, 2) != 0) {
+        node = node->next;
+        if (node == NULL) {
+            return NULL;
         }
     }
     return node;
@@ -405,21 +400,14 @@ void FUN_0043ac70(struct SpaceTowerRideNode *param_1, unsigned short *param_2) {
 
 // FUNCTION: LEGOLAND 0x0043acb0
 unsigned int FUN_0043acb0(struct SpaceTowerRideNode *param_1, struct SpaceTowerCar *param_2) {
-    char slot_used;
-    unsigned int slot;
+    int slot;
 
-    slot = rand();
-    slot = slot & 0x80000007;
-    if ((int)slot < 0) {
-        slot = (slot - 1 | 0xfffffff8) + 1;
-    }
-    slot_used = param_2->flags_a4[slot];
-    while (slot_used != '\0') {
-        slot = slot + 1;
-        if ((int)slot >= 8) {
+    slot = rand() % 8;
+    while (param_2->flags_a4[slot] != 0) {
+        slot++;
+        if (slot >= 8) {
             slot = 0;
         }
-        slot_used = param_2->flags_a4[slot];
     }
     param_2->flags_a4[slot] = 1;
     param_1->bloke->field_36 = (char)slot;
@@ -636,15 +624,13 @@ void FUN_0043b460(struct EditObject *param_1, unsigned int param_2, struct Curso
 }
 
 // FUNCTION: LEGOLAND 0x0043b4b0
-void FUN_0043b4b0(struct EditObject *param_1, unsigned char *param_2) {
-    unsigned char *src = param_2;
-    unsigned char b0 = param_2[0];
-    unsigned char b4 = param_2[4];
+void FUN_0043b4b0(struct EditObject *param_1, int *coords) {
+    TileId id;
 
-    *(unsigned char *)&param_2 = b0;
-    *((unsigned char *)&param_2 + 1) = b4;
-    AddBasicObject(param_1, (int *)src);
-    FUN_0043ab70((unsigned short *)&param_2);
+    id.pos.x = (unsigned char)coords[0];
+    id.pos.y = (unsigned char)coords[1];
+    AddBasicObject(param_1, coords);
+    FUN_0043ab70(&id.id);
 }
 
 // FUNCTION: LEGOLAND 0x0043b4e0
