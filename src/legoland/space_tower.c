@@ -445,31 +445,28 @@ void FUN_0043ad90(struct SpaceTowerCar *param_1, int param_2, unsigned int param
 // FUNCTION: LEGOLAND 0x0043ae20
 void FUN_0043ae20(struct SpaceTowerCar *param_1, int param_2, unsigned int param_3) {
     struct Point coords;
-    int off_x;
-    int off_y;
-    int sprite_id;
+    struct Point off;
+    int id;
 
     coords = GetScreenCoordsForObject((unsigned char *)param_1, DAT_0062fd74);
-    off_x = DAT_0062fd88[param_2].x;
-    off_y = DAT_0062fd88[param_2].y - param_1->seats[param_2].pos;
-    AdjustOffsetForViewMode((struct Point *)&off_x);
+    off = DAT_0062fd88[param_2];
+    off.y -= param_1->seats[param_2].pos;
+    AdjustOffsetForViewMode(&off);
     switch (param_2) {
     case 0:
-        sprite_id = 6;
+        id = 6;
         break;
     case 1:
-        sprite_id = 4;
+        id = 4;
         break;
     case 2:
-        sprite_id = 0;
+        id = 0;
         break;
     case 3:
-        sprite_id = 2;
+        id = 2;
         break;
-    default:
-        sprite_id = off_y;
     }
-    PrintSprite(GetSpriteForLayer((struct LayerContainer *)DAT_0062fd60, sprite_id), off_x + coords.x, coords.y + off_y, param_3, 0);
+    PrintSprite(GetSpriteForLayer((struct LayerContainer *)DAT_0062fd60, id), coords.x + off.x, coords.y + off.y, param_3, 0);
 }
 
 // FUNCTION: LEGOLAND 0x0043aee0
