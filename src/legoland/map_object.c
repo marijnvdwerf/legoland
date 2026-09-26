@@ -2100,24 +2100,27 @@ LEGO_EXPORT void ProcessScrolling(unsigned int a, unsigned int b) {
 
 // FUNCTION: LEGOLAND 0x004614f0
 LEGO_EXPORT void MouseScrollMap(void) {
-    if ((int)DAT_00813a44.x < (int)(unsigned int)lpConfig->field_4) {
-        if (-(int)(unsigned int)lpConfig->field_c < ScrollSpeedX) {
-            ScrollSpeedX = ScrollSpeedX - lpConfig->field_8;
+    struct Point mouse;
+
+    mouse = DAT_00813a44;
+    if (mouse.x < lpConfig->field_4) {
+        if (ScrollSpeedX > -(int)lpConfig->field_c) {
+            ScrollSpeedX -= lpConfig->field_8;
         }
-    } else if ((int)((unsigned int)lpConfig->field_0 - (unsigned int)lpConfig->field_4) < (int)DAT_00813a44.x) {
-        if (ScrollSpeedX < (int)(unsigned int)lpConfig->field_c) {
-            ScrollSpeedX = ScrollSpeedX + lpConfig->field_8;
+    } else if (mouse.x > lpConfig->field_0 - lpConfig->field_4) {
+        if (ScrollSpeedX < lpConfig->field_c) {
+            ScrollSpeedX += lpConfig->field_8;
         }
     } else {
         ScrollSpeedX = 0;
     }
-    if ((int)DAT_00813a44.y < (int)(unsigned int)lpConfig->field_6) {
-        if (-(int)(unsigned int)lpConfig->field_e < ScrollSpeedY) {
-            ScrollSpeedY = ScrollSpeedY - lpConfig->field_a;
+    if (mouse.y < lpConfig->field_6) {
+        if (ScrollSpeedY > -(int)lpConfig->field_e) {
+            ScrollSpeedY -= lpConfig->field_a;
         }
-    } else if ((int)((unsigned int)lpConfig->field_2 - (unsigned int)lpConfig->field_6) < (int)DAT_00813a44.y) {
-        if (ScrollSpeedY < (int)(unsigned int)lpConfig->field_e) {
-            ScrollSpeedY = ScrollSpeedY + lpConfig->field_a;
+    } else if (mouse.y > lpConfig->field_2 - lpConfig->field_6) {
+        if (ScrollSpeedY < lpConfig->field_e) {
+            ScrollSpeedY += lpConfig->field_a;
         }
     } else {
         ScrollSpeedY = 0;
