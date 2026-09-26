@@ -254,9 +254,9 @@ unsigned int FUN_0046a230(struct NerpsArg *arg) {
 // FUNCTION: LEGOLAND 0x0046a300
 unsigned int FUN_0046a300(struct NerpsArg *arg) {
     if (arg->field_14 != 0) {
-        MapStats.field_120 = arg->field_1c;
+        MapStats.capacity_max = arg->field_1c;
     } else {
-        MapStats.field_124 = arg->field_1c;
+        MapStats.capacity_min = arg->field_1c;
     }
     return 1;
 }

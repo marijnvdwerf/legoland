@@ -1590,8 +1590,8 @@ int FUN_0047ac80(struct CommandArgs *arg, int argc) {
             return 0;
         }
         lpConfig->field_1a = (unsigned short)atoi((char *)arg->field_4);
-        MapStats.field_120 = lpConfig->field_1a;
-        MapStats.field_124 = 0;
+        MapStats.capacity_max = lpConfig->field_1a;
+        MapStats.capacity_min = 0;
     }
     return 1;
 }
@@ -1606,7 +1606,7 @@ int FUN_0047ace0(struct CommandArgs *arg, int argc) {
         }
         v = atoi((char *)arg->field_4);
         if (DAT_00669054 == 1) {
-            MapStats.field_120 = v;
+            MapStats.capacity_max = v;
             return 1;
         }
         FUN_0046bb80(1, v);
@@ -1626,7 +1626,7 @@ int FUN_0047ad40(struct CommandArgs *arg, int argc) {
     }
     value = atoi((char *)arg->field_4);
     if (DAT_00669054 == 1) {
-        MapStats.field_124 = value;
+        MapStats.capacity_min = value;
     } else {
         FUN_0046bb80(0, value);
     }

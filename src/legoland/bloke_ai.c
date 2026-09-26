@@ -187,7 +187,7 @@ LEGO_EXPORT void InitBlokeAI(struct Bloke *bloke) {
     }
     DAT_006661bc++;
     bloke->field_7f = (unsigned char)Rand_Tween(12, 24);
-    bloke->field_78 = (unsigned short)Rand_Max(MapStats.field_118);
+    bloke->field_78 = (unsigned short)Rand_Max(MapStats.total_tiles);
     bloke->field_7a = (short)Rand_Tween(10, 50);
     bloke->field_7e = (unsigned char)Rand_Tween(0, 140) - 0x14;
     bloke->field_80 = (unsigned char)Rand_Tween(5, 10);
@@ -209,7 +209,7 @@ LEGO_EXPORT void InitBlokeAI(struct Bloke *bloke) {
 
 // FUNCTION: LEGOLAND 0x0044ea40
 unsigned int FUN_0044ea40(void) {
-    return MapStats.field_11c;
+    return MapStats.capacity;
 }
 
 // FUNCTION: LEGOLAND 0x0044ea50
@@ -235,7 +235,7 @@ void FUN_0044ea50(void) {
 
 // FUNCTION: LEGOLAND 0x0044eab0
 int FUN_0044eab0(struct Bloke *bloke) {
-    return (int)(short)bloke->field_78 - (int)bloke->field_7a / 2 > MapStats.field_118 * 2;
+    return (int)(short)bloke->field_78 - (int)bloke->field_7a / 2 > MapStats.total_tiles * 2;
 }
 
 // FUNCTION: LEGOLAND 0x0044eae0

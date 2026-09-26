@@ -290,14 +290,14 @@ struct MapAIClass {
 /* 0x832800..0x832bf0: map AI statistics (ResetMapAI clears all 0x3f0 bytes). */
 struct MapStats {
     /* 0x000 */ unsigned int field_0;
-    /* 0x004 */ int field_4;
-    /* 0x008 */ int field_8;
-    /* 0x00c */ int field_c;
+    /* 0x004 */ int scan_x;
+    /* 0x008 */ int scan_y;
+    /* 0x00c */ int scan_stage;
     /* 0x010 */ struct MapAIClass classes[6];
-    /* 0x118 */ int field_118;
-    /* 0x11c */ unsigned int field_11c;
-    /* 0x120 */ unsigned int field_120;
-    /* 0x124 */ unsigned int field_124;
+    /* 0x118 */ int total_tiles;
+    /* 0x11c */ unsigned int capacity;
+    /* 0x120 */ unsigned int capacity_max;
+    /* 0x124 */ unsigned int capacity_min;
     /* 0x128 */ int field_128;
     /* 0x12c */ int field_12c;
     /* 0x130 */ int field_130;

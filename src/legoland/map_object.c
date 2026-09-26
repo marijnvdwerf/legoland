@@ -2890,7 +2890,7 @@ LEGO_EXPORT void PlayAppropriateBuildEffect(struct ObjClass *obj, int *coords) {
 // FUNCTION: LEGOLAND 0x00462dd0
 LEGO_EXPORT void ResetMapAI(void) {
     memset(&MapStats, 0, sizeof(MapStats));
-    MapStats.field_11c = 0;
+    MapStats.capacity = 0;
     MapStats.field_0 = 0x1fff;
     memset(MapStats.field_3b0, 2, sizeof(MapStats.field_3b0));
     MapStats.field_128 = 0xffffe0c0;
@@ -2947,9 +2947,9 @@ LEGO_EXPORT void DoMapAI(void) {
 
     if (((unsigned char)DAT_008119a4 & 0x3f) != 0) {
         i = 0;
-        x = MapStats.field_4;
+        x = MapStats.scan_x;
         do {
-            if (MapStats.field_c == 0) {
+            if (MapStats.scan_stage == 0) {
                 p = &MapStats.classes[0].scan_tiles;
                 do {
                     p[1] = 0;
@@ -2958,15 +2958,15 @@ LEGO_EXPORT void DoMapAI(void) {
                     p[3] = 0;
                     p = p + 0xb;
                 } while ((int)p < 0x832934);
-                MapStats.field_c = MapStats.field_c + 1;
-                MapStats.field_4 = 0;
-                MapStats.field_8 = 0;
+                MapStats.scan_stage = MapStats.scan_stage + 1;
+                MapStats.scan_x = 0;
+                MapStats.scan_y = 0;
                 x = 0;
-            } else if (MapStats.field_c == 1) {
-                if ((int)x < 0 || lpConfig->width <= (int)x || MapStats.field_8 < 0 || lpConfig->height <= MapStats.field_8) {
+            } else if (MapStats.scan_stage == 1) {
+                if ((int)x < 0 || lpConfig->width <= (int)x || MapStats.scan_y < 0 || lpConfig->height <= MapStats.scan_y) {
                     tile = 0;
                 } else {
-                    tile = (struct MapElement *)((int)GameMap[MapStats.field_8] + x * 0x14);
+                    tile = (struct MapElement *)((int)GameMap[MapStats.scan_y] + x * 0x14);
                 }
                 if ((tile->field_10 & 1) == 0) {
                     if ((tile->flags & 0x88) != 0 && tile->field_0 != 0) {
@@ -2975,15 +2975,15 @@ LEGO_EXPORT void DoMapAI(void) {
                         if (type != 0) {
                             (&MapStats.classes[0].scan_tiles)[type * 0xb] = (&MapStats.classes[0].scan_tiles)[type * 0xb] + 1;
                             xb = *((unsigned char *)&tile->field_4);
-                            x = MapStats.field_4;
-                            if (xb == MapStats.field_4 && (yb = *((unsigned char *)&tile->field_4 + 1), yb == MapStats.field_8) &&
-                                (r = FUN_0044f360((int)obj, &xb), x = MapStats.field_4, r != 0)) {
+                            x = MapStats.scan_x;
+                            if (xb == MapStats.scan_x && (yb = *((unsigned char *)&tile->field_4 + 1), yb == MapStats.scan_y) &&
+                                (r = FUN_0044f360((int)obj, &xb), x = MapStats.scan_x, r != 0)) {
                                 (&MapStats.classes[0].scan_built)[obj->type * 0xb] = (&MapStats.classes[0].scan_built)[obj->type * 0xb] + 1;
                                 type = obj->type;
                                 r = GetObjSalvageValue((unsigned int)obj, tile->field_11);
                                 (&MapStats.classes[0].scan_salvage)[type * 0xb] = (&MapStats.classes[0].scan_salvage)[type * 0xb] + r;
                                 (&MapStats.classes[0].scan_capacity)[obj->type * 0xb] = (&MapStats.classes[0].scan_capacity)[obj->type * 0xb] + (int)*(short *)((char *)obj + 0x2e);
-                                x = MapStats.field_4;
+                                x = MapStats.scan_x;
                             }
                         }
                     }
@@ -2992,19 +2992,19 @@ LEGO_EXPORT void DoMapAI(void) {
                     MapStats.classes[0].scan_tiles = MapStats.classes[0].scan_tiles + 1;
                     MapStats.classes[0].scan_capacity = MapStats.classes[0].scan_capacity + 1;
                 }
-                MapStats.field_4 = x + 1;
-                x = MapStats.field_4;
-                if (lpConfig->width <= (int)MapStats.field_4) {
-                    MapStats.field_8 = MapStats.field_8 + 1;
-                    MapStats.field_4 = 0;
+                MapStats.scan_x = x + 1;
+                x = MapStats.scan_x;
+                if (lpConfig->width <= (int)MapStats.scan_x) {
+                    MapStats.scan_y = MapStats.scan_y + 1;
+                    MapStats.scan_x = 0;
                     x = 0;
-                    if (lpConfig->height <= MapStats.field_8) {
-                        MapStats.field_c = MapStats.field_c + 1;
+                    if (lpConfig->height <= MapStats.scan_y) {
+                        MapStats.scan_stage = MapStats.scan_stage + 1;
                     }
                 }
-            } else if (MapStats.field_c == 2) {
-                MapStats.field_c = 0;
-                MapStats.field_118 = 0;
+            } else if (MapStats.scan_stage == 2) {
+                MapStats.scan_stage = 0;
+                MapStats.total_tiles = 0;
                 p = &MapStats.classes[0].salvage;
                 i = 6;
                 do {
@@ -3012,7 +3012,7 @@ LEGO_EXPORT void DoMapAI(void) {
                     p[-1] = p[3];
                     p[-4] = p[4];
                     p[-2] = p[6];
-                    MapStats.field_118 = MapStats.field_118 + p[-1];
+                    MapStats.total_tiles = MapStats.total_tiles + p[-1];
                     p = p + 0xb;
                 } while ((int)p < 0x832928);
                 MapStats.classes[0].capacity = MapStats.classes[0].capacity / 100;
@@ -3032,16 +3032,16 @@ LEGO_EXPORT void DoMapAI(void) {
                 if (MapStats.classes[5].limit * 100 <= v4) {
                     v4 = MapStats.classes[5].limit * 100;
                 }
-                MapStats.field_11c = (v4 + v1 + v2 + v3) / 100;
-                if ((int)MapStats.field_11c < (int)MapStats.field_124) {
-                    MapStats.field_11c = MapStats.field_124;
+                MapStats.capacity = (v4 + v1 + v2 + v3) / 100;
+                if ((int)MapStats.capacity < (int)MapStats.capacity_min) {
+                    MapStats.capacity = MapStats.capacity_min;
                 }
-                if ((int)MapStats.field_120 < (int)MapStats.field_11c) {
-                    MapStats.field_11c = MapStats.field_120;
+                if ((int)MapStats.capacity_max < (int)MapStats.capacity) {
+                    MapStats.capacity = MapStats.capacity_max;
                 }
-                x = MapStats.field_4;
-                if ((int)(unsigned int)lpConfig->field_1a < (int)MapStats.field_11c) {
-                    MapStats.field_11c = lpConfig->field_1a;
+                x = MapStats.scan_x;
+                if ((int)(unsigned int)lpConfig->field_1a < (int)MapStats.capacity) {
+                    MapStats.capacity = lpConfig->field_1a;
                 }
             }
             i = i + 1;
@@ -3100,7 +3100,7 @@ void FUN_004632b0(void) {
     } while (y < 0x8c);
     // STRING: LEGOLAND 0x004b9c40
     sprintf(buf, "Tot Capacity = %.2f (limit %d - %d) = %d", (double)((float)total * DAT_004ab518),
-        MapStats.field_124, MapStats.field_120, MapStats.field_11c);
+        MapStats.capacity_min, MapStats.capacity_max, MapStats.capacity);
     Print(SPRITE_ClipRect.left + 8, SPRITE_ClipRect.top + 0x96, buf, 2);
 }
 

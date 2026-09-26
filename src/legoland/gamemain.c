@@ -92,8 +92,8 @@ void FUN_004784c0(void) {
     lpConfig->field_38 = 1;
     lpConfig->field_34 = 1;
     lpConfig->field_1a = 0xc8;
-    MapStats.field_120 = lpConfig->field_1a;
-    MapStats.field_124 = 0;
+    MapStats.capacity_max = lpConfig->field_1a;
+    MapStats.capacity_min = 0;
 
     FUN_004689a0();
     DAT_007fdca4 = FUN_004689f0(0, 0, 0);
