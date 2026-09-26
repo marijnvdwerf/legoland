@@ -1158,8 +1158,8 @@ LEGO_EXPORT void ApplyObjectOrientationToPerson(Person *person, float *matrix, v
 LEGO_EXPORT void SetBlokePositionFromBNV(BinVFile *file, Bloke *bloke, char *name, int frame, float near_z, float far_z, float *orient) {
     BinVObject *object;
     Vertex *vertex;
-    int sumX = 0;
     float sumZ = 0.0f;
+    int sumX = 0;
     int sumY = 0;
     BinVFrame *binFrame;
     float len;
@@ -1229,11 +1229,11 @@ LEGO_EXPORT BNVPath *NewBNVPath(BinVFile *file, unsigned int param_2, char *name
 }
 
 // FUNCTION: LEGOLAND 0x00484cd0
-LEGO_EXPORT int UpdateBlokeFromBNVPath(Bloke *bloke, BNVPath *path) {
+LEGO_EXPORT int UpdateBlokeFromBNVPath(Bloke *bloke, struct BNVPath *path) {
     Person *person = bloke->person;
-    float sumZ = 0.0f;
-    float sumY = 0.0f;
     float sumX = 0.0f;
+    float sumY = 0.0f;
+    float sumZ = 0.0f;
     int frame = path->frame_index;
     BinVFrame *binFrame;
     BinVObject *object;
@@ -1245,6 +1245,7 @@ LEGO_EXPORT int UpdateBlokeFromBNVPath(Bloke *bloke, BNVPath *path) {
     float speed;
     int z;
     double angle;
+    float depth;
     int i;
 
     if (frame == path->file->frameCount) {
@@ -1254,8 +1255,8 @@ LEGO_EXPORT int UpdateBlokeFromBNVPath(Bloke *bloke, BNVPath *path) {
     object = GetObjectFromName(binFrame, path->name);
     for (i = 0; i < 8; i++) {
         vertex = GetVertex(object, i);
-        sumY += vertex->y;
         sumX += vertex->x;
+        sumY += vertex->y;
         sumZ += vertex->z;
     }
     dx = sumX * 0.125 - path->x;
@@ -1299,15 +1300,16 @@ LEGO_EXPORT int UpdateBlokeFromBNVPath(Bloke *bloke, BNVPath *path) {
         object = GetObjectFromName(binFrame, path->name);
         for (i = 0; i < 8; i++) {
             vertex = GetVertex(object, i);
-            sumY += vertex->y;
             sumX += vertex->x;
+            sumY += vertex->y;
             sumZ += vertex->z;
         }
         dx = sumX * 0.125 - path->x;
         dy = sumY * 0.125 - path->y;
-        z = (sumZ * 0.125 - path->field_20) * path->field_1c + 8192.0f;
-        angle = atan2(dy, dx);
+        depth = (sumZ * 0.125 - path->field_20) * path->field_1c;
+        z = depth + 8192.0f;
         bloke->person->field_34 = z >> 8;
+        angle = atan2(dy, dx);
         path->dx = bloke->field_7f * cos(angle) * 0.25;
         path->dy = bloke->field_7f * sin(angle) * 0.25;
     }
@@ -1349,47 +1351,55 @@ LEGO_EXPORT Point BNVPath_GetBINVScreenCoords(BNVPath *path, int frame) {
 
 // FUNCTION: LEGOLAND 0x004850b0
 LEGO_EXPORT void BNVPath_SetDFrame(Bloke *bloke, BNVPath *path, int frame) {
-    float sumX = 0.0f;
-    float sumY = 0.0f;
-    float sumZ = 0.0f;
     BinVFrame *binFrame;
     BinVObject *object;
     Vertex *vertex;
     int i;
     int z;
-    float dx;
-    float dy;
     double angle;
 
     path->frame_index = frame;
-    path->field_44 = 0;
-    binFrame = GetBinVFrame(path->file, frame);
-    object = GetObjectFromName(binFrame, path->name);
-    for (i = 0; i < 8; i++) {
-        vertex = GetVertex(object, i);
-        sumX += vertex->x;
-        sumY += vertex->y;
-        sumZ += vertex->z;
+    {
+        float sumX = 0.0f;
+        float sumY = 0.0f;
+        float sumZ = 0.0f;
+
+        path->field_44 = 0;
+        binFrame = GetBinVFrame(path->file, frame);
+        object = GetObjectFromName(binFrame, path->name);
+        for (i = 0; i < 8; i++) {
+            vertex = GetVertex(object, i);
+            sumX += vertex->x;
+            sumY += vertex->y;
+            sumZ += vertex->z;
+        }
+        path->x = sumX * 0.125;
+        path->y = sumY * 0.125;
     }
-    path->x = sumX * 0.125;
-    path->y = sumY * 0.125;
-    sumX = 0.0f;
-    sumY = 0.0f;
-    sumZ = 0.0f;
-    path->field_44 = 0;
-    binFrame = GetBinVFrame(path->file, frame + 1);
-    object = GetObjectFromName(binFrame, path->name);
-    for (i = 0; i < 8; i++) {
-        vertex = GetVertex(object, i);
-        sumX += vertex->x;
-        sumY += vertex->y;
-        sumZ += vertex->z;
+    {
+        float sumX = 0.0f;
+        float sumY = 0.0f;
+        float sumZ = 0.0f;
+        double dx;
+        double dy;
+        float depth;
+
+        path->field_44 = 0;
+        binFrame = GetBinVFrame(path->file, frame + 1);
+        object = GetObjectFromName(binFrame, path->name);
+        for (i = 0; i < 8; i++) {
+            vertex = GetVertex(object, i);
+            sumX += vertex->x;
+            sumY += vertex->y;
+            sumZ += vertex->z;
+        }
+        dx = sumX * 0.125 - path->x;
+        dy = sumY * 0.125 - path->y;
+        depth = (sumZ * 0.125 - path->field_20) * path->field_1c;
+        z = depth + 8192.0f;
+        bloke->person->field_34 = z >> 8;
+        angle = atan2(dy, dx);
     }
-    dx = sumX * 0.125 - path->x;
-    dy = sumY * 0.125 - path->y;
-    z = (sumZ * 0.125 - path->field_20) * path->field_1c + 8192.0f;
-    angle = atan2(dy, dx);
-    bloke->person->field_34 = z >> 8;
     path->dx = bloke->field_7f * cos(angle) * 0.25;
     path->dy = bloke->field_7f * sin(angle) * 0.25;
 }
