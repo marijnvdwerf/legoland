@@ -1980,58 +1980,56 @@ int FUN_004771f0(char *filename, unsigned int param_2, int param_3) {
     rect[1] = 0;
     rect[2] = 0x140;
     rect[3] = 0xf0;
-    if (param_3 == 0) {
-        if (DAT_00668fb0 != 0) {
-            return 0;
-        }
-    } else {
+    if (param_3 != 0) {
         DAT_00668fb0 = 0;
-    }
-    if (lpConfig->field_40 != 0) {
+    } else if (DAT_00668fb0 != 0) {
         return 0;
     }
-    FUN_00498920();
-    *(unsigned int *)path = DAT_004bb588;
-    DAT_006687b0 = 4;
-    path[4] = DAT_004bb58c;
-    strcpy(path + strlen(path), filename);
-    // STRING: LEGOLAND 0x004bb56c
-    FUN_0047f870("Attempting to open Movie %s", path);
-    handle = FUN_00476460(path);
-    if (handle == NULL) {
-        strcpy(path, DAT_00813b04);
-        strcpy(path + strlen(path), filename);
+    if (lpConfig->field_40 == 0) {
+        FUN_00498920();
+        // STRING: LEGOLAND 0x004bb588
+        strcpy(path, "FMV\\");
+        DAT_006687b0 = 4;
+        strcat(path, filename);
+        // STRING: LEGOLAND 0x004bb56c
         FUN_0047f870("Attempting to open Movie %s", path);
         handle = FUN_00476460(path);
-    }
-    FUN_0047f850();
-    if (handle == NULL) {
+        if (handle == NULL) {
+            strcpy(path, DAT_00813b04);
+            strcat(path, filename);
+            FUN_0047f870("Attempting to open Movie %s", path);
+            handle = FUN_00476460(path);
+        }
+        FUN_0047f850();
+        if (handle != NULL) {
+            // STRING: LEGOLAND 0x004bb554
+            FUN_0047f870("Movie openned OK (%s)", path);
+            FUN_0047f850();
+            FUN_00492830();
+            FUN_00492d80();
+            PushRenderingStatusAndUnlockVideoSurface();
+            // STRING: LEGOLAND 0x004bb538
+            FUN_0047f870("Attempting to play movie..");
+            FUN_0047f850();
+            // STRING: LEGOLAND 0x004bb528
+            DBPrintf("Starting Movie\n");
+            result = FUN_004766f0(handle, rect, param_2);
+            // STRING: LEGOLAND 0x004bb518
+            DBPrintf("Stopping Movie\n");
+            // STRING: LEGOLAND 0x004bb508
+            FUN_0047f870("Stopping movie");
+            FUN_0047f850();
+            FUN_00476630(handle);
+            PopRenderingStatus();
+            do {
+                ProcessSystemEvents();
+                ReadGameButtons();
+            } while ((DAT_00813ad4 & 7) != 0);
+            FUN_00492850();
+            FUN_00492da0();
+            return result;
+        }
         return 1;
     }
-    // STRING: LEGOLAND 0x004bb554
-    FUN_0047f870("Movie openned OK (%s)", path);
-    FUN_0047f850();
-    FUN_00492830();
-    FUN_00492d80();
-    PushRenderingStatusAndUnlockVideoSurface();
-    // STRING: LEGOLAND 0x004bb538
-    FUN_0047f870("Attempting to play movie..");
-    FUN_0047f850();
-    // STRING: LEGOLAND 0x004bb528
-    DBPrintf("Starting Movie\n");
-    result = FUN_004766f0(handle, rect, param_2);
-    // STRING: LEGOLAND 0x004bb518
-    DBPrintf("Stopping Movie\n");
-    // STRING: LEGOLAND 0x004bb508
-    FUN_0047f870("Stopping movie");
-    FUN_0047f850();
-    FUN_00476630(handle);
-    PopRenderingStatus();
-    do {
-        ProcessSystemEvents();
-        ReadGameButtons();
-    } while ((DAT_00813ad4 & 7) != 0);
-    FUN_00492850();
-    FUN_00492da0();
-    return result;
+    return 0;
 }
