@@ -29,11 +29,6 @@ struct TileSprite {
 
 #include "image_sprite.h"
 
-struct FXSpriteList {
-    unsigned char pad_0[0xc];
-    int *sprite_ids;
-};
-
 // FUNCTION: LEGOLAND 0x0045a9b0
 LEGO_EXPORT unsigned int *AllocTileSpace(void *manager, int count, unsigned int *out) {
     struct FXSpriteList *src = (struct FXSpriteList *)manager;
@@ -1251,9 +1246,9 @@ LEGO_EXPORT void AddPathTileGFX(struct Point *p, unsigned short param1) {
 // FUNCTION: LEGOLAND 0x0045d3b0
 LEGO_EXPORT void AddPathTile(struct Point *p, unsigned short param1) {
     AddPathTileGFX(p, param1);
-    /* struct Point and struct InstancePos are identical {x,y} layouts; cast
+    /* struct Point and struct Point are identical {x,y} layouts; cast
        bridges tilemap's local Point to pathfind's InstancePos (no shared type). */
-    AddPathSquare((struct InstancePos *)p);
+    AddPathSquare((struct Point *)p);
 }
 
 struct PathFootprint {
@@ -1291,7 +1286,7 @@ void FUN_0045d3d0(struct PathFootprint *param_1, int *param_2) {
                         local_8.x = x;
                         local_8.y = y;
                         FUN_0045d260(&local_8);
-                        RemovePathSquare((struct InstancePos *)&local_8);
+                        RemovePathSquare((struct Point *)&local_8);
                         x = x + 1;
                         xoff = xoff + 0x14;
                     } while (x <= *param_2 + param_1->x_hi + 1);
@@ -1313,7 +1308,7 @@ void FUN_0045d3d0(struct PathFootprint *param_1, int *param_2) {
                         local_8.x = x;
                         local_8.y = y;
                         FUN_0045d260(&local_8);
-                        RemovePathSquare((struct InstancePos *)&local_8);
+                        RemovePathSquare((struct Point *)&local_8);
                         x = x + 1;
                         xoff = xoff + 0x14;
                     } while (x <= *param_2 + param_1->x_hi);
@@ -1511,7 +1506,7 @@ void FUN_0045d770(struct Cursor *param_1) {
                                     *pb = *pb & 0xfc;
                                     AddPathTileGFX(&local_18, *(unsigned short *)PathSprite);
                                     DAT_00668610 = DAT_00668610 | 0x10;
-                                    AddPathSquare((struct InstancePos *)&local_18);
+                                    AddPathSquare((struct Point *)&local_18);
                                     x = x + 1;
                                 } while (x <= DAT_00801a80[i].x1);
                             }
@@ -1584,7 +1579,7 @@ LEGO_EXPORT void RemovePathTile(int *param_1, unsigned short param_2) {
     local_8.x = *param_1 + -1;
     local_8.y = param_1[1] + -1;
     AdjustPathTile(&local_8, param_2);
-    RemovePathSquare((struct InstancePos *)param_1);
+    RemovePathSquare((struct Point *)param_1);
     if (MapStats.field_184 != 0) {
         FUN_0045cd70(param_1);
     }

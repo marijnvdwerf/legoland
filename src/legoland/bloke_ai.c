@@ -895,8 +895,8 @@ void FUN_0044fe10(Bloke *bloke) {
 
     switch (bloke->param_action) {
     case 0:
-        to.x = DAT_0066b460 << 8;
-        to.y = DAT_0066b464 << 8;
+        to.x = DAT_0066b460.x << 8;
+        to.y = DAT_0066b460.y << 8;
         bloke->dest = to;
         dir = CalcMoveLine(bloke->pos, to, &bloke->nav) + 0x10;
         bloke->field_e = 0xf;

@@ -2949,10 +2949,7 @@ struct DirNode *DAT_0066b454;
 struct DirNode *DAT_0066b458;
 
 // GLOBAL: LEGOLAND 0x0066b460
-unsigned int DAT_0066b460;
-
-// GLOBAL: LEGOLAND 0x0066b464
-unsigned int DAT_0066b464;
+struct Point DAT_0066b460; /* park entrance tile */
 
 // GLOBAL: LEGOLAND 0x0066b468
 unsigned int DAT_0066b468;
@@ -2967,7 +2964,7 @@ char DAT_0066b470[0x104];
 LEGO_EXPORT struct Bloke *FirstBloke;
 
 // GLOBAL: LEGOLAND 0x0066b57c
-void *DAT_0066b57c;
+struct Bloke *DAT_0066b57c;
 
 // GLOBAL: LEGOLAND 0x0066b580
 int DAT_0066b580[9];

@@ -100,11 +100,6 @@ struct ObjNode {
     struct ObjBox *field_c;
 };
 
-struct TileSpriteSrc {
-    unsigned char pad_0[0x18];
-    unsigned char (*get_rf_flags)(int x, int y);
-};
-
 struct ObjDef {
     unsigned char pad_0[8];
     unsigned char field_8;
@@ -401,7 +396,7 @@ void FUN_0045e300(struct RideObject *editObj, struct Point *pos) {
                                         (tile = (struct MapElement *)((int)GameMap[coord[1]] + coord[0] * 0x14)) != 0 &&
                                         (tile->flags & 8) != 0 &&
                                         (gtile = (struct Obj0c *)tile->field_0)->field_c == DAT_007fd624) {
-                                        RemovePathSquare((struct InstancePos *)coord);
+                                        RemovePathSquare((struct Point *)coord);
                                         tile->flags &= 0xffe7;
                                         tile->field_10 &= 0xfe;
                                         tile = (struct MapElement *)((int)GameMap[coord[1]] + coord[0] * 0x14);
@@ -2147,7 +2142,7 @@ LEGO_EXPORT unsigned char GetCurrentRFFlags(int x, int y) {
     } else {
         tile = (struct MapTile *)((int)MapTileGrid[ty] + tx * 0x14);
     }
-    callback = ((struct TileSpriteSrc *)TileSpriteInfo[tile->tile].src)->get_rf_flags;
+    callback = TileSpriteInfo[tile->tile].src->get_rf_flags;
     if (callback != 0) {
         return callback(x, y);
     }
@@ -2590,7 +2585,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
 
                         sq.x = curx;
                         sq.y = cury;
-                        AddPathSquare((struct InstancePos *)&sq);
+                        AddPathSquare((struct Point *)&sq);
                     }
                     curx++;
                     if (curx >= lpConfig->width) {
@@ -2617,7 +2612,7 @@ LEGO_EXPORT unsigned int LoadBaseMap(unsigned int param_1) {
 
                         sq.x = curx;
                         sq.y = cury;
-                        AddPathSquare((struct InstancePos *)&sq);
+                        AddPathSquare((struct Point *)&sq);
                     }
                     curx++;
                     if (curx >= lpConfig->width) {

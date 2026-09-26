@@ -1196,7 +1196,7 @@ int FUN_00444df0(void) {
     int iy;
     int linked;
     int total;
-    struct InstancePos coord;
+    struct Point coord;
 
     obj = (struct RenderObj *)GetFirstRenderObject();
     linked = 0;

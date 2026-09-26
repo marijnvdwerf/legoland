@@ -27,11 +27,6 @@ struct Position {
     void **entries;
 };
 
-struct PosHeader {
-    unsigned char pad_0[0x50];
-    void *field_50;
-};
-
 struct Anim3D {
     int divisor;
 };
@@ -166,11 +161,11 @@ void FUN_0043f840(struct Person *person) {
 }
 
 // FUNCTION: LEGOLAND 0x0043f870
-void FUN_0043f870(struct PosHeader *param_1) {
-    if (param_1->field_50 != 0) {
-        free(param_1->field_50);
+void FUN_0043f870(struct Person *person) {
+    if (person->field_50 != 0) {
+        free(person->field_50);
     }
-    free(param_1);
+    free(person);
 }
 
 // FUNCTION: LEGOLAND 0x0043f890

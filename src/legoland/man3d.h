@@ -36,7 +36,8 @@ struct Person {
     void *field_50;
     unsigned int sort_id;
     union {
-        int m[9];
+        int m[9]; /* orientation, 16.16 fixed point */
+        float fm[9]; /* the same matrix before conversion */
         struct {
             unsigned char pad_58[0x62 - 0x58];
             unsigned char flags;
@@ -59,10 +60,9 @@ struct Person {
 };
 typedef struct Person Person;
 struct Bloke;
-struct PosHeader;
 
 void FUN_0043f840(struct Person *person);
-void FUN_0043f870(struct PosHeader *param_1);
+void FUN_0043f870(struct Person *person);
 
 LEGO_EXPORT struct Person *Find3DPersonFromBloke(struct Bloke *bloke);
 LEGO_EXPORT void SetPersonRotation(struct Person *person, float *src);

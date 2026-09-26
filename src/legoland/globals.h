@@ -213,6 +213,16 @@ struct TextCell {
     /* 0x1c */ struct Sprite *sprite;
 };
 
+/* A tile set: sprites plus per-tile-type callbacks. */
+struct FXSpriteList {
+    /* 0x00 */ unsigned char pad_0[0xc];
+    /* 0x0c */ int *sprite_ids;
+    /* 0x10 */ unsigned char pad_10[0x18 - 0x10];
+    /* 0x18 */ unsigned char (*get_rf_flags)(int x, int y);
+    /* 0x1c */ void (*on_enter)(struct Point pos);
+    /* 0x20 */ void (*on_leave)(int x, int y);
+};
+
 struct TileSpriteEntry {
     struct FXSpriteList *src;
     unsigned short sprite;
@@ -2285,9 +2295,7 @@ extern struct DirNode *DAT_0066b454;
 // 0x0066b458
 extern struct DirNode *DAT_0066b458;
 // 0x0066b460
-extern unsigned int DAT_0066b460;
-// 0x0066b464
-extern unsigned int DAT_0066b464;
+extern struct Point DAT_0066b460;
 // 0x0066b468
 extern unsigned int DAT_0066b468;
 // 0x0066b46c
@@ -2297,7 +2305,7 @@ extern char DAT_0066b470[0x104];
 // 0x0066b574
 extern LEGO_EXPORT struct Bloke *FirstBloke;
 // 0x0066b57c
-extern void *DAT_0066b57c;
+extern struct Bloke *DAT_0066b57c; /* bloke pool */
 // 0x0066b580
 extern int DAT_0066b580[9];
 // 0x0066b5a4

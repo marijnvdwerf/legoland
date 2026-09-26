@@ -40,7 +40,7 @@ struct Bloke {
     struct Element *target; /* class of the ride/shop the bloke is heading for */
     struct Element *last_ride; /* class of the last ride the bloke went on */
     unsigned int field_1c;
-    unsigned char pad_20[0x24 - 0x20];
+    int field_20;
     struct Point dest;
     struct Point goal; /* where the bloke is walking to */
     unsigned char pad_34[0x35 - 0x34];
@@ -52,9 +52,10 @@ struct Bloke {
     short screen_x;
     short screen_y;
     unsigned short field_40;
-    unsigned char pad_42[0x46 - 0x42];
+    unsigned char pad_42[0x44 - 0x42];
+    short field_44;
     union {
-        unsigned short field_46;
+        short field_46;
         TileId brolly; /* Shark Cafe brolly tile being walked to */
     };
     unsigned char pad_48[0x4a - 0x48];
@@ -74,7 +75,7 @@ struct Bloke {
     unsigned char field_64;
     unsigned char pad_65[0x68 - 0x65];
     struct Point pos;
-    unsigned short field_70;
+    short field_70;
     unsigned char field_72;
     unsigned char field_73;
     unsigned char field_74;
@@ -100,25 +101,24 @@ struct Bloke {
 };
 typedef struct Bloke Bloke;
 
-struct InstancePos;
+struct Point;
 struct Point;
 struct OverTile;
 struct ActionState;
 struct BNVPerson;
 struct BNVPath;
-struct BNVBloke;
 LEGO_EXPORT int NewDirForAction(struct Bloke *bloke, unsigned char dir);
 LEGO_EXPORT struct Bloke *GetBlokePtr(int index);
 int CheckForPeople(struct MapRect *rect);
 LEGO_EXPORT void SetBlokePositionFromBNV(struct BinVFile *file, struct Bloke *bloke, char *name, int frame, float near_z, float far_z, float *orient);
 LEGO_EXPORT struct BNVPath *NewBNVPath(struct BinVFile *file, unsigned int param_2, char *name, float param_4, float param_5, int *coords);
-LEGO_EXPORT int UpdateBlokeFromBNVPath(struct BNVBloke *bloke, struct BNVPath *path);
+LEGO_EXPORT int UpdateBlokeFromBNVPath(struct Bloke *bloke, struct BNVPath *path);
 struct Point FUN_004831a0(unsigned char dir, short dist);
 LEGO_EXPORT struct Point GetTileInDir(int x, int y, unsigned int dir);
 LEGO_EXPORT int OverNewTile(struct OverTile *tile, unsigned int x, unsigned int y);
 void FUN_00482b10(void);
 void FUN_00482b20(int force);
-int FUN_00482b60(struct InstancePos *pos);
+int FUN_00482b60(struct Point *pos);
 struct Person;
 LEGO_EXPORT char *GetVisitorName(struct Bloke *bloke);
 int FUN_00482cb0(struct Bloke *bloke);

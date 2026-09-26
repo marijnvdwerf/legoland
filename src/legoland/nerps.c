@@ -498,7 +498,7 @@ unsigned int FUN_0046a750(struct NerpsArg *arg) {
                 (struct MapElement *)((char *)GameMap[y] + x * 0x14) == NULL) {
                 total++;
                 blocked++;
-            } else if (FUN_00482b60((struct InstancePos *)&x) == 0) {
+            } else if (FUN_00482b60((struct Point *)&x) == 0) {
                 total++;
             }
             node = node->next;
@@ -519,7 +519,7 @@ unsigned int FUN_0046a750(struct NerpsArg *arg) {
                     (struct MapElement *)((char *)GameMap[y] + x * 0x14) == NULL) {
                     total++;
                     blocked++;
-                } else if (FUN_00482b60((struct InstancePos *)&x) == 0) {
+                } else if (FUN_00482b60((struct Point *)&x) == 0) {
                     total++;
                 }
             }

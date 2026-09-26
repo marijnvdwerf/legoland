@@ -70,23 +70,6 @@ struct ClassRideNode {
     unsigned char pad_18[0x20 - 0x18];
 };
 
-struct BestNode {
-    struct BestNode *next;
-    unsigned int pad_4;
-    unsigned int x_min;
-    unsigned int y_min;
-    unsigned int x_max;
-    unsigned int y_max;
-    unsigned int field_18;
-    unsigned int field_1c;
-    unsigned int field_20;
-};
-
-struct InstancePos {
-    unsigned int x;
-    unsigned int y;
-};
-
 struct RideStats {
     /* 0x00 */ unsigned char pad_0[0x34];
     /* 0x34 */ short base_code;
@@ -882,7 +865,7 @@ void FUN_00481750(struct BestNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00481790
-struct BestNode *FUN_00481790(struct InstancePos *pos) {
+struct BestNode *FUN_00481790(struct Point *pos) {
     struct BestNode *node;
 
     node = DAT_0066b44c;
@@ -922,7 +905,7 @@ void FUN_00481810(int *param_1) {
     struct BestNode *found;
     void **out;
     int count;
-    struct InstancePos pos;
+    struct Point pos;
 
     DAT_00669254 = 0;
     count = 0;
@@ -1004,7 +987,7 @@ void FUN_004819a0(int *param_1) {
     struct BestNode *found;
     void **out;
     int count;
-    struct InstancePos pos;
+    struct Point pos;
 
     count = 0;
     DAT_00669254 = 0;

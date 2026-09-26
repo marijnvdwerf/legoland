@@ -301,7 +301,7 @@ LEGO_EXPORT void RemObjFromMap(struct ObjClass *obj, unsigned int classid, unsig
                         cell->byte_10 = 0;
                         cell->word_8 = cell->word_a;
                         FUN_0045d260((struct Point *)&blk);
-                        RemovePathSquare((struct InstancePos *)&blk);
+                        RemovePathSquare((struct Point *)&blk);
                     }
                 }
             }

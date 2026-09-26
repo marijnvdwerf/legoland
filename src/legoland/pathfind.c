@@ -6,18 +6,6 @@
 #include "objclass.h"
 #include "pathfind.h"
 
-struct BestNode {
-    struct BestNode *next;
-    unsigned int pad_4;
-    unsigned int x_min;
-    unsigned int y_min;
-    unsigned int x_max;
-    unsigned int y_max;
-    unsigned int field_18;
-    unsigned int field_1c;
-    unsigned int field_20;
-};
-
 struct PathQuery {
     int x;
     int y;
@@ -67,7 +55,7 @@ struct MatchResult {
 };
 
 // FUNCTION: LEGOLAND 0x00481c50
-LEGO_EXPORT void AddPathSquare(struct InstancePos *pos) {
+LEGO_EXPORT void AddPathSquare(struct Point *pos) {
     struct BestNode *node;
     unsigned int x;
     unsigned int y;
@@ -87,7 +75,7 @@ LEGO_EXPORT void AddPathSquare(struct InstancePos *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x00481c90
-LEGO_EXPORT void RemovePathSquare(struct InstancePos *pos) { STUB(); }
+LEGO_EXPORT void RemovePathSquare(struct Point *pos) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00481e60
 void FUN_00481e60(struct PathQuery *query, struct PathBox *box) {
@@ -514,7 +502,7 @@ int FUN_00482920(void) {
 void FUN_004829c0(struct BestNode *node) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00482a40
-void FUN_00482a40(struct InstancePos *pos) {
+void FUN_00482a40(struct Point *pos) {
     struct BestNode *node;
     struct BestNode *found;
 
@@ -534,7 +522,7 @@ void FUN_00482a40(struct InstancePos *pos) {
 
 // FUNCTION: LEGOLAND 0x00482a80
 void FUN_00482a80(void) {
-    DAT_0066b460 = 0;
+    DAT_0066b460.x = 0;
     DAT_006661c4 = 0;
 }
 
@@ -543,7 +531,7 @@ void FUN_00482a90(void) {
     struct MatchResult *match;
     struct ObjData *obj;
 
-    if (DAT_0066b460 != 0) {
+    if (DAT_0066b460.x != 0) {
         return;
     }
 
@@ -555,11 +543,11 @@ void FUN_00482a90(void) {
         (Element *)DAT_006661c4);
     obj = ((struct ElemInfo *)DAT_006661c4)->obj;
 
-    DAT_0066b460 = match->field_4 + obj->field_3c - 1;
-    DAT_0066b464 = ((obj->field_48 + obj->field_40) / 2) + match->field_5;
+    DAT_0066b460.x = match->field_4 + obj->field_3c - 1;
+    DAT_0066b460.y = ((obj->field_48 + obj->field_40) / 2) + match->field_5;
 }
 
 // FUNCTION: LEGOLAND 0x00482b00
-unsigned int *FUN_00482b00(void) {
+struct Point *FUN_00482b00(void) {
     return &DAT_0066b460;
 }
