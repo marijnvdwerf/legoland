@@ -200,66 +200,51 @@ void FUN_0043a8c0(struct SpaceTowerRideNode *param_1) {
 
 // FUNCTION: LEGOLAND 0x0043a940
 void FUN_0043a940(struct SpaceTowerSeat *seat) {
-    int pos;
-
-    if ((seat->flags & 1) != 0) {
+    if (seat->flags & 1) {
         switch (seat->state) {
         case 1:
             if (seat->field_10 == 0) {
                 seat->field_10 = -1;
-                return;
+            } else {
+                seat->state = 2;
             }
-            seat->state = 2;
             break;
         case 2:
             if (seat->field_14 == 0) {
-                pos = seat->pos + seat->delta;
-                seat->pos = pos;
-                if (200 < pos) {
+                seat->pos += seat->delta;
+                if (seat->pos > 200) {
                     seat->pos = 200;
                     seat->field_14 = 1;
-                    return;
                 }
             } else {
-                pos = seat->pos - 2;
-                seat->pos = pos;
-                if (pos < 0) {
+                seat->pos -= 2;
+                if (seat->pos < 0) {
                     seat->pos = 0;
                     seat->field_14 = 0;
                     seat->state = 0;
-                    return;
                 }
             }
             break;
         }
     }
-    return;
 }
 
 // FUNCTION: LEGOLAND 0x0043a9b0
 void FUN_0043a9b0(struct SpaceTowerCar *arg) {
-    struct SpaceTowerSeat *seat;
     int i;
 
-    i = 4;
-    seat = arg->seats;
-    do {
-        i = i + -1;
-        seat->flags = seat->flags & 0xfffffffe;
-        seat->state = 0;
-        seat = seat + 1;
-    } while (i != 0);
-    i = 0;
-    do {
-        if (arg->flags_a4[i] != '\0') {
-            arg->seats[i >> 1].flags = arg->seats[i >> 1].flags | 1;
+    for (i = 0; i < 4; i++) {
+        arg->seats[i].flags &= ~1;
+        arg->seats[i].state = 0;
+    }
+    for (i = 0; i < 8; i++) {
+        if (arg->flags_a4[i] != 0) {
+            arg->seats[i >> 1].flags |= 1;
             arg->seats[i >> 1].state = 2;
             arg->seats[i >> 1].field_14 = 0;
             arg->seats[i >> 1].pos = 0;
         }
-        i = i + 1;
-    } while (i < 8);
-    return;
+    }
 }
 
 // FUNCTION: LEGOLAND 0x0043aa10
