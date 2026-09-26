@@ -945,8 +945,7 @@ LEGO_EXPORT unsigned int ObjectLinkedList(unsigned int *entry) {
         exit(1);
     }
     count = LLIDB_GetCount();
-    menu_name = DAT_004baffc[0];
-    do {
+    for (menu_name = DAT_004baffc[0]; (int)menu_name < (int)DAT_004bb04c; menu_name += 0x14) {
         if (LLIDB_FindElement(menu_name, (unsigned int *)&menu_elem, 0) != 0) {
             exit(1);
         }
@@ -963,8 +962,7 @@ LEGO_EXPORT unsigned int ObjectLinkedList(unsigned int *entry) {
                 }
             }
         }
-        menu_name += 0x14;
-    } while (menu_name < (char *)DAT_004bb04c);
+    }
     for (i = 0; i < count; i++) {
         LLIDB_GetElement(i, (struct Element **)&elem);
         if ((elem->flags & 0x13) == 0x13) {
@@ -975,11 +973,11 @@ LEGO_EXPORT unsigned int ObjectLinkedList(unsigned int *entry) {
         }
     }
     DAT_00668e64 = (unsigned char)DAT_004baff8;
-    if (matched == 0) {
-        return 0;
+    if (matched != 0) {
+        MakeUpObjectList(0xd2, 3, 0x21, 0x154);
+        return 1;
     }
-    MakeUpObjectList(0xd2, 3, 0x21, 0x154);
-    return 1;
+    return 0;
 }
 
 // FUNCTION: LEGOLAND 0x004758c0
@@ -1051,8 +1049,9 @@ LEGO_EXPORT int MakeUpObjectList(int param_1, int param_2, int param_3, int para
             ctx = node;
             node = node->next;
         } else if ((((struct BuildObject *)ctx->data)->field_c4->flags & 8) != 0) {
-            CloseChildrenBar(ctx, param_1, (short)x, (short)(y - 10));
-            y = y + 0x10;
+            y -= 10;
+            CloseChildrenBar(ctx, param_1, (short)x, (short)y);
+            y += 0x1a;
             while (node != NULL && node->flag == 0) {
                 last_icon = AddGBarClassIcon((unsigned int)panel, (struct InfoSource *)node->data, x, y, param_1, 1);
                 last_icon->field_20b = 1;
@@ -1060,11 +1059,12 @@ LEGO_EXPORT int MakeUpObjectList(int param_1, int param_2, int param_3, int para
                 node = node->next;
                 y = y + 0x38;
             }
-            y = y + 10;
+            y += 10;
             last_icon->field_20b = 2;
         } else {
-            ListChildrenBar(ctx, param_1, (short)x, (short)(y - 10));
-            y = y + 0x1a;
+            y -= 10;
+            ListChildrenBar(ctx, param_1, (short)x, (short)y);
+            y += 0x24;
             while (node != NULL && node->flag == 0) {
                 ctx = node;
                 node = node->next;
@@ -1077,18 +1077,17 @@ LEGO_EXPORT int MakeUpObjectList(int param_1, int param_2, int param_3, int para
     if (y < panel->icon->field_12 + panel->icon->y) {
         icon = FindIcon((unsigned short)(param_1 + 4));
         if (icon != NULL) {
-            icon->y = (short)param_4 - 0x1e + (short)param_3;
+            icon->y = (short)param_3 + (short)param_4 - 0x1e;
             icon->flags |= 0x400;
         }
         icon = FindIcon((unsigned short)(param_1 + 3));
         if (icon != NULL) {
             icon->flags |= 0x400;
         }
-        DAT_007fdd84 = 0;
-        DAT_00668e44[DAT_00668e64 & 0xff] = 0;
-        return 1;
+        DAT_00668e44[*(unsigned int *)&DAT_00668e64 & 0xff] = 0;
+    } else {
+        RedrawObjectList(panel, 0, DAT_00668e44[*(unsigned int *)&DAT_00668e64 & 0xff]);
     }
-    RedrawObjectList(panel, 0, DAT_00668e44[DAT_00668e64 & 0xff]);
     DAT_007fdd84 = 0;
     return 1;
 }
@@ -1147,7 +1146,6 @@ LEGO_EXPORT int RAndDLinkedList(unsigned int *entry) {
     void *menu_elem;
     void *theme_elem;
     struct BuildObject *obj;
-    unsigned int flags;
     int count;
     int menu_index;
     int i;
@@ -1163,8 +1161,7 @@ LEGO_EXPORT int RAndDLinkedList(unsigned int *entry) {
         exit(1);
     }
     count = LLIDB_GetCount();
-    menu_index = 0;
-    do {
+    for (menu_index = 0; menu_index < 4; menu_index++) {
         if (LLIDB_FindElement(DAT_004baffc[menu_index], (unsigned int *)&menu_elem, 0) != 0) {
             exit(1);
         }
@@ -1174,21 +1171,20 @@ LEGO_EXPORT int RAndDLinkedList(unsigned int *entry) {
                 obj = elem->obj;
                 if (obj->field_58 == build_elem) {
                     if (obj->field_5c == param_elem && obj->field_60 == menu_elem) {
-                        flags = obj->field_1c;
+                        if ((obj->field_1c & 0xc000000) == 0) {
+                            obj->field_1c |= 0x4000000;
+                        }
+                        FUN_004755c0(obj);
                     } else if (obj->field_5c == theme_elem && DAT_004baff8 == 0 && menu_index == 0) {
-                        flags = obj->field_1c;
-                    } else {
-                        continue;
+                        if ((obj->field_1c & 0xc000000) == 0) {
+                            obj->field_1c |= 0x4000000;
+                        }
+                        FUN_004755c0(obj);
                     }
-                    if ((flags & 0xc000000) == 0) {
-                        obj->field_1c = flags | 0x4000000;
-                    }
-                    FUN_004755c0(obj);
                 }
             }
         }
-        menu_index++;
-    } while (menu_index < 4);
+    }
     for (i = 0; i < count; i++) {
         LLIDB_GetElement(i, (struct Element **)&elem);
         if ((elem->flags & 0x10011) == 0x10011) {
