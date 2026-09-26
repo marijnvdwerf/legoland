@@ -1259,91 +1259,85 @@ void FUN_0045fad0(int *surface, int dir, int px, int py, unsigned char *color, i
     int flip;
     unsigned short c1;
     unsigned short c2;
+    unsigned short c;
     int step;
-    BOOL in;
     unsigned short *dst;
     unsigned short *dst2;
     unsigned int frame;
-    int y;
     unsigned short pattern[16];
 
-    y = py;
     flip = 0;
     c1 = (unsigned short)GetNearestColour(color[0], color[1], color[2]);
     c2 = (unsigned short)GetNearestColour(color[4], color[5], color[6]);
     frame = FrameNumber;
-    pattern[12] = c1;
-    pattern[13] = c1;
-    pattern[14] = c1;
-    pattern[15] = c1;
-    if (surface[5] == 2) {
-        dst = (unsigned short *)(surface[0] * py + surface[3] + px * 2);
-        dst2 = (unsigned short *)((int)dst - surface[0]);
-        pattern[0] = c2;
-        pattern[1] = c2;
-        pattern[2] = c2;
-        pattern[3] = c2;
-        pattern[4] = c2;
-        pattern[5] = c2;
-        pattern[6] = c2;
-        pattern[7] = c2;
-        pattern[8] = c2;
-        pattern[9] = c2;
-        pattern[10] = c2;
-        pattern[11] = c2;
-        if (dir == 0) {
-            for (; count != 0; count--) {
-                pt.y = py;
-                pt.x = px;
-                in = PtInRect(&SPRITE_ClipRect, pt);
-                if (in != 0) {
-                    unsigned short c = pattern[frame & 0xf];
-                    *dst = c;
-                    if (px > 0) {
-                        dst[-1] = c;
-                    }
+    pattern[12] = c2;
+    pattern[13] = c2;
+    pattern[14] = c2;
+    pattern[15] = c2;
+    pattern[0] = c1;
+    pattern[1] = c1;
+    pattern[2] = c1;
+    pattern[3] = c1;
+    pattern[4] = c1;
+    pattern[5] = c1;
+    pattern[6] = c1;
+    pattern[7] = c1;
+    pattern[8] = c1;
+    pattern[9] = c1;
+    pattern[10] = c1;
+    pattern[11] = c1;
+    if (surface[5] != 2) {
+        return;
+    }
+    dst = (unsigned short *)(surface[0] * py + surface[3] + px * 2);
+    dst2 = (unsigned short *)((char *)dst - surface[0]);
+    switch (dir) {
+    case 0:
+        while (count--) {
+            pt.x = px;
+            pt.y = py;
+            if (PtInRect(&SPRITE_ClipRect, pt)) {
+                c = pattern[frame & 0xf];
+                *dst = c;
+                if (px > 0) {
+                    dst[-1] = c;
                 }
-                py--;
-                dst = (unsigned short *)((int)dst - surface[0]);
-                frame++;
             }
-        } else {
-            if (dir == 1) {
-                step = -1;
-            } else if (dir == 2) {
-                step = 1;
-            } else {
-                return;
-            }
-            count++;
-            if (count != 0) {
-                do {
-                    unsigned short *cur;
-                    pt.y = y;
-                    pt.x = px;
-                    in = PtInRect(&SPRITE_ClipRect, pt);
-                    if (in != 0) {
-                        unsigned short c = pattern[frame & 0xf];
-                        *dst = c;
-                        if (y > 0) {
-                            *dst2 = c;
-                        }
-                    }
-                    px += step;
-                    cur = dst + step;
-                    dst = cur;
-                    dst2 += step;
-                    if (flip) {
-                        y++;
-                        dst = (unsigned short *)((int)cur + surface[0]);
-                        dst2 = cur;
-                    }
-                    flip ^= 1;
-                    frame++;
-                    count--;
-                } while (count != 0);
+            py--;
+            dst = (unsigned short *)((char *)dst - surface[0]);
+            frame++;
+        }
+        return;
+    case 1:
+        step = -1;
+        break;
+    case 2:
+        step = 1;
+        break;
+    default:
+        return;
+    }
+    count++;
+    while (count--) {
+        pt.x = px;
+        pt.y = py;
+        if (PtInRect(&SPRITE_ClipRect, pt)) {
+            c = pattern[frame & 0xf];
+            *dst = c;
+            if (py > 0) {
+                *dst2 = c;
             }
         }
+        px += step;
+        dst += step;
+        dst2 += step;
+        if (flip) {
+            py++;
+            dst2 = dst;
+            dst = (unsigned short *)((char *)dst + surface[0]);
+        }
+        flip ^= 1;
+        frame++;
     }
 }
 
