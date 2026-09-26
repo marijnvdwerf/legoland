@@ -33,7 +33,7 @@ void FUN_00438870(struct MapObject *obj);
 void FUN_004388a0(void);
 void FUN_004388c0(void);
 void FUN_00438900(struct MapObject *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6);
-void FUN_00438960(struct MapObject *param_1);
+void FUN_00438960(struct RideObject *obj);
 void FUN_00438c60(struct MapObject *obj);
 void FUN_00438ca0(void);
 void FUN_00438cc0(void);

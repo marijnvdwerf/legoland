@@ -877,126 +877,111 @@ void FUN_00438900(struct MapObject *param_1, unsigned int param_2, unsigned int 
 }
 
 // FUNCTION: LEGOLAND 0x00438960
-void FUN_00438960(struct MapObject *param_1) {
-    struct Building *ride = param_1->building;
-    struct RideListElem *node = ride->list;
-    struct RideListElem *next;
+void FUN_00438960(struct RideObject *obj) {
+    struct Ride *ride = obj->ride;
+    struct RideNode *node = ride->riders;
+    struct RideNode *next;
     struct Bloke *bloke;
-    unsigned char *pos;
+    TileId *tile;
     int x;
     int y;
-    int v24;
-    char move;
-    unsigned int r;
+    char dir;
+    int n;
 
     while (node != NULL) {
         next = node->next;
-        bloke = node->bloke;
-        pos = (unsigned char *)&node->id;
-        x = pos[0] + ride->x;
-        y = pos[1] + ride->y;
+        bloke = node->rider;
+        tile = &node->tile;
+        x = tile->pos.x + ride->x;
+        y = tile->pos.y + ride->y;
         if (bloke->field_e == 0) {
             switch (bloke->param_action) {
             case 0:
-                *(unsigned char *)((char *)bloke + 0x62) |= 8;
-                v24 = x * 0x100 + 0x80;
-                bloke->dest.y = y * 0x100 - 0x100;
-                bloke->dest.x = v24;
-                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->flags |= 8;
+                bloke->dest.y = (y << 8) - 0x100;
+                bloke->dest.x = (x << 8) + 0x80;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
-                bloke->field_73 = move + 0x10;
-                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 1:
-                bloke->dest.x = (x + 1) * 0x100;
-                y = (y - 2) * 0x100;
-                bloke->dest.y = y;
-                v24 = bloke->dest.x;
-                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->dest.x = (x + 1) << 8;
+                bloke->dest.y = (y - 2) << 8;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
-                bloke->field_73 = move + 0x10;
-                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 2:
-                v24 = (pos[0] + 2) * 0x100;
-                bloke->dest.x = v24;
-                y = pos[1] * 0x100 - 0x100;
-                bloke->dest.y = y;
-                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->dest.x = (tile->pos.x + 2) << 8;
+                bloke->dest.y = (tile->pos.y << 8) - 0x100;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
-                bloke->field_73 = move + 0x10;
-                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
                 bloke->param_action++;
-                r = rand() & 0x80000007;
-                if ((int)r < 0) {
-                    r = ((r - 1) | 0xfffffff8) + 1;
-                }
-                bloke->field_58 = r;
+                bloke->field_58 = rand() % 8;
                 break;
             case 3:
-                y = bloke->field_58 - 1;
-                bloke->field_58 = y;
-                if (0 < y) {
-                    bloke->dest.x = pos[0] << 8;
-                    bloke->dest.y = pos[1] * 0x100 - 0x100;
-                    move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                    bloke->field_e = 7;
-                    bloke->field_73 = move + 0x10;
-                    NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
-                    bloke->param_action++;
-                } else {
+                n = --bloke->field_58;
+                if (n <= 0) {
                     bloke->param_action = 5;
+                } else {
+                    bloke->dest.x = tile->pos.x << 8;
+                    bloke->dest.y = (tile->pos.y << 8) - 0x100;
+                    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                    bloke->field_e = 7;
+                    bloke->field_73 = dir + 0x10;
+                    NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                    bloke->param_action++;
                 }
                 break;
             case 4:
-                y = bloke->field_58 - 1;
-                bloke->field_58 = y;
-                if (y < 1) {
+                n = --bloke->field_58;
+                if (n <= 0) {
                     bloke->param_action = 5;
                 } else {
-                    bloke->dest.x = (pos[0] + 2) * 0x100;
-                    y = pos[1] * 0x100 - 0x100;
-                    bloke->dest.y = y;
-                    move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                    bloke->dest.x = (tile->pos.x + 2) << 8;
+                    bloke->dest.y = (tile->pos.y << 8) - 0x100;
+                    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                     bloke->field_e = 7;
-                    bloke->field_73 = move + 0x10;
-                    NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                    bloke->field_73 = dir + 0x10;
+                    NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
                     bloke->param_action--;
                 }
                 break;
             case 5:
-                bloke->dest.x = (x + 1) * 0x100;
-                bloke->dest.y = (y - 2) * 0x100;
-                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->dest.x = (x + 1) << 8;
+                bloke->dest.y = (y - 2) << 8;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
-                bloke->field_73 = move + 0x10;
-                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 6:
-                bloke->dest.x = x * 0x100 + 0x80;
-                y = y * 0x100 - 0x100;
-                bloke->dest.y = y;
-                v24 = bloke->dest.x;
-                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->dest.x = (x << 8) + 0x80;
+                bloke->dest.y = (y << 8) - 0x100;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
-                bloke->field_73 = move + 0x10;
-                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 7:
-                bloke->dest.x = x * 0x100;
-                bloke->dest.y = y * 0x100;
-                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->dest.x = x << 8;
+                bloke->dest.y = y << 8;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
                 bloke->field_e = 7;
-                bloke->field_73 = move + 0x10;
-                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->field_73 = dir + 0x10;
+                NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
                 bloke->param_action++;
                 break;
             case 8:
-                RemoveBlokeFromRide((struct Ride *)ride, (struct RideNode *)node);
+                RemoveBlokeFromRide(ride, node);
                 bloke->flags &= 0xfff7;
             }
         }
