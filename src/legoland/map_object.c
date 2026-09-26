@@ -3118,8 +3118,10 @@ void FUN_004632b0(void) {
     int y;
     char **names;
     int *p;
+    int count;
+    int percent;
+    int limit;
     int prod;
-    int cap;
     int capped;
     char buf[504];
 
@@ -3128,16 +3130,19 @@ void FUN_004632b0(void) {
     names = (char **)&DAT_004bb6bc;
     p = (int *)&MapStats.field_28[0];
     do {
-        prod = p[-4] * p[-1];
-        cap = *p * 100;
-        capped = prod;
-        if (cap <= prod) {
-            capped = cap;
+        limit = *p;
+        percent = p[-1];
+        count = p[-4];
+        prod = count * percent;
+        if (prod < limit * 100) {
+            capped = prod;
+        } else {
+            capped = limit * 100;
         }
         // STRING: LEGOLAND 0x004b9c6c
-        sprintf(buf, "[%s x %d]: Cap %d  x %d%% = %.2f (Capped %d) = %.2f", *names, p[-6], p[-4], p[-1],
-            (double)((float)prod * DAT_004ab518), *p, (double)((float)capped * DAT_004ab518));
-        Print(SPRITE_ClipRect.right, y + SPRITE_ClipRect.top, buf, 2);
+        sprintf(buf, "[%s x %d]: Cap %d  x %d%% = %.2f (Capped %d) = %.2f", *names, p[-6], count, percent,
+            (double)((float)prod * DAT_004ab518), limit, (double)((float)capped * DAT_004ab518));
+        Print(SPRITE_ClipRect.left + 8, y + SPRITE_ClipRect.top, buf, 2);
         y = y + 0x14;
         total = total + capped;
         p = p + 0xb;
@@ -3146,7 +3151,7 @@ void FUN_004632b0(void) {
     // STRING: LEGOLAND 0x004b9c40
     sprintf(buf, "Tot Capacity = %.2f (limit %d - %d) = %d", (double)((float)total * DAT_004ab518),
         MapStats.field_124, MapStats.field_120, MapStats.field_11c);
-    Print(SPRITE_ClipRect.right, SPRITE_ClipRect.top + 0x96, buf, 2);
+    Print(SPRITE_ClipRect.left + 8, SPRITE_ClipRect.top + 0x96, buf, 2);
 }
 
 // FUNCTION: LEGOLAND 0x004633f0
