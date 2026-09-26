@@ -25,7 +25,7 @@ void FUN_00438020(struct MapObject *editObj, unsigned int coords, struct Cursor 
 void FUN_00438070(struct MapObject *obj);
 void FUN_004380f0(void);
 void FUN_00438110(void);
-void FUN_00438150(struct MapObject *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6);
+void FUN_00438150(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6);
 void FUN_00438430(struct MapObject *param_1);
 LEGO_EXPORT unsigned int SaveJailCells(void);
 LEGO_EXPORT unsigned int LoadJailCells(void);
