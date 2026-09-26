@@ -271,45 +271,29 @@ struct ScreenState {
 // per-TU inline externs are migrated to use this header in a later phase.
 // ---------------------------------------------------------------------------
 // 0x004ab38c
+/* Per object-type map statistics (0x2c bytes). The scan_* fields accumulate during DoMapAI's
+   tile sweep and are latched into built/capacity/tiles/salvage when the sweep completes. */
+struct MapAIClass {
+    /* 0x00 */ int built;
+    /* 0x04 */ int classes;
+    /* 0x08 */ int capacity;
+    /* 0x0c */ int tiles;
+    /* 0x10 */ int salvage;
+    /* 0x14 */ int percent;
+    /* 0x18 */ int limit;
+    /* 0x1c */ int scan_tiles;
+    /* 0x20 */ int scan_built;
+    /* 0x24 */ int scan_salvage;
+    /* 0x28 */ int scan_capacity;
+};
+
 /* 0x832800..0x832bf0: map AI statistics (ResetMapAI clears all 0x3f0 bytes). */
 struct MapStats {
     /* 0x000 */ unsigned int field_0;
     /* 0x004 */ int field_4;
     /* 0x008 */ int field_8;
     /* 0x00c */ int field_c;
-    unsigned char pad_10[0x4];
-    /* 0x014 */ int field_14;
-    /* 0x018 */ int field_18;
-    /* 0x01c */ int field_1c;
-    /* 0x020 */ int field_20;
-    /* 0x024 */ unsigned int field_24[1];
-    /* 0x028 */ unsigned int field_28[1];
-    /* 0x02c */ int field_2c;
-    /* 0x030 */ int field_30;
-    /* 0x034 */ int field_34;
-    /* 0x038 */ int field_38;
-    unsigned char pad_3c[0x8];
-    /* 0x044 */ int field_44;
-    unsigned char pad_48[0x8];
-    /* 0x050 */ int field_50;
-    /* 0x054 */ int field_54;
-    unsigned char pad_58[0x24];
-    /* 0x07c */ int field_7c;
-    /* 0x080 */ int field_80;
-    unsigned char pad_84[0x24];
-    /* 0x0a8 */ int field_a8;
-    /* 0x0ac */ int field_ac;
-    unsigned char pad_b0[0x18];
-    /* 0x0c8 */ int field_c8;
-    unsigned char pad_cc[0x8];
-    /* 0x0d4 */ int field_d4;
-    /* 0x0d8 */ int field_d8;
-    unsigned char pad_dc[0x18];
-    /* 0x0f4 */ int field_f4;
-    unsigned char pad_f8[0x8];
-    /* 0x100 */ int field_100;
-    /* 0x104 */ int field_104;
-    unsigned char pad_108[0x10];
+    /* 0x010 */ struct MapAIClass classes[6];
     /* 0x118 */ int field_118;
     /* 0x11c */ unsigned int field_11c;
     /* 0x120 */ unsigned int field_120;

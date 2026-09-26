@@ -2904,38 +2904,28 @@ LEGO_EXPORT void ResetMapAI(void) {
 
 // FUNCTION: LEGOLAND 0x00462e50
 void FUN_00462e50(unsigned int index, unsigned int value) {
-    unsigned int ecx;
-    unsigned int edx;
-
-    ecx = index * 5;
-    edx = index + ecx * 2;
-    MapStats.field_24[edx] = value;
+    MapStats.classes[index].percent = value;
 }
 
 // FUNCTION: LEGOLAND 0x00462e70
 void FUN_00462e70(unsigned int index, unsigned int value) {
-    unsigned int ecx;
-    unsigned int edx;
-
-    ecx = index * 5;
-    edx = index + ecx * 2;
-    MapStats.field_28[edx] = value;
+    MapStats.classes[index].limit = value;
 }
 
 // FUNCTION: LEGOLAND 0x00462e90
 void FUN_00462e90(void) {
-    MapStats.field_24[0] = 0x32;
-    MapStats.field_28[0] = 0x14;
-    MapStats.field_50 = 0x21;
-    MapStats.field_54 = 0x32;
-    MapStats.field_7c = 0;
-    MapStats.field_80 = 0;
-    MapStats.field_a8 = 0;
-    MapStats.field_ac = 0;
-    MapStats.field_d4 = 0x21;
-    MapStats.field_d8 = 0x28;
-    MapStats.field_100 = 0x21;
-    MapStats.field_104 = 0x28;
+    MapStats.classes[0].percent = 0x32;
+    MapStats.classes[0].limit = 0x14;
+    MapStats.classes[1].percent = 0x21;
+    MapStats.classes[1].limit = 0x32;
+    MapStats.classes[2].percent = 0;
+    MapStats.classes[2].limit = 0;
+    MapStats.classes[3].percent = 0;
+    MapStats.classes[3].limit = 0;
+    MapStats.classes[4].percent = 0x21;
+    MapStats.classes[4].limit = 0x28;
+    MapStats.classes[5].percent = 0x21;
+    MapStats.classes[5].limit = 0x28;
 }
 
 // FUNCTION: LEGOLAND 0x00462ef0
@@ -2960,7 +2950,7 @@ LEGO_EXPORT void DoMapAI(void) {
         x = MapStats.field_4;
         do {
             if (MapStats.field_c == 0) {
-                p = &MapStats.field_2c;
+                p = &MapStats.classes[0].scan_tiles;
                 do {
                     p[1] = 0;
                     p[0] = 0;
@@ -2983,24 +2973,24 @@ LEGO_EXPORT void DoMapAI(void) {
                         obj = ((struct EditObject *)tile->field_0)->obj;
                         type = obj->type;
                         if (type != 0) {
-                            (&MapStats.field_2c)[type * 0xb] = (&MapStats.field_2c)[type * 0xb] + 1;
+                            (&MapStats.classes[0].scan_tiles)[type * 0xb] = (&MapStats.classes[0].scan_tiles)[type * 0xb] + 1;
                             xb = *((unsigned char *)&tile->field_4);
                             x = MapStats.field_4;
                             if (xb == MapStats.field_4 && (yb = *((unsigned char *)&tile->field_4 + 1), yb == MapStats.field_8) &&
                                 (r = FUN_0044f360((int)obj, &xb), x = MapStats.field_4, r != 0)) {
-                                (&MapStats.field_30)[obj->type * 0xb] = (&MapStats.field_30)[obj->type * 0xb] + 1;
+                                (&MapStats.classes[0].scan_built)[obj->type * 0xb] = (&MapStats.classes[0].scan_built)[obj->type * 0xb] + 1;
                                 type = obj->type;
                                 r = GetObjSalvageValue((unsigned int)obj, tile->field_11);
-                                (&MapStats.field_34)[type * 0xb] = (&MapStats.field_34)[type * 0xb] + r;
-                                (&MapStats.field_38)[obj->type * 0xb] = (&MapStats.field_38)[obj->type * 0xb] + (int)*(short *)((char *)obj + 0x2e);
+                                (&MapStats.classes[0].scan_salvage)[type * 0xb] = (&MapStats.classes[0].scan_salvage)[type * 0xb] + r;
+                                (&MapStats.classes[0].scan_capacity)[obj->type * 0xb] = (&MapStats.classes[0].scan_capacity)[obj->type * 0xb] + (int)*(short *)((char *)obj + 0x2e);
                                 x = MapStats.field_4;
                             }
                         }
                     }
                 } else {
-                    MapStats.field_30 = MapStats.field_30 + 1;
-                    MapStats.field_2c = MapStats.field_2c + 1;
-                    MapStats.field_38 = MapStats.field_38 + 1;
+                    MapStats.classes[0].scan_built = MapStats.classes[0].scan_built + 1;
+                    MapStats.classes[0].scan_tiles = MapStats.classes[0].scan_tiles + 1;
+                    MapStats.classes[0].scan_capacity = MapStats.classes[0].scan_capacity + 1;
                 }
                 MapStats.field_4 = x + 1;
                 x = MapStats.field_4;
@@ -3015,7 +3005,7 @@ LEGO_EXPORT void DoMapAI(void) {
             } else if (MapStats.field_c == 2) {
                 MapStats.field_c = 0;
                 MapStats.field_118 = 0;
-                p = &MapStats.field_20;
+                p = &MapStats.classes[0].salvage;
                 i = 6;
                 do {
                     p[0] = p[5];
@@ -3025,22 +3015,22 @@ LEGO_EXPORT void DoMapAI(void) {
                     MapStats.field_118 = MapStats.field_118 + p[-1];
                     p = p + 0xb;
                 } while ((int)p < 0x832928);
-                MapStats.field_18 = MapStats.field_18 / 100;
-                v1 = (int)(MapStats.field_24[0] * MapStats.field_1c) / 100;
-                if ((int)(MapStats.field_28[0] * 100) < v1) {
-                    v1 = (int)(MapStats.field_28[0] * 100);
+                MapStats.classes[0].capacity = MapStats.classes[0].capacity / 100;
+                v1 = (int)(MapStats.classes[0].percent * MapStats.classes[0].tiles) / 100;
+                if ((int)(MapStats.classes[0].limit * 100) < v1) {
+                    v1 = (int)(MapStats.classes[0].limit * 100);
                 }
-                v2 = MapStats.field_50 * MapStats.field_44;
-                if (MapStats.field_54 * 100 <= v2) {
-                    v2 = MapStats.field_54 * 100;
+                v2 = MapStats.classes[1].percent * MapStats.classes[1].capacity;
+                if (MapStats.classes[1].limit * 100 <= v2) {
+                    v2 = MapStats.classes[1].limit * 100;
                 }
-                v3 = MapStats.field_d4 * MapStats.field_c8;
-                if (MapStats.field_d8 * 100 <= v3) {
-                    v3 = MapStats.field_d8 * 100;
+                v3 = MapStats.classes[4].percent * MapStats.classes[4].capacity;
+                if (MapStats.classes[4].limit * 100 <= v3) {
+                    v3 = MapStats.classes[4].limit * 100;
                 }
-                v4 = MapStats.field_100 * MapStats.field_f4;
-                if (MapStats.field_104 * 100 <= v4) {
-                    v4 = MapStats.field_104 * 100;
+                v4 = MapStats.classes[5].percent * MapStats.classes[5].capacity;
+                if (MapStats.classes[5].limit * 100 <= v4) {
+                    v4 = MapStats.classes[5].limit * 100;
                 }
                 MapStats.field_11c = (v4 + v1 + v2 + v3) / 100;
                 if ((int)MapStats.field_11c < (int)MapStats.field_124) {
@@ -3058,16 +3048,16 @@ LEGO_EXPORT void DoMapAI(void) {
         } while (i < 0x100);
         return;
     }
-    p = &MapStats.field_14;
+    p = &MapStats.classes[0].classes;
     do {
-        if (p != &MapStats.field_14) {
+        if (p != &MapStats.classes[0].classes) {
             *p = 0;
         }
         p = p + 0xb;
     } while ((int)p < 0x83291c);
     for (cls = (unsigned int *)ObjectClassList; cls != 0; cls = (unsigned int *)*cls) {
         if (*(short *)(cls + 8) != 0 && cls[2] != 0) {
-            (&MapStats.field_14)[*(short *)(cls + 8) * 0xb] = (&MapStats.field_14)[*(short *)(cls + 8) * 0xb] + 1;
+            (&MapStats.classes[0].classes)[*(short *)(cls + 8) * 0xb] = (&MapStats.classes[0].classes)[*(short *)(cls + 8) * 0xb] + 1;
         }
     }
 }
@@ -3088,7 +3078,7 @@ void FUN_004632b0(void) {
     total = 0;
     y = 0x14;
     names = (char **)&DAT_004bb6bc;
-    p = (int *)&MapStats.field_28[0];
+    p = (int *)&MapStats.classes[0].limit;
     do {
         limit = *p;
         percent = p[-1];
