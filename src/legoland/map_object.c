@@ -14,6 +14,7 @@
 #include "gamemain.h"
 #include "gamemap.h"
 #include "gfx.h"
+#include "image_sprite.h"
 #include "llidb.h"
 #include "map_object.h"
 #include "math.h"
@@ -164,7 +165,9 @@ struct MapObject {
     /* 0x74 */ unsigned short *field_74;
     /* 0x78 */ unsigned char pad_78[0x90 - 0x78];
     /* 0x90 */ void (*method_90)(unsigned int param_1, void *footprint, int param_3);
-    /* 0x94 */ unsigned char pad_94[0xc4 - 0x94];
+    /* 0x94 */ unsigned char pad_94[0xa0 - 0x94];
+    /* 0xa0 */ int field_a0;
+    /* 0xa4 */ unsigned char pad_a4[0xc4 - 0xa4];
     /* 0xc4 */ unsigned int field_c4;
 };
 
@@ -1675,7 +1678,7 @@ void FUN_00460560(int index) {
 }
 
 // FUNCTION: LEGOLAND 0x004608c0
-void FUN_004608c0(int *param_1, RECT *param_2) {
+void FUN_004608c0(struct Point *pos, RECT *clip) {
     struct Overlay *ov;
     int dx;
     int dy;
@@ -1684,159 +1687,157 @@ void FUN_004608c0(int *param_1, RECT *param_2) {
     int sx;
     int half_x;
     int half_y;
-    int rem_x;
+    int mx;
     int row;
     int phase;
-    int col;
-    int sxpix;
-    int sypix;
-    struct MapElement *tile;
-    unsigned short sprite_id;
-    int draw_x;
+    int which;
+    int ybot;
+    int xright;
     int draw_y;
-    int sprite;
+    int draw_y2;
+    int col;
+    struct Point cell;
+    struct Point saved;
+    struct MapElement *tile;
+    struct SpriteSet *set;
+    struct Sprite *sprite;
     int frame;
     int k;
+    int ox;
+    int oy;
 
     ov = (struct Overlay *)OverlayList;
-    dx = param_1[0] - param_2->left;
-    dy = param_1[1] - param_2->top;
-    SetClipping(param_2);
-    half_y = (int)((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
-    dbl = (int)(short)(((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size * 2);
-    sx = param_1[0] / dbl;
+    dx = pos->x - clip->left;
+    dy = pos->y - clip->top;
+    SetClipping(clip);
+    size = ((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size;
+    dbl = (short)(((struct TileSprite *)TileSpriteArray[DAT_00667ca4])->size * 2);
+    sx = pos->x / dbl;
     half_x = (dbl + 1) >> 1;
-    rem_x = (half_y + 1) >> 1;
-    param_1 = (int *)(param_1[0] % dbl);
-    row = (param_1[1] - rem_x) / half_y;
-    phase = (param_1[1] - rem_x) % half_y;
-    sxpix = row + -3 + sx;
-    sypix = row - sx;
-    {
-        char which = (char)((half_x <= (int)param_1) + 1);
-        if (rem_x < phase) {
-            which = (char)((half_x <= (int)param_1) + 3);
-        }
-        switch (which) {
-        case 1:
-            if ((int)param_1 < half_x + phase * -2) {
-                param_1 = (int *)((int)param_1 + half_x);
-                sxpix = sxpix - 1;
-                phase = phase + rem_x;
-            }
-            break;
-        case 2:
-            if (half_x + phase * 2 <= (int)param_1) {
-                sypix = sypix + -1;
-                param_1 = (int *)((int)param_1 - half_x);
-                phase = phase + rem_x;
-            }
-            break;
-        case 3:
-            if (half_x + (phase - half_y) * 2 <= (int)param_1) {
-                break;
-            }
-            sypix = sypix + 1;
-            size = half_x;
-            param_1 = (int *)((int)param_1 + size);
-            phase = phase - rem_x;
-            break;
-        case 4:
-            if ((int)param_1 < half_x + (half_y - phase) * 2) {
-                break;
-            }
-            sxpix = sxpix + 1;
-            size = -half_x;
-            param_1 = (int *)((int)param_1 + size);
-            phase = phase - rem_x;
-            break;
-        }
+    half_y = (size + 1) >> 1;
+    mx = pos->x % dbl;
+    row = (pos->y - half_y) / size;
+    phase = (pos->y - half_y) % size;
+    cell.x = row + sx - 3;
+    cell.y = row - sx;
+    which = (mx >= half_x) + 1;
+    if (phase > half_y) {
+        which += 2;
     }
-    {
-        int ybot = param_2->bottom + half_y * 2;
-        int xright = param_2->right;
-        PushRenderingStatusAndLockVideoSurface();
-        draw_y = (param_2->top + half_y * -2) - phase;
-        if (draw_y < ybot) {
-            rem_x = rem_x + draw_y;
-            do {
-                int saved_row = sypix;
-                int saved_col = sxpix;
-                for (col = (param_2->left + dbl * -2) - (int)param_1; col < xright + dbl * 2; col = col + dbl) {
-                    if ((int)sxpix < 0 || lpConfig->width <= (int)sxpix || sypix < 0 || lpConfig->height <= sypix) {
-                        tile = 0;
-                    } else {
-                        tile = (struct MapElement *)((int)GameMap[sypix] + sxpix * 0x14);
-                        if (tile != 0 && (sprite_id = tile->field_8) != 0) {
-                            if ((tile->flags & 3) == 0 || (tile->flags & 8) == 0 || tile->field_0 == 0) {
-                                FUN_00485f00((struct Sprite *)TileSpriteArray[sprite_id], col, draw_y);
-                                if (FUN_0045ce10((struct MapTile *)tile) != 0) {
-                                    FUN_00460e90((int *)&sxpix, col, draw_y, 0);
-                                }
-                            } else if (*(int *)(*(int *)(tile->field_0 + 0xc) + 0xa0) == 0) {
-                                FUN_00485f00((struct Sprite *)TileSpriteArray[sprite_id], col, draw_y);
-                            }
-                        }
-                    }
-                    sxpix = sxpix + 1;
-                    if (tile != 0) {
-                        if ((unsigned int)sxpix == lpConfig->width) {
-                            break;
-                        }
-                        tile = tile + 1;
-                    } else if ((int)sxpix >= 0 && (int)sxpix < lpConfig->width && sypix >= 0 && sypix < lpConfig->height) {
-                        tile = (struct MapElement *)((int)GameMap[sypix] + sxpix * 0x14);
-                    }
-                    if (tile != 0 && (sprite_id = tile->field_8) != 0) {
-                        if ((tile->flags & 3) == 0 || (tile->flags & 8) == 0 || tile->field_0 == 0) {
-                            FUN_00485f00((struct Sprite *)TileSpriteArray[sprite_id], col + half_x, rem_x);
-                            if (FUN_0045ce10((struct MapTile *)tile) != 0) {
-                                FUN_00460e90((int *)&sxpix, col + half_x, rem_x, 0);
-                            }
-                        } else if (*(int *)(*(int *)(tile->field_0 + 0xc) + 0xa0) == 0) {
-                            FUN_00485f00((struct Sprite *)TileSpriteArray[sprite_id], col, draw_y);
-                        }
-                    }
-                    sypix = sypix + -1;
-                }
-                sxpix = saved_col + 1;
-                sypix = saved_row + 1;
-                draw_y = draw_y + half_y;
-                rem_x = rem_x + half_y;
-            } while (draw_y < ybot);
+    switch (which) {
+    case 1:
+        if (mx < half_x - phase * 2) {
+            mx += half_x;
+            cell.x--;
+            phase += half_y;
         }
+        break;
+    case 2:
+        if (mx >= half_x + phase * 2) {
+            cell.y--;
+            mx -= half_x;
+            phase += half_y;
+        }
+        break;
+    case 3:
+        if (mx < half_x + (phase - size) * 2) {
+            cell.y++;
+            mx += half_x;
+            phase -= half_y;
+        }
+        break;
+    case 4:
+        if (mx >= half_x + (size - phase) * 2) {
+            cell.x++;
+            mx -= half_x;
+            phase -= half_y;
+        }
+        break;
     }
-    while (ov != 0) {
-        if (ov->field_20 != 0) {
-            FUN_00485f00((struct Sprite *)ov->field_20, ov->field_14 - dx, ov->field_18 - dy);
-            frame = ov->field_10;
-            if ((char)((unsigned int)frame >> 8) != 0 && (&MapStats.field_3dc)[(int)(unsigned int)frame >> 8] != 0) {
-                if ((frame & 0xff) == 0) {
-                    draw_x = ov->field_14 - dx;
-                    draw_y = ov->field_18 - dy;
-                    FUN_00485f00((struct Sprite *)*(int *)(*(int *)((int)DAT_00667cb0 + 8) + ((frame + 2) & 0xff) * 4),
-                        draw_x + DAT_004b9218, draw_y + DAT_004b921c);
-                    k = (ov->field_10 + 4) & 0xff;
-                    if (k < *(int *)((int)DAT_00667cb0 + 4)) {
-                        sprite = *(int *)(*(int *)((int)DAT_00667cb0 + 8) + k * 4);
-                        SortSprite((struct Sprite *)sprite, draw_x + DAT_00805f40, draw_y + DAT_00805f44,
-                            *(short *)(sprite + 0x16) + draw_y + DAT_00805f44, 0, 0);
+    ybot = clip->bottom + size * 2;
+    xright = clip->right + dbl * 2;
+    PushRenderingStatusAndLockVideoSurface();
+    for (draw_y = clip->top - size * 2 - phase, draw_y2 = half_y + draw_y; draw_y < ybot;
+        draw_y += size, draw_y2 += size) {
+        saved = cell;
+        for (col = clip->left - dbl * 2 - mx; col < xright; col += dbl) {
+            if (cell.x >= 0 && cell.x < lpConfig->width && cell.y >= 0 && cell.y < lpConfig->height) {
+                tile = &GameMap[cell.y][cell.x];
+            } else {
+                tile = 0;
+            }
+            if (tile != 0 && tile->field_8 != 0) {
+                if ((tile->flags & 3) && (tile->flags & 8) && tile->field_0 != 0) {
+                    if (((struct EditObject *)tile->field_0)->obj->field_a0 == 0) {
+                        FUN_00485f00((struct Sprite *)TileSpriteArray[tile->field_8], col, draw_y);
                     }
-                } else if ((frame & 0xff) == 1) {
-                    draw_x = ov->field_14 - dx;
-                    draw_y = ov->field_18 - dy;
-                    FUN_00485f00((struct Sprite *)*(int *)(*(int *)((int)DAT_00667cb0 + 8) + ((frame + 2) & 0xff) * 4),
-                        draw_x + DAT_004b9210, draw_y + DAT_004b9214);
-                    k = (ov->field_10 + 4) & 0xff;
-                    if (k < *(int *)((int)DAT_00667cb0 + 4)) {
-                        sprite = *(int *)(*(int *)((int)DAT_00667cb0 + 8) + k * 4);
-                        SortSprite((struct Sprite *)sprite, draw_x + DAT_00801a60, draw_y + DAT_00801a64,
-                            *(short *)(sprite + 0x16) + draw_y + DAT_00801a64, 0, 0);
+                } else {
+                    FUN_00485f00((struct Sprite *)TileSpriteArray[tile->field_8], col, draw_y);
+                    if (FUN_0045ce10((struct MapTile *)tile) != 0) {
+                        FUN_00460e90((int *)&cell, col, draw_y, 0);
                     }
                 }
             }
+            cell.x++;
+            if (tile != 0) {
+                if (cell.x == lpConfig->width) {
+                    break;
+                }
+                tile++;
+            }
+            if (tile == 0) {
+                if (cell.x >= 0 && cell.x < lpConfig->width && cell.y >= 0 && cell.y < lpConfig->height) {
+                    tile = &GameMap[cell.y][cell.x];
+                } else {
+                    tile = 0;
+                }
+            }
+            if (tile != 0 && tile->field_8 != 0) {
+                if ((tile->flags & 3) && (tile->flags & 8) && tile->field_0 != 0) {
+                    if (((struct EditObject *)tile->field_0)->obj->field_a0 == 0) {
+                        FUN_00485f00((struct Sprite *)TileSpriteArray[tile->field_8], col, draw_y);
+                    }
+                } else {
+                    FUN_00485f00((struct Sprite *)TileSpriteArray[tile->field_8], col + half_x, draw_y2);
+                    if (FUN_0045ce10((struct MapTile *)tile) != 0) {
+                        FUN_00460e90((int *)&cell, col + half_x, draw_y2, 0);
+                    }
+                }
+            }
+            cell.y--;
         }
-        ov = ov->next;
+        cell.x = saved.x + 1;
+        cell.y = saved.y + 1;
+    }
+    for (; ov != 0; ov = ov->next) {
+        if (ov->field_20 == 0) {
+            continue;
+        }
+        FUN_00485f00((struct Sprite *)ov->field_20, ov->field_14 - dx, ov->field_18 - dy);
+        frame = ov->field_10;
+        if ((frame & 0xff00) == 0 || MapStats.field_3e0[(frame >> 8) - 1] == 0) {
+            continue;
+        }
+        set = (struct SpriteSet *)DAT_00667cb0;
+        if ((frame & 0xff) == 0) {
+            ox = ov->field_14 - dx;
+            oy = ov->field_18 - dy;
+            FUN_00485f00(set->sprites[(frame + 2) & 0xff], ox + DAT_004b9218, oy + DAT_004b921c);
+            k = (ov->field_10 + 4) & 0xff;
+            if (k < ((struct SpriteSet *)DAT_00667cb0)->count) {
+                sprite = ((struct SpriteSet *)DAT_00667cb0)->sprites[k];
+                SortSprite(sprite, ox + DAT_00805f40, oy + DAT_00805f44, (short)sprite->height + oy + DAT_00805f44, 0, 0);
+            }
+        } else if ((frame & 0xff) == 1) {
+            ox = ov->field_14 - dx;
+            oy = ov->field_18 - dy;
+            FUN_00485f00(set->sprites[(frame + 2) & 0xff], ox + DAT_004b9210, oy + DAT_004b9214);
+            k = (ov->field_10 + 4) & 0xff;
+            if (k < ((struct SpriteSet *)DAT_00667cb0)->count) {
+                sprite = ((struct SpriteSet *)DAT_00667cb0)->sprites[k];
+                SortSprite(sprite, ox + DAT_00801a60, oy + DAT_00801a64, (short)sprite->height + oy + DAT_00801a64, 0, 0);
+            }
+        }
     }
     PopRenderingStatus();
 }
@@ -1845,18 +1846,18 @@ void FUN_004608c0(int *param_1, RECT *param_2) {
 void FUN_00460e00(void) {
     int sx;
     int sy;
-    int rect[2];
+    struct Point pos;
     RECT clip;
 
     sx = ScrollX >> 8;
     sy = ScrollY >> 8;
-    rect[0] = sx;
-    rect[1] = sy;
+    pos.x = sx;
+    pos.y = sy;
     clip.left = lpConfig->field_20;
     clip.top = lpConfig->field_22;
     clip.right = lpConfig->field_10 + clip.left;
     clip.bottom = lpConfig->field_12 + clip.top;
-    FUN_004608c0(rect, &clip);
+    FUN_004608c0(&pos, &clip);
     DAT_004b95ec = sy;
     DAT_004b95e8 = sx;
     DAT_00667cd0 = 0;
