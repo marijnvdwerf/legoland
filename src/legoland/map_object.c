@@ -3288,24 +3288,14 @@ LEGO_EXPORT void ProcessDamage(void) {
 
 // FUNCTION: LEGOLAND 0x00463680
 void FUN_00463680(void) {
-    int row;
-    int off;
-    int *tile;
+    int x;
+    int y;
 
-    row = 0;
-    do {
-        off = 0;
-        do {
-            tile = (int *)(*(int *)((int)GameMap + row) + off);
-            off = off + 0x14;
-            tile[0] = 0;
-            tile[1] = 0;
-            tile[2] = 0;
-            tile[3] = 0;
-            tile[4] = 0;
-        } while (off < 0x1400);
-        row = row + 4;
-    } while (row < 0x400);
+    for (y = 0; y < 0x100; y++) {
+        for (x = 0; x < 0x100; x++) {
+            memset(&GameMap[y][x], 0, sizeof(struct MapElement));
+        }
+    }
     ClearOverlays();
 }
 
