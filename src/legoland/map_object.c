@@ -148,12 +148,17 @@ struct FootprintNode {
 };
 
 struct MapObject {
-    /* 0x00 */ unsigned char pad_0[0x1c];
+    /* 0x00 */ struct MapObject *next;
+    /* 0x04 */ unsigned char pad_4[0x8 - 0x4];
+    /* 0x08 */ int field_8;
+    /* 0x0c */ unsigned char pad_c[0x1c - 0xc];
     /* 0x1c */ unsigned int flags;
     /* 0x20 */ short type;
     /* 0x22 */ unsigned char pad_22[0x2c - 0x22];
     /* 0x2c */ unsigned char field_2c;
-    /* 0x2d */ unsigned char pad_2d[0x3c - 0x2d];
+    /* 0x2d */ unsigned char pad_2d;
+    /* 0x2e */ short field_2e;
+    /* 0x30 */ unsigned char pad_30[0x3c - 0x30];
     /* 0x3c */ struct FootprintNode footprint;
     /* 0x50 */ unsigned char pad_50[0x74 - 0x50];
     /* 0x74 */ unsigned short *field_74;
@@ -2931,133 +2936,121 @@ void FUN_00462e90(void) {
 // FUNCTION: LEGOLAND 0x00462ef0
 LEGO_EXPORT void DoMapAI(void) {
     int i;
-    int *p;
     struct MapElement *tile;
     struct MapObject *obj;
-    short type;
-    unsigned char xb;
-    unsigned char yb;
-    int r;
-    int v1;
-    int v2;
-    int v3;
-    int v4;
-    unsigned int x;
-    unsigned int *cls;
+    TileId id;
+    unsigned char tx;
+    unsigned char ty;
+    int sum;
+    int v;
+    struct MapObject *cls;
 
-    if (((unsigned char)DAT_008119a4 & 0x3f) != 0) {
-        i = 0;
-        x = MapStats.scan_x;
-        do {
-            if (MapStats.scan_stage == 0) {
-                p = &MapStats.classes[0].scan_tiles;
-                do {
-                    p[1] = 0;
-                    p[0] = 0;
-                    p[2] = 0;
-                    p[3] = 0;
-                    p = p + 0xb;
-                } while ((int)p < 0x832934);
-                MapStats.scan_stage = MapStats.scan_stage + 1;
+    if (DAT_008119a4 & 0x3f) {
+        for (i = 0; i < 0x100; i++) {
+            switch (MapStats.scan_stage) {
+            case 0: {
+                int j;
+                for (j = 0; j < 6; j++) {
+                    MapStats.classes[j].scan_built = 0;
+                    MapStats.classes[j].scan_tiles = 0;
+                    MapStats.classes[j].scan_salvage = 0;
+                    MapStats.classes[j].scan_capacity = 0;
+                }
                 MapStats.scan_x = 0;
                 MapStats.scan_y = 0;
-                x = 0;
-            } else if (MapStats.scan_stage == 1) {
-                if ((int)x < 0 || lpConfig->width <= (int)x || MapStats.scan_y < 0 || lpConfig->height <= MapStats.scan_y) {
-                    tile = 0;
+                MapStats.scan_stage++;
+                break;
+            }
+            case 1:
+                if (MapStats.scan_x >= 0 && MapStats.scan_x < lpConfig->width && MapStats.scan_y >= 0 &&
+                    MapStats.scan_y < lpConfig->height) {
+                    tile = &GameMap[MapStats.scan_y][MapStats.scan_x];
                 } else {
-                    tile = (struct MapElement *)((int)GameMap[MapStats.scan_y] + x * 0x14);
+                    tile = 0;
                 }
-                if ((tile->field_10 & 1) == 0) {
-                    if ((tile->flags & 0x88) != 0 && tile->field_0 != 0) {
-                        obj = ((struct EditObject *)tile->field_0)->obj;
-                        type = obj->type;
-                        if (type != 0) {
-                            (&MapStats.classes[0].scan_tiles)[type * 0xb] = (&MapStats.classes[0].scan_tiles)[type * 0xb] + 1;
-                            xb = *((unsigned char *)&tile->field_4);
-                            x = MapStats.scan_x;
-                            if (xb == MapStats.scan_x && (yb = *((unsigned char *)&tile->field_4 + 1), yb == MapStats.scan_y) &&
-                                (r = FUN_0044f360((int)obj, &xb), x = MapStats.scan_x, r != 0)) {
-                                (&MapStats.classes[0].scan_built)[obj->type * 0xb] = (&MapStats.classes[0].scan_built)[obj->type * 0xb] + 1;
-                                type = obj->type;
-                                r = GetObjSalvageValue((unsigned int)obj, tile->field_11);
-                                (&MapStats.classes[0].scan_salvage)[type * 0xb] = (&MapStats.classes[0].scan_salvage)[type * 0xb] + r;
-                                (&MapStats.classes[0].scan_capacity)[obj->type * 0xb] = (&MapStats.classes[0].scan_capacity)[obj->type * 0xb] + (int)*(short *)((char *)obj + 0x2e);
-                                x = MapStats.scan_x;
+                if (tile->field_10 & 1) {
+                    MapStats.classes[0].scan_built++;
+                    MapStats.classes[0].scan_tiles++;
+                    MapStats.classes[0].scan_capacity++;
+                } else if ((tile->flags & 0x88) && tile->field_0 != 0) {
+                    obj = ((struct EditObject *)tile->field_0)->obj;
+                    if (obj->type != 0) {
+                        MapStats.classes[obj->type].scan_tiles++;
+                        tx = tile->field_4;
+                        if (tx == MapStats.scan_x && (ty = tile->field_5) == MapStats.scan_y) {
+                            id.pos.x = tx;
+                            id.pos.y = ty;
+                            if (FUN_0044f360((unsigned int)obj, (unsigned char *)&id) != 0) {
+                                MapStats.classes[obj->type].scan_built++;
+                                MapStats.classes[obj->type].scan_salvage +=
+                                    GetObjSalvageValue((unsigned int)obj, tile->field_11);
+                                MapStats.classes[obj->type].scan_capacity += obj->field_2e;
                             }
                         }
                     }
-                } else {
-                    MapStats.classes[0].scan_built = MapStats.classes[0].scan_built + 1;
-                    MapStats.classes[0].scan_tiles = MapStats.classes[0].scan_tiles + 1;
-                    MapStats.classes[0].scan_capacity = MapStats.classes[0].scan_capacity + 1;
                 }
-                MapStats.scan_x = x + 1;
-                x = MapStats.scan_x;
-                if (lpConfig->width <= (int)MapStats.scan_x) {
-                    MapStats.scan_y = MapStats.scan_y + 1;
+                MapStats.scan_x++;
+                if (MapStats.scan_x >= lpConfig->width) {
                     MapStats.scan_x = 0;
-                    x = 0;
-                    if (lpConfig->height <= MapStats.scan_y) {
-                        MapStats.scan_stage = MapStats.scan_stage + 1;
+                    MapStats.scan_y++;
+                    if (MapStats.scan_y >= lpConfig->height) {
+                        MapStats.scan_stage++;
                     }
                 }
-            } else if (MapStats.scan_stage == 2) {
+                break;
+            case 2:
                 MapStats.scan_stage = 0;
                 MapStats.total_tiles = 0;
-                p = &MapStats.classes[0].salvage;
-                i = 6;
-                do {
-                    p[0] = p[5];
-                    p[-1] = p[3];
-                    p[-4] = p[4];
-                    p[-2] = p[6];
-                    MapStats.total_tiles = MapStats.total_tiles + p[-1];
-                    p = p + 0xb;
-                } while ((int)p < 0x832928);
-                MapStats.classes[0].capacity = MapStats.classes[0].capacity / 100;
-                v1 = (int)(MapStats.classes[0].percent * MapStats.classes[0].tiles) / 100;
-                if ((int)(MapStats.classes[0].limit * 100) < v1) {
-                    v1 = (int)(MapStats.classes[0].limit * 100);
+                for (i = 0; i < 6; i++) {
+                    MapStats.classes[i].salvage = MapStats.classes[i].scan_salvage;
+                    MapStats.classes[i].tiles = MapStats.classes[i].scan_tiles;
+                    MapStats.classes[i].built = MapStats.classes[i].scan_built;
+                    MapStats.classes[i].capacity = MapStats.classes[i].scan_capacity;
+                    MapStats.total_tiles += MapStats.classes[i].tiles;
                 }
-                v2 = MapStats.classes[1].percent * MapStats.classes[1].capacity;
-                if (MapStats.classes[1].limit * 100 <= v2) {
-                    v2 = MapStats.classes[1].limit * 100;
+                MapStats.classes[0].capacity /= 100;
+                v = MapStats.classes[0].tiles * MapStats.classes[0].percent / 100;
+                sum = MapStats.classes[0].limit * 100;
+                if (v < sum) {
+                    sum = v;
                 }
-                v3 = MapStats.classes[4].percent * MapStats.classes[4].capacity;
-                if (MapStats.classes[4].limit * 100 <= v3) {
-                    v3 = MapStats.classes[4].limit * 100;
+                v = MapStats.classes[1].capacity * MapStats.classes[1].percent;
+                if (v >= MapStats.classes[1].limit * 100) {
+                    v = MapStats.classes[1].limit * 100;
                 }
-                v4 = MapStats.classes[5].percent * MapStats.classes[5].capacity;
-                if (MapStats.classes[5].limit * 100 <= v4) {
-                    v4 = MapStats.classes[5].limit * 100;
+                sum += v;
+                v = MapStats.classes[4].capacity * MapStats.classes[4].percent;
+                if (v >= MapStats.classes[4].limit * 100) {
+                    v = MapStats.classes[4].limit * 100;
                 }
-                MapStats.capacity = (v4 + v1 + v2 + v3) / 100;
+                sum += v;
+                v = MapStats.classes[5].capacity * MapStats.classes[5].percent;
+                if (v >= MapStats.classes[5].limit * 100) {
+                    v = MapStats.classes[5].limit * 100;
+                }
+                MapStats.capacity = (v + sum) / 100;
                 if ((int)MapStats.capacity < (int)MapStats.capacity_min) {
                     MapStats.capacity = MapStats.capacity_min;
                 }
-                if ((int)MapStats.capacity_max < (int)MapStats.capacity) {
+                if ((int)MapStats.capacity > (int)MapStats.capacity_max) {
                     MapStats.capacity = MapStats.capacity_max;
                 }
-                x = MapStats.scan_x;
-                if ((int)(unsigned int)lpConfig->field_1a < (int)MapStats.capacity) {
+                if ((int)MapStats.capacity > (int)lpConfig->field_1a) {
                     MapStats.capacity = lpConfig->field_1a;
                 }
+                break;
             }
-            i = i + 1;
-        } while (i < 0x100);
-        return;
-    }
-    p = &MapStats.classes[0].classes;
-    do {
-        if (p != &MapStats.classes[0].classes) {
-            *p = 0;
         }
-        p = p + 0xb;
-    } while ((int)p < 0x83291c);
-    for (cls = (unsigned int *)ObjectClassList; cls != 0; cls = (unsigned int *)*cls) {
-        if (*(short *)(cls + 8) != 0 && cls[2] != 0) {
-            (&MapStats.classes[0].classes)[*(short *)(cls + 8) * 0xb] = (&MapStats.classes[0].classes)[*(short *)(cls + 8) * 0xb] + 1;
+    } else {
+        for (i = 0; i < 6; i++) {
+            if (i != 0) {
+                MapStats.classes[i].classes = 0;
+            }
+        }
+        for (cls = (struct MapObject *)ObjectClassList; cls != 0; cls = cls->next) {
+            if (cls->type != 0 && cls->field_8 != 0) {
+                MapStats.classes[cls->type].classes++;
+            }
         }
     }
 }
