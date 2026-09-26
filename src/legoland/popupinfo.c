@@ -579,7 +579,7 @@ LEGO_EXPORT void PopUpInfoSetUp(int param_1, void *param_2, unsigned int param_3
             }
         } else if (param_1 == 0x306) {
             DAT_007fdf9c = param_1;
-            DAT_007fdf8c = (unsigned int)param_2;
+            DAT_007fdf8c = param_2;
             DAT_007fdf90 = *(unsigned int *)(*(int *)((char *)param_2 + 4) + 0x1c);
             DAT_007fdf94 = *(unsigned int *)(*(int *)((char *)param_2 + 4) + 0x20);
             return;

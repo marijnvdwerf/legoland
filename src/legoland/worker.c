@@ -668,7 +668,7 @@ void FUN_00499fb0(void) {
                 DoHighLevelAI((struct Bloke *)current);
             }
             if (current->state != 0) {
-                DoLowLevelAI(current);
+                DoLowLevelAI((struct Bloke *)current);
             }
             UpdatePerson((struct Person *)current);
             if (current->progress == 100) {
@@ -689,7 +689,7 @@ void FUN_0049a010(void) {
             DoHighLevelAI((struct Bloke *)node);
         }
         if (node->state != 0) {
-            DoLowLevelAI(node);
+            DoLowLevelAI((struct Bloke *)node);
         }
         UpdatePerson((struct Person *)node);
         if (node->progress == 100) {

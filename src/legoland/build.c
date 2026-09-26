@@ -38,10 +38,9 @@ LEGO_EXPORT void DoBuildEffects(void) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x00450f10
 LEGO_EXPORT void ClearBuildObjList(void) {
-    int entry = (int)DAT_006664f8;
-    int end = (int)&DAT_006670f8;
-    while (entry < end) {
-        *(unsigned int *)entry = 0;
-        entry += 12;
+    int i;
+
+    for (i = 0; i < 256; i++) {
+        DAT_006664f8[i].ride = NULL;
     }
 }

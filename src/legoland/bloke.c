@@ -1342,9 +1342,9 @@ void (*PTR_FUN_004bd34c[16])(void *) = {
 };
 
 // FUNCTION: LEGOLAND 0x00484920
-LEGO_EXPORT void DoLowLevelAI(struct Worker *worker) {
-    SetPathFlag((struct OverTile *)worker);
-    PTR_FUN_004bd34c[((struct TileWalker *)worker)->field_e](worker);
+LEGO_EXPORT void DoLowLevelAI(struct Bloke *bloke) {
+    SetPathFlag((struct OverTile *)bloke);
+    PTR_FUN_004bd34c[bloke->field_e](bloke);
 }
 
 // FUNCTION: LEGOLAND 0x00484950

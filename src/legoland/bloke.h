@@ -80,7 +80,7 @@ struct Bloke {
     unsigned char field_74;
     unsigned char field_75;
     unsigned char pad_76[0x78 - 0x76];
-    unsigned short field_78;
+    short field_78;
     short field_7a;
     unsigned short field_7c;
     unsigned char field_7e;
@@ -134,7 +134,7 @@ LEGO_EXPORT struct Bloke *NewBloke(void);
 LEGO_EXPORT int GetBlokeNum(struct Bloke *bloke);
 LEGO_EXPORT void DestroyBloke(struct Bloke *bloke);
 struct Worker;
-LEGO_EXPORT void DoLowLevelAI(struct Worker *worker);
+LEGO_EXPORT void DoLowLevelAI(struct Bloke *bloke);
 struct MapRect;
 struct BinVFile;
 struct BinVObject;

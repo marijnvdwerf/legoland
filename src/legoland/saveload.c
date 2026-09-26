@@ -50,10 +50,10 @@ LEGO_EXPORT int EndMeasuredBlock(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0047d880
-LEGO_EXPORT int FindeIneList(int *param_1) { STUB(); }
+LEGO_EXPORT int FindeIneList(struct Element **element) { STUB(); }
 
 // FUNCTION: LEGOLAND 0x0047d8c0
-LEGO_EXPORT unsigned int GeteListPtr(int idx) {
+LEGO_EXPORT struct Element *GeteListPtr(int idx) {
     if (idx == -1) {
         return 0;
     }

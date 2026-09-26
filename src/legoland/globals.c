@@ -2103,10 +2103,10 @@ char DAT_006661cc[8][100];
 int DAT_006664ec;
 
 // GLOBAL: LEGOLAND 0x006664f8
-unsigned int DAT_006664f8[768];
+struct BuildObj DAT_006664f8[256] = {0};
 
 // GLOBAL: LEGOLAND 0x006670f8
-unsigned int DAT_006670f8;
+unsigned int DAT_006670f8 = 0;
 
 // GLOBAL: LEGOLAND 0x006670fc
 unsigned int DAT_006670fc;
@@ -2895,7 +2895,7 @@ int DAT_006691bc[16];
 int DAT_006691fc;
 
 // GLOBAL: LEGOLAND 0x00669200
-unsigned int *DAT_00669200;
+struct Element **DAT_00669200;
 
 // GLOBAL: LEGOLAND 0x00669204
 unsigned int DAT_00669204;
@@ -2964,7 +2964,7 @@ unsigned int DAT_0066b46c;
 char DAT_0066b470[0x104];
 
 // GLOBAL: LEGOLAND 0x0066b574
-LEGO_EXPORT void *FirstBloke;
+LEGO_EXPORT struct Bloke *FirstBloke;
 
 // GLOBAL: LEGOLAND 0x0066b57c
 void *DAT_0066b57c;
@@ -3756,7 +3756,7 @@ unsigned char *DAT_007fdf84;
 unsigned short DAT_007fdf88;
 
 // GLOBAL: LEGOLAND 0x007fdf8c
-unsigned int DAT_007fdf8c;
+void *DAT_007fdf8c;
 
 // GLOBAL: LEGOLAND 0x007fdf90
 unsigned int DAT_007fdf90;

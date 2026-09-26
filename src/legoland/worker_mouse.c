@@ -26,9 +26,9 @@ struct WorkerOuter {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x004700c0
-unsigned int FUN_004700c0(unsigned int param_1) {
+unsigned int FUN_004700c0(void *object) {
     if (DAT_007fdf9c == 0x306) {
-        if (DAT_007fdf8c == param_1) {
+        if (DAT_007fdf8c == object) {
             return 1;
         }
     }

@@ -33,6 +33,7 @@ struct Footprint {
         };
     };
 };
+typedef struct Footprint Footprint;
 
 /* LLIDB sprite set: count, sprite table and per-sprite draw offsets. */
 struct SpriteSet {

@@ -100,6 +100,17 @@ struct SpaceTowerSeatData {
     /* 0x10 */ int field_10;
 };
 
+/* An object under construction; on disk the class is saved as its LLIDB index. */
+struct BuildObj {
+    union {
+        struct Ride *ride;
+        int index;
+    };
+    int field_4;
+    int field_8;
+};
+typedef struct BuildObj BuildObj;
+
 typedef struct MapElement MapElement;
 struct MapElement {
     /* 0x00 */ struct Element *field_0; /* class of the object on this tile */
@@ -1703,7 +1714,7 @@ extern char DAT_006661cc[8][100];
 // 0x006664ec
 extern int DAT_006664ec;
 // 0x006664f8
-extern unsigned int DAT_006664f8[768];
+extern struct BuildObj DAT_006664f8[256]; /* objects under construction */
 // 0x006670f8
 extern unsigned int DAT_006670f8;
 // 0x006670fc
@@ -2237,7 +2248,7 @@ extern int DAT_006691bc[16];
 // 0x006691fc
 extern int DAT_006691fc;
 // 0x00669200
-extern unsigned int *DAT_00669200;
+extern struct Element **DAT_00669200;
 // 0x00669204
 extern unsigned int DAT_00669204;
 // 0x00669208
@@ -2284,7 +2295,7 @@ extern unsigned int DAT_0066b46c;
 // 0x0066b470
 extern char DAT_0066b470[0x104];
 // 0x0066b574
-extern LEGO_EXPORT void *FirstBloke;
+extern LEGO_EXPORT struct Bloke *FirstBloke;
 // 0x0066b57c
 extern void *DAT_0066b57c;
 // 0x0066b580
@@ -2812,7 +2823,7 @@ extern unsigned char *DAT_007fdf84;
 // 0x007fdf88
 extern unsigned short DAT_007fdf88;
 // 0x007fdf8c
-extern unsigned int DAT_007fdf8c;
+extern void *DAT_007fdf8c; /* object the info popup is showing */
 // 0x007fdf90
 extern unsigned int DAT_007fdf90;
 // 0x007fdf94
