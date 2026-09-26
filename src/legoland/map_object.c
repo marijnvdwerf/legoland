@@ -3233,53 +3233,46 @@ void FUN_00463560(void) {
 
 // FUNCTION: LEGOLAND 0x00463580
 LEGO_EXPORT void ProcessDamage(void) {
-    short coords;
-    unsigned char xlow;
-    unsigned char ylow;
+    TileId id;
+    struct Point pt;
     int amount;
     struct MapElement *tile;
-    unsigned char dmg;
-    unsigned int x;
-    unsigned int y;
 
-    coords = (short)DAT_007febb8;
-    xlow = (unsigned char)DAT_007febb8;
-    ylow = (unsigned char)((unsigned short)DAT_007febb8 >> 8);
+    id.id = DAT_007febb8;
     amount = FUN_00463520();
     if (amount != 0) {
-        if (coords == 0) {
-            if (lpConfig->width == 0 || lpConfig->height == 0) {
-                tile = 0;
+        if (id.id == 0) {
+            pt.x = 0;
+            pt.y = 0;
+            if (pt.x >= 0 && pt.x < lpConfig->width && pt.y >= 0 && pt.y < lpConfig->height) {
+                tile = &GameMap[pt.y][pt.x];
             } else {
-                tile = (struct MapElement *)GameMap[0];
+                tile = 0;
             }
             if ((tile->flags & 0xa0) == 0) {
                 return;
             }
         }
         do {
-            y = ylow;
-            x = (unsigned int)(((unsigned int)ylow << 8) | xlow) & 0xff;
-            if (x < lpConfig->width && y < lpConfig->height) {
-                tile = (struct MapElement *)((int)GameMap[y] + x * 0x14);
+            pt.x = id.pos.x;
+            pt.y = id.pos.y;
+            if (pt.x >= 0 && pt.x < lpConfig->width && pt.y >= 0 && pt.y < lpConfig->height) {
+                tile = &GameMap[pt.y][pt.x];
             } else {
                 tile = 0;
             }
-            if ((tile->flags & 0x80) != 0) {
-                dmg = tile->field_11;
-                if (1 < dmg) {
-                    if (amount < (int)(unsigned int)dmg) {
-                        tile->field_11 = dmg - (char)amount;
+            if (tile->flags & 0x80) {
+                if (tile->field_11 > 1) {
+                    if (tile->field_11 > amount) {
+                        tile->field_11 -= amount;
                     } else {
                         tile->field_11 = 1;
                     }
                 }
-                FUN_00463460(tile, (int *)&x);
+                FUN_00463460(tile, (int *)&pt);
             }
-            coords = (short)tile->field_6;
-            xlow = (unsigned char)coords;
-            ylow = (unsigned char)((unsigned short)coords >> 8);
-        } while (coords != 0);
+            id.id = tile->field_6;
+        } while (id.id != 0);
     }
 }
 
