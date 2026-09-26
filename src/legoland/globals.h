@@ -92,10 +92,8 @@ struct SpaceTowerLayout {
 };
 
 struct SpaceTowerSeatData {
-    /* 0x00 */ int field_0;
-    /* 0x04 */ int field_4;
-    /* 0x08 */ int field_8;
-    /* 0x0c */ int field_c;
+    /* 0x00 */ struct Point inner;
+    /* 0x08 */ struct Point outer;
     /* 0x10 */ int field_10;
 };
 

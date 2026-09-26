@@ -756,15 +756,14 @@ void SpaceTowerRide(struct ClassNode *name, struct CallbackTable *obj) {
 // FUNCTION: LEGOLAND 0x0043b810
 void FUN_0043b810(struct SpaceTowerCar *param_1) {
     struct SpaceTowerRideNode *node;
-    struct Bloke *bloke;
-    struct SpaceTowerSeat *seat;
-    unsigned char slot;
+    int slot;
     int idx;
-    int off_x;
-    int off_y;
-    int dat_x;
-    int dat_y;
+    int odd;
     struct Point coords;
+    struct Point off;
+    struct Point dat;
+    struct Point pos;
+    struct Person *person;
 
     node = ((struct SpaceTowerRide *)DAT_0062fd74)->list;
     param_1->seats[0].field_18 = NULL;
@@ -777,35 +776,32 @@ void FUN_0043b810(struct SpaceTowerCar *param_1) {
     param_1->seats[3].field_1c = NULL;
     coords = GetScreenCoordsForObject((unsigned char *)param_1, DAT_0062fd74);
     for (; node != NULL; node = node->next) {
-        if (node->id == param_1->var_0 && (node->bloke->flags & 0x80) != 0) {
-            bloke = node->bloke;
-            slot = bloke->field_36;
-            idx = (int)(unsigned int)slot >> 1;
-            if ((slot & 1) == 0) {
-                seat = &param_1->seats[idx];
-                seat->field_18 = node;
+        if (memcmp(&node->id, &param_1->var_0, 2) == 0 && (node->bloke->flags & 0x80) != 0) {
+            slot = node->bloke->field_36;
+            idx = slot >> 1;
+            odd = slot & 1;
+            if (odd == 0) {
+                param_1->seats[idx].field_18 = node;
             } else {
-                seat = &param_1->seats[idx];
-                seat->field_1c = node;
+                param_1->seats[idx].field_1c = node;
             }
-            off_x = DAT_0062fd88[idx].x;
-            off_y = DAT_0062fd88[idx].y - seat->pos;
-            AdjustOffsetForViewMode((struct Point *)&off_x);
-            off_x = off_x + coords.x;
-            off_y = coords.y + off_y;
-            if ((slot & 1) == 0) {
-                dat_x = DAT_004b7798[idx].field_0;
-                dat_y = DAT_004b7798[idx].field_4;
+            off = DAT_0062fd88[idx];
+            off.y -= param_1->seats[idx].pos;
+            AdjustOffsetForViewMode(&off);
+            pos.x = coords.x + off.x;
+            pos.y = coords.y + off.y;
+            if (odd == 0) {
+                dat = DAT_004b7798[idx].inner;
             } else {
-                dat_x = DAT_004b7798[idx].field_8;
-                dat_y = DAT_004b7798[idx].field_c;
+                dat = DAT_004b7798[idx].outer;
             }
-            AdjustOffsetForViewMode((struct Point *)&dat_x);
-            off_x = off_x + dat_x;
-            off_y = off_y + dat_y;
-            AdjustBlokePosition((struct BlokePos *)&off_x);
-            SetPersonPosition(node->person, off_x, off_y);
-            SetPersonDirection(node->person, DAT_004b7798[idx].field_10);
+            AdjustOffsetForViewMode(&dat);
+            pos.x += dat.x;
+            pos.y += dat.y;
+            AdjustBlokePosition((struct BlokePos *)&pos);
+            person = node->person;
+            SetPersonPosition(person, pos.x, pos.y);
+            SetPersonDirection(person, DAT_004b7798[idx].field_10);
         }
     }
 }
