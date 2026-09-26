@@ -50,8 +50,16 @@ struct SpaceTowerCar {
     /* 0xcc */ unsigned int var_cc;
 };
 
+struct AnimStep {
+    /* 0x00 */ int x;
+    /* 0x04 */ int y;
+    /* 0x08 */ int dx;
+    /* 0x0c */ int dy;
+};
+
 struct AnimEntry {
     /* 0x00 */ int count;
+    /* 0x04 */ struct AnimStep *steps;
 };
 
 struct AnimLayout {
@@ -111,64 +119,55 @@ struct FadeParams {
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x0043a7a0
-__int64 FUN_0043a7a0(int *param_1, int param_2, int param_3) {
-    int *node;
-    union {
-        __int64 q;
-        struct {
-            int low;
-            int high;
-        } parts;
-    } result;
-    int *cur;
-    int index;
-    int remaining;
+struct Point FUN_0043a7a0(struct AnimLayout *layout, int seg, int step) {
+    struct Point sum;
+    struct AnimEntry *entry;
+    struct AnimEntry **pp;
+    struct AnimStep *p;
+    int i;
+    int n;
 
-    result.parts.low = 0;
-    result.parts.high = 0;
-    index = 0;
-    if (param_2 + 1 > 0) {
-        param_1 = *(int **)((int)param_1 + 4);
-        do {
-            cur = (int *)*param_1;
-            if (index == param_2) {
-                remaining = param_3 + 1;
-            } else {
-                remaining = *cur;
-            }
-            if (remaining > 0) {
-                node = (int *)cur[1];
-                do {
-                    result.parts.low += node[2] + node[0] * 0x100;
-                    result.parts.high += node[1] * 0x100 + node[3];
-                    node += 4;
-                    remaining += -1;
-                } while (remaining != 0);
-            }
-            index += 1;
-            param_1 += 1;
-        } while (index < param_2 + 1);
+    sum.x = 0;
+    sum.y = 0;
+    pp = layout->entries;
+    for (i = 0; i < seg + 1; i++) {
+        entry = *pp;
+        if (i != seg) {
+            n = entry->count;
+        } else {
+            n = step + 1;
+        }
+        if (n > 0) {
+            p = entry->steps;
+            do {
+                sum.x += p->dx + (p->x << 8);
+                sum.y += (p->y << 8) + p->dy;
+                p++;
+            } while (--n);
+        }
+        pp++;
     }
-    return result.q;
+    return sum;
 }
 
 // FUNCTION: LEGOLAND 0x0043a820
 void FUN_0043a820(struct AnimEntry *param_1, struct SpaceTowerRideNode *param_2) {
     struct Bloke *bloke;
     struct SpaceTowerRide *ride;
-    __int64 base;
+    struct Point base;
     char dir;
 
     bloke = param_2->bloke;
-    base = FUN_0043a7a0((int *)DAT_004b7758[bloke->field_50].field_4, bloke->field_4a, bloke->field_38);
+    base = FUN_0043a7a0((struct AnimLayout *)DAT_004b7758[bloke->field_50].field_4, bloke->field_4a, bloke->field_38);
     ride = (struct SpaceTowerRide *)DAT_0062fd74;
-    bloke->dest.x = (int)base + (param_2->coord.x + ride->field_c) * 0x100;
-    bloke->dest.y = (int)(base >> 0x20) + (param_2->coord.y + ride->field_10) * 0x100;
+    base.x += (param_2->coord.x + ride->field_c) << 8;
+    base.y += (param_2->coord.y + ride->field_10) << 8;
+    param_2->bloke->dest = base;
     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
     bloke->field_e = 7;
     bloke->field_73 = dir + 0x10;
     NewDirForAction((struct ActionState *)bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
-    param_2->bloke->field_38 = param_2->bloke->field_38 + 1;
+    param_2->bloke->field_38++;
 }
 
 // FUNCTION: LEGOLAND 0x0043a8c0
