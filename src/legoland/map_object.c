@@ -281,94 +281,84 @@ LEGO_EXPORT void SetObjRectFlags(struct EditObject *editObj, struct Point *pos, 
 // FUNCTION: LEGOLAND 0x0045e080
 void FUN_0045e080(struct EditObject *editObj, struct Point *pos, unsigned short flags) {
     struct MapObject *obj;
-    unsigned char coords[2];
+    TileId coords;
     struct Cursor *node;
-    unsigned int node_flags;
     struct FootprintNode rect;
-    struct FootprintNode *next;
     struct MapElement *tile;
     int x;
     int y;
+    int tx;
+    int ty;
     struct Point coord;
     unsigned int saved[0x60d];
     int center[2];
 
     obj = editObj->obj;
-    coords[1] = *((unsigned char *)pos + 4);
     memcpy(saved, &EditCursor, 0x60d * sizeof(unsigned int));
-    coords[0] = *(unsigned char *)pos;
+    coords.pos.x = (unsigned char)pos->x;
+    coords.pos.y = (unsigned char)pos->y;
     GetTileCentre(pos, center);
     obj->method_90(obj->field_c4, center, 0x8f8);
     node = &EditCursor;
-    do {
-        node_flags = node->field_1828;
-        rect.x0 = node->field_1414[0];
-        rect.y0 = node->field_1414[1];
-        rect.x1 = node->field_1414[2];
-        rect.y1 = node->field_1414[3];
-        rect.next = (struct FootprintNode *)node->field_1414[4];
-        if ((node_flags & 0x3000) == 0) {
-            y = rect.y0;
-            while (1) {
-                for (; y <= rect.y1; y++) {
-                    for (x = rect.x0; x <= rect.x1; x++) {
-                        coord.x = node->field_1404 + x;
-                        coord.y = node->field_1408 + y;
-                        if (coord.x >= 0 && coord.x < lpConfig->width && coord.y >= 0 && coord.y < lpConfig->height &&
-                            (int)GameMap[coord.y] + coord.x * 0x14 != 0) {
-                            FUN_004779d0(&coord);
-                        }
-                    }
-                }
-                next = rect.next;
-                if (next == 0) {
-                    break;
-                }
-                rect = *next;
-                y = rect.y0;
-            }
-        }
-        node = (struct Cursor *)node->field_1830;
-    } while (node != 0);
-    node = &EditCursor;
-    do {
-        node_flags = node->field_1828;
-        rect.x0 = node->field_1414[0];
-        rect.y0 = node->field_1414[1];
-        rect.x1 = node->field_1414[2];
-        rect.y1 = node->field_1414[3];
-        rect.next = (struct FootprintNode *)node->field_1414[4];
-        if ((node_flags & 0x3000) == 0) {
-            y = rect.y0;
-            while (1) {
-                for (; y <= rect.y1; y++) {
-                    for (x = rect.x0; x <= rect.x1; x++) {
-                        int tx = node->field_1404 + x;
-                        int ty = node->field_1408 + y;
-                        if (tx >= 0 && tx < lpConfig->width && ty >= 0 && ty < lpConfig->height) {
-                            tile = (struct MapElement *)((int)GameMap[ty] + tx * 0x14);
-                            if (tile != 0) {
-                                tile->field_0 = (unsigned int)editObj;
-                                tile->field_4 = *(unsigned short *)coords;
-                                tile->flags = (unsigned short)((tile->flags & 0x10) | flags);
-                                if (obj->flags & 0x800000) {
-                                    *((unsigned char *)&tile->flags + 1) |= 0x80;
+    if (node != 0) {
+        do {
+            rect = *(struct FootprintNode *)node->field_1414;
+            if ((node->field_1828 & 0x3000) == 0) {
+                for (;;) {
+                    for (y = rect.y0; y <= rect.y1; y++) {
+                        for (x = rect.x0; x <= rect.x1; x++) {
+                            coord.x = node->field_1404 + x;
+                            coord.y = node->field_1408 + y;
+                            if (coord.x >= 0 && coord.x < lpConfig->width && coord.y >= 0 && coord.y < lpConfig->height) {
+                                tile = &GameMap[coord.y][coord.x];
+                                if (tile != 0) {
+                                    FUN_004779d0(&coord);
                                 }
-                                tile->field_10 = 2;
                             }
                         }
                     }
+                    if (rect.next == 0) {
+                        break;
+                    }
+                    rect = *rect.next;
                 }
-                next = rect.next;
-                if (next == 0) {
-                    break;
-                }
-                rect = *next;
-                y = rect.y0;
             }
-        }
-        node = (struct Cursor *)node->field_1830;
-    } while (node != 0);
+            node = (struct Cursor *)node->field_1830;
+        } while (node != 0);
+    }
+    node = &EditCursor;
+    if (node != 0) {
+        do {
+            rect = *(struct FootprintNode *)node->field_1414;
+            if ((node->field_1828 & 0x3000) == 0) {
+                for (;;) {
+                    for (y = rect.y0; y <= rect.y1; y++) {
+                        for (x = rect.x0; x <= rect.x1; x++) {
+                            coord.x = node->field_1404 + x;
+                            coord.y = node->field_1408 + y;
+                            if (coord.x >= 0 && coord.x < lpConfig->width && coord.y >= 0 && coord.y < lpConfig->height) {
+                                tile = &GameMap[coord.y][coord.x];
+                                if (tile != 0) {
+                                    tile->field_0 = (unsigned int)editObj;
+                                    *(unsigned short *)&tile->field_4 = coords.id;
+                                    tile->flags = (unsigned short)((tile->flags & 0x10) | flags);
+                                    if (obj->flags & 0x800000) {
+                                        *((unsigned char *)&tile->flags + 1) |= 0x80;
+                                    }
+                                    tile->field_10 = 2;
+                                }
+                            }
+                        }
+                    }
+                    if (rect.next == 0) {
+                        break;
+                    }
+                    rect = *rect.next;
+                }
+            }
+            node = (struct Cursor *)node->field_1830;
+        } while (node != 0);
+    }
     memcpy(&EditCursor, saved, 0x60d * sizeof(unsigned int));
 }
 
