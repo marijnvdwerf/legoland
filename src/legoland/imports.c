@@ -66,76 +66,76 @@ void __stdcall acmStreamConvert(void *has, void *pash, unsigned int fdwConvert) 
 void __stdcall acmStreamPrepareHeader(void *has, void *pash, unsigned int fdwPrepare) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e3d6
-void AVIFileExit(void) { STUB(); }
+void __stdcall AVIFileExit(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e3dc
-void AVIFileRelease(void *file) { STUB(); }
+void __stdcall AVIFileRelease(void *file) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e3e2
-void AVIStreamRelease(void *stream) { STUB(); }
+void __stdcall AVIStreamRelease(void *stream) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e3e8
-void AVIStreamAddRef(void *stream) { STUB(); }
+void __stdcall AVIStreamAddRef(void *stream) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e3ee
-int AVIStreamInfoA(void *stream, void *info, int size) {
+int __stdcall AVIStreamInfoA(void *stream, void *info, int size) {
     STUB();
     return 0;
 }
 
 // STUB: LEGOLAND 0x0049e3f4
-int AVIFileGetStream(void *file, void **stream, unsigned int type, int n) {
+int __stdcall AVIFileGetStream(void *file, void **stream, unsigned int type, int n) {
     STUB();
     return 0;
 }
 
 // STUB: LEGOLAND 0x0049e3fa
-int AVIFileInfoA(void *file, void *info, int size) {
+int __stdcall AVIFileInfoA(void *file, void *info, int size) {
     STUB();
     return 0;
 }
 
 // STUB: LEGOLAND 0x0049e400
-int AVIFileOpenA(void **file, const char *name, int mode, void *handler) {
+int __stdcall AVIFileOpenA(void **file, const char *name, int mode, void *handler) {
     STUB();
     return 0;
 }
 
 // STUB: LEGOLAND 0x0049e406
-void AVIFileInit(void) { STUB(); }
+void __stdcall AVIFileInit(void) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e40c
-void AVIStreamGetFrameClose(void *frame) { STUB(); }
+void __stdcall AVIStreamGetFrameClose(void *frame) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e412
-void *AVIStreamGetFrameOpen(void *stream, void *format) {
+void *__stdcall AVIStreamGetFrameOpen(void *stream, void *format) {
     STUB();
     return 0;
 }
 
 // STUB: LEGOLAND 0x0049e418
-void *AVIStreamGetFrame(void *getframe, int position) {
+void *__stdcall AVIStreamGetFrame(void *getframe, int position) {
     STUB();
     return 0;
 }
 
 // STUB: LEGOLAND 0x0049e41e
-void AVIStreamReadFormat(void *stream, int pos, void *format, int *size) { STUB(); }
+void __stdcall AVIStreamReadFormat(void *stream, int pos, void *format, int *size) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e424
-int AVIStreamLength(void *stream) {
+int __stdcall AVIStreamLength(void *stream) {
     STUB();
     return 0;
 }
 
 // STUB: LEGOLAND 0x0049e42a
-int AVIStreamStart(void *stream) {
+int __stdcall AVIStreamStart(void *stream) {
     STUB();
     return 0;
 }
 
 // STUB: LEGOLAND 0x0049e430
-void AVIStreamRead(void *stream, int start, int samples, void *buffer, int buffer_size, int *bytes, int *samples_out) { STUB(); }
+void __stdcall AVIStreamRead(void *stream, int start, int samples, void *buffer, int buffer_size, int *bytes, int *samples_out) { STUB(); }
 
 // STUB: LEGOLAND 0x0049e442
 void EnumPrintersA(void) { STUB(); }

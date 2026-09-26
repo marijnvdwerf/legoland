@@ -1386,8 +1386,8 @@ void FUN_004760a0(void) {
         if (played != 0 && DAT_00668ec0 == 0) {
             PlayInstanceOfSample(PTR_004b9338, 0, 1, 0);
         }
+        DAT_00668ec0 = played;
     }
-    DAT_00668ec0 = played;
 }
 
 // FUNCTION: LEGOLAND 0x00476140
