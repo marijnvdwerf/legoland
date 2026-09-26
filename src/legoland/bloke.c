@@ -18,23 +18,6 @@
 #include "timer.h"
 #include "worker.h"
 
-struct BNVPath {
-    /* 0x00 */ BinVFile *file;
-    /* 0x04 */ unsigned int field_4;
-    /* 0x08 */ char name[0x14];
-    /* 0x1c */ float field_1c;
-    /* 0x20 */ float field_20;
-    /* 0x24 */ float x;
-    /* 0x28 */ float y;
-    /* 0x2c */ unsigned char pad_2c[0x30 - 0x2c];
-    /* 0x30 */ float dx;
-    /* 0x34 */ float dy;
-    /* 0x38 */ unsigned char pad_38[0x3c - 0x38];
-    /* 0x3c */ float field_3c;
-    /* 0x40 */ unsigned int frame_index;
-    /* 0x44 */ unsigned int field_44;
-};
-
 // FUNCTION: LEGOLAND 0x00482b10
 void FUN_00482b10(void) {
     DAT_0066b468 = GetGameTimer();
@@ -42,8 +25,8 @@ void FUN_00482b10(void) {
 
 // FUNCTION: LEGOLAND 0x00482b20
 void FUN_00482b20(int force) {
-    unsigned int now = GetGameTimer();
-    if ((int)(now - DAT_0066b468) <= 0xfa0 && force == 0) {
+    int now = GetGameTimer();
+    if (now - DAT_0066b468 <= 0xfa0 && force == 0) {
         return;
     }
     DAT_0066b468 = now;
@@ -53,7 +36,7 @@ void FUN_00482b20(int force) {
 
 // FUNCTION: LEGOLAND 0x00482b60
 int FUN_00482b60(Point *pos) {
-    struct BestNode *node = FUN_00481790(pos);
+    BestNode *node = FUN_00481790(pos);
     if (node != NULL) {
         FUN_00482b20(DAT_0066b46c);
         DAT_0066b46c = 0;
@@ -80,12 +63,17 @@ LEGO_EXPORT char *GetVisitorName(Bloke *bloke) {
 
 // FUNCTION: LEGOLAND 0x00482c60
 void FUN_00482c60(Bloke *bloke) {
+    unsigned int roll;
+
     if (bloke->person->random != 0) {
-        bloke->field_83 = (unsigned int)rand() % 0x5a;
+        roll = rand();
+        bloke->field_83 = roll % 0x5a;
     } else {
-        bloke->field_83 = (unsigned int)rand() % 0x53;
+        roll = rand();
+        bloke->field_83 = roll % 0x53;
     }
-    bloke->field_84 = (unsigned int)rand() % 0x6b;
+    roll = rand();
+    bloke->field_84 = roll % 0x6b;
 }
 
 // FUNCTION: LEGOLAND 0x00482cb0
@@ -102,7 +90,7 @@ int FUN_00482cb0(Bloke *bloke) {
     if (bloke->field_7a < MapStats.field_12c) {
         return 3;
     }
-    return ((unsigned int)(bloke->field_7a >= MapStats.field_134) - 1 & 8) + 2;
+    return bloke->field_7a < MapStats.field_134 ? 10 : 2;
 }
 
 // FUNCTION: LEGOLAND 0x00482d30
@@ -110,7 +98,7 @@ int FUN_00482d30(Bloke *bloke) {
     if (bloke->field_7a < MapStats.field_12c) {
         return 3;
     }
-    return ((unsigned int)(bloke->field_7a >= MapStats.field_134) - 1 & 8) + 2;
+    return bloke->field_7a < MapStats.field_134 ? 10 : 2;
 }
 
 // FUNCTION: LEGOLAND 0x00482d60
@@ -188,13 +176,13 @@ LEGO_EXPORT Bloke *NewBloke(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00482f70
-LEGO_EXPORT Bloke *NewBlokeWOList(void *param_2) {
+LEGO_EXPORT Bloke *NewBlokeWOList(int type) {
     Bloke *bloke = malloc(sizeof(Bloke));
     if (bloke != NULL) {
         memset(bloke, 0, sizeof(Bloke));
         bloke->flags = 1;
         bloke->field_64 = 0;
-        Add3DBlokeToList(bloke, (unsigned int)param_2);
+        Add3DBlokeToList(bloke, type);
     }
     return bloke;
 }
@@ -217,7 +205,7 @@ LEGO_EXPORT Bloke *GetBlokePtr(int index) {
 
 // FUNCTION: LEGOLAND 0x00483010
 LEGO_EXPORT void DestroyBloke(Bloke *bloke) {
-    struct SampleSource source;
+    SampleSource source;
     Bloke **prev;
     Bloke *current;
 
@@ -327,7 +315,7 @@ void FUN_00483260(Bloke *bloke) {
     int x;
     int y;
     MapElement *elem;
-    struct FXSpriteList *set;
+    FXSpriteList *set;
 
     bloke->flags |= 8;
     bloke->field_10 = bloke->field_e;
@@ -355,7 +343,7 @@ int FUN_00483300(Bloke *bloke, int x, int y) {
     int tx;
     int ty;
     MapElement *elem;
-    struct FXSpriteList *set;
+    FXSpriteList *set;
 
     if (OverNewTile(bloke, x, y) == 0) {
         return 0;
@@ -493,7 +481,7 @@ LEGO_EXPORT int OverNewTile(Bloke *bloke, unsigned int x, unsigned int y) {
 // FUNCTION: LEGOLAND 0x00483680
 void FUN_00483680(Bloke *bloke, unsigned int x, unsigned int y) {
     MapElement *elem;
-    struct FXSpriteList *set;
+    FXSpriteList *set;
     unsigned int ux;
     unsigned int uy;
     int tx;
@@ -908,7 +896,7 @@ void FUN_00484220(Bloke *bloke) {
     short mapFlags;
     short rf;
 
-    if (FUN_004841a0(bloke, (unsigned int)bloke->field_7f << 1) != 0) {
+    if (FUN_004841a0(bloke, bloke->field_7f << 1) != 0) {
         bloke->field_e = 0;
         return;
     }
@@ -971,7 +959,7 @@ void FUN_00484350(Bloke *bloke) {
 // FUNCTION: LEGOLAND 0x00484470
 void FUN_00484470(Bloke *bloke) {
     Point target;
-    if (FUN_004841a0(bloke, (unsigned int)bloke->field_7f << 1) != 0) {
+    if (FUN_004841a0(bloke, bloke->field_7f << 1) != 0) {
         bloke->field_e = 0;
         return;
     }
@@ -991,7 +979,7 @@ void FUN_00484470(Bloke *bloke) {
 // FUNCTION: LEGOLAND 0x00484520
 void FUN_00484520(Bloke *bloke) {
     Point target;
-    if (FUN_004841a0(bloke, (unsigned int)bloke->field_7f << 1) != 0) {
+    if (FUN_004841a0(bloke, bloke->field_7f << 1) != 0) {
         bloke->field_e = 0;
         return;
     }
@@ -1011,7 +999,7 @@ void FUN_00484520(Bloke *bloke) {
 // FUNCTION: LEGOLAND 0x004845d0
 void FUN_004845d0(Bloke *bloke) {
     Point target;
-    if (FUN_004841a0(bloke, (unsigned int)bloke->field_7f << 1) != 0) {
+    if (FUN_004841a0(bloke, bloke->field_7f << 1) != 0) {
         DoPendingAction(bloke);
         return;
     }
@@ -1077,7 +1065,7 @@ LEGO_EXPORT Point GetTileInDir(Point pos, unsigned char dir) {
 void FUN_00484790(Bloke *bloke) {
     Point tile;
     MapElement *elem;
-    struct FXSpriteList *set;
+    FXSpriteList *set;
     int result;
     unsigned int ux;
     unsigned int uy;
@@ -1168,56 +1156,70 @@ LEGO_EXPORT void ApplyObjectOrientationToPerson(Person *person, float *matrix, v
 
 // FUNCTION: LEGOLAND 0x00484a70
 LEGO_EXPORT void SetBlokePositionFromBNV(BinVFile *file, Bloke *bloke, char *name, int frame, float near_z, float far_z, float *orient) {
-    BinVFrame *binFrame = GetBinVFrame(file, frame);
-    BinVObject *object = GetObjectFromName(binFrame, name);
-    Vertex *vertex = NULL;
+    BinVObject *object;
+    Vertex *vertex;
     int sumX = 0;
+    float sumZ = 0.0f;
     int sumY = 0;
-    int i;
+    BinVFrame *binFrame;
+    float len;
     float scale;
+    float skew;
+    float zscale;
+    float depth;
+    int z;
+    int i;
 
-    scale = 1.0f / (float)sqrt(object->m18 * object->m18 + object->m14 * object->m14 + object->m10 * object->m10);
-    object->m10 = scale * object->m10;
-    object->m14 = scale * object->m14;
-    object->m18 = scale * object->m18;
-    scale = 1.0f / (float)sqrt(object->m24 * object->m24 + object->m20 * object->m20 + object->m1c * object->m1c);
-    object->m1c = scale * object->m1c;
-    object->m20 = scale * object->m20;
-    object->m24 = scale * object->m24;
-    scale = 1.0f / (float)sqrt(object->m2c * object->m2c + object->m28 * object->m28 + object->m30 * object->m30);
-    object->m28 = scale * object->m28;
-    object->m2c = scale * object->m2c;
-    object->m30 = scale * object->m30;
+    binFrame = GetBinVFrame(file, frame);
+    object = GetObjectFromName(binFrame, name);
+    len = sqrt(object->m18 * object->m18 + object->m14 * object->m14 + object->m10 * object->m10);
+    scale = 1.0f / len;
+    object->m10 *= scale;
+    object->m14 *= scale;
+    object->m18 *= scale;
+    len = sqrt(object->m24 * object->m24 + object->m20 * object->m20 + object->m1c * object->m1c);
+    scale = 1.0f / len;
+    object->m1c *= scale;
+    object->m20 *= scale;
+    object->m24 *= scale;
+    len = sqrt(object->m2c * object->m2c + object->m28 * object->m28 + object->m30 * object->m30);
+    scale = 1.0f / len;
+    object->m28 *= scale;
+    object->m2c *= scale;
+    object->m30 *= scale;
     for (i = 0; i < 8; i++) {
         vertex = GetVertex(object, i);
         sumX += vertex->x;
         sumY += vertex->y;
+        sumZ += vertex->z;
     }
-    GetZSkew(file, object, vertex);
-    bloke->person->field_34 = FUN_00458930(0) >> 8;
-    sumX = sumX + (sumX >> 0x1f & 7);
-    bloke->screen_x = (short)(((sumX >> 3) - (sumX >> 0x1f)) >> 1);
-    sumY = sumY + (sumY >> 0x1f & 7);
-    bloke->screen_y = (short)(((sumY >> 3) - (sumY >> 0x1f)) >> 1);
-    bloke->person->field_38 = GetZSkew(file, object, vertex) * 2.0f;
+    skew = GetZSkew(file, object, vertex);
+    zscale = 49152.0f / (near_z - far_z);
+    depth = sumZ * 0.125;
+    depth = (depth - far_z) * zscale;
+    z = depth + 8192.0f;
+    bloke->person->field_34 = z >> 8;
+    bloke->screen_x = sumX / 8 / 2;
+    bloke->screen_y = sumY / 8 / 2;
+    bloke->person->field_38 = skew + skew;
     ApplyObjectOrientationToPerson(bloke->person, &object->m10, orient);
 }
 
 // FUNCTION: LEGOLAND 0x00484c20
-LEGO_EXPORT struct BNVPath *NewBNVPath(BinVFile *file, unsigned int param_2, char *name, float param_4, float param_5, int *coords) {
-    struct BNVPath *path = malloc(sizeof(struct BNVPath));
+LEGO_EXPORT BNVPath *NewBNVPath(BinVFile *file, unsigned int param_2, char *name, float param_4, float param_5, int *coords) {
+    BNVPath *path = malloc(sizeof(BNVPath));
     BinVFrame *frame;
     BinVObject *object;
     Vertex *vertex;
-    float scale = (float)(49152.0f / (param_4 - param_5));
+    float scale = 49152.0f / (param_4 - param_5);
     path->file = file;
     strcpy(path->name, name);
     path->field_1c = scale;
     path->frame_index = 0;
     path->field_20 = param_5;
     path->field_44 = 1;
-    path->x = (float)coords[0];
-    path->y = (float)coords[1];
+    path->x = coords[0];
+    path->y = coords[1];
     frame = GetBinVFrame(file, 0);
     object = GetObjectFromName(frame, name);
     vertex = GetVertex(object, 0);
@@ -1227,17 +1229,23 @@ LEGO_EXPORT struct BNVPath *NewBNVPath(BinVFile *file, unsigned int param_2, cha
 }
 
 // FUNCTION: LEGOLAND 0x00484cd0
-LEGO_EXPORT int UpdateBlokeFromBNVPath(Bloke *bloke, struct BNVPath *path) {
-    Person *render = bloke->person;
-    unsigned int frame = path->frame_index;
-    float sumX = 0.0f;
+LEGO_EXPORT int UpdateBlokeFromBNVPath(Bloke *bloke, BNVPath *path) {
+    Person *person = bloke->person;
+    float sumZ = 0.0f;
     float sumY = 0.0f;
+    float sumX = 0.0f;
+    int frame = path->frame_index;
     BinVFrame *binFrame;
     BinVObject *object;
+    Vertex *vertex;
     float dx;
     float dy;
-    int i;
+    float len;
     float scale;
+    float speed;
+    int z;
+    double angle;
+    int i;
 
     if (frame == path->file->frameCount) {
         return 0;
@@ -1245,113 +1253,149 @@ LEGO_EXPORT int UpdateBlokeFromBNVPath(Bloke *bloke, struct BNVPath *path) {
     binFrame = GetBinVFrame(path->file, frame);
     object = GetObjectFromName(binFrame, path->name);
     for (i = 0; i < 8; i++) {
-        Vertex *v = GetVertex(object, i);
-        sumX += (float)v->x;
-        sumY += (float)v->y;
+        vertex = GetVertex(object, i);
+        sumY += vertex->y;
+        sumX += vertex->x;
+        sumZ += vertex->z;
     }
-    dx = sumX * (float)DAT_004ab548 - path->x;
-    dy = sumY * (float)DAT_004ab548 - path->y;
+    dx = sumX * 0.125 - path->x;
+    dy = sumY * 0.125 - path->y;
     if (path->field_44 == 0) {
-        path->x = (float)(int)(path->dx + path->x);
-        path->y = (float)(int)(path->dy + path->y);
-        if (dx * dx + dy * dy < (float)bloke->field_7f * (float)bloke->field_7f) {
+        path->x = path->dx + path->x;
+        path->y = path->dy + path->y;
+        speed = bloke->field_7f;
+        if (dx * dx + dy * dy < speed * speed) {
             path->field_44 = 1;
-            frame = path->frame_index + 1;
-            path->frame_index = frame;
+            frame = ++path->frame_index;
         }
     }
-    binFrame = GetBinVFrame(path->file, (int)frame < 1 ? 0 : frame - 1);
+    if (frame > 0) {
+        binFrame = GetBinVFrame(path->file, frame - 1);
+    } else {
+        binFrame = GetBinVFrame(path->file, 0);
+    }
     object = GetObjectFromName(binFrame, path->name);
-    scale = 1.0f / (float)sqrt(object->m18 * object->m18 + object->m14 * object->m14 + object->m10 * object->m10);
-    object->m10 = scale * object->m10;
-    object->m14 = scale * object->m14;
-    object->m18 = scale * object->m18;
-    object->m1c = scale * object->m1c;
-    object->m20 = scale * object->m20;
-    object->m24 = scale * object->m24;
-    object->m28 = scale * object->m28;
-    object->m2c = scale * object->m2c;
-    object->m30 = scale * object->m30;
+    len = sqrt(object->m18 * object->m18 + object->m14 * object->m14 + object->m10 * object->m10);
+    scale = 1.0f / len;
+    object->m10 *= scale;
+    object->m14 *= scale;
+    object->m18 *= scale;
+    object->m1c *= scale;
+    object->m20 *= scale;
+    object->m24 *= scale;
+    object->m28 *= scale;
+    object->m2c *= scale;
+    object->m30 *= scale;
     ApplyObjectOrientationToPerson(bloke->person, &object->m10, 0);
     if (path->field_44 != 0) {
         path->field_44 = 0;
+        sumX = 0.0f;
+        sumY = 0.0f;
+        sumZ = 0.0f;
         if (frame == path->file->frameCount) {
             return 0;
         }
         binFrame = GetBinVFrame(path->file, frame);
         object = GetObjectFromName(binFrame, path->name);
         for (i = 0; i < 8; i++) {
-            GetVertex(object, i);
+            vertex = GetVertex(object, i);
+            sumY += vertex->y;
+            sumX += vertex->x;
+            sumZ += vertex->z;
         }
-        render->field_34 = FUN_00458930(0) >> 8;
-        {
-            double angle = atan2(0.0, 0.0);
-            path->dx = (float)((double)bloke->field_7f * cos(angle) * (double)DAT_004ab520);
-            path->dy = (float)((double)bloke->field_7f * sin(angle) * (double)DAT_004ab520);
-        }
+        dx = sumX * 0.125 - path->x;
+        dy = sumY * 0.125 - path->y;
+        z = (sumZ * 0.125 - path->field_20) * path->field_1c + 8192.0f;
+        angle = atan2(dy, dx);
+        bloke->person->field_34 = z >> 8;
+        path->dx = bloke->field_7f * cos(angle) * 0.25;
+        path->dy = bloke->field_7f * sin(angle) * 0.25;
     }
-    render->field_38 = path->field_3c + path->field_3c;
-    bloke->screen_x = FUN_00458930(0);
-    bloke->screen_y = FUN_00458930(0);
+    person->field_38 = path->field_3c + path->field_3c;
+    bloke->screen_x = path->x * 0.5f;
+    bloke->screen_y = path->y * 0.5f;
     FUN_00483830(bloke);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00484ff0
-LEGO_EXPORT unsigned int BNVPath_GetDFrame(struct BNVPath *path) {
+LEGO_EXPORT unsigned int BNVPath_GetDFrame(BNVPath *path) {
     return path->frame_index;
 }
 
 // FUNCTION: LEGOLAND 0x00485000
-LEGO_EXPORT Point BNVPath_GetBINVScreenCoords(struct BNVPath *path, int frame) {
-    Point result;
-    BinVFrame *binFrame = GetBinVFrame(path->file, frame);
-    BinVObject *object = GetObjectFromName(binFrame, path->name);
+LEGO_EXPORT Point BNVPath_GetBINVScreenCoords(BNVPath *path, int frame) {
+    float sumX = 0.0f;
+    float sumY = 0.0f;
+    float sumZ = 0.0f;
+    BinVFrame *binFrame;
+    BinVObject *object;
+    Vertex *vertex;
     int i;
+    Point result;
+
+    binFrame = GetBinVFrame(path->file, frame);
+    object = GetObjectFromName(binFrame, path->name);
     for (i = 0; i < 8; i++) {
-        GetVertex(object, i);
+        vertex = GetVertex(object, i);
+        sumX += vertex->x;
+        sumY += vertex->y;
+        sumZ += vertex->z;
     }
-    result.x = FUN_00458930(0);
-    result.y = FUN_00458930(0);
+    result.x = sumX * 0.125;
+    result.y = sumY * 0.125;
     return result;
 }
 
 // FUNCTION: LEGOLAND 0x004850b0
-LEGO_EXPORT void BNVPath_SetDFrame(Bloke *bloke, struct BNVPath *path, float dframe) {
-    int frame = (int)dframe;
-    BinVFile *file = path->file;
-    BinVFrame *binFrame;
-    BinVObject *object;
+LEGO_EXPORT void BNVPath_SetDFrame(Bloke *bloke, BNVPath *path, int frame) {
     float sumX = 0.0f;
     float sumY = 0.0f;
+    float sumZ = 0.0f;
+    BinVFrame *binFrame;
+    BinVObject *object;
+    Vertex *vertex;
     int i;
+    int z;
+    float dx;
+    float dy;
     double angle;
 
-    path->frame_index = (unsigned int)dframe;
+    path->frame_index = frame;
     path->field_44 = 0;
-    binFrame = GetBinVFrame(file, frame);
+    binFrame = GetBinVFrame(path->file, frame);
     object = GetObjectFromName(binFrame, path->name);
     for (i = 0; i < 8; i++) {
-        Vertex *v = GetVertex(object, i);
-        sumX += (float)v->x;
-        sumY += (float)v->y;
+        vertex = GetVertex(object, i);
+        sumX += vertex->x;
+        sumY += vertex->y;
+        sumZ += vertex->z;
     }
-    path->x = sumX * (float)DAT_004ab548;
+    path->x = sumX * 0.125;
+    path->y = sumY * 0.125;
+    sumX = 0.0f;
+    sumY = 0.0f;
+    sumZ = 0.0f;
     path->field_44 = 0;
-    path->y = sumY * (float)DAT_004ab548;
     binFrame = GetBinVFrame(path->file, frame + 1);
     object = GetObjectFromName(binFrame, path->name);
     for (i = 0; i < 8; i++) {
-        GetVertex(object, i);
+        vertex = GetVertex(object, i);
+        sumX += vertex->x;
+        sumY += vertex->y;
+        sumZ += vertex->z;
     }
-    bloke->person->field_34 = FUN_00458930(0) >> 8;
-    angle = atan2(0.0, 0.0);
-    path->dx = (float)((double)bloke->field_7f * cos(angle) * (double)DAT_004ab520);
-    path->dy = (float)((double)bloke->field_7f * sin(angle) * (double)DAT_004ab520);
+    dx = sumX * 0.125 - path->x;
+    dy = sumY * 0.125 - path->y;
+    z = (sumZ * 0.125 - path->field_20) * path->field_1c + 8192.0f;
+    angle = atan2(dy, dx);
+    bloke->person->field_34 = z >> 8;
+    path->dx = bloke->field_7f * cos(angle) * 0.25;
+    path->dy = bloke->field_7f * sin(angle) * 0.25;
 }
 
 // FUNCTION: LEGOLAND 0x00485260
-int CheckForPeople(struct MapRect *rect) {
+int CheckForPeople(MapRect *rect) {
     Bloke *current = FirstBloke;
     int found = 0;
     int x;
@@ -1368,8 +1412,7 @@ int CheckForPeople(struct MapRect *rect) {
                 int tx = current->pos.x >> 8;
                 int ty = current->pos.y >> 8;
                 if (tx >= 0 && tx < lpConfig->width && ty >= 0 && ty < lpConfig->height) {
-                    MapElement *elem = &GameMap[ty][tx];
-                    *((unsigned char *)&elem->flags + 1) |= 0x10;
+                    GameMap[ty][tx].flags |= 0x1000;
                     if (tx >= rect->x0 && tx <= rect->x1 && ty >= rect->y0 && ty <= rect->y1) {
                         found = 1;
                     }
@@ -1384,7 +1427,7 @@ int CheckForPeople(struct MapRect *rect) {
     FUN_0049cf00(rect);
     for (y = rect->y0; y <= rect->y1; y++) {
         for (x = rect->x0; x <= rect->x1; x++) {
-            if ((*((unsigned char *)&GameMap[y][x].flags + 1) & 0x10) != 0) {
+            if ((GameMap[y][x].flags & 0x1000) != 0) {
                 return -1;
             }
         }

@@ -201,6 +201,7 @@ struct MapRect {
     /* 0x08 */ int x1;
     /* 0x0c */ int y1;
 };
+typedef struct MapRect MapRect;
 
 struct TextCell {
     /* 0x00 */ int width;
@@ -222,6 +223,7 @@ struct FXSpriteList {
     /* 0x1c */ void (*on_enter)(struct Point pos);
     /* 0x20 */ void (*on_leave)(int x, int y);
 };
+typedef struct FXSpriteList FXSpriteList;
 
 struct TileSpriteEntry {
     struct FXSpriteList *src;
@@ -364,8 +366,6 @@ struct MapStats {
 extern float FLOAT_004ab390;
 // 0x004ab398
 extern double DOUBLE_004ab398;
-// 0x004ab3d0
-extern float DAT_004ab3d0;
 // 0x004ab3dc
 extern float DAT_004ab3dc;
 // 0x004ab3e0
@@ -404,8 +404,6 @@ extern float FLOAT_004ab480;
 extern double DAT_004ab4c8;
 // 0x004ab518
 extern float DAT_004ab518;
-// 0x004ab520
-extern float DAT_004ab520;
 // 0x004ab528
 extern float DAT_004ab528;
 // 0x004ab52c
@@ -414,8 +412,6 @@ extern float FLOAT_004ab52c;
 extern double DOUBLE_004ab530;
 // 0x004ab538
 extern double DOUBLE_004ab538;
-// 0x004ab548
-extern double DAT_004ab548;
 // 0x004ab560 c_dfDIKeyboard, 0x004ab578 c_dfDIMouse — declared in <dinput.h>, defined in globals.c
 // 0x004ab5e0
 extern GUID DAT_004ab5e0;
@@ -2297,7 +2293,7 @@ extern struct DirNode *DAT_0066b458;
 // 0x0066b460
 extern struct Point DAT_0066b460;
 // 0x0066b468
-extern unsigned int DAT_0066b468;
+extern int DAT_0066b468;
 // 0x0066b46c
 extern unsigned int DAT_0066b46c;
 // 0x0066b470

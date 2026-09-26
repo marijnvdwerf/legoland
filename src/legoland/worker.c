@@ -803,7 +803,7 @@ LEGO_EXPORT struct Worker *GenerateGardener(int *coords, int param_2) {
     }
     // STRING: LEGOLAND 0x004c00c4
     DBPrintf("Generating Gardener\n");
-    worker = (struct Worker *)NewBlokeWOList((void *)2);
+    worker = (struct Worker *)NewBlokeWOList(2);
     cell = 0;
     if (worker == 0) {
         // STRING: LEGOLAND 0x004c0060
@@ -887,7 +887,7 @@ LEGO_EXPORT struct Worker *GenerateMechanic(int *coords, int param_2) {
     if (DAT_0079a8cc > 0xe) {
         return 0;
     }
-    worker = (struct Worker *)NewBlokeWOList((void *)3);
+    worker = (struct Worker *)NewBlokeWOList(3);
     worker->var_70 = 0;
     worker->var_72 = 0;
     worker->var_74 = 0;

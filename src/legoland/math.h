@@ -18,6 +18,7 @@ struct Navigator {
     /* 0x08 */ short dx;
     /* 0x0a */ short dy;
 };
+typedef struct Navigator Navigator;
 
 struct RectNode {
     /* 0x00 */ int field_0;

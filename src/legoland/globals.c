@@ -12,9 +12,6 @@ float FLOAT_004ab390;
 // GLOBAL: LEGOLAND 0x004ab398
 double DOUBLE_004ab398;
 
-// GLOBAL: LEGOLAND 0x004ab3d0
-float DAT_004ab3d0;
-
 // GLOBAL: LEGOLAND 0x004ab3dc
 float DAT_004ab3dc;
 
@@ -72,9 +69,6 @@ double DAT_004ab4c8;
 // GLOBAL: LEGOLAND 0x004ab518
 float DAT_004ab518;
 
-// GLOBAL: LEGOLAND 0x004ab520
-float DAT_004ab520;
-
 // GLOBAL: LEGOLAND 0x004ab528
 float DAT_004ab528;
 
@@ -86,9 +80,6 @@ double DOUBLE_004ab530;
 
 // GLOBAL: LEGOLAND 0x004ab538
 double DOUBLE_004ab538;
-
-// GLOBAL: LEGOLAND 0x004ab548
-double DAT_004ab548;
 
 // GLOBAL: LEGOLAND 0x004ab560
 const DIDATAFORMAT c_dfDIKeyboard;
@@ -2965,7 +2956,7 @@ struct DirNode *DAT_0066b458;
 struct Point DAT_0066b460; /* park entrance tile */
 
 // GLOBAL: LEGOLAND 0x0066b468
-unsigned int DAT_0066b468;
+int DAT_0066b468;
 
 // GLOBAL: LEGOLAND 0x0066b46c
 unsigned int DAT_0066b46c;

@@ -21,6 +21,7 @@ struct SampleSource {
     /* 0x08 */ unsigned int field_8;
     /* 0x0c */ unsigned int field_c;
 };
+typedef struct SampleSource SampleSource;
 
 LEGO_EXPORT void KillAllSamplesFromSource(struct SampleSource *source);
 

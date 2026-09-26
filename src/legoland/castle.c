@@ -427,7 +427,7 @@ float FUN_0041ddb0(float param_1, float param_2, float param_3) {
     float result = FUN_0041dd70(param_1);
     result = result * param_2;
     result = result * param_2;
-    result = result * DAT_004ab3d0;
+    result = result * 0.5f;
     return result;
 }
 
@@ -2301,7 +2301,7 @@ void FUN_00425c40(void) {
 
     f = DAT_004b5cbc;
     f = f + DAT_00611650;
-    f = f * DAT_004ab3d0;
+    f = f * 0.5f;
 
     i1 = DAT_004b5cc0;
     i2 = DAT_004b5cc4;
@@ -2321,7 +2321,7 @@ void FUN_00425c40(void) {
 
     f = DAT_004b5cbc;
     f = f - DAT_00611650;
-    f = f * DAT_004ab3d0;
+    f = f * 0.5f;
     DAT_0082999c = f;
 }
 

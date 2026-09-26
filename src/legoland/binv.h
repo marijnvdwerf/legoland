@@ -14,7 +14,8 @@ typedef struct Vertex Vertex;
 struct Vertex {
     /* 0x00 */ short x; /* screen position */
     /* 0x02 */ short y;
-    /* 0x04 */ unsigned char pad_4[0xc - 0x4];
+    /* 0x04 */ float z;
+    /* 0x08 */ float field_8;
     /* 0x0c */ float field_c;
     /* 0x10 */ float depth;
 };

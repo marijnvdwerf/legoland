@@ -24,6 +24,25 @@ struct BNVRef {
 };
 typedef struct BNVRef BNVRef;
 
+/* A bloke walking along an animated BNV path (rides with scripted movement). */
+struct BNVPath {
+    /* 0x00 */ struct BinVFile *file;
+    /* 0x04 */ unsigned int field_4;
+    /* 0x08 */ char name[0x14];
+    /* 0x1c */ float field_1c;
+    /* 0x20 */ float field_20;
+    /* 0x24 */ float x;
+    /* 0x28 */ float y;
+    /* 0x2c */ unsigned char pad_2c[0x30 - 0x2c];
+    /* 0x30 */ float dx;
+    /* 0x34 */ float dy;
+    /* 0x38 */ unsigned char pad_38[0x3c - 0x38];
+    /* 0x3c */ float field_3c;
+    /* 0x40 */ unsigned int frame_index;
+    /* 0x44 */ unsigned int field_44;
+};
+typedef struct BNVPath BNVPath;
+
 struct Bloke {
     struct Bloke *next;
     union {
@@ -41,8 +60,8 @@ struct Bloke {
     struct Element *last_ride; /* class of the last ride the bloke went on */
     unsigned int field_1c;
     int field_20;
-    struct Point dest;
-    struct Point goal; /* where the bloke is walking to */
+    Point dest;
+    Point goal; /* where the bloke is walking to */
     unsigned char pad_34[0x35 - 0x34];
     unsigned char field_35;
     unsigned char field_36;
@@ -74,7 +93,7 @@ struct Bloke {
     unsigned short flags;
     unsigned char field_64;
     unsigned char pad_65[0x68 - 0x65];
-    struct Point pos;
+    Point pos;
     unsigned short field_70;
     unsigned char field_72;
     unsigned char field_73;
@@ -96,66 +115,63 @@ struct Bloke {
     struct Element *favourite_attraction_1;
     struct Element *favourite_attraction_2;
     struct Element *favourite_food;
-    struct Navigator nav;
+    Navigator nav;
     unsigned char pad_a4[0xac - 0xa4];
 };
 typedef struct Bloke Bloke;
 
 /* A per-state low-level AI handler (indexed by Bloke.field_e). */
-typedef void (*BlokeAction)(struct Bloke *bloke);
+typedef void (*BlokeAction)(Bloke *bloke);
 
 /* Low-level AI handlers (PTR_FUN_004bd34c). */
-void FUN_004838a0(struct Bloke *bloke);
-void FUN_004838c0(struct Bloke *bloke);
-void FUN_00483ef0(struct Bloke *bloke);
-void FUN_00484090(struct Bloke *bloke);
-void FUN_00483d10(struct Bloke *bloke);
-void FUN_004838e0(struct Bloke *bloke);
-void FUN_00484220(struct Bloke *bloke);
-void FUN_004845d0(struct Bloke *bloke);
-void FUN_00484630(struct Bloke *bloke);
-void FUN_00484790(struct Bloke *bloke);
-void FUN_00483e20(struct Bloke *bloke);
-void FUN_00484470(struct Bloke *bloke);
-void FUN_00484520(struct Bloke *bloke);
-void FUN_004848e0(struct Bloke *bloke);
-void FUN_00483d90(struct Bloke *bloke);
-void FUN_00484350(struct Bloke *bloke);
+void FUN_004838a0(Bloke *bloke);
+void FUN_004838c0(Bloke *bloke);
+void FUN_00483ef0(Bloke *bloke);
+void FUN_00484090(Bloke *bloke);
+void FUN_00483d10(Bloke *bloke);
+void FUN_004838e0(Bloke *bloke);
+void FUN_00484220(Bloke *bloke);
+void FUN_004845d0(Bloke *bloke);
+void FUN_00484630(Bloke *bloke);
+void FUN_00484790(Bloke *bloke);
+void FUN_00483e20(Bloke *bloke);
+void FUN_00484470(Bloke *bloke);
+void FUN_00484520(Bloke *bloke);
+void FUN_004848e0(Bloke *bloke);
+void FUN_00483d90(Bloke *bloke);
+void FUN_00484350(Bloke *bloke);
 
-struct Point;
-struct Point;
 struct OverTile;
 struct ActionState;
 struct BNVPerson;
-struct BNVPath;
-LEGO_EXPORT int NewDirForAction(struct Bloke *bloke, unsigned char dir);
-LEGO_EXPORT struct Bloke *GetBlokePtr(int index);
+LEGO_EXPORT int NewDirForAction(Bloke *bloke, unsigned char dir);
+LEGO_EXPORT Bloke *GetBlokePtr(int index);
 int CheckForPeople(struct MapRect *rect);
-LEGO_EXPORT void SetBlokePositionFromBNV(struct BinVFile *file, struct Bloke *bloke, char *name, int frame, float near_z, float far_z, float *orient);
-LEGO_EXPORT struct BNVPath *NewBNVPath(struct BinVFile *file, unsigned int param_2, char *name, float param_4, float param_5, int *coords);
-LEGO_EXPORT int UpdateBlokeFromBNVPath(struct Bloke *bloke, struct BNVPath *path);
-struct Point FUN_004831a0(unsigned char dir, short dist);
-LEGO_EXPORT struct Point GetTileInDir(struct Point pos, unsigned char dir);
+LEGO_EXPORT void SetBlokePositionFromBNV(struct BinVFile *file, Bloke *bloke, char *name, int frame, float near_z, float far_z, float *orient);
+LEGO_EXPORT BNVPath *NewBNVPath(struct BinVFile *file, unsigned int param_2, char *name, float param_4, float param_5, int *coords);
+LEGO_EXPORT int UpdateBlokeFromBNVPath(Bloke *bloke, BNVPath *path);
+Point FUN_004831a0(unsigned char dir, short dist);
+LEGO_EXPORT Point GetTileInDir(Point pos, unsigned char dir);
 LEGO_EXPORT int OverNewTile(struct OverTile *tile, unsigned int x, unsigned int y);
 void FUN_00482b10(void);
 void FUN_00482b20(int force);
-int FUN_00482b60(struct Point *pos);
+int FUN_00482b60(Point *pos);
 struct Person;
-LEGO_EXPORT char *GetVisitorName(struct Bloke *bloke);
-int FUN_00482cb0(struct Bloke *bloke);
+LEGO_EXPORT char *GetVisitorName(Bloke *bloke);
+int FUN_00482cb0(Bloke *bloke);
 struct BlokeNameView;
-void FUN_00482c60(struct Bloke *bloke);
-int FUN_00482df0(struct Bloke *bloke, int index, int mul);
+void FUN_00482c60(Bloke *bloke);
+int FUN_00482df0(Bloke *bloke, int index, int mul);
 void FUN_00482d60(unsigned int index, int value);
 void FUN_00482d70(void);
 void FUN_00483090(void);
-LEGO_EXPORT struct Bloke *MakeBloke(int param_1);
-LEGO_EXPORT struct Bloke *NewBlokeWOList(void *param_2);
-LEGO_EXPORT struct Bloke *NewBloke(void);
-LEGO_EXPORT int GetBlokeNum(struct Bloke *bloke);
-LEGO_EXPORT void DestroyBloke(struct Bloke *bloke);
+LEGO_EXPORT Bloke *MakeBloke(int param_1);
+LEGO_EXPORT Bloke *NewBlokeWOList(int type);
+LEGO_EXPORT Bloke *NewBloke(void);
+LEGO_EXPORT int GetBlokeNum(Bloke *bloke);
+LEGO_EXPORT void DestroyBloke(Bloke *bloke);
 struct Worker;
-LEGO_EXPORT void DoLowLevelAI(struct Bloke *bloke);
+LEGO_EXPORT void DoLowLevelAI(Bloke *bloke);
 struct MapRect;
 struct BinVFile;
 struct BinVObject;
