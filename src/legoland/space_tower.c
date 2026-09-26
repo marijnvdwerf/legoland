@@ -691,55 +691,50 @@ LEGO_EXPORT int SpaceTower_Save(void) {
 
 // FUNCTION: LEGOLAND 0x0043b6a0
 LEGO_EXPORT int SpaceTower_Load(void) {
-    int *field;
-    int *cursor;
-    int count;
-    unsigned int i;
-    char *node;
-    char *prev;
-    int local_4;
+    struct SpaceTowerCar *node;
+    struct SpaceTowerCar *prev;
+    struct SpaceTowerRideNode **field;
+    struct SpaceTowerRideNode *cur;
+    int flag;
+    int n;
+    int i;
 
     prev = NULL;
-    count = SaveGameRead(&local_4, 4);
-    while (1) {
-        if (count == 0) {
+    if (SaveGameRead(&flag, 4) == 0) {
+        return 0;
+    }
+    while (flag != 0) {
+        node = (struct SpaceTowerCar *)malloc(0xb4);
+        if (SaveGameRead(node, 0xb4) == 0) {
             return 0;
         }
-        if (local_4 == 0) {
-            break;
-        }
-        node = (char *)malloc(0xb4);
-        count = SaveGameRead(node, 0xb4);
-        if (count == 0) {
-            return 0;
-        }
-        *(char **)(node + 8) = NULL;
+        node->next = NULL;
         if (prev != NULL) {
-            *(char **)(prev + 8) = node;
+            prev->next = node;
         } else {
-            DAT_0062fda8 = (struct SpaceTowerCar *)node;
+            DAT_0062fda8 = node;
         }
-        i = 0;
-        do {
-            if ((i & 1) != 0) {
-                field = (int *)(node + ((int)i >> 1) * 0x24 + 0x30);
-            } else {
-                field = (int *)(node + ((int)i >> 1) * 0x24 + 0x2c);
-            }
-            count = *field;
-            cursor = *(int **)((char *)DAT_0062fd74 + 0xcc);
-            if (count != 0) {
-                while (count = count + -1, count != 0) {
-                    cursor = (int *)*cursor;
-                }
-                *field = (int)cursor;
-            } else {
-                *field = 0;
-            }
-            i = i + 1;
-        } while ((int)i < 8);
-        count = SaveGameRead(&local_4, 4);
         prev = node;
+        for (i = 0; i < 8; i++) {
+            if (i & 1) {
+                field = &node->seats[i >> 1].field_1c;
+            } else {
+                field = &node->seats[i >> 1].field_18;
+            }
+            n = (int)*field;
+            cur = ((struct SpaceTowerRide *)DAT_0062fd74)->list;
+            if (n != 0) {
+                while (--n != 0) {
+                    cur = cur->next;
+                }
+                *field = cur;
+            } else {
+                *field = NULL;
+            }
+        }
+        if (SaveGameRead(&flag, 4) == 0) {
+            return 0;
+        }
     }
     return 1;
 }
