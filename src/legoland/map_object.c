@@ -1874,12 +1874,12 @@ void FUN_00460e00(void) {
 
     sx = ScrollX >> 8;
     sy = ScrollY >> 8;
+    rect[0] = sx;
+    rect[1] = sy;
     clip.left = lpConfig->field_20;
     clip.top = lpConfig->field_22;
     clip.right = lpConfig->field_10 + clip.left;
     clip.bottom = lpConfig->field_12 + clip.top;
-    rect[0] = sx;
-    rect[1] = sy;
     FUN_004608c0(rect, &clip);
     DAT_004b95ec = sy;
     DAT_004b95e8 = sx;
