@@ -844,7 +844,7 @@ LEGO_EXPORT void ObjectIsBuilding(struct ObjClass *obj, TileId coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045efc0
-LEGO_EXPORT void ApplyConsTileMap(struct EditObject *editObj, unsigned int coords) {
+LEGO_EXPORT void ApplyConsTileMap(struct EditObject *editObj, TileId coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045efd0
@@ -855,8 +855,9 @@ LEGO_EXPORT void ApplyDestrTileMap(struct EditObject *editObj, unsigned int coor
 LEGO_EXPORT unsigned int AddBasicObject(struct EditObject *editObj, int *coords) {
     struct MapObject *obj;
     struct MapElement *tile;
-    unsigned char packed[2];
-    int instance;
+    TileId packed;
+    TileId id;
+    struct ObjInstance *instance;
 
     obj = editObj->obj;
     if (obj->flags & 0x20000) {
@@ -864,37 +865,36 @@ LEGO_EXPORT unsigned int AddBasicObject(struct EditObject *editObj, int *coords)
     }
     if (obj->flags & 0x40000) {
         if (coords[0] >= 0 && coords[0] < lpConfig->width && coords[1] >= 0 && coords[1] < lpConfig->height) {
-            tile = (struct MapElement *)((int)GameMap[coords[1]] + coords[0] * 0x14);
+            tile = &GameMap[coords[1]][coords[0]];
         } else {
             tile = 0;
         }
-        tile->field_0 = (unsigned int)editObj;
         tile->field_8 = *obj->field_74;
-        *((unsigned char *)&tile->field_4) = (unsigned char)coords[0];
-        *((unsigned char *)&tile->field_4 + 1) = (unsigned char)coords[1];
+        tile->field_0 = (unsigned int)editObj;
+        tile->field_4 = (unsigned char)coords[0];
+        tile->field_5 = (unsigned char)coords[1];
         if (obj->flags & 2) {
             tile->field_10 = 2;
         }
         if (obj->flags & 1) {
             tile->field_10 = 1;
         }
-        *(unsigned char *)&tile->flags |= 8;
+        tile->flags |= 8;
         if (obj->flags & 0x800000) {
             tile->flags |= 0x8000;
         }
         IncrementObjectCount((struct ObjectCount *)obj);
     } else {
-        packed[0] = (unsigned char)coords[0];
-        packed[1] = (unsigned char)coords[1];
-        AddObjectToMap(editObj, *(TileId *)packed, 0);
-        ApplyConsTileMap(editObj, *(unsigned short *)packed);
+        packed.pos.x = (unsigned char)coords[0];
+        packed.pos.y = (unsigned char)coords[1];
+        AddObjectToMap(editObj, packed, 0);
+        ApplyConsTileMap(editObj, packed);
         if (obj->type != 2) {
-            unsigned short id;
-            *((unsigned char *)&id) = (unsigned char)coords[0];
-            *((unsigned char *)&id + 1) = (unsigned char)coords[1];
-            instance = (int)CreateObjectInstance((unsigned int)obj, &id);
+            id.pos.x = (unsigned char)coords[0];
+            id.pos.y = (unsigned char)coords[1];
+            instance = CreateObjectInstance((unsigned int)obj, &id.id);
             if (instance != 0) {
-                AddInstanceToList(instance);
+                AddInstanceToList((struct InstanceNode *)instance);
             }
         }
     }

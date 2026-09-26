@@ -23,7 +23,7 @@ struct WorkOrder;
 LEGO_EXPORT void RateBlokeOnLeaving(int param_1);
 LEGO_EXPORT void SetMapFlags(int x, int y, short value);
 LEGO_EXPORT void Set_RFFlags(int x, int y, unsigned char value);
-LEGO_EXPORT void ApplyConsTileMap(struct EditObject *editObj, unsigned int coords);
+LEGO_EXPORT void ApplyConsTileMap(struct EditObject *editObj, TileId coords);
 LEGO_EXPORT void ApplyDestrTileMap(struct EditObject *editObj, unsigned int coords);
 LEGO_EXPORT int BuildObject(struct EditObject *editObj, int *coords);
 LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, unsigned int coords);
