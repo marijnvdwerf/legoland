@@ -848,7 +848,7 @@ LEGO_EXPORT void ApplyConsTileMap(struct EditObject *editObj, TileId coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045efd0
-LEGO_EXPORT void ApplyDestrTileMap(struct EditObject *editObj, unsigned int coords) {
+LEGO_EXPORT void ApplyDestrTileMap(struct EditObject *editObj, TileId coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045efe0
@@ -942,21 +942,19 @@ LEGO_EXPORT void RemoveObjectFromMap(TileId coords) {
 
 // FUNCTION: LEGOLAND 0x0045f220
 LEGO_EXPORT void StandardRemoveObject(struct EditObject *editObj, TileId coords, struct Cursor *cursor) {
-    int cx;
-    int cy;
+    struct Point pos;
     struct MapElement *tile;
     struct MapObject *obj;
     struct FootprintNode rect;
-    struct FootprintNode *next;
-    struct MapElement *tile2;
     int x;
     int y;
-    int instance;
+    TileId id;
+    struct ObjInstance *instance;
 
-    cx = coords.pos.x;
-    cy = coords.pos.y;
-    if (cx >= 0 && cx < lpConfig->width && cy >= 0 && cy < lpConfig->height) {
-        tile = (struct MapElement *)((int)GameMap[cy] + cx * 0x14);
+    pos.x = coords.pos.x;
+    pos.y = coords.pos.y;
+    if (pos.x >= 0 && pos.x < lpConfig->width && pos.y >= 0 && pos.y < lpConfig->height) {
+        tile = &GameMap[pos.y][pos.x];
     } else {
         tile = 0;
     }
@@ -965,41 +963,40 @@ LEGO_EXPORT void StandardRemoveObject(struct EditObject *editObj, TileId coords,
         BGFullUpdate = 1;
     }
     AddBricks(GetObjSalvageValue((unsigned int)obj, tile->field_11));
-    if ((tile->flags & 0x80) == 0) {
-        rect = *(struct FootprintNode *)&cursor->field_1414[0];
+    if (tile->flags & 0x80) {
+        ApplyDestrTileMap(editObj, coords);
+        FUN_0045e850((struct ObjNode *)editObj, (int *)&pos);
+        RemoveObjectFromMap(coords);
+    } else {
+        rect = *(struct FootprintNode *)cursor->field_1414;
         DecrementObjectCount((struct ObjectCount *)obj);
-        while (1) {
+        for (;;) {
             for (y = rect.y0; y <= rect.y1; y++) {
                 for (x = rect.x0; x <= rect.x1; x++) {
                     RestoreBaseMap(cursor->field_1404 + x, cursor->field_1408 + y);
                     SetMapFlags(cursor->field_1404 + x, cursor->field_1408 + y, 0);
                     Set_RFFlags((cursor->field_1404 + x) * 0x100, (cursor->field_1408 + y) * 0x100, 0);
-                    *(unsigned int *)((int)GameMap[cursor->field_1408 + y] + (cursor->field_1404 + x) * 0x14) = 0;
+                    GameMap[cursor->field_1408 + y][cursor->field_1404 + x].field_0 = 0;
                 }
             }
-            next = rect.next;
-            if (next == 0) {
+            if (rect.next == 0) {
                 break;
             }
-            rect = *next;
+            rect = *rect.next;
         }
-    } else {
-        ApplyDestrTileMap(editObj, *(unsigned int *)&coords);
-        FUN_0045e850((struct ObjNode *)editObj, (int *)&cx);
-        RemoveObjectFromMap(coords);
     }
     if (obj->type != 2) {
-        ((unsigned char *)&cursor)[0] = (unsigned char)cx;
-        ((unsigned char *)&cursor)[1] = (unsigned char)cy;
-        if (cx >= 0 && cx < lpConfig->width && cy >= 0 && cy < lpConfig->height) {
-            tile2 = (struct MapElement *)((int)GameMap[cy] + cx * 0x14);
+        id.pos.x = (unsigned char)pos.x;
+        id.pos.y = (unsigned char)pos.y;
+        if (pos.x >= 0 && pos.x < lpConfig->width && pos.y >= 0 && pos.y < lpConfig->height) {
+            tile = &GameMap[pos.y][pos.x];
         } else {
-            tile2 = 0;
+            tile = 0;
         }
-        instance = (int)GetInstanceOfClass((struct ObjClassNode *)((struct EditObject *)tile2->field_0)->obj, (unsigned short *)&cursor);
+        instance = GetInstanceOfClass((struct ObjClassNode *)((struct EditObject *)tile->field_0)->obj, &id.id);
         if (instance != 0) {
-            RemoveInstanceFromList(instance);
-            free((void *)instance);
+            RemoveInstanceFromList((struct InstanceNode *)instance);
+            free(instance);
         }
     }
 }
