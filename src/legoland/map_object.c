@@ -3171,35 +3171,37 @@ LEGO_EXPORT void RateBlokeOnLeaving(int param_1) {
 
 // FUNCTION: LEGOLAND 0x00463460
 void FUN_00463460(struct MapElement *tile, int *coords) {
-    unsigned short flags;
+    unsigned int flags;
     struct MapObject *obj;
-    unsigned char threshold;
+    int threshold;
     int power;
 
     if (tile->field_11 != 0) {
-        flags = tile->flags;
         obj = ((struct EditObject *)tile->field_0)->obj;
-        threshold = obj->field_2c;
-        tile->flags = flags & 0xfdff;
-        threshold = threshold >> 2;
+        flags = tile->flags;
+        tile->flags &= 0xfdff;
+        threshold = obj->field_2c >> 2;
         if (tile->field_11 < threshold) {
-            if ((flags & 4) != 0) {
-                *((unsigned char *)&tile->flags + 1) |= 2;
+            if (tile->flags & 4) {
+                tile->flags |= 0x200;
                 tile->field_11 = threshold;
                 return;
             }
-            if (lpConfig->field_3c != 0 && (flags & 0x4000) == 0) {
+            if (lpConfig->field_3c != 0 && (tile->flags & 0x4000) == 0) {
                 if (AddRepairOrderForObject((int)obj, coords[0], coords[1]) != 0) {
-                    *((unsigned char *)&tile->flags + 1) |= 0x40;
+                    tile->flags |= 0x4000;
                 }
             }
             if ((flags & 0x200) == 0) {
                 power = FindObjectsPower(obj);
-                if (0 < power && (MapStats.field_3d0 = MapStats.field_3d0 - power, MapStats.field_3d0 < MapStats.field_3d4 - (int)MapStats.field_3d8)) {
-                    FUN_0045a0d0();
+                if (power > 0) {
+                    MapStats.field_3d0 -= power;
+                    if (MapStats.field_3d0 < MapStats.field_3d4 - (int)MapStats.field_3d8) {
+                        FUN_0045a0d0();
+                    }
                 }
             }
-            *((unsigned char *)&tile->flags + 1) |= 2;
+            tile->flags |= 0x200;
         }
     }
 }
