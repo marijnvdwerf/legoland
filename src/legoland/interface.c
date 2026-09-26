@@ -1451,36 +1451,32 @@ void FUN_00476250(void) {
 // FUNCTION: LEGOLAND 0x004762f0
 void FUN_004762f0(void) {
     struct InterfaceResearchNode *node;
-    struct InterfaceResearchNode *prev;
     struct BuildObject *obj;
     char buf[512];
     int count;
     int len;
 
+    node = NULL;
     DAT_00668ed8 = NULL;
     SaveGameRead(&count, 4);
-    prev = NULL;
-    if (count != 0) {
-        do {
-            count = count - 1;
-            if (prev != NULL) {
-                node = (struct InterfaceResearchNode *)malloc(sizeof(struct InterfaceResearchNode));
-                prev->next = node;
-            } else {
-                node = (struct InterfaceResearchNode *)malloc(sizeof(struct InterfaceResearchNode));
-                DAT_00668ed8 = node;
-            }
-            SaveGameRead(&len, 4);
-            SaveGameRead(buf, len);
-            buf[len] = 0;
-            obj = ((struct LLDBElem *)ElemID(buf))->obj;
-            node->data = obj;
-            obj->field_1c = obj->field_1c & 0xfbffffff;
-            ((struct BuildObject *)node->data)->field_1c = ((struct BuildObject *)node->data)->field_1c | 0x8000000;
-            SaveGameRead(&node->field_8, 4);
-            prev = node;
-        } while (count != 0);
-        prev->next = NULL;
+    while (count--) {
+        if (node != NULL) {
+            node = node->next = (struct InterfaceResearchNode *)malloc(sizeof(struct InterfaceResearchNode));
+        } else {
+            node = (struct InterfaceResearchNode *)malloc(sizeof(struct InterfaceResearchNode));
+            DAT_00668ed8 = node;
+        }
+        SaveGameRead(&len, 4);
+        SaveGameRead(buf, len);
+        buf[len] = 0;
+        obj = ((struct LLDBElem *)ElemID(buf))->obj;
+        node->data = obj;
+        obj->field_1c &= 0xfbffffff;
+        ((struct BuildObject *)node->data)->field_1c |= 0x8000000;
+        SaveGameRead(&node->field_8, 4);
+    }
+    if (node != NULL) {
+        node->next = NULL;
     }
 }
 
@@ -1545,57 +1541,50 @@ struct MovieHandle *FUN_00476460(const char *filename) {
     if (DAT_00668f98 == 0) {
         AVIFileInit();
     }
-    rate = 0;
     if (AVIFileOpenA(&file, filename, 0, 0) == 0) {
         file_info.streams = 0;
         AVIFileInfoA(file, &file_info, 0x6c);
-        if (file_info.streams > 0) {
-            length = 0;
-            width = 0;
-            height = 0;
-            i = 0;
-            do {
-                if (AVIFileGetStream(file, &stream, 0, i) != 0) {
-                    break;
+        for (i = 0; i < file_info.streams; i++) {
+            if (AVIFileGetStream(file, &stream, 0, i) != 0) {
+                break;
+            }
+            if (AVIStreamInfoA(stream, &stream_info, 0x8c) == 0) {
+                if (stream_info.type == 0x73646976) {
+                    AVIStreamAddRef(stream);
+                    length = stream_info.length;
+                    width = stream_info.frame_right - stream_info.frame_left;
+                    rate = stream_info.rate / stream_info.scale;
+                    height = stream_info.frame_bottom - stream_info.frame_top;
+                    video_stream = stream;
+                } else if (stream_info.type == 0x73647561) {
+                    DAT_00668fa4 = 0x16;
+                    audio_stream = stream;
+                    AVIStreamAddRef(stream);
                 }
-                if (AVIStreamInfoA(stream, &stream_info, 0x8c) == 0) {
-                    if (stream_info.type == 0x73646976) {
-                        AVIStreamAddRef(stream);
-                        rate = stream_info.rate / stream_info.scale;
-                        width = stream_info.frame_right - stream_info.frame_left;
-                        height = stream_info.frame_bottom - stream_info.frame_top;
-                        video_stream = stream;
-                        length = stream_info.length;
-                    } else if (stream_info.type == 0x73647561) {
-                        DAT_00668fa4 = 0x16;
-                        AVIStreamAddRef(stream);
-                        audio_stream = stream;
-                    }
-                }
-                i++;
-            } while (i < file_info.streams);
-            if (video_stream == NULL) {
-                if (audio_stream != NULL) {
-                    AVIStreamRelease(audio_stream);
-                }
-            } else {
-                handle = (struct MovieHandle *)malloc(sizeof(struct MovieHandle));
-                if (handle != NULL) {
-                    handle->field_0 = length;
-                    handle->field_4 = rate;
-                    handle->field_8 = width;
-                    handle->field_c = height;
-                    handle->frame = NULL;
-                    handle->file = file;
-                    handle->audio_stream = audio_stream;
-                    handle->video_stream = video_stream;
-                    DAT_00668f98 = DAT_00668f98 + 1;
-                    return handle;
-                }
+            }
+        }
+        if (video_stream == NULL) {
+            if (audio_stream != NULL) {
+                AVIStreamRelease(audio_stream);
+            }
+        } else {
+            handle = (struct MovieHandle *)malloc(sizeof(struct MovieHandle));
+            if (handle == NULL) {
                 AVIStreamRelease(video_stream);
                 if (audio_stream != NULL) {
                     AVIStreamRelease(audio_stream);
                 }
+            } else {
+                handle->field_0 = length;
+                handle->field_4 = rate;
+                handle->field_8 = width;
+                handle->field_c = height;
+                handle->frame = NULL;
+                handle->file = file;
+                handle->audio_stream = audio_stream;
+                handle->video_stream = video_stream;
+                DAT_00668f98++;
+                return handle;
             }
         }
         AVIFileRelease(file);
