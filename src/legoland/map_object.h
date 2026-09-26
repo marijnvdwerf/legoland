@@ -27,7 +27,7 @@ LEGO_EXPORT void ApplyConsTileMap(struct EditObject *editObj, unsigned int coord
 LEGO_EXPORT void ApplyDestrTileMap(struct EditObject *editObj, unsigned int coords);
 LEGO_EXPORT int BuildObject(struct EditObject *editObj, int *coords);
 LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, unsigned int coords);
-LEGO_EXPORT void ObjectIsBuilding(struct ObjClass *obj, unsigned int coords);
+LEGO_EXPORT void ObjectIsBuilding(struct ObjClass *obj, TileId coords);
 LEGO_EXPORT void PlayAppropriateBuildEffect(struct ObjClass *obj, int *coords);
 void FUN_0045e300(struct EditObject *editObj, struct Point *pos);
 void FUN_0045e4a0(struct EditObject *editObj, struct Point *pos);

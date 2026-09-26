@@ -828,11 +828,11 @@ LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, unsigned int coords) {
 }
 
 // FUNCTION: LEGOLAND 0x0045ef50
-LEGO_EXPORT void ObjectIsBuilding(struct ObjClass *obj, unsigned int coords) {
+LEGO_EXPORT void ObjectIsBuilding(struct ObjClass *obj, TileId coords) {
     struct BuildBuf buf;
 
-    buf.x = coords & 0xff;
-    buf.y = (coords >> 8) & 0xff;
+    buf.x = coords.pos.x;
+    buf.y = coords.pos.y;
     if ((((struct MapObject *)obj)->flags & 0x200000) == 0) {
         buf.two = 2;
         buf.x2 = buf.x;
