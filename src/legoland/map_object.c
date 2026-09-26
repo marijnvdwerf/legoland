@@ -250,7 +250,7 @@ LEGO_EXPORT void SetObjRectFlags(struct EditObject *editObj, struct Point *pos, 
     memcpy(saved, &EditCursor, 0x60d * sizeof(unsigned int));
     coords[0] = *(unsigned char *)pos;
     GetTileCentre(pos, center);
-    obj->method_90(obj->field_c4, saved, 0x8f8);
+    obj->method_90(obj->field_c4, center, 0x8f8);
     node = &EditCursor;
     do {
         cfg = lpConfig;
@@ -315,7 +315,7 @@ void FUN_0045e080(struct EditObject *editObj, struct Point *pos, unsigned short 
     memcpy(saved, &EditCursor, 0x60d * sizeof(unsigned int));
     coords[0] = *(unsigned char *)pos;
     GetTileCentre(pos, center);
-    obj->method_90(obj->field_c4, saved, 0x8f8);
+    obj->method_90(obj->field_c4, center, 0x8f8);
     node = &EditCursor;
     do {
         node_flags = node->field_1828;
@@ -406,42 +406,44 @@ void FUN_0045e300(struct EditObject *editObj, struct Point *pos) {
     obj = editObj->obj;
     memcpy(saved, &EditCursor, 0x60d * sizeof(unsigned int));
     GetTileCentre(pos, center);
-    obj->method_90(obj->field_c4, saved, 0x8f8);
+    obj->method_90(obj->field_c4, center, 0x8f8);
     node = &EditCursor;
-    cfg = lpConfig;
-    do {
-        if ((node->field_1828 & 0x3000) == 0) {
-            for (rect = (struct FootprintNode *)&node->field_1414[0]; rect != 0; rect = rect->next) {
-                y = rect->y0;
-                if (y <= rect->y1) {
-                    do {
-                        x = rect->x0;
-                        if (x <= rect->x1) {
-                            do {
-                                coord[0] = node->field_1404 + x;
-                                coord[1] = node->field_1408 + y;
-                                if (coord[0] >= 0 && coord[0] < cfg->width && coord[1] >= 0 &&
-                                    coord[1] < cfg->height &&
-                                    (tile = (struct MapElement *)((int)GameMap[coord[1]] + coord[0] * 0x14)) != 0 &&
-                                    (tile->flags & 8) != 0 &&
-                                    (gtile = (struct Obj0c *)tile->field_0)->field_c == DAT_007fd624) {
-                                    RemovePathSquare((struct InstancePos *)coord);
-                                    tile->flags &= 0xffe7;
-                                    tile->field_10 &= 0xfe;
-                                    tile = (struct MapElement *)((int)GameMap[coord[1]] + coord[0] * 0x14);
-                                    tile->field_8 = tile->field_a;
-                                    cfg = lpConfig;
-                                }
-                                x++;
-                            } while (x <= rect->x1);
-                        }
-                        y++;
-                    } while (y <= rect->y1);
+    if (node != 0) {
+        cfg = lpConfig;
+        do {
+            if ((node->field_1828 & 0x3000) == 0) {
+                for (rect = (struct FootprintNode *)&node->field_1414[0]; rect != 0; rect = rect->next) {
+                    y = rect->y0;
+                    if (y <= rect->y1) {
+                        do {
+                            x = rect->x0;
+                            if (x <= rect->x1) {
+                                do {
+                                    coord[0] = node->field_1404 + x;
+                                    coord[1] = node->field_1408 + y;
+                                    if (coord[0] >= 0 && coord[0] < cfg->width && coord[1] >= 0 &&
+                                        coord[1] < cfg->height &&
+                                        (tile = (struct MapElement *)((int)GameMap[coord[1]] + coord[0] * 0x14)) != 0 &&
+                                        (tile->flags & 8) != 0 &&
+                                        (gtile = (struct Obj0c *)tile->field_0)->field_c == DAT_007fd624) {
+                                        RemovePathSquare((struct InstancePos *)coord);
+                                        tile->flags &= 0xffe7;
+                                        tile->field_10 &= 0xfe;
+                                        tile = (struct MapElement *)((int)GameMap[coord[1]] + coord[0] * 0x14);
+                                        tile->field_8 = tile->field_a;
+                                        cfg = lpConfig;
+                                    }
+                                    x++;
+                                } while (x <= rect->x1);
+                            }
+                            y++;
+                        } while (y <= rect->y1);
+                    }
                 }
             }
-        }
-        node = (struct Cursor *)node->field_1830;
-    } while (node != 0);
+            node = (struct Cursor *)node->field_1830;
+        } while (node != 0);
+    }
     memcpy(&EditCursor, saved, 0x60d * sizeof(unsigned int));
 }
 
@@ -464,7 +466,7 @@ void FUN_0045e4a0(struct EditObject *editObj, struct Point *pos) {
     memcpy(saved, &EditCursor, 0x60d * sizeof(unsigned int));
     coords[0] = *(unsigned char *)pos;
     GetTileCentre(pos, center);
-    obj->method_90(obj->field_c4, saved, 0x8f8);
+    obj->method_90(obj->field_c4, center, 0x8f8);
     node = &EditCursor;
     do {
         node_flags = node->field_1828;
