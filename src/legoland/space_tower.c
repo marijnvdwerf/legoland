@@ -553,12 +553,9 @@ void FUN_0043af50(struct SpaceTowerCtx *param_1, unsigned int param_2, unsigned 
 
 // FUNCTION: LEGOLAND 0x0043b2b0
 void FUN_0043b2b0(struct SpaceTowerCtx *param_1) {
-    struct SpaceTowerRide *ride;
-
-    ride = param_1->ride;
-    DAT_0062fd74 = ride;
-    ride->flags = ride->flags | 0x420;
-    DAT_0062fd60 = ride->layers;
+    DAT_0062fd74 = param_1->ride;
+    ((struct SpaceTowerRide *)DAT_0062fd74)->flags |= 0x420;
+    DAT_0062fd60 = ((struct SpaceTowerRide *)DAT_0062fd74)->layers;
     *(unsigned int *)((char *)DAT_0062fd60 + 0x10) = *(unsigned int *)((char *)DAT_0062fd60 + 0x10) | 0x2000;
     HideLayer(DAT_0062fd60, 5);
     StopLayerPlaying(DAT_0062fd60, 5);
