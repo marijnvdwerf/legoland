@@ -654,24 +654,24 @@ unsigned char FUN_00475040(unsigned int a, unsigned int flags) {
 
 // FUNCTION: LEGOLAND 0x00475080
 unsigned char FUN_00475080(unsigned int a, unsigned char flags) {
-    if ((flags & 2) == 0) {
+    if ((flags & 2) != 0) {
+        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
+        if (EditMode.unk4 != 1) {
+            FUN_00498920();
+            DAT_00667c60 = EditMode.unk4;
+            EditMode.unk4 = 1;
+            GamePad = GamePad & 0xffffebff;
+            DAT_008119bc = 1;
+            DAT_006687b0 = 4;
+            EditMode.unk0 = 0;
+            return 1;
+        }
+        DAT_0080ff70 = 1;
+        EditMode.unk4 = DAT_00667c60;
+        DAT_00667c60 = 1;
+        FUN_004562e0();
         return 1;
     }
-    PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-    if (EditMode.unk4 != 1) {
-        FUN_00498920();
-        DAT_00667c60 = EditMode.unk4;
-        EditMode.unk4 = 1;
-        GamePad = GamePad & 0xffffebff;
-        DAT_008119bc = 1;
-        DAT_006687b0 = 4;
-        EditMode.unk0 = 0;
-        return 1;
-    }
-    DAT_0080ff70 = 1;
-    EditMode.unk4 = DAT_00667c60;
-    DAT_00667c60 = 1;
-    FUN_004562e0();
     return 1;
 }
 
@@ -704,8 +704,8 @@ unsigned char FUN_004751a0(struct IconNode *param_1, unsigned char flags) {
     if (EditMode.unk4 == 1 || (flags & 2) == 0) {
         return 1;
     }
-    GamePad = GamePad & 0xffffebff;
     EditMode.unk0 = 0;
+    GamePad = GamePad & 0xffffebff;
     PlayInstanceOfSample(PTR_004b9314, 0, 1, 0);
     if (DAT_004baff8 != 0) {
         DAT_004baff8 = 0;
