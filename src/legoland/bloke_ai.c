@@ -447,57 +447,62 @@ void FUN_0044f170(Bloke *bloke) {
 // FUNCTION: LEGOLAND 0x0044f180
 int FUN_0044f180(Point *pos, Ride *ride) {
     MapElement *element;
+    Point tile;
+    int n;
     Point origin;
-    int x;
-    int y;
 
-    x = pos->x >> 8;
-    y = pos->y >> 8;
-    if (x >= 0 && x < lpConfig->width && y - 1 >= 0 && y - 1 < lpConfig->height) {
-        element = &GameMap[y - 1][x];
+    tile = *pos;
+    tile.x >>= 8;
+    tile.y >>= 8;
+    n = tile.y - 1;
+    if (tile.x >= 0 && tile.x < lpConfig->width && n >= 0 && n < lpConfig->height) {
+        element = &GameMap[n][tile.x];
     } else {
         element = NULL;
     }
     if (element != NULL && (element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
         origin.x = element->field_4 + ride->x;
         origin.y = element->field_5 + ride->y;
-        if (origin.x == x && origin.y == y) {
+        if (origin.x == tile.x && origin.y == tile.y) {
             return 1;
         }
     }
-    if (x >= 0 && x < lpConfig->width && y + 1 >= 0 && y + 1 < lpConfig->height) {
-        element = &GameMap[y + 1][x];
+    n = tile.y + 1;
+    if (tile.x >= 0 && tile.x < lpConfig->width && n >= 0 && n < lpConfig->height) {
+        element = &GameMap[n][tile.x];
     } else {
         element = NULL;
     }
     if (element != NULL && (element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
         origin.x = element->field_4 + ride->x;
         origin.y = element->field_5 + ride->y;
-        if (origin.x == x && origin.y == y) {
+        if (origin.x == tile.x && origin.y == tile.y) {
             return 1;
         }
     }
-    if (x - 1 >= 0 && x - 1 < lpConfig->width && y >= 0 && y < lpConfig->height) {
-        element = &GameMap[y][x - 1];
+    n = tile.x - 1;
+    if (n >= 0 && n < lpConfig->width && tile.y >= 0 && tile.y < lpConfig->height) {
+        element = &GameMap[tile.y][n];
     } else {
         element = NULL;
     }
     if (element != NULL && (element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
         origin.x = element->field_4 + ride->x;
         origin.y = element->field_5 + ride->y;
-        if (origin.x == x && origin.y == y) {
+        if (origin.x == tile.x && origin.y == tile.y) {
             return 1;
         }
     }
-    if (x + 1 >= 0 && x + 1 < lpConfig->width && y >= 0 && y < lpConfig->height) {
-        element = &GameMap[y][x + 1];
+    n = tile.x + 1;
+    if (n >= 0 && n < lpConfig->width && tile.y >= 0 && tile.y < lpConfig->height) {
+        element = &GameMap[tile.y][n];
     } else {
         element = NULL;
     }
     if (element != NULL && (element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
         origin.x = element->field_4 + ride->x;
         origin.y = element->field_5 + ride->y;
-        if (origin.x == x && origin.y == y) {
+        if (origin.x == tile.x && origin.y == tile.y) {
             return 1;
         }
     }
@@ -1189,7 +1194,11 @@ LEGO_EXPORT void DoHighLevelAI(Bloke *bloke) {
 
 // FUNCTION: LEGOLAND 0x00450500
 int FUN_00450500(Point *a, Point *b) {
-    return abs(a->x - b->x) + abs(a->y - b->y) == 1;
+    Point d;
+
+    d.x = abs(a->x - b->x);
+    d.y = abs(a->y - b->y);
+    return d.x + d.y == 1;
 }
 
 // FUNCTION: LEGOLAND 0x00450530

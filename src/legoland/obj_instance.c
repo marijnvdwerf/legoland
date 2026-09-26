@@ -308,43 +308,66 @@ LEGO_EXPORT int GetAllBlokesOffRide(struct Ride *ride, unsigned short uid) {
 
 // FUNCTION: LEGOLAND 0x0048a3e0
 LEGO_EXPORT TileId GetObjectUID(struct Point *pos, struct Ride *ride) {
-    int x;
-    int y;
-    int row;
     struct MapElement *element;
-
+    struct Point tile;
+    int n;
+    struct Point origin;
     TileId none;
 
-    x = pos->x >> 8;
-    y = pos->y >> 8;
-    row = y - 1;
-    if (x >= 0 && x < lpConfig->width && row >= 0 && row < lpConfig->height && (element = &GameMap[row][x]) != 0) {
-        if ((element->flags & 0x80) != 0 && element->field_0 != 0 && element->field_0->data == ride &&
-            element->field_4 + ride->x == x && element->field_5 + ride->y == y) {
-            return element->anchor;
-        }
-        row = y + 1;
-        if (x < 0 || lpConfig->width <= x || row < 0 || lpConfig->height <= row) {
-            element = 0;
-        } else {
-            element = &GameMap[row][x];
-        }
-        if ((element->flags & 0x80) != 0 && element->field_0 != 0 && element->field_0->data == ride &&
-            element->field_4 + ride->x == x && element->field_5 + ride->y == y) {
+    tile = *pos;
+    tile.x >>= 8;
+    tile.y >>= 8;
+    n = tile.y - 1;
+    if (tile.x >= 0 && tile.x < lpConfig->width && n >= 0 && n < lpConfig->height) {
+        element = &GameMap[n][tile.x];
+    } else {
+        element = NULL;
+    }
+    if (element != NULL && (element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
+        origin.x = element->field_4 + ride->x;
+        origin.y = element->field_5 + ride->y;
+        if (origin.x == tile.x && origin.y == tile.y) {
             return element->anchor;
         }
     }
-    row = x - 1;
-    if (row >= 0 && row < lpConfig->width && y >= 0 && y < lpConfig->height && (element = &GameMap[y][row]) != 0 &&
-        (element->flags & 0x80) != 0 && element->field_0 != 0 && element->field_0->data == ride &&
-        element->field_4 + ride->x == x && element->field_5 + ride->y == y) {
-        return element->anchor;
+    n = tile.y + 1;
+    if (tile.x >= 0 && tile.x < lpConfig->width && n >= 0 && n < lpConfig->height) {
+        element = &GameMap[n][tile.x];
+    } else {
+        element = NULL;
     }
-    row = x + 1;
-    if (row >= 0 && row < lpConfig->width && y >= 0 && y < lpConfig->height && (element = &GameMap[y][row]) != 0 &&
-        (element->flags & 0x80) != 0 && element->field_0 != 0 && element->field_0->data == ride &&
-        element->field_4 + ride->x == x && element->field_5 + ride->y == y) {
-        return element->anchor;
+    if (element != NULL && (element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
+        origin.x = element->field_4 + ride->x;
+        origin.y = element->field_5 + ride->y;
+        if (origin.x == tile.x && origin.y == tile.y) {
+            return element->anchor;
+        }
+    }
+    n = tile.x - 1;
+    if (n >= 0 && n < lpConfig->width && tile.y >= 0 && tile.y < lpConfig->height) {
+        element = &GameMap[tile.y][n];
+    } else {
+        element = NULL;
+    }
+    if (element != NULL && (element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
+        origin.x = element->field_4 + ride->x;
+        origin.y = element->field_5 + ride->y;
+        if (origin.x == tile.x && origin.y == tile.y) {
+            return element->anchor;
+        }
+    }
+    n = tile.x + 1;
+    if (n >= 0 && n < lpConfig->width && tile.y >= 0 && tile.y < lpConfig->height) {
+        element = &GameMap[tile.y][n];
+    } else {
+        element = NULL;
+    }
+    if (element != NULL && (element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
+        origin.x = element->field_4 + ride->x;
+        origin.y = element->field_5 + ride->y;
+        if (origin.x == tile.x && origin.y == tile.y) {
+            return element->anchor;
+        }
     }
     none.id = 0;
     return none;
