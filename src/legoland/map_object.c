@@ -748,83 +748,80 @@ struct BuildBuf {
 };
 
 // FUNCTION: LEGOLAND 0x0045ed30
-LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, unsigned int coords) {
-    struct BuildBuf buf;
+LEGO_EXPORT void ObjectIsBuilt(struct ObjClass *obj, TileId coords) {
+    struct Point pos;
+    struct SampleParams source;
     int out[2];
-    unsigned int saved_1414[5];
+    struct FootprintNode saved_rect;
+    int saved_140c;
     int saved_1410;
-    unsigned int saved_140c;
     struct Cursor *node;
     struct LegoConfig *cfg;
-    struct FootprintNode *rect;
-    struct MapElement *tile;
+    struct FootprintNode *next;
+    struct FootprintNode rect;
     int x;
     int y;
+    int tx;
+    int ty;
+    struct MapElement *tile;
 
-    buf.x = coords & 0xff;
-    buf.y = (coords >> 8) & 0xff;
-    buf.two = 2;
-    buf.x2 = buf.x;
-    buf.y2 = buf.y;
-    UnSourceAndFadeAllSamplesFromSource(&buf.two, -200);
-    GetTileCentre((struct Point *)&buf.x, out);
+    pos.x = coords.pos.x;
+    pos.y = coords.pos.y;
+    source.field_0 = 2;
+    source.field_8 = pos.x;
+    source.field_c = pos.y;
+    UnSourceAndFadeAllSamplesFromSource(&source, -200);
+    GetTileCentre(&pos, out);
     EditCursor.field_1830 = 0;
-    if ((GamePad & 0x1000) != 0) {
-        buf.two = EditCursor.field_1404;
+    if (GamePad & 0x1000) {
+        saved_rect = *(struct FootprintNode *)EditCursor.field_1414;
+        source.field_0 = EditCursor.field_1404;
+        source.field_4 = EditCursor.field_1408;
         saved_140c = EditCursor.field_140c;
-        saved_1414[0] = EditCursor.field_1414[0];
-        saved_1414[1] = EditCursor.field_1414[1];
-        saved_1414[2] = EditCursor.field_1414[2];
-        saved_1414[3] = EditCursor.field_1414[3];
-        saved_1414[4] = EditCursor.field_1414[4];
         saved_1410 = EditCursor.field_1410;
-        buf.field_c = EditCursor.field_1408;
     }
     ((struct MapObject *)obj)->method_90(obj->field_c4, out, 0x8f8);
     node = &EditCursor;
-    cfg = lpConfig;
-    do {
-        rect = (struct FootprintNode *)&node->field_1414[0];
+    if (node != 0) {
+        cfg = lpConfig;
         do {
-            if ((node->field_1828 & 0x3000) != 0) {
-                break;
-            }
-            for (y = rect->y0; y <= rect->y1; y++) {
-                for (x = rect->x0; x <= rect->x1; x++) {
-                    int tx = node->field_1404 + x;
-                    int ty = node->field_1408 + y;
-                    if (tx >= 0 && tx < cfg->width && ty >= 0 && ty < cfg->height &&
-                        (tile = (struct MapElement *)((int)GameMap[ty] + tx * 0x14)) != 0) {
-                        tile->flags &= 0xffdf;
-                        tile->field_10 = 0;
-                        cfg = lpConfig;
+            next = (struct FootprintNode *)node->field_1414;
+            do {
+                rect = *next;
+                if ((node->field_1828 & 0x3000) == 0) {
+                    for (y = rect.y0; y <= rect.y1; y++) {
+                        for (x = rect.x0; x <= rect.x1; x++) {
+                            tx = node->field_1404 + x;
+                            ty = node->field_1408 + y;
+                            if (tx >= 0 && tx < cfg->width && ty >= 0 && ty < cfg->height) {
+                                tile = &GameMap[ty][tx];
+                                if (tile != 0) {
+                                    tile->flags &= 0xffdf;
+                                    tile->field_10 = 0;
+                                    cfg = lpConfig;
+                                }
+                            }
+                        }
                     }
+                } else {
+                    break;
                 }
-            }
-            rect = rect->next;
-        } while (rect != 0);
-        node = (struct Cursor *)node->field_1830;
-        if (node == 0) {
-            PutObjOnMap(obj, obj->field_c4, (struct Point *)&buf.x);
-            EditCursor.field_1830 = 0;
-            if ((GamePad & 0x1000) != 0) {
-                EditCursor.field_1414[0] = saved_1414[0];
-                EditCursor.field_1414[1] = saved_1414[1];
-                EditCursor.field_1414[2] = saved_1414[2];
-                EditCursor.field_1414[3] = saved_1414[3];
-                EditCursor.field_1414[4] = saved_1414[4];
-                EditCursor.field_1404 = buf.two;
-                EditCursor.field_1408 = buf.field_c;
-                EditCursor.field_140c = saved_140c;
-                EditCursor.field_1410 = saved_1410;
-                return;
-            }
-            if (EditMode.unk8 != 0) {
-                ((struct MapObject *)EditMode.unk8)->method_90(((struct ObjClass *)EditMode.unk8)->field_c4, &DAT_00813a44, 0x8f8);
-            }
-            return;
-        }
-    } while (1);
+                next = rect.next;
+            } while (next != 0);
+            node = (struct Cursor *)node->field_1830;
+        } while (node != 0);
+    }
+    PutObjOnMap(obj, obj->field_c4, &pos);
+    EditCursor.field_1830 = 0;
+    if (GamePad & 0x1000) {
+        *(struct FootprintNode *)EditCursor.field_1414 = saved_rect;
+        EditCursor.field_1404 = source.field_0;
+        EditCursor.field_1408 = source.field_4;
+        EditCursor.field_140c = saved_140c;
+        EditCursor.field_1410 = saved_1410;
+    } else if (EditMode.unk8 != 0) {
+        ((struct MapObject *)EditMode.unk8)->method_90(((struct ObjClass *)EditMode.unk8)->field_c4, &DAT_00813a44, 0x8f8);
+    }
 }
 
 // FUNCTION: LEGOLAND 0x0045ef50
