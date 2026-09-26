@@ -1641,23 +1641,24 @@ int FUN_004766f0(struct MovieHandle *handle, void *param_2, int param_3) {
     int frame_index;
     unsigned int target;
     unsigned int prev;
+    int audio;
 
-    started = 0;
     frame_index = -1;
     target = 0;
+    started = 0;
+    prev = 0;
     if (handle == NULL) {
         return 0;
     }
     if (handle->video_stream == NULL) {
         return 0;
     }
-    FUN_00476910(handle);
+    audio = FUN_00476910(handle);
     DAT_004bb4e0.biBitCount = 0x10;
     DAT_004bb4e0.biWidth = handle->field_8;
     DAT_004bb4e0.biHeight = handle->field_c;
-    DAT_004bb4e0.biSizeImage = handle->field_c * handle->field_8 * 2;
+    DAT_004bb4e0.biSizeImage = DAT_004bb4e0.biHeight * DAT_004bb4e0.biWidth * 2;
     handle->frame = AVIStreamGetFrameOpen(handle->video_stream, &DAT_004bb4e0);
-    prev = 0;
     if ((int)handle->field_0 > 0) {
         do {
             if (param_3 != 0) {
@@ -1668,7 +1669,7 @@ int FUN_004766f0(struct MovieHandle *handle, void *param_2, int param_3) {
                 if ((DAT_00813ac4 & 1) != 0) {
                     break;
                 }
-                if ((DAT_007fdda0[0x34] & 7) != 0) {
+                if ((DAT_00813ad4 & 7) != 0) {
                     DAT_00668fb0 = 1;
                     break;
                 }
@@ -1677,7 +1678,7 @@ int FUN_004766f0(struct MovieHandle *handle, void *param_2, int param_3) {
                 }
             } else {
                 ProcessSystemEvents();
-                if (((DAT_007fdda0[0x9d] | DAT_007fdda0[0x1d]) & 0x80) != 0 && (DAT_007fdda0[0x10] & 0x80) != 0) {
+                if (((DAT_007fdda0[0x1d] | DAT_007fdda0[0x9d]) & 0x80) != 0 && (DAT_007fdda0[0x10] & 0x80) != 0) {
                     break;
                 }
             }
@@ -1692,7 +1693,7 @@ int FUN_004766f0(struct MovieHandle *handle, void *param_2, int param_3) {
             FUN_00465850(frame);
             PopRenderingStatus();
             if (started == 0) {
-                if (param_3 != 0) {
+                if (audio != 0) {
                     FUN_00476bf0(handle);
                 }
                 started = FUN_00476680();
@@ -1710,7 +1711,7 @@ int FUN_004766f0(struct MovieHandle *handle, void *param_2, int param_3) {
             while (target == prev) {
                 target = (unsigned int)((FUN_00476680() - started) * handle->field_4) / 1000;
             }
-            if (param_3 != 0) {
+            if (audio != 0) {
                 FUN_00476d20(target, prev);
             }
             prev = target;
