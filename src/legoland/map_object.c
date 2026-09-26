@@ -1630,7 +1630,7 @@ void FUN_00460560(int index) {
 
     ov = (struct Overlay *)OverlayList;
     if (OverlayList == 0) {
-        DAT_00832be0[index] = 1;
+        MapStats.field_3e0[index] = 1;
         return;
     }
     do {
@@ -1695,7 +1695,7 @@ void FUN_00460560(int index) {
         }
         ov = ov->next;
     } while (ov != 0);
-    DAT_00832be0[index] = 1;
+    MapStats.field_3e0[index] = 1;
 }
 
 // FUNCTION: LEGOLAND 0x004608c0
@@ -1834,7 +1834,7 @@ void FUN_004608c0(int *param_1, RECT *param_2) {
         if (ov->field_20 != 0) {
             FUN_00485f00((struct Sprite *)ov->field_20, ov->field_14 - dx, ov->field_18 - dy);
             frame = ov->field_10;
-            if ((char)((unsigned int)frame >> 8) != 0 && (&DAT_00832bdc)[(int)(unsigned int)frame >> 8] != 0) {
+            if ((char)((unsigned int)frame >> 8) != 0 && (&MapStats.field_3dc)[(int)(unsigned int)frame >> 8] != 0) {
                 if ((frame & 0xff) == 0) {
                     draw_x = ov->field_14 - dx;
                     draw_y = ov->field_18 - dy;
@@ -2934,29 +2934,17 @@ LEGO_EXPORT void PlayAppropriateBuildEffect(struct ObjClass *obj, int *coords) {
 
 // FUNCTION: LEGOLAND 0x00462dd0
 LEGO_EXPORT void ResetMapAI(void) {
-    unsigned int *p;
-    int i;
-
-    p = &MapStats;
-    for (i = 0xfc; i != 0; i--) {
-        *p = 0;
-        p++;
-    }
-    DAT_0083291c = 0;
-    MapStats = 0x1fff;
-    p = (unsigned int *)DAT_00832bb0;
-    for (i = 6; i != 0; i--) {
-        *p = 0x2020202;
-        p++;
-    }
-    *(unsigned char *)p = 2;
-    DAT_00832928 = 0xffffe0c0;
-    DAT_0083292c = 0xfffffc18;
-    DAT_00832930 = 100;
-    DAT_00832934 = 1000;
-    DAT_00832938 = 5000;
-    DAT_00832bc9 = 0;
-    DAT_00832984 = 0;
+    memset(&MapStats, 0, sizeof(MapStats));
+    MapStats.field_11c = 0;
+    MapStats.field_0 = 0x1fff;
+    memset(MapStats.field_3b0, 2, sizeof(MapStats.field_3b0));
+    MapStats.field_128 = 0xffffe0c0;
+    MapStats.field_12c = 0xfffffc18;
+    MapStats.field_130 = 100;
+    MapStats.field_134 = 1000;
+    MapStats.field_138 = 5000;
+    MapStats.field_3c9 = 0;
+    MapStats.field_184 = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00462e50
@@ -2966,7 +2954,7 @@ void FUN_00462e50(unsigned int index, unsigned int value) {
 
     ecx = index * 5;
     edx = index + ecx * 2;
-    DAT_00832824[edx] = value;
+    MapStats.field_24[edx] = value;
 }
 
 // FUNCTION: LEGOLAND 0x00462e70
@@ -2976,23 +2964,23 @@ void FUN_00462e70(unsigned int index, unsigned int value) {
 
     ecx = index * 5;
     edx = index + ecx * 2;
-    DAT_00832828[edx] = value;
+    MapStats.field_28[edx] = value;
 }
 
 // FUNCTION: LEGOLAND 0x00462e90
 void FUN_00462e90(void) {
-    DAT_00832824[0] = 0x32;
-    DAT_00832854 = 0x32;
-    DAT_00832828[0] = 0x14;
-    DAT_0083287c = 0;
-    DAT_00832880 = 0;
-    DAT_008328a8 = 0;
-    DAT_008328ac = 0;
-    DAT_00832850 = 0x21;
-    DAT_008328d4 = 0x21;
-    DAT_008328d8 = 0x28;
-    DAT_00832900 = 0x21;
-    DAT_00832904 = 0x28;
+    MapStats.field_24[0] = 0x32;
+    MapStats.field_54 = 0x32;
+    MapStats.field_28[0] = 0x14;
+    MapStats.field_7c = 0;
+    MapStats.field_80 = 0;
+    MapStats.field_a8 = 0;
+    MapStats.field_ac = 0;
+    MapStats.field_50 = 0x21;
+    MapStats.field_d4 = 0x21;
+    MapStats.field_d8 = 0x28;
+    MapStats.field_100 = 0x21;
+    MapStats.field_104 = 0x28;
 }
 
 // FUNCTION: LEGOLAND 0x00462ef0
@@ -3014,10 +3002,10 @@ LEGO_EXPORT void DoMapAI(void) {
 
     if (((unsigned char)DAT_008119a4 & 0x3f) != 0) {
         i = 0;
-        x = DAT_00832804;
+        x = MapStats.field_4;
         do {
-            if (DAT_0083280c == 0) {
-                p = &DAT_0083282c;
+            if (MapStats.field_c == 0) {
+                p = &MapStats.field_2c;
                 do {
                     p[1] = 0;
                     p[0] = 0;
@@ -3025,106 +3013,106 @@ LEGO_EXPORT void DoMapAI(void) {
                     p[3] = 0;
                     p = p + 0xb;
                 } while ((int)p < 0x832934);
-                DAT_0083280c = DAT_0083280c + 1;
-                DAT_00832804 = 0;
-                DAT_00832808 = 0;
+                MapStats.field_c = MapStats.field_c + 1;
+                MapStats.field_4 = 0;
+                MapStats.field_8 = 0;
                 x = 0;
-            } else if (DAT_0083280c == 1) {
-                if ((int)x < 0 || lpConfig->width <= (int)x || DAT_00832808 < 0 || lpConfig->height <= DAT_00832808) {
+            } else if (MapStats.field_c == 1) {
+                if ((int)x < 0 || lpConfig->width <= (int)x || MapStats.field_8 < 0 || lpConfig->height <= MapStats.field_8) {
                     tile = 0;
                 } else {
-                    tile = (struct MapElement *)((int)GameMap[DAT_00832808] + x * 0x14);
+                    tile = (struct MapElement *)((int)GameMap[MapStats.field_8] + x * 0x14);
                 }
                 if ((tile->field_10 & 1) == 0) {
                     if ((tile->flags & 0x88) != 0 && tile->field_0 != 0) {
                         obj = ((struct EditObject *)tile->field_0)->obj;
                         type = obj->type;
                         if (type != 0) {
-                            (&DAT_0083282c)[type * 0xb] = (&DAT_0083282c)[type * 0xb] + 1;
+                            (&MapStats.field_2c)[type * 0xb] = (&MapStats.field_2c)[type * 0xb] + 1;
                             xb = *((unsigned char *)&tile->field_4);
-                            x = DAT_00832804;
-                            if (xb == DAT_00832804 && (yb = *((unsigned char *)&tile->field_4 + 1), yb == DAT_00832808) &&
-                                (r = FUN_0044f360((int)obj, &xb), x = DAT_00832804, r != 0)) {
-                                (&DAT_00832830)[obj->type * 0xb] = (&DAT_00832830)[obj->type * 0xb] + 1;
+                            x = MapStats.field_4;
+                            if (xb == MapStats.field_4 && (yb = *((unsigned char *)&tile->field_4 + 1), yb == MapStats.field_8) &&
+                                (r = FUN_0044f360((int)obj, &xb), x = MapStats.field_4, r != 0)) {
+                                (&MapStats.field_30)[obj->type * 0xb] = (&MapStats.field_30)[obj->type * 0xb] + 1;
                                 type = obj->type;
                                 r = GetObjSalvageValue((unsigned int)obj, tile->field_11);
-                                (&DAT_00832834)[type * 0xb] = (&DAT_00832834)[type * 0xb] + r;
-                                (&DAT_00832838)[obj->type * 0xb] = (&DAT_00832838)[obj->type * 0xb] + (int)*(short *)((char *)obj + 0x2e);
-                                x = DAT_00832804;
+                                (&MapStats.field_34)[type * 0xb] = (&MapStats.field_34)[type * 0xb] + r;
+                                (&MapStats.field_38)[obj->type * 0xb] = (&MapStats.field_38)[obj->type * 0xb] + (int)*(short *)((char *)obj + 0x2e);
+                                x = MapStats.field_4;
                             }
                         }
                     }
                 } else {
-                    DAT_00832830 = DAT_00832830 + 1;
-                    DAT_0083282c = DAT_0083282c + 1;
-                    DAT_00832838 = DAT_00832838 + 1;
+                    MapStats.field_30 = MapStats.field_30 + 1;
+                    MapStats.field_2c = MapStats.field_2c + 1;
+                    MapStats.field_38 = MapStats.field_38 + 1;
                 }
-                DAT_00832804 = x + 1;
-                x = DAT_00832804;
-                if (lpConfig->width <= (int)DAT_00832804) {
-                    DAT_00832808 = DAT_00832808 + 1;
-                    DAT_00832804 = 0;
+                MapStats.field_4 = x + 1;
+                x = MapStats.field_4;
+                if (lpConfig->width <= (int)MapStats.field_4) {
+                    MapStats.field_8 = MapStats.field_8 + 1;
+                    MapStats.field_4 = 0;
                     x = 0;
-                    if (lpConfig->height <= DAT_00832808) {
-                        DAT_0083280c = DAT_0083280c + 1;
+                    if (lpConfig->height <= MapStats.field_8) {
+                        MapStats.field_c = MapStats.field_c + 1;
                     }
                 }
-            } else if (DAT_0083280c == 2) {
-                DAT_0083280c = 0;
-                DAT_00832918 = 0;
-                p = &DAT_00832820;
+            } else if (MapStats.field_c == 2) {
+                MapStats.field_c = 0;
+                MapStats.field_118 = 0;
+                p = &MapStats.field_20;
                 i = 6;
                 do {
                     p[0] = p[5];
                     p[-1] = p[3];
                     p[-4] = p[4];
                     p[-2] = p[6];
-                    DAT_00832918 = DAT_00832918 + p[-1];
+                    MapStats.field_118 = MapStats.field_118 + p[-1];
                     p = p + 0xb;
                 } while ((int)p < 0x832928);
-                DAT_00832818 = DAT_00832818 / 100;
-                v1 = (int)(DAT_00832824[0] * DAT_0083281c) / 100;
-                if ((int)(DAT_00832828[0] * 100) < v1) {
-                    v1 = (int)(DAT_00832828[0] * 100);
+                MapStats.field_18 = MapStats.field_18 / 100;
+                v1 = (int)(MapStats.field_24[0] * MapStats.field_1c) / 100;
+                if ((int)(MapStats.field_28[0] * 100) < v1) {
+                    v1 = (int)(MapStats.field_28[0] * 100);
                 }
-                v2 = DAT_00832850 * DAT_00832844;
-                if (DAT_00832854 * 100 <= v2) {
-                    v2 = DAT_00832854 * 100;
+                v2 = MapStats.field_50 * MapStats.field_44;
+                if (MapStats.field_54 * 100 <= v2) {
+                    v2 = MapStats.field_54 * 100;
                 }
-                v3 = DAT_008328d4 * DAT_008328c8;
-                if (DAT_008328d8 * 100 <= v3) {
-                    v3 = DAT_008328d8 * 100;
+                v3 = MapStats.field_d4 * MapStats.field_c8;
+                if (MapStats.field_d8 * 100 <= v3) {
+                    v3 = MapStats.field_d8 * 100;
                 }
-                v4 = DAT_00832900 * DAT_008328f4;
-                if (DAT_00832904 * 100 <= v4) {
-                    v4 = DAT_00832904 * 100;
+                v4 = MapStats.field_100 * MapStats.field_f4;
+                if (MapStats.field_104 * 100 <= v4) {
+                    v4 = MapStats.field_104 * 100;
                 }
-                DAT_0083291c = (v4 + v1 + v2 + v3) / 100;
-                if ((int)DAT_0083291c < (int)DAT_00832924) {
-                    DAT_0083291c = DAT_00832924;
+                MapStats.field_11c = (v4 + v1 + v2 + v3) / 100;
+                if ((int)MapStats.field_11c < (int)MapStats.field_124) {
+                    MapStats.field_11c = MapStats.field_124;
                 }
-                if ((int)DAT_00832920 < (int)DAT_0083291c) {
-                    DAT_0083291c = DAT_00832920;
+                if ((int)MapStats.field_120 < (int)MapStats.field_11c) {
+                    MapStats.field_11c = MapStats.field_120;
                 }
-                x = DAT_00832804;
-                if ((int)(unsigned int)lpConfig->field_1a < (int)DAT_0083291c) {
-                    DAT_0083291c = lpConfig->field_1a;
+                x = MapStats.field_4;
+                if ((int)(unsigned int)lpConfig->field_1a < (int)MapStats.field_11c) {
+                    MapStats.field_11c = lpConfig->field_1a;
                 }
             }
             i = i + 1;
         } while (i < 0x100);
         return;
     }
-    p = &DAT_00832814;
+    p = &MapStats.field_14;
     do {
-        if (p != &DAT_00832814) {
+        if (p != &MapStats.field_14) {
             *p = 0;
         }
         p = p + 0xb;
     } while ((int)p < 0x83291c);
     for (cls = (unsigned int *)ObjectClassList; cls != 0; cls = (unsigned int *)*cls) {
         if (*(short *)(cls + 8) != 0 && cls[2] != 0) {
-            (&DAT_00832814)[*(short *)(cls + 8) * 0xb] = (&DAT_00832814)[*(short *)(cls + 8) * 0xb] + 1;
+            (&MapStats.field_14)[*(short *)(cls + 8) * 0xb] = (&MapStats.field_14)[*(short *)(cls + 8) * 0xb] + 1;
         }
     }
 }
@@ -3143,7 +3131,7 @@ void FUN_004632b0(void) {
     total = 0;
     y = 0x14;
     names = (char **)&DAT_004bb6bc;
-    p = (int *)&DAT_00832828[0];
+    p = (int *)&MapStats.field_28[0];
     do {
         prod = p[-4] * p[-1];
         cap = *p * 100;
@@ -3162,7 +3150,7 @@ void FUN_004632b0(void) {
     } while (y < 0x8c);
     // STRING: LEGOLAND 0x004b9c40
     sprintf(buf, "Tot Capacity = %.2f (limit %d - %d) = %d", (double)((float)total * DAT_004ab518),
-        DAT_00832924, DAT_00832920, DAT_0083291c);
+        MapStats.field_124, MapStats.field_120, MapStats.field_11c);
     Print(SPRITE_ClipRect.right, SPRITE_ClipRect.top + 0x96, buf, 2);
 }
 
@@ -3170,19 +3158,19 @@ void FUN_004632b0(void) {
 LEGO_EXPORT void RateBlokeOnLeaving(int param_1) {
     int rating;
 
-    if (param_1 < DAT_00832928) {
+    if (param_1 < MapStats.field_128) {
         rating = 0;
-    } else if (param_1 < DAT_00832930) {
+    } else if (param_1 < MapStats.field_130) {
         rating = 1;
-    } else if (param_1 < DAT_00832934) {
+    } else if (param_1 < MapStats.field_134) {
         rating = 2;
     } else {
-        rating = (DAT_00832938 <= param_1) + 3;
+        rating = (param_1 >= MapStats.field_138) + 3;
     }
-    *((char *)DAT_00832bb0 + DAT_00832bc9) = (char)rating;
-    DAT_00832bc9 = DAT_00832bc9 + 1;
-    if (DAT_00832bc9 == 0x19) {
-        DAT_00832bc9 = 0;
+    MapStats.field_3b0[MapStats.field_3c9] = (char)rating;
+    MapStats.field_3c9 = MapStats.field_3c9 + 1;
+    if (MapStats.field_3c9 == 0x19) {
+        MapStats.field_3c9 = 0;
     }
 }
 
@@ -3212,7 +3200,7 @@ void FUN_00463460(struct MapElement *tile, int *coords) {
             }
             if ((flags & 0x200) == 0) {
                 power = FindObjectsPower(obj);
-                if (0 < power && (DAT_00832bd0 = DAT_00832bd0 - power, DAT_00832bd0 < DAT_00832bd4 - (int)DAT_00832bd8)) {
+                if (0 < power && (MapStats.field_3d0 = MapStats.field_3d0 - power, MapStats.field_3d0 < MapStats.field_3d4 - (int)MapStats.field_3d8)) {
                     FUN_0045a0d0();
                 }
             }
@@ -3227,12 +3215,12 @@ int FUN_00463520(void) {
     int diff;
     int quotient;
 
-    if (DAT_00832980 == 0) {
+    if (MapStats.field_180 == 0) {
         return 0;
     }
     curr = FUN_00499460();
     diff = curr - DAT_00667d58;
-    quotient = 0x168 / (int)DAT_00832980;
+    quotient = 0x168 / (int)MapStats.field_180;
     if (diff > quotient) {
         DAT_00667d58 = FUN_00499460();
         return 1;

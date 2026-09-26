@@ -271,6 +271,84 @@ struct ScreenState {
 // per-TU inline externs are migrated to use this header in a later phase.
 // ---------------------------------------------------------------------------
 // 0x004ab38c
+/* 0x832800..0x832bf0: map AI statistics (ResetMapAI clears all 0x3f0 bytes). */
+struct MapStats {
+    /* 0x000 */ unsigned int field_0;
+    /* 0x004 */ int field_4;
+    /* 0x008 */ int field_8;
+    /* 0x00c */ int field_c;
+    unsigned char pad_10[0x4];
+    /* 0x014 */ int field_14;
+    /* 0x018 */ int field_18;
+    /* 0x01c */ int field_1c;
+    /* 0x020 */ int field_20;
+    /* 0x024 */ unsigned int field_24[1];
+    /* 0x028 */ unsigned int field_28[1];
+    /* 0x02c */ int field_2c;
+    /* 0x030 */ int field_30;
+    /* 0x034 */ int field_34;
+    /* 0x038 */ int field_38;
+    unsigned char pad_3c[0x8];
+    /* 0x044 */ int field_44;
+    unsigned char pad_48[0x8];
+    /* 0x050 */ int field_50;
+    /* 0x054 */ int field_54;
+    unsigned char pad_58[0x24];
+    /* 0x07c */ int field_7c;
+    /* 0x080 */ int field_80;
+    unsigned char pad_84[0x24];
+    /* 0x0a8 */ int field_a8;
+    /* 0x0ac */ int field_ac;
+    unsigned char pad_b0[0x18];
+    /* 0x0c8 */ int field_c8;
+    unsigned char pad_cc[0x8];
+    /* 0x0d4 */ int field_d4;
+    /* 0x0d8 */ int field_d8;
+    unsigned char pad_dc[0x18];
+    /* 0x0f4 */ int field_f4;
+    unsigned char pad_f8[0x8];
+    /* 0x100 */ int field_100;
+    /* 0x104 */ int field_104;
+    unsigned char pad_108[0x10];
+    /* 0x118 */ int field_118;
+    /* 0x11c */ unsigned int field_11c;
+    /* 0x120 */ unsigned int field_120;
+    /* 0x124 */ unsigned int field_124;
+    /* 0x128 */ int field_128;
+    /* 0x12c */ int field_12c;
+    /* 0x130 */ int field_130;
+    /* 0x134 */ int field_134;
+    /* 0x138 */ int field_138;
+    /* 0x13c */ int field_13c[13];
+    /* 0x170 */ int field_170;
+    /* 0x174 */ unsigned int field_174;
+    /* 0x178 */ unsigned int field_178;
+    /* 0x17c */ int field_17c;
+    /* 0x180 */ unsigned int field_180;
+    /* 0x184 */ unsigned int field_184;
+    /* 0x188 */ unsigned int field_188;
+    /* 0x18c */ unsigned int field_18c;
+    /* 0x190 */ unsigned int field_190;
+    /* 0x194 */ unsigned int field_194;
+    /* 0x198 */ char field_198[256];
+    /* 0x298 */ char field_298[256];
+    unsigned char pad_398[0x4];
+    /* 0x39c */ int field_39c;
+    /* 0x3a0 */ unsigned int field_3a0;
+    /* 0x3a4 */ unsigned int field_3a4;
+    /* 0x3a8 */ unsigned int field_3a8;
+    /* 0x3ac */ unsigned int field_3ac;
+    /* 0x3b0 */ char field_3b0[0x19];
+    /* 0x3c9 */ signed char field_3c9;
+    unsigned char pad_3ca[0x2];
+    /* 0x3cc */ int field_3cc;
+    /* 0x3d0 */ int field_3d0;
+    /* 0x3d4 */ int field_3d4;
+    /* 0x3d8 */ unsigned int field_3d8;
+    /* 0x3dc */ int field_3dc;
+    /* 0x3e0 */ int field_3e0[4];
+};
+
 extern float DAT_004ab38c;
 // 0x004ab390
 extern float FLOAT_004ab390;
@@ -3468,127 +3546,7 @@ extern void *DAT_00830f9c;
 // 0x00830fc0
 extern LEGO_EXPORT struct Cursor PathCursor;
 // 0x00832800
-extern LEGO_EXPORT unsigned int MapStats;
-// 0x00832804
-extern int DAT_00832804;
-// 0x00832808
-extern int DAT_00832808;
-// 0x0083280c
-extern int DAT_0083280c;
-// 0x00832814
-extern int DAT_00832814;
-// 0x00832818
-extern int DAT_00832818;
-// 0x0083281c
-extern int DAT_0083281c;
-// 0x00832820
-extern int DAT_00832820;
-// 0x00832824
-extern unsigned int DAT_00832824[1];
-// 0x00832828
-extern unsigned int DAT_00832828[1];
-// 0x0083282c
-extern int DAT_0083282c;
-// 0x00832830
-extern int DAT_00832830;
-// 0x00832834
-extern int DAT_00832834;
-// 0x00832838
-extern int DAT_00832838;
-// 0x00832844
-extern int DAT_00832844;
-// 0x00832850
-extern int DAT_00832850;
-// 0x00832854
-extern int DAT_00832854;
-// 0x0083287c
-extern int DAT_0083287c;
-// 0x00832880
-extern int DAT_00832880;
-// 0x008328a8
-extern int DAT_008328a8;
-// 0x008328ac
-extern int DAT_008328ac;
-// 0x008328c8
-extern int DAT_008328c8;
-// 0x008328d4
-extern int DAT_008328d4;
-// 0x008328d8
-extern int DAT_008328d8;
-// 0x008328f4
-extern int DAT_008328f4;
-// 0x00832900
-extern int DAT_00832900;
-// 0x00832904
-extern int DAT_00832904;
-// 0x00832918
-extern int DAT_00832918;
-// 0x0083291c
-extern unsigned int DAT_0083291c;
-// 0x00832920
-extern unsigned int DAT_00832920;
-// 0x00832924
-extern unsigned int DAT_00832924;
-// 0x00832928
-extern int DAT_00832928;
-// 0x0083292c
-extern int DAT_0083292c;
-// 0x00832930
-extern int DAT_00832930;
-// 0x00832934
-extern int DAT_00832934;
-// 0x00832938
-extern int DAT_00832938;
-// 0x0083293c
-extern int DAT_0083293c[13];
-// 0x00832970
-extern int DAT_00832970;
-// 0x00832974
-extern unsigned int DAT_00832974;
-// 0x00832978
-extern unsigned int DAT_00832978;
-// 0x0083297c
-extern int DAT_0083297c;
-// 0x00832980
-extern unsigned int DAT_00832980;
-// 0x00832984
-extern unsigned int DAT_00832984;
-// 0x00832988
-extern unsigned int DAT_00832988;
-// 0x0083298c
-extern unsigned int DAT_0083298c;
-// 0x00832990
-extern unsigned int DAT_00832990;
-// 0x00832994
-extern unsigned int DAT_00832994;
-// 0x00832998
-extern char DAT_00832998[256];
-// 0x00832a98
-extern char DAT_00832a98[256];
-// 0x00832b9c
-extern int DAT_00832b9c;
-// 0x00832ba0
-extern unsigned int DAT_00832ba0;
-extern unsigned int DAT_00832bac;
-// 0x00832ba4
-extern unsigned int DAT_00832ba4;
-// 0x00832ba8
-extern unsigned int DAT_00832ba8;
-// 0x00832bb0
-extern int DAT_00832bb0[6];
-// 0x00832bc9
-extern unsigned char DAT_00832bc9;
-// 0x00832bcc
-extern int DAT_00832bcc;
-// 0x00832bd0
-extern int DAT_00832bd0;
-// 0x00832bd4
-extern int DAT_00832bd4;
-// 0x00832bd8
-extern unsigned int DAT_00832bd8;
-// 0x00832bdc
-extern int DAT_00832bdc;
-extern int DAT_00832be0[4];
+extern LEGO_EXPORT struct MapStats MapStats;
 // 0x00832bf0
 extern LEGO_EXPORT void *PathSprite;
 // 0x0082c6a0

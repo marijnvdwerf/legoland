@@ -92,8 +92,8 @@ void FUN_004784c0(void) {
     lpConfig->field_38 = 1;
     lpConfig->field_34 = 1;
     lpConfig->field_1a = 0xc8;
-    DAT_00832920 = lpConfig->field_1a;
-    DAT_00832924 = 0;
+    MapStats.field_120 = lpConfig->field_1a;
+    MapStats.field_124 = 0;
 
     FUN_004689a0();
     DAT_007fdca4 = FUN_004689f0(0, 0, 0);
@@ -115,10 +115,10 @@ void FUN_004784c0(void) {
     FUN_00482b10();
     FUN_00459960();
 
-    DAT_00832974 = 1000;
-    DAT_00832994 = 0;
-    DAT_00832980 = 0;
-    DAT_00832ba8 = 1;
+    MapStats.field_174 = 1000;
+    MapStats.field_194 = 0;
+    MapStats.field_180 = 0;
+    MapStats.field_3a8 = 1;
 
     FUN_0046b240(0);
 }

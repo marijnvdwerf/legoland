@@ -852,21 +852,21 @@ LEGO_EXPORT int RenderEnergyBar(struct IconNode *node) {
     int scale;
     RECT clip;
 
-    if (DAT_00832bd0 == 0 && DAT_00832bd4 == 0) {
+    if (MapStats.field_3d0 == 0 && MapStats.field_3d4 == 0) {
         fill1 = 0;
         fill2 = 0;
     } else {
-        scale = DAT_00832bd4 * 2;
-        if (DAT_00832bd0 > scale) {
-            scale = DAT_00832bd0;
+        scale = MapStats.field_3d4 * 2;
+        if (MapStats.field_3d0 > scale) {
+            scale = MapStats.field_3d0;
         }
         if (scale == 0) {
             scale = 1;
         }
-        fill1 = (node->field_10 * DAT_00832bd0) / scale;
-        fill2 = (node->field_10 * DAT_00832bd4) / scale;
+        fill1 = (node->field_10 * MapStats.field_3d0) / scale;
+        fill2 = (node->field_10 * MapStats.field_3d4) / scale;
     }
-    if (node->sprite != NULL && DAT_0083298c != 0) {
+    if (node->sprite != NULL && MapStats.field_18c != 0) {
         StoreClipping();
         if (fill1 > DAT_006688c0) {
             DAT_006688c0 += 6;
@@ -900,7 +900,7 @@ LEGO_EXPORT int RenderEnergyBar(struct IconNode *node) {
         PrintSprite(DAT_00668e70, (node->x - DAT_00668e70->width / 2) + DAT_006688bc, node->field_12 / 2 + node->y, 0, (int *)&ctx);
         return 0;
     }
-    if (DAT_0083298c == 0) {
+    if (MapStats.field_18c == 0) {
         PrintSprite(DAT_00668e6c, node->x - 0x15, node->y - 6, 0, (int *)&ctx);
     }
     return 0;
@@ -920,7 +920,7 @@ LEGO_EXPORT int RenderMoneyBar(struct IconNode *node) {
     }
     width = node->field_10;
     bricks = GetBrickCount();
-    fill = (bricks * width) / (int)DAT_00832974;
+    fill = (bricks * width) / (int)MapStats.field_174;
     if (fill < 0) {
         fill = 0;
     }

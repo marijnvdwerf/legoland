@@ -77,22 +77,22 @@ struct EventList {
 void FUN_0046a040(unsigned int param_1, unsigned int param_2) {
     switch (param_1) {
     case 0:
-        DAT_00832984 = param_2;
+        MapStats.field_184 = param_2;
         break;
     case 1:
-        DAT_00832980 = param_2;
+        MapStats.field_180 = param_2;
         break;
     case 3:
-        DAT_00832988 = param_2;
+        MapStats.field_188 = param_2;
         break;
     case 4:
-        DAT_0083298c = param_2;
+        MapStats.field_18c = param_2;
         break;
     case 5:
-        DAT_00832990 = param_2;
+        MapStats.field_190 = param_2;
         break;
     case 6:
-        DAT_00832978 = param_2;
+        MapStats.field_178 = param_2;
         FUN_0044db40();
         break;
     case 7:
@@ -102,13 +102,13 @@ void FUN_0046a040(unsigned int param_1, unsigned int param_2) {
         lpConfig->field_2c = param_2;
         break;
     case 9:
-        DAT_00832974 = param_2;
+        MapStats.field_174 = param_2;
         break;
     case 10:
-        DAT_00832994 = param_2;
+        MapStats.field_194 = param_2;
         break;
     case 0xb:
-        DAT_00832ba8 = param_2;
+        MapStats.field_3a8 = param_2;
     }
     PopInfoSizeMayChange();
 }
@@ -254,9 +254,9 @@ unsigned int FUN_0046a230(struct NerpsArg *arg) {
 // FUNCTION: LEGOLAND 0x0046a300
 unsigned int FUN_0046a300(struct NerpsArg *arg) {
     if (arg->field_14 != 0) {
-        DAT_00832920 = arg->field_1c;
+        MapStats.field_120 = arg->field_1c;
     } else {
-        DAT_00832924 = arg->field_1c;
+        MapStats.field_124 = arg->field_1c;
     }
     return 1;
 }
@@ -275,13 +275,13 @@ unsigned int FUN_0046a350(struct NerpsArg *arg) {
 
 // FUNCTION: LEGOLAND 0x0046a370
 unsigned int FUN_0046a370(struct NerpsArg *arg) {
-    DAT_00832970 = (short)arg->field_1c;
+    MapStats.field_170 = (short)arg->field_1c;
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a390
 unsigned int FUN_0046a390(void) {
-    if (DAT_00832978 == 0) {
+    if (MapStats.field_178 == 0) {
         FUN_0046b240(1);
     }
     return 1;
@@ -993,8 +993,8 @@ unsigned int FUN_0046afe0(struct NerpsArg *arg) {
 
 // FUNCTION: LEGOLAND 0x0046b080
 unsigned int FUN_0046b080(struct NerpsArg *arg) {
-    if (DAT_00832bdc > (int)arg->field_1c) {
-        FUN_004691e0(arg, DAT_00832bdc - arg->field_1c, 0);
+    if (MapStats.field_3dc > (int)arg->field_1c) {
+        FUN_004691e0(arg, MapStats.field_3dc - arg->field_1c, 0);
         return 0;
     }
     return 1;
@@ -1090,11 +1090,11 @@ unsigned int FUN_0046b200(struct TimedEvent *event) {
 
 // FUNCTION: LEGOLAND 0x0046b240
 void FUN_0046b240(unsigned int param_1) {
-    DAT_00832ba4 = param_1;
+    MapStats.field_3a4 = param_1;
     FUN_004748a0((void *)1);
     if (param_1 != 0) {
         FUN_00458be0();
-        if (DAT_00832ba8 != 0) {
+        if (MapStats.field_3a8 != 0) {
             return;
         }
         FUN_00459820(1);
@@ -1103,7 +1103,7 @@ void FUN_0046b240(unsigned int param_1) {
 
 // FUNCTION: LEGOLAND 0x0046b280
 unsigned int FUN_0046b280(void) {
-    return DAT_00832ba4;
+    return MapStats.field_3a4;
 }
 
 // FUNCTION: LEGOLAND 0x0046b290

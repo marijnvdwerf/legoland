@@ -187,7 +187,7 @@ LEGO_EXPORT void InitBlokeAI(struct Bloke *bloke) {
     }
     DAT_006661bc++;
     bloke->field_7f = (unsigned char)Rand_Tween(12, 24);
-    bloke->field_78 = (unsigned short)Rand_Max(DAT_00832918);
+    bloke->field_78 = (unsigned short)Rand_Max(MapStats.field_118);
     bloke->field_7a = (short)Rand_Tween(10, 50);
     bloke->field_7e = (unsigned char)Rand_Tween(0, 140) - 0x14;
     bloke->field_80 = (unsigned char)Rand_Tween(5, 10);
@@ -209,7 +209,7 @@ LEGO_EXPORT void InitBlokeAI(struct Bloke *bloke) {
 
 // FUNCTION: LEGOLAND 0x0044ea40
 unsigned int FUN_0044ea40(void) {
-    return DAT_0083291c;
+    return MapStats.field_11c;
 }
 
 // FUNCTION: LEGOLAND 0x0044ea50
@@ -235,7 +235,7 @@ void FUN_0044ea50(void) {
 
 // FUNCTION: LEGOLAND 0x0044eab0
 int FUN_0044eab0(struct Bloke *bloke) {
-    return (int)(short)bloke->field_78 - (int)bloke->field_7a / 2 > DAT_00832918 * 2;
+    return (int)(short)bloke->field_78 - (int)bloke->field_7a / 2 > MapStats.field_118 * 2;
 }
 
 // FUNCTION: LEGOLAND 0x0044eae0
@@ -255,7 +255,7 @@ char FUN_0044eb10(struct Bloke *bloke) {
     int index;
     int value;
 
-    if (DAT_00832990 == 0) {
+    if (MapStats.field_190 == 0) {
         return 1;
     }
     value = bloke->field_7c;
@@ -276,7 +276,7 @@ void FUN_0044eb50(struct Bloke *bloke) {
     unsigned short value;
     int extended;
 
-    if (DAT_00832990 == 0) {
+    if (MapStats.field_190 == 0) {
         return;
     }
     value = bloke->field_7c;
@@ -599,7 +599,7 @@ int FUN_0044f360(unsigned int param_1, unsigned char *param_2) {
     if ((element->flags & 0x200) != 0) {
         return 0;
     }
-    if (DAT_0083298c != 0 && (element->flags & 0x100) != 0) {
+    if (MapStats.field_18c != 0 && (element->flags & 0x100) != 0) {
         return 0;
     }
     return 1;

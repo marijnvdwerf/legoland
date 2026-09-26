@@ -176,7 +176,7 @@ void FUN_0048abb0(void) {
     FUN_0048ab60();
     AllocBlokeCounters(lpConfig->field_1a);
     FUN_00458940();
-    DAT_00832ba0 = 0;
+    MapStats.field_3a0 = 0;
     FUN_00489ee0();
     UpdateMenu();
     FUN_004663c0();

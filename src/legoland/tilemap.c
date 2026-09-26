@@ -1243,7 +1243,7 @@ LEGO_EXPORT void AddPathTileGFX(struct Point *p, unsigned short param1) {
     *pb = *pb | 0x10;
     *(unsigned short *)((char *)GameMap[p->y] + 8 + p->x * 0x14) = param1;
     FUN_0045d260(p);
-    if (DAT_00832984 != 0) {
+    if (MapStats.field_184 != 0) {
         FUN_0045cd30((int *)p);
     }
 }
@@ -1585,7 +1585,7 @@ LEGO_EXPORT void RemovePathTile(int *param_1, unsigned short param_2) {
     local_8.y = param_1[1] + -1;
     AdjustPathTile(&local_8, param_2);
     RemovePathSquare((struct InstancePos *)param_1);
-    if (DAT_00832984 != 0) {
+    if (MapStats.field_184 != 0) {
         FUN_0045cd70(param_1);
     }
 }

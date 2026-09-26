@@ -1374,8 +1374,8 @@ unsigned int FUN_0049b0d0(struct Worker *a, void *b) {
         int result = FindObjectsPower(b);
         a->flags_c &= 0xfdff;
         if (result > 0) {
-            DAT_00832bd0 += result;
-            if (DAT_00832bd8) {
+            MapStats.field_3d0 += result;
+            if (MapStats.field_3d8) {
                 FUN_0045a060();
             }
         }

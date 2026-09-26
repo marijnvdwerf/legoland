@@ -253,20 +253,20 @@ LEGO_EXPORT void UpdateControllerFromKeyboardData(struct CtrlBuffer *buffer) {
                         lpConfig->field_28 = 0xf;
                         // STRING: LEGOLAND 0x004baed0
                         DBPrintf("CHEAT:Level %d\n", arg);
-                        DAT_00832ba0 = 2;
+                        MapStats.field_3a0 = 2;
                     }
                 } else if (DAT_00668d94[0x12] == '0') {
                     if (DAT_00668d94[0x13] >= '1' && DAT_00668d94[0x13] <= '9') {
                         lpConfig->field_28 = DAT_00668d94[0x13] - 0x2b;
                         arg = lpConfig->field_28;
                         DBPrintf("CHEAT:Level %d\n", arg);
-                        DAT_00832ba0 = 2;
+                        MapStats.field_3a0 = 2;
                     }
                 } else if (DAT_00668d94[0x12] == 'T' && DAT_00668d94[0x13] >= '1' && DAT_00668d94[0x13] <= '5') {
                     lpConfig->field_28 = DAT_00668d94[0x13] - 0x30;
                     arg = lpConfig->field_28;
                     DBPrintf("CHEAT:Level %d\n", arg);
-                    DAT_00832ba0 = 2;
+                    MapStats.field_3a0 = 2;
                 }
                 // STRING: LEGOLAND 0x004baec0
             } else if (_memicmp(":COLDHARDCASH", &DAT_00668d94[7], 0xd) == 0) {
@@ -277,7 +277,7 @@ LEGO_EXPORT void UpdateControllerFromKeyboardData(struct CtrlBuffer *buffer) {
             } else if (_memicmp(":HARDASNAILS", &DAT_00668d94[8], 0xc) == 0) {
                 // STRING: LEGOLAND 0x004bae88
                 DBPrintf("CHEAT:No Ride Wear\n");
-                DAT_00832980 = 0;
+                MapStats.field_180 = 0;
                 // STRING: LEGOLAND 0x004bae7c
             } else if (_memicmp(":PRAISEME", &DAT_00668d94[0xb], 9) == 0) {
                 // STRING: LEGOLAND 0x004bae60
@@ -303,7 +303,7 @@ LEGO_EXPORT void UpdateControllerFromKeyboardData(struct CtrlBuffer *buffer) {
                 FUN_00460560(3);
                 // STRING: LEGOLAND 0x004badf0
             } else if (memcmp(":SHOWCAPACITY", &DAT_00668d94[7], 0xd) == 0) {
-                DAT_00832994 = 1;
+                MapStats.field_194 = 1;
                 // STRING: LEGOLAND 0x004badd0
                 DBPrintf("CHEAT: Capacity Calcs visible\n");
             }

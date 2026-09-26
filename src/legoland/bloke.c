@@ -300,45 +300,45 @@ int FUN_00482cb0(struct Bloke *bloke) {
     case 0xd:
         return 5;
     }
-    if (bloke->field_7a < DAT_0083292c) {
+    if (bloke->field_7a < MapStats.field_12c) {
         return 3;
     }
-    return ((unsigned int)(bloke->field_7a >= DAT_00832934) - 1 & 8) + 2;
+    return ((unsigned int)(bloke->field_7a >= MapStats.field_134) - 1 & 8) + 2;
 }
 
 // FUNCTION: LEGOLAND 0x00482d30
 int FUN_00482d30(struct Bloke *bloke) {
-    if (bloke->field_7a < DAT_0083292c) {
+    if (bloke->field_7a < MapStats.field_12c) {
         return 3;
     }
-    return ((unsigned int)(bloke->field_7a >= DAT_00832934) - 1 & 8) + 2;
+    return ((unsigned int)(bloke->field_7a >= MapStats.field_134) - 1 & 8) + 2;
 }
 
 // FUNCTION: LEGOLAND 0x00482d60
 void FUN_00482d60(unsigned int index, int value) {
-    DAT_0083293c[index] = value;
+    MapStats.field_13c[index] = value;
 }
 
 // FUNCTION: LEGOLAND 0x00482d70
 void FUN_00482d70(void) {
-    DAT_0083293c[4] = 5;
-    DAT_0083293c[5] = 5;
-    DAT_0083293c[6] = 5;
-    DAT_0083293c[0] = -100;
-    DAT_0083293c[1] = -400;
-    DAT_0083293c[2] = 33;
-    DAT_0083293c[3] = 20;
-    DAT_0083293c[7] = -200;
-    DAT_0083293c[8] = -1600;
-    DAT_0083293c[9] = 400;
-    DAT_0083293c[10] = 100;
-    DAT_0083293c[11] = 400;
-    DAT_0083293c[12] = 100;
+    MapStats.field_13c[4] = 5;
+    MapStats.field_13c[5] = 5;
+    MapStats.field_13c[6] = 5;
+    MapStats.field_13c[0] = -100;
+    MapStats.field_13c[1] = -400;
+    MapStats.field_13c[2] = 33;
+    MapStats.field_13c[3] = 20;
+    MapStats.field_13c[7] = -200;
+    MapStats.field_13c[8] = -1600;
+    MapStats.field_13c[9] = 400;
+    MapStats.field_13c[10] = 100;
+    MapStats.field_13c[11] = 400;
+    MapStats.field_13c[12] = 100;
 }
 
 // FUNCTION: LEGOLAND 0x00482df0
 short FUN_00482df0(struct Bloke *bloke, int index, int mul) {
-    int value = (DAT_0083293c[index] * mul) / 100 + bloke->field_7a;
+    int value = (MapStats.field_13c[index] * mul) / 100 + bloke->field_7a;
     if (value < -30000) {
         value = -30000;
     } else if (value > 30000) {

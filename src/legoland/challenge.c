@@ -1152,10 +1152,10 @@ void FUN_00444d70(unsigned int *param_1, unsigned int *param_2, int *param_3) {
     }
     do {
         *param_1 += 1;
-        if (bloke->field_7a > DAT_00832934) {
+        if (bloke->field_7a > MapStats.field_134) {
             *param_2 += 1;
         }
-        if (bloke->field_7a > DAT_00832938) {
+        if (bloke->field_7a > MapStats.field_138) {
             *param_2 += 1;
         }
         value = FUN_0044eb10(bloke);
@@ -2522,7 +2522,7 @@ LAB_00446b71:
                     break;
                 }
                 total = 1;
-                flatp = (int *)((int)DAT_00666058 <= (int)DAT_00832bd0);
+                flatp = (int *)((int)DAT_00666058 <= (int)MapStats.field_3d0);
                 if (flatp == (int *)0x0) {
                     flags = flags | 0x400000;
                 }
@@ -2538,7 +2538,7 @@ LAB_00446b71:
                     rep[(iVar12 + 1) * 0x13 + 13] = (int)uVar5;
                     rep[(iVar12 + 1) * 0x13 + 14] = 0;
                     rep[(iVar12 + 1) * 0x13 + 15] = 1;
-                    rep[(iVar12 + 1) * 0x13 + 16] = DAT_00832bd0;
+                    rep[(iVar12 + 1) * 0x13 + 16] = MapStats.field_3d0;
                     rep[(iVar12 + 1) * 0x13 + 17] = DAT_00666058;
                     rep[(iVar12 + 1) * 0x13 + 18] = DAT_0066605c;
                     rep[(iVar12 + 1) * 0x13 + 19] = 0;
@@ -3646,11 +3646,11 @@ LAB_0044a658:
     *piVar10 = *piVar10 + 1;
     ysave = iVar6 + 0x2e;
 LAB_0044a70c:
-    if ((flags != 0) && (DAT_0083297c != 0)) {
-        if (DAT_00832b9c < 0) {
-            iVar6 = DAT_00832b9c + -1 + DAT_0083297c;
+    if ((flags != 0) && (MapStats.field_17c != 0)) {
+        if (MapStats.field_39c < 0) {
+            iVar6 = MapStats.field_39c + -1 + MapStats.field_17c;
         } else {
-            iVar6 = DAT_0083297c + -1;
+            iVar6 = MapStats.field_17c + -1;
         }
         if (iVar6 < 2) {
             if (0 < iVar6) {
@@ -5047,16 +5047,16 @@ LAB_0044acbb:
 
 // FUNCTION: LEGOLAND 0x0044db20
 void FUN_0044db20(void) {
-    DAT_00832b9c = 0;
+    MapStats.field_39c = 0;
 }
 
 // FUNCTION: LEGOLAND 0x0044db40
 void FUN_0044db40(void) {
     unsigned int now;
 
-    if (DAT_00832978 != 0) {
+    if (MapStats.field_178 != 0) {
         now = GetGameTimer();
-        DAT_00666098 = now + DAT_00832978 * 60000;
+        DAT_00666098 = now + MapStats.field_178 * 60000;
         return;
     }
     DAT_00666098 = 0;
@@ -5064,7 +5064,7 @@ void FUN_0044db40(void) {
 
 // FUNCTION: LEGOLAND 0x0044db80
 void FUN_0044db80(void) {
-    DAT_00832978 = 0;
+    MapStats.field_178 = 0;
     DAT_00666098 = 0;
 }
 
@@ -5081,22 +5081,22 @@ int FUN_0044db90(void) {
         DAT_006687b0 = 4;
         DAT_0066609c = FUN_004453a0();
         if (DAT_0066609c != 0) {
-            v = DAT_00832b9c;
+            v = MapStats.field_39c;
             if (v > 0) {
-                DAT_00832b9c = v + 1;
+                MapStats.field_39c = v + 1;
             } else {
-                DAT_00832b9c = 1;
+                MapStats.field_39c = 1;
             }
             FUN_0046b240(1);
             lpConfig->field_30 = 1;
             FUN_0048a750();
         } else {
-            if (DAT_00832b9c < 0) {
-                DAT_00832b9c = DAT_00832b9c - 1;
+            if (MapStats.field_39c < 0) {
+                MapStats.field_39c = MapStats.field_39c - 1;
             } else {
-                DAT_00832b9c = -1;
+                MapStats.field_39c = -1;
             }
-            if (DAT_0083297c != 0 && DAT_00832b9c <= -DAT_0083297c) {
+            if (MapStats.field_17c != 0 && MapStats.field_39c <= -MapStats.field_17c) {
                 FUN_00459820(2);
             }
         }
@@ -5111,7 +5111,7 @@ int FUN_0044db90(void) {
 
 // FUNCTION: LEGOLAND 0x0044dc70
 void FUN_0044dc70(unsigned int param_1, unsigned int param_2) {
-    DAT_0083297c = param_1;
+    MapStats.field_17c = param_1;
     FUN_0044db20();
     FUN_004597e0(0, (const char *)param_2);
 }

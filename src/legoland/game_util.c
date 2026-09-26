@@ -272,13 +272,13 @@ int FUN_00478cd0(char **argv, int argc) {
             return 0;
         }
         if (DAT_00669054 == 1) {
-            out = &DAT_00832928;
+            out = &MapStats.field_128;
             argv++;
             do {
                 *out = atoi(*argv);
                 argv++;
                 out++;
-            } while ((int)out < (int)DAT_0083293c);
+            } while ((int)out < (int)MapStats.field_13c);
         }
     }
     return 1;
@@ -1590,8 +1590,8 @@ int FUN_0047ac80(struct CommandArgs *arg, int argc) {
             return 0;
         }
         lpConfig->field_1a = (unsigned short)atoi((char *)arg->field_4);
-        DAT_00832920 = lpConfig->field_1a;
-        DAT_00832924 = 0;
+        MapStats.field_120 = lpConfig->field_1a;
+        MapStats.field_124 = 0;
     }
     return 1;
 }
@@ -1606,7 +1606,7 @@ int FUN_0047ace0(struct CommandArgs *arg, int argc) {
         }
         v = atoi((char *)arg->field_4);
         if (DAT_00669054 == 1) {
-            DAT_00832920 = v;
+            MapStats.field_120 = v;
             return 1;
         }
         FUN_0046bb80(1, v);
@@ -1626,7 +1626,7 @@ int FUN_0047ad40(struct CommandArgs *arg, int argc) {
     }
     value = atoi((char *)arg->field_4);
     if (DAT_00669054 == 1) {
-        DAT_00832924 = value;
+        MapStats.field_124 = value;
     } else {
         FUN_0046bb80(0, value);
     }
@@ -1643,7 +1643,7 @@ int FUN_0047ada0(struct CommandArgs *arg, int argc) {
         }
         v = atoi((char *)arg->field_4);
         if (DAT_00669054 == 1) {
-            DAT_00832970 = v;
+            MapStats.field_170 = v;
             return 1;
         }
         FUN_0046bc10(v);

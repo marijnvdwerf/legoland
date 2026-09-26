@@ -259,7 +259,7 @@ void FUN_00458a50(void) {
         AllocBlokeCounters(lpConfig->field_1a);
         FUN_00458940();
         FUN_00489ee0();
-        DAT_00832ba0 = 0;
+        MapStats.field_3a0 = 0;
         UpdateMenu();
         FUN_00490600(1);
         FUN_004911c0(DAT_0066861c, 0);
@@ -364,7 +364,7 @@ int FUN_00458c00(void) {
         }
         UpdateSoundVols();
         DAT_00667c64 = 0;
-        DAT_00832ba0 = 0;
+        MapStats.field_3a0 = 0;
         EditMode.unk4 = 3;
         FUN_00474880();
         FUN_004993c0();
@@ -397,15 +397,15 @@ int FUN_00458c00(void) {
         FUN_004969d0();
         ReadGameButtons();
         DAT_008119a4 = DAT_008119a4 + 1;
-        if (DAT_00832ba0 != 0 && EditMode.unk4 == 3) {
-            if (DAT_00832bac != 0) {
+        if (MapStats.field_3a0 != 0 && EditMode.unk4 == 3) {
+            if (MapStats.field_3ac != 0) {
                 SetPointer(0);
                 FUN_004771f0(DAT_008100c0, 1, 1);
-                DAT_00832bac = 0;
+                MapStats.field_3ac = 0;
                 SetPointer(5);
             }
-            if (DAT_00832ba0 != 3) {
-                if (DAT_00832ba0 == 1) {
+            if (MapStats.field_3a0 != 3) {
+                if (MapStats.field_3a0 == 1) {
                     ((struct ScreenConfig *)lpConfig)->slot += 1;
                 }
                 FUN_0048a750();
@@ -580,7 +580,7 @@ void FUN_00458ee0(void) {
         RenderWorkerOnMouse();
     }
     PopRenderingStatus();
-    if (DAT_00832994 != 0) {
+    if (MapStats.field_194 != 0) {
         if (FUN_00474070() != 0 && FUN_00474080() != 0) {
             FUN_004632b0();
         }
@@ -763,7 +763,7 @@ void FUN_00459710(char *s) {
         semicolon++;
         if (strlen(semicolon) != 0) {
             strcpy(DAT_008100c0, semicolon);
-            DAT_00832bac = 1;
+            MapStats.field_3ac = 1;
         }
         semicolon[-1] = ';';
     }
@@ -781,9 +781,9 @@ void FUN_004597e0(int param0, const char *param1) {
     char *buffer;
 
     if (param0) {
-        buffer = DAT_00832998;
+        buffer = MapStats.field_198;
     } else {
-        buffer = DAT_00832a98;
+        buffer = MapStats.field_298;
     }
 
     if (param1) {
@@ -796,12 +796,12 @@ void FUN_004597e0(int param0, const char *param1) {
 
 // FUNCTION: LEGOLAND 0x00459820
 void FUN_00459820(unsigned int a1) {
-    DAT_00832ba0 = a1;
+    MapStats.field_3a0 = a1;
     if (a1 == 1) {
-        FUN_00459710(DAT_00832998);
+        FUN_00459710(MapStats.field_198);
         return;
     }
     if (a1 == 2) {
-        FUN_00459710(DAT_00832a98);
+        FUN_00459710(MapStats.field_298);
     }
 }

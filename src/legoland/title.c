@@ -119,7 +119,7 @@ unsigned char FUN_0048feb0(unsigned int param_1, unsigned int param_2) {
         KillTitleScreenSprites();
         EditMode.unk4 = 2;
         DAT_0080ff80.unk8 = 6;
-        DAT_00832ba0 = 0;
+        MapStats.field_3a0 = 0;
     }
     return 1;
 }

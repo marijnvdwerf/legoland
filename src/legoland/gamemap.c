@@ -422,15 +422,15 @@ LEGO_EXPORT int FindObjectsPower(void *object) {
 // FUNCTION: LEGOLAND 0x0045a000
 void FUN_0045a000(int power, struct RenderObject *object) {
     object->flags.word &= 0xfeff;
-    DAT_00832bd8 = DAT_00832bd8 - power;
-    DAT_00832bdc = DAT_00832bdc - 1;
+    MapStats.field_3d8 = MapStats.field_3d8 - power;
+    MapStats.field_3dc = MapStats.field_3dc - 1;
 }
 
 // FUNCTION: LEGOLAND 0x0045a030
 void FUN_0045a030(int power, struct RenderObject *object) {
     object->flags.bytes[1] |= 1;
-    DAT_00832bd8 = DAT_00832bd8 + power;
-    DAT_00832bdc = DAT_00832bdc + 1;
+    MapStats.field_3d8 = MapStats.field_3d8 + power;
+    MapStats.field_3dc = MapStats.field_3dc + 1;
 }
 
 // FUNCTION: LEGOLAND 0x0045a060
@@ -443,9 +443,9 @@ void FUN_0045a060(void) {
     while (object != NULL) {
         if (object->flags.bytes[1] & 1) {
             power = -FindObjectsPower(object->vtable->get_power);
-            if (DAT_00832bd4 - (int)DAT_00832bd8 + power <= DAT_00832bd0) {
+            if (MapStats.field_3d4 - (int)MapStats.field_3d8 + power <= MapStats.field_3d0) {
                 FUN_0045a000(power, object);
-                if (DAT_00832bd4 - (int)DAT_00832bd8 == DAT_00832bd0) {
+                if (MapStats.field_3d4 - (int)MapStats.field_3d8 == MapStats.field_3d0) {
                     return;
                 }
             }
@@ -463,7 +463,7 @@ void FUN_0045a0d0(void) {
             power = -FindObjectsPower(object->vtable->get_power);
             if (power > 0) {
                 FUN_0045a030(power, object);
-                if (DAT_00832bd4 - (int)DAT_00832bd8 <= DAT_00832bd0) {
+                if (MapStats.field_3d4 - (int)MapStats.field_3d8 <= MapStats.field_3d0) {
                     break;
                 }
             }
@@ -481,8 +481,8 @@ LEGO_EXPORT void AddObjectsPowerStats(unsigned int classid, struct Point *pos) {
     power = FindObjectsPower(((struct ClassNode *)classid)->iface);
     if (power != 0) {
         if (0 < power) {
-            DAT_00832bd0 = DAT_00832bd0 + power;
-            if (DAT_00832bd8 != 0) {
+            MapStats.field_3d0 = MapStats.field_3d0 + power;
+            if (MapStats.field_3d8 != 0) {
                 FUN_0045a060();
             }
             return;
@@ -493,19 +493,19 @@ LEGO_EXPORT void AddObjectsPowerStats(unsigned int classid, struct Point *pos) {
             cell = (struct MapCell *)((char *)GameMap[pos->y] + pos->x * 0x14);
         }
         amount = (power ^ power >> 0x1f) - (power >> 0x1f);
-        DAT_00832bd4 = DAT_00832bd4 + amount;
-        if (DAT_00832bd0 < DAT_00832bd4 - (int)DAT_00832bd8) {
-            DAT_00832bd8 = DAT_00832bd8 + amount;
-            DAT_00832bdc = DAT_00832bdc + 1;
+        MapStats.field_3d4 = MapStats.field_3d4 + amount;
+        if (MapStats.field_3d0 < MapStats.field_3d4 - (int)MapStats.field_3d8) {
+            MapStats.field_3d8 = MapStats.field_3d8 + amount;
+            MapStats.field_3dc = MapStats.field_3dc + 1;
             cell->flags.bytes[1] |= 1;
         } else {
             cell->flags.word = cell->flags.word & 0xfeff;
         }
-        if (DAT_00832bd0 <= DAT_00832bd4) {
-            DAT_00832bcc = 0;
+        if (MapStats.field_3d0 <= MapStats.field_3d4) {
+            MapStats.field_3cc = 0;
             return;
         }
-        DAT_00832bcc = 100 - (DAT_00832bd4 * 100) / DAT_00832bd0;
+        MapStats.field_3cc = 100 - (MapStats.field_3d4 * 100) / MapStats.field_3d0;
     }
 }
 
@@ -524,32 +524,32 @@ LEGO_EXPORT void RemoveObjectsPowerStats(unsigned int classid, unsigned int coor
                 cell = NULL;
             }
             if ((cell->flags.bytes[1] & 2) == 0) {
-                DAT_00832bd0 = DAT_00832bd0 - power;
-                if (DAT_00832bd0 < DAT_00832bd4 - (int)DAT_00832bd8) {
+                MapStats.field_3d0 = MapStats.field_3d0 - power;
+                if (MapStats.field_3d0 < MapStats.field_3d4 - (int)MapStats.field_3d8) {
                     FUN_0045a0d0();
                 }
             }
         } else {
             amount = (power ^ power >> 0x1f) - (power >> 0x1f);
-            DAT_00832bd4 = DAT_00832bd4 - amount;
-            if (DAT_00832bd8 != 0) {
+            MapStats.field_3d4 = MapStats.field_3d4 - amount;
+            if (MapStats.field_3d8 != 0) {
                 if ((coords & 0xff) < lpConfig->width && (coords >> 8 & 0xff) < lpConfig->height) {
                     cell = (struct MapCell *)((char *)GameMap[coords >> 8 & 0xff] + (coords & 0xff) * 0x14);
                 } else {
                     cell = NULL;
                 }
                 if ((cell->flags.bytes[1] & 1) != 0) {
-                    DAT_00832bd8 = DAT_00832bd8 - amount;
-                    DAT_00832bdc = DAT_00832bdc + -1;
+                    MapStats.field_3d8 = MapStats.field_3d8 - amount;
+                    MapStats.field_3dc = MapStats.field_3dc + -1;
                 }
                 FUN_0045a060();
             }
         }
-        if (DAT_00832bd0 <= DAT_00832bd4) {
-            DAT_00832bcc = 0;
+        if (MapStats.field_3d0 <= MapStats.field_3d4) {
+            MapStats.field_3cc = 0;
             return;
         }
-        DAT_00832bcc = 100 - (DAT_00832bd4 * 100) / DAT_00832bd0;
+        MapStats.field_3cc = 100 - (MapStats.field_3d4 * 100) / MapStats.field_3d0;
     }
 }
 
