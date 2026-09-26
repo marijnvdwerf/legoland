@@ -242,7 +242,7 @@ LEGO_EXPORT void RemoveBlokeFromRide(struct Ride *ride, struct RideNode *node) {
     free(node);
     bloke->flags &= 0xffdf;
     if (ride->type == 5) {
-        if (IsFavouriteFood(bloke, ride->field_c4)) {
+        if (IsFavouriteFood(bloke, ride->element)) {
             counter = GetBlokeCounter(*(struct ObjectClass **)(bloke->field_14 + 0xc), GetBlokeNum(bloke));
             code = CalculateRideCode(bloke->field_7e, *(struct RideStats **)(bloke->field_14 + 0xc), counter);
             FUN_00482df0(bloke, 9, code);
@@ -254,7 +254,7 @@ LEGO_EXPORT void RemoveBlokeFromRide(struct Ride *ride, struct RideNode *node) {
             bloke->field_7c = 0;
         }
     } else {
-        if (IsFavouriteAttraction(bloke, ride->field_c4)) {
+        if (IsFavouriteAttraction(bloke, ride->element)) {
             counter = GetBlokeCounter(*(struct ObjectClass **)(bloke->field_14 + 0xc), GetBlokeNum(bloke));
             code = CalculateRideCode(bloke->field_7e, *(struct RideStats **)(bloke->field_14 + 0xc), counter);
             FUN_00482df0(bloke, 0xb, code);

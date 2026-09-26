@@ -254,13 +254,13 @@ LEGO_EXPORT char *GetVisitorName(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00482c60
-void FUN_00482c60(struct BlokeNameView *person) {
-    if (person->field_4->field_84 != 0) {
-        person->field_83 = (unsigned char)((unsigned int)rand() % 0x5a);
+void FUN_00482c60(struct Bloke *bloke) {
+    if (bloke->person->random != 0) {
+        bloke->field_83 = (unsigned int)rand() % 0x5a;
     } else {
-        person->field_83 = (unsigned char)((unsigned int)rand() % 0x53);
+        bloke->field_83 = (unsigned int)rand() % 0x53;
     }
-    person->field_84 = (unsigned char)((unsigned int)rand() % 0x6b);
+    bloke->field_84 = (unsigned int)rand() % 0x6b;
 }
 
 // FUNCTION: LEGOLAND 0x00482cb0
@@ -431,7 +431,7 @@ void FUN_00483090(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004830c0
-LEGO_EXPORT struct Bloke *MakeBloke(void) {
+LEGO_EXPORT struct Bloke *MakeBloke(int param_1) {
     struct Bloke *bloke = NewBloke();
     if (bloke != NULL) {
         ClearBlokeCounters(GetBlokeNum(bloke));

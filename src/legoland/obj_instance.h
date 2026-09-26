@@ -4,6 +4,7 @@
 #include "legoland.h"
 
 struct Bloke;
+struct Element;
 struct Sprite;
 struct Person;
 
@@ -40,7 +41,7 @@ struct Ride {
     /* 0x50 */ unsigned char pad_50[0x64 - 0x50];
     /* 0x64 */ struct Sprite *layer;
     /* 0x68 */ unsigned char pad_68[0xc4 - 0x68];
-    /* 0xc4 */ unsigned int field_c4;
+    /* 0xc4 */ struct Element *element; /* this ride's LLIDB element */
     /* 0xc8 */ unsigned char pad_c8[0xcc - 0xc8];
     /* 0xcc */ struct RideNode *riders;
 };

@@ -101,7 +101,7 @@ struct SpaceTowerSeatData {
 };
 
 struct MapElement {
-    /* 0x00 */ unsigned int field_0;
+    /* 0x00 */ struct Element *field_0; /* class of the object on this tile */
     /* 0x04 */ unsigned char field_4;
     /* 0x05 */ unsigned char field_5;
     /* 0x06 */ unsigned short field_6;
@@ -634,17 +634,13 @@ extern int DAT_004b8328;
 // 0x004b832c
 extern int DAT_004b832c;
 // 0x004b8334
-extern int DAT_004b8334;
-// 0x004b8338
-extern int DAT_004b8338;
-// 0x004b8340
-extern int DAT_004b8340;
+extern int DAT_004b8334[4];
 // 0x004b8344
 extern char DAT_004b8344;
 // 0x004b8348
 extern char *PTR_DAT_004b8348[8];
 // 0x004b8368
-extern void (*PTR_Bloke_DoNothing_004b8368[16])(void *);
+extern void (*PTR_Bloke_DoNothing_004b8368[16])(struct Bloke *);
 // 0x004b8710
 extern unsigned char DAT_004b8710[0x40];
 // 0x004b8750
@@ -1697,13 +1693,13 @@ extern char DAT_006660b0[256];
 // 0x006661bc
 extern int DAT_006661bc;
 // 0x006661c0
-extern unsigned int DAT_006661c0;
+extern struct Element *DAT_006661c0;
 // 0x006661c4
-extern unsigned int DAT_006661c4;
+extern struct Element *DAT_006661c4;
 // 0x006661c8
 extern int DAT_006661c8;
 // 0x006661cc
-extern char DAT_006661cc;
+extern char DAT_006661cc[8][100];
 // 0x006664ec
 extern int DAT_006664ec;
 // 0x006664f8
@@ -3157,7 +3153,9 @@ extern int DAT_00813afc;
 // 0x00813b00
 extern LEGO_EXPORT struct CtrlBuffer *CONTROLLERBUFFER;
 // 0x00813b04
-extern char DAT_00813b04[28];
+extern char DAT_00813b04[4];
+// 0x00813b08
+extern unsigned int DAT_00813b08; /* letter of the bloke being processed */
 // 0x00813b20
 extern unsigned char DAT_00813b20[0x300];
 // 0x00813e20

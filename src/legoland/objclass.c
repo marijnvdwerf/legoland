@@ -650,7 +650,7 @@ LEGO_EXPORT void BuildObjInfoList(void) {
             } else {
                 origin = NULL;
             }
-            cls = (struct ObjClassInfo *)*(int *)(origin->field_0 + 0xc);
+            cls = origin->field_0->data;
             if (cls->type != 0 && cls->type != 2 && (origin->flags & 0x400) == 0) {
                 for (node = DAT_00669248; node != NULL; node = node->next) {
                     if (node->classid == (int)cls) {

@@ -472,22 +472,16 @@ int DAT_004b8328;
 int DAT_004b832c;
 
 // GLOBAL: LEGOLAND 0x004b8334
-int DAT_004b8334;
-
-// GLOBAL: LEGOLAND 0x004b8338
-int DAT_004b8338;
-
-// GLOBAL: LEGOLAND 0x004b8340
-int DAT_004b8340;
+int DAT_004b8334[4] = {0}; /* bloke tiredness thresholds */
 
 // GLOBAL: LEGOLAND 0x004b8344
-char DAT_004b8344;
+char DAT_004b8344 = 0;
 
 // GLOBAL: LEGOLAND 0x004b8348
-char *PTR_DAT_004b8348[8];
+char *PTR_DAT_004b8348[8] = {0};
 
 // GLOBAL: LEGOLAND 0x004b8368
-void (*PTR_Bloke_DoNothing_004b8368[16])(void *);
+void (*PTR_Bloke_DoNothing_004b8368[16])(struct Bloke *) = {0};
 
 // GLOBAL: LEGOLAND 0x004b8710
 unsigned char DAT_004b8710[0x40];
@@ -2103,16 +2097,16 @@ char DAT_006660b0[256];
 int DAT_006661bc;
 
 // GLOBAL: LEGOLAND 0x006661c0
-unsigned int DAT_006661c0;
+struct Element *DAT_006661c0;
 
 // GLOBAL: LEGOLAND 0x006661c4
-unsigned int DAT_006661c4;
+struct Element *DAT_006661c4;
 
 // GLOBAL: LEGOLAND 0x006661c8
 int DAT_006661c8;
 
 // GLOBAL: LEGOLAND 0x006661cc
-char DAT_006661cc;
+char DAT_006661cc[8][100];
 
 // GLOBAL: LEGOLAND 0x006664ec
 int DAT_006664ec;
@@ -4284,7 +4278,10 @@ int DAT_00813afc;
 LEGO_EXPORT struct CtrlBuffer *CONTROLLERBUFFER;
 
 // GLOBAL: LEGOLAND 0x00813b04
-char DAT_00813b04[28];
+char DAT_00813b04[4];
+
+// GLOBAL: LEGOLAND 0x00813b08
+unsigned int DAT_00813b08;
 
 // GLOBAL: LEGOLAND 0x00813b20
 unsigned char DAT_00813b20[0x300];

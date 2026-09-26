@@ -2235,7 +2235,7 @@ LEGO_EXPORT unsigned int GetObjectClassAndInstance(int *coords, unsigned short *
             *out = *(unsigned short *)&local.field_4;
         }
         if ((local.flags & 0x88) != 0 && local.field_0 != 0) {
-            return *(unsigned int *)(local.field_0 + 0xc);
+            return (unsigned int)local.field_0->data;
         }
     }
     return 0;

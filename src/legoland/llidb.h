@@ -19,6 +19,7 @@ struct Element {
     void *data;
     unsigned int field_10;
 };
+typedef struct Element Element;
 
 #define LLIDB_FLAG_LEVEL 0x4
 #define LLIDB_FLAG_LOADED 0x1

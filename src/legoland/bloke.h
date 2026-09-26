@@ -13,6 +13,7 @@
    man3d.c keeps its own thin render-handle view too (its offset 4 is the owned
    Person*, not this list's prev pointer). */
 struct Person;
+struct Element;
 struct BinVFile;
 
 /* A bloke's reference into a loaded BNV file: the file pointer is re-resolved
@@ -85,11 +86,13 @@ struct Bloke {
     unsigned char field_80;
     unsigned char field_81;
     unsigned char field_82;
-    unsigned char pad_83[0x88 - 0x83];
-    unsigned int favourite_attraction_0;
-    unsigned int favourite_attraction_1;
-    unsigned int favourite_attraction_2;
-    unsigned int favourite_food;
+    unsigned char field_83;
+    unsigned char field_84;
+    unsigned char pad_85[0x88 - 0x85];
+    struct Element *favourite_attraction_0;
+    struct Element *favourite_attraction_1;
+    struct Element *favourite_attraction_2;
+    struct Element *favourite_food;
     struct Navigator nav;
     unsigned char pad_a4[0xac - 0xa4];
 };
@@ -118,12 +121,12 @@ struct Person;
 LEGO_EXPORT char *GetVisitorName(struct Bloke *bloke);
 int FUN_00482cb0(struct Bloke *bloke);
 struct BlokeNameView;
-void FUN_00482c60(struct BlokeNameView *person);
+void FUN_00482c60(struct Bloke *bloke);
 short FUN_00482df0(struct Bloke *bloke, int index, int mul);
 void FUN_00482d60(unsigned int index, int value);
 void FUN_00482d70(void);
 void FUN_00483090(void);
-LEGO_EXPORT struct Bloke *MakeBloke(void);
+LEGO_EXPORT struct Bloke *MakeBloke(int param_1);
 LEGO_EXPORT struct Bloke *NewBlokeWOList(void *param_2);
 LEGO_EXPORT struct Bloke *NewBloke(void);
 LEGO_EXPORT int GetBlokeNum(struct Bloke *bloke);

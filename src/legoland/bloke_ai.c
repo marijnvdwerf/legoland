@@ -25,17 +25,6 @@ struct BlokeList {
     struct Bloke *head;
 };
 
-struct AttractionElement {
-    unsigned char pad_0[8];
-    unsigned int field_8;
-    struct AttractionInfo *field_c;
-};
-
-struct AttractionInfo {
-    unsigned char pad_0[0x20];
-    short field_20;
-};
-
 struct BlokeRideState {
     unsigned char pad_0[0x4];
     int *ride;
@@ -66,56 +55,49 @@ LEGO_EXPORT void NewLongTermAction(struct Bloke *bloke, unsigned short action) {
 }
 
 // FUNCTION: LEGOLAND 0x0044e790
-unsigned int FUN_0044e790(void) {
-    struct AttractionElement *element;
+Element *FUN_0044e790(void) {
+    Element *element;
+    Ride *ride;
     int count;
     int start;
     int index;
-    unsigned int roll;
     int remaining;
-    short field;
 
     count = LLIDB_GetCount();
     index = rand() % count;
-    roll = rand();
-    remaining = roll & 0x1f;
+    remaining = rand() & 0x1f;
     start = index;
-    if (remaining-- != 0) {
-        do {
-            while (1) {
-                while (1) {
-                    LLIDB_GetElement(index, (struct Element **)&element);
-                    if ((element->field_8 & 0x14) == 0x14) {
-                        break;
-                    }
-                    index++;
-                    if (index >= count) {
-                        index = 0;
-                    }
-                    if (index == start) {
-                        return 0;
-                    }
+    while (remaining-- != 0) {
+        for (;;) {
+            LLIDB_GetElement(index, &element);
+            if ((element->flags & 0x14) != 0x14) {
+                index++;
+                if (index >= count) {
+                    index = 0;
                 }
-                field = element->field_c->field_20;
-                if (field == 0 || field == 5) {
-                    break;
+                if (index == start) {
+                    return NULL;
                 }
-                if (remaining-- == 0) {
-                    return (unsigned int)element;
-                }
+                continue;
+            }
+            ride = element->data;
+            if (ride->type != 0 && ride->type != 5) {
+                break;
             }
             index++;
             if (index >= count) {
                 index = 0;
             }
-        } while (index != start);
-        return 0;
+            if (index == start) {
+                return NULL;
+            }
+        }
     }
-    return (unsigned int)element;
+    return element;
 }
 
 // FUNCTION: LEGOLAND 0x0044e830
-LEGO_EXPORT int IsFavouriteAttraction(struct Bloke *bloke, unsigned int attraction) {
+LEGO_EXPORT int IsFavouriteAttraction(struct Bloke *bloke, struct Element *attraction) {
     if (bloke->favourite_attraction_0 == attraction) {
         return 1;
     }
@@ -126,55 +108,50 @@ LEGO_EXPORT int IsFavouriteAttraction(struct Bloke *bloke, unsigned int attracti
 }
 
 // FUNCTION: LEGOLAND 0x0044e870
-LEGO_EXPORT int IsFavouriteFood(struct Bloke *bloke, unsigned int food) {
+LEGO_EXPORT int IsFavouriteFood(struct Bloke *bloke, struct Element *food) {
     return bloke->favourite_food == food;
 }
 
 // FUNCTION: LEGOLAND 0x0044e890
-unsigned int FUN_0044e890(void) {
-    struct AttractionElement *element;
+Element *FUN_0044e890(void) {
+    Element *element;
+    Ride *ride;
     int count;
     int start;
     int index;
-    unsigned int roll;
     int remaining;
 
     count = LLIDB_GetCount();
     index = rand() % count;
-    roll = rand();
-    remaining = roll & 0x1f;
+    remaining = rand() & 0x1f;
     start = index;
-    if (remaining-- != 0) {
-        do {
-            while (1) {
-                while (1) {
-                    LLIDB_GetElement(index, (struct Element **)&element);
-                    if ((element->field_8 & 0x14) == 0x14) {
-                        break;
-                    }
-                    index++;
-                    if (index >= count) {
-                        index = 0;
-                    }
-                    if (index == start) {
-                        return 0;
-                    }
+    while (remaining-- != 0) {
+        for (;;) {
+            LLIDB_GetElement(index, &element);
+            if ((element->flags & 0x14) != 0x14) {
+                index++;
+                if (index >= count) {
+                    index = 0;
                 }
-                if (element->field_c->field_20 != 5) {
-                    break;
+                if (index == start) {
+                    return NULL;
                 }
-                if (remaining-- == 0) {
-                    return (unsigned int)element;
-                }
+                continue;
+            }
+            ride = element->data;
+            if (ride->type == 5) {
+                break;
             }
             index++;
             if (index >= count) {
                 index = 0;
             }
-        } while (index != start);
-        return 0;
+            if (index == start) {
+                return NULL;
+            }
+        }
     }
-    return (unsigned int)element;
+    return element;
 }
 
 // FUNCTION: LEGOLAND 0x0044e920
@@ -186,20 +163,20 @@ LEGO_EXPORT void InitBlokeAI(struct Bloke *bloke) {
         DAT_006661c4 = ElemID("ENTRANCE 1");
     }
     DAT_006661bc++;
-    bloke->field_7f = (unsigned char)Rand_Tween(12, 24);
-    bloke->field_78 = (unsigned short)Rand_Max(MapStats.total_tiles);
-    bloke->field_7a = (short)Rand_Tween(10, 50);
-    bloke->field_7e = (unsigned char)Rand_Tween(0, 140) - 0x14;
-    bloke->field_80 = (unsigned char)Rand_Tween(5, 10);
-    bloke->field_7c = (unsigned short)Rand_Tween(0, DAT_004b8338);
+    bloke->field_7f = Rand_Tween(12, 24);
+    bloke->field_78 = Rand_Max(MapStats.total_tiles);
+    bloke->field_7a = Rand_Tween(10, 50);
+    bloke->field_7e = Rand_Tween(0, 140) - 0x14;
+    bloke->field_80 = Rand_Tween(5, 10);
+    bloke->field_7c = Rand_Tween(0, DAT_004b8334[1]);
     bloke->field_14 = 0;
     bloke->field_18 = 0;
-    bloke->field_81 = (unsigned char)DAT_004b8344;
+    bloke->field_81 = DAT_004b8344;
     DAT_004b8344++;
     if (DAT_004b8344 > 'Z') {
         DAT_004b8344 = 'A';
     }
-    FUN_00482c60((struct BlokeNameView *)bloke);
+    FUN_00482c60(bloke);
     bloke->favourite_attraction_0 = FUN_0044e790();
     bloke->favourite_attraction_1 = FUN_0044e790();
     bloke->favourite_attraction_2 = FUN_0044e790();
@@ -208,7 +185,7 @@ LEGO_EXPORT void InitBlokeAI(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044ea40
-unsigned int FUN_0044ea40(void) {
+int FUN_0044ea40(void) {
     return MapStats.capacity;
 }
 
@@ -216,20 +193,15 @@ unsigned int FUN_0044ea40(void) {
 void FUN_0044ea50(void) {
     struct Bloke *bloke;
 
-    DAT_006661c8++;
-    if (DAT_006661c8 < 0x1e) {
-        return;
-    }
-    if (DAT_006661bc >= (int)FUN_0044ea40()) {
-        return;
-    }
-    bloke = MakeBloke();
-    if (bloke != 0) {
-        DAT_006661c8 = 0;
-        bloke->field_72 = rand() & 0x7;
-        bloke->field_74 = rand() & 0x7;
-        bloke->field_75 = 1;
-        InitBlokeAI(bloke);
+    if (++DAT_006661c8 >= 0x1e && DAT_006661bc < FUN_0044ea40()) {
+        bloke = MakeBloke(0);
+        if (bloke != NULL) {
+            DAT_006661c8 = 0;
+            bloke->field_72 = rand() & 7;
+            bloke->field_74 = rand() & 7;
+            bloke->field_75 = 1;
+            InitBlokeAI(bloke);
+        }
     }
 }
 
@@ -251,22 +223,15 @@ void FUN_0044eae0(struct Bloke *bloke) {
 
 // FUNCTION: LEGOLAND 0x0044eb10
 char FUN_0044eb10(struct Bloke *bloke) {
-    int *entry;
-    int index;
-    int value;
+    int i;
 
     if (MapStats.field_190 == 0) {
         return 1;
     }
-    value = bloke->field_7c;
-    index = 1;
-    entry = &DAT_004b8334;
-    while ((int)entry < (int)&DAT_004b8344) {
-        if (value < *entry) {
-            return index - 1;
+    for (i = 1; i < 5; i++) {
+        if (bloke->field_7c < DAT_004b8334[i - 1]) {
+            return i - 1;
         }
-        entry++;
-        index++;
     }
     return 4;
 }
@@ -281,14 +246,14 @@ void FUN_0044eb50(struct Bloke *bloke) {
     }
     value = bloke->field_7c;
     extended = value & 0xffff;
-    if (extended >= DAT_004b8340 && (bloke->flags & 0x28) == 0) {
+    if (extended >= DAT_004b8334[3] && (bloke->flags & 0x28) == 0) {
         NewLongTermAction(bloke, 3);
         return;
     }
     if ((DAT_008119a4 & 0x1f) != 0xf) {
         return;
     }
-    if (extended > DAT_004b8340) {
+    if (extended > DAT_004b8334[3]) {
         return;
     }
     bloke->field_7c = (unsigned short)(bloke->field_80 + value);
@@ -356,24 +321,17 @@ void FUN_0044ebf0(struct Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044ed00
-void FUN_0044ed00(char *param_1) {
-    char **slot;
-    int base;
+void FUN_0044ed00(char *msg) {
     int i;
 
-    i = 0;
-    base = DAT_006664ec;
-    slot = PTR_DAT_004b8348;
-    do {
-        *slot = &DAT_006661cc + ((base + i) & 7) * 100;
-        slot++;
-        i++;
-    } while ((int)slot < (int)PTR_Bloke_DoNothing_004b8368);
-    DAT_006664ec = base + 1;
+    for (i = 0; i < 8; i++) {
+        PTR_DAT_004b8348[i] = DAT_006661cc[(DAT_006664ec + i) & 7];
+    }
+    DAT_006664ec++;
     // STRING: LEGOLAND 0x004b8404
-    sprintf(PTR_DAT_004b8348[7], "%c:%s", *(unsigned int *)(DAT_00813b04 + 4), param_1);
+    sprintf(PTR_DAT_004b8348[7], "%c:%s", DAT_00813b08, msg);
     // STRING: LEGOLAND 0x004b83f0
-    DBPrintf("[Bloke %c] - %s\n", *(unsigned int *)(DAT_00813b04 + 4), param_1);
+    DBPrintf("[Bloke %c] - %s\n", DAT_00813b08, msg);
 }
 
 // FUNCTION: LEGOLAND 0x0044ed70
@@ -736,7 +694,7 @@ void FUN_0044f610(struct Bloke *bloke) {
     char msg[100];
     int *element;
 
-    *(unsigned int *)(DAT_00813b04 + 4) = bloke->field_81;
+    DAT_00813b08 = bloke->field_81;
     switch (bloke->param_action) {
     case 0:
         BuildObjInfoList();
@@ -1262,7 +1220,7 @@ void FUN_00450450(struct BlokeRideState *bloke) {
 LEGO_EXPORT void DoHighLevelAI(struct Bloke *bloke) {
     void (*fn)(struct Bloke *);
 
-    fn = (void (*)(struct Bloke *))PTR_Bloke_DoNothing_004b8368[bloke->action];
+    fn = PTR_Bloke_DoNothing_004b8368[bloke->action];
     if (fn != 0) {
         fn(bloke);
     }
@@ -1311,7 +1269,7 @@ void FUN_00450530(struct Bloke *bloke) {
                 continue;
             }
             if (element->field_0 != 0 && (element->flags & 0x80) != 0) {
-                cls = *(struct Ride **)(element->field_0 + 0xc);
+                cls = element->field_0->data;
                 if (abs(origin.x - pos.x) <= cls->range && abs(origin.y - pos.y) <= cls->range) {
                     switch (cls->type) {
                     case 2:
@@ -1319,7 +1277,7 @@ void FUN_00450530(struct Bloke *bloke) {
                         break;
                     case 3:
                         shops += cls->value >> GetBlokeCounter((struct ObjectClass *)cls, GetBlokeNum(bloke));
-                        if ((bloke->flags & 0x20) == 0 && bloke->field_14 != cls->field_c4) {
+                        if ((bloke->flags & 0x20) == 0 && bloke->field_14 != cls->element) {
                             chance = 15 / (GetBlokeCounter((struct ObjectClass *)cls, GetBlokeNum(bloke)) + 1);
                             if (rand() % 100 < chance && bloke->field_e != 0xf) {
                                 t.x = bloke->pos.x >> 8;
@@ -1327,7 +1285,7 @@ void FUN_00450530(struct Bloke *bloke) {
                                 dx = abs(t.x - pos.x);
                                 dy = abs(t.y - pos.y);
                                 if ((int)sqrt(dy * dy + dx * dx) <= 1) {
-                                    bloke->field_14 = cls->field_c4;
+                                    bloke->field_14 = cls->element;
                                     bloke->field_2c = element->field_4;
                                     bloke->field_30 = element->field_5;
                                     NewLongTermAction(bloke, 0xf);
@@ -1347,7 +1305,7 @@ void FUN_00450530(struct Bloke *bloke) {
                             bloke->field_30 = food.y << 8;
                             bloke->param_action = 1;
                             bloke->field_e = 0;
-                            bloke->field_14 = cls->field_c4;
+                            bloke->field_14 = cls->element;
                         }
                         break;
                     case 1:
@@ -1361,7 +1319,7 @@ void FUN_00450530(struct Bloke *bloke) {
                             bloke->field_30 = spot.y << 8;
                             bloke->param_action = 1;
                             bloke->field_e = 0;
-                            bloke->field_14 = cls->field_c4;
+                            bloke->field_14 = cls->element;
                         }
                         break;
                     }
@@ -1399,7 +1357,7 @@ LEGO_EXPORT void ControlPeople(void) {
             return;
         }
         next = bloke->next;
-        *(unsigned int *)(DAT_00813b04 + 4) = bloke->field_81;
+        DAT_00813b08 = bloke->field_81;
         if (FUN_004700c0((unsigned int)bloke) != 0) {
             // STRING: LEGOLAND 0x004b85a8
             DBPrintf("Processing your bloke\n");

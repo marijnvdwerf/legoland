@@ -2003,7 +2003,7 @@ void FUN_00436a40(struct RideObject *obj, TileId tile, struct Cursor *cursor) {
     } else {
         elem = NULL;
     }
-    if (elem->field_0 != DAT_0081cb54->field_c4) {
+    if (elem->field_0 != DAT_0081cb54->element) {
         fake.ride = DAT_0081cb60;
         FUN_00435470(&fake, tile, cursor);
         return;
@@ -2126,7 +2126,7 @@ void FUN_00436dc0(int x, int y, int mask, unsigned short *owner) {
             }
             elem->flags = 8;
             elem->field_10 = 2;
-            elem->field_0 = DAT_0081cb54->field_c4;
+            elem->field_0 = DAT_0081cb54->element;
             *(unsigned short *)&elem->field_4 = tile.id;
             SetMapTile(pt.x, pt.y, *DAT_0081cb58[DAT_004b72e4[mask * 25 + row * 5 + col] >> 8].tiles + (unsigned char)DAT_004b72e4[mask * 25 + row * 5 + col]);
         }
