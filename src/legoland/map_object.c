@@ -1103,7 +1103,8 @@ LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, int
     struct CursorPts *pts;
     struct TileSprite *sprite;
     short size;
-    unsigned char fbits;
+    int fbits;
+    unsigned short flag;
     int built;
     struct FootprintNode rect;
     int x;
@@ -1121,8 +1122,9 @@ LEGO_EXPORT void BuildCursorPtr(struct Cursor *cursor, unsigned int param_2, int
         pts = (struct CursorPts *)cursor;
         pts->count = 0;
         built = FUN_0045f4b0(cursor);
-        fbits = (unsigned char)(((built != 0) + 1) * 4 - 4);
-        *(unsigned char *)((char *)cursor + 0x1428) = fbits;
+        flag = (built != 0) + 1;
+        fbits = (flag - 1) * 4;
+        *(unsigned char *)((char *)cursor + 0x1428) = (unsigned char)fbits;
         for (y = rect.y0; y <= rect.y1; y++) {
             if (rect.x0 <= rect.x1) {
                 half2 = (short)((short)(size * 2) / 2);
