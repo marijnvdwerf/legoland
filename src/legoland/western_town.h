@@ -38,4 +38,4 @@ void FUN_00438c60(struct MapObject *obj);
 void FUN_00438ca0(void);
 void FUN_00438cc0(void);
 void FUN_00438d00(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6);
-void FUN_00438f10(struct MapObject *param_1);
+void FUN_00438f10(struct RideObject *obj);
