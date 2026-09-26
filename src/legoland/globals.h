@@ -2197,7 +2197,7 @@ extern unsigned int DAT_00668f58;
 // 0x00668f5c
 extern void *DAT_00668f5c;
 // 0x00668f60
-extern unsigned int DAT_00668f60;
+extern int DAT_00668f60;
 // 0x00668f64
 extern unsigned int DAT_00668f64;
 // 0x00668f70
@@ -2205,7 +2205,7 @@ extern WAVEFORMATEX DAT_00668f70;
 // 0x00668f84
 extern void *DAT_00668f84;
 // 0x00668f88
-extern unsigned int DAT_00668f88;
+extern int DAT_00668f88;
 // 0x00668f8c
 extern void *DAT_00668f8c;
 // 0x00668f90
