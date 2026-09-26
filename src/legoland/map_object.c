@@ -2251,15 +2251,13 @@ LEGO_EXPORT void SetMapFlags(int x, int y, short value) {
 // FUNCTION: LEGOLAND 0x00461850
 LEGO_EXPORT unsigned int GetObjectClassAndInstance(int *coords, unsigned short *out) {
     struct MapElement local;
-    struct MapElement *tile;
 
     if (coords[0] >= 0 && coords[0] < lpConfig->width && coords[1] >= 0 && coords[1] < lpConfig->height) {
-        tile = (struct MapElement *)((int)GameMap[coords[1]] + coords[0] * 0x14);
-        local = *tile;
+        local = GameMap[coords[1]][coords[0]];
         if (out != 0) {
-            *out = local.field_4;
+            *out = *(unsigned short *)&local.field_4;
         }
-        if ((local.field_10 & 0x88) != 0 && local.field_0 != 0) {
+        if ((local.flags & 0x88) != 0 && local.field_0 != 0) {
             return *(unsigned int *)(local.field_0 + 0xc);
         }
     }
