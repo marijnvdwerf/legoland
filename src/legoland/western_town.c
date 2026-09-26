@@ -1182,147 +1182,74 @@ void FUN_00438cc0(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00438d00
-void FUN_00438d00(struct MapObject *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6) {
-    struct Building *ride = param_1->building;
-    struct RideListElem *elem = ride->list;
+void FUN_00438d00(struct RideObject *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6) {
+    struct Ride *ride = obj->ride;
     char count = 0;
-    int array[10];
-    int *p;
-    int n;
-    unsigned short id;
-    struct Point coords;
+    struct RideNode *node = ride->riders;
+    struct Bloke *blokes[10] = {0};
+    char i;
+    struct Point pos;
 
-    {
-        int *fill = array;
-        int z;
-        array[0] = 0;
-        for (z = 9; fill = fill + 1, z != 0; z--) {
-            *fill = 0;
+    while (node != NULL) {
+        if (*tile == node->tile.id) {
+            blokes[count++] = node->rider;
+        }
+        node = node->next;
+    }
+    if (count == 0) {
+        return;
+    }
+    pos = GetScreenCoordsForObject((unsigned char *)tile, ride);
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 4) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
         }
     }
-    if (elem != NULL) {
-        id = *param_4;
-        do {
-            if (id == elem->id) {
-                array[(int)count] = (int)elem->bloke;
-                count++;
-            }
-            elem = elem->next;
-        } while (elem != NULL);
-        if (count != 0) {
-            coords = GetScreenCoordsForObject((unsigned char *)param_4, ride);
-            if (0 < count) {
-                p = array;
-                n = count;
-                do {
-                    if (*(char *)(*p + 0x60) == 4) {
-                        IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                    }
-                    p = p + 1;
-                    n = n - 1;
-                } while (n != 0);
-                if (0 < count) {
-                    p = array;
-                    n = count;
-                    do {
-                        if (*(char *)(*p + 0x60) == 5) {
-                            IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                        }
-                        p = p + 1;
-                        n = n - 1;
-                    } while (n != 0);
-                    if (0 < count) {
-                        p = array;
-                        n = count;
-                        do {
-                            if (*(char *)(*p + 0x60) == 6) {
-                                IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                            }
-                            p = p + 1;
-                            n = n - 1;
-                        } while (n != 0);
-                    }
-                }
-            }
-            PrintSprite(DAT_0081cb04, coords.x, coords.y, param_6, NULL);
-            if (0 < count) {
-                p = array;
-                n = count;
-                do {
-                    if (*(char *)(*p + 0x60) == 2) {
-                        IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                    }
-                    p = p + 1;
-                    n = n - 1;
-                } while (n != 0);
-                if (0 < count) {
-                    p = array;
-                    n = count;
-                    do {
-                        if (*(char *)(*p + 0x60) == 3) {
-                            IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                        }
-                        p = p + 1;
-                        n = n - 1;
-                    } while (n != 0);
-                    if (0 < count) {
-                        p = array;
-                        n = count;
-                        do {
-                            if (*(char *)(*p + 0x60) == 7) {
-                                IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                            }
-                            p = p + 1;
-                            n = n - 1;
-                        } while (n != 0);
-                        if (0 < count) {
-                            p = array;
-                            n = count;
-                            do {
-                                if (*(char *)(*p + 0x60) == 8) {
-                                    IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                                }
-                                p = p + 1;
-                                n = n - 1;
-                            } while (n != 0);
-                        }
-                    }
-                }
-            }
-            PrintSprite(DAT_0081cb00, coords.x, coords.y, param_6, NULL);
-            if (0 < count) {
-                p = array;
-                n = count;
-                do {
-                    if (*(char *)(*p + 0x60) == 0) {
-                        IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                    }
-                    p = p + 1;
-                    n = n - 1;
-                } while (n != 0);
-                if (0 < count) {
-                    p = array;
-                    n = count;
-                    do {
-                        if (*(char *)(*p + 0x60) == 1) {
-                            IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                        }
-                        p = p + 1;
-                        n = n - 1;
-                    } while (n != 0);
-                    if (0 < count) {
-                        p = array;
-                        n = count;
-                        do {
-                            if (*(char *)(*p + 0x60) == 9) {
-                                IP_RenderBlokeIn3DNow((struct Bloke *)*p);
-                            }
-                            p = p + 1;
-                            n = n - 1;
-                        } while (n != 0);
-                    }
-                }
-            }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 5) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 6) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    PrintSprite(DAT_0081cb04, pos.x, pos.y, param_6, NULL);
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 2) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 3) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 7) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 8) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    PrintSprite(DAT_0081cb00, pos.x, pos.y, param_6, NULL);
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 0) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 1) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
+        }
+    }
+    for (i = 0; i < count; i++) {
+        if (blokes[i]->param_action == 9) {
+            IP_RenderBlokeIn3DNow(blokes[i]);
         }
     }
 }
