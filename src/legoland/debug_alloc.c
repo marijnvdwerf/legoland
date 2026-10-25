@@ -35,7 +35,7 @@ LEGO_EXPORT void *__DEBUG_MALLOC(char *file, int line, unsigned int size) {
     int start;
     int i;
 
-    DAT_00813a10 += size;
+    DebugAllocatedBytes += size;
     if (len >= 11) {
         count = 11;
         start = len - 11;
@@ -59,7 +59,7 @@ LEGO_EXPORT void *__DEBUG_SMALLOC(char *name, unsigned int size) {
     int start;
     int i;
 
-    DAT_00813a10 += size;
+    DebugAllocatedBytes += size;
     if (len >= 16) {
         count = 16;
         start = len - 16;
@@ -78,7 +78,7 @@ LEGO_EXPORT void *__DEBUG_REALLOC(void *ptr, unsigned int size) {
     void *block_base = (char *)ptr - 0x10;
     unsigned int block_size = _msize(block_base);
 
-    DAT_00813a10 += size - block_size + 0x10;
+    DebugAllocatedBytes += size - block_size + 0x10;
     return (char *)realloc(block_base, size + 0x10) + 0x10;
 }
 
@@ -95,6 +95,6 @@ LEGO_EXPORT void *__DEBUG_CALLOC(char *file, int line, unsigned int count, unsig
 LEGO_EXPORT void __DEBUG_FREE(void *ptr) {
     void *block_base = (char *)ptr - 0x10;
     unsigned int block_size = _msize(block_base);
-    DAT_00813a10 += 0x10 - block_size;
+    DebugAllocatedBytes += 0x10 - block_size;
     free(block_base);
 }

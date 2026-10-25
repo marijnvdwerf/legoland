@@ -2,6 +2,7 @@
 
 #include "bloke.h"
 #include "gamemap.h"
+#include "globals.h"
 #include "legoland.h"
 #include "llidb.h"
 #include "math.h"
@@ -13,8 +14,8 @@
 typedef struct WorkOrder WorkOrder;
 
 /* A gardener's or mechanic's job: build (type 1) or repair (type 2) the object of
-   class `element` at `pos`. Gardener orders are listed at DAT_0079a8b0..b4, mechanic
-   orders at DAT_0079a8c0..c4. */
+   class `element` at `pos`. Gardener orders are listed at GardenerOrderHead..b4, mechanic
+   orders at MechanicOrderHead..c4. */
 struct WorkOrder {
     /* 0x00 */ WorkOrder *next;
     /* 0x04 */ Element *element;
@@ -40,7 +41,7 @@ struct WorkOrder {
 typedef struct RepairOrder RepairOrder;
 
 /* A repair nobody works on (the class needs no worker): paid from the brick
-   supply while drawn. List head DAT_0079a8d4. */
+   supply while drawn. List head RepairOrderList. */
 struct RepairOrder {
     /* 0x00 */ RepairOrder *next;
     /* 0x04 */ Footprint footprint;
@@ -54,27 +55,27 @@ typedef struct WorkerSave WorkerSave;
 /* The 0xdc-byte save-game record of a worker and its Person. */
 struct WorkerSave {
     /* 0x00 */ unsigned short action;
-    /* 0x02 */ unsigned short field_e;
-    /* 0x04 */ unsigned short field_10;
+    /* 0x02 */ unsigned short low_level_action;
+    /* 0x04 */ unsigned short pending_action;
     /* 0x06 */ unsigned char pad_6[0x10 - 0x06];
     /* 0x10 */ unsigned int field_1c;
     /* 0x14 */ int field_20;
     /* 0x18 */ Point dest;
     /* 0x20 */ Point goal;
-    /* 0x28 */ unsigned int block_34[10]; /* Bloke 0x34..0x5c; [7] is the order */
+    /* 0x28 */ struct BlokeBlock34 block_34; /* the order is not saved */
     /* 0x50 */ int field_5c;
     /* 0x54 */ unsigned char param_action;
     /* 0x55 */ unsigned char pad_55[1];
     /* 0x56 */ unsigned short flags;
     /* 0x58 */ unsigned char field_64;
-    /* 0x59 */ unsigned char field_7f;
+    /* 0x59 */ unsigned char speed;
     /* 0x5a */ unsigned char field_82;
     /* 0x5b */ unsigned char pad_5b[1];
     /* 0x5c */ Point pos;
-    /* 0x64 */ unsigned short field_70;
-    /* 0x66 */ unsigned char field_72;
-    /* 0x67 */ unsigned char field_73;
-    /* 0x68 */ unsigned char field_74;
+    /* 0x64 */ unsigned short height;
+    /* 0x66 */ unsigned char dir;
+    /* 0x67 */ unsigned char target_dir;
+    /* 0x68 */ unsigned char frame;
     /* 0x69 */ unsigned char field_75;
     /* 0x6a */ unsigned char pad_6a[2];
     /* 0x6c */ Navigator nav;
@@ -97,20 +98,54 @@ LEGO_EXPORT void RefundGardener(void);
 LEGO_EXPORT void RefundMechanic(void);
 LEGO_EXPORT void RemoveAMechanic(Bloke *worker);
 LEGO_EXPORT void IterateNoneWorkersRepairOrders(void);
+LEGO_EXPORT void PutWorkerOnRide(Bloke *worker, MapElement *tile);
+LEGO_EXPORT WorkOrder *GetGardenerWorkOrderAt(int x, int y);
+LEGO_EXPORT WorkOrder *GetMechanicWorkOrderAt(int x, int y);
 LEGO_EXPORT void RemoveGardenersWorkOrderAt(int x, int y);
 LEGO_EXPORT void RemoveMechanicsWorkOrderAt(int x, int y);
 LEGO_EXPORT void RemoveNoneWorkersRepairOrderAT(int x, int y);
 LEGO_EXPORT void RemoveRepairOrderAT(Ride *ride, int x, int y);
-void FUN_0049b270(Ride *ride, TileId tile);
-void FUN_00499eb0(WorkOrder *order);
-int FUN_0049a120(void);
-int FUN_0049a160(void);
-void FUN_0049cfc0(void);
+void EraseWorkOrdersAtTile(Ride *ride, TileId tile);
+LEGO_EXPORT void EraseMechanicOrder(WorkOrder *order);
+LEGO_EXPORT void EraseGardenerOrder(WorkOrder *order);
+void FreeMechanicWorkOrder(WorkOrder *order);
+int BuyGardener(void);
+int BuyMechanic(void);
+void FreeAllWorkOrdersAndWorkers(void);
 
-void FUN_0049cf00(struct MapRect *rect);
-Bloke *FUN_00499c40(int *coords);
-void FUN_00499ac0(Bloke *worker, WorkOrder *order);
-WorkOrder *FUN_00499780(Element *element, int *coords, int mode);
-LEGO_EXPORT WorkOrder *AddRepairOrderForObject(Ride *ride, int x, int y);
-int FUN_00499550(void);
-int FUN_00499560(void);
+struct MapRect;
+void MarkTilesUnderWorkers(struct MapRect *rect);
+Bloke *FindNearestIdleGardener(int *coords);
+void AssignGardenerToWorkOrder(Bloke *worker, WorkOrder *order);
+WorkOrder *CreateGardenerWorkOrder(Element *element, int *coords, int mode);
+struct Point;
+LEGO_EXPORT WorkOrder *AddRepairOrderForObject(Ride *ride, struct Point pos);
+int GetGardenerCount(void);
+int GetMechanicCount(void);
+LEGO_EXPORT void ClearAMechanicsWorkList(Bloke *value);
+LEGO_EXPORT void ClearAGardenersWorkList(Bloke *param);
+LEGO_EXPORT int SetGardenerWorkOrderAtPostion(Bloke *worker, int x, int y);
+LEGO_EXPORT int SetMechanicsOrderAtPostion(Bloke *worker, int x, int y);
+LEGO_EXPORT void ControlWorkers(void);
+LEGO_EXPORT void LoadWorkerInterfaceGFX(void);
+void SaveGardeners(void);
+void SaveMechanics(void);
+void SaveGardenerOrders(void);
+void SaveMechanicOrders(void);
+void LoadGardeners(void);
+void LoadMechanics(void);
+void LoadGardenerOrders(void);
+void LoadMechanicWorkOrders(void);
+LEGO_EXPORT void RenderWorkers(void);
+LEGO_EXPORT void RenderWorkerInterfaceGFX(void);
+LEGO_EXPORT int WorkOrderBuildObject(Element *element, Point *pos);
+
+/* The map tile at `pos`, or NULL off the map. Inlined by the original: Garderner_Repair
+   and Mechanics_Repair only schedule their loads like the binary when the lookup goes
+   through this helper. */
+static __inline MapElement *GetTileAtPoint(Point *pos) {
+    if (pos->x >= 0 && pos->x < lpConfig->width && pos->y >= 0 && pos->y < lpConfig->height) {
+        return &GameMap[pos->y][pos->x];
+    }
+    return NULL;
+}

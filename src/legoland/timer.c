@@ -10,24 +10,24 @@
 LEGO_EXPORT unsigned int GetGameTimer(void) {
     unsigned int now;
 
-    if (DAT_0079a890 != 0) {
-        now = DAT_0079a894;
+    if (GameTimerPaused != 0) {
+        now = GameTimerPausedTicks;
     } else {
         now = GetTickCount();
     }
-    return now - DAT_0079a898;
+    return now - GameTimerBaseTicks;
 }
 
 // FUNCTION: LEGOLAND 0x00499460
-unsigned int FUN_00499460(void) {
+unsigned int GetGameTimerFrames(void) {
     unsigned int now;
 
-    if (DAT_0079a890 != 0) {
-        now = DAT_0079a89c;
+    if (GameTimerPaused != 0) {
+        now = GameTimerPausedFrame;
     } else {
-        now = DAT_008119a4;
+        now = FrameCounter;
     }
-    return now - DAT_0079a8a0;
+    return now - GameTimerBaseFrame;
 }
 
 // FUNCTION: LEGOLAND 0x00499450
@@ -41,7 +41,7 @@ LEGO_EXPORT unsigned int GetBlink(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00499500
-int FUN_00499500(struct Sprite *sprite) {
+int EnsureSpriteSurface(struct Sprite *sprite) {
     if (sprite->flags & 0x20) {
         if (RecreateSprite(sprite) == 0) {
             return 0;

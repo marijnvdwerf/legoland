@@ -5,4 +5,4 @@
 set -e
 cd "$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
 export PATH="$PWD/tools:$PATH"   # wine/winepath shims: reccmp expects wine for cvdump, we redirect to wibo
-exec uv run reccmp-reccmp --target LEGOLAND "$@"
+exec uv run python tools/reccmp_patched.py --target LEGOLAND "$@"

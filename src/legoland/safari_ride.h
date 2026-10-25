@@ -3,18 +3,35 @@
 #include "objclass.h"
 
 struct SafariNode {
-    unsigned short field_0;
-    unsigned char pad_2[14];
+    union {
+        unsigned short tile_id;
+        struct {
+            unsigned char tile_x;
+            unsigned char tile_y;
+        };
+    };
+    unsigned char pad_2[2];
+    int field_4; /* riders seated */
+    int field_8;
+    int frame;
     struct SafariNode *next;
-    unsigned char pad_14[0x14];
+    unsigned int field_14; /* flags */
+    int loops_left;
+    int frame_ticks;
+    int field_20; /* riders boarding */
+    int field_24; /* boarding timer */
 };
 
 struct SafariKey;
-struct SafariLoadArg;
 
-void *FUN_00414a80(struct SafariKey *key);
-void FUN_00414b10(struct SafariNode *node);
-void FUN_00415030(struct ClassNode *name, struct CallbackTable *interfaces);
-void FUN_00415220(void);
-LEGO_EXPORT int SaveSafariRide(void);
-LEGO_EXPORT int LoadSafariRide(struct SafariLoadArg *arg);
+void *FindSafariNode(struct SafariKey *key);
+void ResetSafariRide(struct SafariNode *node);
+struct Ride;
+void SafariRideGetInterfaces(struct Element *name, struct Ride *interfaces);
+struct Element;
+void SafariRideUpdate(struct Element *obj);
+int GetSafariRiderIndex(struct RideNode *node, unsigned short *key);
+struct SafariSample;
+void StartSafariRide(struct SafariNode *a1);
+LEGO_EXPORT int SaveSafariRide(struct Element *element);
+LEGO_EXPORT int LoadSafariRide(struct Element *arg);

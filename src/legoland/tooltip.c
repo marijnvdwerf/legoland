@@ -7,22 +7,24 @@
 #include "stream.h"
 
 // FUNCTION: LEGOLAND 0x0046d340
-void FUN_0046d340(unsigned int param_1) {
-    if (FUN_00498cf0() == 0) {
+void ShowHelpText(const char *param_1) {
+    if (SpeechIsPlaying() == 0) {
         if (param_1 == 0) {
             return;
         }
-        if (param_1 != DAT_004b9f8c) {
-            DAT_004b9f8c = param_1;
-            DAT_007fe920 = GetTickCount();
-            DAT_006687a4 = 2;
-            DAT_004b9f88 = 1;
+        if ((UINT_PTR)param_1 != CurrentHelpKey) {
+            CurrentHelpKey = (UINT_PTR)param_1;
+            HelpShownTick = GetTickCount();
+            CurrentHelpKind = 2;
+            HelpChanged = 1;
         }
     }
-    DAT_006687a8 = 1;
+    HelpRequested = 1;
 }
 
+/* Sets CurrentHelpKind to 5 when interval report/hint speech starts; UpdateSpeechPlayback only replays kinds 0-2,
+ * so hover help does not restart it. */
 // FUNCTION: LEGOLAND 0x0046d390
-void FUN_0046d390(void) {
-    DAT_006687a4 = 5;
+void SetIntervalSpeechHelpKind(void) {
+    CurrentHelpKind = 5;
 }

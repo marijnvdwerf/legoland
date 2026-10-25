@@ -1,3 +1,4 @@
 #pragma once
 
-void FUN_0046d390(void);
+void ShowHelpText(const char *param_1);
+void SetIntervalSpeechHelpKind(void);

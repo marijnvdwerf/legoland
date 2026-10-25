@@ -10,12 +10,12 @@ union RectPoints {
 };
 
 struct VideoArg {
-    /* 0x00 */ int field_0;
-    /* 0x04 */ int field_4;
-    /* 0x08 */ int field_8;
-    /* 0x0c */ void *field_c;
-    /* 0x10 */ int field_10;
-    /* 0x14 */ int field_14;
+    /* 0x00 */ int pitch;
+    /* 0x04 */ int width;
+    /* 0x08 */ int height;
+    /* 0x0c */ void *bits;
+    /* 0x10 */ struct IDirectDrawSurface *surface; /* GetSprite: the locked sprite surface */
+    /* 0x14 */ int format; /* 1: 8-bit, 2: 16-bit */
 };
 struct Sprite;
 
@@ -34,27 +34,65 @@ LEGO_EXPORT unsigned int SetPointer(unsigned int param_1);
 LEGO_EXPORT void PushRenderingStatusAndLockVideoSurface(void);
 LEGO_EXPORT void PushRenderingStatusAndUnlockVideoSurface(void);
 LEGO_EXPORT void PopRenderingStatus(void);
+LEGO_EXPORT void PrintBackground(int x, int y);
 LEGO_EXPORT int GetVideoSurface(struct VideoArg *arg);
-LEGO_EXPORT void SetOverridePalette(unsigned int param_1);
+LEGO_EXPORT void SetOverridePalette(unsigned short *param_1);
 LEGO_EXPORT void SetOverrideFrame(unsigned int param_1);
-LEGO_EXPORT unsigned int GetOverridePalette(void);
+LEGO_EXPORT unsigned short *GetOverridePalette(void);
 LEGO_EXPORT unsigned int GetOverrideFrame(void);
 LEGO_EXPORT void ClearSpriteOverrides(void);
 LEGO_EXPORT void ZBufferHelper(unsigned int *param_1, int *param_2, int *param_3, void *param_4);
 LEGO_EXPORT void ClearOverrideFrame(void);
 LEGO_EXPORT void ClearOverridePalette(void);
-void FUN_00465850(void *frame);
-void FUN_004659a0(struct AviFrame *param_1, int param_2, int param_3);
-void FUN_00466360(int a, int b);
-void FUN_004663c0(void);
+void DrawMovieFrameDoubled(struct AviFrame *frame);
+void DrawAviFrame(struct AviFrame *param_1, int param_2, int param_3);
+void LoadWatchSprite(int a, int b);
+void UnloadWatchSprite(void);
+LEGO_EXPORT void CommitCliprectToHardware(void);
 LEGO_EXPORT int RenderingComplete(void);
 LEGO_EXPORT void PushSetTarget(struct Sprite *sprite);
 LEGO_EXPORT void PopTarget(void);
 LEGO_EXPORT int RecreateSprite(struct Sprite *sprite);
-void FUN_004687f0(const char *param_1);
+void SetBriefingFile(const char *param_1);
 LEGO_EXPORT int CheckHostSystemGPU(void);
-int FUN_004661d0(void);
-void FUN_00464ee0(void *rect);
+int BlitFrameToWindow(void);
+void __fastcall SoftPrint_BltFast(struct Sprite *sprite, RECT *rect, int *off);
 LEGO_EXPORT void SoftPrint_Clear(void);
 LEGO_EXPORT void SoftPrint_XBltFast(struct Sprite *sprite, RECT *a, RECT *b, unsigned int param_4);
-void FUN_004663f0(void);
+void DrawWatchSprite(void);
+int SetDisplayModeAndDetectPixelFormat(void);
+
+struct DrawLLS {
+    short frame;
+    unsigned short delay;
+    int width;
+    int height;
+    unsigned int field_c;
+    short frame_count;
+    short loop_delay;
+    unsigned int flags;
+};
+
+struct DrawLLSFrame {
+    unsigned int size;
+    unsigned int pixel_count;
+    unsigned int run_bytes;
+    unsigned int field_c;
+    unsigned short pixels[1];
+};
+
+struct Point;
+void DrawLLSSpriteMousePick(struct DrawLLS *lls, RECT *clip, struct Point *pos);
+void BlitLLS16PickClipLeftRight(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void BlitLLS16PickClipLeft(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void BlitLLS16PickClipRight(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void BlitLLS16Pick(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void BlitLLS16ClipLeftRight(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void BlitLLS16ClipLeft(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void BlitLLS16ClipRight(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void BlitLLS16(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip);
+void DrawLLSSpriteTinted(struct DrawLLS *lls, RECT *clip, struct Point *pos);
+void BlitLLS16MaskedPick(unsigned short *dst, unsigned short *src, unsigned char *runs, unsigned int *mask, int h, int stride, int skip, int left, int width, int flags, unsigned short *cursor);
+void SoftPrint_IndexedLLS(void);
+void SoftPrint_IndexedLLSMasked(void);
+void BlitLLS16HalfBright(void);

@@ -25,87 +25,39 @@
 
 #pragma intrinsic(strcpy, strlen)
 
-struct NerpsArg {
-    unsigned char pad_0[0x4];
-    unsigned int field_4;
-    unsigned int field_8;
-    unsigned char pad_c[0x14 - 0xc];
-    unsigned int field_14;
-    unsigned int field_18;
-    unsigned int field_1c;
-    unsigned int field_20;
-    unsigned int field_24;
-    unsigned int field_28;
-    unsigned int field_2c;
-    int field_30;
-    int field_34;
-};
-
-struct ObjectClass {
-    struct ObjectClass *next;
-    unsigned char pad_4[0x8 - 0x4];
-    unsigned int count;
-    unsigned char pad_c[0x58 - 0xc];
-    unsigned int class_id_58;
-    unsigned int class_id_5c;
-};
-
-struct LoopArg {
-    unsigned char pad_0[0x4];
-    struct LoopObject *field_4;
-    unsigned char pad_8[0x1c - 0x8];
-    int field_1c;
-};
-
-struct LoopVtable {
-    unsigned char pad_0[0xc0];
-    int (*eval)(struct LoopObject *object, int param_2);
-};
-
-struct LoopObject {
-    const char *name;
-    unsigned char pad_4[0xc - 0x4];
-    struct LoopVtable *vtable;
-};
-
-struct EventList {
-    unsigned char pad_0[0x10];
-    struct ObjectiveEvent *head;
-};
-
 // FUNCTION: LEGOLAND 0x0046a040
-void FUN_0046a040(unsigned int param_1, unsigned int param_2) {
+void SetScriptFeature(unsigned int param_1, unsigned int param_2) {
     switch (param_1) {
     case 0:
         MapStats.field_184 = param_2;
         break;
     case 1:
-        MapStats.field_180 = param_2;
+        MapStats.ride_wear = param_2;
         break;
     case 3:
         MapStats.field_188 = param_2;
         break;
     case 4:
-        MapStats.field_18c = param_2;
+        MapStats.power_enabled = param_2;
         break;
     case 5:
         MapStats.field_190 = param_2;
         break;
     case 6:
-        MapStats.field_178 = param_2;
-        FUN_0044db40();
+        MapStats.timer_minutes = param_2;
+        StartAppraisalTimer();
         break;
     case 7:
-        lpConfig->field_3c = param_2;
+        lpConfig->repair_orders_enabled = param_2;
         break;
     case 8:
         lpConfig->field_2c = param_2;
         break;
     case 9:
-        MapStats.field_174 = param_2;
+        MapStats.brick_meter_max = param_2;
         break;
     case 10:
-        MapStats.field_194 = param_2;
+        MapStats.show_capacity = param_2;
         break;
     case 0xb:
         MapStats.field_3a8 = param_2;
@@ -114,58 +66,58 @@ void FUN_0046a040(unsigned int param_1, unsigned int param_2) {
 }
 
 // FUNCTION: LEGOLAND 0x0046a120
-unsigned int FUN_0046a120(struct NerpsArg *arg) {
-    FUN_0046a040(arg->field_1c, arg->field_14);
+unsigned int ScriptEventFeature(struct ObjectiveEvent *arg) {
+    SetScriptFeature(arg->field_1c, arg->field_14);
     return 1;
 }
 
 // GLOBAL: LEGOLAND 0x004b7e38
-void (*PTR_FUN_004b7e38[25])(unsigned int, unsigned int) = {
-    (void (*)(unsigned int, unsigned int))FUN_004443b0,
-    (void (*)(unsigned int, unsigned int))FUN_004443e0,
-    (void (*)(unsigned int, unsigned int))FUN_00444410,
-    FUN_00444440,
-    FUN_00444470,
-    FUN_004444b0,
-    FUN_004444f0,
-    FUN_00444530,
-    FUN_00444570,
-    FUN_004445b0,
-    FUN_004445f0,
-    FUN_00444630,
-    FUN_00444670,
-    FUN_004446b0,
-    FUN_004446f0,
-    FUN_00444730,
-    FUN_00444770,
-    FUN_004447b0,
-    FUN_004447f0,
-    FUN_00444830,
-    FUN_00444870,
-    FUN_004448b0,
-    FUN_004448f0,
-    FUN_00444930,
-    FUN_00444970,
+void (*ReportGoalSetters[25])(unsigned int, unsigned int) = {
+    (void (*)(unsigned int, unsigned int))SetReportLegolandZoneGoal,
+    (void (*)(unsigned int, unsigned int))SetReportAdventurerZoneGoal,
+    (void (*)(unsigned int, unsigned int))SetReportCastleZoneGoal,
+    SetReportWesternZoneGoal,
+    SetReportCastleScoreGoal,
+    SetReportDrivingSchoolScoreGoal,
+    SetReportLogFlumeScoreGoal,
+    SetReportBoatingSchoolScoreGoal,
+    SetReportJungleCruiseScoreGoal,
+    SetReportType1Or3ObjectCountGoal,
+    SetReportType1Or3ClassCountGoal,
+    SetReportLinkedObjectPercentGoal,
+    SetReportType2ObjectCountGoal,
+    SetReportType2ClassCountGoal,
+    SetReportSceneryCoverageGoal,
+    SetReportFoodStallObjectCountGoal,
+    SetReportFoodStallClassCountGoal,
+    SetReportType4ObjectCountGoal,
+    SetReportType4ClassCountGoal,
+    SetReportVisitorCountGoal,
+    SetReportVisitorHappinessGoal,
+    SetReportVisitorFullnessGoal,
+    SetReportPowerSupplyGoal,
+    SetReportWorkingRidesGoal,
+    SetReportMapTileCountGoal,
 };
 
 // FUNCTION: LEGOLAND 0x0046a140
-void FUN_0046a140(int index, unsigned int param_2, unsigned int param_3) {
+void CallReportHandler(int index, unsigned int param_2, unsigned int param_3) {
     if (index >= 0 && index < 0x19) {
-        PTR_FUN_004b7e38[index](param_3, param_2);
+        ReportGoalSetters[index](param_3, param_2);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0046a170
-unsigned int FUN_0046a170(struct NerpsArg *arg) {
-    FUN_0046a140(arg->field_18, arg->field_1c, arg->field_14);
+unsigned int ScriptEventReport(struct ObjectiveEvent *arg) {
+    CallReportHandler(arg->field_18, arg->field_1c, arg->field_14);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a190
-unsigned int FUN_0046a190(struct NerpsArg *arg) {
+unsigned int GenerateWorkers(struct ObjectiveEvent *arg) {
     int i;
 
-    FUN_00457870(0);
+    SetBricksLimited(0);
     i = 0;
     if ((int)arg->field_1c > 0) {
         do {
@@ -177,82 +129,60 @@ unsigned int FUN_0046a190(struct NerpsArg *arg) {
             i++;
         } while (i < (int)arg->field_1c);
     }
-    FUN_00457870(1);
+    SetBricksLimited(1);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a1f0
-unsigned int FUN_0046a1f0(struct NerpsArg *arg) {
+unsigned int ScriptEventWorkers(struct ObjectiveEvent *arg) {
     if ((int)arg->field_1c >= 0) {
-        lpConfig->field_38 = (arg->field_1c != 0);
+        lpConfig->gardeners_enabled = (arg->field_1c != 0);
     }
     if ((int)arg->field_14 >= 0) {
-        lpConfig->field_34 = (arg->field_14 != 0);
+        lpConfig->mechanics_enabled = (arg->field_14 != 0);
     }
     return 1;
 }
 
-struct TileNode {
-    struct TileNode *next;
-    unsigned char pad_4[0xe - 0x4];
-    unsigned char x;
-    unsigned char y;
-};
-
-struct TileGroup {
-    unsigned char pad_0[0x4];
-    struct TileNode *list;
-    int count;
-    int field_c;
-    int field_10;
-    unsigned char pad_14[0x2c - 0x14];
-    unsigned char field_2c;
-};
-
-struct TileGroupHolder {
-    unsigned char pad_0[0xc];
-    struct TileGroup *group;
-};
-
 // FUNCTION: LEGOLAND 0x0046a230
-unsigned int FUN_0046a230(struct NerpsArg *arg) {
-    struct TileGroup *group;
-    struct TileNode *node;
+unsigned int ScriptEventDegrade(struct ObjectiveEvent *arg) {
+    struct Ride *group;
+    struct ObjInstance *node;
     struct MapElement *tile;
     int value;
     int limit;
     unsigned char threshold;
-    int x;
-    int y;
+    struct Point pt;
 
-    group = ((struct TileGroupHolder *)arg->field_4)->group;
-    node = group->list;
-    value = (unsigned int)group->field_2c * arg->field_14;
-    limit = arg->field_1c;
+    group = ((struct Element *)arg->element)->ride;
+    node = group->instances;
+    value = (unsigned int)group->durability * arg->field_14;
     threshold = (char)(value / 100);
-    if (group->count < limit || limit == 0) {
-        limit = group->count;
+    limit = arg->field_1c;
+    if (limit > (int)group->field_8 || limit == 0) {
+        limit = group->field_8;
     }
-    for (; node != NULL && limit != 0; limit--) {
-        x = node->x;
-        y = node->y;
-        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
-            tile = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
+    while (node != NULL && limit != 0) {
+        pt.x = node->anchor.pos.x;
+        pt.y = node->anchor.pos.y;
+        if (pt.x >= 0 && pt.x < lpConfig->width && pt.y >= 0 && pt.y < lpConfig->height) {
+            tile = &GameMap[pt.y][pt.x];
         } else {
             tile = NULL;
         }
-        if (tile->field_11 > threshold) {
-            tile->field_11 = threshold;
-            FUN_00463460(tile, (struct Point *)&x);
-            DAT_00668610 |= 0x200;
+        if (tile->durability_level > threshold) {
+            tile->durability_level = threshold;
+            DegradeObject(tile, &pt);
+            ScriptDirtyCategories |= 0x200;
         }
         node = node->next;
+        limit--;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a300
-unsigned int FUN_0046a300(struct NerpsArg *arg) {
+unsigned int ApplyCapacityEvent(struct ObjectiveEvent *arg) {
     if (arg->field_14 != 0) {
         MapStats.capacity_max = arg->field_1c;
     } else {
@@ -262,107 +192,112 @@ unsigned int FUN_0046a300(struct NerpsArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0046a330
-unsigned int FUN_0046a330(struct NerpsArg *arg) {
-    FUN_00462e50(arg->field_14, arg->field_1c);
+unsigned int ScriptEventCapacityScale(struct ObjectiveEvent *arg) {
+    SetClassPercent(arg->field_14, arg->field_1c);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a350
-unsigned int FUN_0046a350(struct NerpsArg *arg) {
-    FUN_00462e70(arg->field_14, arg->field_1c);
+unsigned int ScriptEventCapacityCap(struct ObjectiveEvent *arg) {
+    SetClassLimit(arg->field_14, arg->field_1c);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a370
-unsigned int FUN_0046a370(struct NerpsArg *arg) {
-    MapStats.field_170 = (short)arg->field_1c;
+unsigned int NerpsSetEntranceFee(struct ObjectiveEvent *arg) {
+    MapStats.entrance_fee = (short)arg->field_1c;
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a390
-unsigned int FUN_0046a390(void) {
-    if (MapStats.field_178 == 0) {
-        FUN_0046b240(1);
+unsigned int ScriptEventEndLevel(void) {
+    if (MapStats.timer_minutes == 0) {
+        SetScriptStopped(1);
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a3b0
-unsigned int FUN_0046a3b0(struct NerpsArg *arg) {
+unsigned int ScriptEventLookAt(struct ObjectiveEvent *arg) {
     int dimX;
     int dimY;
     int v24;
     int v20;
+    struct Point pt;
 
     v24 = arg->field_24;
     v20 = arg->field_20;
     GetTileDimensions(&dimX, &dimY);
-    ScrollX = (((v20 - v24) * dimX >> 9) - (lpConfig->field_10 >> 1)) * 0x100;
-    ScrollY = (((v20 + v24) * dimY >> 9) - (lpConfig->field_12 >> 1)) * 0x100;
+    pt.x = (v20 - v24) * dimX;
+    pt.y = (v20 + v24) * dimY;
+    pt.x >>= 9;
+    pt.y >>= 9;
+    ScrollX = (pt.x - (lpConfig->view_width >> 1)) * 0x100;
+    ScrollY = (pt.y - (lpConfig->view_height >> 1)) * 0x100;
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a420
-unsigned int FUN_0046a420(struct NerpsArg *arg) {
-    FUN_00468860(arg->field_14, arg->field_1c);
+unsigned int ScriptEventThemeIcon(struct ObjectiveEvent *arg) {
+    SetObjectiveCounter(arg->field_14, arg->field_1c);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a440
-unsigned int FUN_0046a440(struct NerpsArg *arg) {
-    FUN_00468890(arg->field_14, arg->field_1c);
+unsigned int ScriptEventAddFlag(struct ObjectiveEvent *arg) {
+    AddObjectiveCounter(arg->field_14, arg->field_1c);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a460
-unsigned int FUN_0046a460(struct NerpsArg *arg) {
-    FUN_004688f0(arg->field_14, arg->field_1c);
+unsigned int ScriptEventBridges(struct ObjectiveEvent *arg) {
+    ScriptOpenBridge(arg->field_14, arg->field_1c);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a480
-unsigned int FUN_0046a480(struct NerpsArg *arg) {
-    /* TODO: fold into NerpsArg — field_8 is used both as unsigned int (FUN_00468810) and a string ptr here */
-    FUN_004687f0((const char *)arg->field_8);
+unsigned int ScriptEventBriefingFile(struct ObjectiveEvent *arg) {
+    /* TODO: fold into NerpsArg — field_8 is used both as unsigned int (SetHintsFileName) and a string ptr here */
+    SetBriefingFile(arg->text);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a4a0
-unsigned int FUN_0046a4a0(struct NerpsArg *arg) {
+unsigned int ScriptEventHintsFile(struct ObjectiveEvent *arg) {
     /* TODO: fold into NerpsArg — field_8 doubles as the name string pointer here */
-    FUN_00468810((char *)arg->field_8);
+    SetHintsFileName(arg->text);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a4c0
-unsigned int FUN_0046a4c0(struct NerpsArg *arg) {
-    FUN_00476070(arg->field_1c, arg->field_14);
+unsigned int ApplyFlashButtonEvent(struct ObjectiveEvent *arg) {
+    SetButtonFlashMask(arg->field_1c, arg->field_14);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a4e0
-unsigned int FUN_0046a4e0(void) {
-    DAT_00668788 = 1;
+unsigned int ScriptEventPurge(void) {
+    ScriptPurgePending = 1;
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a4f0
-unsigned int FUN_0046a4f0(struct NerpsArg *arg) {
+unsigned int ScriptEventNeed(struct ObjectiveEvent *arg) {
     int count;
 
     /* TODO: fold into NerpsArg — field_4 is used both as a class_id (unsigned int)
        and, here, as the ObjCountWrap* that ObjCount() dereferences */
-    count = ObjCount((struct ObjCountWrap *)arg->field_4);
+    count = ObjCount((struct Element *)arg->element);
     if (count < (int)arg->field_1c) {
-        FUN_00468d80(arg, arg->field_4, arg->field_1c - count);
-        DAT_0066878c = arg->field_1c - count;
+        QueueBuildMoreObjectsHint(arg, arg->field_4, arg->field_1c - count);
+        ScriptNeedRemaining = arg->field_1c - count;
         return 0;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a540
-unsigned int FUN_0046a540(struct NerpsArg *arg) {
+unsigned int ScriptEventNeedAt(struct ObjectiveEvent *arg) {
     struct MapElement *tile;
     int x;
     int y;
@@ -372,174 +307,154 @@ unsigned int FUN_0046a540(struct NerpsArg *arg) {
         y >= (int)(unsigned int)lpConfig->height) {
         tile = NULL;
     } else {
-        tile = (struct MapElement *)((char *)GameMap[y] + x * 0x14);
+        tile = &GameMap[y][x];
     }
-    if ((tile->flags & 0x80) != 0 && tile->field_0 == arg->field_4) {
+    if ((tile->flags & 0x80) != 0 && tile->field_0 == arg->element) {
         return 1;
     }
-    FUN_00468d80(arg, arg->field_4, 1);
+    QueueBuildMoreObjectsHint(arg, arg->field_4, 1);
     return 0;
 }
 
+/* Counts anchored instances of the requested object within the objective rectangle. Returns success at the target
+ * count; otherwise queues a build-more hint. */
 // FUNCTION: LEGOLAND 0x0046a5b0
-unsigned int FUN_0046a5b0(struct NerpsArg *arg) {
+unsigned int ScriptEventNeedIn(struct ObjectiveEvent *arg) {
     struct MapElement *tile;
+    int x;
     int count;
-    int total;
-    unsigned int x;
     unsigned int y;
-    int xb;
-    struct MapElement **map;
 
-    y = arg->field_2c;
+    count;
     count = 0;
-    total = 0;
-    map = GameMap;
-    if ((int)y <= arg->field_34) {
-        do {
-            x = arg->field_28;
-            if ((int)x <= arg->field_30) {
-                xb = x * 0x14;
-                do {
-                    if (xb < 0 || (int)(unsigned int)lpConfig->width <= (int)x || (int)y < 0 ||
-                        (int)(unsigned int)lpConfig->height <= (int)y) {
-                        tile = NULL;
-                    } else {
-                        tile = (struct MapElement *)((char *)map[y] + xb);
-                    }
-                    if ((tile->flags & 0x80) != 0 && tile->field_0 == arg->field_4 &&
-                        tile->field_4 == x && tile->field_5 == y) {
-                        count++;
-                    }
-                    x++;
-                    xb += 0x14;
-                } while ((int)x <= arg->field_30);
+    for (y = arg->field_2c; y <= arg->field_34; y++) {
+        for (x = arg->field_28; x <= arg->field_30; x++) {
+            if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+                tile = &GameMap[y][x];
+            } else {
+                tile = NULL;
             }
-            y++;
-            total = count;
-        } while ((int)y <= arg->field_34);
+            if ((0x80 & tile->flags) != 0 && tile->field_0 == arg->element && tile->field_4 == x && tile->field_5 == y) {
+                ++count;
+            }
+        }
     }
-    if (total < (int)arg->field_1c) {
-        FUN_00468d80(arg, arg->field_4, arg->field_1c - total);
-        return 0;
+    if (count >= (int)arg->field_1c) {
+        return 1;
     }
-    return 1;
+    QueueBuildMoreObjectsHint(arg, arg->field_4, arg->field_1c - count);
+    return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046a690
-unsigned int FUN_0046a690(struct NerpsArg *arg) {
-    struct TileGroup *group;
-    struct TileNode *node;
+unsigned int ScriptEventConnect(struct ObjectiveEvent *arg) {
+    struct Ride *group;
+    struct ObjInstance *node;
+    struct MapElement *tile;
     int x;
     int y;
 
-    group = ((struct TileGroupHolder *)arg->field_4)->group;
-    node = group->list;
-    if (node != NULL) {
-        do {
-            x = node->x + group->field_c;
-            y = node->y + group->field_10;
-            if (x < 0 || x >= (int)(unsigned int)lpConfig->width || y < 0 ||
-                y >= (int)(unsigned int)lpConfig->height ||
-                (struct MapElement *)((char *)GameMap[y] + x * 0x14) == NULL) {
-                FUN_00468dc0(arg, arg->field_4);
-                return 0;
-            }
-            node = node->next;
-        } while (node != NULL);
+    group = ((struct Element *)arg->element)->ride;
+    for (node = group->instances; node != NULL; node = node->next) {
+        x = node->anchor.pos.x + group->x;
+        y = node->anchor.pos.y + group->y;
+        if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+            tile = &GameMap[y][x];
+        } else {
+            tile = NULL;
+        }
+        /* `!tile->flags & 0x10` is always false: operator precedence bug in the original */
+        if (tile == NULL || !tile->flags & 0x10) {
+            QueueConnectToPathHint(arg, arg->field_4);
+            return 0;
+        }
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a730
-unsigned int FUN_0046a730(struct NerpsArg *arg) {
+unsigned int IsLinkableRideType(struct Ride *arg) {
     int value;
 
-    value = (short)arg->field_20;
+    value = arg->type;
     if (value == 1 || (value > 3 && value <= 5)) {
         return 1;
     }
     return 0;
 }
 
-struct RenderObj {
-    struct TileGroupHolder *field_0;
-    unsigned char field_4;
-    unsigned char field_5;
-    unsigned char pad_6[0xc - 0x6];
-    unsigned char field_c;
-    unsigned char pad_d[0x11 - 0xd];
-    unsigned char field_11;
-};
-
 // FUNCTION: LEGOLAND 0x0046a750
-unsigned int FUN_0046a750(struct NerpsArg *arg) {
-    struct RenderObj *robj;
-    struct TileGroup *group;
-    struct TileNode *node;
+unsigned int ScriptEventLink(struct ObjectiveEvent *arg) {
+    struct MapElement *robj;
+    struct Ride *group;
+    struct ObjInstance *node;
+    struct MapElement *tile;
     int total;
     int blocked;
-    int x;
-    int y;
+    Point pt;
+    int ox;
+    int oy;
 
     total = 0;
     blocked = 0;
     if (arg->field_4 != 0) {
-        group = ((struct TileGroupHolder *)arg->field_4)->group;
-        node = group->list;
+        group = ((struct Element *)arg->element)->ride;
+        node = group->instances;
         if (node == NULL) {
-            return 1;
+            goto ok;
         }
         do {
-            x = group->field_c + node->x;
-            y = group->field_10 + node->y;
-            if (x < 0 || x >= (int)(unsigned int)lpConfig->width || y < 0 ||
-                y >= (int)(unsigned int)lpConfig->height ||
-                (struct MapElement *)((char *)GameMap[y] + x * 0x14) == NULL) {
+            ox = node->anchor.pos.x;
+            oy = node->anchor.pos.y;
+            pt.x = group->x + ox;
+            pt.y = group->y + oy;
+            tile = GetTileAtPoint(&pt);
+            if (tile == NULL || ((tile->flags == 0) & 0x10)) {
                 total++;
                 blocked++;
-            } else if (FUN_00482b60((struct Point *)&x) == 0) {
+            } else if (IsPathPointLinked(&pt) == 0) {
                 total++;
             }
             node = node->next;
         } while (node != NULL);
     } else {
-        robj = (struct RenderObj *)GetFirstRenderObject();
-        blocked = 0;
+        robj = (struct MapElement *)GetFirstRenderObject();
         if (robj == NULL) {
-            return 1;
+            goto ok;
         }
         do {
-            group = robj->field_0->group;
-            if (FUN_0046a730((struct NerpsArg *)group) != 0) {
-                x = group->field_c + robj->field_4;
-                y = group->field_10 + robj->field_5;
-                if (x < 0 || x >= (int)(unsigned int)lpConfig->width || y < 0 ||
-                    y >= (int)(unsigned int)lpConfig->height ||
-                    (struct MapElement *)((char *)GameMap[y] + x * 0x14) == NULL) {
+            group = robj->field_0->ride;
+            if (IsLinkableRideType(group) != 0) {
+                ox = robj->field_4;
+                oy = robj->field_5;
+                pt.x = group->x + ox;
+                pt.y = group->y + oy;
+                tile = GetTileAtPoint(&pt);
+                if (tile == NULL || ((tile->flags == 0) & 0x10)) {
                     total++;
                     blocked++;
-                } else if (FUN_00482b60((struct Point *)&x) == 0) {
+                } else if (IsPathPointLinked(&pt) == 0) {
                     total++;
                 }
             }
-            robj = (struct RenderObj *)GetNextRenderObject((MapElement *)robj);
+            robj = (struct MapElement *)GetNextRenderObject((MapElement *)robj);
         } while (robj != NULL);
     }
-    if (blocked == 0) {
-        if (total == 0) {
-            return 1;
-        }
-        FUN_00468e00(arg, arg->field_4);
+    if (blocked != 0) {
+        QueueConnectToPathHint(arg, arg->field_4);
         return 0;
     }
-    FUN_00468dc0(arg, arg->field_4);
-    return 0;
+    if (total != 0) {
+        QueueLinkToEntranceHint(arg, arg->field_4);
+        return 0;
+    }
+ok:
+    return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a900
-unsigned int FUN_0046a900(struct NerpsArg *arg) {
-    struct ObjectClass *node;
+unsigned int ScriptEventRange(struct ObjectiveEvent *arg) {
+    struct Ride *node;
     int count;
     int sum;
 
@@ -548,77 +463,62 @@ unsigned int FUN_0046a900(struct NerpsArg *arg) {
     sum = 0;
     if (node != NULL) {
         do {
-            if (node->class_id_5c == arg->field_4 && node->count != 0) {
-                sum += node->count;
+            if (node->theme_element == arg->element && node->field_8 != 0) {
+                sum += node->field_8;
                 count++;
             }
             node = node->next;
         } while (node != NULL);
     }
     if (count < (int)arg->field_14 || sum < (int)arg->field_1c) {
-        FUN_00468e40(arg, arg->field_4, arg->field_14 - count, arg->field_1c - sum);
+        QueueBuildRangeAttractionsHint(arg, arg->field_4, arg->field_14 - count, arg->field_1c - sum);
         return 0;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a960
-unsigned int FUN_0046a960(struct NerpsArg *arg) {
+unsigned int ScriptEventClearArea(struct ObjectiveEvent *arg) {
     struct MapElement *tile;
     int count;
-    int total;
-    unsigned int x;
-    unsigned int y;
-    int xb;
+    int x;
+    int y;
 
-    total = 0;
-    y = arg->field_2c;
     count = 0;
-    if ((int)y <= arg->field_34) {
-        do {
-            x = arg->field_28;
-            if ((int)x <= arg->field_30) {
-                xb = x * 0x14;
-                do {
-                    if (xb < 0 || (int)(unsigned int)lpConfig->width <= (int)x || (int)y < 0 ||
-                        (int)(unsigned int)lpConfig->height <= (int)y) {
-                        tile = NULL;
-                    } else {
-                        tile = (struct MapElement *)((char *)GameMap[y] + xb);
-                    }
-                    if ((tile->flags & 0x80) != 0 && tile->field_4 == x && tile->field_5 == y) {
-                        count++;
-                    }
-                    x++;
-                    xb += 0x14;
-                    total = count;
-                } while ((int)x <= arg->field_30);
+    for (y = arg->field_2c; y <= arg->field_34; y++) {
+        for (x = arg->field_28; x <= arg->field_30; x++) {
+            if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
+                tile = &GameMap[y][x];
+            } else {
+                tile = NULL;
             }
-            y++;
-        } while ((int)y <= arg->field_34);
+            if ((tile->flags & 0x80) != 0 && tile->field_4 == x && tile->field_5 == y) {
+                count++;
+            }
+        }
     }
-    if (total <= (int)arg->field_14) {
-        return 1;
+    if (count > (int)arg->field_14) {
+        QueueClearAreaHint(arg, count - arg->field_14);
+        return 0;
     }
-    FUN_00468f00(arg, total - arg->field_14);
-    return 0;
+    return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046aa30
-unsigned int FUN_0046aa30(struct NerpsArg *arg) {
+unsigned int ScriptEventRemove(struct ObjectiveEvent *arg) {
     int count;
 
-    count = ObjCount((struct ObjCountWrap *)arg->field_4);
+    count = ObjCount((struct Element *)arg->element);
     if (count > (int)arg->field_1c) {
-        FUN_00468f40(arg, arg->field_4, count - arg->field_1c);
+        QueueDeleteObjectsHint(arg, arg->field_4, count - arg->field_1c);
         return 0;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046aa70
-unsigned int FUN_0046aa70(struct NerpsArg *arg) {
-    struct ObjectClass *node;
+unsigned int ScriptEventRemoveRange(struct ObjectiveEvent *arg) {
+    struct Ride *node;
     int count;
     int sum;
 
@@ -627,8 +527,8 @@ unsigned int FUN_0046aa70(struct NerpsArg *arg) {
     sum = 0;
     if (node != NULL) {
         do {
-            if (node->class_id_5c == arg->field_4 && node->count != 0) {
-                sum += node->count;
+            if (node->theme_element == arg->element && node->field_8 != 0) {
+                sum += node->field_8;
                 count++;
             }
             node = node->next;
@@ -641,29 +541,29 @@ unsigned int FUN_0046aa70(struct NerpsArg *arg) {
         sum |= arg->field_1c;
     }
     if (count > (int)arg->field_14 || sum > (int)arg->field_1c) {
-        FUN_00468ea0(arg, arg->field_4, count - arg->field_14, sum - arg->field_1c);
+        QueueDeleteRangeAttractionsHint(arg, arg->field_4, count - arg->field_14, sum - arg->field_1c);
         return 0;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046aae0
-unsigned int FUN_0046aae0(struct NerpsArg *arg) {
-    struct ObjectClass *node;
+unsigned int ScriptEventComposite(struct ObjectiveEvent *arg) {
+    struct Ride *node;
     int count;
     int sum;
 
     node = ObjectClassList;
-    if (ObjCount((struct ObjCountWrap *)arg->field_4) < 1) {
-        FUN_00468d80(arg, arg->field_4, 1);
+    if ((int)ObjCount((struct Element *)arg->element) < 1) {
+        QueueBuildMoreObjectsHint(arg, arg->field_4, 1);
         return 0;
     }
     count = 0;
     sum = 0;
     if (node != NULL) {
         do {
-            if (node->class_id_58 == arg->field_4 && node->count != 0) {
-                sum += node->count;
+            if (node->parent_element == arg->element && node->field_8 != 0) {
+                sum += node->field_8;
                 count++;
             }
             node = node->next;
@@ -672,21 +572,21 @@ unsigned int FUN_0046aae0(struct NerpsArg *arg) {
     if (count >= (int)arg->field_14 && sum >= (int)arg->field_1c) {
         return 1;
     }
-    FUN_00469260(arg, arg->field_4, arg->field_1c - sum, arg->field_14 - count);
+    QueueAddRidePartsHint(arg, arg->field_4, arg->field_1c - sum, arg->field_14 - count);
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046ab70
-unsigned int FUN_0046ab70(struct LoopArg *arg) {
-    struct LoopObject *object;
-    struct LoopVtable *vtable;
+unsigned int ScriptEventLoopComposite(struct ObjectiveEvent *arg) {
+    struct Element *object;
+    struct Ride *vtable;
 
-    object = arg->field_4;
-    vtable = object->vtable;
-    if (vtable->eval != NULL) {
-        if (vtable->eval(object, 1) < arg->field_1c) {
+    object = arg->element;
+    vtable = object->ride;
+    if (vtable->cb_c0 != NULL) {
+        if (vtable->cb_c0(object, 1) < (int)arg->field_1c) {
             /* TODO: fold LoopArg/NerpsArg — same objective object, two struct views */
-            FUN_00469390((struct NerpsArg *)arg);
+            QueueCustomObjectiveHintIfDue((struct ObjectiveEvent *)arg);
             return 0;
         }
     } else {
@@ -697,81 +597,60 @@ unsigned int FUN_0046ab70(struct LoopArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x0046abc0
-int FUN_0046abc0(unsigned int param_1) {
+int ScriptEventTechLevel(struct ObjectiveEvent *param_1) {
     /* param_1 is a RewardArg* carried as unsigned int (table callback ABI) */
-    return FUN_00469ae0((struct RewardArg *)param_1);
+    return ProcessUnimplementedReward((struct ObjectiveEvent *)param_1);
 }
 
 // FUNCTION: LEGOLAND 0x0046abd0
-unsigned int FUN_0046abd0(struct NerpsArg *arg) {
-    if (DAT_006661bc < (int)arg->field_1c) {
-        FUN_00468f80(arg, arg->field_1c - DAT_006661bc);
+unsigned int ScriptEventParkVisitors(struct ObjectiveEvent *arg) {
+    if (ParkVisitorCount < (int)arg->field_1c) {
+        QueueAttractVisitorsHint(arg, arg->field_1c - ParkVisitorCount);
         return 0;
     }
     return 1;
 }
 
-struct ListLinkNode {
-    struct ListLinkNode *next;
-};
-
-struct BuildingWithList {
-    unsigned char pad_0[0xcc];
-    struct ListLinkNode *list;
-};
-
-struct BuildingHolder {
-    unsigned char pad_0[0xc];
-    struct BuildingWithList *building;
-};
-
 // FUNCTION: LEGOLAND 0x0046ac00
-unsigned int FUN_0046ac00(struct NerpsArg *arg) {
-    struct ListLinkNode *node;
+unsigned int ScriptEventRiders(struct ObjectiveEvent *arg) {
+    struct RideNode *node;
     int count;
 
     count = 0;
-    node = ((struct BuildingHolder *)arg->field_4)->building->list;
-    if (node != NULL) {
-        do {
-            count++;
-            if ((int)arg->field_1c <= count) {
-                return 1;
-            }
-            node = node->next;
-        } while (node != NULL);
+    node = ((struct Element *)arg->element)->ride->riders;
+    while (node != NULL) {
+        count++;
+        if (count >= (int)arg->field_1c) {
+            return 1;
+        }
+        node = node->next;
     }
-    FUN_00469220(arg, arg->field_4, arg->field_1c - count);
+    QueueRideVisitorsHint(arg, arg->field_4, arg->field_1c - count);
     return 0;
 }
 
 struct ClassListNode {
     struct ClassListNode *next;
     unsigned char pad_4[0x8 - 0x4];
-    struct CallbackTable *iface;
+    struct Ride *iface;
 };
 
 // FUNCTION: LEGOLAND 0x0046ac50
-unsigned int FUN_0046ac50(struct NerpsArg *arg) {
+unsigned int ScriptEventRideVisitors(struct ObjectiveEvent *arg) {
     struct ClassListNode *node;
-    struct RenderObj *robj;
+    struct MapElement *robj;
     int count;
     unsigned int value;
-    unsigned int x;
-    unsigned int y;
+    struct Point pt;
 
     count = 0;
-    node = (struct ClassListNode *)((struct TileGroupHolder *)arg->field_4)->group->list;
-    while (1) {
-        if (node == NULL) {
-            FUN_00469220(arg, arg->field_4, arg->field_1c - count);
-            return 0;
-        }
-        if (_stricmp(*(char **)node->iface->context, *(char **)arg->field_4) == 0 &&
-            (robj = (struct RenderObj *)GetFirstObjectMatching((Element *)node->iface->context)) != NULL) {
-            x = robj->field_4;
-            y = robj->field_5;
-            value = FUN_00489fd0((const struct Point *)&x) & 0xffff;
+    node = (struct ClassListNode *)((struct Element *)arg->element)->ride->instances;
+    while (node != NULL) {
+        if (_stricmp(*(char **)node->iface->element, *(char **)arg->element) == 0 &&
+            (robj = (struct MapElement *)GetFirstObjectMatching((Element *)node->iface->element)) != NULL) {
+            pt.x = robj->field_4;
+            pt.y = robj->field_5;
+            value = GetObjInstanceCount(&pt) & 0xffff;
             if ((int)value >= (int)arg->field_1c) {
                 return 1;
             }
@@ -781,91 +660,94 @@ unsigned int FUN_0046ac50(struct NerpsArg *arg) {
         }
         node = node->next;
     }
+    QueueRideVisitorsHint(arg, arg->field_4, arg->field_1c - count);
+    return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046ad00
-unsigned int FUN_0046ad00(struct NerpsArg *arg) {
-    if (DAT_00667cf8 < (int)arg->field_14) {
-        FUN_00469310(arg, 2, arg->field_14 - DAT_00667cf8);
+unsigned int ScriptEventSceneryCoverage(struct ObjectiveEvent *arg) {
+    if (SceneryCoveredSquares < (int)arg->field_14) {
+        QueueCoverSquaresHint(arg, 2, arg->field_14 - SceneryCoveredSquares);
         return 0;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046ad30
-unsigned int FUN_0046ad30(struct NerpsArg *arg) {
-    FUN_00459970();
-    if (DAT_00667d08 < (int)arg->field_14) {
-        FUN_00469350(arg, arg->field_14 - DAT_00667d08);
+unsigned int ScriptEventPathScenery(struct ObjectiveEvent *arg) {
+    UpdatePathSceneryPercent();
+    if (PathSceneryPercent < (int)arg->field_14) {
+        QueuePathSceneryHint(arg, arg->field_14 - PathSceneryPercent);
         return 0;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046ad60
-unsigned int FUN_0046ad60(struct NerpsArg *arg) {
-    if (DAT_00667ce4 < (int)arg->field_14) {
-        FUN_00469310(arg, 1, arg->field_14 - DAT_00667ce4);
+unsigned int ScriptEventRideCoverage(struct ObjectiveEvent *arg) {
+    if (RideCoveredSquares < (int)arg->field_14) {
+        QueueCoverSquaresHint(arg, 1, arg->field_14 - RideCoveredSquares);
         return 0;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046ad90
-unsigned int FUN_0046ad90(struct NerpsArg *arg) {
-    if (DAT_00667ce8 < (int)arg->field_14) {
-        FUN_00469310(arg, 4, arg->field_14 - DAT_00667ce8);
+unsigned int ScriptEventShopCoverage(struct ObjectiveEvent *arg) {
+    if (ShopCoveredSquares < (int)arg->field_14) {
+        QueueCoverSquaresHint(arg, 4, arg->field_14 - ShopCoveredSquares);
         return 0;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046adc0
-unsigned int FUN_0046adc0(struct NerpsArg *arg) {
-    if (DAT_00667cec < (int)arg->field_14) {
-        FUN_00469310(arg, 5, arg->field_14 - DAT_00667cec);
+unsigned int ScriptEventFoodCoverage(struct ObjectiveEvent *arg) {
+    if (FoodCoveredSquares < (int)arg->field_14) {
+        QueueCoverSquaresHint(arg, 5, arg->field_14 - FoodCoveredSquares);
         return 0;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046adf0
-unsigned int FUN_0046adf0(struct NerpsArg *arg) {
-    if (DAT_00667ce0 < (int)arg->field_14) {
-        FUN_00469310(arg, 0, arg->field_14 - DAT_00667ce0);
+unsigned int ScriptEventTotalCoverage(struct ObjectiveEvent *arg) {
+    if (TotalCoveredSquares < (int)arg->field_14) {
+        QueueCoverSquaresHint(arg, 0, arg->field_14 - TotalCoveredSquares);
         return 0;
     }
     return 1;
 }
 
+/* Does nothing but return 1. */
 // FUNCTION: LEGOLAND 0x0046ae20
-unsigned int FUN_0046ae20(void) {
+unsigned int ReturnOne_0046ae20(void) {
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046ae30
-int FUN_0046ae30(unsigned int param_1) {
-    return FUN_00469ae0((struct RewardArg *)param_1);
+int ScriptEventStudArea(struct ObjectiveEvent *param_1) {
+    return ProcessUnimplementedReward((struct ObjectiveEvent *)param_1);
 }
 
 // FUNCTION: LEGOLAND 0x0046ae40
-unsigned int FUN_0046ae40(struct NerpsArg *arg) {
+unsigned int ScriptEventSave(struct ObjectiveEvent *arg) {
     if (GetBrickCount() >= (int)arg->field_1c) {
         return 1;
     }
-    FUN_004690c0(arg, arg->field_1c - GetBrickCount());
+    QueueSaveCoinsHint(arg, arg->field_1c - GetBrickCount());
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046ae70
-unsigned int FUN_0046ae70(struct NerpsArg *arg) {
+unsigned int ScriptEventHappiness(struct ObjectiveEvent *arg) {
     struct Bloke *bloke;
     int count;
 
     count = 0;
     bloke = FirstBloke;
     while (bloke != NULL) {
-        if (bloke->field_7a < (int)arg->field_14) {
+        if (bloke->mood < (int)arg->field_14) {
             bloke = bloke->next;
             continue;
         }
@@ -875,62 +757,56 @@ unsigned int FUN_0046ae70(struct NerpsArg *arg) {
         }
         bloke = bloke->next;
     }
-    FUN_00469100(arg, arg->field_1c - count, arg->field_14);
+    QueueHappyVisitorsHint(arg, arg->field_1c - count, arg->field_14);
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046aec0
-unsigned int FUN_0046aec0(struct NerpsArg *arg) {
+unsigned int AdjustGardenerCount(struct ObjectiveEvent *arg) {
     int current;
     int target;
 
-    current = FUN_00499550();
+    current = GetGardenerCount();
     target = arg->field_1c;
     if (0 < target) {
         if (target <= current) {
             return 1;
         }
-        FUN_00468fc0(arg, target - current);
+        QueueMoreGardenersHint(arg, target - current);
         return 0;
     }
     if (-target >= current) {
         return 1;
     }
-    FUN_00469000(arg, target + current);
+    QueueFewerGardenersHint(arg, target + current);
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046af10
-unsigned int FUN_0046af10(struct NerpsArg *arg) {
+unsigned int ScriptEventNeedMechanics(struct ObjectiveEvent *arg) {
     int current;
     int target;
 
-    current = FUN_00499560();
+    current = GetMechanicCount();
     target = arg->field_1c;
     if (0 < target) {
         if (target <= current) {
             return 1;
         }
-        FUN_00469040(arg, target - current);
+        QueueMoreMechanicsHint(arg, target - current);
         return 0;
     }
-    return FUN_0046af39(target, current, arg);
-}
-
-// FUNCTION: LEGOLAND 0x0046af39
-unsigned int FUN_0046af39(int target, int current, struct NerpsArg *arg) {
     if (-target >= current) {
         return 1;
     }
-    FUN_00469080(arg, target + current);
+    QueueFewerMechanicsHint(arg, target + current);
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046af60
-unsigned int FUN_0046af60(struct NerpsArg *arg) {
+unsigned int ScriptEventHunger(struct ObjectiveEvent *arg) {
     struct Bloke *bloke;
     int count;
-    int target;
 
     count = 0;
     if (FirstBloke != NULL) {
@@ -946,37 +822,36 @@ unsigned int FUN_0046af60(struct NerpsArg *arg) {
             bloke = bloke->next;
         } while (bloke != NULL);
     }
-    target = arg->field_1c;
     if (arg->field_18 != 0) {
-        if (count > target) {
-            FUN_00469140(arg, count - target, arg->field_14);
+        if (count > (int)arg->field_1c) {
+            QueueFewerHungryVisitorsHint(arg, count - arg->field_1c, arg->field_14);
             return 0;
         }
-    } else if (count < target) {
-        FUN_00469190(arg, target - count, arg->field_14);
+    } else if (count < (int)arg->field_1c) {
+        QueueMoreFedVisitorsHint(arg, arg->field_1c - count, arg->field_14);
         return 0;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046afe0
-unsigned int FUN_0046afe0(struct NerpsArg *arg) {
-    struct RenderObj *robj;
+unsigned int ScriptEventFixRides(struct ObjectiveEvent *arg) {
+    struct MapElement *robj;
     int count;
-    int denom;
+    struct Ride *group;
     int pct;
 
     count = 0;
-    for (robj = (struct RenderObj *)GetFirstRenderObject(); robj != NULL;
-        robj = (struct RenderObj *)GetNextRenderObject((MapElement *)robj)) {
-        if (robj->field_11 != 0) {
-            denom = robj->field_0->group->field_2c;
-            if (denom != 0) {
-                pct = robj->field_11 * 100 / denom;
+    for (robj = (struct MapElement *)GetFirstRenderObject(); robj != NULL;
+        robj = (struct MapElement *)GetNextRenderObject((MapElement *)robj)) {
+        if (robj->durability_level != 0) {
+            group = robj->field_0->ride;
+            if (group->durability != 0) {
+                pct = robj->durability_level * 100 / group->durability;
             } else {
                 pct = 100;
             }
-            if (arg->field_14 == 0x19 && (robj->field_c & 4) != 0) {
+            if (arg->field_14 == 0x19 && (robj->flags & 4) != 0) {
                 pct = 100;
             }
             if (pct < (int)arg->field_14) {
@@ -984,103 +859,97 @@ unsigned int FUN_0046afe0(struct NerpsArg *arg) {
             }
         }
     }
-    if (count <= (int)arg->field_1c) {
-        return 1;
+    if (count > (int)arg->field_1c) {
+        QueueRepairObjectsHint(arg, count - arg->field_1c, arg->field_14);
+        return 0;
     }
-    FUN_004691e0(arg, count - arg->field_1c, arg->field_14);
-    return 0;
+    return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046b080
-unsigned int FUN_0046b080(struct NerpsArg *arg) {
-    if (MapStats.field_3dc > (int)arg->field_1c) {
-        FUN_004691e0(arg, MapStats.field_3dc - arg->field_1c, 0);
+unsigned int ScriptEventPowerRides(struct ObjectiveEvent *arg) {
+    if (MapStats.unpowered_count > (int)arg->field_1c) {
+        QueueRepairObjectsHint(arg, MapStats.unpowered_count - arg->field_1c, 0);
         return 0;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046b0b0
-unsigned int FUN_0046b0b0(void) {
+unsigned int ScriptEventZoning(void) {
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046b0c0
-unsigned int FUN_0046b0c0(struct NerpsArg *arg) {
-    if (FUN_004688c0(arg->field_14) >= (int)arg->field_1c) {
+unsigned int ScriptEventCheckFlag(struct ObjectiveEvent *arg) {
+    if (GetObjectiveCounter(arg->field_14) >= (int)arg->field_1c) {
         return 1;
     }
-    if (FUN_00468d10() != 0) {
-        FUN_00468d30(arg);
+    if (IsObjectiveHintDue() != 0) {
+        QueueCustomObjectiveHint(arg);
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046b100
-unsigned int FUN_0046b100(struct NerpsArg *arg) {
-    if (arg->field_1c == DAT_004baff8) {
+unsigned int ScriptEventSelectTheme(struct ObjectiveEvent *arg) {
+    if (arg->field_1c == SelectedBuildTheme) {
         return 1;
     }
-    if (FUN_00468d10() != 0) {
-        FUN_00468d30(arg);
+    if (IsObjectiveHintDue() != 0) {
+        QueueCustomObjectiveHint(arg);
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046b130
-unsigned int FUN_0046b130(struct NerpsArg *arg) {
-    if (DAT_004baff8 != 5) {
-        if (arg->field_1c != 0 && DAT_00668e34 != 0) {
+unsigned int ScriptEventSelectTab(struct ObjectiveEvent *arg) {
+    if (SelectedBuildTheme != 5) {
+        if (arg->field_1c != 0 && ResearchTabSelected != 0) {
             return 1;
         }
-        if (arg->field_1c == 0 && DAT_00668e34 == 0) {
+        if (arg->field_1c == 0 && ResearchTabSelected == 0) {
             return 1;
         }
     }
-    if (FUN_00468d10() != 0) {
-        FUN_00468d30(arg);
+    if (IsObjectiveHintDue() != 0) {
+        QueueCustomObjectiveHint(arg);
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046b180
-unsigned int FUN_0046b180(struct NerpsArg *arg) {
+unsigned int ScriptEventSelectMode(struct ObjectiveEvent *arg) {
     if (arg->field_1c == 3) {
-        if (EditMode.unk0 == 1 && EditMode.unk8 == DAT_007fd624) {
+        if (EditMode.unk0 == 1 && EditMode.unk8 == PathControlObject) {
             return 1;
         }
     } else if (EditMode.unk0 == arg->field_1c) {
         return 1;
     }
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return 0;
     }
-    FUN_00468d30(arg);
+    QueueCustomObjectiveHint(arg);
     return 0;
 }
 
+/* Only forwards to ProcessUnimplementedObjective. */
 // FUNCTION: LEGOLAND 0x0046b1e0
-int FUN_0046b1e0(unsigned int param_1) {
-    return FUN_00469b00((struct RewardArg *)param_1);
+int CallProcessUnimplementedObjective(struct ObjectiveEvent *param_1) {
+    return ProcessUnimplementedObjective((struct ObjectiveEvent *)param_1);
 }
 
 // FUNCTION: LEGOLAND 0x0046b1f0
-unsigned int FUN_0046b1f0(void) {
+unsigned int ScriptEventForever(void) {
     return 0;
 }
 
-struct TimedEvent {
-    unsigned char pad_0[0xc];
-    unsigned int field_c;
-    unsigned char pad_10[0x3c - 0x10];
-    unsigned int field_3c;
-};
-
 // FUNCTION: LEGOLAND 0x0046b200
-unsigned int FUN_0046b200(struct TimedEvent *event) {
-    if (DAT_00668790 == 0) {
-        if ((DAT_004b9e5c[event->field_c] & DAT_00668610) == 0) {
-            if ((int)(DAT_00668794 - event->field_3c) <= 0x1388) {
+unsigned int IsScriptEventDue(struct ObjectiveEvent *event) {
+    if (ScriptSectionStarted == 0) {
+        if ((ScriptEventCategories[event->type] & ScriptDirtyCategories) == 0) {
+            if ((int)(ScriptEvalTime - event->timestamp) <= 0x1388) {
                 return 0;
             }
         }
@@ -1089,276 +958,260 @@ unsigned int FUN_0046b200(struct TimedEvent *event) {
 }
 
 // FUNCTION: LEGOLAND 0x0046b240
-void FUN_0046b240(unsigned int param_1) {
-    MapStats.field_3a4 = param_1;
-    FUN_004748a0((void *)1);
+void SetScriptStopped(unsigned int param_1) {
+    MapStats.script_stopped = param_1;
+    UpdateScriptEndIcon((void *)1);
     if (param_1 != 0) {
-        FUN_00458be0();
+        MarkLevelComplete();
         if (MapStats.field_3a8 != 0) {
             return;
         }
-        FUN_00459820(1);
+        EndLevel(1);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0046b280
-unsigned int FUN_0046b280(void) {
-    return MapStats.field_3a4;
+unsigned int IsScriptStopped(void) {
+    return MapStats.script_stopped;
 }
 
 // FUNCTION: LEGOLAND 0x0046b290
-void FUN_0046b290(void) {
+void FreePurgedScriptEvents(void) {
     struct ObjectiveEvent *node;
     struct ObjectiveEvent *prev;
-    struct ObjectiveEvent *cur;
-    struct ObjectiveEvent *newprev;
+    struct ObjectiveEvent *next;
 
     prev = NULL;
-    node = DAT_00668784;
-    while (cur = node, newprev = prev, cur != NULL) {
-        node = cur->next;
-        prev = cur;
-        if ((cur->flags_10 & 8) != 0) {
-            prev = node;
-            if (newprev != NULL) {
-                newprev->next = node;
-                prev = DAT_00668784;
+    node = ScriptEventList;
+    while (node != NULL) {
+        next = node->next;
+        if ((node->flags_10 & 8) != 0) {
+            if (prev != NULL) {
+                prev->next = next;
+            } else {
+                ScriptEventList = next;
             }
-            DAT_00668784 = prev;
-            FUN_00468940(cur);
-            prev = newprev;
+            FreeObjectiveEvent(node);
+            node = prev;
         }
+        prev = node;
+        node = next;
     }
 }
 
 typedef int (*EventHandler)(struct ObjectiveEvent *);
 
 // GLOBAL: LEGOLAND 0x004b9d44
-EventHandler DAT_004b9d44[68] = {
+EventHandler ScriptEventHandlers[70] = {
     NULL,
     NULL,
-    (EventHandler)FUN_00469b20,
-    (EventHandler)FUN_00469b50,
-    (EventHandler)FUN_00469b70,
-    (EventHandler)FUN_00469b90,
-    (EventHandler)FUN_00469bb0,
-    (EventHandler)FUN_00469c40,
-    (EventHandler)FUN_00469c80,
-    (EventHandler)FUN_00469ed0,
-    (EventHandler)FUN_00469f20,
-    (EventHandler)FUN_00469f70,
-    (EventHandler)FUN_00469f80,
-    (EventHandler)FUN_00469fc0,
-    (EventHandler)FUN_0046a030,
-    (EventHandler)FUN_0046a120,
-    (EventHandler)FUN_0046a190,
-    (EventHandler)FUN_0046a1f0,
-    (EventHandler)FUN_0046a230,
-    (EventHandler)FUN_0046a300,
-    (EventHandler)FUN_0046a330,
-    (EventHandler)FUN_0046a350,
-    (EventHandler)FUN_0046a370,
-    (EventHandler)FUN_0046a3b0,
-    (EventHandler)FUN_0046a170,
-    (EventHandler)FUN_0046a420,
-    (EventHandler)FUN_0046a440,
-    (EventHandler)FUN_0046a460,
-    (EventHandler)FUN_0046a480,
-    (EventHandler)FUN_0046a4a0,
-    (EventHandler)FUN_0046a4c0,
-    (EventHandler)FUN_0046a4e0,
-    (EventHandler)FUN_0046a390,
-    (EventHandler)FUN_0046a4f0,
-    (EventHandler)FUN_0046a540,
-    (EventHandler)FUN_0046a5b0,
-    (EventHandler)FUN_0046a690,
-    (EventHandler)FUN_0046a750,
-    (EventHandler)FUN_0046a900,
-    (EventHandler)FUN_0046a960,
-    (EventHandler)FUN_0046aa30,
-    (EventHandler)FUN_0046aa70,
-    (EventHandler)FUN_0046aae0,
-    (EventHandler)FUN_0046ab70,
-    (EventHandler)FUN_0046abc0,
-    (EventHandler)FUN_0046abd0,
-    (EventHandler)FUN_0046ac50,
-    (EventHandler)FUN_0046ac00,
-    (EventHandler)FUN_0046ad00,
-    (EventHandler)FUN_0046ad30,
-    (EventHandler)FUN_0046ad60,
-    (EventHandler)FUN_0046ad90,
-    (EventHandler)FUN_0046adc0,
-    (EventHandler)FUN_0046adf0,
-    (EventHandler)FUN_0046ae20,
-    (EventHandler)FUN_0046ae30,
-    (EventHandler)FUN_0046ae40,
-    (EventHandler)FUN_0046ae70,
-    (EventHandler)FUN_0046aec0,
-    (EventHandler)FUN_0046af10,
-    (EventHandler)FUN_0046af60,
-    (EventHandler)FUN_0046afe0,
-    (EventHandler)FUN_0046b080,
-    (EventHandler)FUN_0046b0b0,
-    (EventHandler)FUN_0046b0c0,
-    (EventHandler)FUN_0046b100,
-    (EventHandler)FUN_0046b130,
-    (EventHandler)FUN_0046b180,
+    (EventHandler)ScriptEventGive,
+    (EventHandler)ScriptEventMakeResearchable,
+    (EventHandler)ScriptEventTake,
+    (EventHandler)ObjectiveEventAddBricks,
+    (EventHandler)ObjectiveEventSetBricks,
+    (EventHandler)ScriptEventPlace,
+    (EventHandler)ScriptEventClear,
+    (EventHandler)ScriptEventUnglue,
+    (EventHandler)ScriptEventGlue,
+    (EventHandler)ScriptEventExtendPark,
+    (EventHandler)ScriptEventFmv,
+    (EventHandler)ScriptEventInterval,
+    (EventHandler)ScriptEventMessage,
+    (EventHandler)ScriptEventFeature,
+    (EventHandler)GenerateWorkers,
+    (EventHandler)ScriptEventWorkers,
+    (EventHandler)ScriptEventDegrade,
+    (EventHandler)ApplyCapacityEvent,
+    (EventHandler)ScriptEventCapacityScale,
+    (EventHandler)ScriptEventCapacityCap,
+    (EventHandler)NerpsSetEntranceFee,
+    (EventHandler)ScriptEventLookAt,
+    (EventHandler)ScriptEventReport,
+    (EventHandler)ScriptEventThemeIcon,
+    (EventHandler)ScriptEventAddFlag,
+    (EventHandler)ScriptEventBridges,
+    (EventHandler)ScriptEventBriefingFile,
+    (EventHandler)ScriptEventHintsFile,
+    (EventHandler)ApplyFlashButtonEvent,
+    (EventHandler)ScriptEventPurge,
+    (EventHandler)ScriptEventEndLevel,
+    (EventHandler)ScriptEventNeed,
+    (EventHandler)ScriptEventNeedAt,
+    (EventHandler)ScriptEventNeedIn,
+    (EventHandler)ScriptEventConnect,
+    (EventHandler)ScriptEventLink,
+    (EventHandler)ScriptEventRange,
+    (EventHandler)ScriptEventClearArea,
+    (EventHandler)ScriptEventRemove,
+    (EventHandler)ScriptEventRemoveRange,
+    (EventHandler)ScriptEventComposite,
+    (EventHandler)ScriptEventLoopComposite,
+    (EventHandler)ScriptEventTechLevel,
+    (EventHandler)ScriptEventParkVisitors,
+    (EventHandler)ScriptEventRideVisitors,
+    (EventHandler)ScriptEventRiders,
+    (EventHandler)ScriptEventSceneryCoverage,
+    (EventHandler)ScriptEventPathScenery,
+    (EventHandler)ScriptEventRideCoverage,
+    (EventHandler)ScriptEventShopCoverage,
+    (EventHandler)ScriptEventFoodCoverage,
+    (EventHandler)ScriptEventTotalCoverage,
+    (EventHandler)ReturnOne_0046ae20,
+    (EventHandler)ScriptEventStudArea,
+    (EventHandler)ScriptEventSave,
+    (EventHandler)ScriptEventHappiness,
+    (EventHandler)AdjustGardenerCount,
+    (EventHandler)ScriptEventNeedMechanics,
+    (EventHandler)ScriptEventHunger,
+    (EventHandler)ScriptEventFixRides,
+    (EventHandler)ScriptEventPowerRides,
+    (EventHandler)ScriptEventZoning,
+    (EventHandler)ScriptEventCheckFlag,
+    (EventHandler)ScriptEventSelectTheme,
+    (EventHandler)ScriptEventSelectTab,
+    (EventHandler)ScriptEventSelectMode,
+    (EventHandler)CallProcessUnimplementedObjective,
+    (EventHandler)ScriptEventForever,
 };
 
 // FUNCTION: LEGOLAND 0x0046b2d0
-void FUN_0046b2d0(void) {
+void RunLevelScript(void) {
     struct ObjectiveEvent *node;
     struct ObjectiveEvent *next;
-    struct ObjectiveEvent *cur;
     struct ObjectiveEvent *prev;
     int active;
-    int done;
-    unsigned char flags;
-    int result;
+    int changed;
 
-    node = DAT_00668784;
-    done = 0;
-    FUN_00471bf0();
-    if (FUN_0046b280() != 0) {
+    node = ScriptEventList;
+    prev = NULL;
+    active = 0;
+    changed = 0;
+    ClearNewObjectsList();
+    if (IsScriptStopped() != 0) {
         return;
     }
-    do {
-        active = 0;
-        if ((DAT_00668610 & 0x10) != 0) {
-            FUN_00482b20(1);
+    for (;;) {
+        if ((ScriptDirtyCategories & 0x10) != 0) {
+            UpdatePathLinks(1);
         }
-        DAT_00668794 = GetGameTimer();
-        next = (struct ObjectiveEvent *)(unsigned int)done;
-        prev = NULL;
-        if (node != (struct ObjectiveEvent *)(unsigned int)done) {
-            do {
-                cur = node;
-                next = cur->next;
-                if (DAT_004b9d44[cur->type] != NULL) {
-                    result = FUN_0046b200((struct TimedEvent *)cur);
-                    if (result == 0) {
-                        if ((cur->flags_10 & 0x80) == 0) {
-                            active++;
-                        }
-                    } else {
-                        cur->field_40 = DAT_00668794;
-                        result = DAT_004b9d44[cur->type](cur);
-                        flags = cur->flags_10;
-                        if (result == 0) {
-                            if ((flags & 4) != 0) {
-                                cur->flags_10 = flags | 0x80;
+        ScriptEvalTime = GetGameTimer();
+        while (node != NULL) {
+            next = node->next;
+            if (ScriptEventHandlers[node->type] != NULL) {
+                if (IsScriptEventDue((struct ObjectiveEvent *)node) != 0) {
+                    node->timestamp = ScriptEvalTime;
+                    if (ScriptEventHandlers[node->type](node) != 0) {
+                        if ((node->flags_10 & 7) == 0) {
+                            if (prev != NULL) {
+                                prev->next = node->next;
                             } else {
-                                active++;
-                                cur->flags_10 = flags & 0x7f;
+                                ScriptEventList = node->next;
                             }
-                        } else if ((flags & 7) == 0) {
-                            if (prev == NULL) {
-                                DAT_00668784 = cur->next;
-                                FUN_00468940(cur);
-                                cur = prev;
-                            } else {
-                                prev->next = cur->next;
-                                FUN_00468940(cur);
-                                cur = prev;
-                            }
+                            FreeObjectiveEvent(node);
+                            node = prev;
                         } else {
-                            cur->flags_10 = flags | 0x80;
+                            node->flags_10 |= 0x80;
                         }
+                    } else if ((node->flags_10 & 4) != 0) {
+                        node->flags_10 |= 0x80;
+                    } else {
+                        active++;
+                        node->flags_10 &= 0x7f;
                     }
+                } else if ((node->flags_10 & 0x80) == 0) {
+                    active++;
                 }
-                node = next;
-                prev = cur;
-            } while (next != NULL);
+            }
+            prev = node;
+            node = next;
         }
-        if (DAT_0066871c != (unsigned int)next) {
+        if (BuildMenuRefreshPending != 0) {
             UpdateMenu();
-            DAT_0066871c = (unsigned int)next;
-            FUN_00471d40();
+            BuildMenuRefreshPending = 0;
+            ShowNewObjectsInfo();
         }
-        if (DAT_00668788 != (unsigned int)next) {
-            DAT_00668788 = (unsigned int)next;
-            FUN_0046b290();
+        if (ScriptPurgePending != 0) {
+            ScriptPurgePending = 0;
+            FreePurgedScriptEvents();
         }
-        if (DAT_00668790 != (unsigned int)next && (DAT_00668790 = (unsigned int)next, active != (int)next)) {
-            FUN_0046b6b0((struct Ctx6b0 *)DAT_0066879c, 1);
-            FUN_00468d00();
+        if (ScriptSectionStarted != 0) {
+            ScriptSectionStarted = 0;
+            if (active != 0) {
+                PostScriptSectionIntro(CurrentScriptSection, 1);
+                ResetObjectiveHintTimer();
+            }
         }
-        if (DAT_00668798 != next && active == (int)next) {
-            FUN_0046ce20();
-            active = 0;
-            node = DAT_00668784;
-            while (cur = node, prev = (struct ObjectiveEvent *)(unsigned int)active, cur != next) {
-                node = cur->next;
-                active = (int)cur;
-                if ((cur->flags_10 & 6) == 0) {
-                    active = (int)node;
-                    if (prev != next) {
-                        prev->next = node;
-                        active = (int)DAT_00668784;
+        if (ScriptSectionList != NULL && active == 0) {
+            ClearAdvisorHelp();
+            prev = NULL;
+            node = ScriptEventList;
+            while (node != NULL) {
+                next = node->next;
+                if ((node->flags_10 & 6) == 0) {
+                    if (prev != NULL) {
+                        prev->next = next;
+                    } else {
+                        ScriptEventList = next;
                     }
-                    DAT_00668784 = (struct ObjectiveEvent *)(unsigned int)active;
-                    FUN_00468940(cur);
-                    active = (int)prev;
+                    FreeObjectiveEvent(node);
+                    node = prev;
                 }
+                prev = node;
+                node = next;
             }
-            if (DAT_0066879c != (unsigned int)next) {
-                FUN_0046c580((struct AppendArg10 *)DAT_0066879c);
-                FUN_0046b5d0((struct SortNode *)DAT_0066879c);
-                FUN_0046b520((struct WrapperNode *)DAT_0066879c);
-                done = 1;
+            if (CurrentScriptSection != 0) {
+                AppendSectionRewards(CurrentScriptSection);
+                RemoveScriptSection(CurrentScriptSection);
+                FreeScriptSection(CurrentScriptSection);
+                changed = 1;
             }
-            DAT_0066879c = (unsigned int)DAT_00668798;
-            if (DAT_00668798 != next) {
-                DAT_00668790 = 1;
-                FUN_0046c540((struct AppendArgC *)DAT_00668798);
-                FUN_00468d00();
+            CurrentScriptSection = ScriptSectionList;
+            if (ScriptSectionList != NULL) {
+                ScriptSectionStarted = 1;
+                AppendObjectiveEventList((struct NerpsListNode *)ScriptSectionList);
+                ResetObjectiveHintTimer();
             }
         }
-        node = DAT_00668784;
-        DAT_00668610 = 0xffffffff;
-        if (done == (int)next) {
-            DAT_00668610 = 0x100;
+        ScriptDirtyCategories = 0xffffffff;
+        if (changed != 0) {
+            node = ScriptEventList;
+            prev = NULL;
+            active = 0;
+            changed = 0;
+            ClearNewObjectsList();
+            if (IsScriptStopped() == 0) {
+                continue;
+            }
             return;
         }
-        FUN_00471bf0();
-        result = FUN_0046b280();
-        done = (int)next;
-        if (result != 0) {
-            return;
-        }
-    } while (1);
+        ScriptDirtyCategories = 0x100;
+        return;
+    }
 }
 
 // FUNCTION: LEGOLAND 0x0046b4f0
-struct NerpsListNode *FUN_0046b4f0(unsigned int param_1) {
+struct NerpsListNode *AllocScriptSection(unsigned int param_1) {
     struct NerpsListNode *node;
 
-    node = (struct NerpsListNode *)malloc(0x14);
+    node = (struct NerpsListNode *)malloc(sizeof(struct NerpsListNode));
     if (node != NULL) {
         node->field_8 = 0;
         node->field_4 = param_1;
         node->field_c = 0;
         node->field_10 = 0;
-        node->field_0 = NULL;
+        node->next = NULL;
     }
     return node;
 }
 
-struct WrapperNode {
-    struct WrapperNode *field_0;
-    unsigned char pad_4[0x8 - 0x4];
-    void *field_8;
-    struct ObjectiveEvent *field_c;
-    struct ObjectiveEvent *field_10;
-};
-
 // FUNCTION: LEGOLAND 0x0046b520
-void FUN_0046b520(struct WrapperNode *node) {
+void FreeScriptSection(struct NerpsListNode *node) {
     if (node->field_c != NULL) {
-        FUN_00468970(node->field_c);
+        FreeObjectiveEventList(node->field_c);
     }
     if (node->field_10 != NULL) {
-        FUN_00468970(node->field_10);
+        FreeObjectiveEventList(node->field_10);
     }
     if (node->field_8 != NULL) {
         free(node->field_8);
@@ -1367,25 +1220,25 @@ void FUN_0046b520(struct WrapperNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0046b560
-void FUN_0046b560(struct WrapperNode *node) {
+void FreeScriptSectionList(struct NerpsListNode *node) {
     if (node != NULL) {
-        if (node->field_0 != NULL) {
-            FUN_0046b560(node->field_0);
+        if (node->next != NULL) {
+            FreeScriptSectionList(node->next);
         }
-        FUN_0046b520(node);
+        FreeScriptSection(node);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0046b590
-void FUN_0046b590(struct SortNode *node) {
-    struct SortNode *prev;
-    struct SortNode *cur;
+void InsertScriptSection(struct NerpsListNode *node) {
+    struct NerpsListNode *prev;
+    struct NerpsListNode *cur;
 
     prev = NULL;
-    cur = DAT_00668798;
+    cur = ScriptSectionList;
     if (cur != NULL) {
         while (cur != NULL) {
-            if (cur->val >= node->val) {
+            if (cur->field_4 >= node->field_4) {
                 break;
             }
             prev = cur;
@@ -1397,17 +1250,17 @@ void FUN_0046b590(struct SortNode *node) {
             return;
         }
     }
-    DAT_00668798 = node;
+    ScriptSectionList = node;
     node->next = NULL;
 }
 
 // FUNCTION: LEGOLAND 0x0046b5d0
-int FUN_0046b5d0(struct SortNode *node) {
-    struct SortNode *cur;
+int RemoveScriptSection(struct NerpsListNode *node) {
+    struct NerpsListNode *cur;
 
-    cur = DAT_00668798;
+    cur = ScriptSectionList;
     if (cur == node) {
-        DAT_00668798 = node->next;
+        ScriptSectionList = node->next;
         return 1;
     }
     while (cur != NULL && cur->next != node) {
@@ -1420,44 +1273,28 @@ int FUN_0046b5d0(struct SortNode *node) {
     return 0;
 }
 
-struct TimedNode {
-    struct TimedNode *field_0;
-    unsigned char pad_4[0x40 - 0x4];
-    unsigned int field_40;
-};
-
-struct TimedList {
-    unsigned char pad_0[0xc];
-    struct TimedNode *field_c;
-};
-
 // FUNCTION: LEGOLAND 0x0046b610
-void FUN_0046b610(struct TimedNode *node, struct TimedList *list) {
-    node->field_40 = DAT_007fdca4;
+void AddScriptEvent(struct ObjectiveEvent *node, struct NerpsListNode *list) {
+    node->field_40 = ScriptPromptStringIndex;
     if (list->field_c != NULL) {
-        node->field_0 = list->field_c;
+        node->next = list->field_c;
     }
     list->field_c = node;
 }
 
 // FUNCTION: LEGOLAND 0x0046b630
-void FUN_0046b630(struct ObjectiveEvent *node, struct EventList *list) {
+void InsertObjectiveEventAtHead(struct ObjectiveEvent *node, struct NerpsListNode *list) {
     struct ObjectiveEvent *head;
 
-    head = list->head;
+    head = list->field_10;
     if (head != NULL) {
         node->next = head;
     }
-    list->head = node;
+    list->field_10 = node;
 }
 
-struct StringHolder {
-    unsigned char pad_0[0x8];
-    char *field_8;
-};
-
 // FUNCTION: LEGOLAND 0x0046b650
-void FUN_0046b650(const char *src, struct StringHolder *holder) {
+void SetScriptSectionIntro(const char *src, struct NerpsListNode *holder) {
     char *dst;
 
     if (holder->field_8 != NULL) {
@@ -1468,48 +1305,43 @@ void FUN_0046b650(const char *src, struct StringHolder *holder) {
     strcpy(dst, src);
 }
 
-struct Ctx6b0 {
-    unsigned char pad_0[0x8];
-    unsigned int field_8;
-};
-
 // FUNCTION: LEGOLAND 0x0046b6b0
-void FUN_0046b6b0(struct Ctx6b0 *ctx, unsigned int param_2) {
+void PostScriptSectionIntro(struct NerpsListNode *ctx, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
     if (ctx->field_8 != 0) {
-        node = FUN_00468910(1, 2);
-        FUN_00468b40(node, ctx->field_8, param_2);
+        node = AllocObjectiveEvent(1, 2);
+        SetObjectiveEventText(node, ctx->field_8, param_2);
         if (param_2 == 0) {
             ctx->field_8 = 0;
             node->flags_10 = 0x20;
         }
-        FUN_00468b00(node);
-        DAT_00668614 = 0;
+        InsertObjectiveMessageSorted(node);
+        CurrentObjectivePromptIndex = 0;
     }
 }
 
 // FUNCTION: LEGOLAND 0x0046b700
-unsigned int FUN_0046b700(void) {
-    if (DAT_0066879c != 0) {
-        if (DAT_00668614 != 0) {
-            FUN_00468bb0(DAT_004b8bbc, DAT_007fe120[DAT_00668614]);
-            DAT_00668618 = 1;
+unsigned int RepeatCurrentObjective(void) {
+    if (CurrentScriptSection != 0) {
+        if (CurrentObjectivePromptIndex != 0) {
+            PostObjectiveMessage(PercentSFormat, ScriptStringTable[CurrentObjectivePromptIndex]);
+            AdvisorRepeatPending = 1;
             return 1;
         }
-        FUN_0046b6b0((struct Ctx6b0 *)DAT_0066879c, 1);
-        FUN_00468d00();
+        PostScriptSectionIntro(CurrentScriptSection, 1);
+        ResetObjectiveHintTimer();
         return 1;
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046b760
-unsigned int FUN_0046b760(void) {
-    if (FUN_0046b280() == 0) {
-        if (DAT_0066879c != 0) {
-            FUN_0046b6b0((struct Ctx6b0 *)DAT_0066879c, 1);
-            FUN_00468d00();
+unsigned int RepostScriptIntro(void) {
+    if (IsScriptStopped() == 0) {
+        if (CurrentScriptSection != 0) {
+            PostScriptSectionIntro(CurrentScriptSection, 1);
+            ResetObjectiveHintTimer();
             return 1;
         }
     }
@@ -1517,752 +1349,742 @@ unsigned int FUN_0046b760(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046b790
-void FUN_0046b790(unsigned int param_1, unsigned int param_2) {
+void NewScriptGiveEvent(struct Element *param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(2, 1);
-    node->field_4 = param_1;
+    node = AllocObjectiveEvent(2, 1);
+    node->element = param_1;
     node->flags_10 = 0;
     node->field_14 = param_2;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046b7f0
-void FUN_0046b7f0(unsigned int param_1) {
+void NewScriptTakeEvent(struct Element *param_1) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(4, 1);
+    node = AllocObjectiveEvent(4, 1);
     node->flags_10 = 0;
-    node->field_4 = param_1;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    node->element = param_1;
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046b820
-void FUN_0046b820(unsigned int param_1) {
+void NewScriptAddBricksEvent(unsigned int param_1) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(5, 1);
+    node = AllocObjectiveEvent(5, 1);
     node->flags_10 = 0;
     node->field_1c = param_1;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046b850
-void FUN_0046b850(unsigned int param_1) {
+void NewScriptCurrencyEvent(unsigned int param_1) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(6, 1);
+    node = AllocObjectiveEvent(6, 1);
     node->flags_10 = 0;
     node->field_1c = param_1;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046b880
-void FUN_0046b880(unsigned int param_1, unsigned int *param_2, unsigned int param_3) {
+void NewScriptPlaceEvent(struct Element *param_1, unsigned int *param_2, unsigned int param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(7, 1);
-    node->field_4 = param_1;
+    node = AllocObjectiveEvent(7, 1);
+    node->element = param_1;
     node->field_20 = param_2[0];
     node->field_24 = param_2[1];
     node->field_18 = param_3;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046b8c0
-void FUN_0046b8c0(struct Vec4 *param_1) {
+void NewScriptClearEvent(struct Vec4 *param_1) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(8, 1);
+    node = AllocObjectiveEvent(8, 1);
     node->vec_28 = *param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046b900
-void FUN_0046b900(struct Vec4 *param_1) {
+void NewScriptUnglueEvent(struct Vec4 *param_1) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(9, 1);
+    node = AllocObjectiveEvent(9, 1);
     node->vec_28 = *param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046b940
-void FUN_0046b940(struct Vec4 *param_1) {
+void NewScriptGlueEvent(struct Vec4 *param_1) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0xa, 1);
+    node = AllocObjectiveEvent(0xa, 1);
     node->vec_28 = *param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046b980
-void FUN_0046b980(struct Vec4 *param_1) {
+void NewScriptExtendParkEvent(struct Vec4 *param_1) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0xb, 1);
+    node = AllocObjectiveEvent(0xb, 1);
     node->vec_28 = *param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046b9c0
-void FUN_0046b9c0(unsigned int param_1) {
+void NewScriptFmvEvent(char *param_1) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0xc, 1);
-    FUN_00468b40(node, param_1, 1);
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    node = AllocObjectiveEvent(0xc, 1);
+    SetObjectiveEventText(node, param_1, 1);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046b9f0
-void FUN_0046b9f0(unsigned int param_1) {
+void NewScriptIntervalEvent(char *param_1) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0xd, 1);
-    FUN_00468b40(node, param_1, 1);
+    node = AllocObjectiveEvent(0xd, 1);
+    SetObjectiveEventText(node, param_1, 1);
     node->field_1c = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046ba30
-void FUN_0046ba30(unsigned int param_1) {
+void NewScriptMessageEvent(char *param_1) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0xe, 1);
-    FUN_00468b40(node, param_1, 1);
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    node = AllocObjectiveEvent(0xe, 1);
+    SetObjectiveEventText(node, param_1, 1);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046ba60
-void FUN_0046ba60(unsigned int param_1, unsigned int param_2) {
+void NewScriptFeatureEvent(unsigned int param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0xf, 1);
+    node = AllocObjectiveEvent(0xf, 1);
     node->field_1c = param_1;
     node->field_14 = param_2;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046ba90
-void FUN_0046ba90(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+void NewScriptReportEvent(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x18, 1);
+    node = AllocObjectiveEvent(0x18, 1);
     node->field_18 = param_1;
     node->field_1c = param_2;
     node->field_14 = param_3;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bad0
-void FUN_0046bad0(unsigned int param_1, unsigned int param_2, unsigned int *param_3) {
+void NewScriptWorkerEvent(unsigned int param_1, unsigned int param_2, unsigned int *param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x10, 1);
+    node = AllocObjectiveEvent(0x10, 1);
     node->field_1c = param_2;
     node->field_20 = param_3[0];
     node->field_24 = param_3[1];
     node->field_14 = param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bb10
-void FUN_0046bb10(unsigned int param_1, unsigned int param_2) {
+void NewScriptWorkersEvent(unsigned int param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x11, 1);
+    node = AllocObjectiveEvent(0x11, 1);
     node->field_1c = param_1;
     node->field_14 = param_2;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bb40
-void FUN_0046bb40(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+void NewScriptDegradeEvent(struct Element *param_1, unsigned int param_2, unsigned int param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x12, 1);
-    node->field_4 = param_1;
+    node = AllocObjectiveEvent(0x12, 1);
+    node->element = param_1;
     node->field_14 = param_2;
     node->field_1c = param_3;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bb80
-void FUN_0046bb80(unsigned int param_1, unsigned int param_2) {
+void NewScriptCapacityEvent(unsigned int param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x13, 1);
+    node = AllocObjectiveEvent(0x13, 1);
     node->field_1c = param_2;
     node->field_14 = param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bbb0
-void FUN_0046bbb0(unsigned int param_1, unsigned int param_2) {
+void NewScriptCapacityScaleEvent(unsigned int param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x14, 1);
+    node = AllocObjectiveEvent(0x14, 1);
     node->field_1c = param_2;
     node->field_14 = param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bbe0
-void FUN_0046bbe0(unsigned int param_1, unsigned int param_2) {
+void NewScriptCapacityCapEvent(unsigned int param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x15, 1);
+    node = AllocObjectiveEvent(0x15, 1);
     node->field_1c = param_2;
     node->field_14 = param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bc10
-void FUN_0046bc10(unsigned int param_1) {
+void NewScriptEntranceFeeEvent(unsigned int param_1) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x16, 1);
+    node = AllocObjectiveEvent(0x16, 1);
     node->flags_10 = 0;
     node->field_1c = param_1;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bc40
-void FUN_0046bc40(void) {
+void NewScriptEndLevelEvent(void) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x20, 1);
+    node = AllocObjectiveEvent(0x20, 1);
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bc60
-void FUN_0046bc60(void) {
+void NewScriptPurgeEvent(void) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x1f, 1);
+    node = AllocObjectiveEvent(0x1f, 1);
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bc80
-void FUN_0046bc80(unsigned int param_1, unsigned int param_2) {
+void NewScriptThemeIconEvent(unsigned int param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x19, 1);
+    node = AllocObjectiveEvent(0x19, 1);
     node->field_1c = param_2;
     node->field_14 = param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bcb0
-void FUN_0046bcb0(unsigned int param_1, unsigned int param_2) {
+void NewScriptAddFlagEvent(unsigned int param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x1a, 1);
+    node = AllocObjectiveEvent(0x1a, 1);
     node->field_1c = param_2;
     node->field_14 = param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bce0
-void FUN_0046bce0(unsigned int param_1, unsigned int param_2) {
+void NewScriptBridgesEvent(unsigned int param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x1b, 1);
+    node = AllocObjectiveEvent(0x1b, 1);
     node->field_1c = param_2;
     node->field_14 = param_1;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bd10
-void FUN_0046bd10(unsigned int param_1) {
+void NewScriptBriefingFileEvent(char *param_1) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x1c, 1);
-    FUN_00468b40(node, param_1, 1);
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    node = AllocObjectiveEvent(0x1c, 1);
+    SetObjectiveEventText(node, param_1, 1);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bd40
-void FUN_0046bd40(unsigned int param_1) {
+void NewScriptHintsFileEvent(char *param_1) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x1d, 1);
-    FUN_00468b40(node, param_1, 1);
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    node = AllocObjectiveEvent(0x1d, 1);
+    SetObjectiveEventText(node, param_1, 1);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bd70
-void FUN_0046bd70(unsigned int param_1, unsigned int param_2) {
+void NewScriptFlashButtonEvent(unsigned int param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x1e, 1);
+    node = AllocObjectiveEvent(0x1e, 1);
     node->field_1c = param_1;
     node->field_14 = param_2;
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bda0
-void FUN_0046bda0(unsigned int *param_1) {
+void NewScriptLookAtEvent(unsigned int *param_1) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x17, 1);
+    node = AllocObjectiveEvent(0x17, 1);
     node->field_20 = param_1[0];
     node->field_24 = param_1[1];
     node->flags_10 = 0;
-    FUN_0046b630(node, (struct EventList *)DAT_0066879c);
+    InsertObjectiveEventAtHead(node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bdd0
-void FUN_0046bdd0(unsigned char param_1, unsigned int param_2, unsigned int param_3) {
+void NewScriptNeedEvent(unsigned char param_1, struct Element *param_2, unsigned int param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x21, 1);
-    node->field_4 = param_2;
+    node = AllocObjectiveEvent(0x21, 1);
+    node->element = param_2;
     node->field_1c = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046be00
-void FUN_0046be00(unsigned char param_1, unsigned int param_2, unsigned int *param_3) {
+void NewScriptNeedAtEvent(unsigned char param_1, struct Element *param_2, unsigned int *param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x22, 1);
-    node->field_4 = param_2;
+    node = AllocObjectiveEvent(0x22, 1);
+    node->element = param_2;
     node->field_20 = param_3[0];
     node->field_24 = param_3[1];
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046be40
-void FUN_0046be40(unsigned char param_1, unsigned int param_2, unsigned int param_3, struct Vec4 *param_4) {
+void NewScriptNeedInEvent(unsigned char param_1, struct Element *param_2, unsigned int param_3, struct Vec4 *param_4) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x23, 1);
-    node->field_4 = param_2;
+    node = AllocObjectiveEvent(0x23, 1);
+    node->element = param_2;
     node->field_1c = param_3;
     node->vec_28 = *param_4;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046be90
-void FUN_0046be90(unsigned char param_1, unsigned int param_2) {
+void NewScriptConnectEvent(unsigned char param_1, struct Element *param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x24, 1);
-    node->field_4 = param_2;
+    node = AllocObjectiveEvent(0x24, 1);
+    node->element = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bec0
-void FUN_0046bec0(unsigned char param_1, unsigned int param_2) {
+void NewScriptLinkEvent(unsigned char param_1, struct Element *param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x25, 1);
-    node->field_4 = param_2;
+    node = AllocObjectiveEvent(0x25, 1);
+    node->element = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bef0
-void FUN_0046bef0(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
+void NewScriptRangeEvent(unsigned char param_1, struct Element *param_2, unsigned int param_3, unsigned int param_4) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x26, 1);
-    node->field_4 = param_2;
+    node = AllocObjectiveEvent(0x26, 1);
+    node->element = param_2;
     node->field_1c = param_3;
     node->field_14 = param_4;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bf30
-void FUN_0046bf30(unsigned char param_1, struct Vec4 *param_2, unsigned int param_3) {
+void NewScriptClearAreaEvent(unsigned char param_1, struct Vec4 *param_2, unsigned int param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x27, 1);
+    node = AllocObjectiveEvent(0x27, 1);
     node->vec_28 = *param_2;
     node->field_14 = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bf80
-void FUN_0046bf80(unsigned char param_1, unsigned int param_2, unsigned int param_3) {
+void NewScriptRemoveEvent(unsigned char param_1, struct Element *param_2, unsigned int param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x28, 1);
-    node->field_4 = param_2;
+    node = AllocObjectiveEvent(0x28, 1);
+    node->element = param_2;
     node->field_1c = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bfb0
-void FUN_0046bfb0(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
+void NewScriptRemoveRangeEvent(unsigned char param_1, struct Element *param_2, unsigned int param_3, unsigned int param_4) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x29, 1);
-    node->field_4 = param_2;
+    node = AllocObjectiveEvent(0x29, 1);
+    node->element = param_2;
     node->field_1c = param_3;
     node->field_14 = param_4;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046bff0
-void FUN_0046bff0(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
+void NewScriptCompositeEvent(unsigned char param_1, struct Element *param_2, unsigned int param_3, unsigned int param_4) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x2a, 1);
-    node->field_4 = param_2;
+    node = AllocObjectiveEvent(0x2a, 1);
+    node->element = param_2;
     node->field_1c = param_3;
     node->field_14 = param_4;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c030
-void FUN_0046c030(unsigned char param_1, unsigned int param_2, unsigned int param_3) {
+void NewScriptLoopCompositeEvent(unsigned char param_1, struct Element *param_2, unsigned int param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x2b, 1);
-    node->field_4 = param_2;
+    node = AllocObjectiveEvent(0x2b, 1);
+    node->element = param_2;
     node->field_1c = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c060
-void FUN_0046c060(unsigned char param_1, unsigned int param_2, unsigned int param_3) {
+void NewScriptTechLevelEvent(unsigned char param_1, struct Element *param_2, unsigned int param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x2c, 1);
-    node->field_4 = param_2;
+    node = AllocObjectiveEvent(0x2c, 1);
+    node->element = param_2;
     node->field_18 = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c090
-void FUN_0046c090(unsigned char param_1, unsigned int param_2) {
+void NewScriptParkVisitorsEvent(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x2d, 1);
+    node = AllocObjectiveEvent(0x2d, 1);
     node->field_1c = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c0c0
-void FUN_0046c0c0(unsigned char param_1, unsigned int param_2, unsigned int param_3) {
+void NewScriptRideVisitorsEvent(unsigned char param_1, struct Element *param_2, unsigned int param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x2e, 1);
-    node->field_4 = param_2;
+    node = AllocObjectiveEvent(0x2e, 1);
+    node->element = param_2;
     node->field_1c = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c0f0
-void FUN_0046c0f0(unsigned char param_1, unsigned int param_2, unsigned int param_3) {
+void NewScriptRidersEvent(unsigned char param_1, struct Element *param_2, unsigned int param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x2f, 1);
-    node->field_4 = param_2;
+    node = AllocObjectiveEvent(0x2f, 1);
+    node->element = param_2;
     node->field_1c = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c120
-void FUN_0046c120(unsigned char param_1, unsigned int param_2) {
+void NewScriptSceneryCoverageEvent(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x30, 1);
+    node = AllocObjectiveEvent(0x30, 1);
     node->field_14 = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c150
-void FUN_0046c150(unsigned char param_1, unsigned int param_2) {
+void NewScriptPathSceneryEvent(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x31, 1);
+    node = AllocObjectiveEvent(0x31, 1);
     node->field_14 = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c180
-void FUN_0046c180(unsigned char param_1, unsigned int param_2) {
+void NewScriptRideCoverageEvent(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x32, 1);
+    node = AllocObjectiveEvent(0x32, 1);
     node->field_14 = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c1b0
-void FUN_0046c1b0(unsigned char param_1, unsigned int param_2) {
+void NewScriptShopCoverageEvent(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x33, 1);
+    node = AllocObjectiveEvent(0x33, 1);
     node->field_14 = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c1e0
-void FUN_0046c1e0(unsigned char param_1, unsigned int param_2) {
+void NewScriptFoodCoverageEvent(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x34, 1);
+    node = AllocObjectiveEvent(0x34, 1);
     node->field_14 = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c210
-void FUN_0046c210(unsigned char param_1, unsigned int param_2) {
+void NewScriptTotalCoverageEvent(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x35, 1);
+    node = AllocObjectiveEvent(0x35, 1);
     node->field_14 = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c240
-void FUN_0046c240(unsigned char param_1, struct Vec4 *param_2, unsigned int param_3) {
+void NewScriptStudAreaEvent(unsigned char param_1, struct Vec4 *param_2, unsigned int param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x37, 1);
+    node = AllocObjectiveEvent(0x37, 1);
     node->vec_28 = *param_2;
     node->field_14 = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c290
-void FUN_0046c290(unsigned char param_1, unsigned int param_2) {
+void NewScriptSaveEvent(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x38, 1);
+    node = AllocObjectiveEvent(0x38, 1);
     node->field_1c = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c2c0
-void FUN_0046c2c0(unsigned char param_1, unsigned int param_2, unsigned int param_3) {
+void NewScriptHappinessEvent(unsigned char param_1, unsigned int param_2, unsigned int param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x39, 1);
+    node = AllocObjectiveEvent(0x39, 1);
     node->field_1c = param_2;
     node->field_14 = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c2f0
-void FUN_0046c2f0(unsigned char param_1, unsigned int param_2) {
+void NewScriptNeedGardenersEvent(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x3a, 1);
+    node = AllocObjectiveEvent(0x3a, 1);
     node->field_1c = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c320
-void FUN_0046c320(unsigned char param_1, unsigned int param_2) {
+void NewScriptNeedMechanicsEvent(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x3b, 1);
+    node = AllocObjectiveEvent(0x3b, 1);
     node->field_1c = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c350
-void FUN_0046c350(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
+void NewScriptHungerEvent(unsigned char param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x3c, 1);
+    node = AllocObjectiveEvent(0x3c, 1);
     node->field_14 = param_3;
     node->field_1c = param_2;
     node->field_18 = param_4;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c390
-void FUN_0046c390(unsigned char param_1, unsigned int param_2, unsigned int param_3) {
+void NewScriptFixRidesEvent(unsigned char param_1, unsigned int param_2, unsigned int param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x3d, 1);
+    node = AllocObjectiveEvent(0x3d, 1);
     node->field_1c = param_2;
     node->field_14 = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c3c0
-void FUN_0046c3c0(unsigned char param_1, unsigned int param_2) {
+void NewScriptPowerRidesEvent(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x3e, 1);
+    node = AllocObjectiveEvent(0x3e, 1);
     node->field_1c = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c3f0
-void FUN_0046c3f0(unsigned char param_1, unsigned int param_2, unsigned int param_3) {
+void NewScriptZoningEvent(unsigned char param_1, unsigned int param_2, unsigned int param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x3f, 1);
+    node = AllocObjectiveEvent(0x3f, 1);
     node->field_1c = param_2;
     node->field_14 = param_3;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c420
-void FUN_0046c420(unsigned char param_1, unsigned int param_2, unsigned int param_3) {
+void NewScriptCheckFlagEvent(unsigned char param_1, unsigned int param_2, unsigned int param_3) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x40, 1);
+    node = AllocObjectiveEvent(0x40, 1);
     node->field_1c = param_3;
     node->field_14 = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c450
-void FUN_0046c450(unsigned char param_1, unsigned int param_2) {
+void NewScriptSelectThemeEvent(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x41, 1);
+    node = AllocObjectiveEvent(0x41, 1);
     node->field_1c = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c480
-void FUN_0046c480(unsigned char param_1, unsigned int param_2) {
+void NewScriptSelectTabEvent(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x42, 1);
+    node = AllocObjectiveEvent(0x42, 1);
     node->field_1c = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c4b0
-void FUN_0046c4b0(unsigned char param_1, unsigned int param_2) {
+void NewScriptSelectModeEvent(unsigned char param_1, unsigned int param_2) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x43, 1);
+    node = AllocObjectiveEvent(0x43, 1);
     node->field_1c = param_2;
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
 // FUNCTION: LEGOLAND 0x0046c510
-void FUN_0046c510(unsigned char param_1) {
+void NewScriptForeverEvent(unsigned char param_1) {
     struct ObjectiveEvent *node;
 
-    node = FUN_00468910(0x45, 1);
+    node = AllocObjectiveEvent(0x45, 1);
     node->flags_10 = param_1;
-    FUN_0046b610((struct TimedNode *)node, (struct TimedList *)DAT_0066879c);
+    AddScriptEvent((struct ObjectiveEvent *)node, CurrentScriptSection);
 }
 
-struct AppendArgC {
-    unsigned char pad_0[0xc];
-    struct ObjectiveEvent *node;
-};
-
 // FUNCTION: LEGOLAND 0x0046c540
-void FUN_0046c540(struct AppendArgC *arg) {
+void AppendObjectiveEventList(struct NerpsListNode *arg) {
     struct ObjectiveEvent *cur;
 
-    cur = DAT_00668784;
+    cur = ScriptEventList;
     if (cur != NULL) {
         while (cur->next != NULL) {
             cur = cur->next;
         }
-        cur->next = arg->node;
-        arg->node = NULL;
+        cur->next = arg->field_c;
+        arg->field_c = NULL;
     } else {
-        DAT_00668784 = arg->node;
-        arg->node = NULL;
+        ScriptEventList = arg->field_c;
+        arg->field_c = NULL;
     }
 }
 
-struct AppendArg10 {
-    unsigned char pad_0[0x10];
-    struct ObjectiveEvent *node;
-};
-
 // FUNCTION: LEGOLAND 0x0046c580
-void FUN_0046c580(struct AppendArg10 *arg) {
+void AppendSectionRewards(struct NerpsListNode *arg) {
     struct ObjectiveEvent *cur;
 
-    cur = DAT_00668784;
+    cur = ScriptEventList;
     if (cur != NULL) {
         while (cur->next != NULL) {
             cur = cur->next;
         }
-        cur->next = arg->node;
-        arg->node = NULL;
+        cur->next = arg->field_10;
+        arg->field_10 = NULL;
     } else {
-        DAT_00668784 = arg->node;
-        arg->node = NULL;
+        ScriptEventList = arg->field_10;
+        arg->field_10 = NULL;
     }
 }
 
 // FUNCTION: LEGOLAND 0x0046c5c0
-void FUN_0046c5c0(void) {
-    FUN_00468970(DAT_00668728);
-    DAT_00668728 = NULL;
-    FUN_00468970(DAT_00668724);
-    DAT_00668724 = NULL;
-    FUN_00468970(DAT_00668784);
-    DAT_00668784 = NULL;
-    FUN_0046b560((struct WrapperNode *)DAT_00668798);
-    DAT_00668798 = NULL;
-    DAT_0066879c = 0;
+void FreeAllScriptLists(void) {
+    FreeObjectiveEventList(ObjectiveEventList);
+    ObjectiveEventList = NULL;
+    FreeObjectiveEventList(ObjectiveMessageQueue);
+    ObjectiveMessageQueue = NULL;
+    FreeObjectiveEventList(ScriptEventList);
+    ScriptEventList = NULL;
+    FreeScriptSectionList((struct NerpsListNode *)ScriptSectionList);
+    ScriptSectionList = NULL;
+    CurrentScriptSection = 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046c620
-unsigned int FUN_0046c620(char *str) {
+unsigned int SaveGameWriteString(char *str) {
     int len;
 
     if (str != NULL) {
@@ -2283,12 +2105,12 @@ unsigned int FUN_0046c620(char *str) {
 }
 
 // FUNCTION: LEGOLAND 0x0046c680
-void *FUN_0046c680(void) {
+void *ReadSaveString(void) {
     int len;
-    void *buffer;
+    char *buffer; /* a string: len bytes, then the 0 added here */
 
     if (SaveGameRead(&len, 4) == 0) {
-        DAT_006687a0++;
+        ScriptLoadErrorCount++;
         return NULL;
     }
     if (len == -1) {
@@ -2297,40 +2119,40 @@ void *FUN_0046c680(void) {
     buffer = malloc(len + 1);
     if (SaveGameRead(buffer, len) == 0) {
         free(buffer);
-        DAT_006687a0++;
+        ScriptLoadErrorCount++;
         return NULL;
     }
-    ((char *)buffer)[len] = 0;
+    buffer[len] = 0;
     return buffer;
 }
 
 // FUNCTION: LEGOLAND 0x0046c700
-unsigned int FUN_0046c700(struct ObjectiveEvent *node) {
+unsigned int SaveObjectiveEventList(struct ObjectiveEvent *node) {
     unsigned int marker[17];
 
     while (node != NULL) {
         int ok;
 
-        node->timestamp -= DAT_007fe994;
+        node->timestamp -= ScriptTimeBase;
         // STRING: LEGOLAND 0x004ba808
         DBPrintf("Saving Event, Timestamp = %d\n", node->timestamp);
-        ok = SaveGameWrite(node, 0x44);
-        node->timestamp += DAT_007fe994;
+        ok = SaveGameWrite(node, sizeof(struct ObjectiveEvent));
+        node->timestamp += ScriptTimeBase;
         if (ok == 0) {
             return 0;
         }
         if (node->field_4 != 0) {
-            if (FUN_0046c620(*(char **)node->field_4) == 0) {
+            if (SaveGameWriteString(*(char **)node->element) == 0) {
                 return 0;
             }
-        } else if (FUN_0046c620(NULL) == 0) {
+        } else if (SaveGameWriteString(NULL) == 0) {
             return 0;
         }
         if (node->field_8 != 0) {
-            if (FUN_0046c620((char *)node->field_8) == 0) {
+            if (SaveGameWriteString(node->text) == 0) {
                 return 0;
             }
-        } else if (FUN_0046c620(NULL) == 0) {
+        } else if (SaveGameWriteString(NULL) == 0) {
             return 0;
         }
         node = node->next;
@@ -2341,17 +2163,17 @@ unsigned int FUN_0046c700(struct ObjectiveEvent *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0046c7e0
-struct ObjectiveEvent *FUN_0046c7e0(void) {
+struct ObjectiveEvent *LoadObjectiveEventList(void) {
     struct ObjectiveEvent *node;
     struct ObjectiveEvent *prev;
     struct ObjectiveEvent *head;
     char *str;
 
-    prev = NULL;
-    node = FUN_00468910((unsigned int)prev, (int)prev);
     head = NULL;
-    while (SaveGameRead(node, 0x44) != 0) {
-        if ((unsigned int)node->next == 0xffffffff) {
+    prev = NULL;
+    node = AllocObjectiveEvent((unsigned int)(UINT_PTR)prev, (int)(INT_PTR)prev);
+    while (SaveGameRead(node, sizeof(struct ObjectiveEvent)) != 0) {
+        if ((unsigned int)(UINT_PTR)node->next == 0xffffffff) {
             free(node);
             if (prev != NULL) {
                 prev->next = NULL;
@@ -2361,28 +2183,28 @@ struct ObjectiveEvent *FUN_0046c7e0(void) {
         }
         // STRING: LEGOLAND 0x004ba838
         DBPrintf("Loading Event, TimeStamp = %d", node->timestamp);
-        node->timestamp += DAT_007fe994;
+        node->timestamp += ScriptTimeBase;
         // STRING: LEGOLAND 0x004ba828
         DBPrintf("Fixed up to %d\n", node->timestamp);
-        str = (char *)FUN_0046c680();
-        if (DAT_006687a0 != 0) {
+        str = (char *)ReadSaveString();
+        if (ScriptLoadErrorCount != 0) {
             free(node);
-            FUN_00468970(head);
+            FreeObjectiveEventList(head);
             return NULL;
         }
         if (str != NULL) {
-            node->field_4 = ElemID(str);
+            node->element = ElemID(str);
             free(str);
         } else {
             node->field_4 = 0;
         }
-        node->field_8 = (unsigned int)FUN_0046c680();
+        node->text = ReadSaveString();
         if (node->field_8 != 0) {
             node->flags_10 |= 0x20;
         }
-        if (DAT_006687a0 != 0) {
-            FUN_00468940(node);
-            FUN_00468970(head);
+        if (ScriptLoadErrorCount != 0) {
+            FreeObjectiveEvent(node);
+            FreeObjectiveEventList(head);
             return NULL;
         }
         if (head == NULL) {
@@ -2391,73 +2213,73 @@ struct ObjectiveEvent *FUN_0046c7e0(void) {
             prev->next = node;
         }
         prev = node;
-        node = FUN_00468910(0, 0);
+        node = AllocObjectiveEvent(0, 0);
     }
     free(node);
-    FUN_00468970(head);
-    DAT_006687a0++;
+    FreeObjectiveEventList(head);
+    ScriptLoadErrorCount++;
     return NULL;
 }
 
 // FUNCTION: LEGOLAND 0x0046c920
-unsigned int FUN_0046c920(void) {
+unsigned int SaveScripts(void) {
     struct NerpsListNode *node;
-    int i;
     int scratch;
+    int i;
 
-    DAT_006687a0 = 0;
-    DAT_007fe994 = GetGameTimer();
-    if (FUN_00474920() == 0) {
+    ScriptLoadErrorCount = 0;
+    ScriptTimeBase = GetGameTimer();
+    if (SaveObjectiveIcons() == 0) {
         return 0;
     }
-    if (SaveGameWrite(DAT_0066861c, 0x80) == 0) {
+    if (SaveGameWrite(BriefingFileName, 0x80) == 0) {
         return 0;
     }
-    if (SaveGameWrite(DAT_0066869c, 0x80) == 0) {
+    if (SaveGameWrite(HintsFileName, 0x80) == 0) {
         return 0;
     }
-    if (SaveGameWrite(&DAT_00668720, 4) == 0) {
+    if (SaveGameWrite(&ScriptStringCount, 4) == 0) {
         return 0;
     }
-    for (i = 0; i < (int)DAT_00668720; i++) {
-        if (FUN_0046c620((char *)DAT_007fe120[i]) == 0) {
+    for (i = 0; i < (int)ScriptStringCount; i++) {
+        if (SaveGameWriteString(ScriptStringTable[i]) == 0) {
             return 0;
         }
     }
-    scratch = DAT_007fe994 - DAT_00668780;
+    scratch = ScriptTimeBase - ObjectiveHintTimer;
     if (SaveGameWrite(&scratch, 4) == 0) {
         return 0;
     }
-    scratch = 0xa;
-    if (SaveGameWrite(&scratch, 4) == 0) {
+    i = 0xa;
+    if (SaveGameWrite(&i, 4) == 0) {
         return 0;
     }
-    if (SaveGameWrite(DAT_007fe930, 0xa) == 0) {
+    if (SaveGameWrite(ObjectiveCounters, 0xa) == 0) {
         return 0;
     }
-    if (FUN_0046c700(DAT_00668784) == 0) {
+    if (SaveObjectiveEventList(ScriptEventList) == 0) {
         return 0;
     }
-    for (node = (struct NerpsListNode *)DAT_00668798; node != NULL; node = node->field_0) {
+    for (node = (struct NerpsListNode *)ScriptSectionList; node != NULL; node = node->next) {
         if (SaveGameWrite(&node->field_4, 4) == 0) {
             return 0;
         }
-        if (FUN_0046c700((struct ObjectiveEvent *)node->field_c) == 0) {
+        if (SaveObjectiveEventList((struct ObjectiveEvent *)node->field_c) == 0) {
             return 0;
         }
-        if (FUN_0046c700((struct ObjectiveEvent *)node->field_10) == 0) {
+        if (SaveObjectiveEventList((struct ObjectiveEvent *)node->field_10) == 0) {
             return 0;
         }
-        if (FUN_0046c620((char *)node->field_8) == 0) {
+        if (SaveGameWriteString(node->field_8) == 0) {
             return 0;
         }
     }
-    scratch = 0xffffffff;
-    if (SaveGameWrite(&scratch, 4) == 0) {
+    i = 0xffffffff;
+    if (SaveGameWrite(&i, 4) == 0) {
         return 0;
     }
-    if (DAT_0066879c != 0) {
-        scratch = ((int)(DAT_0066879c - (unsigned int)DAT_00668798) / 0x14) + 1;
+    if (CurrentScriptSection != 0) {
+        scratch = (int)(CurrentScriptSection - ScriptSectionList) + 1;
     } else {
         scratch = 0;
     }
@@ -2465,22 +2287,22 @@ unsigned int FUN_0046c920(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0046cb20
-unsigned int FUN_0046cb20(void) {
-    DAT_00668614 = 0;
-    if (DAT_00810140 != 0) {
+unsigned int UnloadLevelData(void) {
+    CurrentObjectivePromptIndex = 0;
+    if (LevelLoadedFromSave != 0) {
         UnloadSaveGameMap();
     } else {
-        FUN_004629e0();
+        UnloadBaseMap();
     }
-    FUN_004689a0();
-    FUN_0046c5c0();
-    FUN_0046ce20();
-    FUN_0046ce00();
+    FreeScriptStrings();
+    FreeAllScriptLists();
+    ClearAdvisorHelp();
+    ResetAdvisorMessageTimers();
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046cb60
-unsigned int FUN_0046cb60(void) {
+unsigned int LoadScripts(void) {
     struct NerpsListNode *node;
     struct NerpsListNode *prev;
     int i;
@@ -2488,40 +2310,40 @@ unsigned int FUN_0046cb60(void) {
     int base;
     unsigned char skip;
 
-    DAT_006687a0 = 0;
-    DAT_007fe994 = GetGameTimer();
-    if (DAT_006687a0 != 0) {
+    ScriptLoadErrorCount = 0;
+    ScriptTimeBase = GetGameTimer();
+    if (ScriptLoadErrorCount != 0) {
         return 0;
     }
-    if (FUN_00474970() == 0) {
+    if (LoadObjectiveIcons() == 0) {
         return 0;
     }
-    if (SaveGameRead(DAT_0066861c, 0x80) == 0) {
+    if (SaveGameRead(BriefingFileName, 0x80) == 0) {
         return 0;
     }
-    if (SaveGameRead(DAT_0066869c, 0x80) == 0) {
+    if (SaveGameRead(HintsFileName, 0x80) == 0) {
         return 0;
     }
-    if (SaveGameRead(&DAT_00668720, 4) == 0) {
+    if (SaveGameRead(&ScriptStringCount, 4) == 0) {
         return 0;
     }
-    for (i = 0; i < (int)DAT_00668720; i++) {
-        DAT_007fe120[i] = (unsigned int)FUN_0046c680();
-        if (DAT_006687a0 != 0) {
+    for (i = 0; i < (int)ScriptStringCount; i++) {
+        ScriptStringTable[i] = (char *)ReadSaveString();
+        if (ScriptLoadErrorCount != 0) {
             return 0;
         }
     }
     if (SaveGameRead(&base, 4) == 0) {
         return 0;
     }
-    DAT_00668780 = DAT_007fe994 + base;
-    DAT_00668614 = 0;
-    FUN_004748a0((void *)1);
+    ObjectiveHintTimer = ScriptTimeBase + base;
+    CurrentObjectivePromptIndex = 0;
+    UpdateScriptEndIcon((void *)1);
     if (SaveGameRead(&i, 4) == 0) {
         return 0;
     }
     if (i > 0xa) {
-        if (SaveGameRead(DAT_007fe930, 10) == 0) {
+        if (SaveGameRead(ObjectiveCounters, 10) == 0) {
             return 0;
         }
         for (i -= 10; i != 0; i--) {
@@ -2530,14 +2352,14 @@ unsigned int FUN_0046cb60(void) {
             }
         }
     } else {
-        FUN_00468840();
-        FUN_004688e0();
-        if (SaveGameRead(DAT_007fe930, i) == 0) {
+        ClearObjectiveCounters();
+        Empty_004688e0();
+        if (SaveGameRead(ObjectiveCounters, i) == 0) {
             return 0;
         }
     }
-    DAT_00668784 = FUN_0046c7e0();
-    if (DAT_006687a0 != 0) {
+    ScriptEventList = LoadObjectiveEventList();
+    if (ScriptLoadErrorCount != 0) {
         return 0;
     }
     prev = NULL;
@@ -2545,26 +2367,26 @@ unsigned int FUN_0046cb60(void) {
         return 0;
     }
     while (marker != -1) {
-        node = FUN_0046b4f0(marker);
+        node = AllocScriptSection(marker);
         if (node == NULL) {
             return 0;
         }
-        node->field_c = (unsigned int)FUN_0046c7e0();
-        if (DAT_006687a0 != 0) {
+        node->field_c = LoadObjectiveEventList();
+        if (ScriptLoadErrorCount != 0) {
             return 0;
         }
-        node->field_10 = (unsigned int)FUN_0046c7e0();
-        if (DAT_006687a0 != 0) {
+        node->field_10 = LoadObjectiveEventList();
+        if (ScriptLoadErrorCount != 0) {
             return 0;
         }
-        node->field_8 = (unsigned int)FUN_0046c680();
-        if (DAT_006687a0 != 0) {
+        node->field_8 = ReadSaveString();
+        if (ScriptLoadErrorCount != 0) {
             return 0;
         }
         if (prev != NULL) {
-            prev->field_0 = node;
+            prev->next = node;
         } else {
-            DAT_00668798 = node;
+            ScriptSectionList = node;
         }
         if (SaveGameRead(&marker, 4) == 0) {
             return 0;
@@ -2575,16 +2397,18 @@ unsigned int FUN_0046cb60(void) {
         return 0;
     }
     if (base != 0) {
-        DAT_0066879c = (unsigned int)((struct NerpsListNode *)DAT_00668798 + base - 1);
+        CurrentScriptSection = (ScriptSectionList + base - 1);
         return 1;
     }
-    DAT_0066879c = 0;
+    CurrentScriptSection = 0;
     return 1;
 }
 
+/* Resets objective hint timing, the advisor clear time, and the last level-script polling time when unloading level
+ * data. */
 // FUNCTION: LEGOLAND 0x0046ce00
-void FUN_0046ce00(void) {
-    FUN_00468d00();
-    DAT_007fe050 = 0;
-    DAT_007fe054 = 0;
+void ResetAdvisorMessageTimers(void) {
+    ResetObjectiveHintTimer();
+    AdvisorHelpClearTime = 0;
+    LastLevelScriptRunTime = 0;
 }

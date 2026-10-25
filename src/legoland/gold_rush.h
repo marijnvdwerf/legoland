@@ -2,7 +2,12 @@
 
 #include "legoland.h"
 
-struct ClassNode;
-struct CallbackTable;
+struct GoldNode {
+    unsigned short key;
+    unsigned char pad_2[0xa];
+    struct GoldNode *next;
+    unsigned char pad_10[0x1c];
+};
 
-void FUN_004078f0(struct ClassNode *str, struct CallbackTable *module);
+struct Ride;
+void GoldRush_GetInterfaces(struct Element *str, struct Ride *module);

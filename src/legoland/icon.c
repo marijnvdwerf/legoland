@@ -19,30 +19,11 @@
 
 struct Sprite;
 
-struct IconAnim {
-    /* 0x00 */ struct LLS *lls;
-    /* 0x04 */ unsigned char pad_4[0x14 - 0x4];
-    /* 0x14 */ int kind;
-};
-
-struct IconSprite {
-    /* 0x00 */ unsigned char pad_0[8];
-    /* 0x08 */ struct IconAnim *anim;
-};
-
-struct Rect16 {
-    unsigned char pad_0[0xc];
-    short field_c;
-    short field_e;
-    short field_10;
-    short field_12;
-};
-
 struct Rect32 {
-    int field_0;
-    int field_4;
-    int field_8;
-    int field_c;
+    int left;
+    int top;
+    int right;
+    int bottom;
 };
 
 struct Config {
@@ -64,25 +45,11 @@ struct Indicator {
     unsigned int field_c;
     unsigned int field_10;
     struct IconNode *field_14;
-    unsigned int field_18;
-    void (*field_1c)(struct Indicator *);
+    void (*field_18)(struct Indicator *); /* the check function */
+    void (*field_1c)(struct Indicator *); /* the click function */
     unsigned char pad_20[0x22 - 0x20];
     unsigned char field_22;
-};
-
-struct MenuGroup {
-    /* 0x00 */ short field_0;
-    /* 0x02 */ unsigned char pad_2[0x4 - 0x2];
-    /* 0x04 */ unsigned int field_4;
-    /* 0x08 */ struct IconNode *field_8;
-    /* 0x0c */ int field_c;
-    /* 0x10 */ int field_10;
-    /* 0x14 */ int field_14;
-    /* 0x18 */ int field_18;
-    /* 0x1c */ int field_1c;
-    /* 0x20 */ int field_20;
-    /* 0x24 */ int field_24;
-    /* 0x28 */ int field_28;
+    unsigned char pad_23[0x28 - 0x23];
 };
 
 struct ListElement {
@@ -97,7 +64,7 @@ struct InfoSource {
     /* 0x04 */ void *field_4;
     /* 0x08 */ void *field_8;
     /* 0x0c */ unsigned char pad_c[0x10 - 0xc];
-    /* 0x10 */ unsigned int field_10;
+    /* 0x10 */ char *field_10; /* the icon string */
     /* 0x14 */ struct Sprite *field_14;
     /* 0x18 */ unsigned char pad_18[0x68 - 0x18];
     /* 0x68 */ struct Sprite *field_68;
@@ -106,37 +73,6 @@ struct InfoSource {
     /* 0x7c */ void *field_7c;
     /* 0x80 */ unsigned char pad_80[0xc4 - 0x80];
     /* 0xc4 */ unsigned int *field_c4;
-};
-
-struct ScrollRegion {
-    /* 0x00 */ short field_0;
-    /* 0x02 */ unsigned char pad_2[0x4 - 0x2];
-    /* 0x04 */ unsigned char field_4;
-    /* 0x05 */ unsigned char pad_5[0xc - 0x5];
-    /* 0x0c */ int field_c;
-    /* 0x10 */ int field_10;
-    /* 0x14 */ int field_14;
-    /* 0x18 */ int field_18;
-    /* 0x1c */ RECT clip;
-};
-
-struct IndicatorFuncs {
-    unsigned char pad_0[4];
-    unsigned int field_4;
-    unsigned char pad_8[0x18 - 0x8];
-    unsigned int field_18;
-    unsigned int field_1c;
-};
-
-struct TimedIndicator {
-    struct Indicator *next;
-    unsigned int field_4;
-    unsigned int field_8;
-    unsigned int field_c;
-    unsigned int field_10;
-    struct IconNode *field_14;
-    unsigned int field_18;
-    unsigned int field_1c;
 };
 
 #include "bricks.h"
@@ -149,11 +85,13 @@ struct TimedIndicator {
 #include "sound_music.h"
 #include "text.h"
 
+/* Sets CurrentHelpKind to 4 when ShowNextObjectiveMessage starts an objective message's speech
+ * (UpdateSpeechPlayback only replays kinds 0-2). */
 // FUNCTION: LEGOLAND 0x0046d3a0
-void FUN_0046d3a0(void) { DAT_006687a4 = 4; }
+void SetHelpKindObjectiveMessage(void) { CurrentHelpKind = 4; }
 
 // FUNCTION: LEGOLAND 0x0046d3c0
-void FUN_0046d3c0(struct IconNode *node) {
+void FreeIcon(struct IconNode *node) {
     if (!node) {
         return;
     }
@@ -170,68 +108,63 @@ void FUN_0046d3c0(struct IconNode *node) {
     if (FocussedIconPtr == node) {
         FocussedIconPtr = NULL;
     }
-    if (DAT_004bdd00 == 2 && DAT_004bdd04 == (unsigned int)node) {
-        DAT_004bdd04 = 0;
-        DAT_004bdd00 = 0x100;
+    if (Hover.type == 2 && Hover.ptr == (struct Bloke *)node) {
+        Hover.ptr = 0;
+        Hover.type = 0x100;
     }
 }
 
 // FUNCTION: LEGOLAND 0x0046d440
-void FUN_0046d440(struct IconNode *node) {
-    ((struct IconNode *)PTR_some_list_head_004ba87c)->next = node;
-    PTR_some_list_head_004ba87c = node;
+void AppendIcon(struct IconNode *node) {
+    ((struct IconNode *)IconListTail)->next = node;
+    IconListTail = node;
 }
 
 // FUNCTION: LEGOLAND 0x0046d460
-void FUN_0046d460(struct IconNode **slot) {
+void UnlinkIconAtSlot(struct IconNode **slot) {
     struct IconNode *node = *slot;
     struct IconNode *next;
     if (FocussedIconPtr == node->next) {
         FocussedIconPtr = NULL;
     }
-    if (PTR_some_list_head_004ba87c == *slot) {
-        PTR_some_list_head_004ba87c = (struct IconNode *)slot;
+    if (IconListTail == *slot) {
+        IconListTail = (struct IconNode *)slot;
     }
     node = *slot;
     next = node->next;
-    FUN_0046d3c0(node);
+    FreeIcon(node);
     *slot = next;
 }
 
 // FUNCTION: LEGOLAND 0x0046d4a0
-void FUN_0046d4a0(struct IconNode **slot) {
+void FreeIconAtSlot(struct IconNode **slot) {
     struct IconNode *node = *slot;
     struct IconNode *next;
     if (FocussedIconPtr == node->next) {
         FocussedIconPtr = NULL;
     }
-    if (PTR_DAT_004ba880 == *slot) {
-        PTR_DAT_004ba880 = slot;
+    if (HelpIconListTail == *slot) {
+        HelpIconListTail = slot;
     }
     node = *slot;
     next = node->next;
-    FUN_0046d3c0(node);
+    FreeIcon(node);
     *slot = next;
 }
 
 // FUNCTION: LEGOLAND 0x0046d4e0
-void FUN_0046d4e0(struct IconNode *node) {
+void RemoveIconFromList(struct IconNode *node) {
     struct IconNode *cur;
     struct IconNode *next;
-    if (DAT_006687c8 == node) {
-        FUN_0046d460(&DAT_006687c8);
-        return;
-    }
-    cur = DAT_006687c8;
-    if (cur != NULL) {
-        while ((next = cur->next) != node) {
+    if (IconListHead == node) {
+        UnlinkIconAtSlot(&IconListHead);
+    } else {
+        cur = IconListHead;
+        while (cur != NULL && (next = cur->next) != node) {
             cur = next;
-            if (next == NULL) {
-                return;
-            }
         }
         if (cur != NULL) {
-            FUN_0046d460((struct IconNode **)cur);
+            UnlinkIconAtSlot((struct IconNode **)cur);
         }
     }
 }
@@ -242,24 +175,24 @@ LEGO_EXPORT void RemoveIconGroup(unsigned short group) {
     struct IconNode *node;
     int removed = 0;
 
-    slot = &DAT_006687c8;
-    node = DAT_006687c8;
+    slot = &IconListHead;
+    node = IconListHead;
     while (node != NULL) {
         if (node->id == group) {
             node = node->next;
-            FUN_0046d460(slot);
+            UnlinkIconAtSlot(slot);
             removed++;
         } else {
             slot = &node->next;
             node = node->next;
         }
     }
-    slot = &DAT_006687cc;
-    node = DAT_006687cc;
+    slot = &HelpIconListHead;
+    node = HelpIconListHead;
     while (node != NULL) {
         if (node->id == group) {
             node = node->next;
-            FUN_0046d4a0(slot);
+            FreeIconAtSlot(slot);
             removed++;
         } else {
             slot = &node->next;
@@ -269,32 +202,32 @@ LEGO_EXPORT void RemoveIconGroup(unsigned short group) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d590
-void FUN_0046d590(unsigned short val) {
+void RemoveIconRange(unsigned short val) {
     struct IconNode **slot;
     struct IconNode *node;
     int removed = 0;
 
-    slot = &DAT_006687c8;
-    node = DAT_006687c8;
+    slot = &IconListHead;
+    node = IconListHead;
     while (node != NULL) {
         if (node->id < val || (int)node->id >= val + 7) {
             slot = &node->next;
             node = node->next;
         } else {
             node = node->next;
-            FUN_0046d460(slot);
+            UnlinkIconAtSlot(slot);
             removed++;
         }
     }
-    slot = &DAT_006687cc;
-    node = DAT_006687cc;
+    slot = &HelpIconListHead;
+    node = HelpIconListHead;
     while (node != NULL) {
         if (node->id < val || (int)node->id >= val + 7) {
             slot = &node->next;
             node = node->next;
         } else {
             node = node->next;
-            FUN_0046d4a0(slot);
+            FreeIconAtSlot(slot);
             removed++;
         }
     }
@@ -302,14 +235,14 @@ void FUN_0046d590(unsigned short val) {
 
 // FUNCTION: LEGOLAND 0x0046d630
 LEGO_EXPORT struct IconNode *FindIcon(unsigned short id) {
-    struct IconNode *node = (struct IconNode *)DAT_006687c8;
+    struct IconNode *node = (struct IconNode *)IconListHead;
     while (node) {
         if (node->id == id && (node->flags & 0x100) == 0) {
             return node;
         }
         node = node->next;
     }
-    node = (struct IconNode *)DAT_006687cc;
+    node = (struct IconNode *)HelpIconListHead;
     while (node) {
         if (node->id == id && (node->flags & 0x100) == 0) {
             return node;
@@ -320,7 +253,7 @@ LEGO_EXPORT struct IconNode *FindIcon(unsigned short id) {
 }
 
 // FUNCTION: LEGOLAND 0x0046d680
-void FUN_0046d680(struct IconNode *node, struct Sprite *sprite) {
+void SetIconSprite(struct IconNode *node, struct Sprite *sprite) {
     if (node) {
         struct Sprite *old = node->sprite;
         if (sprite != old) {
@@ -339,36 +272,38 @@ void FUN_0046d680(struct IconNode *node, struct Sprite *sprite) {
 LEGO_EXPORT struct IconNode *InsertIcon(short a1, short a2, int a3, struct Sprite *sprite) {
     struct IconNode *icon = (struct IconNode *)malloc(sizeof(struct IconNode));
     if (icon != NULL) {
-        *icon = DAT_00668858;
+        *icon = DefaultIconNode;
         icon->x = a1;
         icon->y = a2;
         icon->id = (unsigned short)a3;
         ReferenceSprite(sprite);
         icon->sprite = sprite;
         if (sprite != NULL) {
-            icon->field_12 = sprite->height;
-            icon->field_10 = sprite->width;
+            short h = *(volatile short *)&sprite->height;
+            short w = *(volatile short *)&sprite->width;
+            icon->height = h;
+            icon->width = w;
             icon->flags = icon->flags | 0x10;
         }
     }
-    FUN_0046d440(icon);
+    AppendIcon(icon);
     return icon;
 }
 
 // FUNCTION: LEGOLAND 0x0046d740
 LEGO_EXPORT void SetNewGroup_Callbacks(void *param_1, void *param_2, void *param_3) {
-    DAT_006688a8 = param_1;
-    DAT_006688ac = param_2;
-    DAT_006688b0 = param_3;
+    NewIconGroupCallbacks = param_1;
+    NewGroupRenderFunc = param_2;
+    NewGroupEventHandler = param_3;
 }
 
 // FUNCTION: LEGOLAND 0x0046d760
-LEGO_EXPORT struct IconNode *AddFullScreenIcon(void *icon) {
-    struct IconNode *result = InsertIcon(0, 0, (int)icon, 0);
+LEGO_EXPORT struct IconNode *AddFullScreenIcon(int icon) {
+    struct IconNode *result = InsertIcon(0, 0, icon, 0);
     if (result) {
-        result->field_10 = ((struct Config *)lpConfig)->field_0;
-        result->field_12 = ((struct Config *)lpConfig)->field_2;
-        result->field_28 = (void *)FUN_0046df60;
+        result->width = ((struct Config *)lpConfig)->field_0;
+        result->height = ((struct Config *)lpConfig)->field_2;
+        result->render_func = (void *)SetClippingToScreenRect;
         result->flags = result->flags | 0x29;
     }
     return result;
@@ -386,115 +321,132 @@ LEGO_EXPORT struct IconNode *LoadSpriteIcon(const char *filename, unsigned int p
 }
 
 // FUNCTION: LEGOLAND 0x0046d850
-void FUN_0046d850(struct ScrollRegion *r, int param_2, int param_3) {
-    int dx;
+void ScrollIconRegion(struct InterfacePanel *r, int param_2, int param_3) {
     int dy;
-    int ebp;
+    int dx;
+    int l;
+    int t;
+    int nl;
+    int nt;
+    int edge;
 
-    if ((r->field_4 & 1) != 0) {
-        if (r->field_18 - r->field_10 <= r->clip.bottom - r->clip.top) {
-            MoveIcons(0xffff, r->field_0, 0, (short)(r->clip.top - r->field_10));
+    int field_0;
+    int content_bottom;
+    int clip_left;
+    if ((1 & r->field_4) != 0) {
+        if (r->content_bottom - r->content_top <= r->clip_bottom - r->clip_top) {
+            MoveIcons(0xffff, r->group, 0, (short)(r->clip_top - r->content_top));
             return;
         }
     } else {
-        if (r->field_14 - r->field_c <= r->clip.right - r->clip.left) {
-            MoveIcons(0xffff, r->field_0, (short)(r->clip.left - r->field_c), 0);
+        if (r->field_14 - r->content_left <= r->clip_right - r->clip_left) {
+            MoveIcons(0xffff, r->group, (short)(r->clip_left - r->content_left), 0);
             return;
         }
     }
 
-    dy = FUN_0046dd10(0xffff, (short)((r->clip.top - r->field_10) - param_3), (short)(r->field_10 + param_3), r->field_0, param_3);
-    dx = param_3;
-    ebp = r->field_c + param_3;
-    if ((r->field_4 & 1) != 0) {
-        if (r->field_10 + dy <= r->clip.top) {
-            ebp = r->field_18 + dy;
-            if (ebp < r->clip.bottom) {
-                dy = dy + (r->clip.bottom - ebp);
+    dy = GetIconScrollSnapOffset(0xffff, (short)((r->clip_top - r->content_top) - param_3), (short)(r->content_top + param_3), r->group, param_3);
+    l = r->content_left;
+    dx = param_2;
+    t = r->content_top;
+    nl = l + dx;
+    nt = t + dy;
+    if (!((1 & r->field_4) != 0)) {
+        if (!(nl > r->clip_left)) {
+            edge = dx + r->field_14;
+            if (edge < r->clip_right) {
+                dx = dx + (r->clip_right - edge);
             }
         } else {
-            dy = dy + (r->clip.top - (r->field_10 + dy));
+            clip_left = r->clip_left;
+            dx = dx + (clip_left - nl);
         }
     } else {
-        if (ebp > r->clip.left) {
-            dx = dx + (r->clip.left - ebp);
-        } else {
-            ebp = r->field_14 + param_3;
-            if (ebp < r->clip.right) {
-                dx = dx + (r->clip.right - ebp);
+        if (!(nt > r->clip_top)) {
+            edge = r->content_bottom + dy;
+            if (edge < r->clip_bottom) {
+                dy = dy + (r->clip_bottom - edge);
             }
+        } else {
+            dy = dy + (r->clip_top - nt);
         }
     }
-    r->field_c = r->field_c + dx;
-    r->field_10 = r->field_10 + dy;
+    r->content_left = dx + l;
+    r->content_top = t + dy;
     r->field_14 = r->field_14 + dx;
-    r->field_18 = r->field_18 + dy;
-    DAT_00668e44[DAT_00668e64] = DAT_00668e44[DAT_00668e64] + dy;
-    MoveIcons(0xffff, r->field_0, (short)dx, (short)dy);
+    content_bottom = r->content_bottom;
+    r->content_bottom = content_bottom + dy;
+    BuildPanelScrollOffsets[BuildPanelScrollIndex] = BuildPanelScrollOffsets[BuildPanelScrollIndex] + dy;
+    field_0 = r->group;
+    MoveIcons(0xffff, field_0, (short)dx, (short)dy);
 }
 
 // FUNCTION: LEGOLAND 0x0046d980
-unsigned char FUN_0046d980(struct IconNode *icon, unsigned char buttons, int a3, int a4) {
-    struct ScrollRegion *region;
+unsigned char ScrollIconRegionForward(struct IconNode *icon, unsigned char buttons, int a3, int a4) {
+    struct InterfacePanel *region;
     if ((buttons & 1) != 0) {
-        region = (struct ScrollRegion *)icon->field_30;
-        DAT_006688b4 = GetTickCount();
-        if ((region->field_4 & 1) != 0) {
-            FUN_0046d850(region, 0, 6);
-            return 2;
-        }
-        FUN_0046d850(region, 0x20, 0);
+        do {
+            region = (struct InterfacePanel *)icon->field_30;
+            LastScrollIconTick = GetTickCount();
+            if ((region->field_4 & 1) != 0) {
+                ScrollIconRegion(region, 0, 6);
+            } else {
+                ScrollIconRegion(region, 0x20, 0);
+            }
+        } while (0);
         return 2;
     }
-    if ((buttons & 4) == 0) {
-        return 1;
+    if ((buttons & 4) != 0) {
+        do {
+            if (GetTickCount() - LastScrollIconTick >= 0xfa) {
+                region = (struct InterfacePanel *)icon->field_30;
+                LastScrollIconTick = GetTickCount();
+                if ((region->field_4 & 1) != 0) {
+                    ScrollIconRegion(region, 0, 6);
+                } else {
+                    ScrollIconRegion(region, 0x20, 0);
+                }
+            }
+        } while (0);
+        return 2;
     }
-    if (0xf9 < GetTickCount() - DAT_006688b4) {
-        region = (struct ScrollRegion *)icon->field_30;
-        DAT_006688b4 = GetTickCount();
-        if ((region->field_4 & 1) != 0) {
-            FUN_0046d850(region, 0, 6);
-            return 2;
-        }
-        FUN_0046d850(region, 0x20, 0);
-    }
-    return 2;
+    return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046da20
-unsigned char FUN_0046da20(struct IconNode *icon, unsigned char buttons, int a3, int a4) {
-    struct ScrollRegion *region;
+unsigned char ScrollIconRegionBack(struct IconNode *icon, unsigned char buttons, int a3, int a4) {
+    struct InterfacePanel *region;
     if ((buttons & 1) != 0) {
-        region = (struct ScrollRegion *)icon->field_30;
-        DAT_006688b4 = GetTickCount();
+        region = (struct InterfacePanel *)icon->field_30;
+        LastScrollIconTick = GetTickCount();
         if ((region->field_4 & 1) != 0) {
-            FUN_0046d850(region, 0, -6);
+            ScrollIconRegion(region, 0, -6);
             return 2;
         }
-        FUN_0046d850(region, -0x20, 0);
+        ScrollIconRegion(region, -0x20, 0);
         return 2;
     }
-    if ((buttons & 4) == 0) {
-        return 1;
-    }
-    if (0xf9 < GetTickCount() - DAT_006688b4) {
-        region = (struct ScrollRegion *)icon->field_30;
-        DAT_006688b4 = GetTickCount();
-        if ((region->field_4 & 1) != 0) {
-            FUN_0046d850(region, 0, -6);
-            return 2;
+    if ((buttons & 4) != 0) {
+        if (GetTickCount() - LastScrollIconTick >= 0xfa) {
+            region = (struct InterfacePanel *)icon->field_30;
+            LastScrollIconTick = GetTickCount();
+            if ((region->field_4 & 1) != 0) {
+                ScrollIconRegion(region, 0, -6);
+            } else {
+                ScrollIconRegion(region, -0x20, 0);
+            }
         }
-        FUN_0046d850(region, -0x20, 0);
+        return 2;
     }
-    return 2;
+    return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046dac0
-void FUN_0046dac0(void) {
+void ScrollActiveIconRegionForward(void) {
     unsigned int v;
     struct IconNode *icon;
-    if (EditMode.unk4 == 2 && DAT_0080ff80.unk8 == 3) {
-        int field = CONTROLLERBUFFER->field_8;
+    if (EditMode.unk4 == 2 && FrontEndScreenMode.unk8 == 3) {
+        int field = CONTROLLERBUFFER->x;
         if (field < 0xb2) {
             v = 0xc8;
         } else if (field < 0x143) {
@@ -511,16 +463,16 @@ void FUN_0046dac0(void) {
     v = v + 3;
     icon = FindIcon((unsigned short)v);
     if (icon) {
-        FUN_0046d980(icon, 1, 0, 0);
+        ScrollIconRegionForward(icon, 1, 0, 0);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0046db40
-void FUN_0046db40(void) {
+void ScrollActiveIconRegionBack(void) {
     unsigned int v;
     struct IconNode *icon;
-    if (EditMode.unk4 == 2 && DAT_0080ff80.unk8 == 3) {
-        int field = CONTROLLERBUFFER->field_8;
+    if (EditMode.unk4 == 2 && FrontEndScreenMode.unk8 == 3) {
+        int field = CONTROLLERBUFFER->x;
         if (field < 0xb2) {
             v = 0xc8;
         } else if (field < 0x143) {
@@ -537,43 +489,43 @@ void FUN_0046db40(void) {
     v = v + 4;
     icon = FindIcon((unsigned short)v);
     if (icon) {
-        FUN_0046da20(icon, 1, 0, 0);
+        ScrollIconRegionBack(icon, 1, 0, 0);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0046dbc0
-LEGO_EXPORT struct IconNode *AddGBarIcons(unsigned int param_1, unsigned int param_2, int param_3, int param_4, int param_5, int param_6) {
+LEGO_EXPORT struct IconNode *AddGBarIcons(struct InterfacePanel *param_1, unsigned int param_2, int param_3, int param_4, int param_5, int param_6) {
     struct IconNode *icon;
 
-    AddFullScreenIcon((void *)(param_6 + 6));
-    icon = InsertIcon(param_2, param_3, param_6 + 3, DAT_0066882c);
-    icon->field_30 = (void *)param_1;
+    AddFullScreenIcon(param_6 + 6);
+    icon = InsertIcon(param_2, param_3, param_6 + 3, IfSideBUpSprite);
+    icon->field_30 = param_1;
     icon->string_id = 0x95;
     icon->string = GetString(0x95);
-    icon->field_12 = 0x1e;
+    icon->height = 0x1e;
     icon->flags = icon->flags | 0x2013;
-    icon->event_handler = (void *)FUN_0046d980;
-    icon = InsertIcon(param_2, param_5 - 0x1e + param_3, param_6 + 4, DAT_00668830);
-    icon->field_30 = (void *)param_1;
+    icon->event_handler = (void *)ScrollIconRegionForward;
+    icon = InsertIcon(param_2, param_5 - 0x1e + param_3, param_6 + 4, IfSideBDownSprite);
+    icon->field_30 = param_1;
     icon->string_id = 0x94;
     icon->string = GetString(0x94);
-    icon->field_12 = 0x1e;
+    icon->height = 0x1e;
     icon->flags = icon->flags | 0x2013;
-    icon->event_handler = (void *)FUN_0046da20;
+    icon->event_handler = (void *)ScrollIconRegionBack;
     icon = InsertIcon(param_2, param_3 + 0x1e, param_6 + 5, 0);
-    icon->field_30 = (void *)param_1;
-    icon->field_10 = 0x79;
-    icon->field_12 = (short)param_5 - 0x3c;
+    icon->field_30 = param_1;
+    icon->width = 0x79;
+    icon->height = (short)param_5 - 0x3c;
     icon->box.box_color = GetNearestColour(0, 10, 0x14);
     icon->flags = icon->flags | 0x29;
-    icon->field_28 = (void *)RenderBoxIcon;
+    icon->render_func = (void *)RenderBoxIcon;
     return icon;
 }
 
 // FUNCTION: LEGOLAND 0x0046dcd0
 LEGO_EXPORT void MoveIcons(unsigned short mask, unsigned short id, short dx, short dy) {
     struct IconNode *node;
-    for (node = DAT_006687c8; node != NULL; node = node->next) {
+    for (node = IconListHead; node != NULL; node = node->next) {
         if ((node->flags & 1) == 0 && (node->id & mask) == id) {
             node->x = node->x + dx;
             node->y = node->y + dy;
@@ -581,14 +533,30 @@ LEGO_EXPORT void MoveIcons(unsigned short mask, unsigned short id, short dx, sho
     }
 }
 
+/* Finds the next eligible icon edge in the requested vertical scroll direction and returns the offset needed to
+ * align it with the reference edge. Filters icon IDs with the supplied mask and skips flag-1 icons; returns zero
+ * when no snap is needed. */
 // FUNCTION: LEGOLAND 0x0046dd10
-int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned short param_4, int param_5) {
+int GetIconScrollSnapOffset(unsigned short param_1, short param_2, short param_3, unsigned short param_4, int param_5) {
     struct IconNode *best = NULL;
-    struct IconNode *node = DAT_006687c8;
+    struct IconNode *node = IconListHead;
     int extreme;
     int v;
 
-    if (param_5 < 1) {
+    if (param_5 > 0) {
+        extreme = -100000;
+        if (node == NULL) {
+            return 0;
+        }
+        do {
+            if ((node->flags & 1) == 0 && (node->id & param_1) == param_4 &&
+                (v = (int)node->y, (v - param_3) + param_5 <= (int)param_2 && v > extreme)) {
+                best = node;
+                extreme = v;
+            }
+            node = node->next;
+        } while (node != NULL);
+    } else {
         if (param_5 >= 0) {
             return 0;
         }
@@ -598,22 +566,9 @@ int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned 
         }
         do {
             if ((node->flags & 1) == 0 && (node->id & param_1) == param_4 &&
-                (v = (int)node->y, (int)param_2 < (v - param_3) + param_5) && v < extreme) {
-                extreme = v;
+                (v = (int)node->y, (v - param_3) + param_5 > (int)param_2) && v < extreme) {
                 best = node;
-            }
-            node = node->next;
-        } while (node != NULL);
-    } else {
-        extreme = -100000;
-        if (node == NULL) {
-            return 0;
-        }
-        do {
-            if ((node->flags & 1) == 0 && (node->id & param_1) == param_4 &&
-                (v = (int)node->y, (v - param_3) + param_5 <= (int)param_2 && extreme < v)) {
                 extreme = v;
-                best = node;
             }
             node = node->next;
         } while (node != NULL);
@@ -625,16 +580,16 @@ int FUN_0046dd10(unsigned short param_1, short param_2, short param_3, unsigned 
 }
 
 // FUNCTION: LEGOLAND 0x0046de50
-void FUN_0046de50(struct Rect16 *src, struct Rect32 *dst) {
-    dst->field_0 = src->field_c;
-    dst->field_4 = src->field_e;
-    dst->field_8 = src->field_10 + src->field_c;
-    dst->field_c = src->field_12 + src->field_e;
+void GetIconRect(struct IconNode *src, struct Rect32 *dst) {
+    dst->left = src->x;
+    dst->top = src->y;
+    dst->right = src->width + src->x;
+    dst->bottom = src->height + src->y;
 }
 
 // FUNCTION: LEGOLAND 0x0046de90
-void FUN_0046de90(struct IconNode *icon, struct Bbox *bbox) {
-    FUN_0046de50((struct Rect16 *)icon, (struct Rect32 *)bbox);
+void GetIconBBox(struct IconNode *icon, struct Bbox *bbox) {
+    GetIconRect((struct IconNode *)icon, (struct Rect32 *)bbox);
     if (icon->flags & 0x20) {
         bbox->min_x = bbox->min_x - 3;
         bbox->max_x = bbox->max_x + 3;
@@ -647,10 +602,10 @@ void FUN_0046de90(struct IconNode *icon, struct Bbox *bbox) {
         ind = (struct Indicator *)icon->field_30;
         if (ind != NULL) {
             if (ind->field_22 & 8) {
-                bbox->max_y = bbox->max_y + DAT_00668840;
+                bbox->max_y = bbox->max_y + IconBBoxExtraHeight;
             }
             if (ind->field_22 & 2) {
-                bbox->max_x = bbox->max_x + DAT_0066884c;
+                bbox->max_x = bbox->max_x + IconBBoxExtraWidth;
             }
         }
     }
@@ -667,16 +622,16 @@ void FUN_0046de90(struct IconNode *icon, struct Bbox *bbox) {
 }
 
 // FUNCTION: LEGOLAND 0x0046df30
-int FUN_0046df30(struct Rect16 *src) {
+int SetClippingToIcon(struct IconNode *src) {
     RECT rect;
-    FUN_0046de50(src, (struct Rect32 *)&rect);
+    GetIconRect(src, (struct Rect32 *)&rect);
     SetClipping(&rect);
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046df60
-int FUN_0046df60(int param) {
-    SetClipping(&DAT_007fe020);
+int SetClippingToScreenRect(int param) {
+    SetClipping(&ScreenRect);
     return 0;
 }
 
@@ -684,16 +639,16 @@ int FUN_0046df60(int param) {
 LEGO_EXPORT int RenderBoxIcon(struct IconNode *node) {
     unsigned short border = node->box.border;
     RenderThickBox(node->x - border, node->y - border,
-        node->field_10 + border * 2, node->field_12 + border * 2,
+        node->width + border * 2, node->height + border * 2,
         border, node->box.box_color);
     if ((node->flags & 0x20) != 0) {
-        FUN_0046df30((struct Rect16 *)node);
+        SetClippingToIcon((struct IconNode *)node);
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046dfd0
-int FUN_0046dfd0(struct IconNode *node) {
+int RenderIconWithText(struct IconNode *node) {
     struct PrintCtx ctx;
 
     ctx.flags = 2;
@@ -707,7 +662,7 @@ int FUN_0046dfd0(struct IconNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0046e040
-int FUN_0046e040(struct IconNode *node) {
+int RenderFocusableIcon(struct IconNode *node) {
     struct PrintCtx ctx;
 
     ctx.flags = 2;
@@ -723,67 +678,63 @@ int FUN_0046e040(struct IconNode *node) {
 
 // FUNCTION: LEGOLAND 0x0046e0a0
 LEGO_EXPORT int RenderBuildObjectIcon(struct IconNode *node) {
-    struct PrintCtx ctx;
+    struct PrintCtx ctx = {2, node};
     int cost;
-    char buf[12];
     unsigned int *objsub;
 
-    ctx.flags = 2;
-    ctx.node = node;
-    ctx.field_8 = 0;
     if (EditMode.unk0 == 1 && EditMode.unk8 != 0) {
-        objsub = *(unsigned int **)((char *)node->field_8 + 0xc4);
-        if (*(unsigned int **)((char *)EditMode.unk8 + 0xc4) == objsub) {
+        objsub = (unsigned int *)((struct Ride *)node->field_8)->element;
+        if ((unsigned int *)EditMode.unk8->element == objsub) {
             objsub[2] = objsub[2] & 0xfffdffff;
         }
     }
     if (node->y > 0 && node->y < 0x174) {
-        cost = GetObjCost(node->field_8);
-        if (node->sprite != NULL) {
-            unsigned int colour;
-            if (GetBrickCount() < cost) {
-                colour = DAT_004ba884;
-            } else {
-                colour = 0;
-            }
-            PrintSprite(node->sprite, node->x, node->y, colour, (int *)&ctx);
-        }
-        if (node->field_8 != NULL) {
-            // STRING: LEGOLAND 0x004b8a80
-            sprintf(buf, "%d", cost);
-            FUN_00455e50(buf, node->x + 0x3c, node->y + 0x14, 0x41, 0x14, 1, 1, 0, 0xffffff);
-        }
-        if ((char)node->field_20 == 1) {
-            PrintSprite(DAT_00668e8c, node->x, node->y, 0, 0);
-        } else if ((char)node->field_20 == 2) {
-            PrintSprite(DAT_00668e90, node->x, node->y, 0, 0);
-        }
-        if (EditMode.unk0 == 1 && EditMode.unk8 != 0) {
-            // STRING: LEGOLAND 0x004ba888
-            if (strcmp("Path", *(char **)((char *)EditMode.unk8 + 0x78)) != 0 &&
-                *(unsigned int **)((char *)EditMode.unk8 + 0xc4) == *(unsigned int **)((char *)node->field_8 + 0xc4)) {
-                struct Sprite *s = DAT_00668e74;
-                if (GetBlink() != 0) {
-                    s = DAT_00668e78;
+        char buf[12];
+        do {
+            cost = GetObjCost(node->field_8);
+            if (node->sprite != NULL) {
+                if (cost <= GetBrickCount()) {
+                    PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
+                } else {
+                    PrintSprite(node->sprite, node->x, node->y, UnaffordableIconColour, (int *)&ctx);
                 }
-                PrintSprite(s, node->x, node->y, 0, 0);
             }
-        }
-        if ((*(unsigned int **)((char *)node->field_8 + 0xc4))[2] & 0x20000) {
-            struct Sprite *s = DAT_00668e7c;
-            if (GetBlink() == 0) {
-                s = DAT_00668e80;
+            if (node->field_8 != NULL) {
+                // STRING: LEGOLAND 0x004b8a80
+                sprintf(buf, "%d", cost);
+                PrintTextBox(buf, node->x + 0x3c, node->y + 0x14, 0x41, 0x14, 1, 1, 0, 0xffffff);
             }
-            PrintSprite(s, node->x, node->y, 0, 0);
-        }
+            switch (node->field_20b) {
+            case 1:
+                PrintSprite(LinkMiddleSprite, node->x, node->y, 0, 0);
+                break;
+            case 2:
+                PrintSprite(LinkBottomSprite, node->x, node->y, 0, 0);
+                break;
+            }
+            if (EditMode.unk0 == 1 && EditMode.unk8 != 0) {
+                // STRING: LEGOLAND 0x004ba888
+                if (strcmp("Path", EditMode.unk8->name) != 0 &&
+                    EditMode.unk8->element == ((struct Ride *)node->field_8)->element) {
+                    struct Sprite *s = AttractHighlightOnSprite;
+                    if (GetBlink() != 0) {
+                        s = AttractHighlightOffSprite;
+                    }
+                    PrintSprite(s, node->x, node->y, 0, 0);
+                }
+            }
+            if (((struct Ride *)node->field_8)->element->flags & 0x20000) {
+                PrintSprite(GetBlink() != 0 ? AttractNewOffSprite : AttractNewOnSprite, node->x, node->y, 0, 0);
+            }
+        } while (0);
     }
-    if ((*(unsigned int **)((char *)node->field_8 + 0xc4))[2] & 0x20000) {
+    if (((struct Ride *)node->field_8)->element->flags & 0x20000) {
         if (node->y < 0x3e) {
-            DAT_006688b8 = DAT_006688b8 | 1;
+            NewObjectScrollHintFlags = NewObjectScrollHintFlags | 1;
             return 0;
         }
-        if (0x156 < node->field_12 + node->y) {
-            DAT_006688b8 = DAT_006688b8 | 2;
+        if (0x156 < node->height + node->y) {
+            NewObjectScrollHintFlags = NewObjectScrollHintFlags | 2;
         }
     }
     return 0;
@@ -800,11 +751,11 @@ LEGO_EXPORT int RenderFreePlayIcons(struct IconNode *node) {
     y = node->y;
     ctx.field_8 = 0;
     if (y >= 0 && y <= 0x12c) {
-        sprite = node->sprite;
         if ((char)node->field_18 != 1) {
+            sprite = node->sprite;
             if (sprite != NULL) {
-                FUN_0048a840((unsigned int)node->field_1c, 0);
-                if (FUN_0048aef0(node->field_1c, node->field_20p) != 0) {
+                GetFreePlayObjectCost((const char *)node->field_1c, 0);
+                if (CanAffordFreePlayObject(node->field_1c, node->field_20p) != 0) {
                     PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
                     return 0;
                 }
@@ -812,10 +763,11 @@ LEGO_EXPORT int RenderFreePlayIcons(struct IconNode *node) {
                 return 0;
             }
         } else {
+            sprite = node->sprite;
             if (sprite != NULL) {
                 PrintSprite(sprite, node->x, y, 0, (int *)&ctx);
             }
-            PrintSprite(DAT_007cb398, node->x + 0x46, node->y, 0, (int *)&ctx);
+            PrintSprite(FreePlayTickSprite, node->x + 0x46, node->y, 0, (int *)&ctx);
         }
     }
     return 0;
@@ -831,14 +783,14 @@ LEGO_EXPORT int RenderScroll_Icons(struct IconNode *node) {
         PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
     }
     if (GetBlink() != 0) {
-        if ((DAT_006688b8 & 2) != 0 && (char)node->field_18 == 2) {
-            PrintSprite(DAT_00668e84, node->x, node->y, 0, (int *)&ctx);
-            DAT_006688b8 = DAT_006688b8 & 0xfffffffd;
+        if ((NewObjectScrollHintFlags & 2) != 0 && (char)node->field_18 == 2) {
+            PrintSprite(SideScrollDownLitSprite, node->x, node->y, 0, (int *)&ctx);
+            NewObjectScrollHintFlags = NewObjectScrollHintFlags & 0xfffffffd;
             return 0;
         }
-        if ((DAT_006688b8 & 1) != 0 && (char)node->field_18 == 1) {
-            PrintSprite(DAT_00668e88, node->x, node->y, 0, (int *)&ctx);
-            DAT_006688b8 = DAT_006688b8 & 0xfffffffe;
+        if ((NewObjectScrollHintFlags & 1) != 0 && (char)node->field_18 == 1) {
+            PrintSprite(SideScrollUpLitSprite, node->x, node->y, 0, (int *)&ctx);
+            NewObjectScrollHintFlags = NewObjectScrollHintFlags & 0xfffffffe;
         }
     }
     return 0;
@@ -852,56 +804,56 @@ LEGO_EXPORT int RenderEnergyBar(struct IconNode *node) {
     int scale;
     RECT clip;
 
-    if (MapStats.field_3d0 == 0 && MapStats.field_3d4 == 0) {
+    if (MapStats.power_supply == 0 && MapStats.power_demand == 0) {
         fill1 = 0;
         fill2 = 0;
     } else {
-        scale = MapStats.field_3d4 * 2;
-        if (MapStats.field_3d0 > scale) {
-            scale = MapStats.field_3d0;
+        scale = MapStats.power_demand * 2;
+        if (MapStats.power_supply > scale) {
+            scale = MapStats.power_supply;
         }
         if (scale == 0) {
             scale = 1;
         }
-        fill1 = (node->field_10 * MapStats.field_3d0) / scale;
-        fill2 = (node->field_10 * MapStats.field_3d4) / scale;
+        fill1 = (node->width * MapStats.power_supply) / scale;
+        fill2 = (node->width * MapStats.power_demand) / scale;
     }
-    if (node->sprite != NULL && MapStats.field_18c != 0) {
+    if (node->sprite != NULL && MapStats.power_enabled != 0) {
         StoreClipping();
-        if (fill1 > DAT_006688c0) {
-            DAT_006688c0 += 6;
-            if (DAT_006688c0 > fill1) {
-                DAT_006688c0 = fill1;
+        if (fill1 > EnergyBarSupplyWidth) {
+            EnergyBarSupplyWidth += 6;
+            if (EnergyBarSupplyWidth > fill1) {
+                EnergyBarSupplyWidth = fill1;
             }
         } else {
-            DAT_006688c0 -= 6;
-            if (DAT_006688c0 < fill1) {
-                DAT_006688c0 = fill1;
+            EnergyBarSupplyWidth -= 6;
+            if (EnergyBarSupplyWidth < fill1) {
+                EnergyBarSupplyWidth = fill1;
             }
         }
-        if (fill2 > DAT_006688bc) {
-            DAT_006688bc += 6;
-            if (DAT_006688bc > fill2) {
-                DAT_006688bc = fill2;
+        if (fill2 > PowerDemandBarPos) {
+            PowerDemandBarPos += 6;
+            if (PowerDemandBarPos > fill2) {
+                PowerDemandBarPos = fill2;
             }
         } else {
-            DAT_006688bc -= 6;
-            if (DAT_006688bc < fill2) {
-                DAT_006688bc = fill2;
+            PowerDemandBarPos -= 6;
+            if (PowerDemandBarPos < fill2) {
+                PowerDemandBarPos = fill2;
             }
         }
         clip.left = node->x;
         clip.top = node->y;
-        clip.right = DAT_006688c0 + clip.left;
-        clip.bottom = node->field_12 + clip.top;
+        clip.right = EnergyBarSupplyWidth + clip.left;
+        clip.bottom = node->height + clip.top;
         SetClipping(&clip);
         PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
         RestoreClipping();
-        PrintSprite(DAT_00668e70, (node->x - DAT_00668e70->width / 2) + DAT_006688bc, node->field_12 / 2 + node->y, 0, (int *)&ctx);
+        PrintSprite(BarPointerSprite, (node->x - BarPointerSprite->width / 2) + PowerDemandBarPos, node->height / 2 + node->y, 0, (int *)&ctx);
         return 0;
     }
-    if (MapStats.field_18c == 0) {
-        PrintSprite(DAT_00668e6c, node->x - 0x15, node->y - 6, 0, (int *)&ctx);
+    if (MapStats.power_enabled == 0) {
+        PrintSprite(NoEnergySprite, node->x - 0x15, node->y - 6, 0, (int *)&ctx);
     }
     return 0;
 }
@@ -915,34 +867,34 @@ LEGO_EXPORT int RenderMoneyBar(struct IconNode *node) {
     RECT clip;
     char buf[100];
 
-    if (FUN_00457890() == 0) {
+    if (AreBricksLimited() == 0) {
         return 0;
     }
-    width = node->field_10;
+    width = node->width;
     bricks = GetBrickCount();
-    fill = (bricks * width) / (int)MapStats.field_174;
+    fill = (bricks * width) / (int)MapStats.brick_meter_max;
     if (fill < 0) {
         fill = 0;
     }
     if (fill > width) {
         fill = width;
     }
-    if (fill > DAT_006688c4) {
-        DAT_006688c4 += 6;
-        if (DAT_006688c4 > fill) {
-            DAT_006688c4 = fill;
+    if (fill > MoneyBarShownWidth) {
+        MoneyBarShownWidth += 6;
+        if (MoneyBarShownWidth > fill) {
+            MoneyBarShownWidth = fill;
         }
     } else {
-        DAT_006688c4 -= 6;
-        if (DAT_006688c4 < fill) {
-            DAT_006688c4 = fill;
+        MoneyBarShownWidth -= 6;
+        if (MoneyBarShownWidth < fill) {
+            MoneyBarShownWidth = fill;
         }
     }
     StoreClipping();
     clip.left = node->x;
-    clip.right = DAT_006688c4 + clip.left;
+    clip.right = MoneyBarShownWidth + clip.left;
     clip.top = node->y;
-    clip.bottom = node->field_12 + clip.top;
+    clip.bottom = node->height + clip.top;
     SetClipping(&clip);
     if (node->sprite != NULL) {
         PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
@@ -954,25 +906,24 @@ LEGO_EXPORT int RenderMoneyBar(struct IconNode *node) {
     }
     // STRING: LEGOLAND 0x004ba890
     sprintf(buf, "%5d", bricks);
-    FUN_00455e50(buf, node->x + 10 + node->field_10, node->y - 3, 200, node->field_12, 0, 0, 0xff0000, 0xffffff);
+    PrintTextBox(buf, node->x + 10 + node->width, node->y - 3, 200, node->height, 0, 0, 0xff0000, 0xffffff);
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046e7b0
 LEGO_EXPORT int RenderFreePlayBar(struct IconNode *node) {
     struct PrintCtx ctx;
-    short x;
     RECT clip;
 
     ctx.flags = 2;
     ctx.node = node;
     ctx.field_8 = 0;
     StoreClipping();
-    x = node->x;
-    clip.left = x;
-    clip.right = FUN_00458930(node->field_10 * 0.00005f * (int)DAT_007cb3a0) + x;
+    clip.left = node->x;
+    clip.right = (int)(node->width * 0.00005f * (int)FreePlayCostTotal);
+    clip.right += clip.left;
     clip.top = node->y;
-    clip.bottom = node->field_12 + clip.top;
+    clip.bottom = node->height + clip.top;
     SetClipping(&clip);
     if (node->sprite != NULL) {
         PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
@@ -1010,7 +961,7 @@ LEGO_EXPORT int RenderFlashingSpriteIcon(struct IconNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0046e920
-int FUN_0046e920(struct IconNode *node) {
+int RenderBlinkIcon(struct IconNode *node) {
     struct PrintCtx ctx;
     struct LLS *lls;
     int frame;
@@ -1024,13 +975,13 @@ int FUN_0046e920(struct IconNode *node) {
         } else {
             struct Sprite *alt = node->alt_sprite;
             if (alt != NULL) {
-                lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)node->sprite);
+                lls = GetLLSForSprite((struct Sprite *)node->sprite);
                 if (lls != NULL) {
                     frame = *(short *)lls;
                 } else {
                     frame = 0;
                 }
-                lls = (struct LLS *)GetLLSForSprite((struct SpriteLLS *)alt);
+                lls = GetLLSForSprite((struct Sprite *)alt);
                 if (lls != NULL) {
                     LLSSetFrame(lls, frame);
                 }
@@ -1044,10 +995,7 @@ int FUN_0046e920(struct IconNode *node) {
 
 // FUNCTION: LEGOLAND 0x0046e9d0
 LEGO_EXPORT int RenderGBarSprite(struct IconNode *node) {
-    struct PrintCtx ctx;
-    ctx.flags = 1;
-    ctx.node = NULL;
-    ctx.field_8 = 0;
+    struct PrintCtx ctx = {1};
     if (node->sprite != NULL) {
         PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
     }
@@ -1055,7 +1003,7 @@ LEGO_EXPORT int RenderGBarSprite(struct IconNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0046ea10
-int FUN_0046ea10(struct IconNode *node) {
+int RenderPanelIcon(struct IconNode *node) {
     struct PrintCtx ctx;
     RECT rect;
     RECT out;
@@ -1064,17 +1012,17 @@ int FUN_0046ea10(struct IconNode *node) {
     ctx.node = node;
     rect.left = (LONG)node->x;
     rect.top = (LONG)node->y;
-    rect.right = node->field_10 + rect.left;
-    rect.bottom = node->field_12 + rect.top;
+    rect.right = node->width + rect.left;
+    rect.bottom = node->height + rect.top;
     ctx.field_8 = 0;
-    if (IntersectRect(&out, &rect, &((struct ScrollRegion *)node->field_30)->clip) != 0 && node->sprite != NULL) {
+    if (IntersectRect(&out, &rect, (RECT *)&((struct InterfacePanel *)node->field_30)->clip_left) != 0 && node->sprite != NULL) {
         PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046eaa0
-int FUN_0046eaa0(struct IconNode *node) {
+int RenderBlinkingIcon(struct IconNode *node) {
     struct PrintCtx ctx;
 
     ctx.flags = 2;
@@ -1087,91 +1035,92 @@ int FUN_0046eaa0(struct IconNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0046eaf0
-LEGO_EXPORT struct IconNode *SetupInterfacePanelIcons(unsigned int param_1, int param_2, int param_3, int param_4, int param_5, int param_6) {
+LEGO_EXPORT struct IconNode *SetupInterfacePanelIcons(struct InterfacePanel *param_1, int param_2, int param_3, int param_4, int param_5, int param_6) {
     struct IconNode *icon;
 
-    DAT_006688b8 = 0;
-    AddFullScreenIcon((void *)(param_6 + 6));
-    icon = InsertIcon(param_2 - 3, 0x20, param_6, DAT_00668834);
-    icon->field_28 = (void *)RenderGBarSprite;
+    NewObjectScrollHintFlags = 0;
+    AddFullScreenIcon(param_6 + 6);
+    icon = InsertIcon(param_2 - 3, 0x20, param_6, IfSidebar1Sprite);
+    icon->render_func = (void *)RenderGBarSprite;
     icon->field_18 = 10;
     icon->flags = icon->flags | 9;
-    icon = InsertIcon(param_2 - 1, param_3, param_6 + 3, DAT_0066882c);
-    icon->field_30 = (void *)param_1;
+    icon = InsertIcon(param_2 - 1, param_3, param_6 + 3, IfSideBUpSprite);
+    icon->field_30 = param_1;
     icon->string_id = 0x95;
     icon->string = GetString(0x95);
-    icon->field_10 = 0x79;
-    icon->field_12 = 0x1e;
+    icon->width = 0x79;
+    icon->height = 0x1e;
     icon->flags = icon->flags | 0x201b;
-    icon->field_28 = (void *)RenderScroll_Icons;
-    icon->event_handler = (void *)FUN_0046d980;
+    icon->render_func = (void *)RenderScroll_Icons;
+    icon->event_handler = (void *)ScrollIconRegionForward;
     icon->field_18 = 1;
-    icon = InsertIcon(param_2 - 1, param_5 - 0x20 + param_3, param_6 + 4, DAT_00668830);
-    icon->field_30 = (void *)param_1;
+    icon = InsertIcon(param_2 - 1, param_5 - 0x20 + param_3, param_6 + 4, IfSideBDownSprite);
+    icon->field_30 = param_1;
     icon->string_id = 0x94;
     icon->string = GetString(0x94);
-    icon->field_10 = 0x79;
-    icon->field_12 = 0x1e;
+    icon->width = 0x79;
+    icon->height = 0x1e;
     icon->flags = icon->flags | 0x201b;
-    icon->field_28 = (void *)RenderScroll_Icons;
-    icon->event_handler = (void *)FUN_0046da20;
+    icon->render_func = (void *)RenderScroll_Icons;
+    icon->event_handler = (void *)ScrollIconRegionBack;
     icon->field_18 = 2;
     icon = InsertIcon(param_2, param_3 + 0x1e, param_6 + 5, 0);
-    icon->field_30 = (void *)param_1;
-    icon->field_10 = 0x79;
-    icon->field_12 = (short)param_5 - 0x3e;
+    icon->field_30 = param_1;
+    icon->width = 0x79;
+    icon->height = (short)param_5 - 0x3e;
     icon->box.box_color = GetNearestColour(0, 10, 0x14);
     icon->flags = icon->flags | 0x29;
-    icon->field_28 = (void *)RenderBoxIcon;
+    icon->render_func = (void *)RenderBoxIcon;
     return icon;
 }
 
+/* Moves build-side-panel icons by the supplied pixel step while opening or closing. Reserves/releases the 121-pixel
+ * map viewport strip and adjusts scroll; destroys the panel group once fully closed. */
 // FUNCTION: LEGOLAND 0x0046ec50
-void FUN_0046ec50(char param) {
-    char saved_mode = DAT_007fdd80;
-    struct IconNode *node = DAT_006687c8;
+void AnimateBuildSidePanel(char param) {
+    char saved_mode = BuildSidePanelState;
+    struct IconNode *node = IconListHead;
 
-    if (DAT_007fdd80 == 2 || DAT_007fdd80 == 3) {
+    if (BuildSidePanelState == 2 || BuildSidePanelState == 3) {
         return;
     }
     while (node != NULL) {
         short id = (short)node->id;
         if (id == 0xd2 || id == 0xd5 || id == 0xd6 || id == 0xd7) {
-            if (DAT_007fdd80 == 0) {
-                short old = node->x;
-                short sum = (short)param + old;
-                node->x = sum;
-                if ((char)node->field_18 == 0xa && sum >= 3) {
+            if (BuildSidePanelState == 0) {
+                int old = node->x;
+                node->x += param;
+                if ((char)node->field_18 == 0xa && node->x >= 3) {
                     node->x = 0;
-                    param = (char)node->x - (char)(short)old;
-                    DAT_007fdd8c = 3;
+                    param = (char)node->x - (char)old;
+                    BuildSidePanelOriginX = 3;
                     saved_mode = 3;
-                    lpConfig->field_20 = 0x79;
+                    lpConfig->view_x = 0x79;
                     ScrollX = ScrollX + 0x7900;
-                    lpConfig->field_10 = 0x207;
+                    lpConfig->view_width = 0x207;
                     BGFullUpdate = 1;
-                    DAT_007fdd88 = 1;
+                    BuildSidePanelViewportReserved = 1;
                 }
-            } else if (DAT_007fdd80 == 1) {
-                if (DAT_007fdd88 != 0) {
-                    lpConfig->field_20 = 0;
+            } else if (BuildSidePanelState == 1) {
+                if (BuildSidePanelViewportReserved != 0) {
+                    lpConfig->view_x = 0;
                     ScrollX = ScrollX - 0x7900;
-                    lpConfig->field_10 = 0x280;
-                    DAT_007fdd88 = 0;
+                    lpConfig->view_width = 0x280;
+                    BuildSidePanelViewportReserved = 0;
                     BGFullUpdate = 1;
                     return;
                 }
                 if ((char)node->field_18 == 0xa) {
                     int diff = (int)(short)node->x - (int)param;
                     if (diff < -0x7a) {
-                        DAT_007fdd80 = 2;
+                        BuildSidePanelState = 2;
                         saved_mode = 2;
-                        DAT_007fdd8c = 0x86;
-                        FUN_0046fb40(0xd2);
+                        BuildSidePanelOriginX = 0x86;
+                        DestroyIconGroup(0xd2);
                         break;
                     }
                     diff = diff + 0x7a;
-                    FUN_00461290((lpConfig->field_10 - diff) * 0x100, lpConfig->field_12 << 8, diff * 0x100, 0);
+                    ClampScrollPosition((lpConfig->view_width - diff) * 0x100, lpConfig->view_height << 8, diff * 0x100, 0);
                 }
                 node->x = (short)node->x - (short)param;
             }
@@ -1179,12 +1128,12 @@ void FUN_0046ec50(char param) {
         node = node->next;
     }
 
-    DAT_007fdd80 = saved_mode;
+    BuildSidePanelState = saved_mode;
 }
 
 // FUNCTION: LEGOLAND 0x0046ee00
-void FUN_0046ee00(void) {
-    struct IconNode *node = DAT_006687c8;
+void UpdateEditModeButtonSprites(void) {
+    struct IconNode *node = IconListHead;
     int mode;
 
     if (EditMode.unk4 == 1) {
@@ -1193,7 +1142,7 @@ void FUN_0046ee00(void) {
         switch (EditMode.unk0) {
         case 1:
             if (EditMode.unk8 != 0) {
-                if (strcmp("Path", *(char **)((char *)EditMode.unk8 + 0x78)) == 0) {
+                if (strcmp("Path", EditMode.unk8->name) == 0) {
                     mode = 1;
                     break;
                 }
@@ -1214,9 +1163,13 @@ void FUN_0046ee00(void) {
     }
     for (; node != NULL; node = node->next) {
         if (node->id == 0x93 && node->field_1c != NULL) {
-            struct Sprite *sprite = node->field_20p;
+            void *sprite = node->field_20p;
             if (sprite != NULL) {
-                FUN_0046d680(node, (node->field_18 == mode) ? node->field_1c : node->field_20p);
+                if (node->field_18 == mode) {
+                    SetIconSprite(node, node->field_1c);
+                } else {
+                    SetIconSprite(node, sprite);
+                }
             }
         }
     }
@@ -1224,72 +1177,66 @@ void FUN_0046ee00(void) {
 
 // FUNCTION: LEGOLAND 0x0046eee0
 LEGO_EXPORT void RenderIcons(void) {
-    struct PrintCtx ctx;
-    struct IconNode *node = (struct IconNode *)DAT_006687c8;
+    struct PrintCtx ctx = {2};
+    struct IconNode *node = (struct IconNode *)IconListHead;
     int elapsed;
 
-    ctx.node = NULL;
-    ctx.flags = 2;
-    ctx.field_8 = 0;
     StoreClipping();
-    FUN_0046df60(0);
-    elapsed = GetTicks() - DAT_006688c8;
+    SetClippingToScreenRect(0);
+    elapsed = GetTicks() - RenderIconsLastTicks;
     if (elapsed > 0x3de) {
         elapsed = 0x3de;
     }
-    FUN_0046ec50(elapsed * 5 / 33);
-    DAT_006688c8 = GetTicks();
+    AnimateBuildSidePanel(elapsed * 5 / 33);
+    RenderIconsLastTicks = GetTicks();
     while (node) {
         if ((node->flags & 0x400) == 0) {
             if (node->flags & 0x8) {
-                ((void (*)(struct IconNode *))node->field_28)(node);
+                ((void (*)(struct IconNode *))node->render_func)(node);
             } else if (node->sprite) {
                 ctx.node = node;
                 PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
             }
             if (node == (struct IconNode *)FocussedIconPtr) {
                 if (node->sprite) {
-                    struct IconAnim *anim = ((struct IconSprite *)node->sprite)->anim;
-                    if (anim->kind == 3 || anim->kind == 2) {
-                        LLSPlayOnce(anim->lls, (unsigned int)anim);
+                    struct SpriteAnim *anim = ((struct Sprite *)node->sprite)->anim;
+                    if (anim->type == 3 || anim->type == 2) {
+                        LLSPlayOnce(anim->lls, anim);
                     }
                 }
                 if (node->flags & 0x8000) {
                     unsigned int colour = GetNearestColour(0, 0xff, 0);
-                    RenderThickBox(node->x, node->y, node->field_10, node->field_12, 2, colour);
+                    RenderThickBox(node->x, node->y, node->width, node->height, 2, colour);
                 }
             }
         }
         node = node->next;
     }
-    FUN_004760a0();
+    DrawFlashingButtons();
     RestoreClipping();
 }
 
 // FUNCTION: LEGOLAND 0x0046f010
 LEGO_EXPORT void RenderIcons2(short param_1, short param_2, short param_3) {
-    struct PrintCtx ctx;
-    struct IconNode *node = (struct IconNode *)DAT_006687c8;
+    struct PrintCtx ctx = {2};
+    struct IconNode *node = (struct IconNode *)IconListHead;
 
-    ctx.node = NULL;
-    ctx.flags = 2;
-    ctx.field_8 = 0;
     StoreClipping();
-    FUN_0046df60(0);
+    SetClippingToScreenRect(0);
     while (node) {
         if ((node->flags & 0x400) == 0 && node->y > 0 && node->y < 0x1e0 &&
             ((short)node->id == param_1 || (short)node->id == param_2 || (short)node->id == param_3)) {
             if (node->flags & 0x8) {
-                ((void (*)(struct IconNode *))node->field_28)(node);
+                ((void (*)(struct IconNode *))node->render_func)(node);
             } else if (node->sprite) {
                 ctx.node = node;
                 PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
             }
         }
         if (node == (struct IconNode *)FocussedIconPtr && node->sprite) {
-            struct IconAnim *anim = ((struct IconSprite *)node->sprite)->anim;
-            if (anim->kind == 3 || anim->kind == 2) {
-                LLSPlayOnce(anim->lls, (unsigned int)anim);
+            struct SpriteAnim *anim = ((struct Sprite *)node->sprite)->anim;
+            if (anim->type == 3 || anim->type == 2) {
+                LLSPlayOnce(anim->lls, anim);
             }
         }
         node = node->next;
@@ -1297,96 +1244,95 @@ LEGO_EXPORT void RenderIcons2(short param_1, short param_2, short param_3) {
     RestoreClipping();
 }
 
+/* Updates the sliding-panel animation, renders visible icons except the supplied ID, advances the focused sprite
+ * animation, and draws flashing buttons with screen clipping. */
 // FUNCTION: LEGOLAND 0x0046f100
-void FUN_0046f100(short param_1) {
-    struct PrintCtx ctx;
+void RenderIconsExceptId(short param_1) {
+    struct PrintCtx ctx = {2};
     struct IconNode *node;
     int elapsed;
 
-    ctx.node = NULL;
-    ctx.flags = 2;
-    ctx.field_8 = 0;
-    elapsed = GetTicks() - DAT_006688cc;
+    elapsed = GetTicks() - RenderIconsExceptIdLastTicks;
     if (elapsed > 0x3de) {
         elapsed = 0x3de;
     }
-    FUN_0046ec50(elapsed * 5 / 0x21);
-    DAT_006688cc = GetTicks();
-    node = DAT_006687c8;
+    AnimateBuildSidePanel(elapsed * 5 / 0x21);
+    RenderIconsExceptIdLastTicks = GetTicks();
+    node = IconListHead;
     StoreClipping();
-    FUN_0046df60(0);
+    SetClippingToScreenRect(0);
     for (; node != NULL; node = node->next) {
         if ((node->flags & 0x400) == 0 && (short)node->id != param_1) {
             if (node->flags & 0x8) {
-                ((void (*)(struct IconNode *))node->field_28)(node);
+                ((void (*)(struct IconNode *))node->render_func)(node);
             } else if (node->sprite) {
                 ctx.node = node;
                 PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
             }
         }
         if (node == (struct IconNode *)FocussedIconPtr && node->sprite) {
-            struct IconAnim *anim = ((struct IconSprite *)node->sprite)->anim;
-            if (anim->kind == 3 || anim->kind == 2) {
-                LLSPlayOnce(anim->lls, (unsigned int)anim);
+            struct SpriteAnim *anim = ((struct Sprite *)node->sprite)->anim;
+            if (anim->type == 3 || anim->type == 2) {
+                LLSPlayOnce(anim->lls, anim);
             }
         }
     }
-    FUN_0046df60(0);
-    FUN_004760a0();
+    SetClippingToScreenRect(0);
+    DrawFlashingButtons();
     RestoreClipping();
 }
 
 // FUNCTION: LEGOLAND 0x0046f200
 LEGO_EXPORT void RenderHelpIcons(void) {
-    struct PrintCtx ctx;
-    struct IconNode *node = DAT_006687cc;
-
-    ctx.node = NULL;
-    ctx.flags = 2;
-    ctx.field_8 = 0;
+    struct PrintCtx ctx = {2};
+    struct IconNode *node = HelpIconListHead;
     StoreClipping();
-    FUN_0046df60(0);
+    SetClippingToScreenRect(0);
     for (; node != NULL; node = node->next) {
         if ((node->flags & 0x400) == 0 && node->x < 0x1e0 && node->x > 0) {
             if ((node->flags & 8) != 0) {
-                ((void (*)(struct IconNode *))node->field_28)(node);
+                ((void (*)(struct IconNode *))node->render_func)(node);
             } else if (node->sprite != NULL) {
                 ctx.node = node;
                 PrintSprite(node->sprite, node->x, node->y, 0, (int *)&ctx);
             }
             if (node == (struct IconNode *)FocussedIconPtr && (node->flags & 0x8000) != 0) {
                 unsigned int colour = GetNearestColour(0, 0xff, 0);
-                RenderThickBox(node->x, node->y, node->field_10, node->field_12, 2, colour);
+                RenderThickBox(node->x, node->y, node->width, node->height, 2, colour);
             }
         }
     }
     RestoreClipping();
 }
 
+/* Returns two for button bits one or four and one for other events; the node and pointer offsets are unused. */
+// DefaultIconEventHandler: the icons' default event handler: 2 if the event has button 1 or 4 (bits 0x1 / 0x4), else 1.
 // FUNCTION: LEGOLAND 0x0046f2e0
-unsigned char FUN_0046f2e0(struct IconNode *node, unsigned int buttons, short dx, short dy) {
-    unsigned char result;
-    if ((buttons & 1) != 0) {
+unsigned char DefaultIconEventHandler(struct IconNode *node, unsigned char buttons, short dx, short dy) {
+    /* buttons: 1 left, 2 right, 4 middle (UpdateControllerFromMouseData) */
+    if (buttons & 1) {
         return 2;
     }
-    result = 2;
-    if ((buttons & 4) == 0) {
-        result = 1;
+    if (buttons & 4) {
+        return 2;
     }
-    return result;
+    if (buttons & 2) {
+        return 1;
+    }
+    return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046f300
-int FUN_0046f300(struct Point *point, struct Bbox *bbox) {
+int PointInBBox(struct Point *point, struct Bbox *bbox) {
     return point->x >= bbox->min_x && point->x <= bbox->max_x &&
         point->y >= bbox->min_y && point->y <= bbox->max_y;
 }
 
 // FUNCTION: LEGOLAND 0x0046f330
-int FUN_0046f330(struct Point *point, struct IconNode *icon) {
+int IsPointInIcon(struct Point *point, struct IconNode *icon) {
     struct Bbox bbox;
-    FUN_0046de90(icon, &bbox);
-    return FUN_0046f300(point, &bbox);
+    GetIconBBox(icon, &bbox);
+    return PointInBBox(point, &bbox);
 }
 
 // FUNCTION: LEGOLAND 0x0046f360
@@ -1405,13 +1351,13 @@ LEGO_EXPORT struct IconNode *GetIconAtPos(struct Point *param_1, unsigned char *
     x = (short)param_1->x;
     y = (short)param_1->y;
     for (i = 0; i < 2; i++) {
-        for (cur = i != 0 ? DAT_006687cc : DAT_006687c8; cur != NULL; cur = cur->next) {
+        for (cur = i != 0 ? HelpIconListHead : IconListHead; cur != NULL; cur = cur->next) {
             if (doGeom) {
                 flags = cur->flags;
                 if ((flags & 0x10) != 0 && (flags & 0x400) == 0 && x >= cur->x && y >= cur->y &&
-                    x <= cur->field_10 + cur->x && y <= cur->field_12 + cur->y) {
+                    x <= cur->width + cur->x && y <= cur->height + cur->y) {
                     found = cur;
-                } else if ((flags & 0x40) != 0 && (flags & 0x400) == 0 && FUN_0046f330(param_1, cur) != 0) {
+                } else if ((flags & 0x40) != 0 && (flags & 0x400) == 0 && IsPointInIcon(param_1, cur) != 0) {
                     *param_2 |= 4;
                     if (found == NULL || (found->flags & 0x800) == 0 ||
                         (cur->id - 1 != found->id - 3 && cur->id - 1 != found->id - 4)) {
@@ -1420,7 +1366,7 @@ LEGO_EXPORT struct IconNode *GetIconAtPos(struct Point *param_1, unsigned char *
                 }
             }
             if ((cur->flags & 0x20) != 0 && (cur->flags & 0x400) == 0) {
-                FUN_0046de50((struct Rect16 *)cur, (struct Rect32 *)&bbox);
+                GetIconRect((struct IconNode *)cur, (struct Rect32 *)&bbox);
                 if (x < bbox.min_x || x > bbox.max_x || y < bbox.min_y || y > bbox.max_y) {
                     doGeom = 0;
                 } else {
@@ -1436,42 +1382,42 @@ LEGO_EXPORT struct IconNode *GetIconAtPos(struct Point *param_1, unsigned char *
 LEGO_EXPORT unsigned char CheckFocussedIcon(void) {
     struct IconNode *icon;
 
-    if (DAT_006687c0 != 0 && (DAT_00813ad4 & 7) != 0) {
-        return ((unsigned char (*)(unsigned int, unsigned int, unsigned int, unsigned int))DAT_006687c0)(0, DAT_00813ad4, 0, 0);
+    if (CancelKeyHandler != 0 && (CancelKeyState & 7) != 0) {
+        return ((unsigned char (*)(unsigned int, unsigned int, unsigned int, unsigned int))CancelKeyHandler)(0, CancelKeyState, 0, 0);
     }
 
     icon = (struct IconNode *)FocussedIconPtr;
     if (icon != NULL) {
         if ((icon->flags & 2) != 0 && icon->event_handler != NULL) {
             unsigned int buttons;
-            if ((DAT_00813adc & 7) != 0 && DAT_00668954 == 0) {
+            if ((OkKeyState & 7) != 0 && WorkerOnMouseActive == 0) {
                 return ((unsigned char (*)(struct IconNode *, unsigned int, short, short))icon->event_handler)(
-                    icon, DAT_00813adc, (short)DAT_00813a44.x - icon->x, (short)DAT_00813a44.y - icon->y);
+                    icon, OkKeyState, (short)MousePos.x - icon->x, (short)MousePos.y - icon->y);
             }
-            buttons = DAT_00813ac4;
-            DAT_00667c48 = 1;
+            buttons = MouseClickFlags;
+            MouseClickConsumed = 1;
             return ((unsigned char (*)(struct IconNode *, unsigned int, short, short))icon->event_handler)(
-                icon, buttons, (short)DAT_00813a44.x - icon->x, (short)DAT_00813a44.y - icon->y);
+                icon, buttons, (short)MousePos.x - icon->x, (short)MousePos.y - icon->y);
         }
         {
-            unsigned int buttons = DAT_00813adc;
-            if ((DAT_00813adc & 7) == 0 || DAT_00668954 != 0) {
-                buttons = DAT_00813ac4;
-                DAT_00667c48 = 1;
+            unsigned int buttons = OkKeyState;
+            if ((OkKeyState & 7) == 0 || WorkerOnMouseActive != 0) {
+                buttons = MouseClickFlags;
+                MouseClickConsumed = 1;
             }
-            return FUN_0046f2e0(icon, buttons, (short)DAT_00813a44.x - icon->x, (short)DAT_00813a44.y - icon->y);
+            return DefaultIconEventHandler(icon, buttons, (short)MousePos.x - icon->x, (short)MousePos.y - icon->y);
         }
     }
 
-    if (DAT_006687bc != 0 && (DAT_00813adc & 7) != 0) {
-        return ((unsigned char (*)(unsigned int, unsigned int, unsigned int, unsigned int))DAT_006687bc)(0, DAT_00813adc, 0, 0);
+    if (OkKeyHandler != 0 && (OkKeyState & 7) != 0) {
+        return ((unsigned char (*)(unsigned int, unsigned int, unsigned int, unsigned int))OkKeyHandler)(0, OkKeyState, 0, 0);
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x0046f690
-LEGO_EXPORT struct IconNode *AddGBarClassIcon(unsigned int param_1, struct InfoSource *src, int a3, int a4, int a5, short a6) {
-    struct IconNode *icon = InsertIcon(a3, a4, a5, DAT_00668828);
+LEGO_EXPORT struct IconNode *AddGBarClassIcon(void *param_1, struct InfoSource *src, int a3, int a4, int a5, short a6) {
+    struct IconNode *icon = InsertIcon(a3, a4, a5, GBarFrameSprite);
     if (icon != NULL) {
         struct Sprite *sprite = src->field_68;
         void *value;
@@ -1479,11 +1425,11 @@ LEGO_EXPORT struct IconNode *AddGBarClassIcon(unsigned int param_1, struct InfoS
         if (sprite != NULL) {
             unsigned short width = sprite->width;
             unsigned short height = sprite->height;
-            FUN_0046d680(icon, sprite);
-            icon->field_12 = height;
-            icon->field_10 = width;
+            SetIconSprite(icon, sprite);
+            icon->height = height;
+            icon->width = width;
         } else {
-            FUN_0046d680(icon, NULL);
+            SetIconSprite(icon, NULL);
         }
         icon->field_18p = src->field_78;
         if ((src->field_c4[2] & 0x10000) != 0) {
@@ -1498,21 +1444,21 @@ LEGO_EXPORT struct IconNode *AddGBarClassIcon(unsigned int param_1, struct InfoS
             *(unsigned char *)&icon->field_1c = 0x14;
         }
         flags = icon->flags & 0xfffffdff;
-        icon->field_30 = (void *)param_1;
-        icon->field_28 = (void *)RenderGBarSpriteIcon;
+        icon->field_30 = param_1;
+        icon->render_func = (void *)RenderGBarSpriteIcon;
         icon->flags = flags | 0x3008;
         icon->field_8 = src;
         icon->field_16 = a6;
-        if (DAT_006688a8 != 0) {
-            icon->field_24 = DAT_006688a8;
+        if (NewIconGroupCallbacks != 0) {
+            icon->field_24 = NewIconGroupCallbacks;
             icon->flags = icon->flags | 4;
         }
-        if (DAT_006688ac != 0) {
-            icon->field_28 = DAT_006688ac;
+        if (NewGroupRenderFunc != 0) {
+            icon->render_func = NewGroupRenderFunc;
             icon->flags = icon->flags | 8;
         }
-        if (DAT_006688b0 != 0) {
-            icon->event_handler = DAT_006688b0;
+        if (NewGroupEventHandler != 0) {
+            icon->event_handler = NewGroupEventHandler;
             icon->flags = icon->flags | 2;
         }
     }
@@ -1520,18 +1466,19 @@ LEGO_EXPORT struct IconNode *AddGBarClassIcon(unsigned int param_1, struct InfoS
 }
 
 // FUNCTION: LEGOLAND 0x0046f7a0
-LEGO_EXPORT struct IconNode *AddFreePlayIcon(unsigned int param_1, struct InfoSource *src, int a3, int a4, int a5, short a6, void *a7) {
-    struct IconNode *icon = InsertIcon(a3, a4, a5, DAT_00668828);
+LEGO_EXPORT struct IconNode *AddFreePlayIcon(void *param_1, struct InfoSource *src, int a3, int a4, int a5, short a6, void *a7) {
+    struct IconNode *icon = InsertIcon(a3, a4, a5, GBarFrameSprite);
     if (icon != NULL) {
         struct Sprite *sprite = src->field_14;
         unsigned int flags;
-        if (sprite == NULL) {
-            sprite = NULL;
+        if (sprite != NULL) {
+            SetIconSprite(icon, sprite);
+        } else {
+            SetIconSprite(icon, NULL);
         }
-        FUN_0046d680(icon, sprite);
         flags = icon->flags;
-        icon->field_28 = (void *)RenderGBarSpriteIcon;
-        icon->string = (char *)src->field_10;
+        icon->render_func = (void *)RenderGBarSpriteIcon;
+        icon->string = src->field_10;
         icon->string_id = 0xffffffff;
         icon->flags = flags | 0x3008;
         icon->field_16 = a6;
@@ -1539,16 +1486,16 @@ LEGO_EXPORT struct IconNode *AddFreePlayIcon(unsigned int param_1, struct InfoSo
         icon->field_18 = 0;
         icon->field_1c = src->field_4;
         icon->field_20p = a7;
-        if (DAT_006688a8 != 0) {
-            icon->field_24 = DAT_006688a8;
+        if (NewIconGroupCallbacks != 0) {
+            icon->field_24 = NewIconGroupCallbacks;
             icon->flags = icon->flags | 4;
         }
-        if (DAT_006688ac != 0) {
-            icon->field_28 = DAT_006688ac;
+        if (NewGroupRenderFunc != 0) {
+            icon->render_func = NewGroupRenderFunc;
             icon->flags = icon->flags | 8;
         }
-        if (DAT_006688b0 != 0) {
-            icon->event_handler = DAT_006688b0;
+        if (NewGroupEventHandler != 0) {
+            icon->event_handler = NewGroupEventHandler;
             icon->flags = icon->flags | 2;
         }
     }
@@ -1556,124 +1503,121 @@ LEGO_EXPORT struct IconNode *AddFreePlayIcon(unsigned int param_1, struct InfoSo
 }
 
 // FUNCTION: LEGOLAND 0x0046f890
-void FUN_0046f890(void) {
-    if (DAT_006688d0 != 0) {
+void LoadGBarSprites(void) {
+    if (GBarSpritesLoaded != 0) {
         return;
     }
-    if (DAT_00668828 == 0) {
+    if (GBarFrameSprite == 0) {
         // STRING: LEGOLAND 0x004ba8c8
-        DAT_00668828 = LoadSprite("GBarFrame.lls", 4);
+        GBarFrameSprite = LoadSprite("GBarFrame.lls", 4);
     }
-    if (DAT_0066882c == 0) {
+    if (IfSideBUpSprite == 0) {
         // STRING: LEGOLAND 0x004ba8b8
-        DAT_0066882c = LoadSprite("IF_Side_BUp.lls", 4);
+        IfSideBUpSprite = LoadSprite("IF_Side_BUp.lls", 4);
     }
-    if (DAT_00668830 == 0) {
+    if (IfSideBDownSprite == 0) {
         // STRING: LEGOLAND 0x004ba8a4
-        DAT_00668830 = LoadSprite("IF_Side_BDown.lls", 4);
+        IfSideBDownSprite = LoadSprite("IF_Side_BDown.lls", 4);
     }
-    if (DAT_00668834 == 0) {
+    if (IfSidebar1Sprite == 0) {
         // STRING: LEGOLAND 0x004ba894
-        DAT_00668834 = LoadSprite("IF_Sidebar1.lls", 4);
+        IfSidebar1Sprite = LoadSprite("IF_Sidebar1.lls", 4);
     }
-    DAT_006688d0 = 1;
+    GBarSpritesLoaded = 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046f920
-void FUN_0046f920(void) {
-    if (DAT_006688d0 != 0) {
-        DAT_006688d0 = 0;
-        if (DAT_00668828 != 0) {
-            KillSprite(DAT_00668828);
-            DAT_00668828 = 0;
+void UnloadGBarSprites(void) {
+    if (GBarSpritesLoaded != 0) {
+        GBarSpritesLoaded = 0;
+        if (GBarFrameSprite != 0) {
+            KillSprite(GBarFrameSprite);
+            GBarFrameSprite = 0;
         }
-        if (DAT_0066882c != 0) {
-            KillSprite(DAT_0066882c);
-            DAT_0066882c = 0;
+        if (IfSideBUpSprite != 0) {
+            KillSprite(IfSideBUpSprite);
+            IfSideBUpSprite = 0;
         }
-        if (DAT_00668830 != 0) {
-            KillSprite(DAT_00668830);
-            DAT_00668830 = 0;
+        if (IfSideBDownSprite != 0) {
+            KillSprite(IfSideBDownSprite);
+            IfSideBDownSprite = 0;
         }
-        if (DAT_00668834 != 0) {
-            KillSprite(DAT_00668834);
-            DAT_00668834 = 0;
+        if (IfSidebar1Sprite != 0) {
+            KillSprite(IfSidebar1Sprite);
+            IfSidebar1Sprite = 0;
         }
     }
 }
 
+/* Creates an icon panel for all database object classes whose parent element equals kind. Lays out matching entries
+ * vertically or horizontally from flags, adjusts panel bounds, destroys an empty group, and returns the number of
+ * children found. */
 // FUNCTION: LEGOLAND 0x0046f9a0
-int FUN_0046f9a0(int param_1, int param_2, int param_3, int param_4, unsigned int param_5, int param_6) {
-    int saved = param_1;
-    int i = 0;
-    int found = 0;
+int CreateChildObjectIconPanel(int id, struct Element *kind, int param_3, int param_4, unsigned int flags, int param_6) {
+    int found;
+    int i;
     int total;
-    struct MenuGroup *group;
+    int x;
+    int y;
+    struct InterfacePanel *group;
     struct IconNode *icon;
-    int row;
-    struct ListElement *elem;
+    struct Element *elem;
 
-    group = (struct MenuGroup *)malloc(sizeof(struct MenuGroup));
+    found = 0;
+    group = (struct InterfacePanel *)malloc(sizeof(struct InterfacePanel));
     if (group == NULL) {
         return 0;
     }
-    icon = AddGBarIcons((unsigned int)group, param_3, param_4, param_5, param_6, param_1);
-    group->field_8 = icon;
-    row = icon->x;
-    group->field_1c = row;
-    group->field_c = row;
-    param_6 = icon->y;
-    group->field_20 = param_6;
-    group->field_10 = param_6;
-    group->field_24 = icon->field_10 + icon->x;
-    group->field_28 = icon->field_12 + icon->y;
-    group->field_4 = param_5;
-    group->field_0 = (short)param_1;
-    SetNewGroup_Callbacks(0, 0, (void *)FUN_00470000);
+    icon = AddGBarIcons(group, param_3, param_4, flags, param_6, id);
+    group->icon = icon;
+    x = group->content_left = group->clip_left = icon->x;
+    y = group->content_top = group->clip_top = icon->y;
+    group->clip_right = icon->x + icon->width;
+    group->clip_bottom = icon->y + icon->height;
+    group->field_4 = flags;
+    group->group = (short)id;
+    SetNewGroup_Callbacks(0, 0, (void *)ObjectListIconHandler);
     total = LLIDB_GetCount();
-    param_1 = row;
-    if (total > 0) {
-        do {
-            LLIDB_GetElement(i, (int *)&elem);
-            if ((elem->field_8 & 0x10) != 0 && elem->field_c[0x16] == param_2) {
-                found = found + 1;
-                AddGBarClassIcon((unsigned int)group, (struct InfoSource *)elem->field_c, param_1, param_6, saved, (short)i);
-                if ((param_5 & 1) == 0) {
-                    param_1 = param_1 + 0x79;
-                } else {
-                    param_6 = param_6 + 0x38;
-                }
-            }
-            i = i + 1;
-        } while (i < total);
-    }
-    AddFullScreenIcon((void *)(saved + 6));
-    icon = group->field_8;
-    group->field_14 = param_1;
-    group->field_18 = param_6;
-    if ((param_5 & 1) == 0) {
-        if (param_1 < icon->x + icon->field_10) {
-            icon->field_10 = (short)(group->field_14 - group->field_c);
-            icon = FindIcon((unsigned short)(saved + 4));
-            if (icon != NULL) {
-                icon->x = (short)group->field_14;
+    for (i = 0; i < total; i++) {
+        LLIDB_GetElement(i, &elem);
+        if ((elem->flags & 0x10) && elem->ride->parent_element == kind) {
+            found++;
+            AddGBarClassIcon(group, elem->data, x, y, id, (short)i);
+            /* bit 0: vertical bar */
+            if (flags & 1) {
+                y += 0x38;
+            } else {
+                x += 0x79;
             }
         }
-    } else if (param_6 < icon->y + icon->field_12) {
-        icon->field_12 = (short)param_6 - (short)group->field_10;
-        icon = FindIcon((unsigned short)(saved + 4));
+    }
+    AddFullScreenIcon(id + 6);
+    group->field_14 = x;
+    group->content_bottom = y;
+    icon = group->icon;
+    if (flags & 1) {
+        if (group->content_bottom < icon->y + icon->height) {
+            icon->height = (short)group->content_bottom - (short)group->content_top;
+            icon = FindIcon((unsigned short)(id + 4));
+            if (icon != NULL) {
+                icon->y = (short)group->content_bottom;
+            }
+        }
+    } else if (group->field_14 < icon->x + icon->width) {
+        icon->width = (short)group->field_14 - (short)group->content_left;
+        icon = FindIcon((unsigned short)(id + 4));
         if (icon != NULL) {
-            icon->y = (short)group->field_18;
+            icon->x = (short)group->field_14;
         }
     }
     if (found == 0) {
-        FUN_0046fb40(saved);
+        DestroyIconGroup(id);
     }
     return found;
 }
 
 // FUNCTION: LEGOLAND 0x0046fb40
-void FUN_0046fb40(unsigned int group) {
+void DestroyIconGroup(unsigned int group) {
     struct IconNode *icon1;
     struct IconNode *icon2;
     struct IconNode *icon3;
@@ -1683,24 +1627,24 @@ void FUN_0046fb40(unsigned int group) {
     if (icon1) {
         icon2 = FindIcon(group + 3);
         if (icon2) {
-            FUN_0046d4e0(icon2);
+            RemoveIconFromList(icon2);
         }
         icon3 = FindIcon(group + 4);
         if (icon3) {
-            FUN_0046d4e0(icon3);
+            RemoveIconFromList(icon3);
         }
         icon4 = FindIcon(group + 6);
         if (icon4) {
-            FUN_0046d4e0(icon4);
+            RemoveIconFromList(icon4);
         }
         free(icon1->field_30);
-        FUN_0046d4e0(icon1);
+        RemoveIconFromList(icon1);
         RemoveIconGroup(group);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0046fbc0
-unsigned char FUN_0046fbc0(struct IconNode *icon, unsigned char flag) {
+unsigned char IndicatorIconHandler(struct IconNode *icon, unsigned char flag) {
     struct Indicator *ind = (struct Indicator *)icon->field_30;
     if (flag & 0x5) {
         if (ind->field_4 & 0x4) {
@@ -1712,12 +1656,12 @@ unsigned char FUN_0046fbc0(struct IconNode *icon, unsigned char flag) {
 }
 
 // FUNCTION: LEGOLAND 0x0046fbf0
-LEGO_EXPORT struct TimedIndicator *AllocateTimedIndicator(struct Sprite *sprite, unsigned int a2, unsigned int a3) {
-    struct TimedIndicator *ind;
+LEGO_EXPORT struct Indicator *AllocateTimedIndicator(struct Sprite *sprite, unsigned int a2, unsigned int a3) {
+    struct Indicator *ind;
     struct IconNode *icon;
 
-    ind = malloc(40);
-    ind->next = DAT_006688d4;
+    ind = malloc(sizeof(struct Indicator));
+    ind->next = IndicatorList;
     ind->field_4 = 0;
     ind->field_8 = GetGameTimer();
     ind->field_c = a2;
@@ -1726,10 +1670,10 @@ LEGO_EXPORT struct TimedIndicator *AllocateTimedIndicator(struct Sprite *sprite,
     ReferenceSprite(sprite);
     icon = InsertIcon(0, 0, 0xe000, sprite);
     ind->field_14 = icon;
-    icon->field_28 = (void *)FUN_0046eaa0;
+    icon->render_func = (void *)RenderBlinkingIcon;
 
     icon = ind->field_14;
-    icon->event_handler = (void *)FUN_0046fbc0;
+    icon->event_handler = (void *)IndicatorIconHandler;
 
     icon = ind->field_14;
     icon->flags = icon->flags | 0x40a;
@@ -1740,17 +1684,17 @@ LEGO_EXPORT struct TimedIndicator *AllocateTimedIndicator(struct Sprite *sprite,
     ind->field_18 = 0;
     ind->field_1c = 0;
 
-    DAT_006688d4 = (struct Indicator *)ind;
+    IndicatorList = (struct Indicator *)ind;
     return ind;
 }
 
 // FUNCTION: LEGOLAND 0x0046fc80
-LEGO_EXPORT struct TimedIndicator *AllocatePermanentIndicator(struct Sprite *sprite, unsigned int param_2) {
-    struct TimedIndicator *ind;
+LEGO_EXPORT struct Indicator *AllocatePermanentIndicator(struct Sprite *sprite, unsigned int param_2) {
+    struct Indicator *ind;
     struct IconNode *icon;
 
-    ind = malloc(40);
-    ind->next = DAT_006688d4;
+    ind = malloc(sizeof(struct Indicator));
+    ind->next = IndicatorList;
     ind->field_4 = 1;
     ind->field_8 = GetGameTimer();
     ind->field_10 = param_2;
@@ -1758,10 +1702,10 @@ LEGO_EXPORT struct TimedIndicator *AllocatePermanentIndicator(struct Sprite *spr
     ReferenceSprite(sprite);
     icon = InsertIcon(0, 0, 0xe000, sprite);
     ind->field_14 = icon;
-    icon->field_28 = (void *)FUN_0046eaa0;
+    icon->render_func = (void *)RenderBlinkingIcon;
 
     icon = ind->field_14;
-    icon->event_handler = (void *)FUN_0046fbc0;
+    icon->event_handler = (void *)IndicatorIconHandler;
 
     icon = ind->field_14;
     icon->flags = icon->flags | 0x40a;
@@ -1772,43 +1716,39 @@ LEGO_EXPORT struct TimedIndicator *AllocatePermanentIndicator(struct Sprite *spr
     ind->field_18 = 0;
     ind->field_1c = 0;
 
-    DAT_006688d4 = (struct Indicator *)ind;
+    IndicatorList = (struct Indicator *)ind;
     return ind;
 }
 
 // FUNCTION: LEGOLAND 0x0046fd00
-LEGO_EXPORT void SetCheckFunc(struct IndicatorFuncs *ind, unsigned int func) {
+LEGO_EXPORT void SetCheckFunc(struct Indicator *ind, void (*func)(struct Indicator *)) {
     ind->field_18 = func;
     ind->field_4 |= 0x4;
 }
 
 // FUNCTION: LEGOLAND 0x0046fd20
-LEGO_EXPORT void SetClickFunc(struct IndicatorFuncs *ind, unsigned int func) {
+LEGO_EXPORT void SetClickFunc(struct Indicator *ind, void (*func)(struct Indicator *)) {
     ind->field_1c = func;
     ind->field_4 |= 0x4;
 }
 
 // FUNCTION: LEGOLAND 0x0046fd40
 LEGO_EXPORT void AddIndicator(struct Indicator *ind) {
-    struct Indicator *cur = DAT_006688d4;
-    struct Indicator *next;
+    struct Indicator *cur = IndicatorList;
     if (cur == ind) {
-        DAT_006688d4 = cur->next;
+        IndicatorList = cur->next;
     } else {
-        if (cur == NULL) {
-            return;
-        }
-        while ((next = cur->next) != ind) {
-            cur = next;
-            if (next == NULL) {
-                return;
+        while (cur != NULL) {
+            if (cur->next == ind) {
+                cur->next = ind->next;
+                break;
             }
+            cur = cur->next;
         }
-        cur->next = ind->next;
     }
     if (cur != NULL) {
-        ind->next = DAT_006688d8;
-        DAT_006688d8 = ind;
+        ind->next = ActiveIndicators;
+        ActiveIndicators = ind;
         ind->field_4 = ind->field_4 | 8;
         ind->field_14->x = 0xf000;
         ind->field_14->flags = ind->field_14->flags & 0xfffffbff;
@@ -1817,25 +1757,21 @@ LEGO_EXPORT void AddIndicator(struct Indicator *ind) {
 
 // FUNCTION: LEGOLAND 0x0046fda0
 LEGO_EXPORT void RemoveIndicator(struct Indicator *ind) {
-    struct Indicator *cur = DAT_006688d8;
-    struct Indicator *next;
+    struct Indicator *cur = ActiveIndicators;
     if (cur == ind) {
-        DAT_006688d8 = cur->next;
+        ActiveIndicators = cur->next;
     } else {
-        if (cur == NULL) {
-            return;
-        }
-        while ((next = cur->next) != ind) {
-            cur = next;
-            if (next == NULL) {
-                return;
+        while (cur != NULL) {
+            if (cur->next == ind) {
+                cur->next = ind->next;
+                break;
             }
+            cur = cur->next;
         }
-        cur->next = ind->next;
     }
     if (cur != NULL) {
-        ind->next = DAT_006688d4;
-        DAT_006688d4 = ind;
+        ind->next = IndicatorList;
+        IndicatorList = ind;
         ind->field_4 = ind->field_4 & 0xfffffff7;
         ind->field_14->flags = ind->field_14->flags | 0x400;
     }
@@ -1845,15 +1781,15 @@ LEGO_EXPORT void RemoveIndicator(struct Indicator *ind) {
 LEGO_EXPORT void DeleteIndicator(struct Indicator *ind) {
     struct Indicator *cur;
 
-    FUN_0046d4e0(ind->field_14);
+    RemoveIconFromList(ind->field_14);
 
     if ((ind->field_4 & 0x8) != 0) {
-        if (DAT_006688d8 == ind) {
-            DAT_006688d8 = ((struct Indicator *)DAT_006688d8)->next;
+        if (ActiveIndicators == ind) {
+            ActiveIndicators = ((struct Indicator *)ActiveIndicators)->next;
             free(ind);
             return;
         }
-        cur = DAT_006688d8;
+        cur = ActiveIndicators;
         while (cur != 0) {
             if (cur->next == ind) {
                 cur->next = ind->next;
@@ -1866,12 +1802,12 @@ LEGO_EXPORT void DeleteIndicator(struct Indicator *ind) {
         return;
     }
 
-    if (DAT_006688d4 == ind) {
-        DAT_006688d4 = ((struct Indicator *)DAT_006688d4)->next;
+    if (IndicatorList == ind) {
+        IndicatorList = ((struct Indicator *)IndicatorList)->next;
         free(ind);
         return;
     }
-    cur = DAT_006688d4;
+    cur = IndicatorList;
     while (cur != 0) {
         if (cur->next == ind) {
             cur->next = ind->next;
@@ -1885,14 +1821,14 @@ LEGO_EXPORT void DeleteIndicator(struct Indicator *ind) {
 
 // FUNCTION: LEGOLAND 0x0046feb0
 LEGO_EXPORT void ControlIndicators(void) {
-    struct Indicator *node = DAT_006688d8;
+    struct Indicator *node = ActiveIndicators;
     int now = GetGameTimer();
     int x = ((struct Config *)lpConfig)->field_0 - 0x50;
     struct Indicator *cur;
     struct Indicator *head;
     struct Indicator *prev;
 
-    DAT_006688d8 = NULL;
+    ActiveIndicators = NULL;
     while (node != NULL) {
         node->field_10 &= 0xffff;
         if (now - (int)node->field_8 < 0x1388) {
@@ -1905,19 +1841,19 @@ LEGO_EXPORT void ControlIndicators(void) {
         } else if (now - (int)node->field_8 >= (int)node->field_c) {
             cur = node;
             node = node->next;
-            cur->next = DAT_006688d8;
-            DAT_006688d8 = cur;
+            cur->next = ActiveIndicators;
+            ActiveIndicators = cur;
             RemoveIndicator(cur);
             if ((cur->field_4 & 2) != 0) {
                 DeleteIndicator(cur);
             }
             continue;
         }
-        head = DAT_006688d8;
+        head = ActiveIndicators;
         cur = node;
         node = node->next;
         if (head == NULL) {
-            DAT_006688d8 = cur;
+            ActiveIndicators = cur;
             cur->next = NULL;
             continue;
         }
@@ -1926,7 +1862,7 @@ LEGO_EXPORT void ControlIndicators(void) {
                 if (prev != NULL) {
                     prev->next = cur;
                 } else {
-                    DAT_006688d8 = cur;
+                    ActiveIndicators = cur;
                 }
                 cur->next = head;
                 break;
@@ -1938,7 +1874,7 @@ LEGO_EXPORT void ControlIndicators(void) {
         }
     }
 
-    for (node = DAT_006688d8; node != NULL; node = node->next) {
+    for (node = ActiveIndicators; node != NULL; node = node->next) {
         node->field_14->x = (short)x;
         x = x - 0x34;
         node->field_14->y = 8;
@@ -1952,27 +1888,29 @@ LEGO_EXPORT void ControlIndicators(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00470000
-unsigned char FUN_00470000(struct IconNode *node, unsigned char buttons) {
+unsigned char ObjectListIconHandler(struct IconNode *node, unsigned char buttons) {
     int cost;
-    unsigned int *sub;
+    struct Element *sub;
     unsigned int flags;
 
     if ((buttons & 2) != 0) {
-        cost = GetObjCost(node->field_8);
-        if (cost <= GetBrickCount()) {
-            if ((node->flags & 0x1000) != 0) {
-                SetEditObject(node->field_8);
+        do {
+            cost = GetObjCost(node->field_8);
+            if (cost <= GetBrickCount()) {
+                if ((node->flags & 0x1000) != 0) {
+                    SetEditObject(node->field_8);
+                }
+                sub = ((struct Ride *)node->field_8)->element;
+                flags = sub->flags;
+                if ((flags & 0x20000) != 0) {
+                    sub->flags = flags & 0xfffdffff;
+                    RemoveNewObject(node->field_8);
+                }
+                PlayInstanceOfSample(GameFX[FX_CLICK1].sample, 0, 1, 0);
+            } else {
+                PlayInstanceOfSample(GameFX[FX_RASP].sample, 0, 1, 0);
             }
-            sub = *(unsigned int **)((char *)node->field_8 + 0xc4);
-            flags = sub[2];
-            if ((flags & 0x20000) != 0) {
-                sub[2] = flags & 0xfffdffff;
-                FUN_00471ca0(node->field_8);
-            }
-            PlayInstanceOfSample(DAT_004b929c, 0, 1, 0);
-            return 2;
-        }
-        PlayInstanceOfSample(DAT_004b92d8, 0, 1, 0);
+        } while (0);
         return 2;
     }
     return 1;
@@ -1980,8 +1918,8 @@ unsigned char FUN_00470000(struct IconNode *node, unsigned char buttons) {
 
 // FUNCTION: LEGOLAND 0x004700a0
 LEGO_EXPORT void UpdateFocussedIconPtr(void) {
-    if (DAT_004bdd00 == 2) {
-        FocussedIconPtr = (void *)DAT_004bdd04;
+    if (Hover.type == 2) {
+        FocussedIconPtr = (void *)Hover.ptr;
     } else {
         FocussedIconPtr = NULL;
     }

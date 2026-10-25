@@ -21,11 +21,11 @@ _WinMainCRTStartup (CRT)                         [TU_CRT, out of match %]
    └─ WinMainBody                        0x0047fd10  debug.c   MATCHED 100%
       ├─ CreateMutexA / cmdline parse  (-nointro / -nomusic / WINDEBUG / BLT)
       ├─ CheckHostSystemGPU             0x004637c0  draw.c    MATCHED (zeroes DDRAWENV, calls InitHostSystemGPU)
-      └─ FUN_0047f880  (main init+loop) 0x0047f880  debug.c   MATCHED 99.62%
-         ├─ FUN_0047f830 open log
-         ├─ FUN_004515e0 (alloc/profile init)
+      └─ GameMain      (main init+loop) 0x0047f880  debug.c   MATCHED 99.62%
+         ├─ OpenLogFile open log
+         ├─ WaitForLegolandCd (alloc/profile init)
          ├─ RES_OpenVolume ×3           0x00489750  resource.c MATCHED 91.5%   (LEGO000/001/002 .res)
-         ├─ FUN_00498d00
+         ├─ LoadStringTable
          ├─ InitHostSystemGPU           0x00463700  draw.c    STUB  *** DDraw device glue — STUB ***
          ├─ InitScreen                  0x00463870  draw.c    STUB  *** DDraw surfaces+window — STUB ***
          ├─ InitInputSystem             0x00473870  input.c   STUB  *** DInput device glue — STUB ***
@@ -41,24 +41,24 @@ _WinMainCRTStartup (CRT)                         [TU_CRT, out of match %]
 
 1. Inits sound (`InitSoundSystem`, `SetMusicGrooveLevel`), controllers
    (`SetupControllers`), clears the level DB (`LLIDB_ClearOnLevel`).
-2. Calls `FUN_004588c0` (screens.c, **MATCHED 100%**) which paints the static
+2. Calls `PrintTitleScreen1` (screens.c, **MATCHED 100%**) which paints the static
    **`TitleScreen1.lls`** splash directly to the locked surface (this is the first
    thing visible — but it is a one-shot paint, not the interactive title).
-3. Plays the **intro logo movie** `lmi.avi` via `FUN_004771f0` — **OUT OF SCOPE**
+3. Plays the **intro logo movie** `lmi.avi` via `PlayMovie` — **OUT OF SCOPE**
    (cutscene). Spins a `PeekMessageA`/`Sleep(100)` wait loop until `DAT_007988bc`.
 4. Loads game/world assets (`LoadWorkerInterfaceGFX`, `InitialiseBlokes`,
    `InitGameMap` 100%, `LoadMapTiles`, `CreateObjectClasses`, `Ir50_32.dll` for
-   Indeo/AVI, …) interleaved with `FUN_004663f0` loading-screen ticks.
-5. Plays `Intro.avi` (`FUN_004771f0`) — **OUT OF SCOPE**.
+   Indeo/AVI, …) interleaved with `DrawWatchSprite` loading-screen ticks.
+5. Plays `Intro.avi` (`PlayMovie`) — **OUT OF SCOPE**.
 6. **Enters the real interactive loop:**
    ```c
    while (FUN_00458c00() != 0) { /* per-frame */ }
    ```
 7. On exit, tears everything down (sprites, map, man, sound, input).
 
-> **Port note:** because the two `FUN_004771f0(...avi...)` calls sit inline in this
+> **Port note:** because the two `PlayMovie(...avi...)` calls sit inline in this
 > routine and in the frame loop, a port wraps them in an `#if ENABLE_MOVIES` (or makes
-> `FUN_004771f0` a no-op returning 1). The wait-for-`DAT_007988bc` loop after `lmi.avi`
+> `PlayMovie` a no-op returning 1). The wait-for-`DAT_007988bc` loop after `lmi.avi`
 > also needs the movie-completion signal stubbed so it doesn't spin forever. The asset
 > loads in step 4 are world/game data the title menu does **not** strictly need; an
 > interactive-title-only build can skip most of them, but they are cheap to keep since
@@ -78,9 +78,9 @@ One tick of the main loop. Returns 0 to quit. Each tick it:
   | 1 | (transition) | `FUN_00459360` (STUB) |
   | **2** | **front-end screens** | `InitScreens(DAT_0080ff88 & 0xff)` |
   | 3 | in-game | `FUN_00458ee0` (STUB) |
-- then runs input + audio for the frame: `FUN_004969d0` (sound, MATCHED) →
+- then runs input + audio for the frame: `UpdateSound` (sound, MATCHED) →
   **`ReadGameButtons`** (controller poll, STUB) → frame counter → handles a couple of
-  `DAT_00832ba0` mode-change transitions → `FUN_0046d110`.
+  `DAT_00832ba0` mode-change transitions → `UpdateSpeechPlayback`.
 
 ### Front-end state machine: `InitScreens` @ `0x00458640` (screens.c) — **STUB, critical**
 Called from frame-loop case 2 with the screen id in `DAT_0080ff88`. On a screen change
@@ -120,7 +120,7 @@ FUN_00458c00 ──case 2──▶ InitScreens ──▶ RenderFrontEndScreen
 
 The title's button handlers already exist in `title.c` and are mostly **MATCHED**
 (`FUN_0048fe20` Load, `FUN_0048ff20` Free-play, `FUN_0048ff70` Reg, `FUN_0048feb0`
-New-game (decompiled in Ghidra), `FUN_00490090/d0/110` the per-region movie buttons →
+New-game (decompiled in Ghidra), `PlayBillundAvi/d0/110` the per-region movie buttons →
 out of scope AVI, `FUN_0048f0a0` Exit). They are wired up by `InitTitleScreen` into
 `SpriteIcon.event_handler` (offset +0x2c) — so once the loop + icon plumbing match,
 input already routes to real code.
@@ -136,10 +136,10 @@ functions it calls are already done.
 ### A. Frame loop / screen routing  (THE backbone — do first)
 | addr | name | file | size | deps | notes |
 |---|---|---|---|---|---|
-| `0x00458c00` | `FUN_00458c00` | screens.c | L | most MATCHED; calls `ReadGameButtons`(B), `InitScreens`(A), `FUN_00458ee0`(in-game, can stay STUB for title), `FUN_00459360`(STUB), `FUN_004771f0`(OOS) | **single per-frame tick + screen switch. Top blocker.** |
+| `0x00458c00` | `FUN_00458c00` | screens.c | L | most MATCHED; calls `ReadGameButtons`(B), `InitScreens`(A), `FUN_00458ee0`(in-game, can stay STUB for title), `FUN_00459360`(STUB), `PlayMovie`(OOS) | **single per-frame tick + screen switch. Top blocker.** |
 | `0x00458640` | `InitScreens` | screens.c | M | `InitTitleScreen`(C), `RenderFrontEndScreen`(below), other screen inits can stay STUB | front-end router |
 | `0x00458740` | `RenderFrontEndScreen` | screens.c | M | needs `PrintSprite`(E), `RenderIcons`(D), `CheckFocussedIcon`(D), `PrintExitCheckBox`(F), `ProcessFrontEndHelp`(F), `RenderingComplete`(E/stub) | **per-frame title render** |
-| `0x00459520` | `FUN_00459520` | screens.c | XL | many MATCHED; `InitSoundSystem`(G), `SetupControllers`(B), `LLIDB_*`, `FUN_004771f0`(OOS, ifdef) | main init that *enters* the loop; large but mostly sequential calls |
+| `0x00459520` | `FUN_00459520` | screens.c | XL | many MATCHED; `InitSoundSystem`(G), `SetupControllers`(B), `LLIDB_*`, `PlayMovie`(OOS, ifdef) | main init that *enters* the loop; large but mostly sequential calls |
 
 ### B. Input (controller / mouse / keyboard poll)
 | addr | name | file | size | deps | notes |
@@ -149,8 +149,8 @@ functions it calls are already done.
 | `0x00480050` | `ProcessSystemEvents` | wndenv.c | M | `PeekMessageA/GetMessageA/TranslateMessage/DispatchMessageA`, `ScanKeyboard`(MATCHED), `ScanMouse`(MATCHED), `UpdateControllerFromMouseData/KeyboardData`(STUB) | Win32 message pump + DInput scan. Called from `RenderingComplete` every frame. |
 | `0x00473b00` | `UpdateControllerFromMouseData` | input.c | M | DInput mouse state → `CONTROLLERBUFFER` | fills the buffer `ReadGameButtons` reads |
 | `0x00473c10` | `UpdateControllerFromKeyboardData` | input.c | M | keyboard state → `CONTROLLERBUFFER` | same |
-| `0x004738b0` | `FUN_004738b0` | input.c | M | DInput create mouse device | sub of `InitInputSystem`(stub) — see §4 |
-| `0x00473970` | `FUN_00473970` | input.c | M | DInput create keyboard device | sub of `InitInputSystem`(stub) — see §4 |
+| `0x004738b0` | `CreateKeyboardDevice` | input.c | M | DInput create mouse device | sub of `InitInputSystem`(stub) — see §4 |
+| `0x00473970` | `CreateMouseDevice` | input.c | M | DInput create keyboard device | sub of `InitInputSystem`(stub) — see §4 |
 | `0x004740b0` | `GetInputChar` | input.c | S | keyboard buffer → char | needed only for name-entry popups, not bare title |
 
 ### C. Title UI load
@@ -164,7 +164,7 @@ functions it calls are already done.
 ### D. Render — icon system (the menu visuals + hit handling)
 | addr | name | file | size | deps | notes |
 |---|---|---|---|---|---|
-| `0x0046eee0` | `RenderIcons` | icon.c | M | `PrintSprite`(E), `StoreClipping`/`RestoreClipping`(100%), `FUN_0046df60`(100%), `FUN_0046ec50`(STUB), `RenderThickBox`(E), `GetNearestColour`(100%), `LLSPlayOnce` | **draws all visible icons + focus highlight.** Core title visual. |
+| `0x0046eee0` | `RenderIcons` | icon.c | M | `PrintSprite`(E), `StoreClipping`/`RestoreClipping`(100%), `SetClippingToScreenRect`(100%), `FUN_0046ec50`(STUB), `RenderThickBox`(E), `GetNearestColour`(100%), `LLSPlayOnce` | **draws all visible icons + focus highlight.** Core title visual. |
 | `0x0046f010` | `RenderIcons2` | icon.c | M | same as above (group-filtered variant) | used by other screens + in-game; cheap once RenderIcons done |
 | `0x0046f4c0` | `CheckFocussedIcon` | icon.c | M | calls `FocussedIconPtr->event_handler` and the default `DAT_006687bc/c0` handlers using `ReadGameButtons` bits | **routes mouse/keys to the menu button handlers — the "responds to input" core.** |
 | `0x0046d520` | `RemoveIconGroup` | icon.c | S/M | icon list unlink | teardown used by every title handler; needed for clean transitions |
@@ -179,14 +179,14 @@ functions it calls are already done.
 | `0x004853a0` | `PrintSprite` | print_sprite.c | L | `GetVRAMAddress`(100%), `FUN_00499500`(100%), `RenderSprite`(E/stub), `RenderSpriteX`(E/stub) | **sprite draw routing + hit-info writeback (`DAT_004bdd00`).** The routing/hit logic is real game code worth matching; it calls the rasterizer below. |
 | `0x004856a0` | `PrintSpriteEx` | print_sprite.c | L | same | variant |
 | `0x00489390` | `RenderThickBox` | (interface/icon) | S/M | line draws into surface | focus highlight box |
-| `0x00466500` | `RenderingComplete` | draw.c | S | `ProcessSystemEvents`(B), `PTR_FUN_004b9ca4`→`FUN_004661d0`(stub blit), `rdtsc`, `GetTickCount` | **the per-frame "present" + input pump.** Small; logic is real, but the actual flip is the stub `FUN_004661d0`. |
+| `0x00466500` | `RenderingComplete` | draw.c | S | `ProcessSystemEvents`(B), `PTR_FUN_004b9ca4`→`BlitFrameToWindow`(stub blit), `rdtsc`, `GetTickCount` | **the per-frame "present" + input pump.** Small; logic is real, but the actual flip is the stub `BlitFrameToWindow`. |
 
 ### F. Title overlays / help (only if you want the full title behavior)
 | addr | name | file | size | notes |
 |---|---|---|---|---|
 | `0x0048f2d0` | `PrintExitCheckBox` | options.c | M | drawn for title (id 1) + options (id 5); the "are you sure you want to exit" box. Needed for the Exit button flow. |
 | `0x0046d080` | `ProcessFrontEndHelp` | help.c | M | tooltip/help text under the cursor; non-essential, can stay STUB initially |
-| `0x004585c0` | `FUN_004585c0` | screens.c | S | screen-clear helper called by `InitScreens` on change + `FUN_004594e0` |
+| `0x004585c0` | `CloseFrontEndScreen` | screens.c | S | screen-clear helper called by `InitScreens` on change + `FUN_004594e0` |
 
 ### G. Audio (called during boot; not strictly required to *see* the title)
 | addr | name | file | size | notes |
@@ -207,18 +207,18 @@ device I/O, not game logic.
 | `0x00463700` | `InitHostSystemGPU` | draw.c | DirectDraw object creation |
 | `0x004637e0` | `KillHostSystemGPU` | draw.c | DDraw teardown |
 | `0x00463870` | `InitScreen` | draw.c | `RegisterClassExA`+`CreateWindowExA`, DDraw `CreateSurface` (primary/back/work), `SetCooperativeLevel`, palette — **XL Win32+DDraw glue** |
-| `0x00463ef0` | `FUN_00463ef0` | draw.c | DDraw mode set helper |
+| `0x00463ef0` | `SetDisplayModeAndDetectPixelFormat` | draw.c | DDraw mode set helper |
 | `0x00463fc0` | `PushRenderingStatusAndLockVideoSurface` | draw.c | `IDirectDrawSurface::Lock` (+clip rect) |
 | `0x00464080` | `PushRenderingStatusAndUnlockVideoSurface` | draw.c | surface unlock |
 | `0x004641f0` | `PopRenderingStatus` | draw.c | restore lock state |
 | `0x00464310` | `GetVideoSurface` | draw.c | surface ptr accessor |
-| `0x004661d0` | `FUN_004661d0` | draw.c | **the blit/flip** (`IDirectDrawSurface::Blt`, vtbl+0x14) — `PTR_FUN_004b9ca4` callback driven by `RenderingComplete` |
-| `0x004663f0` | `FUN_004663f0` | draw.c | loading-screen cursor blit (DDraw) |
+| `0x004661d0` | `BlitFrameToWindow` | draw.c | **the blit/flip** (`IDirectDrawSurface::Blt`, vtbl+0x14) — `PTR_FUN_004b9ca4` callback driven by `RenderingComplete` |
+| `0x004663f0` | `DrawWatchSprite` | draw.c | loading-screen cursor blit (DDraw) |
 | `0x00488a10` | `RenderSprite` | (image) | software sprite rasterizer into locked surface |
 | `0x00488b90` | `RenderSpriteX` | (image) | transparent/blended sprite raster |
 | `0x00473870` | `InitInputSystem` | input.c | `DirectInputCreateA` + device setup |
-| `0x004738b0` | `FUN_004738b0` | input.c | DInput mouse `CreateDevice`/`SetDataFormat`/`SetCooperativeLevel` |
-| `0x00473970` | `FUN_00473970` | input.c | DInput keyboard device setup |
+| `0x004738b0` | `CreateKeyboardDevice` | input.c | DInput mouse `CreateDevice`/`SetDataFormat`/`SetCooperativeLevel` |
+| `0x00473970` | `CreateMouseDevice` | input.c | DInput keyboard device setup |
 | `0x004964f0` | `InitSoundSystem` | sound_music.c | DirectSound init (if kept as stub) |
 
 > The input *polling logic* on top of these (`ScanKeyboard` MATCHED, `ScanMouse`
@@ -229,10 +229,10 @@ device I/O, not game logic.
 ### Out of scope entirely (cutscenes / movies)
 | addr | name | notes |
 |---|---|---|
-| `0x004771f0` | `FUN_004771f0` | AVI/Smacker movie player (`lmi.avi`, `Intro.avi`, `Billund/Windsor/California.avi`). Ifdef out / no-op returning 1. |
-| `0x00476460` | `FUN_00476460` | movie open |
+| `0x004771f0` | `PlayMovie` | AVI/Smacker movie player (`lmi.avi`, `Intro.avi`, `Billund/Windsor/California.avi`). Ifdef out / no-op returning 1. |
+| `0x00476460` | `OpenAviMovie` | movie open |
 | `0x004766f0` | `FUN_004766f0` | movie play loop |
-| `0x00476630` | `FUN_00476630` | movie close |
+| `0x00476630` | `CloseAviMovie` | movie close |
 | `Ir50_32.dll` load in `FUN_00459520` | — | Indeo codec for the AVIs; drop with the movies |
 | `0x00490090/d0/110` | per-region movie buttons (title.c) | already real, but call the OOS movie player |
 
@@ -243,7 +243,7 @@ device I/O, not game logic.
 **In-scope STUBs that block an interactive title screen** (areas A–F above, excluding
 the §4 stubs and OOS movies): **~22 functions**, concentrated in:
 `screens.c` (frame loop + routing: `FUN_00458c00`, `InitScreens`, `RenderFrontEndScreen`,
-`FUN_00459520`, `FUN_004585c0`), `icon.c` (`RenderIcons`, `RenderIcons2`,
+`FUN_00459520`, `CloseFrontEndScreen`), `icon.c` (`RenderIcons`, `RenderIcons2`,
 `CheckFocussedIcon`, `RemoveIconGroup`, `InsertIcon`, `FUN_0046ec50`, `FUN_0046f2e0`,
 `GetIconAtPos`), `controller.c` (`ReadGameButtons`, `SetupControllers`), `wndenv.c`
 (`ProcessSystemEvents`), `input.c` (`UpdateControllerFromMouseData/KeyboardData`),

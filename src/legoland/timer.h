@@ -8,6 +8,6 @@ struct Sprite;
 
 LEGO_EXPORT unsigned int GetGameTimer(void);
 LEGO_EXPORT unsigned int GetBlink(void);
-unsigned int FUN_00499460(void);
+unsigned int GetGameTimerFrames(void);
 unsigned long GetTicks(void);
-int FUN_00499500(struct Sprite *sprite);
+int EnsureSpriteSurface(struct Sprite *sprite);

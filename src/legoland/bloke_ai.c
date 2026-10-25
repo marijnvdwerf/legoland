@@ -23,14 +23,17 @@
 LEGO_EXPORT void NewLongTermAction(Bloke *bloke, unsigned short action) {
     bloke->action = action;
     bloke->param_action = 0;
-    bloke->field_10 = 0;
-    bloke->field_e = 0;
+    bloke->pending_action = 0;
+    bloke->low_level_action = 0;
     bloke->field_1c = 0;
     DoHighLevelAI(bloke);
 }
 
+/* Picks a random LLIDB element (start at a random index, skip up to 31 matches) whose flags have 0x14 set and whose
+ * object type is neither 0 nor 5 (food). Used for the three favourite attractions of a new visitor; NULL when the
+ * whole database was walked without a match. */
 // FUNCTION: LEGOLAND 0x0044e790
-Element *FUN_0044e790(void) {
+Element *PickRandomFavouriteAttraction(void) {
     Element *element;
     Ride *ride;
     int count;
@@ -87,8 +90,10 @@ LEGO_EXPORT int IsFavouriteFood(Bloke *bloke, Element *food) {
     return bloke->favourite_food == food;
 }
 
+/* Same walk as PickRandomFavouriteAttraction, but only accepts objects of type 5 (food outlets): the new visitor's
+ * favourite food. */
 // FUNCTION: LEGOLAND 0x0044e890
-Element *FUN_0044e890(void) {
+Element *PickRandomFavouriteFood(void) {
     Element *element;
     Ride *ride;
     int count;
@@ -131,49 +136,49 @@ Element *FUN_0044e890(void) {
 
 // FUNCTION: LEGOLAND 0x0044e920
 LEGO_EXPORT void InitBlokeAI(Bloke *bloke) {
-    if (DAT_006661c0 == 0) {
-        DAT_006661c0 = ElemID("SHARK CAFE BROLLY");
+    if (SharkCafeBrollyElem == 0) {
+        SharkCafeBrollyElem = ElemID("SHARK CAFE BROLLY");
     }
-    if (DAT_006661c4 == 0) {
-        DAT_006661c4 = ElemID("ENTRANCE 1");
+    if (Entrance1Elem == 0) {
+        Entrance1Elem = ElemID("ENTRANCE 1");
     }
-    DAT_006661bc++;
-    bloke->field_7f = Rand_Tween(12, 24);
+    ParkVisitorCount++;
+    bloke->speed = Rand_Tween(12, 24);
     bloke->field_78 = Rand_Max(MapStats.total_tiles);
-    bloke->field_7a = Rand_Tween(10, 50);
+    bloke->mood = Rand_Tween(10, 50);
     bloke->field_7e = Rand_Tween(0, 140) - 0x14;
     bloke->field_80 = Rand_Tween(5, 10);
-    bloke->field_7c = Rand_Tween(0, DAT_004b8334[1]);
+    bloke->field_7c = Rand_Tween(0, BlokeTirednessThresholds[1]);
     bloke->target = NULL;
     bloke->last_ride = NULL;
-    bloke->field_81 = DAT_004b8344;
-    DAT_004b8344++;
-    if (DAT_004b8344 > 'Z') {
-        DAT_004b8344 = 'A';
+    bloke->field_81 = NextBlokeLetter;
+    NextBlokeLetter++;
+    if (NextBlokeLetter > 'Z') {
+        NextBlokeLetter = 'A';
     }
-    FUN_00482c60(bloke);
-    bloke->favourite_attraction_0 = FUN_0044e790();
-    bloke->favourite_attraction_1 = FUN_0044e790();
-    bloke->favourite_attraction_2 = FUN_0044e790();
-    bloke->favourite_food = FUN_0044e890();
+    RandomiseBlokeName(bloke);
+    bloke->favourite_attraction_0 = PickRandomFavouriteAttraction();
+    bloke->favourite_attraction_1 = PickRandomFavouriteAttraction();
+    bloke->favourite_attraction_2 = PickRandomFavouriteAttraction();
+    bloke->favourite_food = PickRandomFavouriteFood();
     NewLongTermAction(bloke, 2);
 }
 
 // FUNCTION: LEGOLAND 0x0044ea40
-int FUN_0044ea40(void) {
+int GetMapCapacity(void) {
     return MapStats.capacity;
 }
 
 // FUNCTION: LEGOLAND 0x0044ea50
-void FUN_0044ea50(void) {
+void SpawnVisitor(void) {
     Bloke *bloke;
 
-    if (++DAT_006661c8 >= 0x1e && DAT_006661bc < FUN_0044ea40()) {
+    if (++VisitorSpawnCounter >= 0x1e && ParkVisitorCount < GetMapCapacity()) {
         bloke = MakeBloke(0);
         if (bloke != NULL) {
-            DAT_006661c8 = 0;
-            bloke->field_72 = rand() & 7;
-            bloke->field_74 = rand() & 7;
+            VisitorSpawnCounter = 0;
+            bloke->dir = rand() & 7;
+            bloke->frame = rand() & 7;
             bloke->field_75 = 1;
             InitBlokeAI(bloke);
         }
@@ -181,30 +186,30 @@ void FUN_0044ea50(void) {
 }
 
 // FUNCTION: LEGOLAND 0x0044eab0
-int FUN_0044eab0(Bloke *bloke) {
-    return bloke->field_78 - bloke->field_7a / 2 > MapStats.total_tiles * 2;
+int IsBlokeReadyToLeave(Bloke *bloke) {
+    return bloke->field_78 - bloke->mood / 2 > MapStats.total_tiles * 2;
 }
 
 // FUNCTION: LEGOLAND 0x0044eae0
-void FUN_0044eae0(Bloke *bloke) {
+void UpdateBlokeTimeInPark(Bloke *bloke) {
     bloke->field_78++;
     if ((bloke->flags & 0x8) != 0) {
         return;
     }
-    if (FUN_0044eab0(bloke) != 0) {
+    if (IsBlokeReadyToLeave(bloke) != 0) {
         NewLongTermAction(bloke, 3);
     }
 }
 
 // FUNCTION: LEGOLAND 0x0044eb10
-char FUN_0044eb10(Bloke *bloke) {
+char GetBlokeHungerLevel(Bloke *bloke) {
     int i;
 
     if (MapStats.field_190 == 0) {
         return 1;
     }
     for (i = 1; i < 5; i++) {
-        if (bloke->field_7c < DAT_004b8334[i - 1]) {
+        if (bloke->field_7c < BlokeTirednessThresholds[i - 1]) {
             return i - 1;
         }
     }
@@ -212,7 +217,7 @@ char FUN_0044eb10(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044eb50
-void FUN_0044eb50(Bloke *bloke) {
+void UpdateBlokeTiredness(Bloke *bloke) {
     unsigned short value;
     int extended;
 
@@ -221,14 +226,14 @@ void FUN_0044eb50(Bloke *bloke) {
     }
     value = bloke->field_7c;
     extended = value & 0xffff;
-    if (extended >= DAT_004b8334[3] && (bloke->flags & 0x28) == 0) {
+    if (extended >= BlokeTirednessThresholds[3] && (bloke->flags & 0x28) == 0) {
         NewLongTermAction(bloke, 3);
         return;
     }
-    if ((DAT_008119a4 & 0x1f) != 0xf) {
+    if ((FrameCounter & 0x1f) != 0xf) {
         return;
     }
-    if (extended > DAT_004b8334[3]) {
+    if (extended > BlokeTirednessThresholds[3]) {
         return;
     }
     bloke->field_7c = bloke->field_80 + value;
@@ -251,32 +256,32 @@ LEGO_EXPORT void PopLongTermAction(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044ebf0
-void FUN_0044ebf0(Bloke *bloke) {
+void BlokeAIEnterPark(Bloke *bloke) {
     MapElement *object;
     Ride *ride;
     unsigned char dir;
 
     switch (bloke->param_action) {
     case 0:
-        object = GetFirstObjectMatching(DAT_006661c4);
-        ride = DAT_006661c4->data;
+        object = GetFirstObjectMatching(Entrance1Elem);
+        ride = Entrance1Elem->data;
         bloke->flags |= 8;
         bloke->dest.x = (object->field_4 + ride->footprint.x1 + 6) << 8;
         bloke->dest.y = (object->field_5 + ride->footprint.y1 - 5) << 8;
-        bloke->pos.x = bloke->dest.x + DAT_004b8318.x;
-        bloke->pos.y = bloke->dest.y + DAT_004b8318.y;
+        bloke->pos.x = bloke->dest.x + ParkEntranceWalkInOffset.x;
+        bloke->pos.y = bloke->dest.y + ParkEntranceWalkInOffset.y;
         dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
-        bloke->field_e = 7;
-        bloke->field_72 = (dir >> 5) + 3;
+        bloke->low_level_action = 7;
+        bloke->dir = (dir >> 5) + 3;
         bloke->param_action++;
         break;
     case 1:
-        bloke->target = DAT_006661c4;
-        if (FUN_0044f4a0(bloke, DAT_006661c4->data, 0) != 0) {
+        bloke->target = Entrance1Elem;
+        if (PutBlokeOnRide(bloke, Entrance1Elem->data, 0) != 0) {
             bloke->param_action++;
             PushLongTermAction(bloke);
             NewLongTermAction(bloke, 5);
-            DAT_00668610 |= 0x40;
+            ScriptDirtyCategories |= 0x40;
             return;
         }
         break;
@@ -288,21 +293,21 @@ void FUN_0044ebf0(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044ed00
-void FUN_0044ed00(char *msg) {
+void LogBlokeAiMessage(char *msg) {
     int i;
 
     for (i = 0; i < 8; i++) {
-        PTR_DAT_004b8348[i] = DAT_006661cc[(DAT_006664ec + i) & 7];
+        BlokeAiLogLinePtrs[i] = BlokeAiLogLines[(BlokeAiLogIndex + i) & 7];
     }
-    DAT_006664ec++;
+    BlokeAiLogIndex++;
     // STRING: LEGOLAND 0x004b8404
-    sprintf(PTR_DAT_004b8348[7], "%c:%s", DAT_00813b08, msg);
+    sprintf(BlokeAiLogLinePtrs[7], "%c:%s", CurrentBlokeLetter, msg);
     // STRING: LEGOLAND 0x004b83f0
-    DBPrintf("[Bloke %c] - %s\n", DAT_00813b08, msg);
+    DBPrintf("[Bloke %c] - %s\n", CurrentBlokeLetter, msg);
 }
 
 // FUNCTION: LEGOLAND 0x0044ed70
-void FUN_0044ed70(Bloke *bloke) {
+void BlokeAILeavePark(Bloke *bloke) {
     MapElement *object;
     Ride *ride;
     unsigned char dir;
@@ -316,14 +321,14 @@ void FUN_0044ed70(Bloke *bloke) {
         bloke->param_action = 1;
         /* fallthrough */
     case 1:
-        switch (SuggestNextMove(&bloke->pos, &DAT_004b8320, &out)) {
+        switch (SuggestNextMove(&bloke->pos, &ParkExitPos, &out)) {
         case -2:
             bloke->param_action = 5;
             return;
         case -3:
         case -1:
         case 0:
-            bloke->field_e = 4;
+            bloke->low_level_action = 4;
             bloke->param_action = 2;
             if (++bloke->field_82 == 8) {
                 bloke->param_action = 5;
@@ -333,11 +338,11 @@ void FUN_0044ed70(Bloke *bloke) {
         case 2:
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
-            bloke->field_e = 6;
-            bloke->field_73 = dir;
+            bloke->low_level_action = 6;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             if (bloke->field_64 != 0) {
-                bloke->field_e = 4;
+                bloke->low_level_action = 4;
                 bloke->param_action = 2;
                 return;
             }
@@ -346,11 +351,11 @@ void FUN_0044ed70(Bloke *bloke) {
         case 1:
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
-            bloke->field_e = 6;
-            bloke->field_73 = dir;
+            bloke->low_level_action = 6;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             if (bloke->field_64 != 0) {
-                bloke->field_e = 4;
+                bloke->low_level_action = 4;
                 bloke->param_action = 2;
                 return;
             }
@@ -366,21 +371,21 @@ void FUN_0044ed70(Bloke *bloke) {
         bloke->flags |= 8;
         // STRING: LEGOLAND 0x004b8434
         sprintf(msg, "Stuck, Routing Point To Point...");
-        FUN_0044ed00(msg);
-        switch (PTPSuggestNextMove(&bloke->pos, &DAT_004b8320, &out)) {
+        LogBlokeAiMessage(msg);
+        switch (PTPSuggestNextMove(&bloke->pos, &ParkExitPos, &out)) {
         case 2:
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
-            bloke->field_e = 0xb;
-            bloke->field_73 = dir;
+            bloke->low_level_action = 0xb;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             bloke->param_action = (bloke->field_64 & 1) ? 6 : 10;
             return;
         case 1:
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
-            bloke->field_e = 0xb;
-            bloke->field_73 = dir;
+            bloke->low_level_action = 0xb;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             if ((bloke->field_64 & 1) != 0) {
                 bloke->param_action = 6;
@@ -388,7 +393,7 @@ void FUN_0044ed70(Bloke *bloke) {
             }
             break;
         case 0:
-            bloke->field_e = 4;
+            bloke->low_level_action = 4;
             bloke->param_action = 6;
             return;
         }
@@ -396,14 +401,14 @@ void FUN_0044ed70(Bloke *bloke) {
     case 6:
         // STRING: LEGOLAND 0x004b8424
         sprintf(msg, "Wandering...");
-        FUN_0044ed00(msg);
-        bloke->field_e = 4;
+        LogBlokeAiMessage(msg);
+        bloke->low_level_action = 4;
         bloke->param_action = 5;
         return;
     case 10:
-        if (FUN_0044f4a0(bloke, DAT_006661c4->data, 0) != 0) {
+        if (PutBlokeOnRide(bloke, Entrance1Elem->data, 0) != 0) {
             bloke->flags |= 8;
-            bloke->target = DAT_006661c4;
+            bloke->target = Entrance1Elem;
             bloke->param_action++;
             PushLongTermAction(bloke);
             NewLongTermAction(bloke, 5);
@@ -411,23 +416,23 @@ void FUN_0044ed70(Bloke *bloke) {
         }
         break;
     case 11:
-        object = GetFirstObjectMatching(DAT_006661c4);
-        ride = DAT_006661c4->data;
+        object = GetFirstObjectMatching(Entrance1Elem);
+        ride = Entrance1Elem->data;
         bloke->dest.x = (object->field_4 + ride->footprint.x1 + 6) << 8;
         bloke->dest.y = (object->field_5 + ride->footprint.y0 + 8) << 8;
         dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
-        bloke->field_e = 7;
-        bloke->field_73 = dir;
+        bloke->low_level_action = 7;
+        bloke->target_dir = dir;
         NewDirForAction(bloke, (dir >> 5) + 3);
         bloke->param_action++;
         break;
     case 12:
-        RateBlokeOnLeaving(bloke->field_7a);
-        bloke->dest.x += DAT_004b8328.x;
-        bloke->dest.y += DAT_004b8328.y;
+        RateBlokeOnLeaving(bloke->mood);
+        bloke->dest.x += ParkExitStep.x;
+        bloke->dest.y += ParkExitStep.y;
         dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
-        bloke->field_e = 7;
-        bloke->field_73 = dir;
+        bloke->low_level_action = 7;
+        bloke->target_dir = dir;
         NewDirForAction(bloke, (dir >> 5) + 3);
         bloke->param_action++;
         return;
@@ -435,17 +440,21 @@ void FUN_0044ed70(Bloke *bloke) {
         // STRING: LEGOLAND 0x004b840c
         DBPrintf("Killing MiniFig: $%x\n", bloke);
         DestroyBloke(bloke);
-        DAT_006661bc--;
+        ParkVisitorCount--;
     }
 }
 
+/* Long-term action 1: just switch the low-level action to BlokeActionRandomWalk (4). */
 // FUNCTION: LEGOLAND 0x0044f170
-void FUN_0044f170(Bloke *bloke) {
-    bloke->field_e = 4;
+void BlokeAIRandomWalk(Bloke *bloke) {
+    bloke->low_level_action = 4;
 }
 
+/* True when the tile containing pos (1/256-tile units) is the entrance of an instance of ride on one of the four
+ * orthogonally adjacent tiles: an object tile (flag 0x80) of that class whose anchor plus the class entrance offset
+ * (ride->x, ride->y) equals that tile. */
 // FUNCTION: LEGOLAND 0x0044f180
-int FUN_0044f180(Point *pos, Ride *ride) {
+int IsAtRideEntrance(Point *pos, Ride *ride) {
     MapElement *element;
     Point tile;
     int n;
@@ -509,8 +518,11 @@ int FUN_0044f180(Point *pos, Ride *ride) {
     return 0;
 }
 
+/* Whether the object instance at the tile can operate: false when the tile has flag 0x200 (drawn blinking red on
+ * the map) or, with the power feature enabled, flag 0x100. Visitors refuse a ride with "It's not working" when this
+ * fails. The ride argument is unused. */
 // FUNCTION: LEGOLAND 0x0044f360
-int FUN_0044f360(Ride *ride, TileId *tile) {
+int IsRideWorking(Ride *ride, TileId *tile) {
     MapElement *element;
     int x;
     int y;
@@ -525,14 +537,14 @@ int FUN_0044f360(Ride *ride, TileId *tile) {
     if ((element->flags & 0x200) != 0) {
         return 0;
     }
-    if (MapStats.field_18c != 0 && (element->flags & 0x100) != 0) {
+    if (MapStats.power_enabled != 0 && (element->flags & 0x100) != 0) {
         return 0;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0044f3d0
-unsigned int FUN_0044f3d0(Ride *ride, TileId *tile) {
+unsigned int CountRidersAtTile(Ride *ride, TileId *tile) {
     RideNode *node;
     unsigned short id;
     unsigned int count;
@@ -553,10 +565,10 @@ unsigned int FUN_0044f3d0(Ride *ride, TileId *tile) {
 }
 
 // FUNCTION: LEGOLAND 0x0044f400
-unsigned int FUN_0044f400(Ride *ride, TileId *tile) {
+unsigned int IsRideFull(Ride *ride, TileId *tile) {
     int count;
 
-    count = FUN_0044f3d0(ride, tile);
+    count = CountRidersAtTile(ride, tile);
     return count >= ride->seats;
 }
 
@@ -589,7 +601,7 @@ LEGO_EXPORT void RemoveBlokeFromList(Ride *ride, RideNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0044f4a0
-int FUN_0044f4a0(Bloke *bloke, Ride *ride, int wait) {
+int PutBlokeOnRide(Bloke *bloke, Ride *ride, int wait) {
     RideNode *node;
     MapElement *object;
     MapElement *element;
@@ -601,17 +613,17 @@ int FUN_0044f4a0(Bloke *bloke, Ride *ride, int wait) {
         if (object != NULL) {
             at.x = object->field_4;
             at.y = object->field_5;
-            FUN_00489f90(&at);
+            IncObjInstanceCount(&at);
             memset(node, 0, sizeof(RideNode));
             node->rider = bloke;
             bloke->field_58 = wait;
             node->person = bloke->person;
             bloke->flags |= 0x20;
-            bloke->field_e = 0;
-            bloke->field_10 = 0;
+            bloke->low_level_action = 0;
+            bloke->pending_action = 0;
             bloke->field_35 = 0;
-            if (ride == DAT_006661c4->data) {
-                object = GetFirstObjectMatching(DAT_006661c4);
+            if (ride == Entrance1Elem->data) {
+                object = GetFirstObjectMatching(Entrance1Elem);
                 node->tile.pos.x = object->field_4;
                 node->tile.pos.y = object->field_5;
             } else {
@@ -626,7 +638,7 @@ int FUN_0044f4a0(Bloke *bloke, Ride *ride, int wait) {
             }
             element->flags |= 4;
             PutBlokeInList(ride, node);
-            DAT_00668610 |= 0x20;
+            ScriptDirtyCategories |= 0x20;
             return 1;
         }
         // STRING: LEGOLAND 0x004b8480
@@ -639,7 +651,7 @@ int FUN_0044f4a0(Bloke *bloke, Ride *ride, int wait) {
 }
 
 // FUNCTION: LEGOLAND 0x0044f610
-void FUN_0044f610(Bloke *bloke) {
+void BlokeAIWander(Bloke *bloke) {
     Ride *candidate;
     Ride *ride;
     int x;
@@ -653,7 +665,7 @@ void FUN_0044f610(Bloke *bloke) {
     Point out;
     char msg[100];
 
-    DAT_00813b08 = bloke->field_81;
+    CurrentBlokeLetter = bloke->field_81;
     switch (bloke->param_action) {
     case 0:
         BuildObjInfoList();
@@ -665,12 +677,12 @@ void FUN_0044f610(Bloke *bloke) {
                 if (bloke->last_ride == candidate->element) {
                     // STRING: LEGOLAND 0x004b858c
                     sprintf(msg, "I've just been on the %s.", candidate->name);
-                    FUN_0044ed00(msg);
+                    LogBlokeAiMessage(msg);
                 } else if (Calc_Item_Attractiveness(candidate, bloke, 0) > 10) {
                     // STRING: LEGOLAND 0x004b8554
                     sprintf(msg, "(%d) I'll go to the %s", Calc_Item_Attractiveness(candidate, bloke, 0), candidate->name);
                     bloke->target = candidate->element;
-                    FUN_0044ed00(msg);
+                    LogBlokeAiMessage(msg);
                     bloke->param_action = 1;
                     bloke->field_82 = 0;
                     if (more != 0) {
@@ -680,7 +692,7 @@ void FUN_0044f610(Bloke *bloke) {
                 } else {
                     // STRING: LEGOLAND 0x004b856c
                     sprintf(msg, "The %s is not worth going on.", candidate->name);
-                    FUN_0044ed00(msg);
+                    LogBlokeAiMessage(msg);
                     if (GetBlokeCounter(candidate, GetBlokeNum(bloke)) == 0) {
                         IncrementBlokeCounter(candidate, GetBlokeNum(bloke));
                     }
@@ -689,7 +701,7 @@ void FUN_0044f610(Bloke *bloke) {
             } while (more != 0);
             // STRING: LEGOLAND 0x004b8524
             sprintf(msg, "I've been on everything and I want to go home.");
-            FUN_0044ed00(msg);
+            LogBlokeAiMessage(msg);
             NewLongTermAction(bloke, 3);
             return;
         }
@@ -698,12 +710,12 @@ void FUN_0044f610(Bloke *bloke) {
     case 1:
         switch (SuggestNextMove(&bloke->pos, &bloke->goal, &out)) {
         case -2:
-            bloke->field_e = 10;
+            bloke->low_level_action = 10;
             return;
         case -3:
         case -1:
         case 0:
-            if (FUN_0044f180(&bloke->goal, bloke->target->data) != 0) {
+            if (IsAtRideEntrance(&bloke->goal, bloke->target->data) != 0) {
                 Ride *ride;
                 int ox;
                 int oy;
@@ -720,36 +732,36 @@ void FUN_0044f610(Bloke *bloke) {
                 if (object == NULL && (object = GetFirstObjectMatching(bloke->target)) == NULL) {
                     // STRING: LEGOLAND 0x004b8424
                     sprintf(msg, "Wandering...");
-                    FUN_0044ed00(msg);
-                    bloke->field_e = 4;
+                    LogBlokeAiMessage(msg);
+                    bloke->low_level_action = 4;
                     bloke->param_action++;
                     return;
                 }
                 ox = object->field_4;
                 oy = object->field_5;
                 if (ox == x && oy == y) {
-                    bloke->field_e = 4;
+                    bloke->low_level_action = 4;
                     return;
                 }
                 bloke->goal.x = ((ride->x + ox) << 8) + 0x80;
                 bloke->goal.y = ((ride->y + oy) << 8) + 0x80;
                 return;
             }
-            bloke->field_e = 4;
+            bloke->low_level_action = 4;
             return;
         case 2:
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
-            bloke->field_e = 6;
-            bloke->field_73 = dir;
+            bloke->low_level_action = 6;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             bloke->param_action = bloke->field_64 != 0 ? 0 : 10;
             return;
         case 1:
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
-            bloke->field_e = 6;
-            bloke->field_73 = dir;
+            bloke->low_level_action = 6;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             bloke->param_action = bloke->field_64 == 0;
             return;
@@ -758,8 +770,8 @@ void FUN_0044f610(Bloke *bloke) {
     case 2:
     case 3:
         sprintf(msg, "Wandering...");
-        FUN_0044ed00(msg);
-        bloke->field_e = 4;
+        LogBlokeAiMessage(msg);
+        bloke->low_level_action = 4;
         bloke->param_action++;
         return;
     case 4:
@@ -768,21 +780,21 @@ void FUN_0044f610(Bloke *bloke) {
     case 5:
         // STRING: LEGOLAND 0x004b8434
         sprintf(msg, "Stuck, Routing Point To Point...");
-        FUN_0044ed00(msg);
+        LogBlokeAiMessage(msg);
         switch (PTPSuggestNextMove(&bloke->pos, &bloke->goal, &out)) {
         case 2:
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
-            bloke->field_e = 0xb;
-            bloke->field_73 = dir;
+            bloke->low_level_action = 0xb;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             bloke->param_action = (bloke->field_64 & 1) ? 6 : 10;
             return;
         case 1:
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
-            bloke->field_e = 0xb;
-            bloke->field_73 = dir;
+            bloke->low_level_action = 0xb;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             if ((bloke->field_64 & 1) != 0) {
                 bloke->param_action = 6;
@@ -790,38 +802,38 @@ void FUN_0044f610(Bloke *bloke) {
             }
             break;
         case 0:
-            bloke->field_e = 4;
+            bloke->low_level_action = 4;
             bloke->param_action = 6;
             return;
         }
         break;
     case 6:
         sprintf(msg, "Wandering...");
-        FUN_0044ed00(msg);
-        bloke->field_e = 4;
+        LogBlokeAiMessage(msg);
+        bloke->low_level_action = 4;
         bloke->param_action = 5;
         return;
     case 10:
-        if (FUN_0044f180(&bloke->pos, bloke->target->data) != 0) {
+        if (IsAtRideEntrance(&bloke->pos, bloke->target->data) != 0) {
             tile = GetObjectUID(&bloke->pos, bloke->target->data);
-            if (FUN_0044f400(bloke->target->data, &tile) != 0) {
+            if (IsRideFull(bloke->target->data, &tile) != 0) {
                 // STRING: LEGOLAND 0x004b8500
                 sprintf(msg, "I can't go on this ride. It is full");
-                FUN_0044ed00(msg);
+                LogBlokeAiMessage(msg);
                 ride = bloke->target->data;
-                FUN_00482df0(bloke, 0, ride->field_3a);
+                ApplyMoodDelta(bloke, 0, ride->field_3a);
                 if (GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke)) == 0) {
                     IncrementBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
                 }
                 bloke->param_action = 2;
                 return;
             }
-            if (FUN_0044f360(bloke->target->data, &tile) == 0) {
+            if (IsRideWorking(bloke->target->data, &tile) == 0) {
                 // STRING: LEGOLAND 0x004b84d4
                 sprintf(msg, "I can't go on this ride. It's not working");
-                FUN_0044ed00(msg);
+                LogBlokeAiMessage(msg);
                 ride = bloke->target->data;
-                FUN_00482df0(bloke, 1, ride->field_3a);
+                ApplyMoodDelta(bloke, 1, ride->field_3a);
                 if (GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke)) == 0) {
                     IncrementBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
                 }
@@ -839,13 +851,13 @@ void FUN_0044f610(Bloke *bloke) {
             if ((instance->flags & 2) == 0) {
                 // STRING: LEGOLAND 0x004b84bc
                 sprintf(msg, "I'm going on the ride");
-                FUN_0044ed00(msg);
+                LogBlokeAiMessage(msg);
                 NewLongTermAction(bloke, 5);
                 /* reads the flags of the *next* LLIDB element; the ride's own flags were
                    presumably meant */
                 if ((bloke->target[1].flags & 0x100000) != 0) {
-                    if (FUN_0044f4a0(bloke, bloke->target->data, 0) != 0) {
-                        if (FUN_0044f400(bloke->target->data, &tile) == 0) {
+                    if (PutBlokeOnRide(bloke, bloke->target->data, 0) != 0) {
+                        if (IsRideFull(bloke->target->data, &tile) == 0) {
                             return;
                         }
                         x = tile.pos.x;
@@ -868,16 +880,16 @@ void FUN_0044f610(Bloke *bloke) {
                         element = NULL;
                     }
                     GetInstanceOfClass(element->field_0->data, &tile);
-                    if (FUN_0044f4a0(bloke, bloke->target->data, (rand() & 0x1ff) + 200) != 0) {
+                    if (PutBlokeOnRide(bloke, bloke->target->data, (rand() & 0x1ff) + 200) != 0) {
                         return;
                     }
                 }
             }
             // STRING: LEGOLAND 0x004b84a0
             sprintf(msg, "I can't get on the ride.");
-            FUN_0044ed00(msg);
+            LogBlokeAiMessage(msg);
             ride = bloke->target->data;
-            FUN_00482df0(bloke, 0, ride->field_3a);
+            ApplyMoodDelta(bloke, 0, ride->field_3a);
             if (GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke)) == 0) {
                 IncrementBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
             }
@@ -889,18 +901,18 @@ void FUN_0044f610(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044fe10
-void FUN_0044fe10(Bloke *bloke) {
+void BlokeAIGoToEntrance(Bloke *bloke) {
     Point to;
     unsigned char dir;
 
     switch (bloke->param_action) {
     case 0:
-        to.x = DAT_0066b460.x << 8;
-        to.y = DAT_0066b460.y << 8;
+        to.x = Entrance1Point.x << 8;
+        to.y = Entrance1Point.y << 8;
         bloke->dest = to;
         dir = CalcMoveLine(bloke->pos, to, &bloke->nav) + 0x10;
-        bloke->field_e = 0xf;
-        bloke->field_73 = dir;
+        bloke->low_level_action = 0xf;
+        bloke->target_dir = dir;
         NewDirForAction(bloke, (dir >> 5) + 3);
         bloke->param_action++;
         break;
@@ -911,7 +923,7 @@ void FUN_0044fe10(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x0044fe80
-void FUN_0044fe80(Bloke *bloke) {
+void BlokeAIGoToBrolly(Bloke *bloke) {
     MapElement *object;
     MapElement *element;
     Ride *ride;
@@ -923,7 +935,7 @@ void FUN_0044fe80(Bloke *bloke) {
 
     switch (bloke->param_action) {
     case 0:
-        for (object = GetFirstObjectMatching(DAT_006661c0); object != NULL; object = GetNextObjectMatching(object, DAT_006661c0)) {
+        for (object = GetFirstObjectMatching(SharkCafeBrollyElem); object != NULL; object = GetNextObjectMatching(object, SharkCafeBrollyElem)) {
             ride = object->field_0->data;
             if ((object->flags & 1) == 0) {
                 bloke->brolly = object->anchor;
@@ -941,18 +953,18 @@ void FUN_0044fe80(Bloke *bloke) {
     case 1:
         switch (SuggestNextMove(&bloke->pos, &bloke->goal, &out)) {
         case -2:
-            bloke->field_e = 10;
+            bloke->low_level_action = 10;
             return;
         case -3:
         case -1:
         case 0:
-            bloke->field_e = 4;
+            bloke->low_level_action = 4;
             return;
         case 2:
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
-            bloke->field_e = 6;
-            bloke->field_73 = dir;
+            bloke->low_level_action = 6;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             if (bloke->field_64 == 0) {
                 bloke->param_action = 2;
@@ -962,8 +974,8 @@ void FUN_0044fe80(Bloke *bloke) {
         case 1:
             bloke->dest = out;
             dir = CalcMoveLine(bloke->pos, out, &bloke->nav) + 0x10;
-            bloke->field_e = 6;
-            bloke->field_73 = dir;
+            bloke->low_level_action = 6;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             if (bloke->field_64 == 0) {
                 bloke->param_action = 1;
@@ -982,7 +994,7 @@ void FUN_0044fe80(Bloke *bloke) {
         } else {
             element = NULL;
         }
-        if (element->field_0 == DAT_006661c0 && (flags = element->flags, (flags & 0x80) != 0)) {
+        if (element->field_0 == SharkCafeBrollyElem && (flags = element->flags, (flags & 0x80) != 0)) {
             if ((flags & 1) != 0) {
                 bloke->param_action = 0;
                 return;
@@ -992,8 +1004,8 @@ void FUN_0044fe80(Bloke *bloke) {
             bloke->dest.x = bloke->goal.x - 0x80;
             bloke->dest.y = bloke->goal.y;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
-            bloke->field_73 = dir;
-            bloke->field_e = 7;
+            bloke->target_dir = dir;
+            bloke->low_level_action = 7;
             NewDirForAction(bloke, 7);
             bloke->field_5c = 0;
             bloke->param_action++;
@@ -1008,7 +1020,7 @@ void FUN_0044fe80(Bloke *bloke) {
         } else {
             element = NULL;
         }
-        if (element->field_0 == DAT_006661c0 && (element->flags & 0x80) != 0) {
+        if (element->field_0 == SharkCafeBrollyElem && (element->flags & 0x80) != 0) {
             if (bloke->field_5c <= 300) {
                 return;
             }
@@ -1024,13 +1036,13 @@ void FUN_0044fe80(Bloke *bloke) {
         } else {
             element = NULL;
         }
-        if (element->field_0 == DAT_006661c0 && (element->flags & 0x80) != 0) {
+        if (element->field_0 == SharkCafeBrollyElem && (element->flags & 0x80) != 0) {
             element->flags &= 0xfffe;
             bloke->dest.x = bloke->goal.x + 0x80;
             bloke->dest.y = bloke->goal.y;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav) + 0x10;
-            bloke->field_e = 7;
-            bloke->field_73 = dir;
+            bloke->low_level_action = 7;
+            bloke->target_dir = dir;
             NewDirForAction(bloke, (dir >> 5) + 3);
             bloke->param_action++;
             return;
@@ -1045,14 +1057,17 @@ void FUN_0044fe80(Bloke *bloke) {
     NewLongTermAction(bloke, 6);
 }
 
+/* Long-term action 14, entered from PauseHoveredBloke while the cursor is over a visitor: face direction 4, blokes
+ * with character 1 play animation 2 once, then BlokeActionWaitWhileHovered (low-level 13). When that ends, workers
+ * go back to their idle action (16/17), everyone else to wandering (6). */
 // FUNCTION: LEGOLAND 0x00450250
-void FUN_00450250(Bloke *bloke) {
+void BlokeAIStopWhileHovered(Bloke *bloke) {
     int state;
 
     switch (bloke->param_action) {
     case 0:
         NewDirForAction(bloke, 4);
-        if (bloke->person->field_8 == 1) {
+        if (bloke->person->character == 1) {
             bloke->flags |= 0x100;
             BlokeSetAnim(bloke, 2);
             BlokeSetFrame(bloke, 0);
@@ -1071,11 +1086,11 @@ void FUN_00450250(Bloke *bloke) {
         }
         break;
     case 2:
-        bloke->field_e = 0xd;
+        bloke->low_level_action = 0xd;
         bloke->param_action++;
         return;
     case 3:
-        state = bloke->person->field_8;
+        state = bloke->person->character;
         switch (state) {
         case 2:
             NewLongTermAction(bloke, 0x10);
@@ -1088,8 +1103,10 @@ void FUN_00450250(Bloke *bloke) {
     }
 }
 
+/* Long-term action 20: the worker version of BlokeAIStopWhileHovered (face direction 4, wait while hovered, then
+ * back to Gardener_Idle / Mechanic_Idle). */
 // FUNCTION: LEGOLAND 0x00450330
-void FUN_00450330(Bloke *bloke) {
+void WorkerAIStopWhileHovered(Bloke *bloke) {
     int state;
 
     switch (bloke->param_action) {
@@ -1098,11 +1115,11 @@ void FUN_00450330(Bloke *bloke) {
         bloke->param_action++;
         break;
     case 1:
-        bloke->field_e = 0xd;
+        bloke->low_level_action = 0xd;
         bloke->param_action++;
         return;
     case 2:
-        state = bloke->person->field_8;
+        state = bloke->person->character;
         switch (state) {
         case 2:
             NewLongTermAction(bloke, 0x10);
@@ -1115,7 +1132,7 @@ void FUN_00450330(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x004503a0
-void FUN_004503a0(Bloke *bloke, Footprint *box) {
+void FaceBlokeTowardsFootprint(Bloke *bloke, Footprint *box) {
     int ox;
     int oy;
     int tx;
@@ -1127,43 +1144,45 @@ void FUN_004503a0(Bloke *bloke, Footprint *box) {
     oy = bloke->goal.y;
     if (tx > box->x1 + ox) {
         if (ty < box->y0 + oy) {
-            bloke->field_72 = 6;
+            bloke->dir = 6;
             return;
         }
         if (ty > box->y1 + oy) {
-            bloke->field_72 = 0;
+            bloke->dir = 0;
             return;
         }
-        bloke->field_72 = 7;
+        bloke->dir = 7;
         return;
     }
     if (tx < box->x0 + ox) {
         if (ty < box->y0 + oy) {
-            bloke->field_72 = 4;
+            bloke->dir = 4;
             return;
         }
         if (ty > box->y1 + oy) {
-            bloke->field_72 = 2;
+            bloke->dir = 2;
             return;
         }
-        bloke->field_72 = 3;
+        bloke->dir = 3;
         return;
     }
     if (ty < box->y0 + oy) {
-        bloke->field_72 = 5;
+        bloke->dir = 5;
         return;
     }
-    bloke->field_72 = 1;
+    bloke->dir = 1;
 }
 
+/* Long-term action 15, started by UpdateBlokeMoodFromSurroundings next to a type 3 object: face the target object's
+ * footprint, wait 10-41 ticks, count the visit with IncrementBlokeCounter, then wander. */
 // FUNCTION: LEGOLAND 0x00450450
-void FUN_00450450(Bloke *bloke) {
+void BlokeAIStopAtObject(Bloke *bloke) {
     Ride *ride;
 
     switch (bloke->param_action) {
     case 0:
         ride = bloke->target->data;
-        FUN_004503a0(bloke, &ride->footprint);
+        FaceBlokeTowardsFootprint(bloke, &ride->footprint);
         bloke->field_58 = (rand() & 0x1f) + 10;
         bloke->param_action++;
         break;
@@ -1184,7 +1203,7 @@ void FUN_00450450(Bloke *bloke) {
 LEGO_EXPORT void DoHighLevelAI(Bloke *bloke) {
     void (*fn)(Bloke *);
 
-    fn = PTR_Bloke_DoNothing_004b8368[bloke->action];
+    fn = BlokeLongTermActionTable[bloke->action];
     if (fn != 0) {
         fn(bloke);
     }
@@ -1193,7 +1212,7 @@ LEGO_EXPORT void DoHighLevelAI(Bloke *bloke) {
 }
 
 // FUNCTION: LEGOLAND 0x00450500
-int FUN_00450500(Point *a, Point *b) {
+int ArePointsOrthogonallyAdjacent(Point *a, Point *b) {
     Point d;
 
     d.x = abs(a->x - b->x);
@@ -1201,8 +1220,12 @@ int FUN_00450500(Point *a, Point *b) {
     return d.x + d.y == 1;
 }
 
+/* Every 16 ticks per visitor (ControlPeople): scans the 9x9 tiles around the visitor and sums the value of each
+ * object type in range (reduced by how often this visitor already used it), applying the sums as mood deltas 2-7.
+ * Also may redirect a wandering visitor to an adjacent food outlet or type 1 object it finds attractive, or start
+ * BlokeAIStopAtObject next to a type 3 object. */
 // FUNCTION: LEGOLAND 0x00450530
-void FUN_00450530(Bloke *bloke) {
+void UpdateBlokeMoodFromSurroundings(Bloke *bloke) {
     MapElement *element;
     Ride *cls;
     int counter;
@@ -1247,7 +1270,7 @@ void FUN_00450530(Bloke *bloke) {
                         shops += cls->value >> GetBlokeCounter(cls, GetBlokeNum(bloke));
                         if ((bloke->flags & 0x20) == 0 && bloke->target != cls->element) {
                             chance = 15 / (GetBlokeCounter(cls, GetBlokeNum(bloke)) + 1);
-                            if (rand() % 100 < chance && bloke->field_e != 0xf) {
+                            if (rand() % 100 < chance && bloke->low_level_action != 0xf) {
                                 t.x = bloke->pos.x >> 8;
                                 t.y = bloke->pos.y >> 8;
                                 dx = abs(t.x - pos.x);
@@ -1267,13 +1290,13 @@ void FUN_00450530(Bloke *bloke) {
                         food_score += cls->value >> GetBlokeCounter(cls, GetBlokeNum(bloke));
                         food.x = element->field_4 + cls->x;
                         food.y = element->field_5 + cls->y;
-                        if (FUN_00450500(&origin, &food) != 0 && FUN_00450500(&pos, &food) != 0 &&
+                        if (ArePointsOrthogonallyAdjacent(&origin, &food) != 0 && ArePointsOrthogonallyAdjacent(&pos, &food) != 0 &&
                             Calc_Item_Attractiveness(cls, bloke, 1) > 0x32 && bloke->action == 6 &&
                             (bloke->goal.x >> 8 != food.x || bloke->goal.y >> 8 != food.y)) {
                             bloke->goal.x = food.x << 8;
                             bloke->goal.y = food.y << 8;
                             bloke->param_action = 1;
-                            bloke->field_e = 0;
+                            bloke->low_level_action = 0;
                             bloke->target = cls->element;
                         }
                         break;
@@ -1281,13 +1304,13 @@ void FUN_00450530(Bloke *bloke) {
                         toilets += cls->value >> GetBlokeCounter(cls, GetBlokeNum(bloke));
                         spot.x = element->field_4 + cls->x;
                         spot.y = element->field_5 + cls->y;
-                        if (FUN_00450500(&spot, &origin) != 0 && FUN_00450500(&pos, &spot) != 0 &&
+                        if (ArePointsOrthogonallyAdjacent(&spot, &origin) != 0 && ArePointsOrthogonallyAdjacent(&pos, &spot) != 0 &&
                             Calc_Item_Attractiveness(cls, bloke, 1) > 0x32 && bloke->action == 6 &&
                             (bloke->goal.x >> 8 != spot.x || bloke->goal.y >> 8 != spot.y)) {
                             bloke->goal.x = spot.x << 8;
                             bloke->goal.y = spot.y << 8;
                             bloke->param_action = 1;
-                            bloke->field_e = 0;
+                            bloke->low_level_action = 0;
                             bloke->target = cls->element;
                         }
                         break;
@@ -1301,14 +1324,14 @@ void FUN_00450530(Bloke *bloke) {
             }
         }
     }
-    FUN_00482df0(bloke, 2, blocked);
-    FUN_00482df0(bloke, 3, rides);
-    FUN_00482df0(bloke, 4, shops);
-    FUN_00482df0(bloke, 5, food_score);
-    FUN_00482df0(bloke, 6, toilets);
-    rate = FUN_0044eb10(bloke);
+    ApplyMoodDelta(bloke, 2, blocked);
+    ApplyMoodDelta(bloke, 3, rides);
+    ApplyMoodDelta(bloke, 4, shops);
+    ApplyMoodDelta(bloke, 5, food_score);
+    ApplyMoodDelta(bloke, 6, toilets);
+    rate = GetBlokeHungerLevel(bloke);
     if (rate >= 3) {
-        FUN_00482df0(bloke, 7, rate - 2);
+        ApplyMoodDelta(bloke, 7, rate - 2);
     }
 }
 
@@ -1317,73 +1340,73 @@ LEGO_EXPORT void ControlPeople(void) {
     Bloke *bloke;
     Bloke *next;
 
-    FUN_0044ea50();
+    SpawnVisitor();
     for (bloke = FirstBloke; bloke != NULL; bloke = next) {
         next = bloke->next;
-        DAT_00813b08 = bloke->field_81;
-        if (FUN_004700c0(bloke) != 0) {
+        CurrentBlokeLetter = bloke->field_81;
+        if (IsBlokeHovered(bloke) != 0) {
             // STRING: LEGOLAND 0x004b85a8
             DBPrintf("Processing your bloke\n");
         }
-        FUN_0044eb50(bloke);
+        UpdateBlokeTiredness(bloke);
         if ((bloke->flags & 0x20) != 0) {
-            if (bloke->field_e != 0) {
+            if (bloke->low_level_action != 0) {
                 DoLowLevelAI(bloke);
             }
         } else {
-            FUN_0044eae0(bloke);
+            UpdateBlokeTimeInPark(bloke);
             if ((++bloke->field_5c & 0xf) == 0) {
-                FUN_00482df0(bloke, 8, 1);
-                FUN_00450530(bloke);
+                ApplyMoodDelta(bloke, 8, 1);
+                UpdateBlokeMoodFromSurroundings(bloke);
             }
-            if (bloke->field_e == 0) {
+            if (bloke->low_level_action == 0) {
                 DoHighLevelAI(bloke);
             }
-            if (bloke->field_e != 0) {
+            if (bloke->low_level_action != 0) {
                 DoLowLevelAI(bloke);
             }
         }
     }
 }
 
+/* Called while the cursor hovers a visitor (screens.c help code): an idle visitor is stopped (flags |= 8, long-term
+ * action 14 = BlokeAIStopWhileHovered); for workers only field_54 is reset, which delays
+ * BlokeActionRandomWalkDelayed by 50 frames. */
 // FUNCTION: LEGOLAND 0x00450a40
-void FUN_00450a40(Bloke *bloke) {
+void PauseHoveredBloke(Bloke *bloke) {
     int state;
 
     if ((bloke->flags & 0x28) != 0) {
         return;
     }
-    state = bloke->person->field_8;
+    state = bloke->person->character;
     if (state < 2 || state > 3) {
         bloke->flags |= 0x8;
         NewLongTermAction(bloke, 14);
         return;
     }
-    bloke->field_54 = DAT_008119a4;
+    bloke->field_54 = FrameCounter;
 }
 
 // FUNCTION: LEGOLAND 0x00450a80
-void FUN_00450a80(void) {
+void SaveBuildObjList(void) {
     int i;
     int count;
-    union {
-        Element *element;
-        int index;
-    } handle;
+    union SavedElement handle;
     BuildObj record;
 
     count = 0;
     for (i = 0; i < 256; i++) {
-        if (DAT_006664f8[i].ride != NULL) {
+        if (BuildObjArray[i].ride != NULL) {
             count++;
         }
     }
     SaveGameWrite(&count, 4);
     for (i = 0; i < 256; i++) {
-        if (DAT_006664f8[i].ride != NULL) {
-            record = DAT_006664f8[i];
-            handle.element = DAT_006664f8[i].ride->element;
-            FindeIneList(&handle.element);
+        if (BuildObjArray[i].ride != NULL) {
+            record = BuildObjArray[i];
+            handle.element = BuildObjArray[i].ride->element;
+            FindeIneList(&handle);
             record.index = handle.index;
             SaveGameWrite(&record, sizeof(record));
         }
@@ -1391,17 +1414,17 @@ void FUN_00450a80(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00450b10
-void FUN_00450b10(void) {
+void LoadBuildObjArray(void) {
     int count;
     int i;
 
     count = 0;
     SaveGameRead(&count, 4);
     for (i = 0; i < count; i++) {
-        SaveGameRead(&DAT_006664f8[i], sizeof(BuildObj));
-        DAT_006664f8[i].ride = GeteListPtr(DAT_006664f8[i].index)->data;
+        SaveGameRead(&BuildObjArray[i], sizeof(BuildObj));
+        BuildObjArray[i].ride = GeteListPtr(BuildObjArray[i].index)->data;
     }
     for (; i < 256; i++) {
-        DAT_006664f8[i].ride = NULL;
+        BuildObjArray[i].ride = NULL;
     }
 }

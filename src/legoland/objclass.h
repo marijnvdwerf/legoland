@@ -2,71 +2,37 @@
 
 #include "legoland.h"
 
-struct ObjCountWrap;
-struct ObjectCount;
+struct Element;
+struct Ride;
 struct ObjInstance;
-struct EditObject;
 struct BestNode;
 struct Point;
 struct Bloke;
-struct ObjClassNames;
-struct ObjectInfo;
-struct ElemView;
 
-LEGO_EXPORT unsigned int LoadObjectClass(struct ElemView *cls);
+LEGO_EXPORT void *LoadObjectClass(struct Element *cls);
 
 typedef void (*RideCallback)();
 typedef int (*RideIntCallback)();
-typedef struct RideSpriteInfo *(*RidePtrCallback)();
-
-struct CallbackTable {
-    /* 0x00 */ unsigned char pad_0[0x88];
-    /* 0x88 */ struct LibraryNode *library;
-    /* 0x8c */ RideCallback cb_8c;
-    /* 0x90 */ RideCallback cb_90;
-    /* 0x94 */ RideCallback cb_94;
-    /* 0x98 */ RideCallback cb_98;
-    /* 0x9c */ RideCallback cb_9c;
-    /* 0xa0 */ RidePtrCallback cb_a0;
-    /* 0xa4 */ RideCallback cb_a4;
-    /* 0xa8 */ RideCallback cb_a8;
-    /* 0xac */ RideCallback cb_ac;
-    /* 0xb0 */ RideCallback cb_b0;
-    /* 0xb4 */ RideCallback cb_b4;
-    /* 0xb8 */ RideIntCallback cb_b8;
-    /* 0xbc */ RideIntCallback cb_bc;
-    /* 0xc0 */ RideIntCallback cb_c0;
-    /* 0xc4 */ void *context;
-};
-
-struct ClassNode {
-    /* 0x00 */ char *name;
-    /* 0x04 */ unsigned char pad_4[8];
-    /* 0x0c */ struct CallbackTable *iface;
-};
+typedef struct RideSpriteInfo *(*RidePtrCallback)(struct Element *element, unsigned short id);
 
 struct LibraryNode {
     /* 0x00 */ struct LibraryNode *next;
     /* 0x04 */ void *module;
     /* 0x08 */ int refcount;
-    /* 0x0c */ void (*init)(void *context, int *out);
+    /* 0x0c */ void (*init)(void *context, void **out);
 };
 
-LEGO_EXPORT void IncrementObjectCount(struct ObjectCount *count);
-LEGO_EXPORT void DecrementObjectCount(struct ObjectCount *count);
+LEGO_EXPORT void IncrementObjectCount(struct Ride *count);
+LEGO_EXPORT void DecrementObjectCount(struct Ride *count);
 LEGO_EXPORT unsigned int GetObjSalvageValue(struct Ride *ride, unsigned int level);
-LEGO_EXPORT struct ObjInstance *CreateObjectInstance(unsigned int param_1, unsigned short *param_2);
+LEGO_EXPORT struct ObjInstance *CreateObjectInstance(struct Ride *param_1, unsigned short *param_2);
 LEGO_EXPORT int GetObjCost(struct Ride *ride);
 LEGO_EXPORT int GetObjRepairCost(struct Ride *ride, unsigned int level);
-struct Point;
-LEGO_EXPORT void BasicObjectDCalcCursor(unsigned int param_1, struct Point *param_2);
+LEGO_EXPORT void BasicObjectDCalcCursor(struct Element *param_1, struct Point *param_2);
 LEGO_EXPORT void ClearObjectCounters(void);
-LEGO_EXPORT unsigned int ObjCount(struct ObjCountWrap *wrap);
+LEGO_EXPORT unsigned int ObjCount(struct Element *wrap);
 LEGO_EXPORT void FreeBlokeCounters(void);
 LEGO_EXPORT void ClearBlokeCounters(unsigned int index);
-struct Ride;
-struct Bloke;
-struct Point;
 LEGO_EXPORT void IncrementBlokeCounter(struct Ride *cls, unsigned int index);
 LEGO_EXPORT int GetBlokeCounter(struct Ride *cls, int index);
 LEGO_EXPORT void BuildObjInfoList(void);
@@ -77,25 +43,41 @@ LEGO_EXPORT void ResetBestPtr(void);
 LEGO_EXPORT int ShuffleObjKeys(struct Point *goal, struct Ride **ride);
 LEGO_EXPORT int Calc_Item_Attractiveness(struct Ride *item, struct Bloke *bloke, int param_3);
 LEGO_EXPORT void UnLoadObjectLibrary(void *library);
-LEGO_EXPORT void SetStandardCallbacks(struct CallbackTable *table);
+LEGO_EXPORT void SetStandardCallbacks(struct Ride *table);
 LEGO_EXPORT int LoadObjectLibrary(void *obj, const char *name);
-void FUN_00480aa0(struct ObjClassNames *names, struct ObjectInfo *info);
-void FUN_00481170(void);
-void *FUN_00481720(void);
-LEGO_EXPORT void SetEditObject(struct EditObject *obj);
-struct BestNode *FUN_00481730(void);
+void ApplyWaterWorksClassOverrides(struct Element *names, struct Ride *info);
+void ResetClassRideList(void);
+void *GetBestNodeList(void);
+LEGO_EXPORT void SetEditObject(struct Ride *obj);
+struct BestNode *AddBestNode(void);
+struct BestBox {
+    int x_min;
+    int y_min;
+    int x_max;
+    int y_max;
+    int field_18;
+};
 struct BestNode {
     struct BestNode *next;
     unsigned int pad_4;
-    unsigned int x_min;
-    unsigned int y_min;
-    unsigned int x_max;
-    unsigned int y_max;
-    unsigned int field_18;
+    union {
+        struct BestBox box;
+        struct {
+            unsigned int x_min;
+            unsigned int y_min;
+            unsigned int x_max;
+            unsigned int y_max;
+            unsigned int field_18;
+        };
+    };
     unsigned int field_1c;
     unsigned int field_20;
 };
+void RemoveBestNode(struct BestNode *node);
 typedef struct BestNode BestNode;
-struct BestNode *FUN_00481790(struct Point *pos);
-void FUN_00481b10(struct BestNode *node);
+struct BestNode *FindBestNodeAtPoint(struct Point *pos);
+void CollectAdjacentNodes(int *param_1);
+struct BestNode *FindBestNodeAtPixel(int *param_1);
+void MergeBestNode(struct BestNode *node);
 LEGO_EXPORT void AllocBlokeCounters(unsigned int size);
+LEGO_EXPORT void CreateObjectClasses(void);

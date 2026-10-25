@@ -1,6 +1,18 @@
 #pragma once
 
-struct Queue;
+struct QueueTable;
+struct QueueNode;
+
+struct Queue {
+    struct QueueTable *count;
+    struct QueueNode *head;
+    struct QueueNode *tail;
+};
+
+unsigned int CountQueueNodesBetween(struct QueueNode *start, struct QueueNode *stop);
+void SaveQueue(struct QueueNode *start, struct Queue *queue);
+struct QueueNode *GetNthNextQueueNode(struct QueueNode *node, int n);
+void LoadQueueNodes(struct QueueNode *start, struct Queue *queue);
 
 struct PathPair {
     /* 0x00 */ int a;
@@ -12,12 +24,12 @@ struct PathTable {
     /* 0x04 */ struct PathPair *pairs;
 };
 
-int FUN_00412100(struct PathTable *param_1);
+struct QueueTable *BuildQueueTable(struct PathTable *param_1);
 
 struct RideQueueEntry {
     /* 0x00 */ struct RideQueueEntry *next;
     /* 0x04 */ struct RideQueueEntry *field_4;
-    /* 0x08 */ unsigned short field_8;
+    /* 0x08 */ unsigned short id;
     /* 0x0a */ unsigned char pad_a[0x2];
     /* 0x0c */ int x;
     /* 0x10 */ int y;
@@ -25,11 +37,29 @@ struct RideQueueEntry {
     /* 0x15 */ unsigned char field_15;
     /* 0x16 */ unsigned char pad_16[0x2];
     /* 0x18 */ struct RideQueueEntry *field_18;
+    /* 0x1c */ unsigned char field_1c;
+    /* 0x1d */ unsigned char field_1d;
+    /* 0x1e */ unsigned char pad_1e[0x2];
 };
 
-void FUN_00411f00(struct Queue *queue);
-void FUN_00412290(void *param_1);
-void *FUN_004125f0(unsigned int a, unsigned int b);
-struct RideQueueEntry *FUN_004125a0(int x, int y);
-struct RideQueueEntry *FUN_00412650(unsigned short param_1);
-void FUN_00412680(int x, int y, int param_3, int param_4);
+unsigned int IsQueueFull(struct Queue *queue);
+unsigned int QueueHasNodes(struct Queue *queue);
+int IsQueueHeadAtFront(struct Queue *queue);
+void FreeAllQueueNodes(struct Queue *queue);
+void QueueUnlinkHead(struct Queue *queue);
+struct RideNode;
+void LeaveQueueHead(struct Queue *queue, struct RideNode **out);
+void StepQueueRiders(struct Queue *queue, unsigned int param_2, unsigned int param_3);
+void FreeIfNotNull(void *param_1);
+struct Bloke;
+void StartQueueTableBackward(struct QueueTable *param_1, struct Bloke *slot);
+void StartQueueTableForward(struct QueueTable *param_1, struct Bloke *slot);
+struct QueueTable *GetBlokeQueueTable(struct Bloke *slot);
+void MoveBlokeAlongQueueTable(struct QueueTable *table, int x, int y, struct Bloke *bloke);
+void *FindQueueEntryAtTile(unsigned int a, unsigned int b);
+struct RideQueueEntry *FindRoadEntryAt(int x, int y);
+struct RideQueueEntry *FindQueueEntryById(unsigned short param_1);
+void PlaceRoadTiles(int x, int y, int param_3, int param_4);
+void JoinQueue(struct Queue *queue, struct RideNode *mid);
+
+extern unsigned short RoadPieceTileTable[15][4];

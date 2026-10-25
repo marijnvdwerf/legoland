@@ -153,6 +153,11 @@ def build_def_index():
     return index
 
 
+# Compiler/CRT helpers that inline asm must declare to call but that no TU defines
+# (they come from libs/LIBC.LIB): not orphans.
+CRT_PROVIDED = {"_chkstk"}
+
+
 def classify_header(header_path, def_index):
     """Classify each prototype in a header.
 
@@ -164,6 +169,8 @@ def classify_header(header_path, def_index):
     ok, mislocated, orphan, no_tu = [], [], [], []
     for name, line, text in find_predecls(header_path):
         owner = def_index.get(name)
+        if owner is None and name in CRT_PROVIDED:
+            owner = stem  # defined by the CRT library, not by a TU
         if not has_tu:
             no_tu.append((name, line, text, owner))
         elif owner == stem:

@@ -20,6 +20,8 @@ cmake --build build --clean-first             # full rebuild (needed after heade
 ./tools/verify                                 # per-function + total match %
 ./tools/verify -v 0x004015c0                   # asm diff for one function
 uv run tools/progress.py                       # per-TU progress table
+uv run tools/progress.py --worst 30            # the 30 lowest-scoring functions
+uv run tools/asm2naked.py 0x00466d80 --apply   # transcribe a hand-written-asm function as naked __asm
 ```
 
 **Header changes require `--clean-first`** — the MSVC6 wrapper does not track header dependencies.
@@ -47,13 +49,37 @@ struct assignment, etc.).
 - One `.c` per TU (translation unit) under `src/legoland/`, named from `ghidra/functions.csv`'s `tu`
   column (`TU_RIDE_BLOKE` → `ride_bloke.c`). Functions appear in **address order**.
 - Every function is tagged `// FUNCTION: LEGOLAND 0x<addr>` immediately above it.
-- Unmatched functions have a `STUB();` body (macro in `legoland.h`). Remaining work: `grep -rn 'STUB()' src/`.
+- Unmatched functions have a `STUB();` body (macro in `legoland.h`). No game function is at `STUB()` any more:
+  the last ones (hand-written assembly) were decompiled on 2026-10-07, and all but one match.
+  `docs/remaining-work.md` lists what is left.
 - When you decompile a function: replace its `STUB()` body with real C, build, run reccmp, iterate to 100%.
+- **Before retrying a partial match, read its file in `docs/attempts/`** (what was tried, with scores) and don't
+  repeat a listed attempt; afterwards add your attempts there, failed ones included. `docs/attempts/README.md`
+  has the lessons that apply to most of them.
 - No `ctx.h` — include real MSVC6 headers; shared decls go in `src/legoland/legoland.h`.
 - **No forward declarations in `.c` files** — put all declarations in the TU's `.h` header.
   Run `uv run tools/needsdecl.py` to check.
-- **No `__declspec(naked)` or inline `__asm`** — achieve matches through pure C only.
-- **No `goto`** — use `for (;;) { ... break; }` if you need a forward jump pattern.
+- **Inline `__asm` and `__declspec(naked)` only where the original is hand-written assembly** — i.e. it
+  contains instructions MSVC6 never emits from C (`rdtsc`, `xchg`, `pusha`, `shrd`, `fistp` after `fstp/fld`, …;
+  see "Functions With an ebp Frame" in `docs/decomp-tips.md`). `uv run tools/progress.py <tu>` flags them.
+  Everything else stays pure C. First try C with `__asm` only for the parts C can't produce. If MSVC6's
+  register or stack-slot choices around the asm won't converge, transcribe the whole function as
+  `__declspec(naked)` (`tools/asm2naked.py` does it) and say so in the comment above `// FUNCTION:`. The port
+  replaces these functions with plain-C equivalents tagged `// [library:asm]`.
+- **No `__asm` for compiler choices.** When the original was compiled C, the function stays C even if a
+  register, stack-slot or instruction choice keeps it below 100%: write the best natural C and record the
+  attempts in `docs/attempts/`. (The 2026-10-17 rule that allowed documented naked transcriptions for these
+  was withdrawn on 2026-10-19; the 22 functions it produced went back to their C.)
+- **`goto` only with named labels** — cleanup/error paths like `goto fail;` are fine (the original code
+  used them, and they often match better than duplicated cleanup). That includes multi-label cleanup
+  ladders (`fail_release:` / `fail_free:` / `fail_close:`) when the original's failure paths enter one
+  shared cleanup tail at different steps. No Ghidra-style `goto LAB_00446b71;`: give the label a
+  meaningful name or restructure with `if`/loops.
+- **`volatile` is allowed when it is the only way** to get a load or store the original does (a field
+  re-read from memory at each use, a store that must stay in place). Try the natural forms first (reading
+  the field at each use, statement order, struct copies), and put a short comment on it, e.g.
+  `/* volatile: the original re-reads this */`. It is a matching device, not a claim about the original
+  source. Permuter temporaries (`ptmp45`) get a meaningful name when you touch them.
 - **Run `clang-format -i`** on all modified `.c`/`.h` files before committing.
 - **Retype globals** when casts can be removed. If a global is always cast to `struct Foo *`,
   change its type in `globals.h`/`globals.c`. Consecutive globals that form a struct

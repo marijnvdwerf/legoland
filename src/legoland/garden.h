@@ -2,4 +2,7 @@
 
 #include "legoland.h"
 
-void FUN_004329c0();
+#include "objclass.h"
+
+struct Ride;
+void GardenGetInterfaces(struct Element *head, struct Ride *iface);

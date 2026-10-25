@@ -1,9 +1,30 @@
 #pragma once
 
-struct CallbackTable;
-struct ClassNode;
+struct PlaneRideNode {
+    unsigned char b0;
+    unsigned char b1;
+    unsigned char b2;
+    unsigned char b3;
+    char b4;
+    char b5;
+    unsigned char pad_6[2];
+    unsigned int flags;
+    char b12;
+    unsigned char pad_d[3];
+    unsigned int f10;
+    unsigned char b14;
+    unsigned char pad_15[3];
+    int f18;
+    signed char slots[4];
+    struct PlaneRideNode *next;
+};
 
-void FUN_0043d9f0(void *param_1);
-void FUN_0043e410(void);
+struct Element;
 
-void FUN_0043e220(struct ClassNode *name, struct CallbackTable *iface);
+struct PlaneRideNode;
+void ResetPlaneRide(struct PlaneRideNode *node);
+void StartPlaneRide(struct PlaneRideNode *node);
+void PlaneRideUpdate(struct Element *elem);
+
+struct Ride;
+void PlaneRide_GetInterfaces(struct Element *name, struct Ride *iface);

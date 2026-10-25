@@ -5,32 +5,10 @@
 #include "bloke_ai.h"
 #include "gamemap.h"
 #include "globals.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "obj_instance.h"
 #include "potting_shed.h"
-
-struct PSCarInner {
-    unsigned char pad_0[0x10];
-    unsigned int field_10;
-};
-
-struct PSCarSub {
-    unsigned char pad_0[0x14];
-    unsigned int field_14;
-    unsigned int field_18;
-    unsigned char pad_1c[0x48];
-    struct PSCarInner *field_64;
-};
-
-struct PSCarLayer {
-    unsigned char pad_0[0xc];
-    struct PSCarSub *field_c;
-};
-
-struct EditTarget {
-    unsigned char pad_0[0x3c];
-    unsigned char field_3c;
-};
 
 #include "image_sprite.h"
 #include "mechanics_hut.h"
@@ -39,28 +17,28 @@ struct EditTarget {
 #include "worker.h"
 
 // FUNCTION: LEGOLAND 0x0043ce60
-void FUN_0043ce60(Element *obj) {
-    DAT_0081caf0 = obj->ride;
-    DAT_0081caf0->flags |= 0x420;
-    DAT_0062fe48 = DAT_0081caf0->layer;
-    DAT_0081caf0->flags |= 0x2000;
+void LoadGShedMatteSprite(Element *obj) {
+    PottingShedRide = obj->ride;
+    PottingShedRide->flags |= 0x420;
+    PottingShedLayer = PottingShedRide->layer;
+    PottingShedRide->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b7994
-    DAT_0062fe4c = LoadSprite("gshedmatte.lls", 1);
+    GShedMatteSprite = LoadSprite("gshedmatte.lls", 1);
 }
 
 // FUNCTION: LEGOLAND 0x0043ceb0
-unsigned int FUN_0043ceb0(unsigned int param_1, unsigned int param_2) {
+unsigned int PottingShedAddObject(struct Element *param_1, int *param_2) {
     return AddBasicObject(param_1, param_2);
 }
 
 // FUNCTION: LEGOLAND 0x0043ced0
-void FUN_0043ced0(Element *obj, unsigned int tile, struct Cursor *cursor) {
-    StandardRemoveObject((Element *)obj, *(TileId *)&tile, cursor);
-    FUN_0043d7c0(obj->ride, tile, 1);
+void PottingShedRemoveObject(Element *obj, unsigned int tile, struct Cursor *cursor) {
+    StandardRemoveObject(obj, *(TileId *)&tile, cursor);
+    DetachWorkersFromRemovedHome(obj->ride, tile, 1);
 }
 
 // FUNCTION: LEGOLAND 0x0043cf00
-void FUN_0043cf00(Element *obj) {
+void PottingShedUpdate(Element *obj) {
     struct Ride *shed = obj->ride;
     struct RideNode *node;
     struct RideNode *next;
@@ -70,7 +48,7 @@ void FUN_0043cf00(Element *obj) {
     for (node = shed->riders; node != NULL; node = next) {
         bloke = node->rider;
         next = node->next;
-        if (bloke->field_e != 0) {
+        if (bloke->low_level_action != 0) {
             continue;
         }
         switch (bloke->param_action) {
@@ -78,8 +56,8 @@ void FUN_0043cf00(Element *obj) {
             bloke->flags |= 8;
             bloke->dest.x += 0x900;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_73 = dir + 0x10;
-            bloke->field_e = 7;
+            bloke->target_dir = dir + 0x10;
+            bloke->low_level_action = 7;
             NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
@@ -93,8 +71,8 @@ void FUN_0043cf00(Element *obj) {
             bloke->flags |= 8;
             bloke->dest.x -= 0x900;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_73 = dir + 0x10;
-            bloke->field_e = 7;
+            bloke->target_dir = dir + 0x10;
+            bloke->low_level_action = 7;
             NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
@@ -108,7 +86,7 @@ void FUN_0043cf00(Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0043d0b0
-void FUN_0043d0b0(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile) {
+void RenderPottingShed(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile) {
     struct Ride *shed = obj->ride;
     struct RideNode *node = shed->riders;
     struct Bloke *blokes[30] = {0};
@@ -145,36 +123,36 @@ void FUN_0043d0b0(Element *obj, unsigned int param_2, unsigned int param_3, unsi
             IP_RenderBlokeIn3DNow(blokes[i]);
         }
     }
-    pos = GetScreenCoordsForObject((unsigned char *)tile, shed);
-    PrintSprite(DAT_0062fe4c, pos.x, pos.y, 0, 0);
+    pos = GetScreenCoordsForObject((TileId *)tile, shed);
+    PrintSprite(GShedMatteSprite, pos.x, pos.y, 0, 0);
 }
 
 // FUNCTION: LEGOLAND 0x0043d1c0
-void FUN_0043d1c0(void) {
-    KillSprite(DAT_0062fe4c);
+void KillGShedMatteSprite(void) {
+    KillSprite(GShedMatteSprite);
 }
 
 // FUNCTION: LEGOLAND 0x0043d1d0
-void FUN_0043d1d0(void) {
-    void *p = DAT_0081caf0;
+void PottingShedSetEditMode(void) {
+    void *p = PottingShedRide;
     EditMode.unk0 = 1;
     EditMode.unk8 = p;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(&((struct EditTarget *)EditMode.unk8)->field_3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x0043d210
-struct RideSpriteInfo *FUN_0043d210(struct PSCarLayer *param1, unsigned short param2) {
-    struct PSCarSub *s2 = param1->field_c;
-    struct PSCarInner *s3;
+struct RideSpriteInfo *GetPottingShedSpriteInfo(struct Element *param1, unsigned short param2) {
+    struct Ride *s2 = param1->ride;
+    struct Sprite *s3;
 
-    DAT_0062fe10.sprite = s2->field_64;
-    DAT_0062fe10.x = s2->field_14;
-    DAT_0062fe10.y = s2->field_18;
-    DAT_0062fe10.id = param2;
+    PottingShedSpriteInfo.sprite = s2->layer;
+    PottingShedSpriteInfo.x = s2->field_14;
+    PottingShedSpriteInfo.y = s2->field_18;
+    PottingShedSpriteInfo.id = param2;
 
-    s3 = s2->field_64;
-    s3->field_10 |= 0x2000;
+    s3 = s2->layer;
+    s3->flags |= 0x2000;
 
-    return &DAT_0062fe10;
+    return &PottingShedSpriteInfo;
 }

@@ -29,35 +29,25 @@ struct ResFile {
     int position;
 };
 
-struct ResVolumeEntry {
-    unsigned char pad_0[8];
-    unsigned char name[1];
-};
-
 struct MasterDirNode {
     struct MasterDirNode *next;
-    unsigned int pad_4;
+    struct ResVolEntry *entries; /* the directory's first entry (through next_dir) */
     char *name;
 };
 
 struct MasterVolNode {
     struct MasterVolNode *next;
-    unsigned int pad_4;
+    struct ResVolEntry *entries; /* the volume's first entry */
     char name[1];
 };
 
 struct ResVolEntry;
 
-struct ResDirNode {
-    unsigned char pad_0[8];
-    char *name;
-};
-
 struct ResVolEntry {
     struct ResVolEntry *next_all;
     struct ResVolEntry *next_dir;
     struct ResVolEntry *next;
-    struct ResDirNode *dir;
+    struct MasterDirNode *dir;
     struct ResVolume *volume;
     int size;
     int base;
@@ -73,36 +63,26 @@ struct ResDirRecord {
     char name[1];
 };
 
-struct ResDirEntry {
-    unsigned char pad_0[4];
-    struct ResDirEntry *next;
-    unsigned char pad_8[8];
-    struct ResVolume *volume;
-    int size;
-    int base;
-    char *name;
-};
-
 // FUNCTION: LEGOLAND 0x00489440
-struct MasterDirNode *FUN_00489440(char *name) {
+struct MasterDirNode *FindOrAddMasterDir(char *name) {
     struct MasterDirNode *node;
     struct MasterDirNode *new_node;
     char *copy;
 
-    for (node = DAT_00798624; node != 0; node = node->next) {
+    for (node = MasterDirList; node != 0; node = node->next) {
         if (_stricmp(name, node->name) == 0) {
             return node;
         }
     }
 
-    new_node = (struct MasterDirNode *)malloc(0xc);
+    new_node = (struct MasterDirNode *)malloc(sizeof(struct MasterDirNode));
     copy = (char *)malloc(strlen(name) + 1);
     new_node->name = copy;
     strcpy(copy, name);
 
-    new_node->next = DAT_00798624;
-    new_node->pad_4 = 0;
-    DAT_00798624 = new_node;
+    new_node->next = MasterDirList;
+    new_node->entries = 0;
+    MasterDirList = new_node;
     return new_node;
 }
 
@@ -110,7 +90,7 @@ struct MasterDirNode *FUN_00489440(char *name) {
 LEGO_EXPORT struct MasterDirNode *GetMasterDirPtr(const char *name) {
     struct MasterDirNode *node;
 
-    for (node = DAT_00798624; node != 0; node = node->next) {
+    for (node = MasterDirList; node != 0; node = node->next) {
         if (_stricmp(name, node->name) == 0) {
             return node;
         }
@@ -122,7 +102,7 @@ LEGO_EXPORT struct MasterDirNode *GetMasterDirPtr(const char *name) {
 LEGO_EXPORT struct MasterVolNode *GetMasterVolPtr(const char *name) {
     struct MasterVolNode *node;
 
-    for (node = DAT_00798628; node != 0; node = node->next) {
+    for (node = MasterVolList; node != 0; node = node->next) {
         if (_stricmp(name, node->name) == 0) {
             return node;
         }
@@ -131,13 +111,13 @@ LEGO_EXPORT struct MasterVolNode *GetMasterVolPtr(const char *name) {
 }
 
 // FUNCTION: LEGOLAND 0x00489550
-struct ResDirNode *FUN_00489550(const char *vol_name, const char *file_name, struct ResVolEntry **out_entry) {
+struct MasterDirNode *FindVolumeDirEntry(const char *vol_name, const char *file_name, struct ResVolEntry **out_entry) {
     struct MasterVolNode *master;
     struct ResVolEntry *entry;
 
     master = GetMasterVolPtr(vol_name);
     if (master != 0) {
-        for (entry = (struct ResVolEntry *)master->pad_4; entry != 0; entry = entry->next) {
+        for (entry = (struct ResVolEntry *)master->entries; entry != 0; entry = entry->next) {
             if (_stricmp(file_name, entry->dir->name) == 0) {
                 *out_entry = entry;
                 return entry->dir;
@@ -147,34 +127,36 @@ struct ResDirNode *FUN_00489550(const char *vol_name, const char *file_name, str
     return 0;
 }
 
+/* Recursively resolves sibling and child offsets in a resource-volume directory and registers its files in the
+ * master-directory and volume lists. */
 // FUNCTION: LEGOLAND 0x004895a0
-void FUN_004895a0(struct ResDirRecord *node, struct ResVolume *volume, struct ResDirRecord *base, char *path) {
+void RegisterResourceDirectoryTree(struct ResDirRecord *node, struct ResVolume *volume, struct ResDirRecord *base, char *path) {
     char buffer[0x104];
     struct MasterDirNode *master;
     struct ResVolEntry *entry;
 
     strcpy(buffer, path);
-    master = FUN_00489440(buffer);
+    master = FindOrAddMasterDir(buffer);
 
     if (node->is_dir == 0) {
-        entry = (struct ResVolEntry *)malloc(0x20);
-        entry->next_all = (struct ResVolEntry *)DAT_0079862c;
-        DAT_0079862c = entry;
-        entry->next_dir = (struct ResVolEntry *)master->pad_4;
-        master->pad_4 = (unsigned int)entry;
+        entry = (struct ResVolEntry *)malloc(sizeof(struct ResVolEntry));
+        entry->next_all = (struct ResVolEntry *)AllResVolEntries;
+        AllResVolEntries = entry;
+        entry->next_dir = (struct ResVolEntry *)master->entries;
+        master->entries = entry;
         entry->next = volume->dir;
         volume->dir = entry;
         entry->size = node->size;
         entry->base = node->base;
         entry->name = (char *)malloc(strlen(node->name) + 1);
         strcpy(entry->name, node->name);
-        entry->dir = (struct ResDirNode *)master;
+        entry->dir = (struct MasterDirNode *)master;
         entry->volume = volume;
     }
 
     if (node->sibling != -1) {
         node->sibling += (int)base;
-        FUN_004895a0((struct ResDirRecord *)node->sibling, volume, base, buffer);
+        RegisterResourceDirectoryTree((struct ResDirRecord *)node->sibling, volume, base, buffer);
     }
 
     if (node->child != -1) {
@@ -182,7 +164,7 @@ void FUN_004895a0(struct ResDirRecord *node, struct ResVolume *volume, struct Re
         // STRING: LEGOLAND 0x004bdd7c
         strcat(buffer, "\\");
         node->child += (int)base;
-        FUN_004895a0((struct ResDirRecord *)node->child, volume, base, buffer);
+        RegisterResourceDirectoryTree((struct ResDirRecord *)node->child, volume, base, buffer);
     }
 }
 
@@ -191,6 +173,11 @@ LEGO_EXPORT unsigned int RES_GetResourcePath(void) {
     return 0;
 }
 
+// RES_OpenVolume: opens the resource volume <path's file name>.res, from .\volumes\ first and then from the CD.
+// The volume's name is the file name upper-cased (20 chars, zero padded); if a volume with that name is already
+// open it is returned instead. A volume file starts with the offset of its directory, which runs to the end of the
+// file; the directory is read and turned into entries (RegisterResourceDirectoryTree), and the volume goes to the front of
+// MasterVolList with one reference. Returns NULL (and frees everything) if the file can't be opened or read.
 // FUNCTION: LEGOLAND 0x00489750
 LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) {
     char fname[0x100];
@@ -199,18 +186,20 @@ LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) {
     struct ResVolume *cur;
     unsigned int file_size;
     unsigned int dir_offset;
-    unsigned int bytes_read;
+    DWORD bytes_read;
     void *dir_data;
-    int name_len;
     int i;
+    int name_len;
 
-    volume = (struct ResVolume *)malloc(0x28);
-    cur = DAT_00798628;
+    HANDLE handle;
+    HANDLE close_handle;
+    volume = (struct ResVolume *)malloc(sizeof(struct ResVolume));
+    cur = MasterVolList;
 
     _splitpath(path, 0, 0, fname, 0);
     // STRING: LEGOLAND 0x004bde74
-    FUN_0047f870("Attempting to open Resource %s", fname);
-    FUN_0047f850();
+    DebugTrace("Attempting to open Resource %s", fname);
+    Empty_0047f850();
 
     name_len = strlen(fname);
     for (i = 0; i < 0x14; i++) {
@@ -225,7 +214,7 @@ LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) {
         if (_stricmp(cur->name, volume->name) == 0) {
             free(volume);
             // STRING: LEGOLAND 0x004bddc8
-            FUN_0047f870("Volume Already open");
+            DebugTrace("Volume Already open");
             return cur;
         }
         cur = cur->next;
@@ -234,37 +223,39 @@ LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) {
     // STRING: LEGOLAND 0x004bde60
     sprintf(res_path, ".\\volumes\\%s.res", fname);
     // STRING: LEGOLAND 0x004bde48
-    FUN_0047f870("Trying to open from %s", res_path);
-    FUN_0047f850();
+    DebugTrace("Trying to open from %s", res_path);
+    Empty_0047f850();
 
     volume->handle = CreateFileA(res_path, 0x80000000, 1, 0, 3, 0x8000000, 0);
-    if (volume->handle == INVALID_HANDLE_VALUE) {
+    if (INVALID_HANDLE_VALUE == volume->handle) {
         // STRING: LEGOLAND 0x004bde3c
-        sprintf(res_path, "%s%s.res", DAT_00813b04, fname);
-        FUN_0047f870("Trying to open from %s", res_path);
-        FUN_0047f850();
+        sprintf(res_path, "%s%s.res", CdDrivePath, fname);
+        DebugTrace("Trying to open from %s", res_path);
+        Empty_0047f850();
         volume->handle = CreateFileA(res_path, 0x80000000, 1, 0, 3, 0x8000000, 0);
     }
 
-    if (volume->handle == INVALID_HANDLE_VALUE) {
+    if (INVALID_HANDLE_VALUE == volume->handle) {
         free(volume);
         return 0;
     }
 
     // STRING: LEGOLAND 0x004bde28
-    FUN_0047f870("Openned resource %s", res_path);
+    DebugTrace("Openned resource %s", res_path);
 
     file_size = GetFileSize(volume->handle, 0);
     SetFilePointer(volume->handle, 0, 0, 0);
-    ReadFile(volume->handle, &dir_offset, 4, &bytes_read, 0);
+    handle = volume->handle;
+    ReadFile(handle, &dir_offset, 4, &bytes_read, 0);
     // STRING: LEGOLAND 0x004bde04
-    FUN_0047f870("FileSize = %x, Directory is at %x", file_size, dir_offset);
+    DebugTrace("FileSize = %x, Directory is at %x", file_size, dir_offset);
 
     dir_data = malloc(file_size - dir_offset);
     if (dir_data == 0) {
+        close_handle = volume->handle;
         // STRING: LEGOLAND 0x004bdddc
-        FUN_0047f870("Failed to allocate space for directory");
-        CloseHandle(volume->handle);
+        DebugTrace("Failed to allocate space for directory");
+        CloseHandle(close_handle);
         free(volume);
         return 0;
     }
@@ -273,7 +264,7 @@ LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) {
     ReadFile(volume->handle, dir_data, file_size - dir_offset, &bytes_read, 0);
     if (bytes_read != file_size - dir_offset) {
         // STRING: LEGOLAND 0x004bdd94
-        FUN_0047f870("Failed to load directory fully (%x of %x loaded)", bytes_read, file_size - dir_offset);
+        DebugTrace("Failed to load directory fully (%x of %x loaded)", bytes_read, file_size - dir_offset);
         free(dir_data);
         CloseHandle(volume->handle);
         free(volume);
@@ -281,13 +272,13 @@ LEGO_EXPORT struct ResVolume *RES_OpenVolume(const char *path) {
     }
 
     // STRING: LEGOLAND 0x004bdd80
-    FUN_0047f870("Directory read OK");
+    DebugTrace("Directory read OK");
     volume->dir = 0;
-    FUN_004895a0(dir_data, volume, dir_data, DAT_004d8bb0);
+    RegisterResourceDirectoryTree(dir_data, volume, dir_data, EmptyString);
     free(dir_data);
 
-    volume->next = DAT_00798628;
-    DAT_00798628 = volume;
+    volume->next = MasterVolList;
+    MasterVolList = volume;
     volume->refcount = 1;
     volume->current = 0;
     return volume;
@@ -298,7 +289,7 @@ LEGO_EXPORT struct ResFile *RES_OpenFileFromVolume(const char *path, const char 
     char prefix[0x104];
     char path_copy[0x104];
     struct ResVolEntry *entry;
-    struct ResDirNode *dir;
+    struct MasterDirNode *dir;
     struct ResFile *file;
     char *last_bs;
     char *scan;
@@ -308,10 +299,11 @@ LEGO_EXPORT struct ResFile *RES_OpenFileFromVolume(const char *path, const char 
     last_bs = 0;
     prefix[0] = '\0';
     memset(prefix + 1, 0, sizeof(prefix) - 1);
-    strcpy(path_copy, path);
     src = path_copy;
+    scan = path_copy;
+    strcpy(src, path);
 
-    for (scan = path_copy; scan != 0; scan++) {
+    for (; scan != 0; scan++) {
         if (*scan == '\0') {
             break;
         }
@@ -320,25 +312,20 @@ LEGO_EXPORT struct ResFile *RES_OpenFileFromVolume(const char *path, const char 
         }
     }
 
-    if (last_bs == 0) {
-        last_bs = path_copy;
-    } else {
+    if (last_bs != 0) {
         prefix_len = (int)(last_bs - path_copy) + 1;
-        if (path_copy[0] == '.') {
-            while (src[1] == '\\') {
-                src += 2;
-                prefix_len -= 2;
-                if (src[0] != '.') {
-                    break;
-                }
-            }
+        while (*src == '.' && src[1] == '\\') {
+            src += 2;
+            prefix_len -= 2;
         }
         memcpy(prefix, src, prefix_len);
         prefix[prefix_len] = '\0';
         last_bs++;
+    } else {
+        last_bs = path_copy;
     }
 
-    dir = FUN_00489550(vol_name, prefix, &entry);
+    dir = FindVolumeDirEntry(vol_name, prefix, &entry);
     if (dir == 0) {
         return 0;
     }
@@ -346,11 +333,11 @@ LEGO_EXPORT struct ResFile *RES_OpenFileFromVolume(const char *path, const char 
     while (entry != 0) {
         if (entry->dir == dir) {
             if (_stricmp(entry->name, last_bs) == 0) {
-                file = (struct ResFile *)malloc(0x10);
+                file = (struct ResFile *)malloc(sizeof(struct ResFile));
                 file->size = entry->size;
                 file->base = entry->base;
                 file->volume = entry->volume;
-                entry->volume->refcount++;
+                file->volume->refcount++;
                 file->position = 0;
                 return file;
             }
@@ -365,7 +352,7 @@ LEGO_EXPORT struct ResFile *RES_OpenFile(const char *path) {
     char base_name[0x104];
     char orig_str[0x104];
     struct MasterDirNode *dir;
-    struct ResDirEntry *entry;
+    struct ResVolEntry *entry;
     struct ResFile *file;
     char *scan;
     char *last_slash;
@@ -375,17 +362,17 @@ LEGO_EXPORT struct ResFile *RES_OpenFile(const char *path) {
 
     base_name[0] = '\0';
     memset(base_name + 1, 0, sizeof(base_name) - 1);
-    orig_str[0] = '\0';
+    last_slash = 0;
+    prefix = orig_str;
+    scan = orig_str;
 
-    if (FUN_004515e0(0) == 0) {
+    if (WaitForLegolandCd(0) == 0) {
         exit(1);
     }
 
     strcpy(orig_str, path);
 
-    last_slash = 0;
-    prefix = orig_str;
-    for (scan = orig_str; scan != 0; scan++) {
+    for (; scan != 0; scan++) {
         if (*scan == '\0') {
             break;
         }
@@ -398,22 +385,17 @@ LEGO_EXPORT struct ResFile *RES_OpenFile(const char *path) {
         }
     }
 
-    if (last_slash == 0) {
-        file_name = orig_str;
-    } else {
+    if (last_slash != 0) {
         prefix_len = (int)(last_slash - orig_str) + 1;
-        if (orig_str[0] == '.') {
-            while (prefix[1] == '\\') {
-                prefix += 2;
-                prefix_len -= 2;
-                if (prefix[0] != '.') {
-                    break;
-                }
-            }
+        while (*prefix == '.' && prefix[1] == '\\') {
+            prefix += 2;
+            prefix_len -= 2;
         }
         memcpy(base_name, prefix, prefix_len);
         base_name[prefix_len] = '\0';
         file_name = last_slash + 1;
+    } else {
+        file_name = orig_str;
     }
 
     dir = GetMasterDirPtr(base_name);
@@ -421,13 +403,13 @@ LEGO_EXPORT struct ResFile *RES_OpenFile(const char *path) {
         return 0;
     }
 
-    for (entry = (struct ResDirEntry *)dir->pad_4; entry != 0; entry = entry->next) {
+    for (entry = (struct ResVolEntry *)dir->entries; entry != 0; entry = entry->next_dir) {
         if (_stricmp(entry->name, file_name) == 0) {
-            file = (struct ResFile *)malloc(0x10);
+            file = (struct ResFile *)malloc(sizeof(struct ResFile));
             file->size = entry->size;
             file->base = entry->base;
             file->volume = entry->volume;
-            entry->volume->refcount++;
+            file->volume->refcount++;
             file->position = 0;
             return file;
         }
@@ -446,7 +428,7 @@ LEGO_EXPORT unsigned int RES_GetFileSize(struct ResFile *file) {
 // FUNCTION: LEGOLAND 0x00489cf0
 LEGO_EXPORT int RES_ReadFile(struct ResFile *file, void *buffer, int count) {
     int remaining;
-    int bytes_read;
+    DWORD bytes_read;
     struct ResVolume *volume;
 
     if (file == 0) {
@@ -526,7 +508,7 @@ LEGO_EXPORT int RES_CloseFile(struct ResFile *file) {
 }
 
 // FUNCTION: LEGOLAND 0x00489e10
-LEGO_EXPORT struct ResFile *RES_OpenFileFromVolumePtr(void *param_1, struct ResVolumeEntry *entry) {
+LEGO_EXPORT struct ResFile *RES_OpenFileFromVolumePtr(void *param_1, struct MasterVolNode *entry) {
     if (entry == 0) {
         return 0;
     }

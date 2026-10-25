@@ -22,22 +22,21 @@ struct InstanceList {
 };
 
 // FUNCTION: LEGOLAND 0x00489e60
-char *FUN_00489e60(struct ResFile *file, char *dest, int maxlen) {
-    int error;
-    int count;
+char *ReadResFileLine(struct ResFile *file, char *dest, int maxlen) {
+    int error = 0;
+    int count = 0;
     char c;
-    char *out;
-
-    error = 0;
-    count = 0;
-    out = dest;
-    for (;;) {
+    char *out = dest;
+    while (1) {
         if (RES_ReadFile(file, &c, 1) == 0) {
             error = 1;
             break;
         }
-        if (c == '\r' || c == '\n') {
+        if (c == '\r') {
             break;
+        }
+        if (c == '\n') {
+            goto done;
         }
         *out++ = c;
         count++;
@@ -48,6 +47,7 @@ char *FUN_00489e60(struct ResFile *file, char *dest, int maxlen) {
     if (c == '\r') {
         RES_ReadFile(file, &c, 1);
     }
+done:
     *out = '\0';
     if (error && count == 0) {
         return 0;
@@ -56,24 +56,24 @@ char *FUN_00489e60(struct ResFile *file, char *dest, int maxlen) {
 }
 
 // FUNCTION: LEGOLAND 0x00489ee0
-void FUN_00489ee0(void) {
+void ClearObjInstanceTable(void) {
     struct ObjTableEntry *entry;
 
-    for (entry = DAT_007cb3e0; (int)entry < (int)&DAT_007cb5e0; entry++) {
+    for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&ColorGreenBits; entry++) {
         entry->key = 0xffff;
     }
 }
 
 // FUNCTION: LEGOLAND 0x00489f00
-int FUN_00489f00(const struct Point *pos) {
+int AddObjInstance(const struct Point *pos) {
     int index;
     struct ObjTableEntry *entry;
 
     index = 0;
-    for (entry = DAT_007cb3e0; (int)entry < (int)&DAT_007cb5e0; entry++) {
+    for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&ColorGreenBits; entry++) {
         if (entry->key == 0xffff) {
-            DAT_007cb3e0[index].key = (pos->x << 8) + pos->y;
-            DAT_007cb3e2[index].key = 0;
+            ObjInstanceTable[index].key = (pos->x << 8) + pos->y;
+            ObjInstanceTableCounts[index].key = 0;
             return 1;
         }
         index++;
@@ -82,16 +82,16 @@ int FUN_00489f00(const struct Point *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x00489f50
-int FUN_00489f50(const struct Point *pos) {
+int RemoveObjInstance(const struct Point *pos) {
     int index;
     unsigned short target;
     struct ObjTableEntry *entry;
 
     index = 0;
     target = (pos->x << 8) + pos->y;
-    for (entry = DAT_007cb3e0; (int)entry < (int)&DAT_007cb5e0; entry++) {
+    for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&ColorGreenBits; entry++) {
         if (entry->key == target) {
-            DAT_007cb3e0[index].key = 0xffff;
+            ObjInstanceTable[index].key = 0xffff;
             return 1;
         }
         index++;
@@ -100,16 +100,16 @@ int FUN_00489f50(const struct Point *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x00489f90
-int FUN_00489f90(const struct Point *pos) {
+int IncObjInstanceCount(const struct Point *pos) {
     int index;
     unsigned short target;
     struct ObjTableEntry *entry;
 
     index = 0;
     target = (pos->x << 8) + pos->y;
-    for (entry = DAT_007cb3e0; (int)entry < (int)&DAT_007cb5e0; entry++) {
+    for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&ColorGreenBits; entry++) {
         if (entry->key == target) {
-            DAT_007cb3e2[index].key++;
+            ObjInstanceTableCounts[index].key++;
             return 1;
         }
         index++;
@@ -118,16 +118,16 @@ int FUN_00489f90(const struct Point *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x00489fd0
-unsigned short FUN_00489fd0(const struct Point *pos) {
+unsigned short GetObjInstanceCount(const struct Point *pos) {
     int index;
     unsigned short target;
     struct ObjTableEntry *entry;
 
     index = 0;
     target = (pos->x << 8) + pos->y;
-    for (entry = DAT_007cb3e0; (int)entry < (int)&DAT_007cb5e0; entry++) {
+    for (entry = ObjInstanceTable; (INT_PTR)entry < (INT_PTR)&ColorGreenBits; entry++) {
         if (entry->key == target) {
-            return DAT_007cb3e2[index].key;
+            return ObjInstanceTableCounts[index].key;
         }
         index++;
     }
@@ -151,7 +151,7 @@ LEGO_EXPORT void AddInstanceToList(struct InstanceNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x0048a040
-void FUN_0048a040(void) {
+void FreeAllObjectClassInstances(void) {
     struct Ride *node;
 
     for (node = ObjectClassList; node != 0; node = node->next) {
@@ -202,7 +202,7 @@ LEGO_EXPORT struct ObjInstance *GetInstanceOfClass(struct Ride *ride, const Tile
 }
 
 // FUNCTION: LEGOLAND 0x0048a0f0
-LEGO_EXPORT void HandleRideAI(int arg_1, int arg_2, int arg_3) {}
+LEGO_EXPORT void HandleRideAI(void) {}
 
 // FUNCTION: LEGOLAND 0x0048a100
 LEGO_EXPORT void RemoveBlokeFromRide(struct Ride *ride, struct RideNode *node) {
@@ -213,7 +213,7 @@ LEGO_EXPORT void RemoveBlokeFromRide(struct Ride *ride, struct RideNode *node) {
 
     bloke = node->rider;
     RemoveBlokeFromList(ride, node);
-    if (FUN_0044f3d0(ride, &node->tile) == 0) {
+    if (CountRidersAtTile(ride, &node->tile) == 0) {
         int x = node->tile.pos.x;
         int y = node->tile.pos.y;
         if (x >= 0 && x < lpConfig->width && y >= 0 && y < lpConfig->height) {
@@ -229,23 +229,23 @@ LEGO_EXPORT void RemoveBlokeFromRide(struct Ride *ride, struct RideNode *node) {
         if (IsFavouriteFood(bloke, ride->element)) {
             counter = GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
             code = CalculateRideCode(bloke->field_7e, bloke->target->data, counter);
-            FUN_00482df0(bloke, 9, code);
+            ApplyMoodDelta(bloke, 9, code);
             bloke->field_7c = 0;
         } else {
             counter = GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
             code = CalculateRideCode(bloke->field_7e, bloke->target->data, counter);
-            FUN_00482df0(bloke, 10, code);
+            ApplyMoodDelta(bloke, 10, code);
             bloke->field_7c = 0;
         }
     } else {
         if (IsFavouriteAttraction(bloke, ride->element)) {
             counter = GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
             code = CalculateRideCode(bloke->field_7e, bloke->target->data, counter);
-            FUN_00482df0(bloke, 0xb, code);
+            ApplyMoodDelta(bloke, 0xb, code);
         } else {
             counter = GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
             code = CalculateRideCode(bloke->field_7e, bloke->target->data, counter);
-            FUN_00482df0(bloke, 0xc, code);
+            ApplyMoodDelta(bloke, 0xc, code);
         }
     }
     counter = GetBlokeCounter(bloke->target->data, GetBlokeNum(bloke));
@@ -278,11 +278,11 @@ LEGO_EXPORT void RemoveAllBlokesFromRide(struct Ride *ride, TileId tile) {
             bloke->person->sprite = NULL;
             bloke->pos.x = tx * 0x100;
             bloke->pos.y = ty * 0x100;
-            bloke->field_70 = 0;
+            bloke->height = 0;
             RemoveBlokeFromRide(ride, node);
             BlokeWalkAnim(bloke);
             bloke->flags &= 0xff7f;
-            source.field_4 = bloke;
+            source.bloke = bloke;
             KillAllSamplesFromSource(&source);
         }
     }
@@ -306,23 +306,48 @@ LEGO_EXPORT int GetAllBlokesOffRide(struct Ride *ride, unsigned short uid) {
     return 1;
 }
 
+// Finds the TileId of `ride` at map position `pos` (in 1/256 tiles): checks the tiles above, below,
+// left and right of it for an object tile (flag 0x80) of this ride whose anchor (ride origin plus
+// the tile's field_4/field_5 offset) is the tile itself, and returns that tile's anchor id; 0 if
+// none. As in the original, the tile below is only checked when the tile above exists, and it is
+// never NULL-checked.
 // FUNCTION: LEGOLAND 0x0048a3e0
 LEGO_EXPORT TileId GetObjectUID(struct Point *pos, struct Ride *ride) {
     struct MapElement *element;
     struct Point tile;
-    int n;
+    struct Point probe;
     struct Point origin;
+    int n;
     TileId none;
 
     tile = *pos;
     tile.x >>= 8;
     tile.y >>= 8;
     n = tile.y - 1;
-    if (tile.x >= 0 && tile.x < lpConfig->width && n >= 0 && n < lpConfig->height) {
-        element = &GameMap[n][tile.x];
-    } else {
-        element = NULL;
+    element = (tile.x >= 0 && tile.x < lpConfig->width && n >= 0 && n < lpConfig->height) ? &GameMap[n][tile.x] : NULL;
+    /* the original only looks below when the tile above exists, and never NULL-checks the tile below */
+    if (element != NULL) {
+        if ((element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
+            origin.x = element->field_4 + ride->x;
+            origin.y = element->field_5 + ride->y;
+            if (origin.x == tile.x && origin.y == tile.y) {
+                return element->anchor;
+            }
+        }
+        probe = tile;
+        probe.y++;
+        element = (probe.x >= 0 && probe.x < lpConfig->width && probe.y >= 0 && probe.y < lpConfig->height) ? &GameMap[probe.y][probe.x] : NULL;
+        if ((element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
+            origin.x = element->field_4 + ride->x;
+            origin.y = element->field_5 + ride->y;
+            if (origin.x == tile.x && origin.y == tile.y) {
+                return element->anchor;
+            }
+        }
     }
+    probe = tile;
+    probe.x--;
+    element = (probe.x >= 0 && probe.x < lpConfig->width && probe.y >= 0 && probe.y < lpConfig->height) ? &GameMap[probe.y][probe.x] : NULL;
     if (element != NULL && (element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
         origin.x = element->field_4 + ride->x;
         origin.y = element->field_5 + ride->y;
@@ -330,38 +355,8 @@ LEGO_EXPORT TileId GetObjectUID(struct Point *pos, struct Ride *ride) {
             return element->anchor;
         }
     }
-    n = tile.y + 1;
-    if (tile.x >= 0 && tile.x < lpConfig->width && n >= 0 && n < lpConfig->height) {
-        element = &GameMap[n][tile.x];
-    } else {
-        element = NULL;
-    }
-    if (element != NULL && (element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
-        origin.x = element->field_4 + ride->x;
-        origin.y = element->field_5 + ride->y;
-        if (origin.x == tile.x && origin.y == tile.y) {
-            return element->anchor;
-        }
-    }
-    n = tile.x - 1;
-    if (n >= 0 && n < lpConfig->width && tile.y >= 0 && tile.y < lpConfig->height) {
-        element = &GameMap[tile.y][n];
-    } else {
-        element = NULL;
-    }
-    if (element != NULL && (element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
-        origin.x = element->field_4 + ride->x;
-        origin.y = element->field_5 + ride->y;
-        if (origin.x == tile.x && origin.y == tile.y) {
-            return element->anchor;
-        }
-    }
-    n = tile.x + 1;
-    if (n >= 0 && n < lpConfig->width && tile.y >= 0 && tile.y < lpConfig->height) {
-        element = &GameMap[tile.y][n];
-    } else {
-        element = NULL;
-    }
+    probe.x = tile.x + 1;
+    element = (probe.x >= 0 && probe.x < lpConfig->width && probe.y >= 0 && probe.y < lpConfig->height) ? &GameMap[probe.y][probe.x] : NULL;
     if (element != NULL && (element->flags & 0x80) != 0 && element->field_0 != NULL && element->field_0->data == ride) {
         origin.x = element->field_4 + ride->x;
         origin.y = element->field_5 + ride->y;

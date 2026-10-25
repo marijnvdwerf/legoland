@@ -3,24 +3,27 @@
 #include "legoland.h"
 
 struct Sprite;
-struct SaveIcon;
+struct IconNode;
+struct EditSprite;
 
 LEGO_EXPORT int LoadDateIntoTempProfile(int a1, int a2);
 LEGO_EXPORT unsigned char StoreNewSaveGameToDisk(void);
 LEGO_EXPORT void RemoveSaveGame(unsigned char slot);
 LEGO_EXPORT void InitSavedGameScreen(void);
 LEGO_EXPORT void PrintSavedGameDetails(void);
+LEGO_EXPORT void EnterSaveGameDetails(struct IconNode *sprite);
 LEGO_EXPORT void KillSaveScreenSprites(void);
 LEGO_EXPORT void DeleteSavedGameList(void);
 LEGO_EXPORT struct Sprite *GetSavePanelBK(signed char slot);
-LEGO_EXPORT unsigned char LoadSavedGamesList(unsigned char profile);
-unsigned char FUN_0048db10(int param1, unsigned char flags);
-unsigned char FUN_0048da50(unsigned int a1, unsigned int flags, unsigned int a3, unsigned int a4);
-unsigned char FUN_0048d970(unsigned int a1, unsigned char flags);
-unsigned char FUN_0048e450(unsigned int a1, unsigned int a2);
-unsigned char FUN_0048e4a0(struct SaveIcon *icon, unsigned int flags, unsigned int a3, unsigned int a4);
-unsigned char FUN_0048e4f0(struct SaveIcon *icon, unsigned int a2, unsigned int a3, unsigned int a4);
-int FUN_0048e720(unsigned int a1, unsigned int a2, unsigned int a3, unsigned int a4);
-int FUN_0048eac0(int param);
-int FUN_0048eaf0(int param);
-void FUN_0048eb20(void);
+LEGO_EXPORT char LoadSavedGamesList(unsigned char profile);
+unsigned char SavedGameReturnToOptionsClicked(int param1, unsigned char flags);
+unsigned char SavedGameSaveClicked(unsigned int a1, unsigned int flags, unsigned int a3, unsigned int a4);
+unsigned char SavedGameLoadClicked(unsigned int a1, unsigned char flags);
+unsigned char DeletePopUpOkHandler(unsigned int a1, unsigned int a2);
+unsigned char SavedGameSlotClicked(struct IconNode *icon, unsigned int flags, unsigned int a3, unsigned int a4);
+unsigned char SaveSlotClicked(struct IconNode *icon, unsigned int a2, unsigned int a3, unsigned int a4);
+unsigned char NewSaveGameOkClicked(struct IconNode *icon, unsigned int a2, unsigned int a3, unsigned int a4);
+unsigned char NewSaveGameCloseClicked(struct IconNode *icon, unsigned char flags);
+int VolumeMarkerToPercent(int param);
+int VolumePercentToMarker(int param);
+void SaveOptionsMouseHandlers(void);

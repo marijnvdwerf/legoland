@@ -1,0 +1,218 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<rect width="960" height="560" fill="#0d1117"/>
+<text x="16" y="34" fill="#f0f6fc" font-size="24" font-weight="700">legoland.exe decompilation</text>
+<text x="16" y="66" fill="#f0f6fc" font-size="20" font-weight="600">3,104 / 3,255</text>
+<text x="16" y="84" fill="#8b949e" font-size="11">functions matched · 95.4%</text>
+<text x="252" y="66" fill="#f0f6fc" font-size="20" font-weight="600">97.28%</text>
+<text x="252" y="84" fill="#8b949e" font-size="11">fuzzy match · size-weighted</text>
+<text x="488" y="66" fill="#f0f6fc" font-size="20" font-weight="600">77.36%</text>
+<text x="488" y="84" fill="#8b949e" font-size="11">code matched · bytes in 100% functions</text>
+<text x="724" y="66" fill="#f0f6fc" font-size="20" font-weight="600">49 / 99</text>
+<text x="724" y="84" fill="#8b949e" font-size="11">units complete · translation units</text>
+<rect x="780" y="16" width="30" height="10" fill="#d54630"/>
+<text x="780" y="40" fill="#8b949e" font-size="10">&lt;80%</text>
+<rect x="814" y="16" width="30" height="10" fill="#e89128"/>
+<text x="814" y="40" fill="#8b949e" font-size="10">90%</text>
+<rect x="848" y="16" width="30" height="10" fill="#d6c434"/>
+<text x="848" y="40" fill="#8b949e" font-size="10">96%</text>
+<rect x="882" y="16" width="30" height="10" fill="#70be59"/>
+<text x="882" y="40" fill="#8b949e" font-size="10">99%</text>
+<rect x="916" y="16" width="30" height="10" fill="#1f9d55"/>
+<text x="916" y="40" fill="#8b949e" font-size="10">100%</text>
+<g><title>castle: 98.32% fuzzy, 442/459 functions</title><rect x="1.0" y="93.0" width="200.0" height="187.2" rx="3" fill="#99c14a"/></g>
+<text x="5.0" y="108.0" fill="#0d1117" font-size="12" font-weight="600">castle</text>
+<text x="5.0" y="124.0" fill="#0d1117" font-size="11">98.3%</text>
+<g><title>challenge: 91.48% fuzzy, 69/72 functions</title><rect x="1.0" y="282.2" width="200.0" height="152.7" rx="3" fill="#e49e2b"/></g>
+<text x="5.0" y="297.2" fill="#0d1117" font-size="12" font-weight="600">challenge</text>
+<text x="5.0" y="313.2" fill="#0d1117" font-size="11">91.5%</text>
+<g><title>log_flume: 96.20% fuzzy, 191/208 functions</title><rect x="1.0" y="437.0" width="200.0" height="122.0" rx="3" fill="#d1c436"/></g>
+<text x="5.0" y="452.0" fill="#0d1117" font-size="12" font-weight="600">log_flume</text>
+<text x="5.0" y="468.0" fill="#0d1117" font-size="11">96.2%</text>
+<g><title>map_object: 94.90% fuzzy, 69/83 functions</title><rect x="203.0" y="93.0" width="119.4" height="133.5" rx="3" fill="#d9bb32"/></g>
+<text x="207.0" y="108.0" fill="#0d1117" font-size="12" font-weight="600">map_object</text>
+<text x="207.0" y="124.0" fill="#0d1117" font-size="11">94.9%</text>
+<g><title>draw: 98.91% fuzzy, 49/51 functions</title><rect x="203.0" y="228.5" width="119.4" height="121.2" rx="3" fill="#8ac050"/></g>
+<text x="207.0" y="243.5" fill="#0d1117" font-size="12" font-weight="600">draw</text>
+<text x="207.0" y="259.5" fill="#0d1117" font-size="11">98.9%</text>
+<g><title>jungle_cruise: 94.96% fuzzy, 52/56 functions</title><rect x="203.0" y="351.7" width="119.4" height="107.2" rx="3" fill="#d9bb32"/></g>
+<text x="207.0" y="366.7" fill="#0d1117" font-size="12" font-weight="600">jungle_cruise</text>
+<text x="207.0" y="382.7" fill="#0d1117" font-size="11">95.0%</text>
+<g><title>eatery: 98.60% fuzzy, 61/64 functions</title><rect x="203.0" y="460.9" width="119.4" height="98.1" rx="3" fill="#92c04d"/></g>
+<text x="207.0" y="475.9" fill="#0d1117" font-size="12" font-weight="600">eatery</text>
+<text x="207.0" y="491.9" fill="#0d1117" font-size="11">98.6%</text>
+<g><title>boating_school: 96.46% fuzzy, 40/44 functions</title><rect x="324.4" y="93.0" width="107.9" height="102.1" rx="3" fill="#cac338"/></g>
+<text x="328.4" y="108.0" fill="#0d1117" font-size="12" font-weight="600">boating_school</text>
+<text x="328.4" y="124.0" fill="#0d1117" font-size="11">96.5%</text>
+<g><title>sound_sfx: 99.63% fuzzy, 34/36 functions</title><rect x="324.4" y="197.1" width="107.9" height="95.2" rx="3" fill="#77bf57"/></g>
+<text x="328.4" y="212.1" fill="#0d1117" font-size="12" font-weight="600">sound_sfx</text>
+<text x="328.4" y="228.1" fill="#0d1117" font-size="11">99.6%</text>
+<g><title>worker: 99.43% fuzzy, 74/76 functions</title><rect x="324.4" y="294.2" width="107.9" height="94.6" rx="3" fill="#7dbf55"/></g>
+<text x="328.4" y="309.2" fill="#0d1117" font-size="12" font-weight="600">worker</text>
+<text x="328.4" y="325.2" fill="#0d1117" font-size="11">99.4%</text>
+<g><title>render: 99.28% fuzzy, 27/29 functions</title><rect x="324.4" y="390.8" width="107.9" height="83.6" rx="3" fill="#81bf53"/></g>
+<text x="328.4" y="405.8" fill="#0d1117" font-size="12" font-weight="600">render</text>
+<text x="328.4" y="421.8" fill="#0d1117" font-size="11">99.3%</text>
+<g><title>tilemap: 91.22% fuzzy, 35/43 functions</title><rect x="324.4" y="476.4" width="107.9" height="82.6" rx="3" fill="#e49b2a"/></g>
+<text x="328.4" y="491.4" fill="#0d1117" font-size="12" font-weight="600">tilemap</text>
+<text x="328.4" y="507.4" fill="#0d1117" font-size="11">91.2%</text>
+<g><title>interface: 99.22% fuzzy, 72/75 functions</title><rect x="434.3" y="93.0" width="83.2" height="102.8" rx="3" fill="#82bf53"/></g>
+<text x="438.3" y="105.0" fill="#0d1117" font-size="9" font-weight="600">interface</text>
+<text x="438.3" y="118.0" fill="#0d1117" font-size="8">99.2%</text>
+<g><title>popupinfo: 98.30% fuzzy, 43/45 functions</title><rect x="434.3" y="197.8" width="83.2" height="92.5" rx="3" fill="#9ac14a"/></g>
+<text x="438.3" y="209.8" fill="#0d1117" font-size="9" font-weight="600">popupinfo</text>
+<text x="438.3" y="222.8" fill="#0d1117" font-size="8">98.3%</text>
+<g><title>nerps: 98.37% fuzzy, 146/150 functions</title><rect x="434.3" y="292.2" width="83.2" height="89.9" rx="3" fill="#98c04b"/></g>
+<text x="438.3" y="304.2" fill="#0d1117" font-size="9" font-weight="600">nerps</text>
+<text x="438.3" y="317.2" fill="#0d1117" font-size="8">98.4%</text>
+<g><title>icon: 98.23% fuzzy, 67/70 functions</title><rect x="434.3" y="384.2" width="83.2" height="89.7" rx="3" fill="#9cc149"/></g>
+<text x="438.3" y="396.2" fill="#0d1117" font-size="9" font-weight="600">icon</text>
+<text x="438.3" y="409.2" fill="#0d1117" font-size="8">98.2%</text>
+<g><title>llidb: 100.00% fuzzy, 39/39 functions</title><rect x="434.3" y="475.9" width="83.2" height="83.1" rx="3" fill="#1f9d55"/></g>
+<text x="438.3" y="487.9" fill="#0d1117" font-size="9" font-weight="600">llidb</text>
+<text x="438.3" y="500.9" fill="#0d1117" font-size="8">100.0%</text>
+<g><title>bloke: 99.68% fuzzy, 70/72 functions</title><rect x="519.5" y="93.0" width="94.4" height="73.0" rx="3" fill="#76be57"/></g>
+<text x="523.5" y="108.0" fill="#0d1117" font-size="12" font-weight="600">bloke</text>
+<text x="523.5" y="124.0" fill="#0d1117" font-size="11">99.7%</text>
+<g><title>game_util: 100.00% fuzzy, 95/95 functions</title><rect x="615.9" y="93.0" width="91.7" height="73.0" rx="3" fill="#1f9d55"/></g>
+<text x="619.9" y="108.0" fill="#0d1117" font-size="12" font-weight="600">game_util</text>
+<text x="619.9" y="124.0" fill="#0d1117" font-size="11">100.0%</text>
+<g><title>bloke_ai: 99.44% fuzzy, 38/39 functions</title><rect x="709.6" y="93.0" width="85.9" height="73.0" rx="3" fill="#7cbf55"/></g>
+<text x="713.6" y="105.0" fill="#0d1117" font-size="9" font-weight="600">bloke_ai</text>
+<text x="713.6" y="118.0" fill="#0d1117" font-size="8">99.4%</text>
+<g><title>man3d: 100.00% fuzzy, 38/38 functions</title><rect x="797.5" y="93.0" width="79.8" height="73.0" rx="3" fill="#1f9d55"/></g>
+<text x="801.5" y="105.0" fill="#0d1117" font-size="9" font-weight="600">man3d</text>
+<text x="801.5" y="118.0" fill="#0d1117" font-size="8">100.0%</text>
+<g><title>saveload: 97.92% fuzzy, 12/13 functions</title><rect x="879.4" y="93.0" width="79.6" height="73.0" rx="3" fill="#a4c146"/></g>
+<text x="883.4" y="105.0" fill="#0d1117" font-size="9" font-weight="600">saveload</text>
+<text x="883.4" y="118.0" fill="#0d1117" font-size="8">97.9%</text>
+<g><title>ride_bloke: 95.63% fuzzy, 23/28 functions</title><rect x="519.5" y="168.0" width="70.9" height="70.3" rx="3" fill="#d7c133"/></g>
+<text x="523.5" y="180.0" fill="#0d1117" font-size="9" font-weight="600">ride_bloke</text>
+<text x="523.5" y="193.0" fill="#0d1117" font-size="8">95.6%</text>
+<g><title>render3d: 97.47% fuzzy, 54/58 functions</title><rect x="519.5" y="240.3" width="70.9" height="68.6" rx="3" fill="#b0c242"/></g>
+<text x="523.5" y="252.3" fill="#0d1117" font-size="9" font-weight="600">render3d</text>
+<text x="523.5" y="265.3" fill="#0d1117" font-size="8">97.5%</text>
+<g><title>western_town: 100.00% fuzzy, 33/33 functions</title><rect x="519.5" y="310.9" width="70.9" height="68.4" rx="3" fill="#1f9d55"/></g>
+<text x="523.5" y="322.9" fill="#0d1117" font-size="9" font-weight="600">western_town</text>
+<text x="523.5" y="335.9" fill="#0d1117" font-size="8">100.0%</text>
+<g><title>text: 95.75% fuzzy, 22/24 functions</title><rect x="519.5" y="381.3" width="70.9" height="63.0" rx="3" fill="#d7c233"/></g>
+<text x="523.5" y="393.3" fill="#0d1117" font-size="9" font-weight="600">text</text>
+<text x="523.5" y="406.3" fill="#0d1117" font-size="8">95.7%</text>
+<g><title>roads: 97.53% fuzzy, 21/24 functions</title><rect x="519.5" y="446.4" width="70.9" height="56.2" rx="3" fill="#aec243"/></g>
+<text x="523.5" y="458.4" fill="#0d1117" font-size="9" font-weight="600">roads</text>
+<text x="523.5" y="471.4" fill="#0d1117" font-size="8">97.5%</text>
+<g><title>savegame_ui: 97.96% fuzzy, 23/25 functions</title><rect x="519.5" y="504.5" width="70.9" height="54.5" rx="3" fill="#a3c147"/></g>
+<text x="523.5" y="516.5" fill="#0d1117" font-size="9" font-weight="600">savegame_ui</text>
+<text x="523.5" y="529.5" fill="#0d1117" font-size="8">98.0%</text>
+<g><title>objectives: 100.00% fuzzy, 67/67 functions</title><rect x="592.4" y="168.0" width="61.6" height="62.7" rx="3" fill="#1f9d55"/></g>
+<text x="596.4" y="180.0" fill="#0d1117" font-size="9" font-weight="600">objectives</text>
+<text x="596.4" y="193.0" fill="#0d1117" font-size="8">100.0%</text>
+<g><title>mapscreen: 95.36% fuzzy, 9/10 functions</title><rect x="656.0" y="168.0" width="60.4" height="62.7" rx="3" fill="#d8bf33"/></g>
+<text x="660.0" y="180.0" fill="#0d1117" font-size="9" font-weight="600">mapscreen</text>
+<text x="660.0" y="193.0" fill="#0d1117" font-size="8">95.4%</text>
+<g><title>title: 100.00% fuzzy, 42/42 functions</title><rect x="718.4" y="168.0" width="59.4" height="62.7" rx="3" fill="#1f9d55"/></g>
+<text x="722.4" y="180.0" fill="#0d1117" font-size="9" font-weight="600">title</text>
+<text x="722.4" y="193.0" fill="#0d1117" font-size="8">100.0%</text>
+<g><title>space_tower: 94.97% fuzzy, 30/33 functions</title><rect x="779.8" y="168.0" width="58.9" height="62.7" rx="3" fill="#d9bb32"/></g>
+<text x="783.8" y="180.0" fill="#0d1117" font-size="9" font-weight="600">space_to…</text>
+<text x="783.8" y="193.0" fill="#0d1117" font-size="8">95.0%</text>
+<g><title>shops: 93.80% fuzzy, 26/29 functions</title><rect x="840.7" y="168.0" width="58.3" height="62.7" rx="3" fill="#ddb130"/></g>
+<text x="844.7" y="180.0" fill="#0d1117" font-size="9" font-weight="600">shops</text>
+<text x="844.7" y="193.0" fill="#0d1117" font-size="8">93.8%</text>
+<g><title>copters: 98.09% fuzzy, 26/27 functions</title><rect x="901.0" y="168.0" width="58.0" height="62.7" rx="3" fill="#a0c148"/></g>
+<text x="905.0" y="180.0" fill="#0d1117" font-size="9" font-weight="600">copters</text>
+<text x="905.0" y="193.0" fill="#0d1117" font-size="8">98.1%</text>
+<g><title>joust: 89.29% fuzzy, 15/16 functions</title><rect x="592.4" y="232.7" width="53.0" height="66.5" rx="3" fill="#e78c29"/></g>
+<text x="596.4" y="244.7" fill="#0d1117" font-size="9" font-weight="600">joust</text>
+<g><title>balloonz: 98.06% fuzzy, 14/15 functions</title><rect x="592.4" y="301.2" width="53.0" height="65.3" rx="3" fill="#a0c148"/></g>
+<text x="596.4" y="313.2" fill="#0d1117" font-size="9" font-weight="600">balloonz</text>
+<g><title>ride_queue: 99.05% fuzzy, 23/25 functions</title><rect x="592.4" y="368.5" width="53.0" height="65.2" rx="3" fill="#87bf51"/></g>
+<text x="596.4" y="380.5" fill="#0d1117" font-size="9" font-weight="600">ride_qu…</text>
+<g><title>sound_music: 98.60% fuzzy, 47/48 functions</title><rect x="592.4" y="435.7" width="53.0" height="61.5" rx="3" fill="#92c04d"/></g>
+<text x="596.4" y="447.7" fill="#0d1117" font-size="9" font-weight="600">sound_m…</text>
+<g><title>screens: 100.00% fuzzy, 22/22 functions</title><rect x="592.4" y="499.2" width="53.0" height="59.8" rx="3" fill="#1f9d55"/></g>
+<text x="596.4" y="511.2" fill="#0d1117" font-size="9" font-weight="600">screens</text>
+<g><title>water_works: 99.44% fuzzy, 57/58 functions</title><rect x="647.4" y="232.7" width="52.9" height="59.7" rx="3" fill="#7cbf55"/></g>
+<text x="651.4" y="244.7" fill="#0d1117" font-size="9" font-weight="600">water_w…</text>
+<g><title>objclass: 97.28% fuzzy, 38/40 functions</title><rect x="702.4" y="232.7" width="51.6" height="59.7" rx="3" fill="#b5c240"/></g>
+<text x="706.4" y="244.7" fill="#0d1117" font-size="9" font-weight="600">objclass</text>
+<g><title>carousel: 95.86% fuzzy, 18/19 functions</title><rect x="756.0" y="232.7" width="50.6" height="59.7" rx="3" fill="#d6c334"/></g>
+<text x="760.0" y="244.7" fill="#0d1117" font-size="9" font-weight="600">carousel</text>
+<g><title>profile: 100.00% fuzzy, 20/20 functions</title><rect x="808.5" y="232.7" width="50.2" height="59.7" rx="3" fill="#1f9d55"/></g>
+<text x="812.5" y="244.7" fill="#0d1117" font-size="9" font-weight="600">profile</text>
+<g><title>gamemap: 94.50% fuzzy, 22/25 functions</title><rect x="860.7" y="232.7" width="48.7" height="59.7" rx="3" fill="#dbb731"/></g>
+<text x="864.7" y="244.7" fill="#0d1117" font-size="9" font-weight="600">gamemap</text>
+<g><title>driving_school: 97.02% fuzzy, 15/16 functions</title><rect x="911.5" y="232.7" width="47.5" height="59.7" rx="3" fill="#bbc23e"/></g>
+<text x="915.5" y="244.7" fill="#0d1117" font-size="9" font-weight="600">drivin…</text>
+<g><title>gamemain: 92.66% fuzzy, 23/26 functions</title><rect x="647.4" y="294.4" width="54.9" height="51.7" rx="3" fill="#e0a82d"/></g>
+<text x="651.4" y="306.4" fill="#0d1117" font-size="9" font-weight="600">gamemain</text>
+<g><title>spider_ride: 92.77% fuzzy, 20/22 functions</title><rect x="647.4" y="348.1" width="54.9" height="51.4" rx="3" fill="#e0a92e"/></g>
+<text x="651.4" y="360.1" fill="#0d1117" font-size="9" font-weight="600">spider_r…</text>
+<g><title>options: 100.00% fuzzy, 27/27 functions</title><rect x="647.4" y="401.5" width="54.9" height="51.3" rx="3" fill="#1f9d55"/></g>
+<text x="651.4" y="413.5" fill="#0d1117" font-size="9" font-weight="600">options</text>
+<g><title>plane_ride: 95.34% fuzzy, 18/20 functions</title><rect x="647.4" y="454.8" width="54.9" height="51.3" rx="3" fill="#d8be33"/></g>
+<text x="651.4" y="466.8" fill="#0d1117" font-size="9" font-weight="600">plane_ri…</text>
+<g><title>spinning_barrels: 95.30% fuzzy, 18/20 functions</title><rect x="647.4" y="508.1" width="54.9" height="50.9" rx="3" fill="#d8be33"/></g>
+<text x="651.4" y="520.1" fill="#0d1117" font-size="9" font-weight="600">spinning…</text>
+<g><title>gold_rush: 100.00% fuzzy, 24/24 functions</title><rect x="704.3" y="294.4" width="52.9" height="51.4" rx="3" fill="#1f9d55"/></g>
+<text x="708.3" y="306.4" fill="#0d1117" font-size="9" font-weight="600">gold_ru…</text>
+<g><title>image_sprite: 100.00% fuzzy, 38/38 functions</title><rect x="759.3" y="294.4" width="50.6" height="51.4" rx="3" fill="#1f9d55"/></g>
+<text x="763.3" y="306.4" fill="#0d1117" font-size="9" font-weight="600">image_s…</text>
+<g><title>safari_ride: 95.13% fuzzy, 19/20 functions</title><rect x="811.8" y="294.4" width="49.3" height="51.4" rx="3" fill="#d9bd32"/></g>
+<text x="815.8" y="306.4" fill="#0d1117" font-size="9" font-weight="600">safari_…</text>
+<g><title>freeplay: 100.00% fuzzy, 18/18 functions</title><rect x="863.2" y="294.4" width="49.2" height="51.4" rx="3" fill="#1f9d55"/></g>
+<text x="867.2" y="306.4" fill="#0d1117" font-size="9" font-weight="600">freepl…</text>
+<g><title>profile_io: 100.00% fuzzy, 22/22 functions</title><rect x="914.3" y="294.4" width="44.7" height="51.4" rx="3" fill="#1f9d55"/></g>
+<text x="918.3" y="306.4" fill="#0d1117" font-size="9" font-weight="600">profil…</text>
+<g><title>dialog: 98.40% fuzzy, 5/6 functions</title><rect x="704.3" y="347.8" width="44.0" height="51.5" rx="3" fill="#97c04b"/></g>
+<text x="708.3" y="359.8" fill="#0d1117" font-size="9" font-weight="600">dialog</text>
+<g><title>bricks: 100.00% fuzzy, 10/10 functions</title><rect x="704.3" y="401.3" width="44.0" height="51.3" rx="3" fill="#1f9d55"/></g>
+<text x="708.3" y="413.3" fill="#0d1117" font-size="9" font-weight="600">bricks</text>
+<g><title>stream: 100.00% fuzzy, 22/22 functions</title><rect x="704.3" y="454.6" width="44.0" height="51.2" rx="3" fill="#1f9d55"/></g>
+<text x="708.3" y="466.6" fill="#0d1117" font-size="9" font-weight="600">stream</text>
+<g><title>pathfind: 100.00% fuzzy, 24/24 functions</title><rect x="704.3" y="507.8" width="44.0" height="51.2" rx="3" fill="#1f9d55"/></g>
+<text x="708.3" y="519.8" fill="#0d1117" font-size="9" font-weight="600">pathfi…</text>
+<g><title>setcustomcallbacks: 100.00% fuzzy, 1/1 functions</title><rect x="750.4" y="347.8" width="44.0" height="50.8" rx="3" fill="#1f9d55"/></g>
+<g><title>print_sprite: 100.00% fuzzy, 20/20 functions</title><rect x="796.4" y="347.8" width="42.2" height="50.8" rx="3" fill="#1f9d55"/></g>
+<g><title>earth_slide: 100.00% fuzzy, 22/22 functions</title><rect x="840.5" y="347.8" width="38.5" height="50.8" rx="3" fill="#1f9d55"/></g>
+<g><title>exceptlog: 91.33% fuzzy, 7/8 functions</title><rect x="881.0" y="347.8" width="38.1" height="50.8" rx="3" fill="#e49c2b"/></g>
+<g><title>temple_slide: 91.25% fuzzy, 17/19 functions</title><rect x="921.1" y="347.8" width="37.9" height="50.8" rx="3" fill="#e49c2b"/></g>
+<g><title>controller: 98.84% fuzzy, 4/6 functions</title><rect x="750.4" y="400.5" width="47.6" height="39.4" rx="3" fill="#8cc04f"/></g>
+<text x="754.4" y="412.5" fill="#0d1117" font-size="9" font-weight="600">contro…</text>
+<g><title>catapult: 100.00% fuzzy, 25/25 functions</title><rect x="750.4" y="441.9" width="47.6" height="38.1" rx="3" fill="#1f9d55"/></g>
+<text x="754.4" y="453.9" fill="#0d1117" font-size="9" font-weight="600">catapu…</text>
+<g><title>worker_mouse: 94.57% fuzzy, 12/13 functions</title><rect x="750.4" y="482.1" width="47.6" height="38.0" rx="3" fill="#dab831"/></g>
+<text x="754.4" y="494.1" fill="#0d1117" font-size="9" font-weight="600">worker…</text>
+<g><title>progress: 100.00% fuzzy, 11/11 functions</title><rect x="750.4" y="522.1" width="47.6" height="36.9" rx="3" fill="#1f9d55"/></g>
+<text x="754.4" y="534.1" fill="#0d1117" font-size="9" font-weight="600">progre…</text>
+<g><title>resource: 99.21% fuzzy, 16/17 functions</title><rect x="800.0" y="400.5" width="40.1" height="41.4" rx="3" fill="#82bf53"/></g>
+<g><title>input: 100.00% fuzzy, 16/16 functions</title><rect x="800.0" y="444.0" width="40.1" height="38.2" rx="3" fill="#1f9d55"/></g>
+<g><title>gfx: 94.14% fuzzy, 5/6 functions</title><rect x="800.0" y="484.2" width="40.1" height="36.6" rx="3" fill="#dcb430"/></g>
+<g><title>entrance: 100.00% fuzzy, 6/6 functions</title><rect x="800.0" y="522.8" width="40.1" height="36.2" rx="3" fill="#1f9d55"/></g>
+<g><title>cdcheck: 100.00% fuzzy, 14/14 functions</title><rect x="842.0" y="400.5" width="39.9" height="32.2" rx="3" fill="#1f9d55"/></g>
+<g><title>certificate: 100.00% fuzzy, 2/2 functions</title><rect x="884.0" y="400.5" width="37.5" height="32.2" rx="3" fill="#1f9d55"/></g>
+<g><title>obj_instance: 100.00% fuzzy, 16/16 functions</title><rect x="923.5" y="400.5" width="35.5" height="32.2" rx="3" fill="#1f9d55"/></g>
+<g><title>string: 100.00% fuzzy, 13/13 functions</title><rect x="842.0" y="434.7" width="39.2" height="28.2" rx="3" fill="#1f9d55"/></g>
+<g><title>fort: 97.08% fuzzy, 8/9 functions</title><rect x="883.2" y="434.7" width="38.6" height="28.2" rx="3" fill="#bac23e"/></g>
+<g><title>garden: 100.00% fuzzy, 13/13 functions</title><rect x="923.9" y="434.7" width="35.1" height="28.2" rx="3" fill="#1f9d55"/></g>
+<g><title>mechanics_hut: 100.00% fuzzy, 9/9 functions</title><rect x="842.0" y="464.9" width="30.0" height="32.5" rx="3" fill="#1f9d55"/></g>
+<g><title>debug: 100.00% fuzzy, 5/5 functions</title><rect x="842.0" y="499.4" width="30.0" height="31.4" rx="3" fill="#1f9d55"/></g>
+<g><title>help: 100.00% fuzzy, 12/12 functions</title><rect x="842.0" y="532.8" width="30.0" height="26.2" rx="3" fill="#1f9d55"/></g>
+<g><title>temple: 100.00% fuzzy, 8/8 functions</title><rect x="874.0" y="464.9" width="29.2" height="26.2" rx="3" fill="#1f9d55"/></g>
+<g><title>midi: 100.00% fuzzy, 8/8 functions</title><rect x="905.2" y="464.9" width="27.1" height="26.2" rx="3" fill="#1f9d55"/></g>
+<g><title>castle_level: 100.00% fuzzy, 8/8 functions</title><rect x="934.4" y="464.9" width="24.6" height="26.2" rx="3" fill="#1f9d55"/></g>
+<g><title>pumps: 100.00% fuzzy, 11/11 functions</title><rect x="874.0" y="493.2" width="28.4" height="21.3" rx="3" fill="#1f9d55"/></g>
+<g><title>potting_shed: 100.00% fuzzy, 8/8 functions</title><rect x="874.0" y="516.4" width="28.4" height="21.0" rx="3" fill="#1f9d55"/></g>
+<g><title>wndenv: 100.00% fuzzy, 10/10 functions</title><rect x="874.0" y="539.4" width="28.4" height="19.6" rx="3" fill="#1f9d55"/></g>
+<g><title>build: 100.00% fuzzy, 8/8 functions</title><rect x="904.4" y="493.2" width="29.5" height="18.0" rx="3" fill="#1f9d55"/></g>
+<g><title>math: 100.00% fuzzy, 8/8 functions</title><rect x="936.0" y="493.2" width="23.0" height="18.0" rx="3" fill="#1f9d55"/></g>
+<g><title>clipping: 100.00% fuzzy, 11/11 functions</title><rect x="904.4" y="513.2" width="16.6" height="23.1" rx="3" fill="#1f9d55"/></g>
+<g><title>movie_pool: 100.00% fuzzy, 7/7 functions</title><rect x="904.4" y="538.3" width="16.6" height="20.7" rx="3" fill="#1f9d55"/></g>
+<g><title>power: 100.00% fuzzy, 11/11 functions</title><rect x="923.1" y="513.2" width="18.7" height="17.9" rx="3" fill="#1f9d55"/></g>
+<g><title>binv: 100.00% fuzzy, 7/7 functions</title><rect x="943.7" y="513.2" width="15.3" height="17.9" rx="3" fill="#1f9d55"/></g>
+<g><title>debug_alloc: 100.00% fuzzy, 7/7 functions</title><rect x="923.1" y="533.1" width="19.9" height="13.4" rx="3" fill="#1f9d55"/></g>
+<g><title>path_control: 100.00% fuzzy, 5/5 functions</title><rect x="923.1" y="548.5" width="19.9" height="10.5" rx="3" fill="#1f9d55"/></g>
+<g><title>money: 100.00% fuzzy, 5/5 functions</title><rect x="945.0" y="533.1" width="14.0" height="8.7" rx="3" fill="#1f9d55"/></g>
+<g><title>main: 100.00% fuzzy, 3/3 functions</title><rect x="945.0" y="543.8" width="14.0" height="6.2" rx="3" fill="#1f9d55"/></g>
+<g><title>timer: 100.00% fuzzy, 5/5 functions</title><rect x="945.0" y="552.0" width="7.2" height="7.0" rx="3" fill="#1f9d55"/></g>
+<g><title>tooltip: 100.00% fuzzy, 2/2 functions</title><rect x="954.2" y="552.0" width="4.8" height="7.0" rx="3" fill="#1f9d55"/></g>
+</svg>

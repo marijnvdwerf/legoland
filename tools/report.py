@@ -15,8 +15,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+import reccmp_fixes  # noqa: E402,F401  (same false-positive fixes as tools/verify)
 from reccmp.compare.core import Compare
 from reccmp.parser.marker import MarkerType, match_marker
 from reccmp.project.detect import RecCmpProject

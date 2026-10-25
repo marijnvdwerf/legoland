@@ -32,54 +32,8 @@
 
 #pragma intrinsic(strcpy, strlen)
 
-struct ThemeQueryArg {
-    unsigned char pad_0[0xc];
-    struct ThemeData *theme;
-};
-
-struct ThemeData {
-    unsigned char pad_0[0x5c];
-    unsigned int theme_id;
-};
-
-struct RewardArg {
-    unsigned char pad_0[0x8];
-    const char *field_8;
-    int reward_type;
-    unsigned char pad_10[0x1c - 0x10];
-    int field_1c;
-};
-
-struct MapRectArg {
-    unsigned char pad_0[0x28];
-    int x0;
-    int y0;
-    int x1;
-    int y1;
-};
-
-struct NerpsTarget {
-    unsigned char pad_0[0x10];
-    unsigned char flags_10;
-    unsigned char pad_11[0x40 - 0x11];
-    unsigned int field_40;
-};
-
-struct RewardObject {
-    unsigned int id;
-    unsigned char pad_4[0x8 - 0x4];
-    unsigned int flags;
-    struct NewObjInfo *info;
-};
-
-struct PlaceObject {
-    int field_0;
-    unsigned char pad_4[0xc - 0x4];
-    struct ObjClass *cls;
-};
-
 struct SweepInstance {
-    struct PlaceObject *object;
+    struct Element *object;
     unsigned char tile_x;
     unsigned char tile_y;
     unsigned char pad_6[0xc - 0x6];
@@ -87,66 +41,69 @@ struct SweepInstance {
 };
 
 // FUNCTION: LEGOLAND 0x00468810
-void FUN_00468810(char *name) {
-    strncpy(DAT_0066869c, name, 0x80);
-    DAT_0066869c[0x7f] = 0;
+void SetHintsFileName(char *name) {
+    strncpy(HintsFileName, name, 0x80);
+    HintsFileName[0x7f] = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00468830
-void FUN_00468830(void) {
-    DAT_0066869c[0] = 0;
-    DAT_0066861c[0] = 0;
+void ClearBriefingAndHintsFileNames(void) {
+    HintsFileName[0] = 0;
+    BriefingFileName[0] = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00468840
-void FUN_00468840(void) {
-    *(unsigned int *)DAT_007fe930 = 0;
-    *(unsigned int *)(DAT_007fe930 + 4) = 0;
-    *(unsigned short *)(DAT_007fe930 + 8) = 0;
+void ClearObjectiveCounters(void) {
+    *(unsigned int *)ObjectiveCounters = 0;
+    *(unsigned int *)(ObjectiveCounters + 4) = 0;
+    *(unsigned short *)(ObjectiveCounters + 8) = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00468860
-void FUN_00468860(int index, signed char value) {
+void SetObjectiveCounter(int index, signed char value) {
     if (index < 10) {
-        DAT_007fe930[index] = value;
+        ObjectiveCounters[index] = value;
         if (index < 4) {
-            FUN_00476140(index, value);
+            SetObjectiveIconShown(index, value);
         }
     }
 }
 
 // FUNCTION: LEGOLAND 0x00468890
-unsigned char FUN_00468890(int index, unsigned char value) {
+unsigned char AddObjectiveCounter(int index, unsigned char value) {
     if (index < 10) {
-        DAT_007fe930[index] += value;
-        return DAT_007fe930[index];
+        ObjectiveCounters[index] += value;
+        return ObjectiveCounters[index];
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x004688c0
-char FUN_004688c0(int index) {
+char GetObjectiveCounter(int index) {
     if (index < 10) {
-        return DAT_007fe930[index];
+        return ObjectiveCounters[index];
     }
     return 0;
 }
 
+/* Empty in the original (does nothing). */
 // FUNCTION: LEGOLAND 0x004688e0
-void FUN_004688e0(void) {}
+void Empty_004688e0(void) {}
 
+/* Script bridges event (ScriptEventBridges, game_util): OpenBridge(index) for a valid index (< 4). The second
+ * argument is not used. */
 // FUNCTION: LEGOLAND 0x004688f0
-void FUN_004688f0(int index, unsigned char param_2) {
+void ScriptOpenBridge(int index, unsigned char param_2) {
     if (index < 4) {
-        FUN_00460560(index);
+        OpenBridge(index);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00468910
-struct ObjectiveEvent *FUN_00468910(unsigned int type, int sort_key) {
+struct ObjectiveEvent *AllocObjectiveEvent(unsigned int type, int sort_key) {
     struct ObjectiveEvent *event;
 
-    event = (struct ObjectiveEvent *)calloc(1, 0x44);
+    event = (struct ObjectiveEvent *)calloc(1, sizeof(struct ObjectiveEvent));
     if (event != NULL) {
         event->next = NULL;
         event->field_8 = 0;
@@ -157,81 +114,81 @@ struct ObjectiveEvent *FUN_00468910(unsigned int type, int sort_key) {
 }
 
 // FUNCTION: LEGOLAND 0x00468940
-void FUN_00468940(struct ObjectiveEvent *event) {
+void FreeObjectiveEvent(struct ObjectiveEvent *event) {
     if (event->flags_10 & 0x20) {
         if (event->field_8 != 0) {
-            free((void *)event->field_8);
+            free(event->text);
         }
     }
     free(event);
 }
 
 // FUNCTION: LEGOLAND 0x00468970
-void FUN_00468970(struct ObjectiveEvent *event) {
+void FreeObjectiveEventList(struct ObjectiveEvent *event) {
     if (event != NULL) {
         if (event->next != NULL) {
-            FUN_00468970(event->next);
+            FreeObjectiveEventList(event->next);
         }
-        FUN_00468940(event);
+        FreeObjectiveEvent(event);
     }
 }
 
 // FUNCTION: LEGOLAND 0x004689a0
-void FUN_004689a0(void) {
+void FreeScriptStrings(void) {
     int i;
-    unsigned int *p;
+    char **p;
 
     i = 0;
-    if ((int)DAT_00668720 > 0) {
-        p = DAT_007fe120;
+    if ((int)ScriptStringCount > 0) {
+        p = ScriptStringTable;
         do {
             if (*p != 0) {
-                free((void *)*p);
+                free(*p);
                 *p = 0;
             }
             i++;
             p++;
-        } while (i < (int)DAT_00668720);
+        } while (i < (int)ScriptStringCount);
     }
-    DAT_00668720 = 0;
+    ScriptStringCount = 0;
 }
 
 // FUNCTION: LEGOLAND 0x004689f0
-unsigned int FUN_004689f0(char *param_1, char *param_2, int param_3) {
+unsigned int AddScriptString(char *param_1, char *param_2, int param_3) {
     void *buffer;
 
     if (param_3 != 0) {
         if (param_1 != NULL) {
             if (param_2 != NULL) {
                 buffer = malloc(strlen(param_1) + strlen(param_2) + 2);
-                DAT_007fe120[DAT_00668720] = (unsigned int)buffer;
+                ScriptStringTable[ScriptStringCount] = (char *)buffer;
                 if (buffer != NULL) {
                     // STRING: LEGOLAND 0x004b9f90
                     sprintf(buffer, "%s%c%s", param_1, 0x40, param_2);
                 }
             } else {
                 buffer = malloc(strlen(param_1) + 1);
-                DAT_007fe120[DAT_00668720] = (unsigned int)buffer;
+                ScriptStringTable[ScriptStringCount] = (char *)buffer;
                 if (buffer != NULL) {
-                    sprintf(buffer, (char *)DAT_004b8bbc, param_1);
+                    sprintf(buffer, (char *)PercentSFormat, param_1);
                 }
             }
         } else {
-            DAT_007fe120[DAT_00668720] = 0;
+            ScriptStringTable[ScriptStringCount] = 0;
         }
     } else {
-        DAT_007fe120[DAT_00668720] = (unsigned int)param_1;
+        ScriptStringTable[ScriptStringCount] = (char *)param_1;
     }
-    return DAT_00668720++;
+    return ScriptStringCount++;
 }
 
 // FUNCTION: LEGOLAND 0x00468b00
-void FUN_00468b00(struct ObjectiveEvent *event) {
+void InsertObjectiveMessageSorted(struct ObjectiveEvent *event) {
     struct ObjectiveEvent *node;
     struct ObjectiveEvent *prev;
     int key;
 
-    node = DAT_00668724;
+    node = ObjectiveMessageQueue;
     prev = NULL;
     if (node != NULL) {
         key = event->sort_key;
@@ -248,71 +205,71 @@ void FUN_00468b00(struct ObjectiveEvent *event) {
         }
     }
     if (prev == NULL) {
-        DAT_00668724 = event;
+        ObjectiveMessageQueue = event;
         event->next = NULL;
     }
 }
 
 // FUNCTION: LEGOLAND 0x00468b40
-void FUN_00468b40(struct ObjectiveEvent *node, unsigned int param_2, unsigned int param_3) {
+void SetObjectiveEventText(struct ObjectiveEvent *node, char *param_2, unsigned int param_3) {
     char *buffer;
 
     if (param_3 != 0) {
-        buffer = (char *)malloc(strlen((char *)param_2) + 1);
-        node->field_8 = (unsigned int)buffer;
-        strcpy(buffer, (char *)param_2);
+        buffer = (char *)malloc(strlen(param_2) + 1);
+        node->text = buffer;
+        strcpy(buffer, param_2);
         node->flags_10 |= 0x20;
     } else {
-        node->field_8 = param_2;
+        node->text = param_2;
         node->flags_10 &= 0xdf;
     }
 }
 
 // FUNCTION: LEGOLAND 0x00468bb0
-struct ObjectiveEvent *FUN_00468bb0(const char *format, ...) {
+struct ObjectiveEvent *PostObjectiveMessage(const char *format, ...) {
     struct ObjectiveEvent *event;
     va_list args;
 
-    event = FUN_00468910(0, 1);
+    event = AllocObjectiveEvent(0, 1);
     if (event != NULL) {
         va_start(args, format);
-        vsprintf(DAT_0066820c, format, args);
-        FUN_00468b40(event, (unsigned int)DAT_0066820c, 1);
-        FUN_00468b00(event);
+        vsprintf(ObjectiveTextBuffer, format, args);
+        SetObjectiveEventText(event, (char *)ObjectiveTextBuffer, 1);
+        InsertObjectiveMessageSorted(event);
     }
     return event;
 }
 
 // FUNCTION: LEGOLAND 0x00468c00
-void FUN_00468c00(void) {
+void ShowNextObjectiveMessage(void) {
     struct ObjectiveEvent *event;
     char *at;
 
-    event = DAT_00668724;
+    event = ObjectiveMessageQueue;
     if (event != NULL) {
-        at = strchr((char *)event->field_8, 0x40);
+        at = strchr(event->text, 0x40);
         if (at != NULL) {
             *at = 0;
-            FUN_00498920();
-            FUN_00498630(at + 1);
-            FUN_00498b00();
-            FUN_0046d3a0();
+            SpeechCloseFile();
+            SpeechLoadWavFile(at + 1);
+            SpeechPlay();
+            SetHelpKindObjectiveMessage();
         }
-        if (DisplayAdvisorHelp((char *)event->field_8, event->type == 0, 0) != 0) {
-            FUN_00444070(5, 0);
-            DAT_00668724 = DAT_00668724->next;
-            FUN_00468940(event);
+        if (DisplayAdvisorHelp(event->text, event->type == 0, 0) != 0) {
+            SetNextAdvisorAnimState(5, 0);
+            ObjectiveMessageQueue = ObjectiveMessageQueue->next;
+            FreeObjectiveEvent(event);
         }
     }
 }
 
 // FUNCTION: LEGOLAND 0x00468c80
-void FUN_00468c80(struct ObjectiveEvent *event) {
+void InsertObjectiveEventSorted(struct ObjectiveEvent *event) {
     struct ObjectiveEvent *node;
     struct ObjectiveEvent *prev;
     int key;
 
-    node = DAT_00668728;
+    node = ObjectiveEventList;
     prev = NULL;
     if (node != NULL) {
         key = event->sort_key;
@@ -328,17 +285,17 @@ void FUN_00468c80(struct ObjectiveEvent *event) {
         event->next = prev->next;
         prev->next = event;
     } else {
-        DAT_00668728 = event;
+        ObjectiveEventList = event;
         event->next = NULL;
     }
-    DAT_0066872c[event->type] += 1;
+    ObjectiveEventTypeCounts[event->type] += 1;
 }
 
 // FUNCTION: LEGOLAND 0x00468cd0
-struct ObjectiveEvent *FUN_00468cd0(unsigned int type, int sort_key) {
+struct ObjectiveEvent *AllocTimestampedObjectiveEvent(unsigned int type, int sort_key) {
     struct ObjectiveEvent *event;
 
-    event = FUN_00468910(type, sort_key);
+    event = AllocObjectiveEvent(type, sort_key);
     if (event != NULL) {
         event->timestamp = GetGameTimer();
     }
@@ -346,97 +303,97 @@ struct ObjectiveEvent *FUN_00468cd0(unsigned int type, int sort_key) {
 }
 
 // FUNCTION: LEGOLAND 0x00468d00
-void FUN_00468d00(void) {
-    DAT_00668780 = GetGameTimer();
+void ResetObjectiveHintTimer(void) {
+    ObjectiveHintTimer = GetGameTimer();
 }
 
 // FUNCTION: LEGOLAND 0x00468d10
-int FUN_00468d10(void) {
-    if ((int)(GetGameTimer() - DAT_00668780) > 0xc350) {
-        FUN_00468d00();
+int IsObjectiveHintDue(void) {
+    if ((int)(GetGameTimer() - ObjectiveHintTimer) > 0xc350) {
+        ResetObjectiveHintTimer();
         return 1;
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x00468d30
-int FUN_00468d30(struct NerpsArg *object) {
+int QueueCustomObjectiveHint(struct ObjectiveEvent *object) {
     struct ObjectiveEvent *event;
-    struct NerpsTarget *target;
+    struct ObjectiveEvent *target;
 
-    target = (struct NerpsTarget *)object;
-    if (target->field_40 != 0 && DAT_007fe120[target->field_40] != 0) {
+    target = (struct ObjectiveEvent *)object;
+    if (target->field_40 != 0 && ScriptStringTable[target->field_40] != 0) {
         if (target->flags_10 & 4) {
-            event = FUN_00468cd0(0, 0);
+            event = AllocTimestampedObjectiveEvent(0, 0);
         } else {
-            event = FUN_00468cd0(0, 1);
+            event = AllocTimestampedObjectiveEvent(0, 1);
         }
         event->field_40 = target->field_40;
-        FUN_00468c80(event);
+        InsertObjectiveEventSorted(event);
         return 1;
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x00468d80
-void FUN_00468d80(struct NerpsArg *object, unsigned int a, int b) {
+void QueueBuildMoreObjectsHint(struct ObjectiveEvent *object, unsigned int a, int b) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
-    event = FUN_00468cd0(1, 1);
+    event = AllocTimestampedObjectiveEvent(1, 1);
     event->field_4 = a;
     event->field_1c = b;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00468dc0
-void FUN_00468dc0(struct NerpsArg *object, unsigned int a) {
+void QueueConnectToPathHint(struct ObjectiveEvent *object, unsigned int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
-    event = FUN_00468cd0(2, 1);
+    event = AllocTimestampedObjectiveEvent(2, 1);
     event->field_4 = a;
     event->field_1c = 0;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00468e00
-void FUN_00468e00(struct NerpsArg *object, unsigned int a) {
+void QueueLinkToEntranceHint(struct ObjectiveEvent *object, unsigned int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
-    event = FUN_00468cd0(2, 1);
+    event = AllocTimestampedObjectiveEvent(2, 1);
     event->field_4 = a;
     event->field_1c = 1;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00468e40
-void FUN_00468e40(struct NerpsArg *arg, unsigned int class_id, int count, int sum) {
+void QueueBuildRangeAttractionsHint(struct ObjectiveEvent *arg, unsigned int class_id, int count, int sum) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(arg) != 0) {
+    if (QueueCustomObjectiveHint(arg) != 0) {
         return;
     }
-    event = FUN_00468cd0(3, 1);
+    event = AllocTimestampedObjectiveEvent(3, 1);
     if (count < 0) {
         count = 0;
     }
@@ -446,20 +403,20 @@ void FUN_00468e40(struct NerpsArg *arg, unsigned int class_id, int count, int su
     event->field_4 = class_id;
     event->field_14 = count;
     event->field_1c = sum;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00468ea0
-void FUN_00468ea0(struct NerpsArg *arg, unsigned int class_id, int count, int sum) {
+void QueueDeleteRangeAttractionsHint(struct ObjectiveEvent *arg, unsigned int class_id, int count, int sum) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(arg) != 0) {
+    if (QueueCustomObjectiveHint(arg) != 0) {
         return;
     }
-    event = FUN_00468cd0(4, 1);
+    event = AllocTimestampedObjectiveEvent(4, 1);
     if (count < 0) {
         count = 0;
     }
@@ -469,223 +426,223 @@ void FUN_00468ea0(struct NerpsArg *arg, unsigned int class_id, int count, int su
     event->field_4 = class_id;
     event->field_14 = count;
     event->field_1c = sum;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00468f00
-void FUN_00468f00(struct NerpsArg *object, int a) {
+void QueueClearAreaHint(struct ObjectiveEvent *object, int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
-    event = FUN_00468cd0(5, 1);
+    event = AllocTimestampedObjectiveEvent(5, 1);
     event->field_1c = a;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00468f40
-void FUN_00468f40(struct NerpsArg *arg, unsigned int class_id, int count) {
+void QueueDeleteObjectsHint(struct ObjectiveEvent *arg, unsigned int class_id, int count) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(arg) != 0) {
+    if (QueueCustomObjectiveHint(arg) != 0) {
         return;
     }
-    event = FUN_00468cd0(6, 1);
+    event = AllocTimestampedObjectiveEvent(6, 1);
     event->field_1c = count;
     event->field_4 = class_id;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00468f80
-void FUN_00468f80(struct NerpsArg *object, int a) {
+void QueueAttractVisitorsHint(struct ObjectiveEvent *object, int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
-    event = FUN_00468cd0(7, 1);
+    event = AllocTimestampedObjectiveEvent(7, 1);
     event->field_1c = a;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00468fc0
-void FUN_00468fc0(struct NerpsArg *object, int a) {
+void QueueMoreGardenersHint(struct ObjectiveEvent *object, int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
-    event = FUN_00468cd0(8, 1);
+    event = AllocTimestampedObjectiveEvent(8, 1);
     event->field_1c = a;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00469000
-void FUN_00469000(struct NerpsArg *object, int a) {
+void QueueFewerGardenersHint(struct ObjectiveEvent *object, int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
-    event = FUN_00468cd0(8, 1);
+    event = AllocTimestampedObjectiveEvent(8, 1);
     event->field_1c = -a;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00469040
-void FUN_00469040(struct NerpsArg *object, unsigned int a) {
+void QueueMoreMechanicsHint(struct ObjectiveEvent *object, unsigned int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
-    event = FUN_00468cd0(9, 1);
+    event = AllocTimestampedObjectiveEvent(9, 1);
     event->field_1c = a;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00469080
-void FUN_00469080(struct NerpsArg *object, int a) {
+void QueueFewerMechanicsHint(struct ObjectiveEvent *object, int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
-    event = FUN_00468cd0(9, 1);
+    event = AllocTimestampedObjectiveEvent(9, 1);
     event->field_1c = -a;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x004690c0
-void FUN_004690c0(struct NerpsArg *arg, int count) {
+void QueueSaveCoinsHint(struct ObjectiveEvent *arg, int count) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(arg) != 0) {
+    if (QueueCustomObjectiveHint(arg) != 0) {
         return;
     }
-    event = FUN_00468cd0(0xd, 1);
+    event = AllocTimestampedObjectiveEvent(0xd, 1);
     event->field_1c = count;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00469100
-void FUN_00469100(struct NerpsArg *object, int a, unsigned int b) {
+void QueueHappyVisitorsHint(struct ObjectiveEvent *object, int a, unsigned int b) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
-    event = FUN_00468cd0(0xe, 1);
+    event = AllocTimestampedObjectiveEvent(0xe, 1);
     event->field_1c = a;
     event->field_14 = b;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00469140
-void FUN_00469140(struct NerpsArg *object, unsigned int a, unsigned int b) {
+void QueueFewerHungryVisitorsHint(struct ObjectiveEvent *object, unsigned int a, unsigned int b) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
-    event = FUN_00468cd0(0xf, 1);
+    event = AllocTimestampedObjectiveEvent(0xf, 1);
     event->field_1c = a;
     event->field_14 = b;
     event->field_18 = 1;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00469190
-void FUN_00469190(struct NerpsArg *object, unsigned int a, unsigned int b) {
+void QueueMoreFedVisitorsHint(struct ObjectiveEvent *object, unsigned int a, unsigned int b) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
-    event = FUN_00468cd0(0xf, 1);
+    event = AllocTimestampedObjectiveEvent(0xf, 1);
     event->field_1c = a;
     event->field_14 = b;
     event->field_18 = 0;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x004691e0
-void FUN_004691e0(struct NerpsArg *arg, int param_2, unsigned int param_3) {
+void QueueRepairObjectsHint(struct ObjectiveEvent *arg, int param_2, unsigned int param_3) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(arg) != 0) {
+    if (QueueCustomObjectiveHint(arg) != 0) {
         return;
     }
-    event = FUN_00468cd0(0x10, 1);
+    event = AllocTimestampedObjectiveEvent(0x10, 1);
     event->field_1c = param_2;
     event->field_14 = param_3;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00469220
-void FUN_00469220(struct NerpsArg *object, unsigned int a, unsigned int b) {
+void QueueRideVisitorsHint(struct ObjectiveEvent *object, unsigned int a, unsigned int b) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
-    event = FUN_00468cd0(0x11, 1);
+    event = AllocTimestampedObjectiveEvent(0x11, 1);
     event->field_4 = a;
     event->field_1c = b;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00469260
-void FUN_00469260(struct NerpsArg *arg, unsigned int class_id, int sum, int count) {
+void QueueAddRidePartsHint(struct ObjectiveEvent *arg, unsigned int class_id, int sum, int count) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(arg) != 0) {
+    if (QueueCustomObjectiveHint(arg) != 0) {
         return;
     }
-    event = FUN_00468cd0(0x12, 1);
+    event = AllocTimestampedObjectiveEvent(0x12, 1);
     if (sum < 0) {
         sum = 0;
     }
@@ -695,64 +652,64 @@ void FUN_00469260(struct NerpsArg *arg, unsigned int class_id, int sum, int coun
     event->field_4 = class_id;
     event->field_14 = count;
     event->field_1c = sum;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00469310
-void FUN_00469310(struct NerpsArg *object, unsigned int a, int b) {
+void QueueCoverSquaresHint(struct ObjectiveEvent *object, unsigned int a, int b) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
-    event = FUN_00468cd0(0xa, 1);
+    event = AllocTimestampedObjectiveEvent(0xa, 1);
     event->field_14 = b;
     event->field_1c = a;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00469350
-void FUN_00469350(struct NerpsArg *object, int a) {
+void QueuePathSceneryHint(struct ObjectiveEvent *object, int a) {
     struct ObjectiveEvent *event;
 
-    if (FUN_00468d10() == 0) {
+    if (IsObjectiveHintDue() == 0) {
         return;
     }
-    if (FUN_00468d30(object) != 0) {
+    if (QueueCustomObjectiveHint(object) != 0) {
         return;
     }
-    event = FUN_00468cd0(0xb, 1);
+    event = AllocTimestampedObjectiveEvent(0xb, 1);
     event->field_14 = a;
-    FUN_00468c80(event);
+    InsertObjectiveEventSorted(event);
 }
 
 // FUNCTION: LEGOLAND 0x00469390
-void FUN_00469390(struct NerpsArg *object) {
-    if (FUN_00468d10() != 0) {
-        FUN_00468d30(object);
+void QueueCustomObjectiveHintIfDue(struct ObjectiveEvent *object) {
+    if (IsObjectiveHintDue() != 0) {
+        QueueCustomObjectiveHint(object);
     }
 }
 
 // FUNCTION: LEGOLAND 0x004693b0
-void FUN_004693b0(unsigned int type) {
+void RemoveObjectiveEventsOfType(unsigned int type) {
     struct ObjectiveEvent *node;
     struct ObjectiveEvent *next;
     struct ObjectiveEvent *prev;
 
     prev = NULL;
-    node = DAT_00668728;
+    node = ObjectiveEventList;
     while (node != NULL) {
         next = node->next;
         if (node->type == type) {
             if (prev != NULL) {
                 prev->next = next;
             } else {
-                DAT_00668728 = next;
+                ObjectiveEventList = next;
             }
-            FUN_00468940(node);
+            FreeObjectiveEvent(node);
         } else {
             prev = node;
         }
@@ -761,434 +718,440 @@ void FUN_004693b0(unsigned int type) {
 }
 
 // FUNCTION: LEGOLAND 0x00469400
-void FUN_00469400(void) {
+void PostPendingObjectiveHints(void) {
     struct ObjectiveEvent *node;
 
     GetGameTimer();
     do {
-        node = DAT_00668728;
+        node = ObjectiveEventList;
         if (node != NULL) {
             switch (node->type) {
             case 0:
-                FUN_00468bb0((char *)DAT_004b8bbc, DAT_007fe120[node->field_40]);
-                DAT_00668614 = node->field_40;
+                PostObjectiveMessage((char *)PercentSFormat, ScriptStringTable[node->field_40]);
+                CurrentObjectivePromptIndex = node->field_40;
                 break;
             case 1:
                 // STRING: LEGOLAND 0x004ba6bc
-                FUN_00468bb0("You need to build %d more of object %s", node->field_1c,
-                    ((struct PlaceObject *)node->field_4)->cls->name);
+                PostObjectiveMessage("You need to build %d more of object %s", node->field_1c,
+                    ((struct Element *)node->element)->ride->name);
                 break;
             case 0xc:
                 // STRING: LEGOLAND 0x004ba69c
-                FUN_00468bb0("You need to research object %s", ((struct PlaceObject *)node->field_4)->cls->name);
+                PostObjectiveMessage("You need to research object %s", ((struct Element *)node->element)->ride->name);
                 break;
             case 2:
                 if (node->field_1c == 0) {
                     if (node->field_4 != 0) {
                         // STRING: LEGOLAND 0x004ba674
-                        FUN_00468bb0("You need to connect your %s to a path",
-                            ((struct PlaceObject *)node->field_4)->cls->name);
+                        PostObjectiveMessage("You need to connect your %s to a path",
+                            ((struct Element *)node->element)->ride->name);
                     } else {
                         // STRING: LEGOLAND 0x004ba648
-                        FUN_00468bb0("You need to connect all objects to a path");
+                        PostObjectiveMessage("You need to connect all objects to a path");
                     }
                 } else {
                     if (node->field_4 != 0) {
                         // STRING: LEGOLAND 0x004ba60c
-                        FUN_00468bb0("You need to link the path from your %s to the park entrance",
-                            ((struct PlaceObject *)node->field_4)->cls->name);
+                        PostObjectiveMessage("You need to link the path from your %s to the park entrance",
+                            ((struct Element *)node->element)->ride->name);
                     } else {
                         // STRING: LEGOLAND 0x004ba5c8
-                        FUN_00468bb0("You need to link the paths from all objects to the park entrance.");
+                        PostObjectiveMessage("You need to link the paths from all objects to the park entrance.");
                     }
                 }
                 break;
             case 3:
                 if (node->field_14 != 0) {
                     // STRING: LEGOLAND 0x004ba590
-                    FUN_00468bb0("You need to build %d new attractions from the %s range", node->field_14,
-                        *(unsigned int *)node->field_4);
+                    PostObjectiveMessage("You need to build %d new attractions from the %s range", node->field_14,
+                        *(unsigned int *)node->element);
                 } else {
                     // STRING: LEGOLAND 0x004ba558
-                    FUN_00468bb0("You need to build %d more attractions from the %s range", node->field_1c,
-                        *(unsigned int *)node->field_4);
+                    PostObjectiveMessage("You need to build %d more attractions from the %s range", node->field_1c,
+                        *(unsigned int *)node->element);
                 }
                 break;
             case 4:
                 if (node->field_14 != 0) {
                     // STRING: LEGOLAND 0x004ba510
-                    FUN_00468bb0("You need to delete all instances of %d attractions from the %s range", node->field_14,
-                        *(unsigned int *)node->field_4);
+                    PostObjectiveMessage("You need to delete all instances of %d attractions from the %s range", node->field_14,
+                        *(unsigned int *)node->element);
                 } else {
                     // STRING: LEGOLAND 0x004ba4dc
-                    FUN_00468bb0("You need delete %d attractions from the %s range", node->field_1c,
-                        *(unsigned int *)node->field_4);
+                    PostObjectiveMessage("You need delete %d attractions from the %s range", node->field_1c,
+                        *(unsigned int *)node->element);
                 }
                 break;
             case 5:
                 // STRING: LEGOLAND 0x004ba4b0
-                FUN_00468bb0("You need to remove %d items from the area", node->field_1c);
+                PostObjectiveMessage("You need to remove %d items from the area", node->field_1c);
                 break;
             case 6:
                 // STRING: LEGOLAND 0x004ba48c
-                FUN_00468bb0("You need to delete %d of object %s", node->field_1c,
-                    ((struct PlaceObject *)node->field_4)->cls->name);
+                PostObjectiveMessage("You need to delete %d of object %s", node->field_1c,
+                    ((struct Element *)node->element)->ride->name);
                 break;
             case 7:
                 // STRING: LEGOLAND 0x004ba45c
-                FUN_00468bb0("You need to attract %d more people to your park", node->field_1c);
+                PostObjectiveMessage("You need to attract %d more people to your park", node->field_1c);
                 break;
             case 8:
                 if ((int)node->field_1c > 0) {
                     // STRING: LEGOLAND 0x004ba428
-                    FUN_00468bb0("You need %d more gardeners to look after your park", node->field_1c);
+                    PostObjectiveMessage("You need %d more gardeners to look after your park", node->field_1c);
                 } else {
                     // STRING: LEGOLAND 0x004ba3fc
-                    FUN_00468bb0("You need %d fewer gardeners in your park", -(int)node->field_1c);
+                    PostObjectiveMessage("You need %d fewer gardeners in your park", -(int)node->field_1c);
                 }
                 break;
             case 9:
                 if ((int)node->field_1c > 0) {
                     // STRING: LEGOLAND 0x004ba3cc
-                    FUN_00468bb0("You need %d more mechanics to help in the park", node->field_1c);
+                    PostObjectiveMessage("You need %d more mechanics to help in the park", node->field_1c);
                 } else {
                     // STRING: LEGOLAND 0x004ba3a0
-                    FUN_00468bb0("You need %d fewer mechanics in your park", -(int)node->field_1c);
+                    PostObjectiveMessage("You need %d fewer mechanics in your park", -(int)node->field_1c);
                 }
                 break;
             case 0xa:
                 switch (node->field_1c) {
                 case 0:
                     // STRING: LEGOLAND 0x004ba370
-                    FUN_00468bb0("You need to cover %d more squares with objects", node->field_14);
+                    PostObjectiveMessage("You need to cover %d more squares with objects", node->field_14);
                     break;
                 case 1:
                     // STRING: LEGOLAND 0x004ba340
-                    FUN_00468bb0("You need to cover %d more squares with rides", node->field_14);
+                    PostObjectiveMessage("You need to cover %d more squares with rides", node->field_14);
                     break;
                 case 4:
                     // STRING: LEGOLAND 0x004ba310
-                    FUN_00468bb0("You need to cover %d more squares with shops", node->field_14);
+                    PostObjectiveMessage("You need to cover %d more squares with shops", node->field_14);
                     break;
                 case 5:
                     // STRING: LEGOLAND 0x004ba2dc
-                    FUN_00468bb0("You need to cover %d more squares with food outlets", node->field_14);
+                    PostObjectiveMessage("You need to cover %d more squares with food outlets", node->field_14);
                     break;
                 case 2:
                     // STRING: LEGOLAND 0x004ba2ac
-                    FUN_00468bb0("You need to cover %d more squares with scenery", node->field_14);
+                    PostObjectiveMessage("You need to cover %d more squares with scenery", node->field_14);
                     break;
                 case 3:
                     // STRING: LEGOLAND 0x004ba26c
-                    FUN_00468bb0("You need to cover %d more squares with stop 'n' wonder objects", node->field_14);
+                    PostObjectiveMessage("You need to cover %d more squares with stop 'n' wonder objects", node->field_14);
                     break;
                 }
                 break;
             case 0xb:
                 // STRING: LEGOLAND 0x004ba234
-                FUN_00468bb0("You need to line %d%% more of your path with scenery", node->field_14);
+                PostObjectiveMessage("You need to line %d%% more of your path with scenery", node->field_14);
                 break;
             case 0xd:
                 // STRING: LEGOLAND 0x004ba210
-                FUN_00468bb0("You need to save up %d more coins.", node->field_1c);
+                PostObjectiveMessage("You need to save up %d more coins.", node->field_1c);
                 break;
             case 0xe:
                 // STRING: LEGOLAND 0x004ba1dc
-                FUN_00468bb0("You need make %d people up to happiness level %d", node->field_1c, node->field_14);
+                PostObjectiveMessage("You need make %d people up to happiness level %d", node->field_1c, node->field_14);
                 break;
             case 0xf:
                 if (node->field_18 != 0) {
                     // STRING: LEGOLAND 0x004ba198
-                    FUN_00468bb0("You need to get %d fewer people with hunger levels greater than %d", node->field_1c,
+                    PostObjectiveMessage("You need to get %d fewer people with hunger levels greater than %d", node->field_1c,
                         node->field_14);
                 } else {
                     // STRING: LEGOLAND 0x004ba15c
-                    FUN_00468bb0("You need to get %d more people with hunger level below %d", node->field_1c,
+                    PostObjectiveMessage("You need to get %d more people with hunger level below %d", node->field_1c,
                         node->field_14);
                 }
                 break;
             case 0x10:
                 // STRING: LEGOLAND 0x004ba110
-                FUN_00468bb0("You need make repairs to %d objects to bring them to above %d%% of health", node->field_1c,
+                PostObjectiveMessage("You need make repairs to %d objects to bring them to above %d%% of health", node->field_1c,
                     node->field_14);
                 break;
             case 0x11:
                 // STRING: LEGOLAND 0x004ba0e4
-                FUN_00468bb0("You need to get %d more people on the %s", node->field_1c,
-                    ((struct PlaceObject *)node->field_4)->cls->name);
+                PostObjectiveMessage("You need to get %d more people on the %s", node->field_1c,
+                    ((struct Element *)node->element)->ride->name);
                 break;
             case 0x12:
                 if (node->field_14 != 0) {
                     // STRING: LEGOLAND 0x004ba0b4
-                    FUN_00468bb0("You need to add %d different parts to the %s", node->field_14,
-                        ((struct PlaceObject *)node->field_4)->cls->name);
+                    PostObjectiveMessage("You need to add %d different parts to the %s", node->field_14,
+                        ((struct Element *)node->element)->ride->name);
                 } else {
                     // STRING: LEGOLAND 0x004ba08c
-                    FUN_00468bb0("You need to add %d more parts to the %s", node->field_1c,
-                        ((struct PlaceObject *)node->field_4)->cls->name);
+                    PostObjectiveMessage("You need to add %d more parts to the %s", node->field_1c,
+                        ((struct Element *)node->element)->ride->name);
                 }
                 break;
             case 0x13:
                 switch (node->field_18) {
                 case 0:
                     // STRING: LEGOLAND 0x004ba050
-                    FUN_00468bb0("You need to improve the LEGOLAND zoning (from %d%% to %d%%)", node->field_1c,
+                    PostObjectiveMessage("You need to improve the LEGOLAND zoning (from %d%% to %d%%)", node->field_1c,
                         node->field_14);
                     break;
                 case 1:
                     // STRING: LEGOLAND 0x004ba010
-                    FUN_00468bb0("You need to improve the ADVENTURER zoning (from %d%% to %d%%)", node->field_1c,
+                    PostObjectiveMessage("You need to improve the ADVENTURER zoning (from %d%% to %d%%)", node->field_1c,
                         node->field_14);
                     break;
                 case 2:
                     // STRING: LEGOLAND 0x004b9fd4
-                    FUN_00468bb0("You need to  inprove the CASTLE zoning (from %d%% to %d%%)", node->field_1c,
+                    PostObjectiveMessage("You need to  inprove the CASTLE zoning (from %d%% to %d%%)", node->field_1c,
                         node->field_14);
                     break;
                 case 3:
                     // STRING: LEGOLAND 0x004b9f98
-                    FUN_00468bb0("You need to improve the WESTERN zoning (from %d%% to %d%%)", node->field_1c,
+                    PostObjectiveMessage("You need to improve the WESTERN zoning (from %d%% to %d%%)", node->field_1c,
                         node->field_14);
                     break;
                 }
                 break;
             }
-            FUN_004693b0(node->type);
+            RemoveObjectiveEventsOfType(node->type);
         }
     } while (node != NULL);
 }
 
 // FUNCTION: LEGOLAND 0x00469900
-void FUN_00469900(struct NerpsArg *object, unsigned int a, unsigned int b) {
-    struct RewardObject *obj;
+void GiveRewardObject(struct Element *object, unsigned int a, unsigned int b) {
+    struct Element *obj;
     unsigned int flags;
 
-    obj = (struct RewardObject *)object;
+    obj = (struct Element *)object;
     if (obj != NULL) {
         flags = obj->flags;
         if ((flags & 1) != 0) {
             if ((flags & 0x10002) != 2) {
                 obj->flags = (flags & 0xfffeffff) | 2;
-                FUN_0048a6e0((struct ClippedObject *)obj);
+                UnlockFreePlayObject((struct Element *)obj);
                 if (a != 0) {
-                    FUN_00471c10(obj->info);
+                    AddNewObjectIcon(obj->data);
                 }
             } else {
                 // STRING: LEGOLAND 0x004ba6e4
-                DBPrintf("Not giving %d.. Already got it\n", obj->id);
+                DBPrintf("Not giving %d.. Already got it\n", obj->name);
             }
         }
     }
-    DAT_0066871c = 1;
+    BuildMenuRefreshPending = 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469980
-void FUN_00469980(struct ThemeQueryArg *arg) {
-    struct ThemeData *theme;
-    unsigned int id;
+void CountObjectTheme(struct Element *arg) {
+    struct Ride *theme;
+    struct Element *id;
 
-    theme = arg->theme;
+    theme = arg->ride;
     // STRING: LEGOLAND 0x004ba748
     if (LLIDB_FindElement("LEGOLAND THEME", &id, 0) == 0) {
-        if (theme->theme_id == id) {
-            DAT_007fe114++;
+        if (theme->theme_element == id) {
+            LegolandCommonThemeCount++;
             return;
         }
         // STRING: LEGOLAND 0x004ba738
-        if (LLIDB_FindElement("COMMON THEME", &id, 0) == 0 && theme->theme_id == id) {
-            DAT_007fe114++;
+        if (LLIDB_FindElement("COMMON THEME", &id, 0) == 0 && theme->theme_element == id) {
+            LegolandCommonThemeCount++;
             return;
         }
     }
     // STRING: LEGOLAND 0x004ba728
-    if (LLIDB_FindElement("WESTERN THEME", &id, 0) == 0 && theme->theme_id == id) {
-        DAT_007fe115++;
+    if (LLIDB_FindElement("WESTERN THEME", &id, 0) == 0 && theme->theme_element == id) {
+        WesternThemeCount++;
         return;
     }
     // STRING: LEGOLAND 0x004ba718
-    if (LLIDB_FindElement("CASTLE THEME", &id, 0) == 0 && theme->theme_id == id) {
-        DAT_007fe116++;
+    if (LLIDB_FindElement("CASTLE THEME", &id, 0) == 0 && theme->theme_element == id) {
+        CastleThemeCount++;
         return;
     }
     // STRING: LEGOLAND 0x004ba704
-    if (LLIDB_FindElement("ADVENTURERS THEME", &id, 0) == 0 && theme->theme_id == id) {
-        DAT_007fe117++;
+    if (LLIDB_FindElement("ADVENTURERS THEME", &id, 0) == 0 && theme->theme_element == id) {
+        AdventurersThemeCount++;
     }
 }
 
+/* Makes a valid object researchable by clearing available/buildable flag 2 and setting research-menu flag 0x10000;
+ * counts its theme and requests a build-menu refresh. */
 // FUNCTION: LEGOLAND 0x00469a80
-void FUN_00469a80(struct NerpsArg *object) {
+void MakeObjectResearchable(struct Element *object) {
     unsigned int flags;
 
     if (object != NULL) {
-        flags = ((struct ObjectiveEvent *)object)->field_8;
+        flags = object->flags;
         if (flags & 1) {
-            ((struct ObjectiveEvent *)object)->field_8 = (flags & 0xfffffffd) | 0x10000;
-            FUN_00469980((struct ThemeQueryArg *)object);
+            object->flags = (flags & 0xfffffffd) | 0x10000;
+            CountObjectTheme(object);
         }
     }
-    DAT_0066871c = 1;
+    BuildMenuRefreshPending = 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469ab0
-void FUN_00469ab0(struct NerpsArg *object) {
+void TakeRewardObject(struct Element *object) {
     unsigned int flags;
 
     if (object != NULL) {
-        flags = ((struct ObjectiveEvent *)object)->field_8;
+        flags = object->flags;
         if (flags & 1) {
-            ((struct ObjectiveEvent *)object)->field_8 = flags & 0xfffefffd;
+            object->flags = flags & 0xfffefffd;
         }
     }
-    DAT_0066871c = 1;
+    BuildMenuRefreshPending = 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469ae0
-int FUN_00469ae0(struct RewardArg *arg) {
+int ProcessUnimplementedReward(struct ObjectiveEvent *arg) {
     // STRING: LEGOLAND 0x004ba758
-    DBPrintf("Processing unimplemented reward [ Type = %d ]\n", arg->reward_type);
+    DBPrintf("Processing unimplemented reward [ Type = %d ]\n", arg->type);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469b00
-int FUN_00469b00(struct RewardArg *arg) {
+int ProcessUnimplementedObjective(struct ObjectiveEvent *arg) {
     // STRING: LEGOLAND 0x004ba788
-    DBPrintf("Processing unimplemented objective [ Type = %d ]\n", arg->reward_type);
+    DBPrintf("Processing unimplemented objective [ Type = %d ]\n", arg->type);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469b20
-int FUN_00469b20(struct ObjectiveEvent *event) {
-    struct NerpsArg *object;
+int ScriptEventGive(struct ObjectiveEvent *event) {
+    struct Element *object;
 
-    object = (struct NerpsArg *)event->field_4;
-    FUN_00469900(object, event->field_14, 0);
-    object = (struct NerpsArg *)event->field_4;
-    ((struct ObjectiveEvent *)object)->field_8 |= 0x20000;
+    object = event->element;
+    GiveRewardObject(object, event->field_14, 0);
+    object = event->element;
+    object->flags |= 0x20000;
     return 1;
 }
 
+/* Objective event handler that makes its element researchable and reports immediate completion. */
 // FUNCTION: LEGOLAND 0x00469b50
-int FUN_00469b50(struct ObjectiveEvent *event) {
-    FUN_00469a80((struct NerpsArg *)event->field_4);
+int ScriptEventMakeResearchable(struct ObjectiveEvent *event) {
+    MakeObjectResearchable(event->element);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469b70
-int FUN_00469b70(struct ObjectiveEvent *event) {
-    FUN_00469ab0((struct NerpsArg *)event->field_4);
+int ScriptEventTake(struct ObjectiveEvent *event) {
+    TakeRewardObject(event->element);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469b90
-int FUN_00469b90(struct ObjectiveEvent *event) {
-    FUN_00457900(GetBrickCount() + event->field_1c);
+int ObjectiveEventAddBricks(struct ObjectiveEvent *event) {
+    SetBrickCount(GetBrickCount() + event->field_1c);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469bb0
-int FUN_00469bb0(struct ObjectiveEvent *event) {
-    FUN_00457900(event->field_1c);
+int ObjectiveEventSetBricks(struct ObjectiveEvent *event) {
+    SetBrickCount(event->field_1c);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469bd0
-void FUN_00469bd0(unsigned int a, void *b) {
-    struct PlaceObject *object;
-    struct ObjClass *cls;
+void PlaceObjectAtTile(struct Element *a, void *b) {
+    struct Ride *cls;
     struct Point centre;
 
-    object = (struct PlaceObject *)a;
-    cls = object->cls;
-    FUN_00457870(0);
+    cls = a->ride;
+    SetBricksLimited(0);
     GetTileCentre((struct Point *)b, &centre.x);
-    EditCursor.field_1404 = centre.x;
-    EditCursor.field_1408 = centre.y;
-    cls->method_90(a, &centre, 0x8f8);
-    FUN_0045d770(&EditCursor);
-    PutObjOnMap(object->cls, a, (struct Point *)&EditCursor.field_1404);
-    FUN_00457870(1);
+    EditCursor.tile_x = centre.x;
+    EditCursor.tile_y = centre.y;
+    cls->cb_90(a, &centre, 0x8f8);
+    LayCursorPathFootprint(&EditCursor);
+    PutObjOnMap(a->ride, a, (struct Point *)&EditCursor.tile_x);
+    SetBricksLimited(1);
 }
 
 // FUNCTION: LEGOLAND 0x00469c40
-int FUN_00469c40(struct ObjectiveEvent *event) {
-    FUN_00469bd0(event->field_4, &event->field_20);
+int ScriptEventPlace(struct ObjectiveEvent *event) {
+    PlaceObjectAtTile(event->element, &event->field_20);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469c60
-int FUN_00469c60(unsigned int handle) {
-    SetSampleFade((struct Sample *)handle, -100);
+int FadeOutSampleCallback(struct Sample *handle) {
+    SetSampleFade(handle, -100);
     return 0;
 }
 
+// Script "clear" event: removes every object whose footprint overlaps the event's area
+// (field_28..field_30 x, field_2c..field_34 y), in three passes over the render list (powered
+// parent-flagged objects first, then any powered object, then the rest), each removal done through
+// the normal query cursor (saved and restored around it). Plays the inventory sound while it runs.
 // FUNCTION: LEGOLAND 0x00469c80
-int FUN_00469c80(struct MapRectArg *arg) {
+int ScriptEventClear(struct ObjectiveEvent *arg) {
     struct SweepInstance *next;
     RECT rect;
+    short tile_x;
     struct SweepInstance *current;
-    char tile_x;
-    struct ObjClass *cls;
-    char tile_y;
+    struct Ride *cls;
+    short tile_y;
     struct Cursor saved;
     struct Point point;
     struct Sample *sample;
-    int power;
     void *saved_class;
+    int power;
     int phase;
 
-    sample = PlayInstanceOfSample(DAT_004b92fc, 1, 1, 0);
-    FUN_00496d10(sample);
-    AddSFX_Callback((struct CallbackEntry *)sample, 3000, (unsigned int (*)(struct CallbackEntry *))FUN_00469c60);
+    int right;
+    sample = PlayInstanceOfSample(GameFX[FX_INVENTORY_OUT].sample, 1, 1, 0);
+    SetSampleFlag20(sample);
+    AddSFX_Callback(sample, 3000, (unsigned int (*)(struct Sample *))FadeOutSampleCallback);
     for (phase = 0; phase < 3; phase++) {
         current = (struct SweepInstance *)GetFirstRenderObject();
         while (current != NULL) {
-            FUN_004969d0();
+            UpdateSound();
             switch (phase) {
             case 0:
                 next = current;
                 do {
                     next = (struct SweepInstance *)GetNextRenderObject((MapElement *)next);
-                } while (next != NULL && (cls = next->object->cls, power = FindObjectsPower(cls), cls->field_58 != NULL) &&
-                    (cls->field_58[8] & 0x10) != 0 && power <= 0);
+                } while (next != NULL && (cls = next->object->ride, power = FindObjectsPower(cls), cls->parent_element != NULL) &&
+                    (0x10 & (unsigned char)cls->parent_element->flags) != 0 && power <= 0);
                 break;
             case 1:
                 next = current;
                 do {
                     next = (struct SweepInstance *)GetNextRenderObject((MapElement *)next);
-                } while (next != NULL && FindObjectsPower(next->object->cls) <= 0);
+                } while (next != NULL && FindObjectsPower(next->object->ride) <= 0);
                 break;
             case 2:
                 next = (struct SweepInstance *)GetNextRenderObject((MapElement *)current);
                 break;
             }
             if (current->flags_c & 0x80) {
-                cls = current->object->cls;
+                cls = current->object->ride;
                 tile_y = current->tile_y;
-                tile_x = current->tile_x;
                 rect.top = cls->footprint.v[1];
+                tile_x = current->tile_x;
                 rect.bottom = cls->footprint.v[3];
                 rect.top += tile_y;
-                rect.right = cls->footprint.v[2];
+                right = cls->footprint.v[2];
+                rect.right = right;
                 rect.right += tile_x;
                 rect.bottom += tile_y;
                 rect.left = cls->footprint.v[0] + tile_x;
-                if (rect.left <= arg->x1 && rect.right >= arg->x0 && rect.top <= arg->y1 && rect.bottom >= arg->y0) {
+                if (rect.left <= arg->field_30 && rect.right >= arg->field_28 && rect.top <= arg->field_34 && rect.bottom >= arg->field_2c) {
                     point.y = tile_y;
                     saved_class = QueryClass;
                     memcpy(&saved, &QueryCursor, sizeof(struct Cursor));
-                    QueryCursor.field_1408 = tile_y;
+                    QueryCursor.tile_y = tile_y;
                     point.x = tile_x;
-                    QueryCursor.field_1404 = point.x;
+                    QueryCursor.tile_x = point.x;
                     QueryObj.pos.x = (unsigned char)point.x;
                     QueryClass = cls;
                     QueryObj.pos.y = (unsigned char)point.y;
-                    cls->method_94(cls->field_c4, &point);
+                    cls->cb_94(cls->element, &point);
                     BuildCursorPtr(&QueryCursor, 0, 0);
-                    if (FUN_0045f4b0(&QueryCursor) != 0) {
-                        FUN_0045d3d0(QueryClass, &point.x);
-                        RemObjFromMap(QueryClass, (unsigned int)(QueryClass)->field_c4, QueryObj,
-                            &QueryCursor);
+                    if (IsCursorBuildable(&QueryCursor) != 0) {
+                        ClearPathUnderFootprint(QueryClass, &point.x);
+                        RemObjFromMap(QueryClass, (QueryClass)->element, QueryObj, &QueryCursor);
                     }
                     memcpy(&QueryCursor, &saved, sizeof(struct Cursor));
                     QueryClass = saved_class;
@@ -1198,19 +1161,19 @@ int FUN_00469c80(struct MapRectArg *arg) {
         }
     }
     CalculateMapRenderOrder();
-    PlayInstanceOfSample(DAT_004b92fc, 0, 1, 0);
+    PlayInstanceOfSample(GameFX[FX_INVENTORY_OUT].sample, 0, 1, 0);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469ed0
-int FUN_00469ed0(struct MapRectArg *arg) {
+int ScriptEventUnglue(struct ObjectiveEvent *arg) {
     int y;
     int x;
 
-    y = arg->y0;
-    while (y <= arg->y1) {
-        x = arg->x0;
-        while (x <= arg->x1) {
+    y = arg->field_2c;
+    while (y <= arg->field_34) {
+        x = arg->field_28;
+        while (x <= arg->field_30) {
             GameMap[y][x].flags &= 0xffbf;
             x++;
         }
@@ -1220,14 +1183,14 @@ int FUN_00469ed0(struct MapRectArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00469f20
-int FUN_00469f20(struct MapRectArg *arg) {
+int ScriptEventGlue(struct ObjectiveEvent *arg) {
     int y;
     int x;
 
-    y = arg->y0;
-    while (y <= arg->y1) {
-        x = arg->x0;
-        while (x <= arg->x1) {
+    y = arg->field_2c;
+    while (y <= arg->field_34) {
+        x = arg->field_28;
+        while (x <= arg->field_30) {
             GameMap[y][x].flags |= 0x40;
             x++;
         }
@@ -1237,32 +1200,32 @@ int FUN_00469f20(struct MapRectArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x00469f70
-int FUN_00469f70(struct RewardArg *arg) {
-    return FUN_00469ae0(arg);
+int ScriptEventExtendPark(struct ObjectiveEvent *arg) {
+    return ProcessUnimplementedReward(arg);
 }
 
 // FUNCTION: LEGOLAND 0x00469f80
-int FUN_00469f80(struct RewardArg *arg) {
-    FUN_00499380();
+int ScriptEventFmv(struct ObjectiveEvent *arg) {
+    PauseGameTimer();
     SetPointer(0);
-    FUN_00496e60(1, 0xf);
-    FUN_004771f0(arg->field_8, 1, 1);
-    FUN_004993c0();
-    FUN_0046ce20();
-    FUN_0046b760();
+    FadeOutSpeechAndEffects(1, 0xf);
+    PlayMovie(arg->text, 1, 1);
+    ResumeGameTimer();
+    ClearAdvisorHelp();
+    RepostScriptIntro();
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00469fc0
-int FUN_00469fc0(struct RewardArg *arg) {
+int ScriptEventInterval(struct ObjectiveEvent *arg) {
     int retries;
 
-    FUN_00490600(0);
-    if (FUN_004907a0(arg->field_8) != 0) {
+    SetIntervalScreenIsBriefing(0);
+    if (LoadIntervalReport(arg->text) != 0) {
         EditMode.unk4 = 2;
-        DAT_00668e38 = 1;
-        DAT_0080ff80.unk4 = 0xffffffff;
-        DAT_0080ff80.unk8 = 7;
+        FrontEndSubScreenActive = 1;
+        FrontEndScreenMode.unk4 = 0xffffffff;
+        FrontEndScreenMode.unk8 = 7;
         return 1;
     }
     retries = arg->field_1c;
@@ -1271,11 +1234,11 @@ int FUN_00469fc0(struct RewardArg *arg) {
         return 0;
     }
     // STRING: LEGOLAND 0x004ba7bc
-    DBPrintf("Giving up trying to load Interval %s\n", arg->field_8);
+    DBPrintf("Giving up trying to load Interval %s\n", arg->text);
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0046a030
-int FUN_0046a030(struct RewardArg *arg) {
-    return FUN_00469ae0(arg);
+int ScriptEventMessage(struct ObjectiveEvent *arg) {
+    return ProcessUnimplementedReward(arg);
 }

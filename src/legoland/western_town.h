@@ -3,39 +3,51 @@
 #include "legoland.h"
 #include "llidb.h"
 
-struct MapObject;
-struct EditObject;
+struct JailCell {
+    struct JailCell *next;
+    unsigned short tile_id;
+    unsigned char frame;
+    unsigned char pad_7[0x8 - 0x7];
+    unsigned int field_8;
+    unsigned int field_c;
+    unsigned int field_10;
+    unsigned int field_14;
+    unsigned int field_18;
+};
+
+struct Element;
+struct Ride;
 struct Cursor;
 
 /* Callback-table entry points for the western-town shops (General Store,
  * Sheriff, Jail Cells, Bank, Saloon), registered by the shops dispatcher
- * (FUN_0043a400). */
-void FUN_004375d0(struct MapObject *obj);
-void FUN_00437610(void);
-void FUN_00437630(void);
-void FUN_00437670(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6);
-void FUN_004378e0(struct MapObject *param_1);
-void FUN_00437ba0(struct MapObject *obj);
-void FUN_00437bd0(void);
-void FUN_00437bf0(void);
-void FUN_00437c30(struct MapObject *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6);
-void FUN_00437c90(struct MapObject *param_1);
-void FUN_00437f60(struct EditObject *editObj, int *coords);
-void FUN_00438020(struct MapObject *editObj, TileId coords, struct Cursor *cursor);
-void FUN_00438070(struct MapObject *obj);
-void FUN_004380f0(void);
-void FUN_00438110(void);
-void FUN_00438150(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6);
-void FUN_00438430(Element *obj);
-LEGO_EXPORT unsigned int SaveJailCells(void);
-LEGO_EXPORT unsigned int LoadJailCells(void);
-void FUN_00438870(struct MapObject *obj);
-void FUN_004388a0(void);
-void FUN_004388c0(void);
-void FUN_00438900(struct MapObject *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6);
-void FUN_00438960(Element *obj);
-void FUN_00438c60(struct MapObject *obj);
-void FUN_00438ca0(void);
-void FUN_00438cc0(void);
-void FUN_00438d00(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6);
-void FUN_00438f10(Element *obj);
+ * (ShopsGetInterfaces). */
+void LoadGStoreMatteSpritesAndMoneySFX(struct Element *obj);
+void KillGStoreMatteSpritesAndMoneySFX(void);
+void GeneralStoreSetEditMode(void);
+void RenderGeneralStore(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int param_6);
+void GeneralStoreUpdate(struct Element *param_1);
+void LoadSherifshutMatteSpriteAndMoneySFX(struct Element *obj);
+void KillSherifshutMatteSpriteAndMoneySFX(void);
+void SheriffSetEditMode(void);
+void RenderSheriff(struct Element *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, void *param_5, unsigned int param_6);
+void SheriffUpdate(struct Element *param_1);
+void JailCellAddObject(struct Element *editObj, int *coords);
+void JailCellRemoveObject(struct Element *editObj, TileId coords, struct Cursor *cursor);
+void JailCellLoad(struct Element *obj);
+void JailCellUnload(void);
+void JailCellSetEditMode(void);
+void RenderJailCell(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int param_6);
+void JailCellUpdate(Element *obj);
+LEGO_EXPORT int SaveJailCells(struct Element *element);
+LEGO_EXPORT int LoadJailCells(struct Element *element);
+void LoadBankMatteSpriteAndMoneySFX(struct Element *obj);
+void KillBankMatteSpriteAndMoneySFX(void);
+void BankSetEditMode(void);
+void RenderBank(struct Element *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, void *param_5, unsigned int param_6);
+void BankUpdate(Element *obj);
+void LoadSaloonMatteSpritesAndMoneySFX(struct Element *obj);
+void KillSaloonMatteSpritesAndMoneySFX(void);
+void SaloonSetEditMode(void);
+void RenderSaloon(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int param_6);
+void SaloonUpdate(Element *obj);

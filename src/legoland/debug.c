@@ -19,10 +19,51 @@
 #include "string.h"
 
 // FUNCTION: LEGOLAND 0x0047f870
-void FUN_0047f870(const char *fmt, ...) {}
+void DebugTrace(const char *fmt, ...) {}
+
+// Strings used by GameMain.
+// GLOBAL: LEGOLAND 0x004bcd44
+static const char GameLogFileName[] = "legoland.log";
+// GLOBAL: LEGOLAND 0x004bcd28
+static const char ResourceOpenErrorFormat[] = "Failed to open resource %s";
+// GLOBAL: LEGOLAND 0x004bcd18
+static const char ErrorBoxTitle[] = "LEGOLAND Error";
+// GLOBAL: LEGOLAND 0x004bcd08
+static const char EraseItSpriteName[] = "erase it.lls";
+// GLOBAL: LEGOLAND 0x004bccf8
+static const char EraseIt2SpriteName[] = "erase it2.lls";
+// GLOBAL: LEGOLAND 0x004bcce8
+static const char NoBuildSpriteName[] = "no build.lls";
+// GLOBAL: LEGOLAND 0x004bccd8
+static const char YesBuildSpriteName[] = "yes build.lls";
+// GLOBAL: LEGOLAND 0x004bccc4
+static const char RabOverIconSpriteName[] = "rab over icon.lls";
+// GLOBAL: LEGOLAND 0x004bccb0
+static const char RabOverIcon2SpriteName[] = "rab over icon2.lls";
+// GLOBAL: LEGOLAND 0x004bcca0
+static const char QuestionItSpriteName[] = "question it.lls";
+// GLOBAL: LEGOLAND 0x004bcc8c
+static const char QuestionIt2SpriteName[] = "question it2.lls";
+// GLOBAL: LEGOLAND 0x004bcc78
+static const char AttractionsMenuName[] = "ATTRACTIONS MENU";
+// GLOBAL: LEGOLAND 0x004bcc64
+static const char FoodStoresMenuName[] = "FOOD STORES MENU";
+// GLOBAL: LEGOLAND 0x004bcc54
+static const char SceneryMenuName[] = "SCENERY MENU";
+// GLOBAL: LEGOLAND 0x004bcc48
+static const char ShopsMenuName[] = "SHOPS MENU";
+// GLOBAL: LEGOLAND 0x004bcc28
+static const char ShutdownTraceMessage[] = "Finished shutting stuff down";
+
+// GameMain: the game's top level. Opens the log, checks the CD, opens the three resource volumes,
+// starts graphics and input, loads the shared pointer sprites and registers the build-menu
+// elements, runs the game (RunGameApplication), then shuts everything down again.
+// Returns 0 on a normal exit, 1 if any start-up step failed.
+// Still differs: the "open the three volumes" loop ends with a signed `jl` here and an unsigned `jb` in
+// the original (docs/attempts/0x0047f880-GameMain.md).
 
 // FUNCTION: LEGOLAND 0x0047f880
-int FUN_0047f880(void) {
+int GameMain(void) {
     char buffer[1024];
     int i;
     int j;
@@ -30,34 +71,31 @@ int FUN_0047f880(void) {
 
     lpConfig->field_1e = 1;
 
-    // STRING: LEGOLAND 0x004bcd44
-    if (FUN_0047f830("legoland.log") == 0) {
+    if (OpenLogFile(GameLogFileName) == 0) {
         return 1;
     }
-    if (FUN_004515e0(1) == 0) {
+    if (WaitForLegolandCd(1) == 0) {
         return 1;
     }
 
     for (i = 0; i < 3; i++) {
-        DAT_007fd640[i] = RES_OpenVolume(DAT_004bcba4[i]);
-        if (DAT_007fd640[i] == NULL) {
-            // STRING: LEGOLAND 0x004bcd28
-            sprintf(buffer, "Failed to open resource %s", DAT_004bcba4[i]);
-            // STRING: LEGOLAND 0x004bcd18
-            MessageBoxA(GetDesktopWindow(), buffer, "LEGOLAND Error", 0x30);
+        ResourceVolumes[i] = RES_OpenVolume(ResourceFileNames[i]);
+        if (ResourceVolumes[i] == NULL) {
+            sprintf(buffer, ResourceOpenErrorFormat, ResourceFileNames[i]);
+            MessageBoxA(GetDesktopWindow(), buffer, ErrorBoxTitle, 0x30);
             for (j = 0; j < i; j++) {
-                RES_CloseVolume(DAT_007fd640[j]);
+                RES_CloseVolume(ResourceVolumes[j]);
             }
             return 1;
         }
     }
 
-    FUN_00498d00();
+    LoadStringTable();
     InitHostSystemGPU();
     if (InitScreen() == 0) {
         MessageBoxA(GetDesktopWindow(), GetString(0xcc), GetString(0xcb), 0x30);
         KillHostSystemGPU();
-        for (vol = DAT_007fd640; vol < DAT_007fd640 + 3; vol++) {
+        for (vol = ResourceVolumes; vol < ResourceVolumes + 3; vol++) {
             RES_CloseVolume(*vol);
         }
         return 1;
@@ -67,90 +105,77 @@ int FUN_0047f880(void) {
         MessageBoxA(GetDesktopWindow(), GetString(0x9c4), GetString(0xcb), 0x30);
         KillInputSystem();
         KillHostSystemGPU();
-        for (vol = DAT_007fd640; vol < DAT_007fd640 + 3; vol++) {
+        for (vol = ResourceVolumes; vol < ResourceVolumes + 3; vol++) {
             RES_CloseVolume(*vol);
         }
         return 1;
     }
 
-    DAT_007fe9c0[0] = 0;
-    // STRING: LEGOLAND 0x004bcd08
-    DAT_007fe9c0[1] = LoadSprite("erase it.lls", 0);
-    // STRING: LEGOLAND 0x004bccf8
-    DAT_007fe9c0[2] = LoadSprite("erase it2.lls", 0);
-    // STRING: LEGOLAND 0x004bcce8
-    DAT_007fe9c0[3] = LoadSprite("no build.lls", 0);
-    // STRING: LEGOLAND 0x004bccd8
-    DAT_007fe9c0[4] = LoadSprite("yes build.lls", 0);
-    // STRING: LEGOLAND 0x004bccc4
-    DAT_007fe9c0[5] = LoadSprite("rab over icon.lls", 0);
-    // STRING: LEGOLAND 0x004bccb0
-    DAT_007fe9c0[6] = LoadSprite("rab over icon2.lls", 0);
-    // STRING: LEGOLAND 0x004bcca0
-    DAT_007fe9c0[7] = LoadSprite("question it.lls", 0);
-    // STRING: LEGOLAND 0x004bcc8c
-    DAT_007fe9c0[8] = LoadSprite("question it2.lls", 0);
+    PointerSprites[0] = 0;
+    PointerSprites[1] = LoadSprite(EraseItSpriteName, 0);
+    PointerSprites[2] = LoadSprite(EraseIt2SpriteName, 0);
+    PointerSprites[3] = LoadSprite(NoBuildSpriteName, 0);
+    PointerSprites[4] = LoadSprite(YesBuildSpriteName, 0);
+    PointerSprites[5] = LoadSprite(RabOverIconSpriteName, 0);
+    PointerSprites[6] = LoadSprite(RabOverIcon2SpriteName, 0);
+    PointerSprites[7] = LoadSprite(QuestionItSpriteName, 0);
+    PointerSprites[8] = LoadSprite(QuestionIt2SpriteName, 0);
 
     LLIDB_LoadICM();
 
-    LLIDB_RegisterNewElement("BUILD MENU", 0, 0x200);
-    // STRING: LEGOLAND 0x004bcc78
-    LLIDB_RegisterNewElement("ATTRACTIONS MENU", 0, 0x200);
-    // STRING: LEGOLAND 0x004bcc64
-    LLIDB_RegisterNewElement("FOOD STORES MENU", 0, 0x200);
-    // STRING: LEGOLAND 0x004bcc54
-    LLIDB_RegisterNewElement("SCENERY MENU", 0, 0x200);
-    // STRING: LEGOLAND 0x004bcc48
-    LLIDB_RegisterNewElement("SHOPS MENU", 0, 0x200);
+    LLIDB_RegisterNewElement(BuildMenuName, 0, 0x200);
+    LLIDB_RegisterNewElement(AttractionsMenuName, 0, 0x200);
+    LLIDB_RegisterNewElement(FoodStoresMenuName, 0, 0x200);
+    LLIDB_RegisterNewElement(SceneryMenuName, 0, 0x200);
+    LLIDB_RegisterNewElement(ShopsMenuName, 0, 0x200);
 
-    FUN_00459520();
+    RunGameApplication();
 
     KillHostSystemGPU();
 
-    for (vol = DAT_007fd640; vol < DAT_007fd640 + 3; vol++) {
+    for (vol = ResourceVolumes; vol < ResourceVolumes + 3; vol++) {
         if (*vol != 0) {
             RES_CloseVolume(*vol);
         }
     }
 
-    // STRING: LEGOLAND 0x004bcc28
-    FUN_0047f870("Finished shutting stuff down");
+    DebugTrace(ShutdownTraceMessage);
 
-    FUN_0047f840();
+    CloseLogFile();
     DeleteStrings();
     LLIDB_CloseICM();
 
-    if (DAT_007fe9c0[3] != 0) {
-        KillSprite(DAT_007fe9c0[3]);
-        DAT_007fe9c0[3] = 0;
+    if (PointerSprites[3] != 0) {
+        KillSprite(PointerSprites[3]);
+        PointerSprites[3] = 0;
     }
-    if (DAT_007fe9c0[4] != 0) {
-        KillSprite(DAT_007fe9c0[4]);
-        DAT_007fe9c0[4] = 0;
+    if (PointerSprites[4] != 0) {
+        KillSprite(PointerSprites[4]);
+        PointerSprites[4] = 0;
     }
-    if (DAT_007fe9c0[7] != 0) {
-        KillSprite(DAT_007fe9c0[7]);
-        DAT_007fe9c0[7] = 0;
+    if (PointerSprites[7] != 0) {
+        KillSprite(PointerSprites[7]);
+        PointerSprites[7] = 0;
     }
-    if (DAT_007fe9c0[8] != 0) {
-        KillSprite(DAT_007fe9c0[8]);
-        DAT_007fe9c0[8] = 0;
+    if (PointerSprites[8] != 0) {
+        KillSprite(PointerSprites[8]);
+        PointerSprites[8] = 0;
     }
-    if (DAT_007fe9c0[1] != 0) {
-        KillSprite(DAT_007fe9c0[1]);
-        DAT_007fe9c0[1] = 0;
+    if (PointerSprites[1] != 0) {
+        KillSprite(PointerSprites[1]);
+        PointerSprites[1] = 0;
     }
-    if (DAT_007fe9c0[2] != 0) {
-        KillSprite(DAT_007fe9c0[2]);
-        DAT_007fe9c0[2] = 0;
+    if (PointerSprites[2] != 0) {
+        KillSprite(PointerSprites[2]);
+        PointerSprites[2] = 0;
     }
-    if (DAT_007fe9c0[5] != 0) {
-        KillSprite(DAT_007fe9c0[5]);
-        DAT_007fe9c0[5] = 0;
+    if (PointerSprites[5] != 0) {
+        KillSprite(PointerSprites[5]);
+        PointerSprites[5] = 0;
     }
-    if (DAT_007fe9c0[6] != 0) {
-        KillSprite(DAT_007fe9c0[6]);
-        DAT_007fe9c0[6] = 0;
+    if (PointerSprites[6] != 0) {
+        KillSprite(PointerSprites[6]);
+        PointerSprites[6] = 0;
     }
 
     return 0;
@@ -165,7 +190,7 @@ LEGO_EXPORT unsigned int mystrlen(const char *s) {
 }
 
 // FUNCTION: LEGOLAND 0x0047fc40
-char *FUN_0047fc40(const char *haystack, const char *needle) {
+char *StrIStr(const char *haystack, const char *needle) {
     char *upper_haystack;
     char *upper_needle;
     char *match;
@@ -218,35 +243,28 @@ int __cdecl wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     }
 
     // STRING: LEGOLAND 0x004bcd70
-    if (FUN_0047fc40(lpCmdLine, "WINDEBUG")) {
-        DAT_004b9ca4 = FUN_004661d0;
-        DAT_00667d6c = 1;
+    if (StrIStr(lpCmdLine, "WINDEBUG")) {
+        BlitFrameFunc = BlitFrameToWindow;
+        WinDebugMode = 1;
         // STRING: LEGOLAND 0x004bcd6c
-    } else if (FUN_0047fc40(lpCmdLine, "BLT")) {
-        DAT_004b9ca4 = FUN_004661d0;
+    } else if (StrIStr(lpCmdLine, "BLT")) {
+        BlitFrameFunc = BlitFrameToWindow;
     }
 
     // STRING: LEGOLAND 0x004bcd60
-    if (FUN_0047fc40(lpCmdLine, "-nointro")) {
+    if (StrIStr(lpCmdLine, "-nointro")) {
         lpConfig->field_40 = 1;
     } else {
         lpConfig->field_40 = 0;
     }
 
     // STRING: LEGOLAND 0x004bcd54
-    DAT_004bf774 = FUN_0047fc40(lpCmdLine, "-nomusic") ? 0 : 1;
+    MusicEnabled = StrIStr(lpCmdLine, "-nomusic") ? 0 : 1;
     g_hInstance = hInstance;
-    DAT_0066920c = nCmdShow;
+    g_nCmdShow = nCmdShow;
 
     if (CheckHostSystemGPU() == 0) {
         return 0;
     }
-    return FUN_0047f880();
-}
-
-/* __stdcall thunk providing _WinMain@16 for LIBC's _WinMainCRTStartup, which
-   forwards to the game's __cdecl WinMain at 0x0047fd10. Not a real binary
-   function (no annotation); only satisfies the CRT startup's reference. */
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-    return wWinMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
+    return GameMain();
 }

@@ -1,50 +1,45 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
 #include "legoland.h"
 
 #include "bloke.h"
+#include "build.h"
 #include "challenge.h"
+#include "controller.h"
+#include "draw.h"
 #include "gamemain.h"
 #include "gamemap.h"
 #include "interface.h"
+#include "llidb.h"
 #include "map_object.h"
 #include "nerps.h"
+#include "objclass.h"
 #include "objectives.h"
+#include "path_control.h"
+#include "pathfind.h"
+#include "resource.h"
+#include "string.h"
+#include "tilemap.h"
 #include "title.h"
+#include "worker.h"
 
 struct GameMainNode {
     struct GameMainNode *next;
-    unsigned char pad_4[0x4];
-    unsigned int field_8;
-    unsigned int field_c;
-};
-
-struct GameMainArg {
-    unsigned int field_0;
-    unsigned int field_4;
-};
-
-struct GameMainEntry {
-    unsigned char pad_0[0x4];
-    char *name;
-};
-
-struct EventNode {
-    struct EventNode *next;
-    unsigned char pad_4[0x1c - 0x4];
-    int sort_key;
-};
-
-struct QueryNode {
-    struct QueryNode *next;
-    unsigned char pad_4[0x8 - 0x4];
-    unsigned int field_8;
-    unsigned int field_c;
+    struct GameMainNode *parent;
+    int x;
+    int y;
+    int step_cost;
+    int path_cost;
+    int heuristic;
+    int field_1c;
+    int field_20;
+    int field_24;
 };
 
 // FUNCTION: LEGOLAND 0x00477680
-int FUN_00477680(int a, int b) {
+int IsInMapBounds(int a, int b) {
     unsigned short limit;
 
     if (a < 0) {
@@ -61,24 +56,24 @@ int FUN_00477680(int a, int b) {
 }
 
 // FUNCTION: LEGOLAND 0x004776c0
-void FUN_004776c0(struct QueryNode *node) {
-    node->next = (struct QueryNode *)DAT_00668fc4;
-    DAT_00668fc4 = (struct InterfaceQueryNode *)node;
+void AddToClosedList(struct GameMainNode *node) {
+    node->next = ClosedPathNodeList;
+    ClosedPathNodeList = node;
 }
 
 // FUNCTION: LEGOLAND 0x004776e0
-void FUN_004776e0(struct EventNode *node) {
-    struct EventNode *current;
-    struct EventNode *previous;
+void InsertOpenListSorted(struct GameMainNode *node) {
+    struct GameMainNode *current;
+    struct GameMainNode *previous;
 
-    if (DAT_00668fc0 == NULL) {
-        DAT_00668fc0 = node;
+    if (OpenPathNodeList == NULL) {
+        OpenPathNodeList = node;
         node->next = NULL;
     } else {
-        current = DAT_00668fc0;
+        current = OpenPathNodeList;
         previous = NULL;
         while (current != NULL) {
-            if (current->sort_key >= node->sort_key) {
+            if (current->field_1c >= node->field_1c) {
                 break;
             }
             previous = current;
@@ -88,22 +83,22 @@ void FUN_004776e0(struct EventNode *node) {
             node->next = previous->next;
             previous->next = node;
         } else {
-            node->next = DAT_00668fc0;
-            DAT_00668fc0 = node;
+            node->next = OpenPathNodeList;
+            OpenPathNodeList = node;
         }
     }
 }
 
 // FUNCTION: LEGOLAND 0x00477730
-struct QueryNode *FUN_00477730(struct QueryNode *ctx) {
-    struct QueryNode *node;
+struct GameMainNode *FindClosedPathNode(struct Point *ctx) {
+    struct GameMainNode *node;
 
-    node = (struct QueryNode *)DAT_00668fc4;
+    node = ClosedPathNodeList;
     if (node == NULL) {
         return NULL;
     }
     while (node != NULL) {
-        if (node->field_8 == *(unsigned int *)ctx && node->field_c == *((unsigned int *)ctx + 1)) {
+        if (node->x == ctx->x && node->y == ctx->y) {
             return node;
         }
         node = node->next;
@@ -112,12 +107,12 @@ struct QueryNode *FUN_00477730(struct QueryNode *ctx) {
 }
 
 // FUNCTION: LEGOLAND 0x00477760
-void FUN_00477760(struct QueryNode *ctx) {
-    struct QueryNode *prev;
-    struct QueryNode *node;
+void RemoveFromClosedList(struct GameMainNode *ctx) {
+    struct GameMainNode *prev;
+    struct GameMainNode *node;
 
     prev = NULL;
-    node = (struct QueryNode *)DAT_00668fc4;
+    node = ClosedPathNodeList;
     while (node != NULL) {
         if (node == ctx) {
             break;
@@ -128,17 +123,17 @@ void FUN_00477760(struct QueryNode *ctx) {
     if (prev != NULL) {
         prev->next = node->next;
     } else {
-        DAT_00668fc4 = (struct InterfaceQueryNode *)node->next;
+        ClosedPathNodeList = node->next;
     }
 }
 
 // FUNCTION: LEGOLAND 0x00477790
-void FUN_00477790(struct EventNode *param_1) {
-    struct EventNode *prev;
-    struct EventNode *node;
+void RemoveFromOpenList(struct GameMainNode *param_1) {
+    struct GameMainNode *prev;
+    struct GameMainNode *node;
 
     prev = NULL;
-    node = DAT_00668fc0;
+    node = OpenPathNodeList;
     while (node != NULL) {
         if (node == param_1) {
             break;
@@ -150,20 +145,20 @@ void FUN_00477790(struct EventNode *param_1) {
         prev->next = node->next;
         return;
     }
-    DAT_00668fc0 = node->next;
+    OpenPathNodeList = node->next;
 }
 
 // FUNCTION: LEGOLAND 0x004777c0
-struct GameMainNode *FUN_004777c0(struct GameMainArg *arg) {
-    struct GameMainNode *node = DAT_00668fc0;
-    unsigned int first;
+struct GameMainNode *FindOpenPathNode(struct Point *arg) {
+    struct GameMainNode *node = OpenPathNodeList;
+    int first;
 
     if (node == NULL) {
         return NULL;
     }
-    first = arg->field_0;
+    first = arg->x;
     do {
-        if (node->field_8 == first && node->field_c == arg->field_4) {
+        if (node->x == first && node->y == arg->y) {
             return node;
         }
         node = node->next;
@@ -172,140 +167,587 @@ struct GameMainNode *FUN_004777c0(struct GameMainArg *arg) {
 }
 
 // FUNCTION: LEGOLAND 0x004777f0
-void FUN_004777f0(void) { STUB(); }
+struct GameMainNode *GetPathNodeAt(struct Point *pos, int *result) {
+    struct GameMainNode *node;
+    struct MapElement *tile;
+    struct Ride *ride;
+    unsigned short flags;
+    int dx;
+    int dy;
 
+    node = FindClosedPathNode(pos);
+    if (node != NULL) {
+        *result = 2;
+        return node;
+    }
+    node = FindOpenPathNode(pos);
+    if (node != NULL) {
+        *result = 1;
+        return node;
+    }
+    *result = 0;
+    node = (struct GameMainNode *)malloc(sizeof(struct GameMainNode));
+    if (pos->x >= 0 && pos->x < lpConfig->width && pos->y >= 0 && pos->y < lpConfig->height) {
+        tile = &GameMap[pos->y][pos->x];
+    } else {
+        tile = NULL;
+    }
+    flags = tile->flags;
+    if ((flags & 0x10) || (tile->field_10 & 1)) {
+        if (IsPathPointLinked(pos)) {
+            node->field_20 = 1;
+        } else {
+            node->field_20 = 0;
+        }
+        node->step_cost = 1;
+    } else if (flags & 0x40) {
+        node->field_20 = 5;
+        node->step_cost = -1;
+    } else if (flags & 0x8a0) {
+        ride = tile->field_0->ride;
+        if (ride->flags & 0x200000) {
+            if (ride->range > 1) {
+                node->field_20 = 4;
+                node->step_cost = 0x14;
+            } else {
+                node->field_20 = 3;
+                node->step_cost = 9;
+            }
+        } else {
+            node->field_20 = 5;
+            node->step_cost = -1;
+        }
+    } else if (tile->field_10 & 2) {
+        node->field_20 = 5;
+        node->step_cost = -1;
+    } else {
+        node->field_20 = 2;
+        node->step_cost = 3;
+    }
+    node->x = pos->x;
+    node->y = pos->y;
+    node->path_cost = 0x7fffffff;
+    dy = abs(pos->y - AStarGoalY);
+    dx = abs(pos->x - AStarGoalX);
+    node->parent = 0;
+    node->field_24 = 0;
+    node->heuristic = dx + dy;
+    node->field_1c = node->step_cost + node->heuristic;
+    return node;
+}
+
+/* A-star axis-change penalty: returns zero when previous and next axis masks overlap, otherwise four. Used in
+ * addition to tile step cost for eligible path nodes. */
 // FUNCTION: LEGOLAND 0x00477980
-unsigned int FUN_00477980(unsigned int param_1, unsigned int param_2) {
+unsigned int GetPathAxisTurnCost(unsigned int param_1, unsigned int param_2) {
     return ((param_1 & param_2) != 0 ? 0xfffffffc : 0u) + 4;
 }
 
+/* Axis mask between two tile positions for A-star turn costs: 1 for vertical, 2 for horizontal, zero for coincident
+ * or diagonal positions. */
 // FUNCTION: LEGOLAND 0x004779a0
-void FUN_004779a0(void) { STUB(); }
+int GetPathStepAxisMask(int x0, int y0, int x1, int y1) {
+    int dx = x0 - x1;
+    int dy = y0 - y1;
+
+    if (dx != 0 && dy != 0) {
+        return 0;
+    }
+    if (dx != 0) {
+        return 2;
+    }
+    return dy != 0;
+}
 
 // FUNCTION: LEGOLAND 0x004779d0
-void FUN_004779d0(void) { STUB(); }
+void RemoveObjectAtPoint(struct Point *p) {
+    struct MapElement *tile;
+    struct Element *elem;
+    struct Ride *saved_class;
+    struct Cursor saved;
+    TileId t;
+    struct Point pos;
+    WorkOrder *order;
+
+    struct Element *ptmp12;
+    register int ptmp60;
+    int ptmp62;
+    void *ptmp63;
+    int ptmp184;
+    if (p->x >= 0 && p->x < (unsigned int)lpConfig->width && p->y >= 0 && (unsigned int)p->y < lpConfig->height) {
+        tile = &GameMap[p->y][p->x];
+    } else {
+        tile = NULL;
+    }
+    if (tile->flags & 0x40) {
+        return;
+    }
+    if (0xa0 & tile->flags) {
+        elem = tile->field_0;
+        saved_class = QueryClass;
+        memcpy(&saved, &QueryCursor, sizeof(struct Cursor));
+        QueryClass = (struct Ride *)elem->data;
+        t.pos.x = tile->field_4;
+        ptmp60 = t.pos.x;
+        pos.x = ptmp60;
+        t.pos.y = tile->field_5;
+        pos.y = t.pos.y;
+        QueryClass->cb_94((unsigned int *)elem, &pos);
+        if (tile->flags & 0x20) {
+            if (QueryClass->flags & 0x200000) {
+                RemoveObjectFromBuildList(t);
+                ClearObjectEntrances((struct Element *)elem, &pos.x);
+                IncrementObjectCount((struct Ride *)QueryClass);
+                RemoveObjectFromMap(t);
+            }
+        } else {
+            RemObjFromMap(QueryClass, elem, t, &QueryCursor);
+        }
+        memcpy(&QueryCursor, &saved, sizeof(struct Cursor));
+        QueryClass = saved_class;
+        return;
+    }
+    if (tile->flags & 0x800) {
+        order = GetGardenerWorkOrderAt(p->x, p->y);
+        if (NULL != order) {
+            ClearObjectEntrances((struct Element *)order->element, &order->pos.x);
+            ptmp63 = order->element->data;
+            ClearPathUnderFootprint((struct Ride *)ptmp63, &order->pos.x);
+            EraseGardenerOrder(order);
+            return;
+        }
+        ptmp62 = p->x;
+        ptmp184 = p->y;
+        order = GetMechanicWorkOrderAt(ptmp62, ptmp184);
+        if (order != NULL) {
+            ptmp12 = order->element;
+            ClearObjectEntrances((struct Element *)ptmp12, &order->pos.x);
+            ClearPathUnderFootprint((struct Ride *)order->element->data, &order->pos.x);
+            EraseMechanicOrder(order);
+            return;
+        }
+    } else if (8 & tile->flags) {
+        RemovePathSquare(p);
+        tile->flags &= 0xfff7;
+        tile->field_10 &= 0xfe;
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00477bd0
-void FUN_00477bd0(int x, int y, int a, int b) { STUB(); }
+void FindMapPathAStar(int x, int y, int a, int b) {
+    register struct GameMainNode *best;
+    struct GameMainNode *cur;
+    register struct GameMainNode *nb;
+    struct Element *id;
+    struct MapElement *tile;
+    int result;
+    struct Point pos;
+    struct Point *pp;
+    int cost;
+
+    unsigned int cur_x;
+    int cur_y;
+    int pos_x;
+    int cur_x2;
+    AStarStartPoint.x = x;
+    AStarStartPoint.y = y;
+    best = NULL;
+    AStarGoalX = a;
+    AStarGoalY = b;
+    nb = GetPathNodeAt(&AStarStartPoint, &result);
+    nb->path_cost = 0;
+    InsertOpenListSorted((struct GameMainNode *)nb);
+    while ((cur = OpenPathNodeList) != NULL) {
+        OpenPathNodeList = cur->next;
+
+        if ((AStarGoalX == cur->x && cur->y == AStarGoalY) || cur->field_20 == 1) {
+            best = cur;
+        } else {
+            pos.x = cur->x;
+            pos.y = cur->y - 1;
+            if (IsInMapBounds(pos.x, pos.y)) {
+                nb = GetPathNodeAt(&pos, &result);
+                if (nb->step_cost != -1) {
+                    if (nb->field_20 && (unsigned)nb->field_20 != 1) {
+                        cur_y = cur->y;
+                        cost = GetPathAxisTurnCost(cur->field_24, GetPathStepAxisMask(cur->x, cur_y, nb->x, nb->y)) + cur->path_cost + nb->step_cost;
+                    } else {
+                        cost = cur->path_cost + nb->step_cost;
+                    }
+                    if (result == 0) {
+                        if (NULL != best && cost > best->path_cost) {
+                            AddToClosedList((struct GameMainNode *)nb);
+                        } else {
+                            cur_x2 = cur->x;
+                            nb->field_24 = GetPathStepAxisMask(cur_x2, cur->y, nb->x, nb->y);
+                            nb->parent = cur;
+                            nb->path_cost = cost;
+                            nb->field_1c = nb->heuristic + cost;
+                            if (result == 2) {
+                                RemoveFromClosedList((struct GameMainNode *)nb);
+                            }
+                            if (result == 1) {
+                                RemoveFromOpenList((struct GameMainNode *)nb);
+                            }
+                            InsertOpenListSorted((struct GameMainNode *)nb);
+                        }
+                    }
+                }
+            }
+            pos.x = cur->x + 1;
+            pos.y = cur->y;
+            if (IsInMapBounds(pos.x, pos.y)) {
+                nb = GetPathNodeAt(&pos, &result);
+                cur_x = cur->x;
+                nb->field_24 = GetPathStepAxisMask(cur_x, cur->y, nb->x, nb->y);
+                if (nb->step_cost != -1) {
+                    if (!(0 != nb->field_20 && nb->field_20 != 1)) {
+                        cost = cur->path_cost + nb->step_cost;
+                    } else {
+                        cost = GetPathAxisTurnCost(cur->field_24, GetPathStepAxisMask(cur->x, cur->y, nb->x, nb->y)) + cur->path_cost + nb->step_cost;
+                    }
+                    if (result == 0) {
+                        if (NULL != best && cost > best->path_cost) {
+                            AddToClosedList((struct GameMainNode *)nb);
+                        } else {
+                            nb->field_24 = GetPathStepAxisMask(cur->x, cur->y, nb->x, nb->y);
+                            nb->parent = cur;
+                            nb->path_cost = cost;
+                            nb->field_1c = nb->heuristic + cost;
+                            if (result == 2) {
+                                RemoveFromClosedList((struct GameMainNode *)nb);
+                            }
+                            if (result == 1) {
+                                RemoveFromOpenList((struct GameMainNode *)nb);
+                            }
+                            InsertOpenListSorted((struct GameMainNode *)nb);
+                        }
+                    }
+                }
+            }
+            pos_x = cur->x;
+            pos.x = pos_x;
+            pos.y = cur->y + 1;
+            if (IsInMapBounds(pos.x, pos.y)) {
+                nb = GetPathNodeAt(&pos, &result);
+                nb->field_24 = GetPathStepAxisMask(cur->x, cur->y, nb->x, nb->y);
+                if (nb->step_cost != -1) {
+                    if (!(nb->field_20 != 0 && nb->field_20 != 1)) {
+                        cost = cur->path_cost + nb->step_cost;
+                    } else {
+                        cost = GetPathAxisTurnCost(cur->field_24, GetPathStepAxisMask(cur->x, cur->y, nb->x, nb->y)) + cur->path_cost + nb->step_cost;
+                    }
+                    if (result == 0) {
+                        if (NULL != best && cost > best->path_cost) {
+                            AddToClosedList((struct GameMainNode *)nb);
+                        } else {
+                            nb->field_24 = GetPathStepAxisMask(cur->x, cur->y, nb->x, nb->y);
+                            nb->parent = cur;
+                            nb->path_cost = cost;
+                            nb->field_1c = nb->heuristic + cost;
+                            if (result == 2) {
+                                RemoveFromClosedList((struct GameMainNode *)nb);
+                            }
+                            if (result == 1) {
+                                RemoveFromOpenList((struct GameMainNode *)nb);
+                            }
+                            InsertOpenListSorted((struct GameMainNode *)nb);
+                        }
+                    }
+                }
+            }
+            pos.x = cur->x - 1;
+            pos.y = cur->y;
+            if (IsInMapBounds(pos.x, pos.y)) {
+                nb = GetPathNodeAt(&pos, &result);
+                nb->field_24 = GetPathStepAxisMask(cur->x, cur->y, nb->x, nb->y);
+                if (nb->step_cost != -1) {
+                    if (0 != nb->field_20 && nb->field_20 != 1) {
+                        cost = GetPathAxisTurnCost(cur->field_24, GetPathStepAxisMask(cur->x, cur->y, nb->x, nb->y)) + cur->path_cost + nb->step_cost;
+                    } else {
+                        cost = cur->path_cost + nb->step_cost;
+                    }
+                    if (result == 0) {
+                        if (best != NULL && cost > best->path_cost) {
+                            AddToClosedList((struct GameMainNode *)nb);
+                        } else {
+                            nb->field_24 = GetPathStepAxisMask(cur->x, cur->y, nb->x, nb->y);
+                            nb->parent = cur;
+                            nb->path_cost = cost;
+                            nb->field_1c = nb->heuristic + cost;
+                            if (2 == result) {
+                                RemoveFromClosedList((struct GameMainNode *)nb);
+                            }
+                            if (result == 1) {
+                                RemoveFromOpenList((struct GameMainNode *)nb);
+                            }
+                            InsertOpenListSorted((struct GameMainNode *)nb);
+                        }
+                    }
+                }
+            }
+        }
+        AddToClosedList((struct GameMainNode *)cur);
+    }
+    id = ElemID(PathControlName);
+    nb = best;
+    while (nb) {
+        pp = (struct Point *)&nb->x;
+        if (0 <= pp->x && pp->x < lpConfig->width && pp->y >= 0 && pp->y < lpConfig->height) {
+            tile = &GameMap[pp->y][pp->x];
+        } else {
+            tile = NULL;
+        }
+        if (!(tile->flags & 0x10)) {
+            if ((tile->field_10 & 3) != 3) {
+                RemoveObjectAtPoint(pp);
+                AddBasicPath((struct Element *)id, (int *)pp);
+            }
+        }
+        nb = nb->parent;
+    }
+    while (ClosedPathNodeList != NULL) {
+        RemoveFromClosedList(ClosedPathNodeList);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00478110
-void FUN_00478110(void) { STUB(); }
+int TokenizeString(char *str, const char *delims, char **out) {
+    int count = 0;
+    char *p;
+    int n;
+
+    while (*str) {
+        str += strspn(str, delims);
+        if (*str) {
+            if (*str == '"') {
+                *str = 0;
+                str++;
+                *out = str;
+                count++;
+                out++;
+                p = strchr(str, '"');
+                if (!p)
+                    return count;
+                *p = 0;
+                str = p + 1;
+            } else {
+                *out = str;
+                count++;
+                out++;
+                n = strcspn(str, delims);
+                p = strchr(str, '"');
+                if (p && p - str < n) {
+                    str = p;
+                } else {
+                    str += n;
+                    if (!*str)
+                        return count;
+                    *str = 0;
+                    str++;
+                }
+            }
+        }
+    }
+    return count;
+}
 
 // FUNCTION: LEGOLAND 0x004781b0
-int FUN_004781b0(const char *param_1, const void *param_2, int param_3) { STUB(); }
+int FindStringNoCase(const char *param_1, const void *param_2, int param_3) {
+    int i;
 
+    for (i = 0; i < param_3; i++) {
+        if (_strcmpi(param_1, ((const char **)param_2)[i]) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
 // FUNCTION: LEGOLAND 0x004781f0
-int FUN_004781f0(int param_1, const void *param_2, int param_3, int param_4) { STUB(); }
+int ParseScriptFile(const char *name, struct ScriptCommand *commands, int count, int flags) {
+    char path[256];
+    struct ResFile *file;
+    int result;
 
+    sprintf(path, "%s%s",
+        // STRING: LEGOLAND 0x004bc084
+        "Scripts\\", name);
+    file = RES_OpenFile(path);
+    if (file != NULL) {
+        strncpy(CurrentScriptFileName, name, 128);
+        result = ParseScriptResFile(file, commands, count, flags);
+        RES_CloseFile(file);
+        return result;
+    }
+    return 0;
+}
+
+/* Reads resource-script lines, strips hash comments, tokenizes them and dispatches matching or default command
+ * handlers. Counts zero-status failures and optionally calls the final check handler. */
 // FUNCTION: LEGOLAND 0x00478280
-void FUN_00478280(void) { STUB(); }
+int ParseScriptResFile(struct ResFile *file, struct ScriptCommand *commands, int count, int flags) {
+    char line[1024];
+    char *tokens[20];
+    char *p;
+    unsigned int r;
+    int errors = 0;
+    ScriptCommandFn deflt = NULL;
+    int ntok;
+    int i;
+    char found;
+    struct ScriptCommand *cmd;
+
+    ScriptResourceLineNumber = 0;
+    cmd = commands;
+    r = 0;
+    // STRING: LEGOLAND 0x004bbdcc
+    if (strcmp(cmd->name, "none") == 0)
+        deflt = cmd->fn;
+    while (ReadResFileLine(file, line, 1024)) {
+        ScriptResourceLineNumber++;
+        DrawWatchSprite();
+        p = strchr(line, '#');
+        if (p)
+            *p = 0;
+        // STRING: LEGOLAND 0x004bc098
+        ntok = TokenizeString(line, " ,;:(){}\xa0\n\t", tokens);
+        if (ntok) {
+            UppercaseStringAndGetLength(tokens[0]);
+            found = 0;
+            for (i = 0; i < count; i++, cmd++) {
+                if (strcmp(tokens[0], cmd->name) == 0) {
+                    found = 1;
+                    r = commands[i].fn(tokens, ntok - 1, flags);
+                    if (0 == r)
+                        errors++;
+                    break;
+                }
+            }
+            cmd = commands;
+            if (!found) {
+                if (deflt)
+                    r = deflt(tokens, ntok - 1, flags);
+            }
+        }
+        if (r < 0)
+            return r;
+    }
+    if (r < 0)
+        return r;
+    // STRING: LEGOLAND 0x004bc090
+    if (strcmp(commands[count - 1].name, "check") == 0)
+        r = commands[count - 1].fn(NULL, errors, flags);
+    if (r < 0)
+        return r;
+    return errors;
+}
 
 // FUNCTION: LEGOLAND 0x004784c0
-void FUN_004784c0(void) {
+void ResetLevelScriptState(void) {
     NEWFLC_Repeat = 0;
     NEWFLC_BuffSize = 1;
     NEWFLC_CheckDuplicate = 1;
-    DAT_00669054 = 0;
-    DAT_004bb5ac = 1;
-    DAT_00669050 = 0;
-    DAT_0066879c = 0;
-    DAT_00669098 = 0;
+    ScriptSectionTypeMask = 0;
+    ScriptObjectiveKind = 1;
+    CurrentObjectiveEventFlags = 0;
+    CurrentScriptSection = 0;
+    NextScriptSectionId = 0;
 
     lpConfig->field_30 = 0;
-    lpConfig->field_38 = 1;
-    lpConfig->field_34 = 1;
-    lpConfig->field_1a = 0xc8;
-    MapStats.capacity_max = lpConfig->field_1a;
+    lpConfig->gardeners_enabled = 1;
+    lpConfig->mechanics_enabled = 1;
+    lpConfig->max_blokes = 0xc8;
+    MapStats.capacity_max = lpConfig->max_blokes;
     MapStats.capacity_min = 0;
 
-    FUN_004689a0();
-    DAT_007fdca4 = FUN_004689f0(0, 0, 0);
-    DAT_004bb5b0 = 1;
+    FreeScriptStrings();
+    ScriptPromptStringIndex = AddScriptString(0, 0, 0);
+    ScriptConditionActive = 1;
 
-    FUN_004441f0();
-    FUN_0044db20();
-    FUN_0044db80();
-    FUN_00468840();
-    FUN_004688e0();
-    FUN_0044dc70(0, 0);
-    FUN_00468830();
-    FUN_00482d70();
-    FUN_00462e90();
-    FUN_00476000();
-    FUN_00476050();
-    FUN_00490610(DAT_004d8bb0);
-    FUN_00463560();
-    FUN_00482b10();
-    FUN_00459960();
+    ResetReportFlags();
+    ResetAppraisalStreak();
+    StopAppraisalTimer();
+    ClearObjectiveCounters();
+    Empty_004688e0();
+    ConfigureAppraisal(0, 0);
+    ClearBriefingAndHintsFileNames();
+    SetDefaultMoodDeltas();
+    SetDefaultClassLimits();
+    ClearInterfaceSlotValues();
+    ClearButtonFlashStates();
+    SetPendingMovie(EmptyString);
+    ResetDamageTimer();
+    ResetPathUpdateTimer();
+    ResetPathSceneryTimer();
 
-    MapStats.field_174 = 1000;
-    MapStats.field_194 = 0;
-    MapStats.field_180 = 0;
+    MapStats.brick_meter_max = 1000;
+    MapStats.show_capacity = 0;
+    MapStats.ride_wear = 0;
     MapStats.field_3a8 = 1;
 
-    FUN_0046b240(0);
+    SetScriptStopped(0);
 }
 
 // FUNCTION: LEGOLAND 0x004785d0
-void FUN_004785d0(char *param_1, unsigned int param_2) {
-    strcpy(DAT_00669058, param_1);
-    DAT_00669054 = param_2;
+void SetScriptSectionType(char *param_1, unsigned int param_2) {
+    strcpy(ScriptSectionName, param_1);
+    ScriptSectionTypeMask = param_2;
 }
 
 // FUNCTION: LEGOLAND 0x00478610
-void FUN_00478610(unsigned int param_1) {
-    DAT_004bb5ac = param_1;
+void SetScriptObjectiveKind(unsigned int param_1) {
+    ScriptObjectiveKind = param_1;
     switch (param_1) {
     case 1:
-        DAT_00669050 = 1;
+        CurrentObjectiveEventFlags = 1;
         break;
     case 2:
-        DAT_00669050 = 2;
+        CurrentObjectiveEventFlags = 2;
         break;
     case 3:
-        DAT_00669050 = 4;
+        CurrentObjectiveEventFlags = 4;
         break;
     default:
-        DAT_00669050 = 0;
+        CurrentObjectiveEventFlags = 0;
         break;
     }
 }
 
+/* For a script command with an argument, sets current objective flag 8 when arg1 is PURGE (case insensitive),
+ * otherwise clears it. Leaves the flags unchanged when there is no argument. */
 // FUNCTION: LEGOLAND 0x00478650
-void FUN_00478650(unsigned int param_1, unsigned int param_2) {
-    // param_1 is an opaque command-block handle reinterpreted as a GameMainEntry
-    struct GameMainEntry *entry = (struct GameMainEntry *)param_1;
+void SetScriptObjectivePurgeFlag(struct CommandArgs *param_1, unsigned int param_2) {
     if (param_2 == 0) {
         return;
     }
     // STRING: LEGOLAND 0x004bb9ec
-    if (_stricmp(entry->name, "PURGE") == 0) {
-        DAT_00669050 |= 0x8;
+    if (_stricmp(param_1->arg1, "PURGE") == 0) {
+        CurrentObjectiveEventFlags |= 0x8;
     } else {
-        DAT_00669050 &= 0xf7;
+        CurrentObjectiveEventFlags &= 0xf7;
     }
 }
 
 // FUNCTION: LEGOLAND 0x00478690
-int FUN_00478690(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
+int HasEnoughScriptArgs(void *param_1, unsigned int param_2, unsigned int param_3) {
     return (int)param_2 >= (int)param_3;
 }
 
 // FUNCTION: LEGOLAND 0x004786a0
-int FUN_004786a0(unsigned int param_1, unsigned int param_2, unsigned int param_3) {
-    return (DAT_00669054 & param_3) != 0;
+int IsScriptCommandAllowed(void *param_1, unsigned int param_2, unsigned int param_3) {
+    return (ScriptSectionTypeMask & param_3) != 0;
 }
 
 // FUNCTION: LEGOLAND 0x004786c0
-unsigned int FUN_004786c0(unsigned int param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
-    if (FUN_004786a0(param_1, param_2, param_3) == 0) {
+unsigned int CheckScriptCommand(void *param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4) {
+    if (IsScriptCommandAllowed(param_1, param_2, param_3) == 0) {
         return 0;
     }
-    return FUN_00478690(param_1, param_2, param_4) != 0;
+    return HasEnoughScriptArgs(param_1, param_2, param_4) != 0;
 }
 
 // FUNCTION: LEGOLAND 0x00478700
-void FUN_00478700(int *param_1, char **param_2, int param_3) {
+void ParseRect(int *param_1, char **param_2, int param_3) {
     int temp;
 
     param_1[0] = atoi(param_2[param_3 + 0]);
@@ -326,13 +768,12 @@ void FUN_00478700(int *param_1, char **param_2, int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00478770
-void FUN_00478770(int *param_1, char **param_2, int param_3) {
+void ParseIntPair(int *param_1, char **param_2, int param_3) {
     param_1[0] = atoi(param_2[param_3 + 0]);
     param_1[1] = atoi(param_2[param_3 + 1]);
 }
 
 // FUNCTION: LEGOLAND 0x004787a0
-unsigned int FUN_004787a0(unsigned int param_1, unsigned int param_2) {
-    // param_1 is an opaque command-block handle reinterpreted as a GameMainArg
-    return ((struct GameMainArg *)param_1)->field_4;
+char *GetScriptArg1(struct CommandArgs *param_1, unsigned int param_2) {
+    return param_1->arg1;
 }

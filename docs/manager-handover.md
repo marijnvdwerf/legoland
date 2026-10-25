@@ -41,15 +41,15 @@ what worked and what didn't in the session that produced commits `47fd6bb`..`736
 - `uv run tools/todo.py` — reachable 🔴 functions grouped by TU with original byte size;
   use smallest-first target picking. These replace the old grep one-liners.
 - State at handover: total **74.58%**, 0 `[ERROR]` lines. `string.c` 12/13 (parked:
-  `FUN_00498d00` 78.7%). `image_sprite.c` 35/38 (parked: `FUN_004978b0` 80.9%,
+  `LoadStringTable` 78.7%). `image_sprite.c` 35/38 (parked: `LoadCompSprite` 80.9%,
   `ReloadImageBitmapAndBuildSprites` 91.0%, `RemakeAllDetailDependentSprites` 98.9%).
   The current function-count table is 2,019 matched, 575 partial, 659 unmatched (62.1%
   by function weighting; verify's headline is effective byte-weighted).
-- This session matched `draw.c`'s `InitHostSystemGPU`, `FUN_004661d0`, and `InitScreen`
-  (all 100%), plus `screens.c`'s `FUN_004585c0`, `FUN_00458a50`, and `FUN_00459520`
+- This session matched `draw.c`'s `InitHostSystemGPU`, `BlitFrameToWindow`, and `InitScreen`
+  (all 100%), plus `screens.c`'s `CloseFrontEndScreen`, `FUN_00458a50`, and `FUN_00459520`
   (100%*). Four screens partials remain parked at 91%, 85%, 60%, and 59%; see
   `docs/handover-screens.md` for function-level hypotheses, not duplicated here.
-- Still parked in `draw.c`: `FUN_004659a0` 48%, `FUN_00466360` 79%, and `PushSetTarget`
+- Still parked in `draw.c`: `FUN_004659a0` 48%, `LoadWatchSprite` 79%, and `PushSetTarget`
   80%. One worker exhausted source-shape variants; remaining differences are
   register-allocation/ordering residue.
 - The session's cast-removal sweep made `DDRAWENV` a real struct (including DX6-sized
@@ -80,7 +80,7 @@ Plain prose, goal first, explicit paths, verification at the end — no XML scaf
    one reusable `i`, do-while when the first iteration is unconditional, standard CRT
    calls). Natural form first, then let the diff say where reality differs. Code
    contorted to the asm (duplicated stores, hoisted `i = 0`) is a last resort and must be
-   justified by a diff pair (`FUN_00499040`'s duplicated NUL store *is* justified: the
+   justified by a diff pair (`SplitPathDirectoryAndBaseName`'s duplicated NUL store *is* justified: the
    natural form was tested and the original really has two exits).
 5. **Rules**: `CLAUDE.md` + `DECOMPILING.md`, plus no goto/register/volatile, decls in
    the TU's `.h`, `clang-format -i`, don't commit, don't touch `crt.c`/`imports.c`/
@@ -100,12 +100,12 @@ they meant:
 | asm symptom | C cause that fixed it |
 |---|---|
 | Wrong global/data symbol on one side | wrong `DAT_*` referenced (`GetSprite`) |
-| Two `add esp, N` cleanups vs one merged | statement between two calls differs; e.g. log-only on NULL path, unlink otherwise, one shared `free()` after the `if` (`FUN_004975b0`) |
-| Same var read via two registers / extra `push ebx` | two index vars where the original has one reused (`FUN_00499040`) |
+| Two `add esp, N` cleanups vs one merged | statement between two calls differs; e.g. log-only on NULL path, unlink otherwise, one shared `free()` after the `if` (`UnlinkAndFreeSprite`) |
+| Same var read via two registers / extra `push ebx` | two index vars where the original has one reused (`SplitPathDirectoryAndBaseName`) |
 | `mov byte [x],0` interleaved with `rep stos` | aggregate initializer `char buf[N] = {0}`, not `memset` |
 | `cmp bl,'"'; jne →inc; jmp; xor bl,bl; inc` (else path falls into the increment) | one fetch + one test (`c = i < n ? p[i++] : 0; if (c != '"') q++;`), not two branches each incrementing |
 | Callee names differ (`getgamedir`, `fopen_wrapper`, `heap_free`) | **red herring** — those are `../port2` asm aliases; port3's own diff showed `_getcwd`/`fopen`/`free` already matching. Trust port3's `verify -v`, not port2 label names. |
-| Whole-function EBX↔EDI (or EBX↔EBP) swap between two locals, plus rotated vs top-tested loop, plus a hoisted entry check | allocator tie-break; **not understood**. Declaration order, `total`/`file_size` merge, `for(;;)`+break, ternary fetch — none changed it. Parked: `FUN_00498d00`, `FUN_004978b0`. Don't spend a pass on these until someone finds the trigger; the likely lever is what stops MSVC6 rotating the loop (the duplicated bottom compare is the extra use that tips the allocator). |
+| Whole-function EBX↔EDI (or EBX↔EBP) swap between two locals, plus rotated vs top-tested loop, plus a hoisted entry check | allocator tie-break; **not understood**. Declaration order, `total`/`file_size` merge, `for(;;)`+break, ternary fetch — none changed it. Parked: `LoadStringTable`, `LoadCompSprite`. Don't spend a pass on these until someone finds the trigger; the likely lever is what stops MSVC6 rotating the loop (the duplicated bottom compare is the extra use that tips the allocator). |
 | `mov ebp, imm` before vs after a `je` | single-pair scheduling residual (`RemakeAllDetailDependentSprites`); guard-vs-mask order variants didn't move it. |
 | Byte index table plus jump table over a dense range | One source `switch` with shared bodies; do not declare the compiler-generated table as data (`FUN_00458ee0`). |
 | `sub esp,N; mov [esp],a; mov [esp+4],b; call f` with no cleanup | `/O2` cdecl arguments in a pre-reserved outgoing area, not local struct stores (`HandleRideAI`). |
@@ -149,12 +149,12 @@ they meant:
 
 | TU | Function | Bytes |
 |---|---|---:|
-| certificate | `FUN_00451e20` | 80 |
+| certificate | `PrintCertificateWithCurrentDate` | 80 |
 | build | `ProcessBuildingTimes` | 112 |
 | mapscreen | `DrawMapScreen` | 128 |
 | man3d | `SetPersonRotation` | 144 |
-| gamemain | `FUN_004781b0` | 64 |
-| gamemain | `FUN_004781f0` | 144 |
+| gamemain | `FindStringNoCase` | 64 |
+| gamemain | `ParseScriptFile` | 144 |
 
 The table is grouped by TU, so use the smallest reachable function rather than blindly
 following its display order. Other useful queues are the `lpVtbl`→interface-macro sweep

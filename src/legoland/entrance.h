@@ -2,10 +2,12 @@
 
 #include "legoland.h"
 
-struct EntranceParam;
+struct Cursor;
+struct Element;
 
-void FUN_0042d9c0();
-void FUN_0042de50();
-void FUN_0042def0(struct EntranceParam *param);
-void FUN_0042df70();
-void FUN_0042dfa0();
+void PlayEntranceArrivalSounds(TileId *tile, struct Bloke *arg);
+void RenderEntrance(struct Element *obj, unsigned int param_2, unsigned int param_3, TileId *tile, void *param_5, unsigned int clip);
+void LoadEntranceResources(struct Element *param);
+void UnloadEntranceResources(struct Element *param);
+void EntranceRemoveObject(struct Element *obj, TileId tile, struct Cursor *cursor);
+void Entrance1Update(struct Element *elem);

@@ -17,11 +17,6 @@
 #include "text.h"
 #include "tooltip.h"
 
-struct PopUp {
-    unsigned char pad_0[0x34];
-    unsigned int field_34;
-};
-
 #include "certificate.h"
 #include "help.h"
 #include "image_sprite.h"
@@ -36,7 +31,7 @@ struct PopUp {
 LEGO_EXPORT void InitTitleScreen(void) {
     struct IconNode *icon;
 
-    FUN_00474ed0();
+    UnloadGameInterface();
     // STRING: LEGOLAND 0x004bf574
     SPRITE_TitleScreenBk = LoadSprite("TitleScreenBk.lls", 0);
 
@@ -45,24 +40,24 @@ LEGO_EXPORT void InitTitleScreen(void) {
     icon->string_id = 7;
     icon->string = GetString(7);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_0048feb0;
-    if (FUN_0048fc30() == 0) {
+    icon->event_handler = TitleNewGameHandler;
+    if (IsFreePlayUnlocked() == 0) {
         // STRING: LEGOLAND 0x004bf548
         icon->alt_sprite = LoadSprite("Dark_New_On_Title.lls", 4);
-        icon->field_28 = (void *)FUN_0046e920;
+        icon->render_func = (void *)RenderBlinkIcon;
         icon->flags |= 8;
     } else {
         icon->alt_sprite = NULL;
     }
-    DAT_006687bc = FUN_0048feb0;
+    OkKeyHandler = TitleNewGameHandler;
 
     // STRING: LEGOLAND 0x004bf534
     icon = LoadSpriteIcon("Free_on_Title.lls", 4, 0x9a, 8, 7);
     icon->string_id = 8;
     icon->string = GetString(8);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_0048ff20;
-    if (FUN_0048fc30() == 0) {
+    icon->event_handler = TitleFreePlayHandler;
+    if (IsFreePlayUnlocked() == 0) {
         icon->flags |= 0x400;
     }
 
@@ -71,82 +66,86 @@ LEGO_EXPORT void InitTitleScreen(void) {
     icon->string_id = 10;
     icon->string = GetString(10);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_0048ff70;
+    icon->event_handler = TitleRegistrationHandler;
 
     // STRING: LEGOLAND 0x004bf50c
     icon = LoadSpriteIcon("Exit_On_Title.lls", 4, 0x1e1, 0x13, 7);
     icon->string_id = 1000;
     icon->string = GetString(1000);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_0048f0a0;
-    DAT_006687c0 = FUN_0048f0a0;
+    icon->event_handler = OptionsExitIconHandler;
+    CancelKeyHandler = OptionsExitIconHandler;
 
     // STRING: LEGOLAND 0x004bf4f8
     icon = LoadSpriteIcon("Load_on_Title.lls", 4, 0x19, 0x118, 7);
     icon->string_id = 9;
     icon->string = GetString(9);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_0048fe20;
+    icon->event_handler = TitleLoadGameHandler;
 
     // STRING: LEGOLAND 0x004bf4e0
     icon = LoadSpriteIcon("MovieOn_On_Title.lls", 4, 0x10e, 0xa1, 7);
     icon->string_id = 0x2bf;
     icon->string = GetString(0x2bf);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_0048ffe0;
-    DAT_0080ff80.unk0 = 0x898;
+    icon->event_handler = TitleMovieHandler;
+    FrontEndScreenMode.unk0 = 0x898;
 }
 
 // FUNCTION: LEGOLAND 0x0048fe20
-unsigned char FUN_0048fe20(unsigned int param_1, unsigned char param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
-        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_007cb328 = 1;
-        DAT_007cb324 = 1;
-        DAT_0080ff80.unk8 = 4;
+unsigned char TitleLoadGameHandler(unsigned int param_1, unsigned char param_2) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
+        PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
+        LoadMode = 1;
+        SavedGameScreenFromTitle = 1;
+        FrontEndScreenMode.unk8 = 4;
     }
     return 1;
 }
 
+/* Handles the title screen New button: closes speech and title graphics, marks a new game, and opens the
+ * level-selection screen. */
 // FUNCTION: LEGOLAND 0x0048feb0
-unsigned char FUN_0048feb0(unsigned int param_1, unsigned int param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
-        FUN_00498920();
-        DAT_006687b0 = 4;
-        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_0080ffe5 = 1;
+unsigned char TitleNewGameHandler(unsigned int param_1, unsigned int param_2) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
+        SpeechCloseFile();
+        SpeechDelayFrames = 4;
+        PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
+        CurrentProfile.field_45 = 1;
         RemoveIconGroup(7);
         KillTitleScreenSprites();
         EditMode.unk4 = 2;
-        DAT_0080ff80.unk8 = 6;
-        MapStats.field_3a0 = 0;
+        FrontEndScreenMode.unk8 = 6;
+        MapStats.level_end = 0;
     }
     return 1;
 }
 
+/* Handles the title screen Free Play button: closes speech and switches the front end to the free-play screen. */
 // FUNCTION: LEGOLAND 0x0048ff20
-unsigned char FUN_0048ff20(unsigned int param_1, unsigned int param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
-        FUN_00498920();
-        DAT_006687b0 = 4;
-        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_0080ff80.unk8 = 3;
+unsigned char TitleFreePlayHandler(unsigned int param_1, unsigned int param_2) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
+        SpeechCloseFile();
+        SpeechDelayFrames = 4;
+        PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
+        FrontEndScreenMode.unk8 = 3;
         return 2;
     }
     return 1;
 }
 
+/* Handles the title screen registration button by selecting front-end screen zero. */
 // FUNCTION: LEGOLAND 0x0048ff70
-unsigned char FUN_0048ff70(unsigned int param_1, unsigned int param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
-        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_0080ff80.unk8 = 0;
+unsigned char TitleRegistrationHandler(unsigned int param_1, unsigned int param_2) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
+        PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
+        FrontEndScreenMode.unk8 = 0;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x0048ffb0
-void FUN_0048ffb0(void) {
+void KillTitleScreenBkSpriteAndRemoveIconGroup7(void) {
     if (SPRITE_TitleScreenBk != 0) {
         KillSprite(SPRITE_TitleScreenBk);
         SPRITE_TitleScreenBk = 0;
@@ -154,64 +153,65 @@ void FUN_0048ffb0(void) {
     RemoveIconGroup(7);
 }
 
+/* Handles the title screen movie button: saves the current screen state and requests front-end screen nine. */
 // FUNCTION: LEGOLAND 0x0048ffe0
-unsigned char FUN_0048ffe0(unsigned int param_1, unsigned int param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
-        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        FUN_0048f9f0(DAT_007cb30c, DAT_007cb300, DAT_007cb2f0);
+unsigned char TitleMovieHandler(unsigned int param_1, unsigned int param_2) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
+        PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
+        SaveScreenState(&TitleSavedScreenFlag, &TitleSavedScreenMode, &TitleSavedEditMode);
         EditMode.unk4 = 2;
-        DAT_0080ff80.unk4 = 0xffffffff;
-        DAT_0080ff80.unk8 = 9;
-        DAT_00668e38 = 1;
+        FrontEndScreenMode.unk4 = 0xffffffff;
+        FrontEndScreenMode.unk8 = 9;
+        FrontEndSubScreenActive = 1;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00490050
-unsigned char FUN_00490050(unsigned int param_1, unsigned char param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
-        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        FUN_0048ffb0();
-        FUN_0048fa40(DAT_007cb30c, DAT_007cb300, DAT_007cb2f0);
+unsigned char AdvertGoBackHandler(unsigned int param_1, unsigned char param_2) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
+        PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
+        KillTitleScreenBkSpriteAndRemoveIconGroup7();
+        RestoreScreenState(&TitleSavedScreenFlag, &TitleSavedScreenMode, &TitleSavedEditMode);
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00490090
-unsigned char FUN_00490090(unsigned int param_1, unsigned char param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
+unsigned char PlayBillundAvi(unsigned int param_1, unsigned char param_2) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         SetPointer(0);
         // STRING: LEGOLAND 0x004bf58c
-        FUN_004771f0("Billund.avi", 1, 1);
+        PlayMovie("Billund.avi", 1, 1);
         SetPointer(6);
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x004900d0
-unsigned char FUN_004900d0(unsigned int param_1, unsigned char param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
+unsigned char PlayWindsorAvi(unsigned int param_1, unsigned char param_2) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         SetPointer(0);
         // STRING: LEGOLAND 0x004bf598
-        FUN_004771f0("Windsor.avi", 1, 1);
+        PlayMovie("Windsor.avi", 1, 1);
         SetPointer(6);
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00490110
-unsigned char FUN_00490110(unsigned int param_1, unsigned char param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
+unsigned char PlayCaliforniaAvi(unsigned int param_1, unsigned char param_2) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
         SetPointer(0);
         // STRING: LEGOLAND 0x004bf5a4
-        FUN_004771f0("California.avi", 1, 1);
+        PlayMovie("California.avi", 1, 1);
         SetPointer(6);
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00490150
-void FUN_00490150(void) {
+void InitAdvertScreen(void) {
     struct IconNode *icon;
 
     // STRING: LEGOLAND 0x004bf5f4
@@ -222,159 +222,161 @@ void FUN_00490150(void) {
     icon->string_id = 0x26;
     icon->string = GetString(0x26);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_00490050;
-    DAT_006687c0 = FUN_00490050;
-    DAT_006687bc = 0;
+    icon->event_handler = AdvertGoBackHandler;
+    CancelKeyHandler = AdvertGoBackHandler;
+    OkKeyHandler = 0;
 
     // STRING: LEGOLAND 0x004bf5cc
     icon = LoadSpriteIcon("California.lls", 4, 0x1c, 0x24, 7);
     icon->string_id = 700;
     icon->string = GetString(700);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_00490110;
+    icon->event_handler = PlayCaliforniaAvi;
 
     // STRING: LEGOLAND 0x004bf5c0
     icon = LoadSpriteIcon("Windsor.lls", 4, 0xea, 0x24, 7);
     icon->string_id = 0x2bd;
     icon->string = GetString(0x2bd);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_004900d0;
+    icon->event_handler = PlayWindsorAvi;
 
     // STRING: LEGOLAND 0x004bf5b4
     icon = LoadSpriteIcon("billund.lls", 4, 0x1b8, 0x24, 7);
     icon->string_id = 0x2be;
     icon->string = GetString(0x2be);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_00490090;
+    icon->event_handler = PlayBillundAvi;
 }
 
 // FUNCTION: LEGOLAND 0x00490270
-void FUN_00490270(void) {
+void KillCertificateScreen(void) {
     if (SPRITE_TitleScreenBk != 0) {
         KillSprite(SPRITE_TitleScreenBk);
         SPRITE_TitleScreenBk = 0;
     }
-    if (DAT_00798764 != 0) {
-        KillSprite(DAT_00798764);
-        DAT_00798764 = 0;
+    if (PrintInfoSprite != 0) {
+        KillSprite(PrintInfoSprite);
+        PrintInfoSprite = 0;
     }
     RemoveIconGroup(7);
 }
 
 // FUNCTION: LEGOLAND 0x004902c0
-unsigned char FUN_004902c0(unsigned int param_1, unsigned int param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
-        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        FUN_00490270();
-        DAT_0080ff80.unk8 = 1;
-        DAT_00798770 = 0;
+unsigned char CertificateGoBackHandler(unsigned int param_1, unsigned int param_2) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
+        PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
+        KillCertificateScreen();
+        FrontEndScreenMode.unk8 = 1;
+        CertificateScreenActive = 0;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00490300
-unsigned char FUN_00490300(unsigned int param_1, unsigned int param_2) {
-    if (DAT_004bef9c != 0 && (param_2 & 2) != 0) {
-        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        if (DAT_00798768 == 0 && DAT_0079876c == 0) {
-            DAT_0079876c = 2;
+unsigned char CertificatePrintHandler(unsigned int param_1, unsigned int param_2) {
+    if (FrontEndInputEnabled != 0 && (param_2 & 2) != 0) {
+        PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
+        if (CertificatePrintResultTimer == 0 && CertificatePrintCountdown == 0) {
+            CertificatePrintCountdown = 2;
         }
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00490350
-unsigned int FUN_00490350(void) {
+struct Sprite *InitCertificateScreen(void) {
     struct IconNode *icon;
     struct Sprite *result;
 
     // STRING: LEGOLAND 0x004bf654
     SPRITE_TitleScreenBk = LoadSprite("CertificateScreen.lls", 0);
-    DAT_00798770 = 1;
+    CertificateScreenActive = 1;
 
     // STRING: LEGOLAND 0x004bf638
     icon = LoadSpriteIcon("GoBack_On_Certificate.lls", 4, 12, 14, 7);
     icon->string_id = 0x26;
     icon->string = GetString(0x26);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_004902c0;
+    icon->event_handler = CertificateGoBackHandler;
 
     // STRING: LEGOLAND 0x004bf61c
     icon = LoadSpriteIcon("Print_On_Certificate.lls", 4, 0x207, 14, 7);
     icon->string_id = 0x23d;
     icon->string = GetString(0x23d);
     icon->flags |= 0x6002;
-    icon->event_handler = FUN_00490300;
+    icon->event_handler = CertificatePrintHandler;
 
     // STRING: LEGOLAND 0x004bf60c
     result = LoadSprite("printinfo.lls", 4);
-    DAT_00798764 = result;
-    DAT_00798768 = 0;
-    DAT_0079876c = 0;
-    return (unsigned int)result;
+    PrintInfoSprite = result;
+    CertificatePrintResultTimer = 0;
+    CertificatePrintCountdown = 0;
+    return result;
 }
 
 // FUNCTION: LEGOLAND 0x00490410
-void FUN_00490410(void) {
+void RenderCertificateScreen(void) {
     RECT rc;
     int hit[3] = {1};
-    if (DAT_00798770 != 0) {
+    if (CertificateScreenActive != 0) {
         rc.top = 0x102;
         rc.bottom = 0x130;
         rc.left = 0;
         rc.right = 0x280;
-        NewPrintCent((char *)&DAT_0080ffa0, 0, rc, 0);
-        if (DAT_0079876c != 0) {
-            PrintSprite(DAT_00798764, 0xc6, 0x28, 0, hit);
+        NewPrintCent((char *)&CurrentProfile, 0, rc, 0);
+        if (CertificatePrintCountdown != 0) {
+            PrintSprite(PrintInfoSprite, 0xc6, 0x28, 0, hit);
             rc.top = 0x2d;
             rc.bottom = 0x43;
             rc.left = 0xc6;
-            rc.right = (short)DAT_00798764->width + 0xc6;
+            rc.right = (short)PrintInfoSprite->width + 0xc6;
             NewPrintCent(GetString(0x23a), 1, rc, 1);
-            DAT_0079876c = DAT_0079876c + -1;
-            if (DAT_0079876c == 0) {
-                FUN_00498920();
-                DAT_006687b0 = 4;
-                DAT_00798768 = FUN_00451e20() ? 0x8c : -0x8c;
+            CertificatePrintCountdown = CertificatePrintCountdown + -1;
+            if (CertificatePrintCountdown == 0) {
+                SpeechCloseFile();
+                SpeechDelayFrames = 4;
+                CertificatePrintResultTimer = PrintCertificateWithCurrentDate() ? 0x8c : -0x8c;
             }
-        } else if (0 < DAT_00798768) {
-            PrintSprite(DAT_00798764, 0xc6, 0x28, 0, hit);
+        } else if (0 < CertificatePrintResultTimer) {
+            PrintSprite(PrintInfoSprite, 0xc6, 0x28, 0, hit);
             rc.top = 0x2d;
             rc.bottom = 0x43;
             rc.left = 0xc6;
-            rc.right = (short)DAT_00798764->width + 0xc6;
+            rc.right = (short)PrintInfoSprite->width + 0xc6;
             NewPrintCent(GetString(0x23b), 1, rc, 1);
-            DAT_00798768 = DAT_00798768 + -1;
-        } else if (DAT_00798768 < 0) {
-            PrintSprite(DAT_00798764, 0xc6, 0x28, 0, hit);
+            CertificatePrintResultTimer = CertificatePrintResultTimer + -1;
+        } else if (CertificatePrintResultTimer < 0) {
+            PrintSprite(PrintInfoSprite, 0xc6, 0x28, 0, hit);
             rc.top = 0x2d;
             rc.bottom = 0x43;
             rc.left = 0xc6;
-            rc.right = (short)DAT_00798764->width + 0xc6;
+            rc.right = (short)PrintInfoSprite->width + 0xc6;
             NewPrintCent(GetString(0x23c), 1, rc, 1);
-            DAT_00798768 = DAT_00798768 + 1;
+            CertificatePrintResultTimer = CertificatePrintResultTimer + 1;
         }
     }
 }
 
+/* Sets IntervalScreenIsBriefing: 1 right before the level briefing is shown (level/free play start, briefing
+ * button), 0 for mid-level interval reports and after the interval screen closes. */
 // FUNCTION: LEGOLAND 0x00490600
-void FUN_00490600(unsigned int param_1) {
-    DAT_00798878 = param_1;
+void SetIntervalScreenIsBriefing(unsigned int param_1) {
+    IntervalScreenIsBriefing = param_1;
 }
 
 // FUNCTION: LEGOLAND 0x00490610
-void FUN_00490610(const char *param_1) {
+void SetPendingMovie(const char *param_1) {
     if (strlen(param_1) > 0xff) {
-        strncpy(DAT_00798778, param_1, 0x100);
-        DAT_00798778[0xff] = 0;
+        strncpy(IntervalMovieName, param_1, 0x100);
+        IntervalMovieName[0xff] = 0;
     } else {
-        strcpy(DAT_00798778, param_1);
-        (&DAT_00798777)[strlen(param_1) + 1] = 0;
+        strcpy(IntervalMovieName, param_1);
+        (&IntervalMovieNameEnd)[strlen(param_1) + 1] = 0;
     }
 }
 
 // FUNCTION: LEGOLAND 0x00490680
-unsigned int FUN_00490680(char *param_1, void **param_2, unsigned int param_3) {
+unsigned int ReadResourceLines(char *param_1, void **param_2, unsigned int param_3) {
     struct ResFile *file;
     int size;
     char *buffer;
@@ -415,233 +417,233 @@ unsigned int FUN_00490680(char *param_1, void **param_2, unsigned int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00490740
-void FUN_00490740(const char *param_1) {
+void SetIntervalReportSpeechPrefix(const char *param_1) {
     char fname[64];
 
     _splitpath(param_1, 0, 0, fname, 0);
     // STRING: LEGOLAND 0x004bf674
-    sprintf(DAT_007cae80, "%s_", fname);
+    sprintf(IntervalReportSpeechPrefix, "%s_", fname);
 }
 
 // FUNCTION: LEGOLAND 0x00490770
-void FUN_00490770(const char *param_1) {
+void SetIntervalHintSpeechPrefix(const char *param_1) {
     char fname[64];
 
     _splitpath(param_1, 0, 0, fname, 0);
-    sprintf(DAT_007cb1e0, "%s_", fname);
+    sprintf(IntervalHintSpeechPrefix, "%s_", fname);
 }
 
 // FUNCTION: LEGOLAND 0x004907a0
-unsigned int FUN_004907a0(const char *param_1) {
+unsigned int LoadIntervalReport(const char *param_1) {
     char buffer[128];
     unsigned int result;
 
-    FUN_00490740(param_1);
-    FUN_00490850();
+    SetIntervalReportSpeechPrefix(param_1);
+    FreeIntervalReport();
     // STRING: LEGOLAND 0x004bf678
     sprintf(buffer, "Intervals\\%s", param_1);
-    result = FUN_00490680(buffer, &DAT_007cafa0, 100);
-    DAT_0079887c = result;
+    result = ReadResourceLines(buffer, (void **)IntervalTextLines, 100);
+    IntervalTextLastLine = result;
     if (result != 0) {
-        DAT_004bf670 = 1;
+        IntervalPageFirstLine = 1;
         result = result - 1;
-        DAT_0079887c = result;
+        IntervalTextLastLine = result;
     }
     return result;
 }
 
 // FUNCTION: LEGOLAND 0x00490800
-void FUN_00490800(const char *param_1) {
+void LoadIntervalHints(const char *param_1) {
     char buffer[128];
 
-    FUN_00490770(param_1);
-    FUN_00490880();
+    SetIntervalHintSpeechPrefix(param_1);
+    FreeIntervalHints();
     sprintf(buffer, "Intervals\\%s", param_1);
-    DAT_00798880 = FUN_00490680(buffer, &DAT_007cb140, 32);
+    IntervalHintCount = ReadResourceLines(buffer, (void **)IntervalHintLines, 32);
 }
 
 // FUNCTION: LEGOLAND 0x00490850
-void FUN_00490850(void) {
-    if (DAT_0079887c != 0) {
-        free(DAT_007cafa0);
+void FreeIntervalReport(void) {
+    if (IntervalTextLastLine != 0) {
+        free(IntervalTextLines[0]);
     }
-    DAT_0079887c = 0;
+    IntervalTextLastLine = 0;
 }
 
 // FUNCTION: LEGOLAND 0x00490880
-void FUN_00490880(void) {
-    if (DAT_00798880 != 0) {
-        free(DAT_007cb140);
+void FreeIntervalHints(void) {
+    if (IntervalHintCount != 0) {
+        free(IntervalHintLines[0]);
     }
-    DAT_00798880 = 0;
+    IntervalHintCount = 0;
 }
 
 // FUNCTION: LEGOLAND 0x004908b0
-void FUN_004908b0(void) {
+void KillIntervalScreen(void) {
     if (SPRITE_TitleScreenBk != 0) {
         KillSprite(SPRITE_TitleScreenBk);
         SPRITE_TitleScreenBk = 0;
     }
-    if (DAT_0081c02c != 0) {
-        KillSprite(DAT_0081c02c);
-        DAT_0081c02c = 0;
+    if (NextPageSprite != 0) {
+        KillSprite(NextPageSprite);
+        NextPageSprite = 0;
     }
-    if (DAT_0081c034 != 0) {
-        KillSprite(DAT_0081c034);
-        DAT_0081c034 = 0;
+    if (NextPageLitSprite != 0) {
+        KillSprite(NextPageLitSprite);
+        NextPageLitSprite = 0;
     }
-    if (DAT_0081c080 != 0) {
-        KillSprite(DAT_0081c080);
-        DAT_0081c080 = 0;
+    if (PreviousPageSprite != 0) {
+        KillSprite(PreviousPageSprite);
+        PreviousPageSprite = 0;
     }
-    if (DAT_0081c084 != 0) {
-        KillSprite(DAT_0081c084);
-        DAT_0081c084 = 0;
+    if (PreviousPageLitSprite != 0) {
+        KillSprite(PreviousPageLitSprite);
+        PreviousPageLitSprite = 0;
     }
-    if (DAT_007caf80 != 0) {
-        KillSprite(DAT_007caf80);
-        DAT_007caf80 = 0;
+    if (RepHint1Sprite != 0) {
+        KillSprite(RepHint1Sprite);
+        RepHint1Sprite = 0;
     }
-    if (DAT_007cb1c4 != 0) {
-        KillSprite(DAT_007cb1c4);
-        DAT_007cb1c4 = 0;
+    if (RepHint2Sprite != 0) {
+        KillSprite(RepHint2Sprite);
+        RepHint2Sprite = 0;
     }
     RemoveIconGroup(7);
 }
 
 // FUNCTION: LEGOLAND 0x00490970
-unsigned char FUN_00490970(unsigned int param_1, unsigned char param_2, unsigned int param_3, unsigned int param_4) {
+unsigned char IntervalScreenCloseHandler(unsigned int param_1, unsigned char param_2, unsigned int param_3, unsigned int param_4) {
     if ((param_2 & 2) != 0) {
-        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_00668e38 = 0;
-        FUN_004908b0();
+        PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
+        FrontEndSubScreenActive = 0;
+        KillIntervalScreen();
         EditMode.unk4 = 3;
-        FUN_00474880();
-        FUN_00490850();
-        FUN_00490880();
-        FUN_00490600(0);
-        if (DAT_00798778[0] != 0) {
+        SetDefaultMouseHandlers();
+        FreeIntervalReport();
+        FreeIntervalHints();
+        SetIntervalScreenIsBriefing(0);
+        if (IntervalMovieName[0] != 0) {
             SetPointer(0);
-            FUN_004771f0(DAT_00798778, 1, 1);
+            PlayMovie(IntervalMovieName, 1, 1);
             SetPointer(6);
-            FUN_00490610(DAT_004d8bb0);
+            SetPendingMovie(EmptyString);
         }
-        FUN_00498920();
-        DAT_006687b0 = 4;
-        FUN_004993c0();
-        FUN_00492850();
-        FUN_0046ce20();
-        FUN_0046b760();
+        SpeechCloseFile();
+        SpeechDelayFrames = 4;
+        ResumeGameTimer();
+        ResumeAllSamples();
+        ClearAdvisorHelp();
+        RepostScriptIntro();
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00490a20
-void FUN_00490a20(unsigned int param_1) {
+void PlayIntervalReportSpeech(unsigned int param_1) {
     char buffer[256];
 
     // STRING: LEGOLAND 0x004bf688
-    sprintf(buffer, "%s%02d.wav", DAT_007cae80, param_1 + 1);
-    FUN_00498920();
-    FUN_00498630(buffer);
-    FUN_00498b00();
-    FUN_0046d390();
+    sprintf(buffer, "%s%02d.wav", IntervalReportSpeechPrefix, param_1 + 1);
+    SpeechCloseFile();
+    SpeechLoadWavFile(buffer);
+    SpeechPlay();
+    SetIntervalSpeechHelpKind();
 }
 
 // FUNCTION: LEGOLAND 0x00490a60
-void FUN_00490a60(unsigned int param_1) {
+void PlayIntervalHintSpeech(unsigned int param_1) {
     char buffer[256];
 
-    sprintf(buffer, "%s%02d.wav", DAT_007cb1e0, param_1 + 1);
-    FUN_00498920();
-    FUN_00498630(buffer);
-    FUN_00498b00();
-    FUN_0046d390();
+    sprintf(buffer, "%s%02d.wav", IntervalHintSpeechPrefix, param_1 + 1);
+    SpeechCloseFile();
+    SpeechLoadWavFile(buffer);
+    SpeechPlay();
+    SetIntervalSpeechHelpKind();
 }
 
 // FUNCTION: LEGOLAND 0x00490aa0
-void FUN_00490aa0(void) {
-    if ((int)DAT_004bf670 <= 1) {
-        DAT_004bf670 = 1;
-        DAT_007cb2e0->flags = DAT_007cb2e0->flags | 0x400;
+void ShowIntervalReportPage(void) {
+    if ((int)IntervalPageFirstLine <= 1) {
+        IntervalPageFirstLine = 1;
+        TitlePreviousPageIcon->flags = TitlePreviousPageIcon->flags | 0x400;
     } else {
-        DAT_007cb2e0->flags = DAT_007cb2e0->flags & 0xfffffbff;
+        TitlePreviousPageIcon->flags = TitlePreviousPageIcon->flags & 0xfffffbff;
     }
-    if ((int)(DAT_004bf670 + 0xe) > (int)DAT_0079887c) {
-        DAT_007cb2e4->flags |= 0x400;
+    if ((int)(IntervalPageFirstLine + 0xe) > (int)IntervalTextLastLine) {
+        TitleNextPageIcon->flags |= 0x400;
     } else {
-        DAT_007cb2e4->flags &= 0xfffffbff;
+        TitleNextPageIcon->flags &= 0xfffffbff;
     }
-    FUN_00490a20((int)DAT_004bf670 / 0xe);
+    PlayIntervalReportSpeech((int)IntervalPageFirstLine / 0xe);
 }
 
 // FUNCTION: LEGOLAND 0x00490b20
-unsigned char FUN_00490b20(unsigned int param_1, unsigned int param_2) {
-    FUN_0046d680(DAT_007cb2e4, DAT_0081c034);
+unsigned char IntervalNextPageHandler(unsigned int param_1, unsigned int param_2) {
+    SetIconSprite(TitleNextPageIcon, NextPageLitSprite);
     if ((param_2 & 2) != 0) {
-        if ((DAT_007cb2e4->flags & 0x400) != 0) {
-            return FUN_00490970(0, param_2, 0, 0);
+        if ((TitleNextPageIcon->flags & 0x400) != 0) {
+            return IntervalScreenCloseHandler(0, param_2, 0, 0);
         }
-        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_004bf670 = DAT_004bf670 + 0xe;
-        FUN_00490aa0();
+        PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
+        IntervalPageFirstLine = IntervalPageFirstLine + 0xe;
+        ShowIntervalReportPage();
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00490b90
-unsigned char FUN_00490b90(unsigned int param_1, unsigned int param_2) {
-    FUN_0046d680(DAT_007cb2e0, DAT_0081c084);
+unsigned char IntervalPreviousPageHandler(unsigned int param_1, unsigned int param_2) {
+    SetIconSprite(TitlePreviousPageIcon, PreviousPageLitSprite);
     if ((param_2 & 2) != 0) {
-        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
-        DAT_004bf670 -= 14;
-        FUN_00490aa0();
+        PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
+        IntervalPageFirstLine -= 14;
+        ShowIntervalReportPage();
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00490be0
-unsigned char FUN_00490be0(struct IconNode *param_1, unsigned int param_2) {
-    FUN_0046d680(param_1, DAT_007cb1c4);
+unsigned char IntervalHintHandler(struct IconNode *param_1, unsigned int param_2) {
+    SetIconSprite(param_1, RepHint2Sprite);
     if ((param_2 & 2) != 0) {
-        PlayInstanceOfSample(PTR_004b92c0, 0, 1, 0);
+        PlayInstanceOfSample(GameFX[FX_BUTTON4].sample, 0, 1, 0);
         do {
-            DAT_00798884 = DAT_00798884 + 1;
-            if ((int)DAT_00798884 >= (int)DAT_00798880) {
-                DAT_00798884 = 0;
+            IntervalHintIndex = IntervalHintIndex + 1;
+            if ((int)IntervalHintIndex >= (int)IntervalHintCount) {
+                IntervalHintIndex = 0;
             }
-        } while (strlen(((char **)&DAT_007cb140)[DAT_00798884]) == 0);
-        DAT_00798888 = GetTicks() + 8000;
-        FUN_00490a60(DAT_00798884);
+        } while (strlen(IntervalHintLines[IntervalHintIndex]) == 0);
+        IntervalHintBubbleEndTime = GetTicks() + 8000;
+        PlayIntervalHintSpeech(IntervalHintIndex);
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x00490c70
-void FUN_00490c70(void) {
+void InitIntervalScreen(void) {
     struct IconNode *accept;
     struct IconNode *icon;
 
-    FUN_00499380();
-    FUN_00492830();
+    PauseGameTimer();
+    PauseAllSamples();
     // STRING: LEGOLAND 0x004bf6cc
     SPRITE_TitleScreenBk = LoadSprite("Interval_Screen.lls", 0);
     // STRING: LEGOLAND 0x004b8198
-    DAT_0081c02c = LoadSprite("NextPage.lls", 4);
+    NextPageSprite = LoadSprite("NextPage.lls", 4);
     // STRING: LEGOLAND 0x004b8188
-    DAT_0081c034 = LoadSprite("NextPageLit.lls", 4);
+    NextPageLitSprite = LoadSprite("NextPageLit.lls", 4);
     // STRING: LEGOLAND 0x004b8174
-    DAT_0081c080 = LoadSprite("PreviousPage.lls", 4);
+    PreviousPageSprite = LoadSprite("PreviousPage.lls", 4);
     // STRING: LEGOLAND 0x004b8160
-    DAT_0081c084 = LoadSprite("PreviousPageLit.lls", 4);
+    PreviousPageLitSprite = LoadSprite("PreviousPageLit.lls", 4);
     // STRING: LEGOLAND 0x004bf6bc
-    DAT_007caf80 = LoadSprite("Rep_Hint1.lls", 4);
+    RepHint1Sprite = LoadSprite("Rep_Hint1.lls", 4);
     // STRING: LEGOLAND 0x004bf6ac
-    DAT_007cb1c4 = LoadSprite("Rep_Hint2.lls", 4);
+    RepHint2Sprite = LoadSprite("Rep_Hint2.lls", 4);
 
     // STRING: LEGOLAND 0x004bf694
     accept = LoadSpriteIcon("Accept_On_Report.lls", 4, 0x20a, 0x16c, 7);
-    if (DAT_00798878 != 0) {
+    if (IntervalScreenIsBriefing != 0) {
         accept->string_id = 0x244;
         accept->string = GetString(0x244);
     } else {
@@ -649,69 +651,69 @@ void FUN_00490c70(void) {
         accept->string = GetString(0x245);
     }
     accept->flags |= 0x6002;
-    accept->event_handler = FUN_00490970;
-    DAT_006687c0 = FUN_00490970;
+    accept->event_handler = IntervalScreenCloseHandler;
+    CancelKeyHandler = IntervalScreenCloseHandler;
 
-    icon = InsertIcon(0x1b9, 0x50, 7, DAT_007caf80);
+    icon = InsertIcon(0x1b9, 0x50, 7, RepHint1Sprite);
     icon->string_id = 0x2d0;
     icon->string = GetString(0x2d0);
-    icon->event_handler = (void *)FUN_00490be0;
+    icon->event_handler = (void *)IntervalHintHandler;
     icon->flags |= 0x6002;
-    DAT_007cb1c0 = icon;
-    if (DAT_00798880 == 0) {
+    RepHint1Icon = icon;
+    if (IntervalHintCount == 0) {
         icon->flags |= 0x400;
     }
 
-    DAT_00798888 = 0;
-    DAT_00798884 = 0xffffffff;
-    DAT_007cb2e4 = InsertIcon(0x1b9, 0x1ae, 7, DAT_0081c02c);
-    DAT_007cb2e4->string_id = 0x88e;
-    DAT_007cb2e4->string = GetString(0x88e);
-    DAT_007cb2e4->flags |= 0x2000;
-    DAT_007cb2e4->flags |= 0x4002;
-    DAT_007cb2e4->event_handler = (void *)FUN_00490b20;
-    DAT_006687bc = FUN_00490b20;
+    IntervalHintBubbleEndTime = 0;
+    IntervalHintIndex = 0xffffffff;
+    TitleNextPageIcon = InsertIcon(0x1b9, 0x1ae, 7, NextPageSprite);
+    TitleNextPageIcon->string_id = 0x88e;
+    TitleNextPageIcon->string = GetString(0x88e);
+    TitleNextPageIcon->flags |= 0x2000;
+    TitleNextPageIcon->flags |= 0x4002;
+    TitleNextPageIcon->event_handler = (void *)IntervalNextPageHandler;
+    OkKeyHandler = IntervalNextPageHandler;
 
-    DAT_007cb2e0 = InsertIcon(6, 0x1ae, 7, DAT_0081c080);
-    DAT_007cb2e0->string_id = 0x88f;
-    DAT_007cb2e0->string = GetString(0x88f);
-    DAT_007cb2e0->flags |= 0x2000;
-    DAT_007cb2e0->flags |= 0x4002;
-    DAT_007cb2e0->event_handler = (void *)FUN_00490b90;
-    DAT_004bf670 = 1;
-    FUN_00490aa0();
+    TitlePreviousPageIcon = InsertIcon(6, 0x1ae, 7, PreviousPageSprite);
+    TitlePreviousPageIcon->string_id = 0x88f;
+    TitlePreviousPageIcon->string = GetString(0x88f);
+    TitlePreviousPageIcon->flags |= 0x2000;
+    TitlePreviousPageIcon->flags |= 0x4002;
+    TitlePreviousPageIcon->event_handler = (void *)IntervalPreviousPageHandler;
+    IntervalPageFirstLine = 1;
+    ShowIntervalReportPage();
 }
 
 // FUNCTION: LEGOLAND 0x00490ea0
-void FUN_00490ea0(void) {
-    unsigned int _x = DAT_00813a44.x;
-    unsigned int _y = DAT_00813a44.y;
-    if ((int)_x < DAT_007cb2e4->x ||
-        (int)DAT_00813a44.x > DAT_007cb2e4->field_10 + DAT_007cb2e4->x ||
-        (int)DAT_00813a44.y < DAT_007cb2e4->y ||
-        (int)DAT_00813a44.y > DAT_007cb2e4->field_12 + DAT_007cb2e4->y) {
+void UpdateIntervalScreenIcons(void) {
+    unsigned int _x = MousePos.x;
+    unsigned int _y = MousePos.y;
+    if ((int)_x < TitleNextPageIcon->x ||
+        (int)MousePos.x > TitleNextPageIcon->width + TitleNextPageIcon->x ||
+        (int)MousePos.y < TitleNextPageIcon->y ||
+        (int)MousePos.y > TitleNextPageIcon->height + TitleNextPageIcon->y) {
         if (GetBlink() != 0) {
-            FUN_0046d680(DAT_007cb2e4, DAT_0081c02c);
+            SetIconSprite(TitleNextPageIcon, NextPageSprite);
         } else {
-            FUN_0046d680(DAT_007cb2e4, DAT_0081c034);
+            SetIconSprite(TitleNextPageIcon, NextPageLitSprite);
         }
     }
-    if ((int)DAT_00813a44.x < DAT_007cb2e0->x ||
-        (int)DAT_00813a44.x > DAT_007cb2e0->field_10 + DAT_007cb2e0->x ||
-        (int)DAT_00813a44.y < DAT_007cb2e0->y ||
-        (int)DAT_00813a44.y > DAT_007cb2e0->field_12 + DAT_007cb2e0->y) {
-        FUN_0046d680(DAT_007cb2e0, DAT_0081c080);
+    if ((int)MousePos.x < TitlePreviousPageIcon->x ||
+        (int)MousePos.x > TitlePreviousPageIcon->width + TitlePreviousPageIcon->x ||
+        (int)MousePos.y < TitlePreviousPageIcon->y ||
+        (int)MousePos.y > TitlePreviousPageIcon->height + TitlePreviousPageIcon->y) {
+        SetIconSprite(TitlePreviousPageIcon, PreviousPageSprite);
     }
-    if ((int)DAT_00813a44.x < DAT_007cb1c0->x ||
-        (int)DAT_00813a44.x > DAT_007cb1c0->field_10 + DAT_007cb1c0->x ||
-        (int)DAT_00813a44.y < DAT_007cb1c0->y ||
-        (int)DAT_00813a44.y > DAT_007cb1c0->field_12 + DAT_007cb1c0->y) {
-        FUN_0046d680(DAT_007cb1c0, DAT_007caf80);
+    if ((int)MousePos.x < RepHint1Icon->x ||
+        (int)MousePos.x > RepHint1Icon->width + RepHint1Icon->x ||
+        (int)MousePos.y < RepHint1Icon->y ||
+        (int)MousePos.y > RepHint1Icon->height + RepHint1Icon->y) {
+        SetIconSprite(RepHint1Icon, RepHint1Sprite);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00490fa0
-void FUN_00490fa0(char *text, int font, RECT rc, int color_flag) {
+void DrawClippedText(char *text, int font, RECT rc, INT_PTR color_flag) {
     HRGN region = CreateRectRgn(SPRITE_ClipRect.left, SPRITE_ClipRect.top, SPRITE_ClipRect.right, SPRITE_ClipRect.bottom);
     HDC hdc;
     HGDIOBJ old_region;
@@ -723,7 +725,7 @@ void FUN_00490fa0(char *text, int font, RECT rc, int color_flag) {
         SetTextColor(hdc, 0xffffff);
     }
     old_region = SelectObject(hdc, region);
-    color_flag = (int)SelectFont(hdc, font);
+    color_flag = (INT_PTR)SelectFont(hdc, font); /* the old font */
     DrawTextA(hdc, text, strlen(text), &rc, 0x24);
     SelectObject(hdc, (HGDIOBJ)color_flag);
     SelectObject(hdc, old_region);
@@ -733,7 +735,7 @@ void FUN_00490fa0(char *text, int font, RECT rc, int color_flag) {
 }
 
 // FUNCTION: LEGOLAND 0x00491080
-void FUN_00491080(char *param_1, int param_2, int param_3, int param_4, int param_5) {
+void PrintIntervalLine(char *param_1, int param_2, int param_3, int param_4, int param_5) {
     RECT rc;
 
     if (param_1 != NULL) {
@@ -744,86 +746,86 @@ void FUN_00491080(char *param_1, int param_2, int param_3, int param_4, int para
         if (param_5 != 0) {
             NewPrintCent(param_1, 3, rc, 0);
         } else {
-            FUN_00490fa0(param_1, 2, rc, 0);
+            DrawClippedText(param_1, 2, rc, 0);
         }
     }
 }
 
 // FUNCTION: LEGOLAND 0x004910f0
-void FUN_004910f0(void) {
+void RenderIntervalScreen(void) {
     int rc[4];
     char **line;
     int y;
     int n;
     int idx;
 
-    FUN_00491080(DAT_007cafa0, 10, 0x45, 0x27, 1);
+    PrintIntervalLine(IntervalTextLines[0], 10, 0x45, 0x27, 1);
     y = 0x6b;
     n = 0;
-    line = (char **)&DAT_007cafa0 + DAT_004bf670;
-    idx = DAT_004bf670;
-    while (n < 0xe && idx <= (int)DAT_0079887c) {
-        FUN_00491080(*line, 10, y, 0x16, 0);
+    line = &IntervalTextLines[IntervalPageFirstLine];
+    idx = IntervalPageFirstLine;
+    while (n < 0xe && idx <= (int)IntervalTextLastLine) {
+        PrintIntervalLine(*line, 10, y, 0x16, 0);
         n = n + 1;
         idx = idx + 1;
         line = line + 1;
         y = y + 0x18;
     }
-    FUN_00490ea0();
-    if (DAT_00798888 != 0) {
+    UpdateIntervalScreenIcons();
+    if (IntervalHintBubbleEndTime != 0) {
         rc[0] = 0x1db;
         rc[1] = 5;
         rc[2] = 0x280;
         rc[3] = 0x78;
-        if ((int)GetTicks() > (int)DAT_00798888) {
-            DAT_00798888 = 0;
+        if ((int)GetTicks() > (int)IntervalHintBubbleEndTime) {
+            IntervalHintBubbleEndTime = 0;
         }
-        BubbleHelp(rc, ((char **)&DAT_007cb140)[DAT_00798884], 2);
+        BubbleHelp(rc, IntervalHintLines[IntervalHintIndex], 2);
     }
 }
 
 // FUNCTION: LEGOLAND 0x004911c0
-unsigned int FUN_004911c0(const char *a, const char *b) {
-    if (FUN_004907a0(a) != 0) {
+unsigned int ShowIntervalScreen(const char *a, const char *b) {
+    if (LoadIntervalReport(a) != 0) {
         if (b != 0) {
-            FUN_00490800(b);
+            LoadIntervalHints(b);
         }
-        DAT_00668e38 = 1;
+        FrontEndSubScreenActive = 1;
         EditMode.unk4 = 2;
-        DAT_0080ff80.unk4 = 0xffffffff;
-        DAT_0080ff80.unk8 = 7;
-        if (DAT_00668e9c != 0) {
-            ((struct PopUp *)DAT_00668e9c)->field_34 &= 0xfffffbff;
+        FrontEndScreenMode.unk4 = 0xffffffff;
+        FrontEndScreenMode.unk8 = 7;
+        if (BriefingIcon != 0) {
+            ((struct IconNode *)BriefingIcon)->flags &= 0xfffffbff;
         }
         return 1;
     }
-    if (DAT_00668e9c != 0) {
-        ((struct PopUp *)DAT_00668e9c)->field_34 |= 0x400;
+    if (BriefingIcon != 0) {
+        ((struct IconNode *)BriefingIcon)->flags |= 0x400;
     }
     return 0;
 }
 
 // FUNCTION: LEGOLAND 0x00491240
-unsigned int FUN_00491240(const char *param_1) {
+unsigned int HasIntervalReport(const char *param_1) {
     unsigned int result;
 
-    if (DAT_00668e9c == 0) {
+    if (BriefingIcon == 0) {
         return 0;
     }
-    if (FUN_004907a0(param_1) != 0) {
-        ((struct PopUp *)DAT_00668e9c)->field_34 &= 0xfffffbff;
+    if (LoadIntervalReport(param_1) != 0) {
+        ((struct IconNode *)BriefingIcon)->flags &= 0xfffffbff;
         result = 1;
     } else {
-        ((struct PopUp *)DAT_00668e9c)->field_34 |= 0x400;
+        ((struct IconNode *)BriefingIcon)->flags |= 0x400;
         result = 0;
     }
-    FUN_00490850();
+    FreeIntervalReport();
     return result;
 }
 
 // FUNCTION: LEGOLAND 0x00491290
-LEGO_EXPORT void InitNewProfilePoPUp(struct Profile *profile) {
-    struct IconNode *icon = (struct IconNode *)profile;
+LEGO_EXPORT void InitNewProfilePoPUp(struct IconNode *profile) {
+    struct IconNode *icon = profile;
     struct IconNode *popup;
 
     // STRING: LEGOLAND 0x004bf6e4

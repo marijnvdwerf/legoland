@@ -2,7 +2,7 @@
 # requires-python = ">=3.11"
 # dependencies = ["reccmp>=0.1.7"]
 # ///
-"""Show per-TU progress, or details for one TU."""
+"""Show per-TU progress, details for one TU, or `--worst [N]` (the N lowest-scoring functions)."""
 
 from __future__ import annotations
 
@@ -14,25 +14,58 @@ from pathlib import Path
 TOOLS_DIR = Path(__file__).resolve().parent
 os.environ["PATH"] = str(TOOLS_DIR) + os.pathsep + os.environ.get("PATH", "")
 
+import capstone
+from capstone import x86
+import reccmp_fixes  # noqa: F401  (project fix for a reccmp false positive; see the module)
 from reccmp.compare.core import Compare
 from reccmp.parser.marker import MarkerType, match_marker
 from reccmp.project.detect import RecCmpProject
 
+# Instructions MSVC6 never emits from C. A function whose original code contains one
+# was hand-written assembly and needs inline __asm to byte-match.
+INLINE_ASM = {
+    "pushal", "popal", "rdtsc", "fnstcw", "fldcw", "fist", "fistp", "shrd", "shld",
+    "movsw", "rep stosw", "rep movsw", "lodsb", "lodsw", "lodsd", "cld", "std",
+    "loop", "wait", "xchg", "bswap",
+}  # fmt: skip
 
-def parse_annotations(source_dir: Path) -> dict[int, tuple[str, str]]:
-    annotations = {}
+
+def parse_annotations(source_dir: Path) -> tuple[dict[int, tuple[str, str]], list[int]]:
+    """Return FUNCTION annotations, and the start of every annotated function (incl. STUBs)."""
+    annotations, starts = {}, []
     for src in sorted(source_dir.glob("*.c")):
-        lines = src.read_text().splitlines()
+        lines = src.read_text(encoding="latin-1").splitlines()
         for i, line in enumerate(lines):
             marker = match_marker(line)
-            if (
-                marker
-                and marker.module == "LEGOLAND"
-                and marker.type == MarkerType.FUNCTION
-            ):
-                name = re.search(r"([A-Za-z_]\w*)\s*\(", lines[i + 1]).group(1)
+            if not marker or marker.module != "LEGOLAND":
+                continue
+            if marker.type in (MarkerType.FUNCTION, MarkerType.STUB):
+                starts.append(marker.offset)
+            if marker.type == MarkerType.FUNCTION:
+                name = re.search(r"([A-Za-z_]\w*)\s*\(", re.sub(r"__declspec\(\w+\)", "", lines[i + 1])).group(1)
                 annotations[marker.offset] = (src.stem, name)
-    return annotations
+    return annotations, sorted(set(starts))
+
+
+def find_inline_asm(image, starts: list[int]) -> set[int]:
+    """Addresses of original functions that contain inline asm."""
+    md = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)
+    md.detail = True
+    found = set()
+    for start, end in zip(starts, starts[1:]):
+        code = image.read(start, end - start)
+        # MSVC places jump tables after the code: stop before the first one
+        for ins in md.disasm(code, start):
+            for op in ins.operands:
+                if op.type == x86.X86_OP_MEM and start < op.mem.disp < end:
+                    end = op.mem.disp
+        if any(
+            ins.mnemonic in INLINE_ASM
+            or (ins.mnemonic == "and" and ins.op_str.endswith(", 0xffffffff"))
+            for ins in md.disasm(code[: end - start], start)
+        ):
+            found.add(start)
+    return found
 
 
 RESET = "\033[0m"
@@ -59,19 +92,25 @@ def classify(ratio: float) -> str:
 
 def main():
     target = RecCmpProject.from_directory(Path(".")).get("LEGOLAND")
-    ratios = {
-        d.orig_addr: d.effective_accuracy
-        for d in Compare.from_target(target).compare_all()
-    }
+    compare = Compare.from_target(target)
+    ratios = {d.orig_addr: d.effective_accuracy for d in compare.compare_all()}
+    annotations, starts = parse_annotations(target.source_paths[0])
     functions = {
         address: (tu, name, ratios[address])
-        for address, (tu, name) in parse_annotations(target.source_paths[0]).items()
+        for address, (tu, name) in annotations.items()
     }
+    inline_asm = find_inline_asm(compare.orig_bin, starts) & functions.keys()
     stats, first = {}, {}
     for address, (tu, _name, ratio) in functions.items():
         s = stats.setdefault(tu, {"matched": 0, "partial": 0, "unmatched": 0})
         s[classify(ratio)] += 1
         first[tu] = min(first.get(tu, address), address)
+
+    if len(sys.argv) > 1 and sys.argv[1] == "--worst":
+        print_worst(
+            functions, inline_asm, int(sys.argv[2]) if len(sys.argv) > 2 else 30
+        )
+        return
 
     if len(sys.argv) > 1:
         tu = sys.argv[1].removesuffix(".c")
@@ -88,7 +127,8 @@ def main():
             marker = {"matched": "🟢", "partial": "🟡", "unmatched": "🔴"}[
                 classify(ratio)
             ]
-            print(f"{marker} 0x{address:08x} {name:<{width}} {ratio * 100:7.2f}%")
+            asm = "  inline asm" if address in inline_asm else ""
+            print(f"{marker} 0x{address:08x} {name:<{width}} {ratio * 100:7.2f}%{asm}")
         s = stats[tu]
         total = sum(s.values())
         print(
@@ -136,6 +176,47 @@ def main():
         bar = f"{_fg(100, 100, 100)}{bar}{RESET}"
     print(
         f"{'':2s} {'TOTAL':<{w_tu}}  {totals['matched']:>{w_m}}  {totals['partial']:>{w_p}}  {totals['unmatched']:>{w_u}}  {totals['matched'] / total * 100:>{w_pct}.1f}%  {bar}"
+    )
+    print_split(functions, inline_asm)
+
+
+def print_worst(functions: dict, inline_asm: set[int], count: int):
+    """The lowest-scoring functions that are not yet 100%."""
+    worst = sorted(
+        (
+            (ratio, address, tu, name)
+            for address, (tu, name, ratio) in functions.items()
+            if ratio < 1.0
+        ),
+    )[:count]
+    width = max(len(name) for _, _, _, name in worst)
+    for ratio, address, tu, name in worst:
+        asm = "  inline asm" if address in inline_asm else ""
+        print(f"{ratio * 100:6.2f}%  0x{address:08x}  {tu:<16} {name:<{width}}{asm}")
+
+
+def print_split(functions: dict, inline_asm: set[int]):
+    """Totals split by whether the original function used inline asm."""
+    groups = {
+        "Pure C": [r for a, (_, _, r) in functions.items() if a not in inline_asm],
+        "Inline asm": [r for a, (_, _, r) in functions.items() if a in inline_asm],
+        "All": [r for _, _, r in functions.values()],
+    }
+    print()
+    print(
+        f"   {'':<10}  {'Funcs':>5}  {'Matched':>7}  {'Partial':>7}  {'Unmatched':>9}  {'%':>6}  {'Avg sim.':>8}"
+    )
+    for label, ratios in groups.items():
+        count = {c: 0 for c in ("matched", "partial", "unmatched")}
+        for ratio in ratios:
+            count[classify(ratio)] += 1
+        n = max(len(ratios), 1)
+        print(
+            f"   {label:<10}  {len(ratios):>5}  {count['matched']:>7}  {count['partial']:>7}  {count['unmatched']:>9}  {count['matched'] / n * 100:>5.1f}%  {sum(ratios) / n * 100:>7.2f}%"
+        )
+    print(
+        "   Inline asm: the original uses instructions MSVC6 never emits from C;"
+        " match these with __asm."
     )
 
 

@@ -22,54 +22,9 @@
 #include "sound_sfx.h"
 #include "tilemap.h"
 
-struct DSCursorSource {
-    /* 0x00 */ unsigned char pad_0[0x1c];
-    /* 0x1c */ unsigned int field_1c;
-    /* 0x20 */ unsigned char pad_20[0x3c - 0x20];
-    /* 0x3c */ int field_3c;
-    /* 0x40 */ int field_40;
-};
-
-struct DSHead {
-    /* 0x00 */ unsigned char pad_0[0xc];
-    /* 0x0c */ struct DSCursorSource *field_c;
-};
-
 struct Node8 {
     unsigned char pad_0[8];
     void *next;
-};
-
-struct DSCarLayer {
-    unsigned char pad_0[12];
-    struct DSCarSub *field_c;
-};
-
-struct DSCarSub {
-    unsigned char pad_0[20];
-    unsigned int field_14;
-    unsigned int field_18;
-    unsigned char pad_1c[72];
-    struct DSCarInner *field_64;
-};
-
-struct DSCarInner {
-    unsigned char pad_0[16];
-    unsigned int field_10;
-};
-
-struct CountNode {
-    TileId tile;
-    unsigned char pad_2[2];
-    int field_4;
-    struct CountNode *next;
-};
-
-struct DSRoadElem {
-    /* 0x00 */ unsigned char pad_0[0x8];
-    /* 0x08 */ unsigned char flags;
-    /* 0x09 */ unsigned char pad_9[0xc - 0x9];
-    /* 0x0c */ void *obj;
 };
 
 struct DSSampleConfig {
@@ -79,68 +34,41 @@ struct DSSampleConfig {
 
 struct DSObjClass {
     /* 0x00 */ unsigned char pad_0[0x26];
-    /* 0x26 */ short field_26;
+    /* 0x26 */ short cost;
     /* 0x28 */ unsigned char pad_28[0xc4 - 0x28];
-    /* 0xc4 */ unsigned int field_c4;
-};
-
-struct DSBlokeNode {
-    /* 0x00 */ struct DSBlokeNode *next;
-    /* 0x04 */ short field_4;
-};
-
-struct DSRenderNode {
-    /* 0x00 */ struct DSRenderNode *next;
-    /* 0x04 */ unsigned char pad_4[0x8 - 0x4];
-    /* 0x08 */ struct Bloke *field_8;
-    /* 0x0c */ short field_c;
-};
-
-struct DSRenderSub {
-    /* 0x00 */ unsigned char pad_0[0xc];
-    /* 0x0c */ int field_c;
-    /* 0x10 */ int field_10;
-    /* 0x14 */ int field_14;
-    /* 0x18 */ int field_18;
-    /* 0x1c */ unsigned char pad_1c[0xcc - 0x1c];
-    /* 0xcc */ struct DSRenderNode *field_cc;
-};
-
-struct DSRenderRoot {
-    /* 0x00 */ unsigned char pad_0[0xc];
-    /* 0x0c */ struct DSRenderSub *field_c;
+    /* 0xc4 */ Element *element;
 };
 
 #include "image_sprite.h"
 #include "pumps.h"
 
 // FUNCTION: LEGOLAND 0x004051a0
-void FUN_004051a0(short param_1) {
+void ComputeRoadDistancesStep(short param_1) {
     struct RideQueueEntry *node;
     struct RideQueueEntry *e0;
     struct RideQueueEntry *e1;
     struct RideQueueEntry *e2;
     struct RideQueueEntry *e3;
 
-    for (node = DAT_004c11c4; node != NULL; node = node->field_4) {
-        e0 = FUN_004125a0(node->x, node->y - 4);
-        e1 = FUN_004125a0(node->x + 4, node->y);
-        e2 = FUN_004125a0(node->x, node->y + 4);
-        e3 = FUN_004125a0(node->x - 4, node->y);
+    for (node = RoadBfsFrontier; node != NULL; node = node->field_4) {
+        e0 = FindRoadEntryAt(node->x, node->y - 4);
+        e1 = FindRoadEntryAt(node->x + 4, node->y);
+        e2 = FindRoadEntryAt(node->x, node->y + 4);
+        e3 = FindRoadEntryAt(node->x - 4, node->y);
         if ((node->field_14 & 0xf) == 6) {
             e2 = NULL;
             e3 = NULL;
             e0 = NULL;
-        } else if (e0 != NULL && ((short)e0->field_8 != param_1 || e0->field_18 != NULL)) {
+        } else if (e0 != NULL && ((short)e0->id != param_1 || e0->field_18 != NULL)) {
             e0 = NULL;
         }
-        if (e1 != NULL && ((short)e1->field_8 != param_1 || e1->field_18 != NULL)) {
+        if (e1 != NULL && ((short)e1->id != param_1 || e1->field_18 != NULL)) {
             e1 = NULL;
         }
-        if (e2 != NULL && ((short)e2->field_8 != param_1 || e2->field_18 != NULL)) {
+        if (e2 != NULL && ((short)e2->id != param_1 || e2->field_18 != NULL)) {
             e2 = NULL;
         }
-        if (e3 != NULL && ((short)e3->field_8 != param_1 || e3->field_18 != NULL)) {
+        if (e3 != NULL && ((short)e3->id != param_1 || e3->field_18 != NULL)) {
             e3 = NULL;
         }
         if (e0 != NULL) {
@@ -160,78 +88,78 @@ void FUN_004051a0(short param_1) {
             e3->field_15 = node->field_15 + 1;
         }
         if (e0 != NULL) {
-            e0->field_4 = DAT_004c11c8;
-            DAT_004c11c8 = e0;
+            e0->field_4 = RoadBfsNextFrontier;
+            RoadBfsNextFrontier = e0;
         }
         if (e1 != NULL) {
-            e1->field_4 = DAT_004c11c8;
-            DAT_004c11c8 = e1;
+            e1->field_4 = RoadBfsNextFrontier;
+            RoadBfsNextFrontier = e1;
         }
         if (e2 != NULL) {
-            e2->field_4 = DAT_004c11c8;
-            DAT_004c11c8 = e2;
+            e2->field_4 = RoadBfsNextFrontier;
+            RoadBfsNextFrontier = e2;
         }
         if (e3 != NULL) {
-            e3->field_4 = DAT_004c11c8;
-            DAT_004c11c8 = e3;
+            e3->field_4 = RoadBfsNextFrontier;
+            RoadBfsNextFrontier = e3;
         }
     }
 }
 
 // FUNCTION: LEGOLAND 0x00405310
-void FUN_00405310(TileId tile) {
+void ComputeRoadDistances(TileId tile) {
     struct RideQueueEntry *cur;
     struct RideQueueEntry *ret;
     struct RideQueueEntry *tmp;
 
-    cur = DAT_004cbeac;
+    cur = RoadEntryList;
     while (cur != NULL) {
-        if (cur->field_8 == tile.id) {
+        if (cur->id == tile.id) {
             cur->field_18 = NULL;
         }
         cur = cur->next;
     }
 
-    ret = FUN_00412650(tile.id);
+    ret = FindQueueEntryById(tile.id);
     ret->field_15 = 0;
     ret->field_4 = NULL;
 
-    DAT_004c11c4 = ret;
-    DAT_004c11c8 = NULL;
+    RoadBfsFrontier = ret;
+    RoadBfsNextFrontier = NULL;
 
     do {
-        FUN_004051a0(tile.id);
-        tmp = DAT_004c11c8;
-        DAT_004c11c4 = tmp;
-        DAT_004c11c8 = NULL;
+        ComputeRoadDistancesStep(tile.id);
+        tmp = RoadBfsNextFrontier;
+        RoadBfsFrontier = tmp;
+        RoadBfsNextFrontier = NULL;
     } while (tmp != NULL);
 }
 
 // FUNCTION: LEGOLAND 0x00405370
-void FUN_00405370(struct DSHead *param_1) {
-    unsigned int lls;
+void LoadDrivingSchoolResources(struct Element *param_1) {
+    struct LLS *lls;
 
-    DAT_0082c694 = param_1->field_c;
-    if (LLIDB_FindElement("DSCHOOL MAPPING", (unsigned int *)&param_1, 0) == 0) {
-        DAT_0082c67c = LLIDB_LoadData(param_1);
+    DrivingSchoolRide = param_1->ride;
+    if (LLIDB_FindElement("DSCHOOL MAPPING", (struct Element **)&param_1, 0) == 0) {
+        DSchoolMappingData = LLIDB_LoadData((struct Element *)param_1);
     }
-    if (LLIDB_FindElement("DSCHOOL BLUE CAR", (unsigned int *)&param_1, 0) == 0) {
-        DAT_00830f9c = LLIDB_LoadData(param_1);
+    if (LLIDB_FindElement("DSCHOOL BLUE CAR", (struct Element **)&param_1, 0) == 0) {
+        DSchoolBlueCarData = LLIDB_LoadData((struct Element *)param_1);
     }
-    DAT_0082c694->field_1c |= 0x420;
+    DrivingSchoolRide->flags |= 0x420;
     Load_FXList(DRIVING_SCHOOL_SFX, 6);
     // STRING: LEGOLAND 0x004b4524
-    DAT_0082c6c0 = LoadSprite("DSchool Matte.lls", 1);
+    DSchoolMatteSprite = LoadSprite("DSchool Matte.lls", 1);
     // STRING: LEGOLAND 0x004b4510
-    DAT_0082c6bc = LoadPalette((unsigned int)".\\3ddata\\blu.col");
+    DSchoolBluePalette = LoadPalette(".\\3ddata\\blu.col");
     // STRING: LEGOLAND 0x004b44fc
-    DAT_0082c6b8 = LoadPalette((unsigned int)".\\3ddata\\yel.col");
+    DSchoolYellowPalette = LoadPalette(".\\3ddata\\yel.col");
     // STRING: LEGOLAND 0x004b44e8
-    DAT_0082c690 = LoadPalette((unsigned int)".\\3ddata\\red.col");
+    DSchoolRedPalette = LoadPalette(".\\3ddata\\red.col");
     // STRING: LEGOLAND 0x004b44d8
-    DAT_00830f94 = LoadSprite("ds_car&m.lls", 1);
-    if (DAT_00830f94 != NULL) {
-        lls = GetLLSForSprite((struct SpriteLLS *)DAT_00830f94);
+    DSCarSprite = LoadSprite("ds_car&m.lls", 1);
+    if (DSCarSprite != NULL) {
+        lls = GetLLSForSprite((struct Sprite *)DSCarSprite);
         if (lls != 0) {
             LLSStop(lls);
         }
@@ -239,8 +167,8 @@ void FUN_00405370(struct DSHead *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00405460
-void FUN_00405460(void) {
-    unsigned int local;
+void UnloadDrivingSchoolResources(void) {
+    struct Element *local;
 
     // STRING: LEGOLAND 0x004b454c
     if (LLIDB_FindElement("DSCHOOL MAPPING", &local, 0) == 0) {
@@ -252,59 +180,59 @@ void FUN_00405460(void) {
         LLIDB_UnLoadData(local);
     }
 
-    while (DAT_004c10d4 != NULL) {
-        FUN_00401c60(DAT_004c10d4);
+    while (DrivingSchoolCars != NULL) {
+        RemoveDrivingSchoolCar(DrivingSchoolCars);
     }
 
-    FUN_00411bd0();
+    RemoveAllPumps();
 
-    while (DAT_004cbeac != NULL) {
-        struct RideQueueEntry *next = DAT_004cbeac->next;
-        free(DAT_004cbeac);
-        DAT_004cbeac = next;
+    while (RoadEntryList != NULL) {
+        struct RideQueueEntry *next = RoadEntryList->next;
+        free(RoadEntryList);
+        RoadEntryList = next;
     }
 
-    while (DAT_004c11bc != NULL) {
-        void *next = ((struct Node8 *)DAT_004c11bc)->next;
-        free(DAT_004c11bc);
-        DAT_004c11bc = next;
+    while (DrivingSchoolCountList != NULL) {
+        void *next = ((struct Node8 *)DrivingSchoolCountList)->next;
+        free(DrivingSchoolCountList);
+        DrivingSchoolCountList = next;
     }
 
     Kill_FXList(DRIVING_SCHOOL_SFX, 6);
-    KillSprite(DAT_0082c6c0);
-    free(DAT_0082c6bc);
-    free(DAT_0082c6b8);
-    free(DAT_0082c690);
-    KillSprite(DAT_00830f94);
-    DAT_0082c694 = NULL;
+    KillSprite(DSchoolMatteSprite);
+    free(DSchoolBluePalette);
+    free(DSchoolYellowPalette);
+    free(DSchoolRedPalette);
+    KillSprite(DSCarSprite);
+    DrivingSchoolRide = NULL;
 }
 
 // FUNCTION: LEGOLAND 0x00405570
-void FUN_00405570(void) {
+void DrivingSchoolSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_0082c694;
+    EditMode.unk8 = DrivingSchoolRide;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
-    DefaultCursor(&DAT_0082f760);
-    memcpy(DAT_0082f760.field_1414, DAT_004b4440, 20);
-    DAT_0082f760.field_1828 |= 0x100;
-    DefaultCursor(&DAT_0082c6e0);
-    memcpy(DAT_0082c6e0.field_1414, DAT_004b4458, 20);
-    DAT_0082c6e0.field_1828 |= 0x200;
-    DefaultCursor(&DAT_0082df20);
-    memcpy(DAT_0082df20.field_1414, DAT_004b4470, 20);
-    EditCursor.field_1830 = (unsigned int)&DAT_0082f760;
-    DAT_0082f760.field_1830 = (unsigned int)&DAT_0082c6e0;
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
+    DefaultCursor(&ExtraEditCursor1);
+    memcpy(ExtraEditCursor1.field_1414, DrivingSchoolPart1Footprint, 20);
+    ExtraEditCursor1.field_1828 |= 0x100;
+    DefaultCursor(&ExtraEditCursor2);
+    memcpy(ExtraEditCursor2.field_1414, DrivingSchoolPart2Footprint, 20);
+    ExtraEditCursor2.field_1828 |= 0x200;
+    DefaultCursor(&ExtraEditCursor3);
+    memcpy(ExtraEditCursor3.field_1414, DrivingSchoolPart3Footprint, 20);
+    EditCursor.next = &ExtraEditCursor1;
+    ExtraEditCursor1.next = &ExtraEditCursor2;
 }
 
 // FUNCTION: LEGOLAND 0x00405630
-void FUN_00405630(unsigned int param_1, int *coords) {
+void DrivingSchoolAddObject(struct Element *param_1, int *coords) {
     TileId tile;
     struct CountNode *node;
     struct Cursor *cursor;
     int x;
     int y;
-    struct DSRoadElem *elem;
+    struct Element *elem;
 
     tile.pos.x = coords[0];
     tile.pos.y = coords[1];
@@ -312,20 +240,20 @@ void FUN_00405630(unsigned int param_1, int *coords) {
 
     node = (struct CountNode *)malloc(sizeof(struct CountNode));
     node->tile = tile;
-    node->next = (struct CountNode *)DAT_004c11bc;
-    DAT_004c11bc = node;
-    cursor = (struct Cursor *)EditCursor.field_1830;
-    x = cursor->field_1404;
-    y = cursor->field_1408;
+    node->next = DrivingSchoolCountList;
+    DrivingSchoolCountList = node;
+    cursor = EditCursor.next;
+    x = cursor->tile_x;
+    y = cursor->tile_y;
 
-    FUN_004132a0(tile, x - 3, y - 4, 6, 1);
-    FUN_004132a0(tile, x + 1, y - 4, 0, 1);
-    FUN_004132a0(tile, x + 5, y - 4, 3, 1);
-    FUN_004132a0(tile, x + 5, y, 0, 0);
-    FUN_004132a0(tile, x + 5, y + 4, 0, 0);
+    AddRoadEntry(tile, x - 3, y - 4, 6, 1);
+    AddRoadEntry(tile, x + 1, y - 4, 0, 1);
+    AddRoadEntry(tile, x + 5, y - 4, 3, 1);
+    AddRoadEntry(tile, x + 5, y, 0, 0);
+    AddRoadEntry(tile, x + 5, y + 4, 0, 0);
 
     // STRING: LEGOLAND 0x004b455c
-    elem = (struct DSRoadElem *)ElemID("Driving School Roads");
+    elem = (struct Element *)ElemID("Driving School Roads");
     if (elem != NULL && (elem->flags & 4) != 0) {
         IncrementObjectCount(elem->obj);
         IncrementObjectCount(elem->obj);
@@ -335,88 +263,88 @@ void FUN_00405630(unsigned int param_1, int *coords) {
     }
 
     node->field_4 = 5;
-    FUN_00405310(tile);
+    ComputeRoadDistances(tile);
 }
 
 // FUNCTION: LEGOLAND 0x00405740
-void FUN_00405740(struct DSHead *param_1, unsigned int param_2, unsigned int param_3) {
-    struct DSCursorSource *src = param_1->field_c;
-    struct DSCursorSource *c694;
+void DrivingSchoolCalcCursor(struct Element *param_1, int *param_2, unsigned int param_3) {
+    struct Ride *src = param_1->ride;
+    struct Ride *c694;
     unsigned int mapx;
     unsigned int mapy;
 
-    memcpy(EditCursor.field_1414, (char *)src + 0x3c, 20);
+    memcpy(EditCursor.field_1414, &src->footprint, sizeof(EditCursor.field_1414));
     EditCursor.field_1830 = 0;
     EditCursor.field_1828 = 0x4408;
-    ScreenToMapRef(param_2, &EditCursor.field_1404, param_3);
+    ScreenToMapRef(param_2, &EditCursor.tile_x, param_3);
 
-    c694 = DAT_0082c694;
-    mapx = EditCursor.field_1404;
-    memcpy(DAT_0082f760.field_1414, DAT_004b4440, 20);
-    DAT_0082f760.field_1830 = 0;
-    mapy = EditCursor.field_1408;
-    DAT_0082f760.field_1828 = 0x4108;
-    DAT_0082f760.field_1404 = c694->field_3c + mapx;
-    DAT_0082f760.field_1408 = c694->field_40 + mapy;
+    c694 = DrivingSchoolRide;
+    mapx = EditCursor.tile_x;
+    memcpy(ExtraEditCursor1.field_1414, DrivingSchoolPart1Footprint, 20);
+    ExtraEditCursor1.field_1830 = 0;
+    mapy = EditCursor.tile_y;
+    ExtraEditCursor1.field_1828 = 0x4108;
+    ExtraEditCursor1.tile_x = c694->footprint.x0 + mapx;
+    ExtraEditCursor1.tile_y = c694->footprint.y0 + mapy;
 
-    memcpy(DAT_0082c6e0.field_1414, DAT_004b4458, 20);
-    DAT_0082c6e0.field_1830 = 0;
-    DAT_0082c6e0.field_1828 = 0x4208;
-    DAT_0082c6e0.field_1404 = c694->field_3c + mapx;
-    DAT_0082c6e0.field_1408 = c694->field_40 + mapy;
+    memcpy(ExtraEditCursor2.field_1414, DrivingSchoolPart2Footprint, 20);
+    ExtraEditCursor2.field_1830 = 0;
+    ExtraEditCursor2.field_1828 = 0x4208;
+    ExtraEditCursor2.tile_x = c694->footprint.x0 + mapx;
+    ExtraEditCursor2.tile_y = c694->footprint.y0 + mapy;
 
-    memcpy(DAT_0082df20.field_1414, DAT_004b4470, 20);
-    DAT_0082df20.field_1830 = 0;
-    DAT_0082df20.field_1828 = 0x5008;
-    DAT_0082df20.field_1404 = c694->field_3c + mapx;
-    DAT_0082df20.field_1408 = c694->field_40 + mapy;
+    memcpy(ExtraEditCursor3.field_1414, DrivingSchoolPart3Footprint, 20);
+    ExtraEditCursor3.field_1830 = 0;
+    ExtraEditCursor3.field_1828 = 0x5008;
+    ExtraEditCursor3.tile_x = c694->footprint.x0 + mapx;
+    ExtraEditCursor3.tile_y = c694->footprint.y0 + mapy;
 
-    ValidateCursor(&DAT_0082df20, (unsigned int)src);
-    ValidateCursor(&DAT_0082c6e0, (unsigned int)src);
-    ValidateCursor(&DAT_0082f760, (unsigned int)src);
-    ValidateCursor(&EditCursor, (unsigned int)src);
+    ValidateCursor(&ExtraEditCursor3, src);
+    ValidateCursor(&ExtraEditCursor2, src);
+    ValidateCursor(&ExtraEditCursor1, src);
+    ValidateCursor(&EditCursor, src);
 
-    EditCursor.field_1830 = (unsigned int)&DAT_0082f760;
-    DAT_0082f760.field_1830 = (unsigned int)&DAT_0082c6e0;
-    DAT_0082c6e0.field_1830 = (unsigned int)&DAT_0082df20;
-    FUN_0045f4d0(&EditCursor);
+    EditCursor.next = &ExtraEditCursor1;
+    ExtraEditCursor1.next = &ExtraEditCursor2;
+    ExtraEditCursor2.next = &ExtraEditCursor3;
+    PropagateCursorBlocked(&EditCursor);
 }
 
 // FUNCTION: LEGOLAND 0x004058a0
-void FUN_004058a0(unsigned int param_1, unsigned int param_2) {
-    struct RideQueueEntry *node = DAT_004cbeac;
+void DrivingSchoolDCalcCursor(struct Element *param_1, struct Point *param_2) {
+    struct RideQueueEntry *node = RoadEntryList;
 
     BasicObjectDCalcCursor(param_1, param_2);
-    DefaultCursor(&DAT_0082f760);
-    memcpy(DAT_0082f760.field_1414, DAT_004b4bf0, 20);
+    DefaultCursor(&ExtraEditCursor1);
+    memcpy(ExtraEditCursor1.field_1414, RoadPieceFootprint, 20);
 
     while (node != NULL) {
-        if (node->field_8 == QueryObj.id) {
-            DAT_0082f760.field_1404 = node->x;
-            DAT_0082f760.field_1408 = node->y;
-            FUN_0045f460(&DAT_0082f760);
-            DAT_0082f760.field_1828 = 0x18;
-            BuildCursorPtr(&DAT_0082f760, 0, 0);
-            RenderCursor(&DAT_0082f760);
+        if (node->id == QueryObj.id) {
+            ExtraEditCursor1.tile_x = node->x;
+            ExtraEditCursor1.tile_y = node->y;
+            ResetCursorBuildable(&ExtraEditCursor1);
+            ExtraEditCursor1.field_1828 = 0x18;
+            BuildCursorPtr(&ExtraEditCursor1, 0, 0);
+            RenderCursor(&ExtraEditCursor1);
         }
         node = node->next;
     }
 }
 
 // FUNCTION: LEGOLAND 0x00405940
-void FUN_00405940(Element *obj, TileId tile, unsigned int param_3) {
-    struct RideQueueEntry *queue = DAT_004cbeac;
-    struct CountNode *count = (struct CountNode *)DAT_004c11bc;
-    struct DSBlokeNode *blokes = (struct DSBlokeNode *)DAT_004c10d4;
+void DrivingSchoolRemoveObject(Element *obj, TileId tile, struct Cursor *param_3) {
+    struct RideQueueEntry *queue = RoadEntryList;
+    struct CountNode *count = DrivingSchoolCountList;
+    struct NewBloke *blokes = DrivingSchoolCars;
     struct RideQueueEntry *next;
-    struct DSBlokeNode *nextBloke;
+    struct NewBloke *nextBloke;
 
-    StandardRemoveObject((Element *)obj, tile, (struct Cursor *)param_3);
-    DefaultCursor(&DAT_0082f760);
-    memcpy(DAT_0082f760.field_1414, DAT_004b4bf0, 20);
+    StandardRemoveObject(obj, tile, (struct Cursor *)param_3);
+    DefaultCursor(&ExtraEditCursor1);
+    memcpy(ExtraEditCursor1.field_1414, RoadPieceFootprint, 20);
 
     if (count->tile.id == tile.id) {
-        DAT_004c11bc = count->next;
+        DrivingSchoolCountList = count->next;
         free(count);
     } else {
         while (count->next != NULL) {
@@ -429,30 +357,30 @@ void FUN_00405940(Element *obj, TileId tile, unsigned int param_3) {
         }
     }
 
-    FUN_00411ba0(QueryObj.id);
+    RemovePumpsWithId(QueryObj.id);
 
     while (queue != NULL) {
         next = queue->next;
-        if (queue->field_8 == QueryObj.id) {
+        if (queue->id == QueryObj.id) {
             if (queue->field_14 & 0x10) {
                 queue->field_14 &= 0xef;
-                FUN_00413650(queue->field_8, queue->x, queue->y);
-                AddBricks(((struct DSObjClass *)DAT_0082c678)->field_26);
+                UpdateQueuePathShape(queue->id, queue->x, queue->y);
+                AddBricks(((struct DSObjClass *)ZebraCrossingRide)->cost);
             }
-            DAT_0082f760.field_1404 = queue->x;
-            DAT_0082f760.field_1408 = queue->y;
-            StandardRemoveObject((Element *)((struct DSObjClass *)DAT_0082c684)->field_c4, *(TileId *)&queue->field_8, &DAT_0082f760);
-            FUN_004133e0(queue->x, queue->y);
+            ExtraEditCursor1.tile_x = queue->x;
+            ExtraEditCursor1.tile_y = queue->y;
+            StandardRemoveObject((Element *)((struct DSObjClass *)DrivingSchoolRoadsClass)->element, *(TileId *)&queue->id, &ExtraEditCursor1);
+            RemoveRoadEntry(queue->x, queue->y);
         }
         queue = next;
     }
 
-    AddBricks(((struct DSObjClass *)DAT_0082c684)->field_26 * 5);
+    AddBricks(((struct DSObjClass *)DrivingSchoolRoadsClass)->cost * 5);
 
     while (blokes != NULL) {
         nextBloke = blokes->next;
-        if (blokes->field_4 == (short)QueryObj.id) {
-            FUN_00401c60(blokes);
+        if ((short)blokes->id == (short)QueryObj.id) {
+            RemoveDrivingSchoolCar(blokes);
         }
         blokes = nextBloke;
     }
@@ -461,23 +389,23 @@ void FUN_00405940(Element *obj, TileId tile, unsigned int param_3) {
 }
 
 // FUNCTION: LEGOLAND 0x00405ad0
-struct RideSpriteInfo *FUN_00405ad0(struct DSCarLayer *arg1, unsigned short arg2) {
-    struct DSCarSub *sub = arg1->field_c;
-    struct DSCarInner *inner = sub->field_64;
+struct RideSpriteInfo *GetDrivingSchoolSpriteInfo(struct Element *arg1, unsigned short arg2) {
+    struct Ride *sub = arg1->ride;
+    struct Sprite *inner = sub->layer;
 
-    DAT_0082c6a0.sprite = inner;
-    DAT_0082c6a0.x = sub->field_14;
-    DAT_0082c6a0.y = sub->field_18;
-    DAT_0082c6a0.id = arg2;
+    RideSpriteInfoBuffer.sprite = inner;
+    RideSpriteInfoBuffer.x = sub->field_14;
+    RideSpriteInfoBuffer.y = sub->field_18;
+    RideSpriteInfoBuffer.id = arg2;
 
-    inner = sub->field_64;
-    inner->field_10 |= 0x2000;
+    inner = sub->layer;
+    inner->flags |= 0x2000;
 
-    return &DAT_0082c6a0;
+    return &RideSpriteInfoBuffer;
 }
 
 // FUNCTION: LEGOLAND 0x00405b10
-void FUN_00405b10(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int clip) {
+void RenderDrivingSchool(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int clip) {
     struct Ride *ride = obj->ride;
     struct RideNode *node;
     struct Point ref;
@@ -497,7 +425,7 @@ void FUN_00405b10(Element *obj, unsigned int param_2, unsigned int param_3, unsi
         }
     }
     GetTileBounds(&ref, bounds);
-    if (DAT_0082c6c0 != NULL) {
+    if (DSchoolMatteSprite != NULL) {
         dx = ride->field_14;
         dy = ride->field_18;
         if (dx < 0) {
@@ -510,57 +438,71 @@ void FUN_00405b10(Element *obj, unsigned int param_2, unsigned int param_3, unsi
         } else {
             dy = dy >> 1;
         }
-        PrintSprite(DAT_0082c6c0, bounds[0] + dx, bounds[1] + dy, clip, 0);
+        PrintSprite(DSchoolMatteSprite, bounds[0] + dx, bounds[1] + dy, clip, 0);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00405bd0
-void FUN_00405bd0(Element *obj) {
+void DrivingSchoolUpdate(Element *obj) {
+    int tile_id;
+    int ride_y0;
+    unsigned int ride_y3;
+    int ride_x0;
+    int flags;
+    volatile int tile_y;
+    int ride_x3;
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
     struct Bloke *bloke;
     struct SampleSource source;
     struct SampleSource source2;
-    char move;
+    unsigned char move;
     int res;
-    int count;
-    int r;
+    volatile unsigned int count;
     struct Sample *sample;
+    int r;
 
-    FUN_00402c10();
-    FUN_00414440();
-    while (node != NULL) {
+    UpdateDrivingSchoolCars();
+    UpdateTrafficLights();
+    while (node) {
         bloke = node->rider;
         next = node->next;
-        if (bloke->field_e == 0) {
+        if (0 == bloke->low_level_action) {
             switch (bloke->param_action) {
             case 0:
-                bloke->dest.x = (node->tile.pos.x + ride->x) << 8;
-                bloke->dest.y = (node->tile.pos.y - 3 + ride->y) << 8;
+                ride_x0 = ride->x;
+                ride_y0 = ride->y;
+                bloke->dest.x = (node->tile.pos.x + ride_x0) << 8;
+                tile_y = node->tile.pos.y;
+                bloke->dest.y = (tile_y - 3 + ride_y0) << 8;
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = move + 0x10;
+                bloke->low_level_action = 7;
+                bloke->target_dir = 0x10 + move;
                 NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
                 bloke->field_58 = (rand() & 7) + 1;
                 bloke->param_action++;
                 break;
             case 1:
-                if (bloke->field_58 == 0) {
-                    count = FUN_00401c40(node->tile.id);
-                    if (count * 5 < (int)FUN_00413970(node->tile.id)) {
-                        res = FUN_00401ae0(node->tile.id, (int)bloke);
-                        if (res == 0) {
+                if (!bloke->field_58) {
+                    tile_id = node->tile.id;
+                    count = CountNewBlokesWithId(tile_id);
+                    /* The original compares the weighted rider count as a signed value (jge). */
+                    if ((int)(5 * count) < (int)CountRoadEntriesWithId(node->tile.id)) {
+                        res = AddDrivingSchoolCar(node->tile.id, bloke);
+                        if (0 == res) {
                             source.type = 1;
-                            source.field_4 = bloke;
-                            PlayInstanceOfSample(*(void **)(DRIVING_SCHOOL_SFX + 8), 0, 1, &source);
+                            source.bloke = bloke;
+                            PlayInstanceOfSample(DRIVING_SCHOOL_SFX[0].sample, 0, 1, &source);
                             r = rand() % 4 + 1;
-                            sample = PlayInstanceOfSample(((void **)(DRIVING_SCHOOL_SFX + 8))[r * 3], 1, 1, &source);
+                            sample = PlayInstanceOfSample(DRIVING_SCHOOL_SFX[r].sample, 1, 1, &source);
                             AdjustPSampleFreq(sample, 10);
                             BlokeSitAnim(bloke);
                             BlokeSetFrame(bloke, 0);
-                            bloke->flags |= 0x80;
+                            /* Advance the state before setting flag 0x80: MSVC6 then
+                             * schedules this load/increment and flag update as in the original. */
                             bloke->param_action++;
+                            bloke->flags = bloke->flags | 0x80;
                         } else if (res == -1) {
                             bloke->param_action = 3;
                         } else if (res == -2) {
@@ -572,7 +514,7 @@ void FUN_00405bd0(Element *obj) {
                 }
                 break;
             case 3:
-                bloke->flags &= 0xff7f;
+                bloke->flags = 0xff7f & bloke->flags;
                 BlokeWalkAnim(bloke);
                 BlokeSetFrame(bloke, 0);
                 bloke->pos.x = (node->tile.pos.x + ride->x) << 8;
@@ -580,8 +522,8 @@ void FUN_00405bd0(Element *obj) {
                 bloke->dest.x = ((node->tile.pos.x + ride->x) << 8) + 0x80;
                 bloke->dest.y = ((node->tile.pos.y + ride->y) << 8) + 0x80;
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = move + 0x10;
+                bloke->low_level_action = 7;
+                bloke->target_dir = move + 0x10;
                 NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
                 bloke->param_action++;
                 break;
@@ -589,7 +531,7 @@ void FUN_00405bd0(Element *obj) {
                 RemoveBlokeFromRide(ride, node);
                 bloke->flags &= 0xfff7;
                 source2.type = 1;
-                source2.field_4 = bloke;
+                source2.bloke = bloke;
                 KillAllSamplesFromSource(&source2);
                 break;
             }
@@ -599,61 +541,61 @@ void FUN_00405bd0(Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00405e70
-int FUN_00405e70(void) {
+int DrivingSchool_Save(struct Element *element) {
     struct CountNode *countNode;
     struct RideQueueEntry *queue;
     struct PumpNode *pump;
-    struct DSBlokeNode *bloke;
+    struct NewBloke *bloke;
     struct CountNode *countCur;
     struct RideQueueEntry *queueCur;
     struct PumpNode *pumpCur;
-    struct DSBlokeNode *blokeCur;
+    struct NewBloke *blokeCur;
     int count;
-    int buf[52];
+    struct NewBloke buf;
 
     count = 0;
-    for (countCur = (struct CountNode *)DAT_004c11bc; countCur != NULL; countCur = countCur->next) {
+    for (countCur = DrivingSchoolCountList; countCur != NULL; countCur = countCur->next) {
         count++;
     }
-    countNode = (struct CountNode *)DAT_004c11bc;
+    countNode = DrivingSchoolCountList;
     SaveGameWrite(&count, 4);
     while (count--) {
-        SaveGameWrite(countNode, 0xc);
+        SaveGameWrite(countNode, sizeof(struct CountNode));
         countNode = countNode->next;
     }
 
     count = 0;
-    for (queueCur = DAT_004cbeac; queueCur != NULL; queueCur = queueCur->next) {
+    for (queueCur = RoadEntryList; queueCur != NULL; queueCur = queueCur->next) {
         count++;
     }
-    queue = DAT_004cbeac;
+    queue = RoadEntryList;
     SaveGameWrite(&count, 4);
     while (count--) {
-        SaveGameWrite(queue, 0x20);
+        SaveGameWrite(queue, sizeof(struct RideQueueEntry));
         queue = queue->next;
     }
 
     count = 0;
-    for (pumpCur = (struct PumpNode *)DAT_004cbea4; pumpCur != NULL; pumpCur = pumpCur->next) {
+    for (pumpCur = PumpList; pumpCur != NULL; pumpCur = pumpCur->next) {
         count++;
     }
-    pump = (struct PumpNode *)DAT_004cbea4;
+    pump = PumpList;
     SaveGameWrite(&count, 4);
     while (count--) {
-        SaveGameWrite(pump, 0x10);
+        SaveGameWrite(pump, sizeof(struct PumpNode));
         pump = pump->next;
     }
 
     count = 0;
-    for (blokeCur = (struct DSBlokeNode *)DAT_004c10d4; blokeCur != NULL; blokeCur = blokeCur->next) {
+    for (blokeCur = DrivingSchoolCars; blokeCur != NULL; blokeCur = blokeCur->next) {
         count++;
     }
-    bloke = (struct DSBlokeNode *)DAT_004c10d4;
+    bloke = DrivingSchoolCars;
     SaveGameWrite(&count, 4);
     while (count--) {
-        memcpy(buf, bloke, 0xd0);
-        buf[51] = GetBlokeNum(buf[51]);
-        SaveGameWrite(buf, 0xd0);
+        memcpy(&buf, bloke, sizeof(buf));
+        buf.owner = GetBlokeNum(buf.bloke); /* the bloke by number */
+        SaveGameWrite(&buf, sizeof(buf));
         bloke = bloke->next;
     }
 
@@ -661,8 +603,8 @@ int FUN_00405e70(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00406020
-void FUN_00406020(unsigned short arg1, unsigned int arg2) {
-    struct CountNode *current = (struct CountNode *)DAT_004c11bc;
+void AddDrivingSchoolScore(unsigned short arg1, unsigned int arg2) {
+    struct CountNode *current = DrivingSchoolCountList;
     while (current != NULL) {
         if (current->tile.id == arg1) {
             if (current != NULL) {
@@ -675,8 +617,8 @@ void FUN_00406020(unsigned short arg1, unsigned int arg2) {
 }
 
 // FUNCTION: LEGOLAND 0x00406050
-int FUN_00406050(void) {
-    struct CountNode *current = (struct CountNode *)DAT_004c11bc;
+int GetBestDrivingSchoolScore(void) {
+    struct CountNode *current = DrivingSchoolCountList;
     int max = 0;
 
     while (current != NULL) {
@@ -690,15 +632,15 @@ int FUN_00406050(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00406070
-int FUN_00406070(void) {
+int DrivingSchool_Load(struct Element *element) {
     struct CountNode *countPrev;
     struct CountNode *countNode;
     struct RideQueueEntry *queuePrev;
     struct RideQueueEntry *queueNode;
     struct PumpNode *pumpPrev;
     struct PumpNode *pumpNode;
-    struct DSBlokeNode *blokePrev;
-    struct DSBlokeNode *blokeNode;
+    struct NewBloke *blokePrev;
+    struct NewBloke *blokeNode;
     int count;
 
     countPrev = NULL;
@@ -706,65 +648,65 @@ int FUN_00406070(void) {
     pumpPrev = NULL;
     blokePrev = NULL;
 
-    DAT_004c11bc = NULL;
+    DrivingSchoolCountList = NULL;
     SaveGameRead(&count, 4);
     while (count--) {
         if (countPrev == NULL) {
-            DAT_004c11bc = (struct CountNode *)malloc(0xc);
-            countPrev = DAT_004c11bc;
+            DrivingSchoolCountList = (struct CountNode *)malloc(sizeof(struct CountNode));
+            countPrev = DrivingSchoolCountList;
         } else {
-            countNode = (struct CountNode *)malloc(0xc);
+            countNode = (struct CountNode *)malloc(sizeof(struct CountNode));
             countPrev->next = countNode;
             countPrev = countNode;
         }
-        SaveGameRead(countPrev, 0xc);
+        SaveGameRead(countPrev, sizeof(struct CountNode));
     }
 
-    DAT_004cbeac = NULL;
+    RoadEntryList = NULL;
     SaveGameRead(&count, 4);
     while (count--) {
         if (queuePrev == NULL) {
-            DAT_004cbeac = (struct RideQueueEntry *)malloc(0x20);
-            queuePrev = DAT_004cbeac;
+            RoadEntryList = (struct RideQueueEntry *)malloc(sizeof(struct RideQueueEntry));
+            queuePrev = RoadEntryList;
         } else {
-            queueNode = (struct RideQueueEntry *)malloc(0x20);
+            queueNode = (struct RideQueueEntry *)malloc(sizeof(struct RideQueueEntry));
             queuePrev->next = queueNode;
             queuePrev = queueNode;
         }
-        SaveGameRead(queuePrev, 0x20);
+        SaveGameRead(queuePrev, sizeof(struct RideQueueEntry));
     }
 
-    DAT_004cbea4 = NULL;
+    PumpList = NULL;
     SaveGameRead(&count, 4);
     while (count--) {
         if (pumpPrev == NULL) {
-            DAT_004cbea4 = (struct PumpNode *)malloc(0x10);
-            pumpPrev = DAT_004cbea4;
+            PumpList = (struct PumpNode *)malloc(sizeof(struct PumpNode));
+            pumpPrev = PumpList;
         } else {
-            pumpNode = (struct PumpNode *)malloc(0x10);
+            pumpNode = (struct PumpNode *)malloc(sizeof(struct PumpNode));
             pumpPrev->next = pumpNode;
             pumpPrev = pumpNode;
         }
-        SaveGameRead(pumpPrev, 0x10);
+        SaveGameRead(pumpPrev, sizeof(struct PumpNode));
     }
 
-    DAT_004c10d4 = NULL;
+    DrivingSchoolCars = NULL;
     SaveGameRead(&count, 4);
     while (count--) {
         if (blokePrev == NULL) {
-            DAT_004c10d4 = (struct DSBlokeNode *)malloc(0xd0);
-            blokePrev = DAT_004c10d4;
+            DrivingSchoolCars = (struct NewBloke *)malloc(sizeof(struct NewBloke));
+            blokePrev = DrivingSchoolCars;
         } else {
-            blokeNode = (struct DSBlokeNode *)malloc(0xd0);
+            blokeNode = (struct NewBloke *)malloc(sizeof(struct NewBloke));
             blokePrev->next = blokeNode;
             blokePrev = blokeNode;
         }
-        SaveGameRead(blokePrev, 0xd0);
-        *(int *)((char *)blokePrev + 0xcc) = GetBlokePtr(*(int *)((char *)blokePrev + 0xcc));
+        SaveGameRead(blokePrev, sizeof(struct NewBloke));
+        blokePrev->bloke = GetBlokePtr(blokePrev->owner);
     }
 
-    for (countNode = (struct CountNode *)DAT_004c11bc; countNode != NULL; countNode = countNode->next) {
-        FUN_00405310(countNode->tile);
+    for (countNode = DrivingSchoolCountList; countNode != NULL; countNode = countNode->next) {
+        ComputeRoadDistances(countNode->tile);
     }
 
     return 1;

@@ -2,7 +2,5 @@
 
 #include "legoland.h"
 
-struct CallbackTable;
-struct ClassNode;
-
-void FUN_004068b0(struct ClassNode *name, struct CallbackTable *ci);
+struct Ride;
+void FortGetInterfaces(struct Element *name, struct Ride *ci);

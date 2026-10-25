@@ -16,79 +16,37 @@
 #include "render3d.h"
 #include "western_town.h"
 
-struct RideListElem {
-    struct RideListElem *next;
-    unsigned char pad_4[0x8 - 0x4];
-    struct Bloke *bloke;
-    union {
-        unsigned short id;
-        struct {
-            unsigned char x;
-            unsigned char y;
-        } pos;
-    };
-};
-
-struct Building {
-    unsigned char pad_0[0xc];
-    int x;
-    int y;
-    unsigned char pad_14[0x1c - 0x14];
-    unsigned int flags;
-    unsigned char pad_20[0x64 - 0x20];
-    void *layer;
-    unsigned char pad_68[0xcc - 0x68];
-    struct RideListElem *list;
-};
-
-struct MapObject {
-    unsigned char pad_0[0xc];
-    struct Building *building;
-};
-
-struct JailCell {
-    struct JailCell *next;
-    unsigned short field_4;
-    unsigned char field_6;
-    unsigned char pad_7[0x8 - 0x7];
-    unsigned int field_8;
-    unsigned int field_c;
-    unsigned int field_10;
-    unsigned int field_14;
-    unsigned int field_18;
-};
-
 #include "image_sprite.h"
 
 // FUNCTION: LEGOLAND 0x004375d0
-void FUN_004375d0(struct MapObject *obj) {
-    struct Building *building = obj->building;
-    DAT_0081cb30 = building;
+void LoadGStoreMatteSpritesAndMoneySFX(struct Element *obj) {
+    struct Ride *building = obj->ride;
+    GeneralStoreBuilding = building;
     building->flags |= 0x420;
     // STRING: LEGOLAND 0x004b74a4
-    DAT_0081cb08 = LoadSprite("G_Store Matte.LLS", 1);
+    GStoreMatteSprite = LoadSprite("G_Store Matte.LLS", 1);
     // STRING: LEGOLAND 0x004b7490
-    DAT_0081cb24 = LoadSprite("G_Store Matte2.LLS", 1);
+    GStoreMatte2Sprite = LoadSprite("G_Store Matte2.LLS", 1);
     LoadMoneySFX();
 }
 
 // FUNCTION: LEGOLAND 0x00437610
-void FUN_00437610(void) {
-    KillSprite(DAT_0081cb08);
-    KillSprite(DAT_0081cb24);
+void KillGStoreMatteSpritesAndMoneySFX(void) {
+    KillSprite(GStoreMatteSprite);
+    KillSprite(GStoreMatte2Sprite);
     KillMoneySFX();
 }
 
 // FUNCTION: LEGOLAND 0x00437630
-void FUN_00437630(void) {
+void GeneralStoreSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_0081cb30;
+    EditMode.unk8 = GeneralStoreBuilding;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00437670
-void FUN_00437670(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6) {
+void RenderGeneralStore(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int param_6) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     char count = 0;
@@ -105,7 +63,7 @@ void FUN_00437670(Element *obj, unsigned int param_2, unsigned int param_3, unsi
     if (count == 0) {
         return;
     }
-    pos = GetScreenCoordsForObject((unsigned char *)tile, ride);
+    pos = GetScreenCoordsForObject((TileId *)tile, ride);
     for (i = 0; i < count; i++) {
         if (blokes[i]->param_action == 4) {
             IP_RenderBlokeIn3DNow(blokes[i]);
@@ -121,7 +79,7 @@ void FUN_00437670(Element *obj, unsigned int param_2, unsigned int param_3, unsi
             IP_RenderBlokeIn3DNow(blokes[i]);
         }
     }
-    PrintSprite(DAT_0081cb24, pos.x, pos.y, param_6, NULL);
+    PrintSprite(GStoreMatte2Sprite, pos.x, pos.y, param_6, NULL);
     for (i = 0; i < count; i++) {
         if (blokes[i]->param_action == 0) {
             IP_RenderBlokeIn3DNow(blokes[i]);
@@ -167,122 +125,135 @@ void FUN_00437670(Element *obj, unsigned int param_2, unsigned int param_3, unsi
             IP_RenderBlokeIn3DNow(blokes[i]);
         }
     }
-    PrintSprite(DAT_0081cb08, pos.x, pos.y, param_6, NULL);
+    PrintSprite(GStoreMatteSprite, pos.x, pos.y, param_6, NULL);
 }
 
 // FUNCTION: LEGOLAND 0x004378e0
-void FUN_004378e0(struct MapObject *param_1) {
-    struct Building *ride = param_1->building;
-    struct RideListElem *node = ride->list;
-    struct RideListElem *next;
+void GeneralStoreUpdate(struct Element *param_1) {
+    struct Ride *ride = param_1->ride;
+    struct RideNode *node = ride->riders;
+    struct RideNode *next;
     struct Bloke *bloke;
     unsigned char *pos;
     int x;
     int y;
     char move;
-    unsigned int r;
-    unsigned char tmr;
-    int v24;
-    int v6c;
-    int v68;
+    char rr;
 
     while (node != NULL) {
         next = node->next;
-        bloke = node->bloke;
-        pos = (unsigned char *)&node->pos;
+        bloke = node->rider;
+        pos = (unsigned char *)&node->tile;
         x = pos[0] + ride->x;
         y = pos[1] + ride->y;
-        if (bloke->field_e == 0) {
+        if (bloke->low_level_action == 0) {
             switch (bloke->param_action) {
             case 0:
-                *(unsigned char *)((char *)bloke + 0x62) |= 8;
+                bloke->flags |= 8;
                 bloke->dest.x = x * 0x100 - 0x80;
                 y = y * 0x100 - 0x100;
-                goto calc968;
+                bloke->dest.y = y;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->low_level_action = 7;
+                bloke->target_dir = move + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
+                bloke->param_action++;
+                break;
             case 1:
                 bloke->dest.x = x * 0x100 + 0x80;
                 y = (y - 2) * 0x100;
-                goto calc998;
+                bloke->dest.y = y;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->low_level_action = 7;
+                bloke->target_dir = move + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
+                bloke->param_action++;
+                break;
             case 2:
                 bloke->dest.x = x * 0x100 + 0x80;
                 y = (y - 3) * 0x100;
-                goto calcaff;
+                bloke->dest.y = y;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->low_level_action = 7;
+                bloke->target_dir = move + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
+                bloke->param_action++;
+                break;
             case 3:
-                r = rand() & 0x80000001;
-                if ((int)r < 0) {
-                    r = ((r - 1) | 0xfffffffe) + 1;
-                }
-                if ((char)r == 0) {
-                    bloke->param_action = 6;
-                } else {
+                rr = rand() % 2;
+                if (rr != 0) {
                     y = y * 0x100 - 0x280;
                     x = x * 0x100 - 0x100;
                     bloke->dest.x = x;
                     bloke->dest.y = y;
                     move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                    bloke->field_e = 7;
-                    bloke->field_73 = move + 0x10;
-                    NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                    bloke->low_level_action = 7;
+                    bloke->target_dir = move + 0x10;
+                    NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
+                    y = rand() % 0x32;
                     bloke->param_action++;
-                    bloke->field_58 = rand() % 0x32;
+                    bloke->field_58 = y;
+                } else {
+                    bloke->param_action = 6;
                 }
                 break;
             case 4:
                 y = bloke->field_58 - 1;
                 bloke->field_58 = y;
                 if (y == 0) {
-                    goto case6;
+                    bloke->param_action++;
+                    break;
                 }
                 if (y % 10 == 0) {
-                    tmr = bloke->field_72 + 1;
-                    bloke->field_72 = tmr;
-                    if (8 < tmr) {
-                        bloke->field_72 = 0;
+                    if ((bloke->dir = bloke->dir + 1) > 8) {
+                        bloke->dir = 0;
                     }
                 }
                 break;
             case 5:
                 bloke->dest.x = x * 0x100 + 0x80;
                 y = (y - 3) * 0x100;
-                goto calc968;
+                bloke->dest.y = y;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->low_level_action = 7;
+                bloke->target_dir = move + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
+                bloke->param_action++;
+                break;
             case 6:
-            case6:
                 bloke->param_action++;
                 break;
             case 7:
-                FUN_00437570((struct RideNode *)node, (Element *)param_1, (TileId *)&node->pos, 1);
+                BrowseAndBuyItem((struct RideNode *)node, (Element *)param_1, (TileId *)&node->tile, 1);
                 break;
             case 8:
                 bloke->dest.x = x * 0x100 + 0x80;
                 y = (y - 2) * 0x100;
-            calc968:
                 bloke->dest.y = y;
-                v24 = bloke->dest.x;
-                v6c = bloke->pos.y;
-                v68 = bloke->pos.x;
-                goto calc;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->low_level_action = 7;
+                bloke->target_dir = move + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
+                bloke->param_action++;
+                break;
             case 9:
                 bloke->dest.x = x * 0x100 - 0x80;
                 y = y * 0x100 - 0x100;
-            calc998:
                 bloke->dest.y = y;
-                v24 = bloke->dest.x;
-                v6c = bloke->pos.y;
-                v68 = bloke->pos.x;
-                goto calc;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->low_level_action = 7;
+                bloke->target_dir = move + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
+                bloke->param_action++;
+                break;
             case 10:
                 bloke->dest.x = x * 0x100 + 0x80;
                 y = y * 0x100 + 0x80;
-            calcaff:
                 bloke->dest.y = y;
-                v24 = bloke->dest.x;
-                v6c = bloke->pos.y;
-                v68 = bloke->pos.x;
-            calc:
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = move + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 11:
@@ -296,84 +267,90 @@ void FUN_004378e0(struct MapObject *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00437ba0
-void FUN_00437ba0(struct MapObject *obj) {
-    struct Building *building = obj->building;
-    DAT_0081cb14 = building;
+void LoadSherifshutMatteSpriteAndMoneySFX(struct Element *obj) {
+    struct Ride *building = obj->ride;
+    SheriffBuilding = building;
     building->flags |= 0x420;
     // STRING: LEGOLAND 0x004b74b8
-    DAT_0081cb38 = LoadSprite("Sherifshut Matte.LLS", 1);
+    SherifshutMatteSprite = LoadSprite("Sherifshut Matte.LLS", 1);
     LoadMoneySFX();
 }
 
 // FUNCTION: LEGOLAND 0x00437bd0
-void FUN_00437bd0(void) {
-    KillSprite(DAT_0081cb38);
+void KillSherifshutMatteSpriteAndMoneySFX(void) {
+    KillSprite(SherifshutMatteSprite);
     KillMoneySFX();
 }
 
 // FUNCTION: LEGOLAND 0x00437bf0
-void FUN_00437bf0(void) {
+void SheriffSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_0081cb14;
+    EditMode.unk8 = SheriffBuilding;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00437c30
-void FUN_00437c30(struct MapObject *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6) {
-    struct Building *ride = param_1->building;
-    struct RideListElem *elem = ride->list;
+void RenderSheriff(struct Element *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, void *param_5, unsigned int param_6) {
+    struct Ride *ride = param_1->ride;
+    struct RideNode *elem = ride->riders;
     int count = 0;
     struct Point coords;
     if (elem != NULL) {
         do {
-            if (*param_4 == elem->id) {
-                RenderBlokeIn3D(elem->bloke);
+            if (*param_4 == elem->tile.id) {
+                RenderBlokeIn3D(elem->rider);
                 count++;
             }
             elem = elem->next;
         } while (elem != NULL);
         if (count != 0) {
-            coords = GetScreenCoordsForObject((unsigned char *)param_4, ride);
-            PrintSprite(DAT_0081cb38, coords.x, coords.y, param_6, NULL);
+            coords = GetScreenCoordsForObject((TileId *)param_4, ride);
+            PrintSprite(SherifshutMatteSprite, coords.x, coords.y, param_6, NULL);
         }
     }
 }
 
 // FUNCTION: LEGOLAND 0x00437c90
-void FUN_00437c90(struct MapObject *param_1) {
-    struct Building *ride = param_1->building;
-    struct RideListElem *node = ride->list;
-    struct RideListElem *next;
+void SheriffUpdate(struct Element *param_1) {
+    struct Ride *ride = param_1->ride;
+    struct RideNode *node = ride->riders;
+    struct RideNode *next;
     struct Bloke *bloke;
     unsigned char *pos;
     int x;
     int y;
     char move;
-    int v24;
-    int v6c;
-    int v68;
 
     while (node != NULL) {
         next = node->next;
-        bloke = node->bloke;
-        pos = (unsigned char *)&node->pos;
+        bloke = node->rider;
+        pos = (unsigned char *)&node->tile;
         x = pos[0] + ride->x;
         y = pos[1] + ride->y;
-        if (bloke->field_e == 0) {
+        if (bloke->low_level_action == 0) {
             switch (bloke->param_action) {
             case 0:
-                *(unsigned char *)((char *)bloke + 0x62) |= 8;
+                bloke->flags |= 8;
                 bloke->dest.x = x * 0x100 - 0x100;
                 y = y * 0x100 + 0x80;
                 bloke->dest.y = y;
-                v24 = bloke->dest.x;
-                v6c = bloke->pos.y;
-                v68 = bloke->pos.x;
-                goto calc;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->low_level_action = 7;
+                bloke->target_dir = move + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
+                bloke->param_action++;
+                break;
             case 1:
-                x = (x - 3) * 0x100;
-                goto calc2;
+                bloke->dest.x = (x - 3) * 0x100;
+                y = y * 0x100 + 0x80;
+                bloke->dest.y = y;
+                move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->low_level_action = 7;
+                bloke->target_dir = move + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
+                bloke->param_action++;
+                break;
             case 2:
                 bloke->dest.x = (x - 3) * 0x100;
                 move = (char)(rand() % 3);
@@ -383,48 +360,43 @@ void FUN_00437c90(struct MapObject *param_1) {
                     bloke->dest.y = y * 0x100 + 0x80;
                 }
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
-                bloke->field_72 = 8;
+                bloke->low_level_action = 7;
+                bloke->target_dir = move + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
+                bloke->dir = 8;
                 break;
             case 3:
-                FUN_00437570((struct RideNode *)node, (Element *)param_1, (TileId *)&node->pos, 1);
+                BrowseAndBuyItem((struct RideNode *)node, (Element *)param_1, (TileId *)&node->tile, 1);
                 break;
             case 4:
                 bloke->dest.x = (x - 3) * 0x100;
                 y = y * 0x100 + 0x80;
                 bloke->dest.y = y;
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = move + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 5:
-                x = (x - 1) * 0x100;
-            calc2:
+                bloke->dest.x = x * 0x100 - 0x100;
                 y = y * 0x100 + 0x80;
-                bloke->dest.x = x;
                 bloke->dest.y = y;
-                v24 = bloke->dest.x;
-                v6c = bloke->pos.y;
-                v68 = bloke->pos.x;
-            calc:
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = move + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 6:
                 bloke->dest.x = x * 0x100;
-                bloke->dest.y = y * 0x100;
+                y = y * 0x100;
+                bloke->dest.y = y;
                 move = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = move + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(move + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = move + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(move + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 7:
@@ -438,40 +410,40 @@ void FUN_00437c90(struct MapObject *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00437f10
-void FUN_00437f10(unsigned short *param) {
+void AddJailCell(unsigned short *param) {
     struct JailCell *cell = malloc(sizeof(struct JailCell));
     if (cell != NULL) {
         memset(cell, 0, sizeof(struct JailCell));
-        cell->field_4 = *param;
-        cell->field_6 = 9;
+        cell->tile_id = *param;
+        cell->frame = 9;
         cell->field_8 = 0;
         cell->field_c = 0;
         cell->field_10 = 0;
         cell->field_14 = 0;
         cell->field_18 = 0;
-        cell->next = DAT_0062fd3c;
-        DAT_0062fd3c = cell;
+        cell->next = JailCellList;
+        JailCellList = cell;
     }
 }
 
 // FUNCTION: LEGOLAND 0x00437f60
-void FUN_00437f60(struct EditObject *editObj, int *coords) {
+void JailCellAddObject(struct Element *editObj, int *coords) {
     unsigned char key[2];
     key[0] = (unsigned char)coords[0];
     key[1] = (unsigned char)coords[1];
     AddBasicObject(editObj, coords);
-    FUN_00437f10((unsigned short *)key);
+    AddJailCell((unsigned short *)key);
 }
 
 // FUNCTION: LEGOLAND 0x00437f90
-struct JailCell *FUN_00437f90(unsigned short *key) {
+struct JailCell *FindJailCell(unsigned short *key) {
     struct JailCell *cell;
 
-    cell = DAT_0062fd3c;
+    cell = JailCellList;
     if (cell == NULL) {
         return NULL;
     }
-    while (memcmp(&cell->field_4, key, 2) != 0) {
+    while (memcmp(&cell->tile_id, key, 2) != 0) {
         cell = cell->next;
         if (cell == NULL) {
             return NULL;
@@ -481,15 +453,15 @@ struct JailCell *FUN_00437f90(unsigned short *key) {
 }
 
 // FUNCTION: LEGOLAND 0x00437fc0
-void FUN_00437fc0(struct JailCell *cell) {
+void FreeJailCell(struct JailCell *cell) {
     struct JailCell *cur;
     struct JailCell *prev;
 
-    if (DAT_0062fd3c == cell) {
-        DAT_0062fd3c = cell->next;
+    if (JailCellList == cell) {
+        JailCellList = cell->next;
     } else {
-        cur = DAT_0062fd3c->next;
-        prev = DAT_0062fd3c;
+        cur = JailCellList->next;
+        prev = JailCellList;
         while (cur != cell) {
             prev = prev->next;
             if (prev == NULL) {
@@ -505,52 +477,52 @@ void FUN_00437fc0(struct JailCell *cell) {
 }
 
 // FUNCTION: LEGOLAND 0x00438000
-void FUN_00438000(void) {
-    while (DAT_0062fd3c != NULL) {
-        FUN_00437fc0(DAT_0062fd3c);
+void FreeAllJailCells(void) {
+    while (JailCellList != NULL) {
+        FreeJailCell(JailCellList);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00438020
-void FUN_00438020(struct MapObject *editObj, TileId coords, struct Cursor *cursor) {
-    struct JailCell *cell = FUN_00437f90(&coords.id);
+void JailCellRemoveObject(struct Element *editObj, TileId coords, struct Cursor *cursor) {
+    struct JailCell *cell = FindJailCell(&coords.id);
     if (cell != NULL) {
-        FUN_00437fc0(cell);
+        FreeJailCell(cell);
     }
-    StandardRemoveObject((Element *)editObj, coords, cursor);
-    RemoveAllBlokesFromRide((struct Ride *)editObj->building, coords);
+    StandardRemoveObject(editObj, coords, cursor);
+    RemoveAllBlokesFromRide((struct Ride *)editObj->ride, coords);
 }
 
 // FUNCTION: LEGOLAND 0x00438070
-void FUN_00438070(struct MapObject *obj) {
-    struct Building *building = obj->building;
-    DAT_0081cb10 = building;
+void JailCellLoad(struct Element *obj) {
+    struct Ride *building = obj->ride;
+    ActiveWesternTownRide = building;
     building->flags |= 0x420;
-    DAT_0062fd40 = DAT_0081cb10->layer;
-    DAT_0081cb10->flags |= 0x2000;
+    WesternTownLayer = ActiveWesternTownRide->layer;
+    ActiveWesternTownRide->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b74d0
-    DAT_0081cb0c = LoadSprite("JailCellMask.LLS", 1);
-    HideLayer(DAT_0062fd40, 1);
-    StopLayerPlaying((unsigned int)DAT_0062fd40, 1);
-    LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_0062fd40, 1), 9);
+    JailCellMaskSprite = LoadSprite("JailCellMask.LLS", 1);
+    HideLayer(WesternTownLayer, 1);
+    StopLayerPlaying((struct Sprite *)WesternTownLayer, 1);
+    LLSSetFrame((struct LLS *)GetLLSForLayer((struct Sprite *)WesternTownLayer, 1), 9);
 }
 
 // FUNCTION: LEGOLAND 0x004380f0
-void FUN_004380f0(void) {
-    KillSprite(DAT_0081cb0c);
-    FUN_00438000();
+void JailCellUnload(void) {
+    KillSprite(JailCellMaskSprite);
+    FreeAllJailCells();
 }
 
 // FUNCTION: LEGOLAND 0x00438110
-void FUN_00438110(void) {
+void JailCellSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_0081cb10;
+    EditMode.unk8 = ActiveWesternTownRide;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00438150
-void FUN_00438150(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6) {
+void RenderJailCell(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int param_6) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct Bloke *blokes[10] = {0};
@@ -560,8 +532,8 @@ void FUN_00438150(Element *obj, unsigned int param_2, unsigned int param_3, unsi
     struct Point offset;
     struct JailCell *cell;
 
-    pos = GetScreenCoordsForObject((unsigned char *)tile, ride);
-    cell = FUN_00437f90(tile);
+    pos = GetScreenCoordsForObject((TileId *)tile, ride);
+    cell = FindJailCell(tile);
     if (cell == NULL) {
         return;
     }
@@ -582,10 +554,10 @@ void FUN_00438150(Element *obj, unsigned int param_2, unsigned int param_3, unsi
                 IP_RenderBlokeIn3DNow(blokes[i]);
             }
         }
-        LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_0062fd40, 1), (char)cell->field_6);
-        offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd40, 1);
+        LLSSetFrame((struct LLS *)GetLLSForLayer((struct Sprite *)WesternTownLayer, 1), (char)cell->frame);
+        offset = GetRenderOffsetForLayer((struct Sprite *)WesternTownLayer, 1);
         AdjustOffsetForViewMode(&offset);
-        PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_0062fd40, 1), pos.x + offset.x, pos.y + offset.y, param_6, NULL);
+        PrintSprite((struct Sprite *)GetSpriteForLayer((struct Sprite *)WesternTownLayer, 1), pos.x + offset.x, pos.y + offset.y, param_6, NULL);
         for (i = 0; i < count; i++) {
             if (blokes[i]->param_action == 1) {
                 IP_RenderBlokeIn3DNow(blokes[i]);
@@ -601,9 +573,9 @@ void FUN_00438150(Element *obj, unsigned int param_2, unsigned int param_3, unsi
                 IP_RenderBlokeIn3DNow(blokes[i]);
             }
         }
-        offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd40, 0);
+        offset = GetRenderOffsetForLayer((struct Sprite *)WesternTownLayer, 0);
         AdjustOffsetForViewMode(&offset);
-        PrintSprite(DAT_0081cb0c, pos.x + offset.x, pos.y + offset.y, param_6, NULL);
+        PrintSprite(JailCellMaskSprite, pos.x + offset.x, pos.y + offset.y, param_6, NULL);
         for (i = 0; i < count; i++) {
             if (blokes[i]->param_action == 0) {
                 IP_RenderBlokeIn3DNow(blokes[i]);
@@ -621,14 +593,14 @@ void FUN_00438150(Element *obj, unsigned int param_2, unsigned int param_3, unsi
         }
         return;
     }
-    LLSSetFrame((struct LLS *)GetLLSForLayer((unsigned int)DAT_0062fd40, 1), (char)cell->field_6);
-    offset = GetRenderOffsetForLayer((struct LayerOffsetHolder *)DAT_0062fd40, 1);
+    LLSSetFrame((struct LLS *)GetLLSForLayer((struct Sprite *)WesternTownLayer, 1), (char)cell->frame);
+    offset = GetRenderOffsetForLayer((struct Sprite *)WesternTownLayer, 1);
     AdjustOffsetForViewMode(&offset);
-    PrintSprite((struct Sprite *)GetSpriteForLayer((struct LayerContainer *)DAT_0062fd40, 1), pos.x + offset.x, pos.y + offset.y, param_6, NULL);
+    PrintSprite((struct Sprite *)GetSpriteForLayer((struct Sprite *)WesternTownLayer, 1), pos.x + offset.x, pos.y + offset.y, param_6, NULL);
 }
 
 // FUNCTION: LEGOLAND 0x00438430
-void FUN_00438430(Element *obj) {
+void JailCellUpdate(Element *obj) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
@@ -650,11 +622,11 @@ void FUN_00438430(Element *obj) {
         next = node->next;
         bloke = node->rider;
         tile = &node->tile;
-        cell = FUN_00437f90(&tile->id);
+        cell = FindJailCell(&tile->id);
         if (cell == NULL) {
             return;
         }
-        field_6 = cell->field_6;
+        field_6 = cell->frame;
         field_8 = cell->field_8;
         field_c = cell->field_c;
         field_10 = cell->field_10;
@@ -662,7 +634,7 @@ void FUN_00438430(Element *obj) {
         field_18 = cell->field_18;
         x = ride->x + tile->pos.x;
         y = tile->pos.y + ride->y;
-        if (bloke->field_e == 0) {
+        if (bloke->low_level_action == 0) {
             switch (bloke->param_action) {
             case 0:
                 bloke->flags |= 8;
@@ -673,19 +645,19 @@ void FUN_00438430(Element *obj) {
                 } else {
                     bloke->dest.x = (x << 8) - 0x80;
                     bloke->dest.y = y << 8;
-                    bloke->field_72 = 7;
+                    bloke->dir = 7;
                 }
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->field_58 = rand() % 100;
                 bloke->param_action++;
                 break;
             case 1:
                 field_14 = 1;
                 bloke->param_action++;
-                bloke->field_72 = 3;
+                bloke->dir = 3;
                 break;
             case 2:
                 if (field_18 != 0) {
@@ -696,7 +668,7 @@ void FUN_00438430(Element *obj) {
                         field_18 = 0;
                         bloke->param_action++;
                     } else if (y % 10 == 0) {
-                        bloke->field_72 = rand() % 2 ? 4 : 2;
+                        bloke->dir = rand() % 2 ? 4 : 2;
                     }
                 }
                 break;
@@ -711,9 +683,9 @@ void FUN_00438430(Element *obj) {
                 bloke->dest.y = y;
                 bloke->dest.x = x;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action = 8;
                 field_8 = 0;
                 break;
@@ -729,9 +701,9 @@ void FUN_00438430(Element *obj) {
                 y = y * 0x100 + 0x80;
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action = 10;
                 break;
             case 10:
@@ -739,7 +711,7 @@ void FUN_00438430(Element *obj) {
                 bloke->flags &= 0xfff7;
             }
         }
-        cell->field_6 = field_6;
+        cell->frame = field_6;
         cell->field_8 = field_8;
         cell->field_c = field_c;
         cell->field_10 = field_10;
@@ -747,9 +719,9 @@ void FUN_00438430(Element *obj) {
         cell->field_18 = field_18;
         node = next;
     }
-    for (jc = DAT_0062fd3c; jc != NULL; jc = jc->next) {
+    for (jc = JailCellList; jc != NULL; jc = jc->next) {
         field_14 = jc->field_14;
-        field_6 = jc->field_6;
+        field_6 = jc->frame;
         field_8 = jc->field_8;
         field_c = jc->field_c;
         field_10 = jc->field_10;
@@ -768,7 +740,7 @@ void FUN_00438430(Element *obj) {
                 field_c = 0;
             }
         }
-        jc->field_6 = field_6;
+        jc->frame = field_6;
         jc->field_8 = field_8;
         jc->field_c = field_c;
         jc->field_10 = field_10;
@@ -778,8 +750,8 @@ void FUN_00438430(Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00438780
-LEGO_EXPORT unsigned int SaveJailCells(void) {
-    struct JailCell *cell = DAT_0062fd3c;
+LEGO_EXPORT int SaveJailCells(struct Element *element) {
+    struct JailCell *cell = JailCellList;
     unsigned int marker = 1;
     unsigned int terminator = 0;
 
@@ -787,7 +759,7 @@ LEGO_EXPORT unsigned int SaveJailCells(void) {
         if (SaveGameWrite(&marker, 4) == 0) {
             return 0;
         }
-        if (SaveGameWrite(cell, 0x1c) == 0) {
+        if (SaveGameWrite(cell, sizeof(struct JailCell)) == 0) {
             return 0;
         }
         cell = cell->next;
@@ -796,7 +768,7 @@ LEGO_EXPORT unsigned int SaveJailCells(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004387f0
-LEGO_EXPORT unsigned int LoadJailCells(void) {
+LEGO_EXPORT int LoadJailCells(struct Element *element) {
     unsigned int marker;
     struct JailCell *prev = NULL;
 
@@ -804,15 +776,15 @@ LEGO_EXPORT unsigned int LoadJailCells(void) {
         return 0;
     }
     while (marker != 0) {
-        struct JailCell *cell = malloc(0x1c);
-        if (SaveGameRead(cell, 0x1c) == 0) {
+        struct JailCell *cell = malloc(sizeof(struct JailCell));
+        if (SaveGameRead(cell, sizeof(struct JailCell)) == 0) {
             return 0;
         }
         cell->next = NULL;
         if (prev != NULL) {
             prev->next = cell;
         } else {
-            DAT_0062fd3c = cell;
+            JailCellList = cell;
         }
         prev = cell;
         if (SaveGameRead(&marker, 4) == 0) {
@@ -823,52 +795,52 @@ LEGO_EXPORT unsigned int LoadJailCells(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00438870
-void FUN_00438870(struct MapObject *obj) {
-    struct Building *building = obj->building;
-    DAT_0081cb2c = building;
+void LoadBankMatteSpriteAndMoneySFX(struct Element *obj) {
+    struct Ride *building = obj->ride;
+    BankBuilding = building;
     building->flags |= 0x420;
     // STRING: LEGOLAND 0x004b74e4
-    DAT_0081cb34 = LoadSprite("Bank Matte.lls", 1);
+    BankMatteSprite = LoadSprite("Bank Matte.lls", 1);
     LoadMoneySFX();
 }
 
 // FUNCTION: LEGOLAND 0x004388a0
-void FUN_004388a0(void) {
-    KillSprite(DAT_0081cb34);
+void KillBankMatteSpriteAndMoneySFX(void) {
+    KillSprite(BankMatteSprite);
     KillMoneySFX();
 }
 
 // FUNCTION: LEGOLAND 0x004388c0
-void FUN_004388c0(void) {
+void BankSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_0081cb2c;
+    EditMode.unk8 = BankBuilding;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00438900
-void FUN_00438900(struct MapObject *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, unsigned int param_5, unsigned int param_6) {
-    struct Building *ride = param_1->building;
-    struct RideListElem *elem = ride->list;
+void RenderBank(struct Element *param_1, unsigned int param_2, unsigned int param_3, unsigned short *param_4, void *param_5, unsigned int param_6) {
+    struct Ride *ride = param_1->ride;
+    struct RideNode *elem = ride->riders;
     int count = 0;
     struct Point coords;
     if (elem != NULL) {
         do {
-            if (*param_4 == elem->id) {
-                RenderBlokeIn3D(elem->bloke);
+            if (*param_4 == elem->tile.id) {
+                RenderBlokeIn3D(elem->rider);
                 count++;
             }
             elem = elem->next;
         } while (elem != NULL);
         if (count != 0) {
-            coords = GetScreenCoordsForObject((unsigned char *)param_4, ride);
-            PrintSprite(DAT_0081cb34, coords.x, coords.y, param_6, NULL);
+            coords = GetScreenCoordsForObject((TileId *)param_4, ride);
+            PrintSprite(BankMatteSprite, coords.x, coords.y, param_6, NULL);
         }
     }
 }
 
 // FUNCTION: LEGOLAND 0x00438960
-void FUN_00438960(Element *obj) {
+void BankUpdate(Element *obj) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
@@ -885,34 +857,34 @@ void FUN_00438960(Element *obj) {
         tile = &node->tile;
         x = tile->pos.x + ride->x;
         y = tile->pos.y + ride->y;
-        if (bloke->field_e == 0) {
+        if (bloke->low_level_action == 0) {
             switch (bloke->param_action) {
             case 0:
                 bloke->flags |= 8;
-                bloke->dest.y = (y << 8) - 0x100;
                 bloke->dest.x = (x << 8) + 0x80;
+                bloke->dest.y = (y << 8) - 0x100;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 1:
                 bloke->dest.x = (x + 1) << 8;
                 bloke->dest.y = (y - 2) << 8;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 2:
                 bloke->dest.x = (tile->pos.x + 2) << 8;
                 bloke->dest.y = (tile->pos.y << 8) - 0x100;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 bloke->field_58 = rand() % 8;
                 break;
@@ -924,9 +896,9 @@ void FUN_00438960(Element *obj) {
                     bloke->dest.x = tile->pos.x << 8;
                     bloke->dest.y = (tile->pos.y << 8) - 0x100;
                     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                    bloke->field_e = 7;
-                    bloke->field_73 = dir + 0x10;
-                    NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                    bloke->low_level_action = 7;
+                    bloke->target_dir = dir + 0x10;
+                    NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                     bloke->param_action++;
                 }
                 break;
@@ -938,9 +910,9 @@ void FUN_00438960(Element *obj) {
                     bloke->dest.x = (tile->pos.x + 2) << 8;
                     bloke->dest.y = (tile->pos.y << 8) - 0x100;
                     dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                    bloke->field_e = 7;
-                    bloke->field_73 = dir + 0x10;
-                    NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                    bloke->low_level_action = 7;
+                    bloke->target_dir = dir + 0x10;
+                    NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                     bloke->param_action--;
                 }
                 break;
@@ -948,27 +920,27 @@ void FUN_00438960(Element *obj) {
                 bloke->dest.x = (x + 1) << 8;
                 bloke->dest.y = (y - 2) << 8;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 6:
                 bloke->dest.x = (x << 8) + 0x80;
                 bloke->dest.y = (y << 8) - 0x100;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 7:
                 bloke->dest.x = x << 8;
                 bloke->dest.y = y << 8;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 8:
@@ -981,34 +953,34 @@ void FUN_00438960(Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00438c60
-void FUN_00438c60(struct MapObject *obj) {
-    struct Building *building = obj->building;
-    DAT_0081cb1c = building;
+void LoadSaloonMatteSpritesAndMoneySFX(struct Element *obj) {
+    struct Ride *building = obj->ride;
+    SaloonBuilding = building;
     building->flags |= 0x420;
     // STRING: LEGOLAND 0x004b7508
-    DAT_0081cb00 = LoadSprite("SaloonMatte1.LLS", 1);
+    SaloonMatte1Sprite = LoadSprite("SaloonMatte1.LLS", 1);
     // STRING: LEGOLAND 0x004b74f4
-    DAT_0081cb04 = LoadSprite("SaloonMatte2.LLS", 1);
+    SaloonMatte2Sprite = LoadSprite("SaloonMatte2.LLS", 1);
     LoadMoneySFX();
 }
 
 // FUNCTION: LEGOLAND 0x00438ca0
-void FUN_00438ca0(void) {
-    KillSprite(DAT_0081cb00);
-    KillSprite(DAT_0081cb04);
+void KillSaloonMatteSpritesAndMoneySFX(void) {
+    KillSprite(SaloonMatte1Sprite);
+    KillSprite(SaloonMatte2Sprite);
     KillMoneySFX();
 }
 
 // FUNCTION: LEGOLAND 0x00438cc0
-void FUN_00438cc0(void) {
+void SaloonSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_0081cb1c;
+    EditMode.unk8 = SaloonBuilding;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((char *)EditMode.unk8 + 0x3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00438d00
-void FUN_00438d00(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, unsigned int param_5, unsigned int param_6) {
+void RenderSaloon(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile, void *param_5, unsigned int param_6) {
     struct Ride *ride = obj->ride;
     char count = 0;
     struct RideNode *node = ride->riders;
@@ -1025,7 +997,7 @@ void FUN_00438d00(Element *obj, unsigned int param_2, unsigned int param_3, unsi
     if (count == 0) {
         return;
     }
-    pos = GetScreenCoordsForObject((unsigned char *)tile, ride);
+    pos = GetScreenCoordsForObject((TileId *)tile, ride);
     for (i = 0; i < count; i++) {
         if (blokes[i]->param_action == 4) {
             IP_RenderBlokeIn3DNow(blokes[i]);
@@ -1041,7 +1013,7 @@ void FUN_00438d00(Element *obj, unsigned int param_2, unsigned int param_3, unsi
             IP_RenderBlokeIn3DNow(blokes[i]);
         }
     }
-    PrintSprite(DAT_0081cb04, pos.x, pos.y, param_6, NULL);
+    PrintSprite(SaloonMatte2Sprite, pos.x, pos.y, param_6, NULL);
     for (i = 0; i < count; i++) {
         if (blokes[i]->param_action == 2) {
             IP_RenderBlokeIn3DNow(blokes[i]);
@@ -1062,7 +1034,7 @@ void FUN_00438d00(Element *obj, unsigned int param_2, unsigned int param_3, unsi
             IP_RenderBlokeIn3DNow(blokes[i]);
         }
     }
-    PrintSprite(DAT_0081cb00, pos.x, pos.y, param_6, NULL);
+    PrintSprite(SaloonMatte1Sprite, pos.x, pos.y, param_6, NULL);
     for (i = 0; i < count; i++) {
         if (blokes[i]->param_action == 0) {
             IP_RenderBlokeIn3DNow(blokes[i]);
@@ -1081,7 +1053,7 @@ void FUN_00438d00(Element *obj, unsigned int param_2, unsigned int param_3, unsi
 }
 
 // FUNCTION: LEGOLAND 0x00438f10
-void FUN_00438f10(Element *obj) {
+void SaloonUpdate(Element *obj) {
     struct Ride *ride = obj->ride;
     struct RideNode *node = ride->riders;
     struct RideNode *next;
@@ -1090,7 +1062,6 @@ void FUN_00438f10(Element *obj) {
     int x;
     int y;
     char dir;
-    struct Point to;
 
     while (node != NULL) {
         next = node->next;
@@ -1098,17 +1069,18 @@ void FUN_00438f10(Element *obj) {
         tile = &node->tile;
         x = tile->pos.x + ride->x;
         y = tile->pos.y + ride->y;
-        if (bloke->field_e == 0) {
+        if (bloke->low_level_action == 0) {
             switch (bloke->param_action) {
             case 0:
                 bloke->flags |= 8;
-                to.x = (x << 8) - 0x80;
-                to.y = y << 8;
-                bloke->dest = to;
-                dir = CalcMoveLine(bloke->pos, to, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                x = x * 0x100 - 0x80;
+                y = y * 0x100;
+                bloke->dest.x = x;
+                bloke->dest.y = y;
+                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                bloke->low_level_action = 7;
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 1:
@@ -1116,9 +1088,9 @@ void FUN_00438f10(Element *obj) {
                 y = y * 0x100 - 0x100;
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 2:
@@ -1127,41 +1099,45 @@ void FUN_00438f10(Element *obj) {
                 bloke->dest.x = x;
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 3:
-                if ((char)(rand() % 2) == 0) {
-                    x = x * 0x100 - 0x380;
-                    y = (y - 2) * 0x100;
-                    bloke->dest.x = x;
-                    bloke->dest.y = y;
-                } else {
+                if ((char)(rand() % 2) != 0) {
                     x = x * 0x100 - 0x380;
                     y = (y + 1) * 0x100;
                     bloke->dest.x = x;
                     bloke->dest.y = y;
+                    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                    bloke->low_level_action = 7;
+                    bloke->target_dir = dir + 0x10;
+                    NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
+                } else {
+                    x = x * 0x100 - 0x380;
+                    y = (y - 2) * 0x100;
+                    bloke->dest.x = x;
+                    bloke->dest.y = y;
+                    dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
+                    bloke->low_level_action = 7;
+                    bloke->target_dir = dir + 0x10;
+                    NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 }
-                dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
-                bloke->field_72 = 8;
+                bloke->dir = 8;
                 bloke->param_action++;
                 break;
             case 4:
-                FUN_00437570(node, obj, tile, 1);
+                BrowseAndBuyItem(node, obj, tile, 1);
                 break;
             case 5:
                 bloke->dest.x = (x - 4) * 0x100;
                 y = y * 0x100 - 0x80;
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 6:
@@ -1170,9 +1146,9 @@ void FUN_00438f10(Element *obj) {
                 bloke->dest.x = x;
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 7:
@@ -1180,9 +1156,9 @@ void FUN_00438f10(Element *obj) {
                 bloke->dest.x = x;
                 bloke->dest.y = y * 0x100;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 8:
@@ -1190,9 +1166,9 @@ void FUN_00438f10(Element *obj) {
                 y = y * 0x100;
                 bloke->dest.y = y;
                 dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-                bloke->field_e = 7;
-                bloke->field_73 = dir + 0x10;
-                NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
+                bloke->low_level_action = 7;
+                bloke->target_dir = dir + 0x10;
+                NewDirForAction(bloke, (unsigned char)(((unsigned char)(dir + 0x10) >> 5) + 3));
                 bloke->param_action++;
                 break;
             case 9:

@@ -12,8 +12,21 @@ struct LLS {
 };
 typedef struct LLS LLS;
 
+/* An entry of the list of playing animations (LLSPlayList), advanced by LLSAuto. */
+struct LLSNode {
+    struct LLS *lls;
+    struct LLSNode *next;
+    void *param; /* LLSPlay's second argument */
+};
+
 /* An LLIDB element (0x14 bytes).  For object classes `data` is the class's Ride
    record; placed-object code (map_object.c, the ride TUs) reaches it as `ride`. */
+/* A TSM file entry once loaded: the element and its data; the list ends with both -1. */
+struct TSMEntry {
+    struct Element *element;
+    void *data;
+};
+
 struct Element {
     /* 0x00 */ char *name;
     /* 0x04 */ char *path;
@@ -21,7 +34,7 @@ struct Element {
     /* 0x0c */ union {
         void *data;
         struct Ride *ride;
-        struct MapObject *obj; /* map_object.c's view of the class */
+        struct Ride *obj; /* the class, as map_object.c names it */
     };
     /* 0x10 */ unsigned int field_10;
 };
@@ -50,32 +63,33 @@ typedef struct Element Element;
 #define LLIDB_ERR_CANCELED (-6)
 
 struct LLSImage;
-struct ILFTable;
-struct LLIDBHead;
 
 LEGO_EXPORT void LLS555To565(struct LLSImage *param_1);
 
-void FUN_0047c6a0(struct LLIDBHead *head);
+void LLIDB_UnLoadODF(struct Element *head);
 
-LEGO_EXPORT void LLIDB_FreeILFTable(struct ILFTable *table);
+struct SpriteSet;
+LEGO_EXPORT void LLIDB_FreeILFTable(struct SpriteSet *table);
 
 LEGO_EXPORT unsigned int LLIDB_GetCount(void);
 LEGO_EXPORT int LLIDB_GetElement(unsigned int index, struct Element **output);
-LEGO_EXPORT int LLIDB_FindElement(const char *name, unsigned int *out, unsigned int *index_out);
-LEGO_EXPORT int LLIDB_FindElementFromDataPtr(void *data, unsigned int *out, unsigned int *index_out);
+struct Sprite;
+struct Sprite *LoadObjDescFile(struct Element *elem, char **name2, int *key, char ***after);
+LEGO_EXPORT int LLIDB_FindElement(const char *name, struct Element **out, unsigned int *index_out);
+LEGO_EXPORT int LLIDB_FindElementFromDataPtr(void *data, struct Element **out, unsigned int *index_out);
 LEGO_EXPORT struct Element *ElemID(const char *name);
-LEGO_EXPORT void LLIDB_LoadICM(void);
-LEGO_EXPORT void LLIDB_CloseICM(void);
+LEGO_EXPORT int LLIDB_LoadICM(void);
+LEGO_EXPORT int LLIDB_CloseICM(void);
 LEGO_EXPORT unsigned int LLIDB_RegisterNewElement(const char *param_1, const char *param_2, unsigned int param_3);
 LEGO_EXPORT void LLIDB_ClearOnLevel(void);
-LEGO_EXPORT void *LLIDB_LoadData(void *head);
-LEGO_EXPORT void LLIDB_UnLoadData(unsigned int handle);
+LEGO_EXPORT void *LLIDB_LoadData(struct Element *head);
+LEGO_EXPORT void LLIDB_UnLoadData(struct Element *handle);
 
 LEGO_EXPORT void LLSAuto(void);
-void FUN_0047d610(struct LLS *param_1);
-LEGO_EXPORT int LLSStop(unsigned int handle);
-LEGO_EXPORT void LLSPlay(struct LLS *param_1, unsigned int param_2);
-LEGO_EXPORT void LLSPlayOnce(struct LLS *param_1, unsigned int param_2);
+void LLSAdvanceFrame(struct LLS *param_1);
+LEGO_EXPORT int LLSStop(struct LLS *lls);
+LEGO_EXPORT void LLSPlay(struct LLS *param_1, void *param_2);
+LEGO_EXPORT void LLSPlayOnce(struct LLS *param_1, void *param_2);
 LEGO_EXPORT void LLSSetFrame(struct LLS *lls, int index);
 LEGO_EXPORT void LLSNextFrame(struct LLS *param_1);
 

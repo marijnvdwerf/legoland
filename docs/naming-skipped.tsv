@@ -1,0 +1,1121 @@
+symbol	status	proposed_name	note
+DAT_004ab3fc	skipped-no-evidence		
+DAT_004b4728	named	LogFlumeFootprint	
+DAT_004b472c	skipped-no-evidence		
+DAT_004b4730	skipped-no-evidence		inner field of the DAT_004b4728 footprint
+DAT_004b5c1c	skipped-no-evidence		
+DAT_004baff8	skipped-no-evidence		
+DAT_004bb04c	skipped-no-evidence		
+DAT_004bb5b0	named	ScriptConditionActive	
+DAT_004beb80	named	ProgressScreenTables	
+DAT_004bef9c	skipped-no-evidence		
+DAT_004c10d4	skipped-no-evidence		
+DAT_004c2aa0	skipped-no-evidence		log_flume.c cursor source; ambiguous
+DAT_004c2af4	skipped-no-evidence		
+DAT_004cbe84	named	FlumeEntryList	
+DAT_004cbeac	rejected-by-verifier	RideQueueList	also used as RoadQueueEntry list in roads.c (conflicting types)
+DAT_004cbf28	named	SpiderRideLayer	
+DAT_004cc03c	named	BoatRideList	
+DAT_004cc074	named	BoatRideNodeList	
+DAT_004cc090	dropped-collision	BoatingSchoolCursors	collided: same name proposed for DAT_004d2168
+DAT_004d2168	dropped-collision	BoatingSchoolCursors	collided: same name proposed for DAT_004cc090
+DAT_004d823c	named	BoatPathList	
+DAT_004dd5e0	skipped-no-evidence		function-pointer table in castle.c; role unclear
+DAT_0060f914	skipped-no-evidence		
+DAT_006102f8	skipped-no-evidence		
+DAT_00616044	named	BalloonzLayer	
+DAT_00616068	named	CarouselLayer	
+DAT_006160ec	named	BlokeRenderList	
+DAT_00616118	named	EateryLayerOwner	
+DAT_00616164	named	JungleRideList	
+DAT_00616180	skipped-no-evidence		scratch Cursor struct shared by boating_school.c and jungle_cruise.c
+DAT_00622320	named	JungleCruiseCursors	
+DAT_00629c3c	named	JungleScoreList	
+DAT_00629c40	named	JungleCruiseFootprint	
+DAT_00629c54	named	JungleCruiseStep	
+DAT_00629c58	skipped-no-evidence		scratch Cursor struct shared by boating_school.c and jungle_cruise.c
+DAT_0062fd2c	named	JunglePathList	
+DAT_00665ff8	named	ReportFlags	
+DAT_006660a0	named	AppraisalPageCount	report pages
+DAT_00667ca4	skipped-no-evidence		
+DAT_00668078	named	OffscreenSurface	
+DAT_0066809c	named	CurrentSurfaceDesc	
+DAT_00668108	skipped-no-evidence		
+DAT_00668610	named	ScriptDirtyCategories	event categories to re-check now (ANDed with ScriptEventCategories)
+DAT_0066879c	named	CurrentScriptSection	the section being run
+DAT_006687b0	skipped-no-evidence		
+DAT_006687bc	rejected-by-verifier	ScreenEventHandler	handler also copied into OK icon event_handler; dual role, unclear
+DAT_006687c0	skipped-no-evidence		
+DAT_006687c8	named	IconListHead	
+DAT_00668954	rejected-by-verifier	HoldingWorker	set/cleared in varied drop-validity contexts; meaning unclear
+DAT_00668e38	skipped-no-evidence		
+DAT_00668f3c	named	AviSoundBytesPerFrame	
+DAT_00668fb8	skipped-no-evidence		
+DAT_00669050	named	CurrentObjectiveEventFlags	
+DAT_00669054	skipped-no-evidence		
+DAT_00669200	named	SavedElementTable	
+DAT_0066a45c	skipped-no-evidence		
+DAT_0066b44c	skipped-no-evidence		shared by pathfind and objclass lists
+DAT_007cad60	named	TempProfile	
+DAT_007fda60	named	BlokeSaveBuffer	
+DAT_007fdea8	named	PopUpInfoOkIcon	
+DAT_007fdf84	skipped-no-evidence		
+DAT_007fe000	named	CBCloseIcon	
+DAT_007fe9a8	skipped-no-evidence		
+DAT_007fe9c0	named	PointerSprites	
+DAT_007fea4c	named	SpriteClipOrigin	
+DAT_007febac	named	DrawClipExtent	
+DAT_00801a80	skipped-no-evidence		
+DAT_0080ff80	skipped-no-evidence		
+DAT_008139c4	named	MapViewWidth	
+DAT_00813a44	named	MousePos	
+DAT_00813a70	named	FootprintHeight	
+DAT_00813ac4	rejected-by-verifier	MouseButtonState	one of ~8 identical button-state words; which button unconfirmed
+DAT_0081cb60	named	JungleCruiseRide	
+DAT_0081cb74	named	MFish2Ride	
+DAT_0081ce00	skipped-no-evidence		
+DAT_00829ae0	skipped-no-evidence		
+DAT_0082ad20	named	CastleDispatchTable	
+DAT_0082ae20	skipped-no-evidence		scratch Cursor struct shared by boating_school.c and jungle_cruise.c
+DAT_0082c6a0	named	RideSpriteInfoBuffer	
+DAT_0082f760	skipped-no-evidence		
+FUN_00402390	skipped-no-evidence		
+FUN_00408c00	named	JoustFreeResources	
+FUN_00409010	skipped-no-evidence		
+FUN_0040c8d0	skipped-no-evidence		
+FUN_0040cfd0	skipped-no-evidence		
+FUN_004123c0	named	SaveQueue	
+FUN_00414a00	named	RemoveSafariNode	
+FUN_00417280	named	RemoveSlideObject	
+FUN_0041abd0	named	RenderBoatingSchool	
+FUN_0041b0d0	rejected-by-verifier	AdjustBoatOwnerCount	BoatRideNode.value meaning unclear; 'owner' unconfirmed
+FUN_0041b830	skipped-no-evidence		
+FUN_0041b880	named	BoatingSchoolSetEditMode	
+FUN_0041cee0	skipped-no-evidence		
+FUN_0041cf70	skipped-no-evidence		
+FUN_0041d0b0	skipped-no-evidence		
+FUN_0041d700	skipped-no-evidence		
+FUN_0041da10	skipped-no-evidence		
+FUN_0041e720	skipped-no-evidence		
+FUN_0041eaf0	skipped-no-evidence		
+FUN_0041edb0	skipped-no-evidence		
+FUN_0041f720	skipped-no-evidence		
+FUN_0041f880	skipped-no-evidence		
+FUN_00420810	skipped-no-evidence		
+FUN_004213a0	named	BlendFloatArrays	
+FUN_00421400	named	ZeroIntBuffer	
+FUN_00421ab0	skipped-no-evidence		
+FUN_00422340	named	FindLineStart	
+FUN_004237f0	named	DrawDottedLine	
+FUN_004238a0	named	PlotClippedPoints	
+FUN_00424dc0	skipped-no-evidence		
+FUN_00426650	skipped-no-evidence		
+FUN_004266e0	named	UnlinkListLink	
+FUN_00426d80	skipped-no-evidence		
+FUN_00427100	skipped-no-evidence		
+FUN_00427940	skipped-no-evidence		
+FUN_00429750	skipped-no-evidence		
+FUN_0042cdc0	named	RemoveEarthNode	
+FUN_0042d070	named	RenderEarthSlide	
+FUN_0042d1f0	named	UnloadEarthSlideResources	
+FUN_0042f9d0	named	FindSaveBlock	
+FUN_0042fa00	named	RemoveSaveBlock	
+FUN_004324d0	skipped-no-evidence		
+FUN_004371b0	named	FindJunglePathAt	
+FUN_004371e0	named	AreJunglePathsConnected	
+FUN_004373c0	skipped-no-evidence		
+FUN_0043ce10	named	PickBarrelSeat	
+FUN_0043d210	skipped-no-evidence		
+FUN_00442f50	named	AllocRenderItem	
+FUN_00443d90	skipped-no-evidence		
+FUN_00444410	skipped-no-evidence		
+FUN_004444b0	skipped-no-evidence		
+FUN_00444870	skipped-no-evidence		
+FUN_00444930	skipped-no-evidence		
+FUN_00444ef0	named	AppraisalNextPageClicked	next report page
+FUN_0044dc70	skipped-no-evidence		
+FUN_0044eb10	skipped-no-evidence		
+FUN_00450a40	skipped-no-evidence		
+FUN_00450b10	named	LoadBuildObjArray	
+FUN_004511e0	skipped-no-evidence		Empty original function, no recovered source callers; no evidence for an initialization or shutdown name.
+FUN_00451390	named	LockMedia	VWIN32 DOS IOCTL 0x440d/0x0848 with parameter-block operation 0 locks media in the drive; operation and lock-count bytes documented at https://www.delorie.com/djgpp/doc/rbinter/it/67/15.html.
+FUN_00451550	named	UnlockLogicalVolume	
+FUN_004594f0	named	InitDefaultProfile	
+FUN_004598d0	skipped-no-evidence		
+FUN_0045e850	skipped-no-evidence		
+FUN_00461080	skipped-no-evidence		
+FUN_00469a80	skipped-no-evidence		
+FUN_0046a120	named	ScriptEventFeature	handler for type-0xf events (Feature), DAT_004b9d44[15]
+FUN_0046a190	named	GenerateWorkers	
+FUN_0046a460	named	ScriptEventBridges	handler for type-0x1b events (Bridges), DAT_004b9d44[27]
+FUN_0046a4f0	named	ScriptEventNeed	handler for type-0x21 events (Need), DAT_004b9d44[33]
+FUN_0046aa70	named	ScriptEventRemoveRange	handler for type-0x29 events (RemoveRange), DAT_004b9d44[41]
+FUN_0046aec0	named	AdjustGardenerCount	
+FUN_0046b790	named	NewScriptGiveEvent	builds the type-0x2 event for GIVE
+FUN_0046bb80	skipped-no-evidence		
+FUN_0046bda0	named	NewScriptLookAtEvent	builds the type-0x17 event for LOOKAT
+FUN_0046c090	named	NewScriptParkVisitorsEvent	builds the type-0x2d event for PARKVISITORS
+FUN_0046c0f0	named	NewScriptRidersEvent	builds the type-0x2f event for RIDERS
+FUN_0046c450	named	NewScriptSelectThemeEvent	builds the type-0x41 event for SELECTTHEME
+FUN_0046c510	named	NewScriptForeverEvent	builds the type-0x45 event for FOREVER
+FUN_0046c540	named	AppendObjectiveEventList	
+FUN_004730f0	named	ClosePopUpEventHandler	
+FUN_00473130	named	TryClosePopUp	
+FUN_00473680	skipped-no-evidence		
+FUN_00474820	skipped-no-evidence		
+FUN_00476000	skipped-no-evidence		
+FUN_004760a0	named	DrawFlashingButtons	
+FUN_00478770	named	ParseIntPair	
+FUN_00478870	named	ScriptCmdInit	parser for script keyword [INIT] (keyword table 0x4bb708)
+FUN_0047ad40	named	ScriptCmdMinCapacity	parser for script keyword MINVISITORS (keyword table 0x4bb9a0)
+FUN_004821e0	named	FreeDirNodeList	
+FUN_00482a90	named	InitEntrance1Point	
+FUN_00482df0	named	ApplyMoodDelta	
+FUN_004848e0	skipped-no-evidence		
+FUN_004969d0	named	UpdateSound	
+FUN_00499d00	named	AssignGardenerWorkOrder	
+FUN_00499fb0	named	UpdateGardeners	
+FUN_0049b270	named	EraseWorkOrdersAtTile	
+FUN_0049b690	named	AddRepairOrder	
+DAT_004ab3dc	skipped-no-evidence		
+DAT_004ab3e0	skipped-no-evidence		
+DAT_004ab3e4	skipped-no-evidence		
+DAT_004ab3e8	skipped-no-evidence		
+DAT_004ab3f0	skipped-no-evidence		
+DAT_004ab3f4	skipped-no-evidence		
+DAT_004b4734	skipped-no-evidence		
+DAT_004b4bf0	skipped-no-evidence		
+DAT_004b4d94	named	SpiderBnvInfo	
+DAT_004b5118	named	BoatingSchoolDirSteps	
+DAT_004b53c0	rejected-by-verifier	BoatingSchoolFootprintTemplate	mutated in place by building footprint and used for edit cursor, state and QueryClass; Template misleading
+DAT_004b6990	skipped-no-evidence		
+DAT_004b7148	skipped-no-evidence		
+DAT_004b7260	skipped-no-evidence		
+DAT_004b7278	named	JungleCruiseStartFootprint	
+DAT_004b7478	skipped-no-evidence		
+DAT_004b8bbc	named	PercentSFormat	
+DAT_004b9f8c	skipped-no-evidence		
+DAT_004bafa8	skipped-no-evidence		
+DAT_004bf670	skipped-no-evidence		
+DAT_004bf778	named	MusicState	
+DAT_004c10f0	skipped-no-evidence		
+DAT_004c11bc	named	DrivingSchoolCountList	
+DAT_004c11c8	rejected-by-verifier	DrivingSchoolQueueList	BFS next-frontier list in driving_school (pairs with 4c11c4); Queue name misleading, unsure
+DAT_004c1208	named	GoldRushBlokeRenderList	
+DAT_004c1214	named	JoustLayer	
+DAT_004c2b0c	skipped-no-evidence		
+DAT_004c2b60	skipped-no-evidence		
+DAT_004c2bc0	skipped-no-evidence		
+DAT_004c2be8	skipped-no-evidence		
+DAT_004c2bf0	skipped-no-evidence		
+DAT_004c2c08	skipped-no-evidence		
+DAT_004c2c10	skipped-no-evidence		
+DAT_004c445c	skipped-no-evidence		
+DAT_004c4468	skipped-no-evidence		
+DAT_004c74d4	skipped-no-evidence		
+DAT_004c74d8	skipped-no-evidence		
+DAT_004c74f8	named	LogFlumeCursor	
+DAT_004c8d6c	skipped-no-evidence		
+DAT_004c8d78	skipped-no-evidence		
+DAT_004cbe18	skipped-no-evidence		
+DAT_004cbe70	skipped-no-evidence		
+DAT_004cbea4	named	PumpList	
+DAT_004cbf0c	named	SafariNodeList	
+DAT_004cbf20	skipped-no-evidence		
+DAT_004cbf38	skipped-no-evidence		
+DAT_004cc008	named	WaterBlockRide	
+DAT_004cc02c	named	WaterNodeList	
+DAT_004cc034	named	ElephantFountainList	
+DAT_004cc048	skipped-no-evidence		
+DAT_004cc060	named	BoatingSchoolStartFootprint	
+DAT_004cc08c	named	BoatingSchoolAnimTick	
+DAT_004d2164	named	MermaidList	
+DAT_004d8244	skipped-no-evidence		
+DAT_004d8250	skipped-no-evidence		
+DAT_004d8bb0	skipped-no-evidence		
+DAT_004dcbd0	rejected-by-verifier	FloatArrayOpTable	table mixes copy/alloc/free/int-zero ops, not only float array ops; copied out as 11 entries
+DAT_00610a04	skipped-no-evidence		
+DAT_00610a08	skipped-no-evidence		
+DAT_00610a10	skipped-no-evidence		
+DAT_00611958	skipped-no-evidence		
+DAT_006122a0	skipped-no-evidence		
+DAT_00613878	skipped-no-evidence		
+DAT_00613908	skipped-no-evidence		
+DAT_00615fd4	skipped-no-evidence		
+DAT_006160bc	skipped-no-evidence		
+DAT_006160d0	named	EarthSlideRide	
+DAT_006160e8	named	EarthNodeHead	
+DAT_00616148	named	SaveBlockList	
+DAT_00629c2c	rejected-by-verifier	JungleObjList	two distinct JungleObj lists exist (DAT_00629c34 too); name would be ambiguous
+DAT_00629c30	named	JungleFishList	
+DAT_0062fd34	named	JungleBfsNextFrontier	
+DAT_0062fd3c	named	JailCellList	
+DAT_0062fd40	skipped-no-evidence		
+DAT_0062fe08	named	SpinningBarrelList	
+DAT_0062fe58	named	PlaneRide	
+DAT_0062fe7c	named	PlaneRideLayer	
+DAT_0062fea0	named	DialogListScrollY	
+DAT_00666098	named	AppraisalDeadline	
+DAT_006660a4	named	AppraisalPage	report page shown
+DAT_006660a8	named	AppraisalNextIcon	next page icon
+DAT_006660ac	named	AppraisalPrevIcon	previous page icon
+DAT_00667c00	named	MapWorldMinX	
+DAT_00667c04	skipped-no-evidence		
+DAT_00667c14	rejected-by-verifier	MapScaledTileHeight	also used as scratch for sprite heights at mapscreen.c:448,508,573,611; conflicting use
+DAT_00667c16	rejected-by-verifier	MapSpriteWidth	reused as scaled tile width (mapscreen:268) and as individual sprite widths; conflicting uses
+DAT_00667c18	named	MapWorldHeight	
+DAT_00667c1c	named	MapWorldWidth	
+DAT_00667c20	named	MapCenterOffsetY	
+DAT_00667c40	skipped-no-evidence		
+DAT_00667c48	skipped-no-evidence		
+DAT_00667ca0	named	LoadInProgress	
+DAT_00667cd8	skipped-no-evidence		
+DAT_00667ce0	skipped-no-evidence		
+DAT_00667ce4	skipped-no-evidence		
+DAT_00667ce8	skipped-no-evidence		
+DAT_00667cec	skipped-no-evidence		
+DAT_00667cf8	skipped-no-evidence		
+DAT_00667d3c	skipped-no-evidence		
+DAT_00667d50	named	MapDataLoaded	
+DAT_00668144	named	VideoSurfaceLocked	
+DAT_006681e4	named	RenderingStatusStackDepth	
+DAT_0066861c	skipped-no-evidence		
+DAT_00668720	named	ScriptStringCount	
+DAT_00668724	skipped-no-evidence		
+DAT_00668728	named	ObjectiveEventList	
+DAT_00668784	named	ScriptEventList	active level-script events
+DAT_00668798	named	ScriptSectionList	level-script sections still to run, current one at the head
+DAT_006687a0	named	ScriptLoadErrorCount	
+DAT_006687a4	skipped-no-evidence		
+DAT_006687a8	skipped-no-evidence		
+DAT_006688b8	skipped-no-evidence		
+DAT_006688bc	named	PowerDemandBarPos	
+DAT_006688c0	named	EnergyBarSupplyWidth	
+DAT_006688c4	skipped-no-evidence		
+DAT_006688d4	rejected-by-verifier	InactiveIndicators	list shared with DAT_006688d8; active/inactive semantics unclear
+DAT_006688d8	named	ActiveIndicators	
+DAT_00668e34	skipped-no-evidence		
+DAT_00668e9c	dropped-collision	BriefIcon	exists in src
+DAT_00668eb0	named	SelectedThemeIcon	
+DAT_00668eb8	named	ScriptEndIcon	
+DAT_00668f54	skipped-no-evidence		
+DAT_00668f60	named	AviAudioSamplePos	
+DAT_00668f8c	named	AviAcmDstBase	
+DAT_00668fb4	skipped-no-evidence		
+DAT_00668fc0	skipped-no-evidence		
+DAT_006691b4	named	SavedElementCount	
+DAT_00669244	named	ObjectLibraryHead	
+DAT_00669248	named	ClassRideList	
+DAT_00669250	skipped-no-evidence		
+DAT_00669254	skipped-no-evidence		
+DAT_0066b450	named	DirSearchNodeList	
+DAT_0066b458	skipped-no-evidence		
+DAT_0066b638	named	ColorLut	
+DAT_0066be50	rejected-by-verifier	ScreenSourceImage	image is a pixel-by-pixel z-threshold transition buffer (data=DAT_00701e68), not screen source
+DAT_00798660	skipped-no-evidence		
+DAT_0079867c	named	PopUpCloseSprite	
+DAT_00798680	named	PuCloseOnSprite	
+DAT_007986b8	rejected-by-verifier	RegPopUpSprite	different sprites loaded in profile (Reg_Delete_PopUp) vs savegame_ui (RegSaveDouble_PopUp); name too generic
+DAT_00798768	named	CertificatePrintResultTimer	
+DAT_00798884	skipped-no-evidence		
+DAT_00799230	named	MusicSegments	
+DAT_0079a6a0	named	MusicCommandEvent	
+DAT_0079a6a4	named	MusicCommand	
+DAT_0079a6a8	named	NextMusicTheme	
+DAT_0079a6ac	named	CurrentMusicTheme	
+DAT_0079a8d4	named	RepairOrderList	
+DAT_007cb1c0	named	RepHint1Icon	
+DAT_007cb2e0	dropped-collision	PreviousPageIcon	dup new name
+DAT_007cb2e4	dropped-collision	NextPageIcon	dup new name
+DAT_007cb328	named	LoadMode	
+DAT_007cb3e0	named	ObjInstanceTable	
+DAT_007cb5e0	skipped-no-evidence		
+DAT_007fd600	named	SortCursor	
+DAT_007fdd70	skipped-no-evidence		
+DAT_007fdd80	skipped-no-evidence		
+DAT_007fdd84	skipped-no-evidence		
+DAT_007fdecc	named	PopUpInfoX	
+DAT_007fded0	named	PopUpInfoY	
+DAT_007fdf80	skipped-no-evidence		
+DAT_007fdf9c	skipped-no-evidence		
+DAT_007fdfa0	skipped-no-evidence		
+DAT_007fdfac	named	PopupInfoLineCount	
+DAT_007fdfcc	skipped-no-evidence		
+DAT_007fdffc	named	WorkerOnMouseType	
+DAT_007fe120	named	ScriptStringTable	
+DAT_007fe930	named	ObjectiveCounters	
+DAT_007fe994	skipped-no-evidence		
+DAT_00801408	skipped-no-evidence		
+DAT_00801a6c	skipped-no-evidence		
+DAT_0080ff6c	skipped-no-evidence		
+DAT_008139c0	named	MapViewHeight	
+DAT_008139c8	named	MapViewX	
+DAT_008139cc	named	MapViewY	
+DAT_00813a50	skipped-no-evidence		
+DAT_00813a60	skipped-no-evidence		
+DAT_00813a64	named	MouseTileX	
+DAT_00813a68	named	MouseTileY	
+DAT_00813a6c	named	FootprintWidth	
+DAT_00813acc	skipped-no-evidence		
+DAT_00813ad4	skipped-no-evidence		
+DAT_00813adc	skipped-no-evidence		
+DAT_0081cb54	skipped-no-evidence		
+DAT_0081cb80	skipped-no-evidence		
+DAT_0081cd08	named	HedgeObjectClass	
+DAT_0081cd2c	named	EateryFxInner	
+DAT_008299a0	skipped-no-evidence		
+DAT_008299bc	skipped-no-evidence		
+DAT_00829a3c	skipped-no-evidence		
+DAT_00829ae4	skipped-no-evidence		
+DAT_00829ae8	skipped-no-evidence		
+DAT_00829b8c	skipped-no-evidence		
+DAT_00829b90	skipped-no-evidence		
+DAT_00829ba4	skipped-no-evidence		
+DAT_00829ba8	skipped-no-evidence		
+DAT_00829bf8	skipped-no-evidence		
+DAT_0082adb0	skipped-no-evidence		
+DAT_0082c684	skipped-no-evidence		
+DAT_0082c6e0	rejected-by-verifier	DrivingSchoolCursor	one of several chained driving school cursors (f760, df20); name ambiguous
+DAT_0082df20	skipped-no-evidence		
+FUN_00401000	named	RotateOffset	
+FUN_00401f30	named	PickQueueTurn	
+FUN_00404630	skipped-no-evidence		
+FUN_00405310	skipped-no-evidence		
+FUN_00408ec0	named	FindFlumeEntryByTile	
+FUN_00408ef0	named	FindFlumeSubEntryByTile	
+FUN_00408f30	skipped-no-evidence		
+FUN_00409040	named	InsertNodeBefore	
+FUN_00409080	named	LinkNodeAfter	
+FUN_004090c0	named	InsertNodeBetween	
+FUN_00409110	named	ReverseNodeList	
+FUN_00409140	skipped-no-evidence		
+FUN_00409170	named	AppendListNode	
+FUN_004091f0	skipped-no-evidence		
+FUN_00409410	skipped-no-evidence		
+FUN_00409620	skipped-no-evidence		
+FUN_00409680	skipped-no-evidence		
+FUN_004096e0	skipped-no-evidence		
+FUN_00409740	skipped-no-evidence		
+FUN_00409a50	skipped-no-evidence		
+FUN_00409b70	named	JoinOppositeFlumeNodes	
+FUN_0040a010	skipped-no-evidence		
+FUN_0040ad50	skipped-no-evidence		
+FUN_0040b210	skipped-no-evidence		
+FUN_0040ba80	skipped-no-evidence		
+FUN_0040bab0	skipped-no-evidence		
+FUN_0040ca30	skipped-no-evidence		
+FUN_0040cca0	skipped-no-evidence		
+FUN_0040cd70	skipped-no-evidence		
+FUN_0040cdf0	skipped-no-evidence		
+FUN_0040d090	skipped-no-evidence		
+FUN_0040d2d0	skipped-no-evidence		
+FUN_0040d3b0	skipped-no-evidence		
+FUN_0040d6f0	skipped-no-evidence		
+FUN_0040d900	skipped-no-evidence		
+FUN_0040db00	skipped-no-evidence		
+FUN_0040e340	skipped-no-evidence		
+FUN_0040e3b0	skipped-no-evidence		
+FUN_0040e440	skipped-no-evidence		
+FUN_0040ed50	skipped-no-evidence		
+FUN_004107b0	skipped-no-evidence		
+FUN_00410b60	named	IndexToFlumeNode	
+FUN_004112c0	skipped-no-evidence		
+FUN_004119a0	skipped-no-evidence		
+FUN_00412100	skipped-no-evidence		
+FUN_004122a0	skipped-no-evidence		
+FUN_00412300	skipped-no-evidence		
+FUN_004125a0	skipped-no-evidence		
+FUN_004125f0	named	FindQueueEntryAtTile	
+FUN_00412650	skipped-no-evidence		
+FUN_004132a0	skipped-no-evidence		
+FUN_00413450	skipped-no-evidence		
+FUN_004134f0	skipped-no-evidence		
+FUN_004135d0	skipped-no-evidence		
+FUN_00417c90	skipped-no-evidence		
+FUN_0041bab0	skipped-no-evidence		
+FUN_0041c4c0	skipped-no-evidence		
+FUN_0041c690	skipped-no-evidence		
+FUN_0041c890	named	FindBoatPathAt	
+FUN_0041c940	named	SearchBoatPathConnected	
+FUN_0041cc50	named	GetOppositeDirection	
+FUN_0041cca0	named	DirMaskToIndex	
+FUN_0041ce10	named	ResetAnim	
+FUN_0041ce60	skipped-no-evidence		
+FUN_0041cff0	skipped-no-evidence		
+FUN_0041d3b0	skipped-no-evidence		
+FUN_0041d6d0	skipped-no-evidence		
+FUN_0041d7f0	skipped-no-evidence		
+FUN_0041e330	named	ForEachRingNode	
+FUN_0041e4a0	skipped-no-evidence		
+FUN_0041e500	skipped-no-evidence		
+FUN_0041e820	skipped-no-evidence		
+FUN_0041ec20	skipped-no-evidence		
+FUN_0041ed90	skipped-no-evidence		
+FUN_0041f2b0	skipped-no-evidence		
+FUN_0041f4e0	skipped-no-evidence		
+FUN_00420200	named	IntegrateSimpson	
+FUN_00420310	skipped-no-evidence		
+FUN_00420e90	skipped-no-evidence		
+FUN_00421540	skipped-no-evidence		
+FUN_00421980	skipped-no-evidence		
+FUN_00424ab0	skipped-no-evidence		
+FUN_00425cb0	skipped-no-evidence		
+FUN_00425d50	skipped-no-evidence		
+FUN_00427970	skipped-no-evidence		
+FUN_00427a00	skipped-no-evidence		
+FUN_00427c00	skipped-no-evidence		
+FUN_00429910	skipped-no-evidence		
+FUN_0042a150	skipped-no-evidence		
+FUN_0042aa60	skipped-no-evidence		
+FUN_0042ce20	skipped-no-evidence		
+FUN_0042e830	skipped-no-evidence		
+FUN_0042e8d0	named	EaterySetEditMode	
+FUN_0042f0f0	skipped-no-evidence		
+FUN_004312c0	named	EateryRemoveObject	
+FUN_00431c50	skipped-no-evidence		
+FUN_00432510	named	UpdateHedgeTileImage	
+FUN_00432cb0	skipped-no-evidence		
+FUN_00436130	skipped-no-evidence		
+FUN_004367b0	skipped-no-evidence		
+FUN_00436dc0	skipped-no-evidence		
+FUN_00436fb0	skipped-no-evidence		
+FUN_00437260	named	SearchJunglePathConnected	
+FUN_00437570	skipped-no-evidence		
+FUN_0043a390	named	GetShopSpriteInfo	
+FUN_0043a3d0	named	RemoveObjectAndBlokes	
+FUN_0043aee0	named	RenderSpaceTowerSeat	
+FUN_0043fa80	skipped-no-evidence		
+FUN_004401b0	skipped-no-evidence		
+FUN_00441890	skipped-no-evidence		
+FUN_00444020	skipped-no-evidence		
+FUN_0044ed00	named	LogBlokeAiMessage	
+FUN_0044f360	skipped-no-evidence		
+FUN_0044f4a0	skipped-no-evidence		
+FUN_00455d40	skipped-no-evidence		
+FUN_00455e50	skipped-no-evidence		
+FUN_00458a50	skipped-no-evidence		
+FUN_00458b20	named	UnloadMap	
+FUN_00459820	named	EndLevel	MapStats.level_end = 1 win / 2 lose and shows the ENDSCREENS text
+FUN_0045a060	skipped-no-evidence		
+FUN_0045a3e0	skipped-no-evidence		
+FUN_0045ce10	named	IsPathTile	
+FUN_0045d260	named	AdjustPathTileAndNeighbours	
+FUN_0045d3d0	named	ClearPathUnderFootprint	
+FUN_0045f460	named	ResetCursorBuildable	
+FUN_0045f480	named	SetCursorBlocked	
+FUN_0045f4b0	named	IsCursorBuildable	
+FUN_0045f4d0	named	PropagateCursorBlocked	
+FUN_00460560	skipped-no-evidence		
+FUN_00468810	skipped-no-evidence		
+FUN_004689f0	skipped-no-evidence		
+FUN_00468b40	skipped-no-evidence		
+FUN_00468bb0	named	PostObjectiveMessage	
+FUN_00468c80	named	InsertObjectiveEventSorted	
+FUN_00468d10	skipped-no-evidence		
+FUN_00468d30	skipped-no-evidence		
+FUN_00468d80	skipped-no-evidence		
+FUN_00469310	skipped-no-evidence		
+FUN_00469900	skipped-no-evidence		
+FUN_0046a140	skipped-no-evidence		
+FUN_0046b240	named	SetScriptStopped	stops the level script (cheat IMPROVISE); usually wins the level
+FUN_0046b610	rejected-by-verifier	InsertTimedNodeAtHead	DAT_007fdca4 is an objective handle not a time; nodes are ObjectiveEvents; Timed unsupported
+FUN_0046b6b0	skipped-no-evidence		
+FUN_0046b760	skipped-no-evidence		
+FUN_0046c5c0	skipped-no-evidence		
+FUN_0046c620	named	SaveGameWriteString	
+FUN_0046c680	skipped-no-evidence		
+FUN_0046ce20	named	ClearAdvisorHelp	frees the advisor text and stops its speech
+FUN_0046d110	named	UpdateSpeechPlayback	
+FUN_0046d230	skipped-no-evidence		
+FUN_0046d4e0	skipped-no-evidence		
+FUN_0046d850	named	ScrollIconRegion	scrolls a ScrollRegion's icons by (dx,dy), clamped to its clip rect (object list arrows)
+FUN_0046fb40	named	DestroyIconGroup	
+FUN_00471610	named	SetPopUpIconSprites	
+FUN_00471d60	named	SetPopUpOkCloseIconSprites	
+FUN_004735e0	named	TryPlayAdviceSpeech	
+FUN_00474750	skipped-no-evidence		
+FUN_00474880	skipped-no-evidence		
+FUN_004748a0	skipped-no-evidence		
+FUN_004776c0	skipped-no-evidence		
+FUN_004776e0	named	InsertOpenListSorted	
+FUN_00477760	named	RemoveQueryNode	
+FUN_00477790	named	RemoveFromOpenList	
+FUN_004777f0	skipped-no-evidence		
+FUN_004779a0	skipped-no-evidence		
+FUN_004779d0	skipped-no-evidence		
+FUN_004785d0	skipped-no-evidence		
+FUN_00478610	named	SetScriptObjectiveKind	[ONEOFF]/[ONGOING]/[PERMANENT]/[REMINDER] -> CurrentObjectiveEventFlags 0/1/2/4
+FUN_004786c0	skipped-no-evidence		
+FUN_00478700	named	ParseRect	
+FUN_00478b20	skipped-no-evidence		
+FUN_00480840	named	MovePointInDirection	
+FUN_004808d0	named	StepPointByDirection	
+FUN_00481b10	named	MergeBestNode	
+FUN_00482210	named	FreeDirPathNodes	
+FUN_00482240	skipped-no-evidence		
+FUN_00482620	skipped-no-evidence		
+FUN_00482710	skipped-no-evidence		
+FUN_004828f0	skipped-no-evidence		
+FUN_00482b60	skipped-no-evidence		
+FUN_00483300	skipped-no-evidence		
+FUN_004837a0	skipped-no-evidence		
+FUN_00489ee0	skipped-no-evidence		
+FUN_00489f00	skipped-no-evidence		
+FUN_00489f50	skipped-no-evidence		
+FUN_0048a750	skipped-no-evidence		
+FUN_0048a840	skipped-no-evidence		
+FUN_0048b4a0	skipped-no-evidence		
+FUN_0048b770	skipped-no-evidence		
+FUN_0048bb60	skipped-no-evidence		
+FUN_0048d490	skipped-no-evidence		
+FUN_0048e420	named	ResetPopUpIconSprites	
+FUN_0048f0a0	skipped-no-evidence		
+FUN_0048fb80	skipped-no-evidence		
+FUN_004907a0	skipped-no-evidence		
+FUN_00492b20	named	FreeSample	
+FUN_00492ce0	named	SetInteractiveMusicTheme	
+FUN_004966a0	skipped-no-evidence		
+FUN_00499410	named	ResetGameTimer	
+FUN_00499500	skipped-no-evidence		
+FUN_00405370	named	LoadDrivingSchoolResources	DRIVING SCHOOL cb_a4 (setcustomcallbacks.c:91); loads DSCHOOL MAPPING/BLUE CAR, DSchool Matte.lls, palettes
+FUN_00405460	named	UnloadDrivingSchoolResources	DRIVING SCHOOL cb_ac (setcustomcallbacks.c:102); unloads DSCHOOL data, kills its sprites, frees palettes
+FUN_00411a10	named	InitDrivingSchoolPumps	DRIVING SCHOOL PUMPS cb_a4 (setcustomcallbacks.c:85); stores the ride pointer
+FUN_00413a10	named	LoadDrivingSchoolRoadsResources	DRIVING SCHOOL ROADS cb_a4 (setcustomcallbacks.c:107); loads DSCHOOL LIGHTS, TILES FOR DSCHOOL callbacks
+FUN_00413a80	named	UnloadDrivingSchoolRoadsResources	DRIVING SCHOOL ROADS cb_ac (setcustomcallbacks.c:108); unloads DSCHOOL LIGHTS, frees queue entries
+FUN_00414940	named	InitZebraCrossing	ZEBRA CROSSING cb_a4 (setcustomcallbacks.c:117); stores the ride pointer
+FUN_0042de50	named	LoadEntranceResources	ENTRANCE 1 cb_a4 (setcustomcallbacks.c:124); loads entrance_matte1-4.lls, booth1.lls, ENTRANCE_SFX
+FUN_0042def0	named	UnloadEntranceResources	ENTRANCE 1 cb_ac (setcustomcallbacks.c:125); kills the entrance sprites and SFX
+FUN_0043ce60	named	LoadGShedMatteSprite	POTTING SHED cb_a4 (setcustomcallbacks.c:130); loads gshedmatte.lls; pairs with KillGShedMatteSprite
+FUN_0043d250	named	LoadMechHutMaskSprite	MECHANICS HUT cb_a4 (setcustomcallbacks.c:139); loads MechHutMask.lls; pairs with KillMechHutMaskSprite
+FUN_0042c280	named	LoadCarouselResources	CAROUSEL cb_a4 (setcustomcallbacks.c:150); loads z_Carousel.lls, Carousel*.bnv, entrance mattes
+FUN_0042c3f0	named	UnloadCarouselResources	CAROUSEL cb_ac (setcustomcallbacks.c:151); kills carousel sprites, frees nodes and BinVs
+FUN_0042a7b0	named	LoadBalloonzResources	BALLOONZ cb_a4 (setcustomcallbacks.c:163); loads Ballbasem*.lls, BZ*CarM1.lls, balloonz.bnv
+FUN_0042b9d0	named	UnloadBalloonzResources	BALLOONZ cb_ac (setcustomcallbacks.c:169); kills the balloonz sprites and BinV
+FUN_0042d100	named	LoadEarthSlideResources	EARTH SLIDE RIDE cb_a4 (setcustomcallbacks.c:176); loads earth.pos/earthslide.rin/mattes; pairs with UnloadEarthSlideResources
+FUN_0042e870	named	LoadCastleBBQResources	CASTLE BBQ cb_a4 (setcustomcallbacks.c:188); stores ride/layer, loads RESTAURANT_SFX and money SFX
+FUN_0042e8b0	named	UnloadCastleBBQResources	CASTLE BBQ cb_ac (setcustomcallbacks.c:189); kills RESTAURANT_SFX and money SFX
+FUN_0042e770	named	LoadFoodcartDrinkResources	FOODCART DRINK cb_a4 (setcustomcallbacks.c:198)
+FUN_0042e7a0	named	UnloadFoodcartDrinkResources	FOODCART DRINK cb_ac (setcustomcallbacks.c:199)
+FUN_0042e7f0	named	LoadFoodcartFoodResources	FOODCART FOOD cb_a4 (setcustomcallbacks.c:207)
+FUN_0042e820	named	UnloadFoodcartFoodResources	FOODCART FOOD cb_ac (setcustomcallbacks.c:208)
+FUN_0042e7b0	named	LoadFoodcartIcecreamResources	FOODCART ICECREAM cb_a4 (setcustomcallbacks.c:216)
+FUN_0042e7e0	named	UnloadFoodcartIcecreamResources	FOODCART ICECREAM cb_ac (setcustomcallbacks.c:217)
+FUN_0042e220	named	LoadChuckWagonResources	CHUCK WAGON cb_a4 (setcustomcallbacks.c:260)
+FUN_0042e250	named	UnloadChuckWagonResources	CHUCK WAGON cb_ac (setcustomcallbacks.c:265)
+FUN_0042e5d0	named	LoadSharkCafeResources	SHARK CAFE cb_a4 (setcustomcallbacks.c:269)
+FUN_0042e600	named	UnloadSharkCafeResources	SHARK CAFE cb_ac (setcustomcallbacks.c:270)
+FUN_00431300	named	LoadOctopusCafeResources	OCTOPUS CAFE cb_a4 (setcustomcallbacks.c:225); loads OctTent*/OctTab*/OctoKiosk sprites
+FUN_00431520	named	UnloadOctopusCafeResources	OCTOPUS CAFE cb_ac (setcustomcallbacks.c:231); kills the Oct* sprites
+FUN_0042f030	named	LoadRestaurant1Resources	RESTAURANT 1 cb_a4 (setcustomcallbacks.c:235); loads RestMask*.lls; pairs with KillRestMaskSpritesAndMoneySFX
+FUN_0042f770	named	LoadRestaurant2Resources	RESTAURANT 2 cb_a4 (setcustomcallbacks.c:247); loads R2*door/tower mattes
+FUN_00431120	named	UnloadRestaurant2Resources	RESTAURANT 2 cb_ac (setcustomcallbacks.c:253); kills R2* sprites
+FUN_00419d10	named	LoadBoatingSchoolResources	BOATING SCHOOL cb_a4 (setcustomcallbacks.c:291); loads tile mapping, boats, bs_hullmask/bs_railm
+FUN_00419ef0	named	UnloadBoatingSchoolResources	BOATING SCHOOL cb_ac (setcustomcallbacks.c:292); unloads data, frees boat lists, kills sprites
+FUN_0041b250	named	InitBoatingSchoolMermaid	BOATING SCHOOL MERMAID cb_a4 (setcustomcallbacks.c:306); stores the ride pointer
+FUN_00436190	named	InitJungleCruiseWater	JUNGLE CRUISE WATER cb_a4 (setcustomcallbacks.c:315); stores the ride pointer
+FUN_00434cb0	named	LoadJungleCruiseResources	JUNGLE CRUISE cb_a4 (setcustomcallbacks.c:322); loads boats, jungmask.lls
+FUN_00434e50	named	UnloadJungleCruiseResources	JUNGLE CRUISE cb_ac (setcustomcallbacks.c:323); unloads data, frees lists, kills jungmask
+FUN_00433ca0	named	LoadBrijMaskSprite	JUNGLE CRUISE MONKEY TREE cb_a4 (setcustomcallbacks.c:337); loads brijmask.lls; pairs with KillBrijMaskSprite
+FUN_00434080	named	LoadMFish2Sprite	JUNGLE CRUISE MONKEY FISH cb_a4 (setcustomcallbacks.c:348); loads mfish2.lls; pairs with KillMFish2Sprite
+DAT_0082c694	named	DrivingSchoolRide	set from the DRIVING SCHOOL element in LoadDrivingSchoolResources, cleared in Unload, used as EditMode.unk8
+DAT_004cbe9c	named	DrivingSchoolPumpsRide	set in InitDrivingSchoolPumps; used as the pumps Ride in pumps.c
+DAT_0082c678	named	ZebraCrossingRide	set in InitZebraCrossing; used as EditMode.unk8 and for its cost in roads.c
+DAT_006160f4	named	EntranceRide	ENTRANCE 1 ride set in Load/UnloadEntranceResources
+DAT_006160f0	named	EntranceLayer	EntranceRide->layer, set in LoadEntranceResources
+DAT_0081cde4	named	BalloonzRide	BALLOONZ ride set in LoadBalloonzResources (BalloonzLayer = its layer)
+DAT_0081cd0c	named	CastleBBQRide	CASTLE BBQ ride set in LoadCastleBBQResources, cleared in Unload
+DAT_0081cd10	named	CastleBBQLayer	CastleBBQRide->inner_64 layer, rendered in the CASTLE BBQ render callback
+DAT_0081cd14	named	FoodcartDrinkRide	set in LoadFoodcartDrinkResources
+DAT_0081cd3c	named	FoodcartFoodRide	set in LoadFoodcartFoodResources
+DAT_0081cde0	named	FoodcartIcecreamRide	set in LoadFoodcartIcecreamResources
+DAT_0081cd44	named	ChuckWagonRide	set in LoadChuckWagonResources
+DAT_0081cd18	named	SharkCafeRide	set in LoadSharkCafeResources
+DAT_0081cd1c	named	OctopusCafeRide	set in LoadOctopusCafeResources
+DAT_0081cd40	named	Restaurant1Ride	set in LoadRestaurant1Resources
+DAT_0081cd30	named	Restaurant2Ride	set in LoadRestaurant2Resources
+DAT_0082adf0	named	BoatingSchoolWaterRide	set in InitBoatingSchoolWater; its element marks water tiles
+DAT_0082adf8	named	BoatingSchoolMermaidRide	set in InitBoatingSchoolMermaid; EditMode.unk8 in the mermaid edit mode
+DAT_0081cb70	named	MonkeyTreeRide	JUNGLE CRUISE MONKEY TREE ride set in LoadBrijMaskSprite (MFish2Ride is the monkey fish one)
+FUN_00402d00	named	RenderCastleLevel	CASTLE LEVEL 1 cb_b0 callback (body verified)
+FUN_00403270	named	RenderCatapult	CATAPULT cb_b0 callback (body verified)
+FUN_004039a0	named	CatapultRemoveObject	CATAPULT cb_9c callback (body verified)
+FUN_00405570	named	DrivingSchoolSetEditMode	DRIVING SCHOOL cb_8c callback (body verified)
+FUN_00405630	named	DrivingSchoolAddObject	DRIVING SCHOOL cb_98 callback (body verified)
+FUN_00405940	named	DrivingSchoolRemoveObject	DRIVING SCHOOL cb_9c callback (body verified)
+FUN_00405ad0	named	GetDrivingSchoolSpriteInfo	DRIVING SCHOOL cb_a0 callback (body verified)
+FUN_00405b10	named	RenderDrivingSchool	DRIVING SCHOOL cb_b0 callback (body verified)
+FUN_004062c0	named	RenderFort	FORT cb_b0 callback (body verified)
+FUN_00406820	named	FortSetEditMode	FORT cb_8c callback (body verified)
+FUN_00406860	named	FortAddObject	FORT cb_98 callback (body verified)
+FUN_00406880	named	FortRemoveObject	FORT cb_9c callback (body verified)
+FUN_00406b10	named	RenderGoldRush	GOLD RUSH cb_b0 callback (body verified)
+FUN_004075f0	named	GoldRushAddObject	GOLD RUSH cb_98 callback (body verified)
+FUN_004076e0	named	GoldRushRemoveObject	GOLD RUSH cb_9c callback (body verified)
+FUN_00407ad0	named	JoustRemoveObject	JOUST cb_9c callback (body verified)
+FUN_00408580	named	RenderJoust	JOUST cb_b0 callback (body verified)
+FUN_0040a600	named	LogFlumeEntranceAddObject	LOG FLUME ENTRANCE cb_98 callback (body verified)
+FUN_0040abf0	named	LogFlumeEntranceRemoveObject	LOG FLUME ENTRANCE cb_9c callback (body verified)
+FUN_0040b420	named	RenderLogFlumeEntrance	LOG FLUME ENTRANCE cb_b0 callback (body verified)
+FUN_0040c780	named	LogFlumeTrackAddObject	LOG FLUME TRACK cb_98 callback (body verified)
+FUN_0040c970	named	GetLogFlumeTrackSpriteInfo	LOG FLUME TRACK cb_a0 callback (body verified)
+FUN_0040ee60	named	RenderLogFlumeSpecialCorner2	LOG FLUME SPECIAL CORNER 2 cb_b0 callback (body verified)
+FUN_0040efb0	named	RenderLogFlumeSpecialCorner4	LOG FLUME SPECIAL CORNER 4 cb_b0 callback (body verified)
+FUN_0040f450	named	RenderLogFlumeTunnel	LOG FLUME TUNNEL cb_b0 callback (body verified)
+FUN_0040f920	named	RenderLogFlumeCsaw	LOG FLUME CSAW cb_b0 callback (body verified)
+FUN_0040ffd0	named	RenderLogFlumeHoldUp	LOG FLUME HOLD UP cb_b0 callback (body verified)
+FUN_004104b0	named	RenderLogFlumeDrop	LOG FLUME DROP cb_b0 callback (body verified)
+FUN_00411a20	named	DrivingSchoolPumpsSetEditMode	DRIVING SCHOOL PUMPS cb_8c callback (body verified)
+FUN_00411bf0	named	DrivingSchoolPumpsAddObject	DRIVING SCHOOL PUMPS cb_98 callback (body verified)
+FUN_00411c70	named	DrivingSchoolPumpsRemoveObject	DRIVING SCHOOL PUMPS cb_9c callback (body verified)
+FUN_00413ad0	named	DrivingSchoolRoadsSetEditMode	DRIVING SCHOOL ROADS cb_8c callback (body verified)
+FUN_00414830	named	ZebraCrossingSetEditMode	ZEBRA CROSSING cb_8c callback (body verified)
+FUN_00414b80	named	RenderSafari	SAFARI RIDE cb_b0 callback (body verified)
+FUN_00414f40	named	SafariRemoveObject	SAFARI RIDE cb_9c callback (body verified)
+FUN_00415ae0	named	RenderSpider	SPIDER RIDE cb_b0 callback (body verified)
+FUN_00416060	named	SpiderSetEditMode	SPIDER RIDE cb_8c callback (body verified)
+FUN_004160a0	named	SpiderRemoveObject	SPIDER RIDE cb_9c callback (body verified)
+FUN_004160f0	named	SpiderAddObject	SPIDER RIDE cb_98 callback (body verified)
+FUN_00416a60	named	RenderTemple	TEMPLE cb_b0 callback (body verified)
+FUN_00416dc0	named	TempleSetEditMode	TEMPLE cb_8c callback (body verified)
+FUN_00416e00	named	TempleAddObject	TEMPLE cb_98 callback (body verified)
+FUN_00416e20	named	TempleRemoveObject	TEMPLE cb_9c callback (body verified)
+FUN_00416fa0	named	RenderTempleSlide	TEMPLE SLIDE cb_b0 callback (body verified)
+FUN_00417240	named	TempleSlideSetEditMode	TEMPLE SLIDE cb_8c callback (body verified)
+FUN_004172d0	named	TempleSlideAddObject	TEMPLE SLIDE cb_98 callback (body verified)
+FUN_004181a0	named	RenderWaterBlock	WATER WORKS WATER BLOCK cb_b0 callback (body verified)
+FUN_004181e0	named	WaterBlockAddObject	WATER WORKS WATER BLOCK cb_98 callback (body verified)
+FUN_00418450	named	RenderShower	WATER WORKS SHOWER cb_b0 callback (body verified)
+FUN_00418910	named	ElephantFountainRemoveObject	WATER WORKS ELEPHANT FOUNTAIN cb_9c callback (body verified)
+FUN_0041a040	named	BoatingSchoolAddObject	BOATING SCHOOL cb_98 callback (body verified)
+FUN_0041a530	named	BoatingSchoolRemoveObject	BOATING SCHOOL cb_9c callback (body verified)
+FUN_0041b260	named	BoatingSchoolMermaidSetEditMode	BOATING SCHOOL MERMAID cb_8c callback (body verified)
+FUN_0041b2a0	named	BoatingSchoolMermaidAddObject	BOATING SCHOOL MERMAID cb_98 callback (body verified)
+FUN_0041b6f0	named	BoatingSchoolMermaidRemoveObject	BOATING SCHOOL MERMAID cb_9c callback (body verified)
+FUN_00425050	named	RenderCastleObj	CASTLE OBJ cb_b0 callback (body verified)
+FUN_0042a950	named	BalloonzAddObject	BALLOONZ cb_98 callback (body verified)
+FUN_0042aa10	named	BalloonzRemoveObject	BALLOONZ cb_9c callback (body verified)
+FUN_0042b2a0	named	GetBalloonzSpriteInfo	BALLOONZ cb_a0 callback (body verified)
+FUN_0042b2e0	named	RenderBalloonz	BALLOONZ cb_b0 callback (body verified)
+FUN_0042ba40	named	BalloonzSetEditMode	BALLOONZ cb_8c callback (body verified)
+FUN_0042bcf0	named	RenderCarousel	CAROUSEL cb_b0 callback (body verified)
+FUN_0042c460	named	CarouselSetEditMode	CAROUSEL cb_8c callback (body verified)
+FUN_0042c4a0	named	CarouselRemoveObject	CAROUSEL cb_9c callback (body verified)
+FUN_0042c520	named	CarouselAddObject	CAROUSEL cb_98 callback (body verified)
+FUN_0042c550	named	GetCarouselSpriteInfo	CAROUSEL cb_a0 callback (body verified)
+FUN_0042d230	named	EarthSlideSetEditMode	EARTH SLIDE RIDE cb_8c callback (body verified)
+FUN_0042d270	named	EarthSlideRemoveObject	EARTH SLIDE RIDE cb_9c callback (body verified)
+FUN_0042d2c0	named	EarthSlideAddObject	EARTH SLIDE RIDE cb_98 callback (body verified)
+FUN_0042d9c0	named	RenderEntrance	ENTRANCE 1 cb_b0 callback (body verified)
+FUN_0042df70	named	EntranceRemoveObject	ENTRANCE 1 cb_9c callback (body verified)
+FUN_0042e260	named	RenderChuckWagon	CHUCK WAGON cb_b0 callback (body verified)
+FUN_0042e4c0	named	BrollySetEditMode	SHARK CAFE BROLLY cb_8c callback (body verified)
+FUN_0042e500	named	BrollyAddObject	SHARK CAFE BROLLY cb_98 callback (body verified)
+FUN_0042e560	named	GetBrollySpriteInfo	SHARK CAFE BROLLY cb_a0 callback (body verified)
+FUN_0042e910	named	RenderCastleBBQ	CASTLE BBQ cb_b0 callback (body verified)
+FUN_0042e9c0	named	CastleBBQAddObject	CASTLE BBQ cb_98 callback (body verified)
+FUN_0042ea10	named	CastleBBQRemoveObject	CASTLE BBQ cb_9c callback (body verified)
+FUN_0042ef10	named	Restaurant1AddObject	RESTAURANT 1 cb_98 callback (body verified)
+FUN_0042efb0	named	Restaurant1RemoveObject	RESTAURANT 1 cb_9c callback (body verified)
+FUN_0042f4c0	named	RenderRestaurant1	RESTAURANT 1 cb_b0 callback (body verified)
+FUN_0042f9a0	named	Restaurant2AddObject	RESTAURANT 2 cb_98 callback (body verified)
+FUN_0042fa40	named	Restaurant2RemoveObject	RESTAURANT 2 cb_9c callback (body verified)
+FUN_00430b10	named	RenderRestaurant2	RESTAURANT 2 cb_b0 callback (body verified)
+FUN_004314f0	named	OctopusCafeAddObject	OCTOPUS CAFE cb_98 callback (body verified)
+FUN_00431d00	named	RenderOctopusCafe	OCTOPUS CAFE cb_b0 callback (body verified)
+FUN_004325e0	named	HedgeAddObject	HEDGE cb_98 callback (body verified)
+FUN_00432700	named	HedgeRemoveObject	HEDGE cb_9c callback (body verified)
+FUN_004328c0	named	FlowersSetEditMode	FLOWERS cb_8c callback (body verified)
+FUN_00432900	named	FlowersAddObject	FLOWERS cb_98 callback (body verified)
+FUN_00433ce0	named	MonkeyTreeSetEditMode	JUNGLE CRUISE MONKEY TREE cb_8c callback (body verified)
+FUN_00433d20	named	MonkeyTreeAddObject	JUNGLE CRUISE MONKEY TREE cb_98 callback (body verified)
+FUN_00433fc0	named	MonkeyTreeRemoveObject	JUNGLE CRUISE MONKEY TREE cb_9c callback (body verified)
+FUN_00434040	named	GetMonkeyTreeSpriteInfo	JUNGLE CRUISE MONKEY TREE cb_a0 callback (body verified)
+FUN_004340c0	named	MonkeyFishSetEditMode	JUNGLE CRUISE MONKEY FISH cb_8c callback (body verified)
+FUN_00434100	named	MonkeyFishAddObject	JUNGLE CRUISE MONKEY FISH cb_98 callback (body verified)
+FUN_00434670	named	MonkeyFishRemoveObject	JUNGLE CRUISE MONKEY FISH cb_9c callback (body verified)
+FUN_00434740	named	GetMonkeyFishSpriteInfo	JUNGLE CRUISE MONKEY FISH cb_a0 callback (body verified)
+FUN_00434f50	named	JungleCruiseSetEditMode	JUNGLE CRUISE cb_8c callback (body verified)
+FUN_00434f90	named	JungleCruiseAddObject	JUNGLE CRUISE cb_98 callback (body verified)
+FUN_00435470	named	JungleCruiseRemoveObject	JUNGLE CRUISE cb_9c callback (body verified)
+FUN_00435bd0	named	RenderJungleCruise	JUNGLE CRUISE cb_b0 callback (body verified)
+FUN_004361a0	named	JungleCruiseWaterSetEditMode	JUNGLE CRUISE WATER cb_8c callback (body verified)
+FUN_00437630	named	GeneralStoreSetEditMode	GENERAL STORE cb_8c callback (body verified)
+FUN_00437670	named	RenderGeneralStore	GENERAL STORE cb_b0 callback (body verified)
+FUN_00437bf0	named	SheriffSetEditMode	SHERIFF cb_8c callback (body verified)
+FUN_00437c30	named	RenderSheriff	SHERIFF cb_b0 callback (body verified)
+FUN_00437f60	named	JailCellAddObject	JAIL CELL cb_98 callback (body verified)
+FUN_00438020	named	JailCellRemoveObject	JAIL CELL cb_9c callback (body verified)
+FUN_00438110	named	JailCellSetEditMode	JAIL CELL cb_8c callback (body verified)
+FUN_00438150	named	RenderJailCell	JAIL CELL cb_b0 callback (body verified)
+FUN_004388c0	named	BankSetEditMode	BANK cb_8c callback (body verified)
+FUN_00438900	named	RenderBank	BANK cb_b0 callback (body verified)
+FUN_00438cc0	named	SaloonSetEditMode	SALOON cb_8c callback (body verified)
+FUN_00438d00	named	RenderSaloon	SALOON cb_b0 callback (body verified)
+FUN_00439320	named	LegoShop1AddObject	LEGO SHOP 1 cb_98 callback (body verified)
+FUN_00439350	named	LegoShop1RemoveObject	LEGO SHOP 1 cb_9c callback (body verified)
+FUN_004393a0	named	LegoShop1SetEditMode	LEGO SHOP 1 cb_8c callback (body verified)
+FUN_00439400	named	RenderLegoShop1	LEGO SHOP 1 cb_b0 callback (body verified)
+FUN_00439720	named	LegoShop2SetEditMode	LEGO SHOP 2 cb_8c callback (body verified)
+FUN_00439760	named	RenderLegoShop2	LEGO SHOP 2 cb_b0 callback (body verified)
+FUN_00439c60	named	LegoMediaShopAddObject	LEGO MEDIA SHOP cb_98 callback (body verified)
+FUN_00439c90	named	LegoMediaShopRemoveObject	LEGO MEDIA SHOP cb_9c callback (body verified)
+FUN_00439d00	named	LegoMediaShopSetEditMode	LEGO MEDIA SHOP cb_8c callback (body verified)
+FUN_00439d40	named	RenderLegoMediaShop	LEGO MEDIA SHOP cb_b0 callback (body verified)
+FUN_0043a140	named	ExplorersInstituteSetEditMode	EXPLORERS INSTITUTE cb_8c callback (body verified)
+FUN_0043a180	named	RenderExplorersInstitute	EXPLORERS INSTITUTE cb_b0 callback (body verified)
+FUN_0043af50	named	RenderSpaceTower	SPACE TOWER RIDE cb_b0 callback (body verified)
+FUN_0043b460	named	SpaceTowerRemoveObject	SPACE TOWER RIDE cb_9c callback (body verified)
+FUN_0043be70	named	RenderSpinningBarrels	SPINNING BARRELS RIDE cb_b0 callback (body verified)
+FUN_0043d0b0	named	RenderPottingShed	POTTING SHED cb_b0 callback (body verified)
+FUN_0043d2a0	named	MechanicsHutAddObject	MECHANICS HUT cb_98 callback (body verified)
+FUN_0043d2c0	named	MechanicsHutRemoveObject	MECHANICS HUT cb_9c callback (body verified)
+FUN_0043d580	named	RenderMechanicsHut	MECHANICS HUT cb_b0 callback (body verified)
+FUN_0043d740	named	MechanicsHutSetEditMode	MECHANICS HUT cb_8c callback (body verified)
+FUN_0043d780	named	GetMechanicsHutSpriteInfo	MECHANICS HUT cb_a0 callback (body verified)
+FUN_0043da60	named	RenderPlaneRide	PLANE RIDE cb_b0 callback (body verified)
+FUN_0043df50	named	PlaneRideSetEditMode	PLANE RIDE cb_8c callback (body verified)
+FUN_0043df90	named	PlaneRideRemoveObject	PLANE RIDE cb_9c callback (body verified)
+FUN_0043dfe0	named	PlaneRideAddObject	PLANE RIDE cb_98 callback (body verified)
+FUN_00452bc0	named	DinoAddObject	Dino Mini cb_98 callback (body verified)
+FUN_0040dbb0	named	LogFlumeTrackSetEditMode	LOG FLUME TRACK cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_0040e630	named	LogFlumeSpecialCorner1SetEditMode	LOG FLUME SPECIAL CORNER 1 cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_0040e660	named	LogFlumeSpecialCorner2SetEditMode	LOG FLUME SPECIAL CORNER 2 cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_0040e690	named	LogFlumeSpecialCorner3SetEditMode	LOG FLUME SPECIAL CORNER 3 cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_0040e6c0	named	LogFlumeSpecialCorner4SetEditMode	LOG FLUME SPECIAL CORNER 4 cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_0040ead0	named	LogFlumeSpecialCorner1AddObject	LOG FLUME SPECIAL CORNER 1 cb_98; calls the shared add helper FUN_0040d900 (AddBasicObject)
+FUN_0040eb40	named	LogFlumeSpecialCorner2AddObject	LOG FLUME SPECIAL CORNER 2 cb_98; calls the shared add helper FUN_0040d900 (AddBasicObject)
+FUN_0040ebb0	named	LogFlumeSpecialCorner3AddObject	LOG FLUME SPECIAL CORNER 3 cb_98; calls the shared add helper FUN_0040d900 (AddBasicObject)
+FUN_0040ec20	named	LogFlumeSpecialCorner4AddObject	LOG FLUME SPECIAL CORNER 4 cb_98; calls the shared add helper FUN_0040d900 (AddBasicObject)
+FUN_0040ec90	named	LogFlumeSpecialCorner1RemoveObject	LOG FLUME SPECIAL CORNER 1 cb_9c; calls the shared remove helper FUN_0040db00 (StandardRemoveObject)
+FUN_0040ecc0	named	LogFlumeSpecialCorner2RemoveObject	LOG FLUME SPECIAL CORNER 2 cb_9c; calls the shared remove helper FUN_0040db00 (StandardRemoveObject)
+FUN_0040ecf0	named	LogFlumeSpecialCorner3RemoveObject	LOG FLUME SPECIAL CORNER 3 cb_9c; calls the shared remove helper FUN_0040db00 (StandardRemoveObject)
+FUN_0040ed20	named	LogFlumeSpecialCorner4RemoveObject	LOG FLUME SPECIAL CORNER 4 cb_9c; calls the shared remove helper FUN_0040db00 (StandardRemoveObject)
+FUN_0040f4f0	named	LogFlumeTunnelSetEditMode	LOG FLUME TUNNEL cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_0040f540	named	LogFlumeTunnelAddObject	LOG FLUME TUNNEL cb_98; calls the shared add helper FUN_0040d900 (AddBasicObject)
+FUN_0040f580	named	LogFlumeTunnelRemoveObject	LOG FLUME TUNNEL cb_9c; calls the shared remove helper FUN_0040db00 (StandardRemoveObject)
+FUN_0040fa00	named	LogFlumeCsawSetEditMode	LOG FLUME CSAW cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_0040fa60	named	LogFlumeCsawAddObject	LOG FLUME CSAW cb_98; calls the shared add helper FUN_0040d900 (AddBasicObject)
+FUN_0040fab0	named	LogFlumeCsawRemoveObject	LOG FLUME CSAW cb_9c; calls the shared remove helper FUN_0040db00 (StandardRemoveObject)
+FUN_004100b0	named	LogFlumeHoldUpSetEditMode	LOG FLUME HOLD UP cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_00410110	named	LogFlumeHoldUpAddObject	LOG FLUME HOLD UP cb_98; calls the shared add helper FUN_0040d900 (AddBasicObject)
+FUN_00410160	named	LogFlumeHoldUpRemoveObject	LOG FLUME HOLD UP cb_9c; calls the shared remove helper FUN_0040db00 (StandardRemoveObject)
+FUN_004106e0	named	LogFlumeDropSetEditMode	LOG FLUME DROP cb_8c; calls the shared edit-mode helper FUN_0040d3b0
+FUN_00410740	named	LogFlumeDropAddObject	LOG FLUME DROP cb_98; calls the shared add helper FUN_0040d900 (AddBasicObject)
+FUN_00410790	named	LogFlumeDropRemoveObject	LOG FLUME DROP cb_9c; calls the shared remove helper FUN_0040db00 (StandardRemoveObject)
+FUN_0040cc50	named	RenderLogFlumeTrack	LOG FLUME TRACK cb_b0 render callback
+FUN_0040edb0	named	RenderLogFlumeSpecialCorner1	LOG FLUME SPECIAL CORNER 1 cb_b0; syncs fc1 matte frames and draws the piece
+FUN_0040ef00	named	RenderLogFlumeSpecialCorner3	LOG FLUME SPECIAL CORNER 3 cb_b0; syncs fc3 matte frames and draws the piece
+FUN_00402ca0	named	LoadCastleLevelMatteSprite	CASTLE LEVEL 1 cb_a4: loads Castle Matte.lls; pairs with KillCastleLevelMatteSprite
+FUN_004031e0	named	LoadCatapultResources	CATAPULT cb_a4: stores ride/layer, loads Catapult_SFX; pairs with CatapultFreeNodesAndKillSfx
+FUN_00403d90	named	CoptersLoad	COPTERS cb_a4: loads copter sprites/pos/queues; mirrors CoptersUnload
+FUN_00406240	named	LoadFortMaskSprite	FORT cb_a4: loads fortmask.lls; pairs with KillFortMaskSprite
+FUN_00407b50	named	JoustLoadResources	JOUST cb_a4: loads Joust sprites/BinV/SFX; mirrors JoustFreeResources
+FUN_0040e8b0	named	LogFlumeSpecialCorner1LoadSprites	loads fc1_m1/fc1_m2.lls; mirrors LogFlumeSpecialCorner1UnloadSprites
+FUN_0040e920	named	LogFlumeSpecialCorner2LoadSprites	loads fc2_m1.lls; mirrors LogFlumeSpecialCorner2UnloadSprites
+FUN_0040e970	named	LogFlumeSpecialCorner3LoadSprites	loads fc3_m1/fc3_m2.lls; mirrors LogFlumeSpecialCorner3UnloadSprites
+FUN_0040e9e0	named	LogFlumeSpecialCorner4LoadSprites	loads fc4_m.lls; mirrors LogFlumeSpecialCorner4UnloadSprites
+FUN_0040f3e0	named	LogFlumeTunnelLoadSprites	loads tunel_m.lls; mirrors LogFlumeTunnelUnloadSprites
+FUN_0040ff30	named	LogFlumeHoldUpLoadSprites	loads hup1_m1/hup1_m2.lls; mirrors LogFlumeHoldUpUnloadSprites
+FUN_004375d0	named	LoadGStoreMatteSpritesAndMoneySFX	loads G_Store Matte(2).LLS + money SFX; mirrors KillGStoreMatteSpritesAndMoneySFX
+FUN_00437ba0	named	LoadSherifshutMatteSpriteAndMoneySFX	loads Sherifshut Matte.LLS + money SFX; mirrors KillSherifshutMatteSpriteAndMoneySFX
+FUN_00438870	named	LoadBankMatteSpriteAndMoneySFX	loads Bank Matte.lls + money SFX; mirrors KillBankMatteSpriteAndMoneySFX
+FUN_00438c60	named	LoadSaloonMatteSpritesAndMoneySFX	loads SaloonMatte1/2.LLS + money SFX; mirrors KillSaloonMatteSpritesAndMoneySFX
+FUN_0043a0f0	named	LoadExplorersInstituteMatteSpriteAndMoneySFX	loads Explorers Institute Matte.LLS + money SFX; mirrors the Unload
+FUN_00439200	named	LoadLegoShop1MatteSpriteAndMoneySFX	loads Lego Shop 1 Matte.LLS + money SFX; mirrors the Unload
+FUN_004396d0	named	LoadLegoShop2MatteSpriteAndMoneySFX	loads Lego Shop 2 Matte.LLS + money SFX; mirrors the Unload
+FUN_00439c20	named	LoadLegMediaShopMaskSpritesAndMoneySFX	loads LegMediaShopMask1/2.LLS + money SFX; mirrors the Unload
+FUN_004169c0	named	LoadTempleMatteSprites	loads temple_matte1/2.lls; pairs with KillTempleMatteSprites
+FUN_00417d30	named	WaterBlockLoad	WATER WORKS WATER BLOCK cb_a4: loads image list + topwater.lls; mirrors WaterBlockUnload
+FUN_004182e0	named	ShowerLoad	WATER WORKS SHOWER cb_a4: loads shower.lls; mirrors ShowerUnload
+FUN_004186b0	named	ElephantFountainLoad	WATER WORKS ELEPHANT FOUNTAIN cb_a4: loads ww_elsquirt.lls; mirrors ElephantFountainUnload
+FUN_00427aa0	named	CastleLoadBasicTiles	loads BASIC TILES 1; mirrors CastleUnloadBasicTiles
+FUN_004329c0	named	GardenGetInterfaces	sets the HEDGE/FLOWERS callback tables; called from SetCustomCallbacks like the other *GetInterfaces
+FUN_004254d0	named	CastleGetInterfaces	sets the CASTLE OBJ/CASTLE_DUMMY/SQUARE_TRACK callback tables; called from SetCustomCallbacks
+DAT_004cbfdc	named	ElephantFountainRide	WATER WORKS ELEPHANT FOUNTAIN ride, set in ElephantFountainLoad (water_works.c:696), used for its footprint/screen coords
+DAT_004cbfec	named	ElephantFountainLayer	ElephantFountainRide->field_64 layer, set in ElephantFountainLoad (water_works.c:698)
+DAT_004cbf5c	named	TempleBuildingRide	TEMPLE ride, set in LoadTempleMatteSprites (temple.c:21), EditMode target in temple.c:188
+DAT_004cbf64	named	TempleLayer	TempleRide->layer, set in LoadTempleMatteSprites (temple.c:26), rendered in RenderTemple
+DAT_004cc024	named	ShowerRide	WATER WORKS SHOWER ride, set in ShowerLoad (water_works.c:521)
+DAT_004cbfe0	named	ShowerLayer	ShowerRide->field_64 layer, set in ShowerLoad (water_works.c:523)
+DAT_004c10f4	named	ActiveCatapultRide	CATAPULT ride, set in LoadCatapultResources (catapult.c:175), EditMode.unk8 (catapult.c:464); cf. ActiveCopterRide
+DAT_0081cb30	named	GeneralStoreBuilding	GENERAL STORE building, set in LoadGStoreMatteSpritesAndMoneySFX
+DAT_0081cb14	named	SheriffBuilding	SHERIFF building, set in LoadSherifshutMatteSpriteAndMoneySFX
+DAT_0081cb2c	named	BankBuilding	BANK building, set in LoadBankMatteSpriteAndMoneySFX
+DAT_0081cb1c	named	SaloonBuilding	SALOON building, set in LoadSaloonMatteSpritesAndMoneySFX
+DAT_0081cb44	named	ExplorersInstituteBuilding	EXPLORERS INSTITUTE building, set in LoadExplorersInstituteMatteSpriteAndMoneySFX
+DAT_0081cb3c	named	LegoShop1Building	LEGO SHOP 1 building, set in LoadLegoShop1MatteSpriteAndMoneySFX
+DAT_0081cb4c	named	LegoShop2Building	LEGO SHOP 2 building, set in LoadLegoShop2MatteSpriteAndMoneySFX
+DAT_0081cb40	named	LegoMediaShopBuilding	LEGO MEDIA SHOP building, set in LoadLegMediaShopMaskSpritesAndMoneySFX
+FUN_0041a000	dropped-collision	BoatingSchoolSetEditMode	BOATING SCHOOL cb_8c, but BoatingSchoolSetEditMode already names the water element's edit-mode callback
+FUN_00414220	skipped-no-evidence		roads cb_9c shared by two road elements (setcustomcallbacks.c:113,122); no single owner name
+FUN_0041ec50	skipped-no-evidence		castle cb_8c shared by 7+ castle elements; generic shared helper, specific name unclear
+FUN_0041ece0	skipped-no-evidence		castle cb_98 shared by 7+ castle elements; generic shared helper, specific name unclear
+FUN_0041ed50	skipped-no-evidence		castle cb_9c shared by 7+ castle elements; generic shared helper, specific name unclear
+FUN_00426c20	skipped-no-evidence		used as both castle cb_b8 and cb_8c (castle.c:5424,5524); likely a shared no-op, role ambiguous
+DAT_004b9d44	named	ScriptEventHandlers	handler per event type
+DAT_004b9e5c	named	ScriptEventCategories	per event type category mask
+DAT_004bad58	named	CheatKeyMap	scan code -> character for the cheat buffer
+DAT_006661bc	named	ParkVisitorCount	visitors in the park (PARKVISITORS)
+DAT_00668788	named	ScriptPurgePending	set by PURGE; RunLevelScript frees the purged events
+DAT_00668790	named	ScriptSectionStarted	a new section was appended: check everything, post its intros
+DAT_00668794	named	ScriptEvalTime	game time of this RunLevelScript pass
+DAT_00668de4	named	CheatKeyState	previous key states for ReadCheatKey
+DAT_0081c038	named	AppraisalScreenActive	report loop runs while set; back clears it
+DAT_0081c040	named	AppTickSprites	App_tick0..4.lls
+DAT_0081c054	named	AppCrossSprites	App_cross0..4.lls
+DAT_0081c068	named	AppBulletSprites	App_bullet0..4.lls
+DAT_0081c07c	named	AppraisalPageChanged	page changed: queue its speech again
+FUN_00444a70	named	DrawAppraisalBar	report bar: value, maximum, pass mark; green if passed
+FUN_00444b70	named	DrawAppraisalMark	report tick / cross / bullet sprite
+FUN_00444eb0	named	AppraisalBackClicked	closes the report
+FUN_00444f90	named	AppraisalPrevPageClicked	previous report page
+FUN_00445000	named	KillAppraisalSprites	frees what LoadAppraisalSprites loaded
+FUN_00445100	named	UnlightAppraisalPageButtons	unlit next/previous sprites when the mouse is not over them
+FUN_00445190	named	InitAppraisalScreen	loads AppraisalBK and the back/next/previous page icons
+FUN_00445310	named	UpdateAppraisalPageButtons	enables next/previous page icons for AppraisalPage
+FUN_004453a0	named	RunAppraisal	builds and shows the inspector's report; returns 1 if every criterion passed
+FUN_0044db40	named	StartAppraisalTimer	AppraisalDeadline = now + timer_minutes * 60000
+FUN_0044db80	named	StopAppraisalTimer	clears timer_minutes and AppraisalDeadline
+FUN_0044db90	named	CheckAppraisalDue	runs the appraisal when AppraisalDeadline passes; counts passes/failures, loses the level
+FUN_00469b20	named	ScriptEventGive	handler for type-0x2 events (Give), DAT_004b9d44[2]
+FUN_00469b70	named	ScriptEventTake	handler for type-0x4 events (Take), DAT_004b9d44[4]
+FUN_00469c40	named	ScriptEventPlace	handler for type-0x7 events (Place), DAT_004b9d44[7]
+FUN_00469c80	named	ScriptEventClear	handler for type-0x8 events (Clear), DAT_004b9d44[8]
+FUN_00469ed0	named	ScriptEventUnglue	handler for type-0x9 events (Unglue), DAT_004b9d44[9]
+FUN_00469f20	named	ScriptEventGlue	handler for type-0xa events (Glue), DAT_004b9d44[10]
+FUN_00469f70	named	ScriptEventExtendPark	handler for type-0xb events (ExtendPark), DAT_004b9d44[11]
+FUN_00469f80	named	ScriptEventFmv	handler for type-0xc events (Fmv), DAT_004b9d44[12]
+FUN_00469fc0	named	ScriptEventInterval	handler for type-0xd events (Interval), DAT_004b9d44[13]
+FUN_0046a030	named	ScriptEventMessage	handler for type-0xe events (Message), DAT_004b9d44[14]
+FUN_0046a040	named	SetScriptFeature	FEATURE switch (ride wear, inspector timer, autorepair...)
+FUN_0046a170	named	ScriptEventReport	handler for type-0x18 events (Report), DAT_004b9d44[24]
+FUN_0046a1f0	named	ScriptEventWorkers	handler for type-0x11 events (Workers), DAT_004b9d44[17]
+FUN_0046a230	named	ScriptEventDegrade	handler for type-0x12 events (Degrade), DAT_004b9d44[18]
+FUN_0046a330	named	ScriptEventCapacityScale	handler for type-0x14 events (CapacityScale), DAT_004b9d44[20]
+FUN_0046a350	named	ScriptEventCapacityCap	handler for type-0x15 events (CapacityCap), DAT_004b9d44[21]
+FUN_0046a390	named	ScriptEventEndLevel	handler for type-0x20 events (EndLevel), DAT_004b9d44[32]
+FUN_0046a3b0	named	ScriptEventLookAt	handler for type-0x17 events (LookAt), DAT_004b9d44[23]
+FUN_0046a420	named	ScriptEventThemeIcon	handler for type-0x19 events (ThemeIcon), DAT_004b9d44[25]
+FUN_0046a440	named	ScriptEventAddFlag	handler for type-0x1a events (AddFlag), DAT_004b9d44[26]
+FUN_0046a480	named	ScriptEventBriefingFile	handler for type-0x1c events (BriefingFile), DAT_004b9d44[28]
+FUN_0046a4a0	named	ScriptEventHintsFile	handler for type-0x1d events (HintsFile), DAT_004b9d44[29]
+FUN_0046a4e0	named	ScriptEventPurge	handler for type-0x1f events (Purge), DAT_004b9d44[31]
+FUN_0046a540	named	ScriptEventNeedAt	handler for type-0x22 events (NeedAt), DAT_004b9d44[34]
+FUN_0046a5b0	named	ScriptEventNeedIn	handler for type-0x23 events (NeedIn), DAT_004b9d44[35]
+FUN_0046a690	named	ScriptEventConnect	handler for type-0x24 events (Connect), DAT_004b9d44[36]
+FUN_0046a750	named	ScriptEventLink	handler for type-0x25 events (Link), DAT_004b9d44[37]
+FUN_0046a900	named	ScriptEventRange	handler for type-0x26 events (Range), DAT_004b9d44[38]
+FUN_0046a960	named	ScriptEventClearArea	handler for type-0x27 events (ClearArea), DAT_004b9d44[39]
+FUN_0046aa30	named	ScriptEventRemove	handler for type-0x28 events (Remove), DAT_004b9d44[40]
+FUN_0046aae0	named	ScriptEventComposite	handler for type-0x2a events (Composite), DAT_004b9d44[42]
+FUN_0046ab70	named	ScriptEventLoopComposite	handler for type-0x2b events (LoopComposite), DAT_004b9d44[43]
+FUN_0046abc0	named	ScriptEventTechLevel	handler for type-0x2c events (TechLevel), DAT_004b9d44[44]
+FUN_0046abd0	named	ScriptEventParkVisitors	handler for type-0x2d events (ParkVisitors), DAT_004b9d44[45]
+FUN_0046ac00	named	ScriptEventRiders	handler for type-0x2f events (Riders), DAT_004b9d44[47]
+FUN_0046ac50	named	ScriptEventRideVisitors	handler for type-0x2e events (RideVisitors), DAT_004b9d44[46]
+FUN_0046ad00	named	ScriptEventSceneryCoverage	handler for type-0x30 events (SceneryCoverage), DAT_004b9d44[48]
+FUN_0046ad30	named	ScriptEventPathScenery	handler for type-0x31 events (PathScenery), DAT_004b9d44[49]
+FUN_0046ad60	named	ScriptEventRideCoverage	handler for type-0x32 events (RideCoverage), DAT_004b9d44[50]
+FUN_0046ad90	named	ScriptEventShopCoverage	handler for type-0x33 events (ShopCoverage), DAT_004b9d44[51]
+FUN_0046adc0	named	ScriptEventFoodCoverage	handler for type-0x34 events (FoodCoverage), DAT_004b9d44[52]
+FUN_0046adf0	named	ScriptEventTotalCoverage	handler for type-0x35 events (TotalCoverage), DAT_004b9d44[53]
+FUN_0046ae30	named	ScriptEventStudArea	handler for type-0x37 events (StudArea), DAT_004b9d44[55]
+FUN_0046ae40	named	ScriptEventSave	handler for type-0x38 events (Save), DAT_004b9d44[56]
+FUN_0046ae70	named	ScriptEventHappiness	handler for type-0x39 events (Happiness), DAT_004b9d44[57]
+FUN_0046af10	named	ScriptEventNeedMechanics	handler for type-0x3b events (NeedMechanics), DAT_004b9d44[59]
+FUN_0046af60	named	ScriptEventHunger	handler for type-0x3c events (Hunger), DAT_004b9d44[60]
+FUN_0046afe0	named	ScriptEventFixRides	handler for type-0x3d events (FixRides), DAT_004b9d44[61]
+FUN_0046b080	named	ScriptEventPowerRides	handler for type-0x3e events (PowerRides), DAT_004b9d44[62]
+FUN_0046b0b0	named	ScriptEventZoning	handler for type-0x3f events (Zoning), DAT_004b9d44[63]
+FUN_0046b0c0	named	ScriptEventCheckFlag	handler for type-0x40 events (CheckFlag), DAT_004b9d44[64]
+FUN_0046b100	named	ScriptEventSelectTheme	handler for type-0x41 events (SelectTheme), DAT_004b9d44[65]
+FUN_0046b130	named	ScriptEventSelectTab	handler for type-0x42 events (SelectTab), DAT_004b9d44[66]
+FUN_0046b180	named	ScriptEventSelectMode	handler for type-0x43 events (SelectMode), DAT_004b9d44[67]
+FUN_0046b1f0	named	ScriptEventForever	handler for type-0x45 events (Forever), DAT_004b9d44[69]
+FUN_0046b200	named	IsScriptEventDue	event re-checked when its category is dirty or 5 s of game time passed
+FUN_0046b280	named	IsScriptStopped	returns MapStats.script_stopped
+FUN_0046b290	named	FreePurgedScriptEvents	frees events marked by PURGE (flag 8)
+FUN_0046b2d0	named	RunLevelScript	evaluates the script's events each frame and moves to the next section
+FUN_0046b590	named	InsertScriptSection	inserts a section into ScriptSectionList, sorted
+FUN_0046b5d0	named	RemoveScriptSection	unlinks a section from ScriptSectionList
+FUN_0046b7f0	named	NewScriptTakeEvent	builds the type-0x4 event for TAKE
+FUN_0046b820	named	NewScriptAddBricksEvent	builds the type-0x5 event for ADDBRICKS
+FUN_0046b850	named	NewScriptCurrencyEvent	builds the type-0x6 event for CURRENCY
+FUN_0046b880	named	NewScriptPlaceEvent	builds the type-0x7 event for PLACE
+FUN_0046b8c0	named	NewScriptClearEvent	builds the type-0x8 event for CLEAR
+FUN_0046b900	named	NewScriptUnglueEvent	builds the type-0x9 event for UNGLUE
+FUN_0046b940	named	NewScriptGlueEvent	builds the type-0xa event for GLUE
+FUN_0046b980	named	NewScriptExtendParkEvent	builds the type-0xb event for EXTENDPARK
+FUN_0046b9c0	named	NewScriptFmvEvent	builds the type-0xc event for FMV
+FUN_0046b9f0	named	NewScriptIntervalEvent	builds the type-0xd event for INTERVAL
+FUN_0046ba30	named	NewScriptMessageEvent	builds the type-0xe event for MESSAGE
+FUN_0046ba60	named	NewScriptFeatureEvent	builds the type-0xf event for FEATURE
+FUN_0046ba90	named	NewScriptReportEvent	builds the type-0x18 event for REPORT
+FUN_0046bb10	named	NewScriptWorkersEvent	builds the type-0x11 event for WORKERS
+FUN_0046bb40	named	NewScriptDegradeEvent	builds the type-0x12 event for DEGRADE
+FUN_0046bbb0	named	NewScriptCapacityScaleEvent	builds the type-0x14 event for CAPACITYSCALE
+FUN_0046bbe0	named	NewScriptCapacityCapEvent	builds the type-0x15 event for CAPACITYCAP
+FUN_0046bc10	named	NewScriptEntranceFeeEvent	builds the type-0x16 event for ENTRANCEFEE
+FUN_0046bc40	named	NewScriptEndLevelEvent	builds the type-0x20 event for ENDLEVEL
+FUN_0046bc60	named	NewScriptPurgeEvent	builds the type-0x1f event for PURGE
+FUN_0046bc80	named	NewScriptThemeIconEvent	builds the type-0x19 event for THEMEICON
+FUN_0046bcb0	named	NewScriptAddFlagEvent	builds the type-0x1a event for ADDFLAG
+FUN_0046bce0	named	NewScriptBridgesEvent	builds the type-0x1b event for BRIDGES
+FUN_0046bd10	named	NewScriptBriefingFileEvent	builds the type-0x1c event for BRIEFINGFILE
+FUN_0046bd40	named	NewScriptHintsFileEvent	builds the type-0x1d event for HINTSFILE
+FUN_0046bdd0	named	NewScriptNeedEvent	builds the type-0x21 event for NEED
+FUN_0046be00	named	NewScriptNeedAtEvent	builds the type-0x22 event for NEEDAT
+FUN_0046be40	named	NewScriptNeedInEvent	builds the type-0x23 event for NEEDIN
+FUN_0046be90	named	NewScriptConnectEvent	builds the type-0x24 event for CONNECT
+FUN_0046bec0	named	NewScriptLinkEvent	builds the type-0x25 event for LINK
+FUN_0046bef0	named	NewScriptRangeEvent	builds the type-0x26 event for RANGE
+FUN_0046bf30	named	NewScriptClearAreaEvent	builds the type-0x27 event for CLEARAREA
+FUN_0046bf80	named	NewScriptRemoveEvent	builds the type-0x28 event for REMOVE
+FUN_0046bfb0	named	NewScriptRemoveRangeEvent	builds the type-0x29 event for REMOVERANGE
+FUN_0046bff0	named	NewScriptCompositeEvent	builds the type-0x2a event for COMPOSITE
+FUN_0046c030	named	NewScriptLoopCompositeEvent	builds the type-0x2b event for LOOPCOMPOSITE
+FUN_0046c060	named	NewScriptTechLevelEvent	builds the type-0x2c event for TECHLEVEL
+FUN_0046c0c0	named	NewScriptRideVisitorsEvent	builds the type-0x2e event for RIDEVISITORS
+FUN_0046c120	named	NewScriptSceneryCoverageEvent	builds the type-0x30 event for SCENERYCOVERAGE
+FUN_0046c150	named	NewScriptPathSceneryEvent	builds the type-0x31 event for PATHSCENERY
+FUN_0046c180	named	NewScriptRideCoverageEvent	builds the type-0x32 event for RIDECOVERAGE
+FUN_0046c1b0	named	NewScriptShopCoverageEvent	builds the type-0x33 event for SHOPCOVERAGE
+FUN_0046c1e0	named	NewScriptFoodCoverageEvent	builds the type-0x34 event for FOODCOVERAGE
+FUN_0046c210	named	NewScriptTotalCoverageEvent	builds the type-0x35 event for TOTCOVERAGE
+FUN_0046c240	named	NewScriptStudAreaEvent	builds the type-0x37 event for STUDAREA
+FUN_0046c290	named	NewScriptSaveEvent	builds the type-0x38 event for SAVE
+FUN_0046c2c0	named	NewScriptHappinessEvent	builds the type-0x39 event for HAPPINESS
+FUN_0046c2f0	named	NewScriptNeedGardenersEvent	builds the type-0x3a event for NEEDGARDENERS
+FUN_0046c320	named	NewScriptNeedMechanicsEvent	builds the type-0x3b event for NEEDMECHANICS
+FUN_0046c350	named	NewScriptHungerEvent	builds the type-0x3c event for HUNGER
+FUN_0046c390	named	NewScriptFixRidesEvent	builds the type-0x3d event for FIXRIDES
+FUN_0046c3c0	named	NewScriptPowerRidesEvent	builds the type-0x3e event for POWERRIDES
+FUN_0046c3f0	named	NewScriptZoningEvent	builds the type-0x3f event for ZONING
+FUN_0046c420	named	NewScriptCheckFlagEvent	builds the type-0x40 event for CHECKFLAG
+FUN_0046c480	named	NewScriptSelectTabEvent	builds the type-0x42 event for SELECTTAB
+FUN_0046c4b0	named	NewScriptSelectModeEvent	builds the type-0x43 event for SELECTMODE
+FUN_0046c580	named	AppendSectionRewards	appends a finished section's reward events to ScriptEventList
+FUN_00474130	named	ReadCheatKey	edge-detects the cheat keys through CheatKeyMap; Shift types ':'
+FUN_00478840	named	ScriptCmdEnd	parser for script keyword [END] (keyword table 0x4bb740)
+FUN_00478890	named	ScriptCmdAges	parser for script keyword AGES (keyword table 0x4bb700)
+FUN_00478930	named	ScriptCmdObjective	parser for script keyword [OBJECTIVE] (keyword table 0x4bb710)
+FUN_00478980	named	ScriptCmdOneOff	parser for script keyword [ONEOFF] (keyword table 0x4bb718)
+FUN_004789c0	named	ScriptCmdOngoing	parser for script keyword [ONGOING] (keyword table 0x4bb720)
+FUN_00478a00	named	ScriptCmdPermanent	parser for script keyword [PERMANENT] (keyword table 0x4bb728)
+FUN_00478a40	named	ScriptCmdReminder	parser for script keyword [REMINDER] (keyword table 0x4bb730)
+FUN_00478a80	named	ScriptCmdReward	parser for script keyword [REWARD] (keyword table 0x4bb738)
+FUN_00478ac0	named	ScriptCmdMap	parser for script keyword MAP (keyword table 0x4bb748)
+FUN_00478b70	named	ScriptCmdLoad	parser for script keyword LOAD (keyword table 0x4bb750)
+FUN_00478bc0	named	ScriptCmdBlueprint	parser for script keyword BLUEPRINT (keyword table 0x4bb790)
+FUN_00478be0	named	ScriptCmdEnable	parser for script keyword ENABLE (keyword table 0x4bb758)
+FUN_00478c60	named	ScriptCmdCurrency	parser for script keyword CURRENCY (keyword table 0x4bb760)
+FUN_00478cd0	named	ScriptCmdHappinessEnv	parser for script keyword HAPPINESS_ENV (keyword table 0x4bb768)
+FUN_00478d30	named	ScriptCmdLookAt	parser for script keyword LOOKAT (keyword table 0x4bb770)
+FUN_00478e20	named	ScriptCmdBriefingFile	parser for script keyword BRIEFINGFILE (keyword table 0x4bb780)
+FUN_00478e90	named	ScriptCmdHintsFile	parser for script keyword HINTSFILE (keyword table 0x4bb788)
+FUN_00478f00	named	ScriptCmdWorkers	parser for script keyword WORKERS (keyword table 0x4bb7a8)
+FUN_00478fa0	named	ScriptCmdGardener	parser for script keyword GARDENER (keyword table 0x4bb798)
+FUN_00479060	named	ScriptCmdMechanic	parser for script keyword MECHANIC (keyword table 0x4bb7a0)
+FUN_00479120	named	ScriptCmdPrompt	parser for script keyword PROMPT (keyword table 0x4bb7e0)
+FUN_004791a0	named	ScriptCmdIntro	parser for script keyword INTRO (keyword table 0x4bb7e8)
+FUN_004791f0	named	ScriptCmdNeed	parser for script keyword NEED (keyword table 0x4bb7f0)
+FUN_00479270	named	ScriptCmdNeedAt	parser for script keyword NEEDAT (keyword table 0x4bb7f8)
+FUN_00479300	named	ScriptCmdNeedIn	parser for script keyword NEEDIN (keyword table 0x4bb800)
+FUN_00479390	named	ScriptCmdConnect	parser for script keyword CONNECT (keyword table 0x4bb808)
+FUN_004793e0	named	ScriptCmdLink	parser for script keyword LINK (keyword table 0x4bb810)
+FUN_00479450	named	ScriptCmdRange	parser for script keyword RANGE (keyword table 0x4bb818)
+FUN_004794d0	named	ScriptCmdClearArea	parser for script keyword CLEARAREA (keyword table 0x4bb820)
+FUN_00479550	named	ScriptCmdRemove	parser for script keyword REMOVE (keyword table 0x4bb828)
+FUN_004795c0	named	ScriptCmdRemoveRange	parser for script keyword REMOVERANGE (keyword table 0x4bb830)
+FUN_00479640	named	ScriptCmdComposite	parser for script keyword COMPOSITE (keyword table 0x4bb838)
+FUN_004796d0	named	ScriptCmdLoopComposite	parser for script keyword LOOPCOMPOSITE (keyword table 0x4bb840)
+FUN_00479740	named	ScriptCmdTechLevel	parser for script keyword TECHLEVEL (keyword table 0x4bb848)
+FUN_004797b0	named	ScriptCmdResearch	parser for script keyword RESEARCH (keyword table 0x4bb850)
+FUN_00479800	named	ScriptCmdParkVisitors	parser for script keyword PARKVISITORS (keyword table 0x4bb858)
+FUN_00479850	named	ScriptCmdRideVisitors	parser for script keyword RIDEVISITORS (keyword table 0x4bb860)
+FUN_004798c0	named	ScriptCmdRiders	parser for script keyword RIDERS (keyword table 0x4bb868)
+FUN_00479930	named	ScriptCmdSceneryCoverage	parser for script keyword SCENERYCOVERAGE (keyword table 0x4bb870)
+FUN_00479980	named	ScriptCmdPathScenery	parser for script keyword PATHSCENERY (keyword table 0x4bb878)
+FUN_004799d0	named	ScriptCmdRideCoverage	parser for script keyword RIDECOVERAGE (keyword table 0x4bb880)
+FUN_00479a20	named	ScriptCmdShopCoverage	parser for script keyword SHOPCOVERAGE (keyword table 0x4bb888)
+FUN_00479a70	named	ScriptCmdFoodCoverage	parser for script keyword FOODCOVERAGE (keyword table 0x4bb890)
+FUN_00479ac0	named	ScriptCmdTotalCoverage	parser for script keyword TOTCOVERAGE (keyword table 0x4bb898)
+FUN_00479b10	named	ScriptCmdAppraisal	parser for script keyword APPRAISAL (keyword table 0x4bb8a0)
+FUN_00479c40	named	ScriptCmdStudArea	parser for script keyword STUDAREA (keyword table 0x4bb8a8)
+FUN_00479cb0	named	ScriptCmdSave	parser for script keyword SAVE (keyword table 0x4bb8b0)
+FUN_00479d00	named	ScriptCmdHappiness	parser for script keyword HAPPINESS (keyword table 0x4bb8b8)
+FUN_00479d60	named	ScriptCmdNeedGardeners	parser for script keyword NEEDGARDENERS (keyword table 0x4bb8c0)
+FUN_00479db0	named	ScriptCmdNeedMechanics	parser for script keyword NEEDMECHANICS (keyword table 0x4bb8c8)
+FUN_00479e00	named	ScriptCmdHunger	parser for script keyword HUNGER (keyword table 0x4bb8d0)
+FUN_00479e80	named	ScriptCmdFixRides	parser for script keyword FIXRIDES (keyword table 0x4bb8d8)
+FUN_00479ee0	named	ScriptCmdPowerRides	parser for script keyword POWERRIDES (keyword table 0x4bb8e0)
+FUN_00479f30	named	ScriptCmdZoning	parser for script keyword ZONING (keyword table 0x4bb8e8)
+FUN_00479fa0	named	ScriptCmdCheckFlag	parser for script keyword CHECKFLAG (keyword table 0x4bb8f0)
+FUN_0047a020	named	ScriptCmdThemeIcon	parser for script keyword THEMEICON (keyword table 0x4bb9b0)
+FUN_0047a0b0	named	ScriptCmdAddFlag	parser for script keyword ADDFLAG (keyword table 0x4bb9b8)
+FUN_0047a140	named	ScriptCmdBridges	parser for script keyword BRIDGES (keyword table 0x4bb9c0)
+FUN_0047a1d0	named	ScriptCmdEndScreens	parser for script keyword ENDSCREENS (keyword table 0x4bb9c8)
+FUN_0047a2f0	named	ScriptCmdSelectTheme	parser for script keyword SELECTTHEME (keyword table 0x4bb8f8)
+FUN_0047a360	named	ScriptCmdSelectTab	parser for script keyword SELECTTAB (keyword table 0x4bb900)
+FUN_0047a3d0	named	ScriptCmdSelectMode	parser for script keyword SELECTMODE (keyword table 0x4bb908)
+FUN_0047a440	named	ScriptCmdForever	parser for script keyword FOREVER (keyword table 0x4bb910)
+FUN_0047a480	named	ScriptCmdGive	parser for script keyword GIVE (keyword table 0x4bb918)
+FUN_0047a500	named	ScriptCmdTake	parser for script keyword TAKE (keyword table 0x4bb920)
+FUN_0047a550	named	ScriptCmdAddBricks	parser for script keyword ADDBRICKS (keyword table 0x4bb928)
+FUN_0047a5a0	named	ScriptCmdPlace	parser for script keyword PLACE (keyword table 0x4bb930)
+FUN_0047a650	named	ScriptCmdClear	parser for script keyword CLEAR (keyword table 0x4bb938)
+FUN_0047a6a0	named	ScriptCmdUnglue	parser for script keyword UNGLUE (keyword table 0x4bb940)
+FUN_0047a6f0	named	ScriptCmdGlue	parser for script keyword GLUE (keyword table 0x4bb948)
+FUN_0047a7b0	named	ScriptCmdExtendPark	parser for script keyword EXTENDPARK (keyword table 0x4bb950)
+FUN_0047a800	named	ScriptCmdFmv	parser for script keyword FMV (keyword table 0x4bb958)
+FUN_0047a860	named	ScriptCmdInterval	parser for script keyword INTERVAL (keyword table 0x4bb960)
+FUN_0047a8a0	named	ScriptCmdMessage	parser for script keyword MESSAGE (keyword table 0x4bb968)
+FUN_0047a8e0	named	ScriptCmdFeature	parser for script keyword FEATURE (keyword table 0x4bb970)
+FUN_0047a960	named	ScriptCmdReport	parser for script keyword REPORT (keyword table 0x4bb978)
+FUN_0047aa90	named	ScriptCmdHapFactor	parser for script keyword HAP_FACTOR (keyword table 0x4bb7b8)
+FUN_0047ab00	named	ScriptCmdCapacityScale	parser for script keyword CAPACITYSCALE (keyword table 0x4bb7c0)
+FUN_0047ab80	named	ScriptCmdCapacityCap	parser for script keyword CAPACITYCAP (keyword table 0x4bb7c8)
+FUN_0047ac00	named	ScriptCmdDegrade	parser for script keyword DEGRADE (keyword table 0x4bb980)
+FUN_0047ac80	named	ScriptCmdMaxBlokes	parser for script keyword MAXBLOKES (keyword table 0x4bb7b0)
+FUN_0047ace0	named	ScriptCmdMaxCapacity	parser for script keyword MAXVISITORS (keyword table 0x4bb990)
+FUN_0047ada0	named	ScriptCmdEntranceFee	parser for script keyword ENTRANCEFEE (keyword table 0x4bb9a8)
+FUN_0047ae00	named	ScriptCmdFlashButton	parser for script keyword FLASHBUTTON (keyword table 0x4bb7d0)
+FUN_0047aea0	named	ScriptCmdFlashButtonOff	parser for script keyword FLASHBUTTOFF (keyword table 0x4bb7d8)
+FUN_0047af50	named	ScriptCmdPurge	parser for script keyword PURGE (keyword table 0x4bb9d0)
+FUN_0047af80	named	ScriptCmdEndLevel	parser for script keyword ENDLEVEL (keyword table 0x4bb9d8)
+FUN_00492d80	named	StopInteractiveMusic	music thread command 1 (cheat :STOP)
+FUN_004428f0	named	Get3DDataListString	string param_3 of section param_2 (0 faces, 1 chests) in a Load3DDataFile list (visitor altman/altwoman)
+FUN_0040ca60	named	RenderLogFlumeCorner	draws log flume corners 0/2 (fc1/fc3 + matte fc1_m3/fc3_m3) with the boats split behind/in front; track sprites fc1-4 corners, fs straights, fe ends
+FUN_0042a020	named	FindPathPosAtRangeAhead	
+FUN_00429f30	named	FindPathPosAtRangeBehind	
+FUN_00411680	named	AdvanceFlumeMover	
+FUN_004064d0	named	FortWanderUpdate	
+FUN_00406660	named	FortUpdate	
+FUN_004227c0	named	EdgeMeshRemoveBackfaces	
+FUN_00433840	named	JungleCruiseBuildStepPath	
+FUN_004198a0	named	BoatingSchoolBuildStepPath	
+FUN_00402150	named	GetQueueTurn	
+FUN_0043e410	named	PlaneRideUpdate	
+FUN_0040bf70	named	LogFlumeEntranceUpdate	
+FUN_00405bd0	named	DrivingSchoolUpdate	
+FUN_00417430	named	TempleSlideUpdate	
+FUN_00415220	named	SafariRideUpdate	
+FUN_0043a1e0	named	ExplorersInstituteUpdate	
+FUN_00477bd0	named	FindMapPathAStar	
+FUN_0043f0b0	named	FileSelectDialog	
+FUN_0043ea30	named	ListBoxDialog	
+FUN_004025d0	named	SetPersonYawFromDir16	
+FUN_00439950	named	LegoShop2Update	
+FUN_0043bac0	named	SpaceTowerUpdate	
+FUN_00442040	named	RemapTexCoordsToCell	
+FUN_0043c950	named	SpinningBarrelsUpdate	
+FUN_004316f0	named	OctopusCafeUpdate	
+FUN_0042fbb0	named	Restaurant2Update	
+FUN_00407c30	named	JoustUpdate	
+FUN_00451280	named	UnlockMedia	VWIN32 DOS IOCTL 0x440d/0x0848: query operation 2, release operation 1 for each media lock; matches Microsoft KB Q168180 UnlockMedia example (https://www.betaarchive.com/wiki/index.php/Microsoft_KB_Archive/168180).
+FUN_004511f0	skipped-no-evidence		Empty original hook passed a drive letter by EjectCdDrive; the empty body does not establish a semantic role.
+FUN_00451200	skipped-no-evidence		Empty original function without recovered source callers; retain its address name.
+FUN_00451210	named	EjectCdDrive	Converts a drive letter, unlocks media, requests ejection, unlocks the logical volume, closes the persistent handle and resets it.
+FUN_00451410	named	EjectMedia	DOS generic IOCTL 0x440d/0x0849 ejects media without a parameter block: https://www.delorie.com/djgpp/doc/rbinter/it/59/15.html.
+FUN_004514b0	named	LockLogicalVolume	DOS generic IOCTL minor 0x4a: BL drive, BH lock level, DX permissions; retries categories 0x48 then 0x08: https://www.delorie.com/djgpp/doc/rbinter/id/09/29.html.
+DAT_004b85c4	named	VWin32DeviceHandle	HANDLE initialized/reset to INVALID_HANDLE_VALUE; used by the media-unlock/eject/volume-unlock/CloseHandle sequence in EjectCdDrive.

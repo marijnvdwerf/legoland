@@ -1,104 +1,214 @@
 #include "legoland.h"
 
+#include <string.h>
 #include "gamemap.h"
 #include "garden.h"
 #include "globals.h"
 #include "llidb.h"
 #include "map_object.h"
+#include "objclass.h"
 
-struct GardenLayer {
-    unsigned char pad_0[0xc];
-    struct GardenInner *field_c;
-};
-
-struct GardenInner {
-    unsigned char pad_0[0x1c];
-    unsigned int field_1c;
-};
-
-struct EditTarget {
-    unsigned char pad_0[0x3c];
-    unsigned int field_3c;
-};
+#pragma intrinsic(strcmp)
 
 // FUNCTION: LEGOLAND 0x00432480
-void FUN_00432480(struct GardenLayer *arg0) {
-    struct GardenInner *temp = arg0->field_c;
-    DAT_0081cd08 = temp;
-    temp->field_1c |= 0x404;
+void LoadHedgeImages(struct Element *arg0) {
+    struct Ride *temp = arg0->ride;
+    HedgeObjectClass = temp;
+    temp->flags |= 0x404;
     // STRING: LEGOLAND 0x004b7114
-    if (LLIDB_FindElement("HEDGE IMAGES", &DAT_0061615c, 0) != 0) {
+    if (LLIDB_FindElement("HEDGE IMAGES", &HedgeImagesHandle, 0) != 0) {
         return;
     }
-    DAT_0061614c = (unsigned int)LLIDB_LoadData((void *)DAT_0061615c); /* TODO: fold — LLIDB_LoadData handle stored as uint global */
+    HedgeImagesData = LLIDB_LoadData((void *)HedgeImagesHandle);
 }
 
 // FUNCTION: LEGOLAND 0x004324c0
-void FUN_004324c0(void) {
-    LLIDB_UnLoadData(DAT_0061615c);
+void UnloadHedgeImages(void) {
+    LLIDB_UnLoadData(HedgeImagesHandle);
 }
 
 // FUNCTION: LEGOLAND 0x004324d0
-void FUN_004324d0(void) {
-    void *var = DAT_0081cd08;
+void SetHedgeEditCursor(void) {
+    void *var = HedgeObjectClass;
     EditMode.unk0 = 1;
     EditMode.unk8 = var;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(&((struct EditTarget *)EditMode.unk8)->field_3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00432510
-void FUN_00432510(void) { STUB(); }
+void UpdateHedgeTileImage(int x, int y) {
+    int pos[2];
+    int mask = 0;
+
+    pos[0] = x;
+    pos[1] = y - 1;
+    if (GetObjectClassAndInstance(pos, 0) == HedgeObjectClass) {
+        mask = 1;
+    }
+    pos[0] = x + 1;
+    pos[1] = y;
+    if (GetObjectClassAndInstance(pos, 0) == HedgeObjectClass) {
+        mask |= 2;
+    }
+    pos[0] = x;
+    pos[1] = y + 1;
+    if (GetObjectClassAndInstance(pos, 0) == HedgeObjectClass) {
+        mask |= 4;
+    }
+    pos[0] = x - 1;
+    pos[1] = y;
+    if (GetObjectClassAndInstance(pos, 0) == HedgeObjectClass) {
+        mask |= 8;
+    }
+    if (mask == 0) {
+        Set_UserFlags(x << 8, y << 8, 0xe);
+    } else {
+        Set_UserFlags(x << 8, y << 8, mask - 1);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x004325e0
-void FUN_004325e0(void) { STUB(); }
+void HedgeAddObject(Element *obj, int *param_2) {
+    TileId packed;
+    int pos[2];
+    packed.pos.x = param_2[0];
+    packed.pos.y = param_2[1];
+    AddObjectToMap(obj, packed, 0);
+    UpdateHedgeTileImage(param_2[0], param_2[1]);
+    pos[0] = param_2[0];
+    pos[1] = param_2[1] - 1;
+    if (GetObjectClassAndInstance(pos, 0) == HedgeObjectClass) {
+        UpdateHedgeTileImage(pos[0], pos[1]);
+    }
+    pos[0] = param_2[0] + 1;
+    pos[1] = param_2[1];
+    if (GetObjectClassAndInstance(pos, 0) == HedgeObjectClass) {
+        UpdateHedgeTileImage(pos[0], pos[1]);
+    }
+    pos[0] = param_2[0];
+    pos[1] = param_2[1] + 1;
+    if (GetObjectClassAndInstance(pos, 0) == HedgeObjectClass) {
+        UpdateHedgeTileImage(pos[0], pos[1]);
+    }
+    pos[0] = param_2[0] - 1;
+    pos[1] = param_2[1];
+    if (GetObjectClassAndInstance(pos, 0) == HedgeObjectClass) {
+        UpdateHedgeTileImage(pos[0], pos[1]);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00432700
-void FUN_00432700(void) { STUB(); }
+void HedgeRemoveObject(Element *obj, TileId tile, struct Cursor *cursor) {
+    int pos[2];
+    int x = tile.pos.x;
+    int y = tile.pos.y;
+
+    StandardRemoveObject(obj, tile, cursor);
+    pos[0] = x;
+    pos[1] = y - 1;
+    if (GetObjectClassAndInstance(pos, 0) == HedgeObjectClass) {
+        UpdateHedgeTileImage(pos[0], pos[1]);
+    }
+    pos[0] = x + 1;
+    pos[1] = y;
+    if (GetObjectClassAndInstance(pos, 0) == HedgeObjectClass) {
+        UpdateHedgeTileImage(pos[0], pos[1]);
+    }
+    pos[0] = x;
+    pos[1] = y + 1;
+    if (GetObjectClassAndInstance(pos, 0) == HedgeObjectClass) {
+        UpdateHedgeTileImage(pos[0], pos[1]);
+    }
+    pos[0] = x - 1;
+    pos[1] = y;
+    if (GetObjectClassAndInstance(pos, 0) == HedgeObjectClass) {
+        UpdateHedgeTileImage(pos[0], pos[1]);
+    }
+}
 
 // FUNCTION: LEGOLAND 0x00432810
-void FUN_00432810(void) { STUB(); }
+struct RideSpriteInfo *GetHedgeSpriteInfo(struct Element *unused, TileId tile) {
+    struct SpriteSet *t;
+    int i;
+
+    i = Get_UserFlags(tile.pos.x << 8, tile.pos.y << 8) & 0xffff;
+    t = HedgeImagesData;
+    RideSpriteInfoBuffer.sprite = t->sprites[(unsigned char)i];
+    RideSpriteInfoBuffer.x = t->offset_x[(unsigned char)i] >> 1;
+    RideSpriteInfoBuffer.y = t->offset_y[(unsigned char)i] >> 1;
+    return &RideSpriteInfoBuffer;
+}
 
 // FUNCTION: LEGOLAND 0x00432870
-void FUN_00432870(struct GardenLayer *param) {
-    struct GardenInner *temp = param->field_c;
-    DAT_0081cd04 = temp;
-    temp->field_1c |= 0x404;
+void LoadFlowerImages(struct Element *param) {
+    struct Ride *temp = param->ride;
+    FlowersRide = temp;
+    temp->flags |= 0x404;
     // STRING: LEGOLAND 0x004b7124
-    if (LLIDB_FindElement("FLOWERS 1", &DAT_00616150, 0) != 0) {
+    if (LLIDB_FindElement("FLOWERS 1", &FlowerImagesHandle, 0) != 0) {
         return;
     }
-    DAT_00616158 = (unsigned int)LLIDB_LoadData((void *)DAT_00616150);
+    FlowerImagesData = LLIDB_LoadData((void *)FlowerImagesHandle);
 }
 
 // FUNCTION: LEGOLAND 0x004328b0
-void FUN_004328b0(void) {
-    LLIDB_UnLoadData(DAT_00616150);
+void UnloadFlowerImages(void) {
+    LLIDB_UnLoadData(FlowerImagesHandle);
 }
 
 // FUNCTION: LEGOLAND 0x004328c0
-void FUN_004328c0(void) {
-    void *var = DAT_0081cd04;
+void FlowersSetEditMode(void) {
+    void *var = FlowersRide;
     EditMode.unk0 = 1;
     EditMode.unk8 = var;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(&((struct EditTarget *)EditMode.unk8)->field_3c);
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00432900
-void FUN_00432900(int param_1, int *param_2) {
+void FlowersAddObject(struct Element *param_1, int *param_2) {
     TileId packed;
     packed.pos.x = param_2[0];
     packed.pos.y = param_2[1];
     AddObjectToMap(param_1, packed, 0);
-    if (DAT_00616158 != 0) {
+    if (FlowerImagesData != 0) {
         int r = rand();
-        Set_UserFlags(param_2[0] << 8, param_2[1] << 8, (unsigned short)(r % *(int *)(DAT_00616158 + 4)));
+        Set_UserFlags(param_2[0] << 8, param_2[1] << 8, (unsigned short)(r % FlowerImagesData->count));
     }
 }
 
 // FUNCTION: LEGOLAND 0x00432960
-void FUN_00432960(void) { STUB(); }
+struct RideSpriteInfo *GetFlowerSpriteInfo(struct Element *unused, TileId tile) {
+    struct SpriteSet *t;
+    int i;
+
+    i = Get_UserFlags(tile.pos.x << 8, tile.pos.y << 8) & 0xffff;
+    t = FlowerImagesData;
+    RideSpriteInfoBuffer.sprite = t->sprites[(unsigned char)i];
+    RideSpriteInfoBuffer.x = t->offset_x[(unsigned char)i] >> 1;
+    RideSpriteInfoBuffer.y = t->offset_y[(unsigned char)i] >> 1;
+    return &RideSpriteInfoBuffer;
+}
 
 // FUNCTION: LEGOLAND 0x004329c0
-void FUN_004329c0(void) { STUB(); }
+void GardenGetInterfaces(struct Element *head, struct Ride *iface) {
+    // STRING: LEGOLAND 0x004b7138
+    if (strcmp(head->name, "HEDGE") == 0) {
+        iface->cb_a4 = LoadHedgeImages;
+        iface->cb_8c = SetHedgeEditCursor;
+        iface->cb_98 = HedgeAddObject;
+        iface->cb_9c = HedgeRemoveObject;
+        iface->cb_sprite = (struct RideSpriteInfo * (*)(struct Element *, unsigned short)) GetHedgeSpriteInfo; /* takes the tile id as a TileId */
+        iface->cb_ac = UnloadHedgeImages;
+        return;
+    }
+    // STRING: LEGOLAND 0x004b7130
+    if (strcmp(head->name, "FLOWERS") == 0) {
+        iface->cb_a4 = LoadFlowerImages;
+        iface->cb_8c = FlowersSetEditMode;
+        iface->cb_98 = FlowersAddObject;
+        iface->cb_sprite = (struct RideSpriteInfo * (*)(struct Element *, unsigned short)) GetFlowerSpriteInfo; /* takes the tile id as a TileId */
+        iface->cb_ac = UnloadFlowerImages;
+    }
+}

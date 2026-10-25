@@ -11,7 +11,7 @@
 #include "timer.h"
 
 // FUNCTION: LEGOLAND 0x00498d00
-void FUN_00498d00(void) {
+void LoadStringTable(void) {
     int total = 0;
     int offset = 0;
     char cwd[256];
@@ -107,7 +107,7 @@ void FUN_00498d00(void) {
                 }
             }
             token[len] = 0;
-            FUN_00498f80(token, current_id);
+            AddString(token, current_id);
         }
     }
     free(data_buf);
@@ -132,7 +132,7 @@ LEGO_EXPORT char *GetString(int n) {
 }
 
 // FUNCTION: LEGOLAND 0x00498f80
-void FUN_00498f80(const char *text, int key) {
+void AddString(const char *text, int key) {
     struct StringNode *node = (struct StringNode *)malloc(sizeof(struct StringNode));
     int index = key % 10;
     node->next = (struct StringNode *)strings[index];
@@ -164,11 +164,11 @@ LEGO_EXPORT void DeleteStrings(void) {
         }
         *slot = NULL;
         slot++;
-    } while ((int)slot < (int)DAT_0079a878);
+    } while ((INT_PTR)slot < (INT_PTR)&strings[10]); /* the original's end: UnusedAfterStrings, next to it */
 }
 
 // FUNCTION: LEGOLAND 0x00499040
-void FUN_00499040(const char *path, char *directory, char *filename) {
+void SplitPathDirectoryAndBaseName(const char *path, char *directory, char *filename) {
     int dot = strlen(path);
     int i = dot;
     int len;
@@ -203,7 +203,7 @@ void FUN_00499040(const char *path, char *directory, char *filename) {
 }
 
 // FUNCTION: LEGOLAND 0x004990c0
-void FUN_004990c0(char *path, char *ext) {
+void AppendExtensionIfMissing(char *path, char *ext) {
     int i = strlen(path);
     while (path[i] != '.' && path[i] != '\\' && i > 0) {
         i--;
@@ -214,7 +214,7 @@ void FUN_004990c0(char *path, char *ext) {
 }
 
 // FUNCTION: LEGOLAND 0x00499120
-void FUN_00499120(char *path, char *ext) {
+void ReplaceExtension(char *path, char *ext) {
     int i = strlen(path);
     while (path[i] != '.' && path[i] != '\\' && i > 0) {
         i--;
@@ -226,7 +226,7 @@ void FUN_00499120(char *path, char *ext) {
 }
 
 // FUNCTION: LEGOLAND 0x00499190
-void FUN_00499190(char *path, char *dir) {
+void PrependDirIfNoPath(char *path, char *dir) {
     char tmp[200];
     int i = strlen(path);
     while (path[i] != '\\' && path[i] != ':' && i > 0) {
@@ -240,7 +240,7 @@ void FUN_00499190(char *path, char *dir) {
 }
 
 // FUNCTION: LEGOLAND 0x00499240
-void FUN_00499240(char *path, char *dir) {
+void ReplacePathDir(char *path, char *dir) {
     char tmp[200];
     int i = strlen(path);
     while (path[i] != '\\' && path[i] != ':' && i > 0) {
@@ -255,7 +255,7 @@ void FUN_00499240(char *path, char *dir) {
 }
 
 // FUNCTION: LEGOLAND 0x00499300
-int FUN_00499300(char *str) {
+int UppercaseStringAndGetLength(char *str) {
     int i = 0;
 
     str[0] = (char)toupper(str[0]);
@@ -269,35 +269,35 @@ int FUN_00499300(char *str) {
 }
 
 // FUNCTION: LEGOLAND 0x00499380
-unsigned int FUN_00499380(void) {
-    if (DAT_0079a890 == 0) {
-        DAT_0079a890 = 1;
-        DAT_0079a894 = GetTickCount();
-        DAT_0079a89c = DAT_008119a4;
+unsigned int PauseGameTimer(void) {
+    if (GameTimerPaused == 0) {
+        GameTimerPaused = 1;
+        GameTimerPausedTicks = GetTickCount();
+        GameTimerPausedFrame = FrameCounter;
         return 0;
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x004993c0
-void FUN_004993c0(void) {
-    if (DAT_0079a890 == 0) {
+void ResumeGameTimer(void) {
+    if (GameTimerPaused == 0) {
         return;
     }
-    DAT_0079a890 = 0;
-    DAT_0079a898 += GetTickCount() - DAT_0079a894;
-    DAT_0079a8a0 += DAT_008119a4 - DAT_0079a89c;
+    GameTimerPaused = 0;
+    GameTimerBaseTicks += GetTickCount() - GameTimerPausedTicks;
+    GameTimerBaseFrame += FrameCounter - GameTimerPausedFrame;
 }
 
 // FUNCTION: LEGOLAND 0x00499410
-void FUN_00499410(void) {
+void ResetGameTimer(void) {
     unsigned int ticks;
     unsigned int counter;
 
     ticks = GetTicks();
-    DAT_0079a894 = ticks;
-    DAT_0079a898 = ticks;
-    counter = DAT_008119a4;
-    DAT_0079a89c = counter;
-    DAT_0079a8a0 = counter;
+    GameTimerPausedTicks = ticks;
+    GameTimerBaseTicks = ticks;
+    counter = FrameCounter;
+    GameTimerPausedFrame = counter;
+    GameTimerBaseFrame = counter;
 }

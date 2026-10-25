@@ -15,45 +15,6 @@
 #include "obj_instance.h"
 #include "objclass.h"
 
-struct ObjClassNames {
-    char *name;
-    unsigned char pad_4[0xc - 0x4];
-    void *field_c;
-};
-
-struct ObjectInfo {
-    unsigned char pad_0[0xc];
-    unsigned int field_c;
-    unsigned int field_10;
-    unsigned char pad_14[0x24 - 0x14];
-    unsigned char field_24;
-    unsigned char field_25;
-    unsigned char pad_26[0x2e - 0x26];
-    unsigned short field_2e;
-};
-
-struct CountHolder {
-    unsigned char pad_0[0x10];
-    unsigned int count;
-};
-
-struct ObjectCount {
-    unsigned char pad_0[8];
-    unsigned int count;
-    unsigned char pad_c[0x5c - 0xc];
-    struct CountHolder *holder;
-};
-
-struct ObjCountWrap {
-    unsigned char pad_0[0xc];
-    struct ObjectCount *inner;
-};
-
-struct EditObject {
-    unsigned char pad_0[0x1c];
-    unsigned int flags;
-};
-
 struct ClassRideNode {
     struct ClassRideNode *next;
     void *ride;
@@ -70,14 +31,6 @@ struct RideStats {
     /* 0x38 */ short rating;
 };
 
-struct FootprintNode {
-    /* 0x00 */ int x_min;
-    /* 0x04 */ unsigned char pad_4[4];
-    /* 0x08 */ int x_max;
-    /* 0x0c */ unsigned char pad_c[4];
-    /* 0x10 */ struct FootprintNode *next;
-};
-
 struct ClassObjNode {
     /* 0x00 */ unsigned char pad_0[0xc];
     /* 0x0c */ int field_c;
@@ -86,8 +39,8 @@ struct ClassObjNode {
 
 struct ObjClassInfo {
     /* 0x00 */ unsigned char pad_0[0xc];
-    /* 0x0c */ int field_c;
-    /* 0x10 */ int field_10;
+    /* 0x0c */ int x;
+    /* 0x10 */ int y;
     /* 0x14 */ unsigned char pad_14[0x20 - 0x14];
     /* 0x20 */ short type;
     /* 0x22 */ unsigned char pad_22[0x24 - 0x22];
@@ -135,13 +88,10 @@ struct ObjClassAlias {
     const char *aliases;
 };
 
-struct ElemView {
-    /* 0x00 */ char *name;
-    /* 0x04 */ unsigned char pad_4[4];
-    /* 0x08 */ unsigned int flags;
-};
-
-static const struct ObjClassAlias ObjClassAliasTable[] = {
+/* Not const: the original keeps this table in .data, directly followed by its alias strings, so the loop's
+ * end pointer (&ObjClassAliasTable[5].aliases) lands inside the first of them. */
+// GLOBAL: LEGOLAND 0x004bcdcc
+static struct ObjClassAlias ObjClassAliasTable[] = {
     {"CASTLE OBJ",
         // STRING: LEGOLAND 0x004bce60
         "CASTLE_DUMMY;ROLLER COASTER TRACK;SQUARE_TRACK;"},
@@ -162,28 +112,33 @@ static const struct ObjClassAlias ObjClassAliasTable[] = {
         "BOATING SCHOOL WATER;"},
 };
 
+/* Load the semicolon-terminated dependencies of a matching object class. Each name is
+   temporarily terminated for ElemID; successful loads get flag 4 so they are not loaded
+   again. Like the original, this only processes names followed by a semicolon. */
 // FUNCTION: LEGOLAND 0x004809d0
-void FUN_004809d0(struct ElemView *cls) {
-    const char *const *slot;
+void LoadObjectClassAliasElements(struct Element *cls) {
+    const char **slot;
     char *token;
     char *semicolon;
-    struct ElemView *elem;
+    struct Element *elem;
     char buffer[256];
 
     slot = &ObjClassAliasTable[0].aliases;
     do {
-        if (_stricmp(cls->name, slot[-1]) == 0) {
-            strcpy(buffer, slot[0]);
+        if (_strcmpi(cls->name, slot[-1]) == 0) {
+            /* Initialize before the copy and restore each delimiter before advancing:
+               MSVC6 then keeps the token and resolved element in separate registers. */
             token = buffer;
+            strcpy(buffer, slot[0]);
             semicolon = strchr(buffer, ';');
             while (semicolon != 0) {
                 *semicolon = '\0';
-                elem = (struct ElemView *)ElemID(token);
+                elem = (struct Element *)ElemID(token);
                 if (elem != 0 && (elem->flags & 4) == 0 && LLIDB_LoadData(elem) != 0) {
                     elem->flags |= 4;
                 }
-                token = semicolon + 1;
                 *semicolon = ';';
+                token = semicolon + 1;
                 semicolon = strchr(token, ';');
             }
         }
@@ -191,102 +146,104 @@ void FUN_004809d0(struct ElemView *cls) {
     } while (slot < &ObjClassAliasTable[5].aliases);
 }
 
+/* Hard-coded class data fixes applied while loading object data: entrance offsets (and 10 seats for the water
+ * block) for the Water Works Shower, Water Block and Elephant Fountain. */
 // FUNCTION: LEGOLAND 0x00480aa0
-void FUN_00480aa0(struct ObjClassNames *names, struct ObjectInfo *info) {
+void ApplyWaterWorksClassOverrides(struct Element *names, struct Ride *info) {
     // STRING: LEGOLAND 0x004bce90
     if (_stricmp(names->name, "Water Works Shower") == 0) {
-        info->field_c = 1;
-        info->field_10 = 0;
+        info->x = 1;
+        info->y = 0;
         info->field_24 = 1;
         info->field_25 = 0;
         return;
     }
     // STRING: LEGOLAND 0x004b9828
     if (_stricmp(names->name, "Water Works Water Block") == 0) {
-        info->field_c = 1;
-        info->field_10 = 0;
+        info->x = 1;
+        info->y = 0;
         info->field_24 = 1;
         info->field_25 = 0;
-        info->field_2e = 10;
+        info->seats = 10;
         return;
     }
     // STRING: LEGOLAND 0x004b9840
     if (_stricmp(names->name, "Water Works Elephant Fountain") == 0) {
-        info->field_c = 6;
-        info->field_10 = 2;
+        info->x = 6;
+        info->y = 2;
         info->field_24 = 6;
         info->field_25 = 2;
     }
 }
 
 // FUNCTION: LEGOLAND 0x00480b40
-LEGO_EXPORT unsigned int LoadObjectClass(struct ElemView *cls) {
-    unsigned int result;
+LEGO_EXPORT void *LoadObjectClass(struct Element *cls) {
+    void *result;
 
-    result = (unsigned int)LLIDB_LoadData(cls);
+    result = LLIDB_LoadData(cls);
     if (result != 0) {
         cls->flags |= 0x4;
     }
-    FUN_004809d0(cls);
+    LoadObjectClassAliasElements(cls);
     return result;
 }
 
 // FUNCTION: LEGOLAND 0x00480b70
-void FUN_00480b70(struct ObjClassNames *param) {
+void SetObjectEditCursor(struct Element *param) {
     void *value;
 
-    value = param->field_c;
+    value = param->ride;
     EditMode.unk0 = 1;
     EditMode.unk8 = value;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint((void *)((unsigned int)EditMode.unk8 + 0x3c));
+    SetEditCursorFootPrint(&EditMode.unk8->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x00480bb0
-LEGO_EXPORT void BasicObjectDCalcCursor(unsigned int param_1, struct Point *param_2) {
+LEGO_EXPORT void BasicObjectDCalcCursor(struct Element *param_1, struct Point *param_2) {
     struct MapElement **map;
     struct LegoConfig *config;
     int x;
     int y;
-    unsigned int buf[5];
+    struct MapElement buf; /* a copy of the tile */
 
     map = GameMap;
     config = lpConfig;
     x = param_2->x;
     if (x < 0 || x >= (int)config->width || (y = param_2->y) < 0 || y >= (int)config->height) {
-        *(unsigned short *)&buf[3] = 0x40;
+        buf.flags = 0x40;
     } else {
-        memcpy(buf, &GameMap[y][x], 20);
+        memcpy(&buf, &GameMap[y][x], sizeof(buf));
     }
     memcpy(QueryCursor.field_1414, &QueryClass->footprint, sizeof(QueryClass->footprint));
     QueryCursor.field_1828 = 8;
-    if ((buf[3] & 0x8a0) != 0) {
+    if ((*(unsigned int *)&buf.flags & 0x8a0) != 0) {
         QueryCursor.field_1828 = 9;
-        QueryCursor.field_1404 = QueryObj.pos.x;
-        QueryCursor.field_1408 = QueryObj.pos.y;
+        QueryCursor.tile_x = QueryObj.pos.x;
+        QueryCursor.tile_y = QueryObj.pos.y;
     } else {
-        QueryCursor.field_1404 = param_2->x;
-        QueryCursor.field_1408 = param_2->y;
+        QueryCursor.tile_x = param_2->x;
+        QueryCursor.tile_y = param_2->y;
     }
-    if ((int)QueryCursor.field_1404 < 0 || (int)QueryCursor.field_1404 >= (int)config->width ||
-        (int)QueryCursor.field_1408 < 0 || (int)QueryCursor.field_1408 >= (int)config->height) {
-        *(unsigned short *)&buf[3] = 0x40;
+    if ((int)QueryCursor.tile_x < 0 || (int)QueryCursor.tile_x >= (int)config->width ||
+        (int)QueryCursor.tile_y < 0 || (int)QueryCursor.tile_y >= (int)config->height) {
+        buf.flags = 0x40;
     } else {
-        memcpy(buf, &map[QueryCursor.field_1408][QueryCursor.field_1404], 20);
+        memcpy(&buf, &map[QueryCursor.tile_y][QueryCursor.tile_x], sizeof(buf));
     }
-    if ((buf[3] & 0x40) != 0) {
-        FUN_0045f480(&QueryCursor, 1);
+    if ((*(unsigned int *)&buf.flags & 0x40) != 0) {
+        SetCursorBlocked(&QueryCursor, 1);
         return;
     }
-    FUN_0045f460(&QueryCursor);
+    ResetCursorBuildable(&QueryCursor);
 }
 
 // FUNCTION: LEGOLAND 0x00480cd0
-LEGO_EXPORT void SetStandardCallbacks(struct CallbackTable *table) {
-    table->cb_8c = FUN_00480b70;
+LEGO_EXPORT void SetStandardCallbacks(struct Ride *table) {
+    table->cb_8c = SetObjectEditCursor;
     table->cb_90 = CalcBasicObjectCursor;
     table->cb_94 = BasicObjectDCalcCursor;
-    table->cb_98 = AddBasicObject;
+    table->cb_98 = (void (*)())AddBasicObject;
     table->cb_9c = StandardRemoveObject;
 }
 
@@ -300,23 +257,23 @@ LEGO_EXPORT void ClearObjectCounters(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00480d30
-LEGO_EXPORT unsigned int ObjCount(struct ObjCountWrap *wrap) {
+LEGO_EXPORT unsigned int ObjCount(struct Element *wrap) {
     if (wrap == 0) {
         return 0;
     }
-    return wrap->inner->count;
+    return wrap->ride->field_8;
 }
 
 // FUNCTION: LEGOLAND 0x00480d40
-LEGO_EXPORT void IncrementObjectCount(struct ObjectCount *count) {
-    count->count++;
-    count->holder->count++;
+LEGO_EXPORT void IncrementObjectCount(struct Ride *count) {
+    count->field_8++;
+    count->theme_element->field_10++;
 }
 
 // FUNCTION: LEGOLAND 0x00480d60
-LEGO_EXPORT void DecrementObjectCount(struct ObjectCount *count) {
-    count->count--;
-    count->holder->count--;
+LEGO_EXPORT void DecrementObjectCount(struct Ride *count) {
+    count->field_8--;
+    count->theme_element->field_10--;
 }
 
 // FUNCTION: LEGOLAND 0x00480d80
@@ -411,23 +368,23 @@ LEGO_EXPORT int GetBlokeCounter(struct Ride *cls, int index) {
 
 // FUNCTION: LEGOLAND 0x00480f00
 LEGO_EXPORT int LoadObjectLibrary(void *object, const char *name) {
-    struct CallbackTable *obj;
+    struct Ride *obj;
     struct LibraryNode *node;
     struct LibraryNode *staging;
-    int results[14];
+    void *results[14];
     char fname[256];
     char path[260];
 
-    obj = (struct CallbackTable *)object;
+    obj = (struct Ride *)object;
     _splitpath(name, 0, 0, fname, 0);
-    NewObjectPtr = &DAT_007fd610;
+    NewObjectPtr = &NewObjectLibraryNode;
     // STRING: LEGOLAND 0x004bcea4
     sprintf(path, ".\\dlls\\%s.dll", fname);
     ((struct LibraryNode *)NewObjectPtr)->module = LoadLibraryExA(path, 0, 0);
     if (((struct LibraryNode *)NewObjectPtr)->module == 0) {
         return 0;
     }
-    node = DAT_00669244;
+    node = ObjectLibraryHead;
     while (node != 0) {
         if (node->module == ((struct LibraryNode *)NewObjectPtr)->module) {
             NewObjectPtr = node;
@@ -437,20 +394,20 @@ LEGO_EXPORT int LoadObjectLibrary(void *object, const char *name) {
         }
         node = node->next;
     }
-    ((struct LibraryNode *)NewObjectPtr)->next = DAT_00669244;
+    ((struct LibraryNode *)NewObjectPtr)->next = ObjectLibraryHead;
     ((struct LibraryNode *)NewObjectPtr)->refcount = 1;
     staging = (struct LibraryNode *)malloc(sizeof(struct LibraryNode));
     node = (struct LibraryNode *)NewObjectPtr;
-    DAT_00669244 = staging;
+    ObjectLibraryHead = staging;
     staging->next = node->next;
     staging->module = node->module;
     staging->refcount = node->refcount;
     staging->init = node->init;
-    obj->library = DAT_00669244;
-    node = DAT_00669244;
+    obj->library = ObjectLibraryHead;
+    node = ObjectLibraryHead;
 loaded:
     memset(results, 0, sizeof(results));
-    node->init(obj->context, results);
+    node->init(obj->element, results);
     if (results[0] != 0) {
         obj->cb_8c = (RideCallback)results[0];
     }
@@ -467,10 +424,10 @@ loaded:
         obj->cb_9c = (RideCallback)results[4];
     }
     if (results[5] != 0) {
-        obj->cb_a0 = (RidePtrCallback)results[5];
+        obj->cb_sprite = (RidePtrCallback)results[5];
     }
     if (results[6] != 0) {
-        obj->cb_a8 = (RideCallback)results[6];
+        obj->cb_pre_render = (RideCallback)results[6];
     }
     if (results[8] != 0) {
         obj->cb_ac = (RideCallback)results[8];
@@ -479,24 +436,24 @@ loaded:
         obj->cb_c0 = (RideIntCallback)results[13];
     }
     obj->cb_b4 = (RideCallback)results[10];
-    obj->cb_b8 = (RideIntCallback)results[11];
-    obj->cb_bc = (RideIntCallback)results[12];
+    obj->load_hook = (RideIntCallback)results[11];
+    obj->save_hook = (RideIntCallback)results[12];
     if (results[9] != 0) {
         obj->cb_b0 = (RideCallback)results[9];
     }
     if (results[7] != 0) {
-        ((void (*)(void *))results[7])(obj->context);
+        ((void (*)(void *))results[7])(obj->element);
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x004810f0
 LEGO_EXPORT void UnLoadObjectLibrary(void *object) {
-    struct CallbackTable *obj;
+    struct Ride *obj;
     struct LibraryNode *node;
     struct LibraryNode *prev;
 
-    obj = (struct CallbackTable *)object;
+    obj = (struct Ride *)object;
     if (obj->library->refcount == 0) {
         return;
     }
@@ -504,13 +461,13 @@ LEGO_EXPORT void UnLoadObjectLibrary(void *object) {
     obj->library->refcount--;
     node = obj->library;
     if (node->refcount == 0) {
-        prev = DAT_00669244;
-        if (DAT_00669244 == node) {
-            DAT_00669244 = DAT_00669244->next;
+        prev = ObjectLibraryHead;
+        if (ObjectLibraryHead == node) {
+            ObjectLibraryHead = ObjectLibraryHead->next;
             free(prev);
             return;
         }
-        if (DAT_00669244 != 0) {
+        if (ObjectLibraryHead != 0) {
             while (prev != 0) {
                 if (prev->next == node) {
                     break;
@@ -525,45 +482,28 @@ LEGO_EXPORT void UnLoadObjectLibrary(void *object) {
     }
 }
 
+/* Frees every ClassRideList node and clears tile flag 0x400 across the whole map. */
 // FUNCTION: LEGOLAND 0x00481170
-void FUN_00481170(void) {
-    struct LegoConfig *config;
+void ResetClassRideList(void) {
     struct MapElement *cell;
     void *next;
     int x;
     int y;
-    int offset;
-    unsigned int width;
 
-    while (DAT_00669248 != 0) {
-        next = *(void **)DAT_00669248;
-        free(DAT_00669248);
-        DAT_00669248 = next;
+    while (ClassRideList != 0) {
+        next = *(void **)ClassRideList;
+        free(ClassRideList);
+        ClassRideList = next;
     }
-    config = lpConfig;
-    y = 0;
-    DAT_00669248 = 0;
-    if (config->height != 0) {
-        do {
-            x = 0;
-            width = config->width;
-            if (width != 0) {
-                offset = 0;
-                do {
-                    if (offset < 0 || x >= (int)width || y < 0 || y >= (int)lpConfig->height) {
-                        cell = 0;
-                    } else {
-                        cell = (struct MapElement *)((char *)GameMap[y] + offset);
-                    }
-                    cell->flags &= 0xfbff;
-                    x++;
-                    width = lpConfig->width;
-                    offset += 0x14;
-                } while (x < (int)width);
+    for (y = 0; y < lpConfig->height; y++) {
+        for (x = 0; x < lpConfig->width; x++) {
+            if (x < 0 || x >= lpConfig->width || y < 0 || y >= lpConfig->height) {
+                cell = 0;
+            } else {
+                cell = &GameMap[y][x];
             }
-            config = lpConfig;
-            y++;
-        } while (y < (int)config->height);
+            cell->flags &= 0xfbff;
+        }
     }
 }
 
@@ -573,14 +513,14 @@ LEGO_EXPORT void BuildObjInfoList(void) {
     struct MapElement *origin;
     struct ObjClassInfo *cls;
     struct InfoNode *node;
-    struct FootprintNode *fp;
+    struct Footprint *fp;
     struct ClassObjNode *obj;
     TileId tile;
     struct Point pos;
     int best;
     struct Point at;
 
-    FUN_00481170();
+    ResetClassRideList();
     for (pos.y = 0; pos.y < lpConfig->height; pos.y++) {
         for (pos.x = 0; pos.x < lpConfig->width; pos.x++) {
             if (pos.x >= 0 && pos.x < lpConfig->width && pos.y >= 0 && pos.y < lpConfig->height) {
@@ -602,36 +542,36 @@ LEGO_EXPORT void BuildObjInfoList(void) {
             }
             cls = origin->field_0->data;
             if (cls->type != 0 && cls->type != 2 && (origin->flags & 0x400) == 0) {
-                for (node = DAT_00669248; node != NULL; node = node->next) {
+                for (node = ClassRideList; node != NULL; node = node->next) {
                     if (node->classid == cls) {
                         break;
                     }
                 }
                 if (node != NULL) {
                     if (rand() % 256 < 0x50) {
-                        node->x = cls->field_c + at.x;
-                        node->y = cls->field_10 + at.y;
+                        node->x = cls->x + at.x;
+                        node->y = cls->y + at.y;
                         node->origin_x = cls->field_24 + at.x;
                         node->origin_y = cls->field_25 + at.y;
                     }
                 } else {
                     node = (struct InfoNode *)malloc(sizeof(struct InfoNode));
-                    node->next = DAT_00669248;
-                    DAT_00669248 = node;
+                    node->next = ClassRideList;
+                    ClassRideList = node;
                     node->classid = cls;
                     node->coords = tile.id;
-                    node->x = cls->field_c + at.x;
-                    node->y = cls->field_10 + at.y;
+                    node->x = cls->x + at.x;
+                    node->y = cls->y + at.y;
                     node->origin_x = cls->field_24 + at.x;
                     node->origin_y = cls->field_25 + at.y;
                 }
                 origin->flags |= 0x400;
             }
-            fp = (struct FootprintNode *)&cls->footprint_base;
-            while (pos.x < fp->x_min + at.x || pos.x > fp->x_max + at.x) {
+            fp = (struct Footprint *)&cls->footprint_base;
+            while (pos.x < fp->x0 + at.x || pos.x > fp->x1 + at.x) {
                 fp = fp->next;
             }
-            pos.x = fp->x_max + at.x;
+            pos.x = fp->x1 + at.x;
             best = cls->field_48;
             for (obj = cls->objlist; obj != NULL; obj = obj->next) {
                 if (obj->field_c > best) {
@@ -688,31 +628,32 @@ LEGO_EXPORT unsigned int CalculateRideCode(unsigned int param_1, struct RideStat
 
 // FUNCTION: LEGOLAND 0x004814c0
 LEGO_EXPORT int Calc_Item_Attractiveness(struct Ride *item, struct Bloke *bloke, int param_3) {
-    unsigned int fatigue;
-    unsigned char category;
+    volatile int category;
     int rating;
+    int fatigue;
     int blokenum;
     int counter;
 
     fatigue = bloke->field_7e;
-    category = FUN_0044eb10(bloke);
+    category = GetBlokeHungerLevel(bloke);
     rating = item->intensity;
     blokenum = GetBlokeNum(bloke);
     counter = GetBlokeCounter(item, blokenum);
-    if ((int)fatigue < rating) {
-        rating -= fatigue;
+    if (rating > fatigue) {
+        fatigue = rating - fatigue;
     } else {
-        rating = (fatigue - rating) * 2;
+        fatigue = (fatigue - rating) * 2;
     }
-    rating -= 10;
-    if (rating < 0) {
-        rating = 0;
+    fatigue -= 10;
+    if (fatigue < 0) {
+        fatigue = 0;
     }
-    if (counter == 0) {
-        rating = (item->value - rating) + 100;
+    if (counter != 0) {
+        rating = ((4 - (1 << counter)) * 0x19 + item->value) - fatigue;
     } else {
-        rating = ((4 - (1 << (counter & 0x1f))) * 0x19 + item->value) - rating;
+        rating = (item->value - fatigue) + 100;
     }
+    counter = rating;
     switch (category) {
     case 0:
         if (item->type == 5) {
@@ -720,38 +661,38 @@ LEGO_EXPORT int Calc_Item_Attractiveness(struct Ride *item, struct Bloke *bloke,
         }
         break;
     case 1:
-        if (item->type == 5 && param_3 == 0) {
+        if (item->type == 5 && !param_3) {
             return -100;
         }
         break;
     case 2:
         if (item->type == 5) {
-            if (rating < 0x14) {
-                rating = 0x14;
+            if (counter < 0x14) {
+                counter = 0x14;
             }
             if (param_3 != 0) {
-                return rating * 2;
+                return 2 * counter;
             }
         }
         break;
     case 3:
     case 4:
         if (item->type == 5) {
-            if (rating < 0x14) {
-                rating = 0x32;
+            if (0x14 > counter) {
+                counter = 0x32;
             }
-            return rating * ((-(int)(param_3 != 0) & 2) + 4);
+            return counter * (param_3 != 0 ? 6 : 4);
         }
-        rating = 0;
+        counter = 0;
     }
-    return rating;
+    return counter;
 }
 
 // FUNCTION: LEGOLAND 0x004815e0
 LEGO_EXPORT void CalculateRideCodes(struct Bloke *bloke) {
     struct ClassRideNode *node;
 
-    for (node = DAT_00669248; node != 0; node = node->next) {
+    for (node = ClassRideList; node != 0; node = node->next) {
         node->score = Calc_Item_Attractiveness(node->ride, bloke, 0);
     }
 }
@@ -762,26 +703,26 @@ LEGO_EXPORT int ShuffleObjKeys(struct Point *goal, struct Ride **ride) {
     struct InfoNode *node;
     struct InfoNode *next;
 
-    slot = (struct InfoNode **)&DAT_00669248;
-    node = DAT_00669248;
-    if (DAT_00669248 != (void *)DAT_0066924c) {
-        while (next = node, node != 0) {
-            node = next->next;
-            if ((unsigned int)node == DAT_0066924c) {
-                DAT_0066924c = (unsigned int)next;
-                goal->x = next->x << 8;
-                goal->y = next->y << 8;
-                *ride = next->classid;
+    slot = (struct InfoNode **)&ClassRideList;
+    node = ClassRideList;
+    if (ClassRideList != ClassRideBestPtr) {
+        while (node != 0) {
+            next = node->next;
+            if (next == ClassRideBestPtr) {
+                ClassRideBestPtr = node;
+                goal->x = node->x << 8;
+                goal->y = node->y << 8;
+                *ride = node->classid;
                 return 1;
             }
-            if ((int)node->sort_key < (int)next->sort_key) {
-                *slot = node;
-                next->next = node->next;
-                node->next = next;
+            if ((int)node->sort_key > (int)next->sort_key) {
+                *slot = next;
+                node->next = next->next;
+                next->next = node;
+                slot = (struct InfoNode **)next;
+            } else {
                 slot = (struct InfoNode **)node;
                 node = next;
-            } else {
-                slot = (struct InfoNode **)next;
             }
         }
     }
@@ -790,24 +731,24 @@ LEGO_EXPORT int ShuffleObjKeys(struct Point *goal, struct Ride **ride) {
 
 // FUNCTION: LEGOLAND 0x00481690
 LEGO_EXPORT void ResetBestPtr(void) {
-    DAT_0066924c = 0;
+    ClassRideBestPtr = 0;
 }
 
 // FUNCTION: LEGOLAND 0x004816a0
-LEGO_EXPORT struct ObjInstance *CreateObjectInstance(unsigned int param_1, unsigned short *param_2) {
+LEGO_EXPORT struct ObjInstance *CreateObjectInstance(struct Ride *param_1, unsigned short *param_2) {
     struct ObjInstance *obj;
 
     obj = malloc(sizeof(struct ObjInstance));
     if (obj != 0) {
         memset(obj, 0, sizeof(struct ObjInstance));
         obj->uid = *param_2;
-        obj->field_8 = param_1;
+        obj->ride = param_1;
     }
     return obj;
 }
 
 // FUNCTION: LEGOLAND 0x004816e0
-LEGO_EXPORT void SetEditObject(struct EditObject *obj) {
+LEGO_EXPORT void SetEditObject(struct Ride *obj) {
     EditMode.unk0 = 1;
     EditMode.unk8 = obj;
     if (obj == 0) {
@@ -821,31 +762,31 @@ LEGO_EXPORT void SetEditObject(struct EditObject *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x00481720
-void *FUN_00481720(void) {
-    return DAT_0066b44c;
+void *GetBestNodeList(void) {
+    return BestNodeList;
 }
 
 // FUNCTION: LEGOLAND 0x00481730
-struct BestNode *FUN_00481730(void) {
+struct BestNode *AddBestNode(void) {
     struct BestNode *node;
 
-    node = (struct BestNode *)malloc(0x24);
+    node = (struct BestNode *)malloc(sizeof(struct BestNode));
     node->field_20 = 0;
     node->field_1c = 0;
-    node->next = DAT_0066b44c;
-    DAT_0066b44c = node;
+    node->next = BestNodeList;
+    BestNodeList = node;
     return node;
 }
 
 // FUNCTION: LEGOLAND 0x00481750
-void FUN_00481750(struct BestNode *node) {
+void RemoveBestNode(struct BestNode *node) {
     struct BestNode *current;
 
-    if (DAT_0066b44c == node) {
-        DAT_0066b44c = node->next;
+    if (BestNodeList == node) {
+        BestNodeList = node->next;
         free(node);
     } else {
-        for (current = DAT_0066b44c; current->next != 0; current = current->next) {
+        for (current = BestNodeList; current->next != 0; current = current->next) {
             if (current->next == node) {
                 current->next = node->next;
                 free(node);
@@ -856,10 +797,10 @@ void FUN_00481750(struct BestNode *node) {
 }
 
 // FUNCTION: LEGOLAND 0x00481790
-struct BestNode *FUN_00481790(struct Point *pos) {
+struct BestNode *FindBestNodeAtPoint(struct Point *pos) {
     struct BestNode *node;
 
-    node = DAT_0066b44c;
+    node = BestNodeList;
     if (node == 0) {
         return 0;
     }
@@ -874,13 +815,13 @@ struct BestNode *FUN_00481790(struct Point *pos) {
 }
 
 // FUNCTION: LEGOLAND 0x004817d0
-struct BestNode *FUN_004817d0(int *param_1) {
+struct BestNode *FindBestNodeAtPixel(int *param_1) {
     struct BestNode *node;
 
-    if (DAT_0066b44c == 0) {
+    if (BestNodeList == 0) {
         return 0;
     }
-    node = DAT_0066b44c;
+    node = BestNodeList;
     do {
         if (param_1[0] >> 8 >= (int)node->x_min && param_1[0] >> 8 <= (int)node->x_max &&
             param_1[1] >> 8 >= (int)node->y_min && param_1[1] >> 8 <= (int)node->y_max) {
@@ -891,109 +832,111 @@ struct BestNode *FUN_004817d0(int *param_1) {
     return 0;
 }
 
+/* Collects the best-path nodes bordering rectangle param_1 {x0, y0, x1, y1} into AdjacentNodes, one NULL-terminated
+ * run per side (above, below, left, right); AdjacentNodeCount counts the nodes. */
 // FUNCTION: LEGOLAND 0x00481810
-void FUN_00481810(int *param_1) {
+void CollectAdjacentNodesBySide(int *param_1) {
     struct BestNode *found;
     void **out;
     int count;
     struct Point pos;
 
-    DAT_00669254 = 0;
+    AdjacentNodeCount = 0;
     count = 0;
     pos.y = param_1[1] - 1;
     pos.x = param_1[0];
     if ((int)pos.x <= param_1[2]) {
-        out = DAT_0066a45c;
+        out = AdjacentNodes;
         do {
-            found = FUN_00481790(&pos);
+            found = FindBestNodeAtPoint(&pos);
             *out = found;
             if (found != 0) {
                 pos.x = found->x_max;
                 count++;
                 out++;
-                DAT_00669254++;
+                AdjacentNodeCount++;
             }
             pos.x++;
         } while ((int)pos.x <= param_1[2]);
     }
-    DAT_0066a45c[count] = 0;
+    AdjacentNodes[count] = 0;
     pos.x = param_1[0];
     count++;
     pos.y = param_1[3] + 1;
     if ((int)pos.x <= param_1[2]) {
-        out = &DAT_0066a45c[count];
+        out = &AdjacentNodes[count];
         do {
-            found = FUN_00481790(&pos);
+            found = FindBestNodeAtPoint(&pos);
             *out = found;
             if (found != 0) {
                 pos.x = found->x_max;
                 count++;
                 out++;
-                DAT_00669254++;
+                AdjacentNodeCount++;
             }
             pos.x++;
         } while ((int)pos.x <= param_1[2]);
     }
-    DAT_0066a45c[count] = 0;
+    AdjacentNodes[count] = 0;
     pos.y = param_1[1];
     count++;
     pos.x = param_1[0] - 1;
     if ((int)pos.y <= param_1[3]) {
-        out = &DAT_0066a45c[count];
+        out = &AdjacentNodes[count];
         do {
-            found = FUN_00481790(&pos);
+            found = FindBestNodeAtPoint(&pos);
             *out = found;
             if (found != 0) {
                 pos.y = found->y_max;
                 count++;
                 out++;
-                DAT_00669254++;
+                AdjacentNodeCount++;
             }
             pos.y++;
         } while ((int)pos.y <= param_1[3]);
     }
-    DAT_0066a45c[count] = 0;
+    AdjacentNodes[count] = 0;
     count++;
     pos.x = param_1[2] + 1;
     pos.y = param_1[1];
     if ((int)pos.y <= param_1[3]) {
-        out = &DAT_0066a45c[count];
+        out = &AdjacentNodes[count];
         do {
-            found = FUN_00481790(&pos);
+            found = FindBestNodeAtPoint(&pos);
             *out = found;
             if (found != 0) {
                 pos.y = found->y_max;
                 count++;
                 out++;
-                DAT_00669254++;
+                AdjacentNodeCount++;
             }
             pos.y++;
         } while ((int)pos.y <= param_1[3]);
     }
-    DAT_0066a45c[count] = 0;
+    AdjacentNodes[count] = 0;
 }
 
 // FUNCTION: LEGOLAND 0x004819a0
-void FUN_004819a0(int *param_1) {
+void CollectAdjacentNodes(int *param_1) {
     struct BestNode *found;
     void **out;
     int count;
     struct Point pos;
 
     count = 0;
-    DAT_00669254 = 0;
+    AdjacentNodeCount = 0;
     pos.y = param_1[1] - 1;
     pos.x = param_1[0];
     if ((int)pos.x <= param_1[2]) {
-        out = DAT_0066a45c;
+        out = AdjacentNodes;
         do {
-            found = FUN_00481790(&pos);
+            found = FindBestNodeAtPoint(&pos);
             *out = found;
             if (found != 0) {
                 pos.x = found->x_max;
                 count++;
                 out++;
-                DAT_00669254++;
+                AdjacentNodeCount++;
             }
             pos.x++;
         } while ((int)pos.x <= param_1[2]);
@@ -1001,15 +944,15 @@ void FUN_004819a0(int *param_1) {
     pos.x = param_1[0];
     pos.y = param_1[3] + 1;
     if ((int)pos.x <= param_1[2]) {
-        out = &DAT_0066a45c[count];
+        out = &AdjacentNodes[count];
         do {
-            found = FUN_00481790(&pos);
+            found = FindBestNodeAtPoint(&pos);
             *out = found;
             if (found != 0) {
                 pos.x = found->x_max;
                 count++;
                 out++;
-                DAT_00669254++;
+                AdjacentNodeCount++;
             }
             pos.x++;
         } while ((int)pos.x <= param_1[2]);
@@ -1017,15 +960,15 @@ void FUN_004819a0(int *param_1) {
     pos.y = param_1[1];
     pos.x = param_1[0] - 1;
     if ((int)pos.y <= param_1[3]) {
-        out = &DAT_0066a45c[count];
+        out = &AdjacentNodes[count];
         do {
-            found = FUN_00481790(&pos);
+            found = FindBestNodeAtPoint(&pos);
             *out = found;
             if (found != 0) {
                 pos.y = found->y_max;
                 count++;
                 out++;
-                DAT_00669254++;
+                AdjacentNodeCount++;
             }
             pos.y++;
         } while ((int)pos.y <= param_1[3]);
@@ -1033,14 +976,14 @@ void FUN_004819a0(int *param_1) {
     pos.x = param_1[2] + 1;
     pos.y = param_1[1];
     if ((int)pos.y <= param_1[3]) {
-        out = &DAT_0066a45c[count];
+        out = &AdjacentNodes[count];
         do {
-            found = FUN_00481790(&pos);
+            found = FindBestNodeAtPoint(&pos);
             *out = found;
             if (found != 0) {
                 pos.y = found->y_max;
                 out++;
-                DAT_00669254++;
+                AdjacentNodeCount++;
             }
             pos.y++;
         } while ((int)pos.y <= param_1[3]);
@@ -1048,47 +991,47 @@ void FUN_004819a0(int *param_1) {
 }
 
 // FUNCTION: LEGOLAND 0x00481b10
-void FUN_00481b10(struct BestNode *node) {
+void MergeBestNode(struct BestNode *node) {
     struct BestNode *cur;
     int i;
 
     for (;;) {
-        FUN_00481810((int *)&node->x_min);
+        CollectAdjacentNodesBySide((int *)&node->x_min);
         i = 0;
-        for (cur = DAT_0066a45c[i]; cur != 0; cur = DAT_0066a45c[++i]) {
-            if (cur->x_min == node->x_min && ((struct BestNode *)DAT_0066a45c[i])->x_max == node->x_max) {
-                ((struct BestNode *)DAT_0066a45c[i])->y_max = node->y_max;
+        for (cur = AdjacentNodes[i]; cur != 0; cur = AdjacentNodes[++i]) {
+            if (cur->x_min == node->x_min && ((struct BestNode *)AdjacentNodes[i])->x_max == node->x_max) {
+                ((struct BestNode *)AdjacentNodes[i])->y_max = node->y_max;
                 goto merged;
             }
         }
         i++;
-        for (cur = DAT_0066a45c[i]; cur != 0; cur = DAT_0066a45c[++i]) {
-            if (cur->x_min == node->x_min && ((struct BestNode *)DAT_0066a45c[i])->x_max == node->x_max) {
-                ((struct BestNode *)DAT_0066a45c[i])->y_min = node->y_min;
+        for (cur = AdjacentNodes[i]; cur != 0; cur = AdjacentNodes[++i]) {
+            if (cur->x_min == node->x_min && ((struct BestNode *)AdjacentNodes[i])->x_max == node->x_max) {
+                ((struct BestNode *)AdjacentNodes[i])->y_min = node->y_min;
                 goto merged;
             }
         }
         i++;
-        for (cur = DAT_0066a45c[i]; cur != 0; cur = DAT_0066a45c[++i]) {
-            if (cur->y_min == node->y_min && ((struct BestNode *)DAT_0066a45c[i])->y_max == node->y_max) {
-                ((struct BestNode *)DAT_0066a45c[i])->x_max = node->x_max;
+        for (cur = AdjacentNodes[i]; cur != 0; cur = AdjacentNodes[++i]) {
+            if (cur->y_min == node->y_min && ((struct BestNode *)AdjacentNodes[i])->y_max == node->y_max) {
+                ((struct BestNode *)AdjacentNodes[i])->x_max = node->x_max;
                 goto merged;
             }
         }
         i++;
-        cur = DAT_0066a45c[i];
+        cur = AdjacentNodes[i];
         if (cur == 0) {
             return;
         }
-        while (cur->y_min != node->y_min || ((struct BestNode *)DAT_0066a45c[i])->y_max != node->y_max) {
-            cur = DAT_0066a45c[++i];
+        while (cur->y_min != node->y_min || ((struct BestNode *)AdjacentNodes[i])->y_max != node->y_max) {
+            cur = AdjacentNodes[++i];
             if (cur == 0) {
                 return;
             }
         }
-        ((struct BestNode *)DAT_0066a45c[i])->x_min = node->x_min;
+        ((struct BestNode *)AdjacentNodes[i])->x_min = node->x_min;
     merged:
-        FUN_00481750(node);
-        node = DAT_0066a45c[i];
+        RemoveBestNode(node);
+        node = AdjacentNodes[i];
     }
 }

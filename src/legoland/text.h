@@ -4,17 +4,22 @@
 
 #include <windows.h>
 
-void FUN_00455f70(int param_1);
-void FUN_00454d80(char *text, int font, RECT rc, COLORREF color);
+void FlushTextCells(int param_1);
+void DrawTextOnRenderSurface(char *text, int font, RECT rc, COLORREF color);
 LEGO_EXPORT void PrintCent(int cx, int y, int width, const char *text, int font);
 LEGO_EXPORT void BubbleHelp(int *rect, char *text, int font);
 LEGO_EXPORT void HTBubbleHelp(RECT *rect, char *text, int font);
-void FUN_00455fc0(RECT *rect, const char *text, int font, int mood);
+void HTBubbleHelpWithMood(RECT *rect, const char *text, int font, int mood_icon);
 LEGO_EXPORT HGDIOBJ SelectFont(HDC hdc, int font_id);
 
 struct TextCell;
-struct TextCell *FUN_00455bb0(char *name, int width, int height, int font, unsigned int format, unsigned int bg_color, unsigned int text_color);
-struct TextCell *FUN_00455d40(const char *name, int font, unsigned int format, unsigned int bg_color, unsigned int text_color);
-void FUN_00455e50(char *name, unsigned int x, unsigned int y, int width, int height, int font, unsigned int format, unsigned int bg_color, unsigned int text_color);
-void FUN_00455ec0(struct TextCell *cell, unsigned int x, unsigned int y);
+struct TextCell *CreateTextCell(char *name, int width, int height, int font, unsigned int format, unsigned int bg_color, unsigned int text_color);
+struct TextCell *FindTextCellByStyle(const char *name, int font, unsigned int format, unsigned int bg_color, unsigned int text_color);
+void PrintTextBox(char *name, unsigned int x, unsigned int y, int width, int height, int font, unsigned int format, unsigned int bg_color, unsigned int text_color);
+void PrintTextCell(struct TextCell *cell, unsigned int x, unsigned int y);
 LEGO_EXPORT void Print(int x, int y, const char *text, int font);
+LEGO_EXPORT void PrintLimitedText(int x, int y, int width, const char *text, int font, COLORREF color, UINT format);
+int MeasureTextHeight(const char *text, int font, int width);
+void DrawWrappedTextAt(int x, int y, const char *text, int font, int width);
+void UnloadBubbleHelpGFX(void);
+LEGO_EXPORT void LoadBubbleHelpGFX(void);

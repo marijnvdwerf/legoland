@@ -5,6 +5,7 @@
 #include "bloke_ai.h"
 #include "gamemap.h"
 #include "globals.h"
+#include "man3d.h"
 #include "map_object.h"
 #include "mechanics_hut.h"
 #include "obj_instance.h"
@@ -15,28 +16,28 @@
 #include "worker.h"
 
 // FUNCTION: LEGOLAND 0x0043d250
-void FUN_0043d250(Element *ctx) {
-    DAT_0081caf4 = ctx->ride;
-    DAT_0081caf4->flags |= 0x420;
-    DAT_0062fe50 = DAT_0081caf4->layer;
-    DAT_0081caf4->flags |= 0x2000;
+void LoadMechHutMaskSprite(Element *ctx) {
+    MechanicsHutRide = ctx->ride;
+    MechanicsHutRide->flags |= 0x420;
+    MechanicsHutLayer = MechanicsHutRide->layer;
+    MechanicsHutRide->flags |= 0x2000;
     // STRING: LEGOLAND 0x004b79a4
-    DAT_0062fe54 = LoadSprite("MechHutMask.lls", 1);
+    MechHutMaskSprite = LoadSprite("MechHutMask.lls", 1);
 }
 
 // FUNCTION: LEGOLAND 0x0043d2a0
-unsigned int FUN_0043d2a0(unsigned int param1, unsigned int param2) {
+unsigned int MechanicsHutAddObject(struct Element *param1, int *param2) {
     return AddBasicObject(param1, param2);
 }
 
 // FUNCTION: LEGOLAND 0x0043d2c0
-void FUN_0043d2c0(Element *obj, unsigned int tile, struct Cursor *cursor) {
-    StandardRemoveObject((Element *)obj, *(TileId *)&tile, cursor);
-    FUN_0043d7c0(obj->ride, tile, 0);
+void MechanicsHutRemoveObject(Element *obj, unsigned int tile, struct Cursor *cursor) {
+    StandardRemoveObject(obj, *(TileId *)&tile, cursor);
+    DetachWorkersFromRemovedHome(obj->ride, tile, 0);
 }
 
 // FUNCTION: LEGOLAND 0x0043d2f0
-void FUN_0043d2f0(Element *obj) {
+void MechanicsHutUpdate(Element *obj) {
     struct Ride *hut = obj->ride;
     struct RideNode *node;
     struct RideNode *next;
@@ -46,7 +47,7 @@ void FUN_0043d2f0(Element *obj) {
     for (node = hut->riders; node != NULL; node = next) {
         bloke = node->rider;
         next = node->next;
-        if (bloke->field_e != 0) {
+        if (bloke->low_level_action != 0) {
             continue;
         }
         switch (bloke->param_action) {
@@ -54,8 +55,8 @@ void FUN_0043d2f0(Element *obj) {
             bloke->flags |= 8;
             bloke->dest.y += 0x300;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_73 = dir + 0x10;
-            bloke->field_e = 7;
+            bloke->target_dir = dir + 0x10;
+            bloke->low_level_action = 7;
             NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
@@ -63,16 +64,16 @@ void FUN_0043d2f0(Element *obj) {
             bloke->dest.x += 0x400;
             bloke->dest.y += 0x100;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_73 = dir + 0x10;
-            bloke->field_e = 7;
+            bloke->target_dir = dir + 0x10;
+            bloke->low_level_action = 7;
             NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 2:
             bloke->dest.y += 0x400;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_73 = dir + 0x10;
-            bloke->field_e = 7;
+            bloke->target_dir = dir + 0x10;
+            bloke->low_level_action = 7;
             NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
@@ -86,8 +87,8 @@ void FUN_0043d2f0(Element *obj) {
             bloke->flags |= 8;
             bloke->dest.y -= 0x300;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_73 = dir + 0x10;
-            bloke->field_e = 7;
+            bloke->target_dir = dir + 0x10;
+            bloke->low_level_action = 7;
             NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
@@ -95,16 +96,16 @@ void FUN_0043d2f0(Element *obj) {
             bloke->dest.x -= 0x480;
             bloke->dest.y -= 0x100;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_73 = dir + 0x10;
-            bloke->field_e = 7;
+            bloke->target_dir = dir + 0x10;
+            bloke->low_level_action = 7;
             NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
         case 102:
             bloke->dest.y -= 0x300;
             dir = CalcMoveLine(bloke->pos, bloke->dest, &bloke->nav);
-            bloke->field_73 = dir + 0x10;
-            bloke->field_e = 7;
+            bloke->target_dir = dir + 0x10;
+            bloke->low_level_action = 7;
             NewDirForAction(bloke, ((unsigned char)(dir + 0x10) >> 5) + 3);
             bloke->param_action++;
             break;
@@ -118,7 +119,7 @@ void FUN_0043d2f0(Element *obj) {
 }
 
 // FUNCTION: LEGOLAND 0x0043d580
-void FUN_0043d580(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile) {
+void RenderMechanicsHut(Element *obj, unsigned int param_2, unsigned int param_3, unsigned short *tile) {
     struct Ride *hut = obj->ride;
     struct RideNode *node = hut->riders;
     struct Bloke *blokes[30] = {0};
@@ -170,8 +171,8 @@ void FUN_0043d580(Element *obj, unsigned int param_2, unsigned int param_3, unsi
             IP_RenderBlokeIn3DNow(blokes[i]);
         }
     }
-    pos = GetScreenCoordsForObject((unsigned char *)tile, hut);
-    PrintSprite(DAT_0062fe54, pos.x, pos.y, 0, 0);
+    pos = GetScreenCoordsForObject((TileId *)tile, hut);
+    PrintSprite(MechHutMaskSprite, pos.x, pos.y, 0, 0);
     for (i = 0; i < count; i++) {
         if (blokes[i]->param_action == 102) {
             IP_RenderBlokeIn3DNow(blokes[i]);
@@ -180,35 +181,37 @@ void FUN_0043d580(Element *obj, unsigned int param_2, unsigned int param_3, unsi
 }
 
 // FUNCTION: LEGOLAND 0x0043d730
-void FUN_0043d730(void) {
-    KillSprite(DAT_0062fe54);
+void KillMechHutMaskSprite(void) {
+    KillSprite(MechHutMaskSprite);
 }
 
 // FUNCTION: LEGOLAND 0x0043d740
-void FUN_0043d740(void) {
+void MechanicsHutSetEditMode(void) {
     EditMode.unk0 = 1;
-    EditMode.unk8 = DAT_0081caf4;
+    EditMode.unk8 = MechanicsHutRide;
     DefaultCursor(&EditCursor);
-    SetEditCursorFootPrint(&((struct EditCursorData *)EditMode.unk8)->field_3c);
+    SetEditCursorFootPrint(&((struct Ride *)EditMode.unk8)->footprint);
 }
 
 // FUNCTION: LEGOLAND 0x0043d780
-struct RideSpriteInfo *FUN_0043d780(void *ptr, unsigned short arg2) {
-    unsigned int *p = (unsigned int *)((unsigned int *)ptr)[3];
+struct RideSpriteInfo *GetMechanicsHutSpriteInfo(struct Element *ptr, unsigned short arg2) {
+    struct Ride *ride = ptr->ride;
 
-    DAT_0062fe30.sprite = p[25];
-    DAT_0062fe30.x = ((unsigned int *)p)[5];
-    DAT_0062fe30.y = ((unsigned int *)p)[6];
-    DAT_0062fe30.id = arg2;
+    MechanicsHutSpriteInfo.sprite = ride->layer;
+    MechanicsHutSpriteInfo.x = ride->field_14;
+    MechanicsHutSpriteInfo.y = ride->field_18;
+    MechanicsHutSpriteInfo.id = arg2;
 
-    p = p[25];
-    p[4] |= 0x2000;
+    ride->layer->flags |= 0x2000;
 
-    return &DAT_0062fe30;
+    return &MechanicsHutSpriteInfo;
 }
 
+/* Detaches the workers attached to a removed home tile. Active workers are unlinked/freed from the home list, moved
+ * to the home entrance, and returned to gardener/mechanic idle according to flag; pending workers are unlinked and
+ * marked with field_36 = 100. */
 // FUNCTION: LEGOLAND 0x0043d7c0
-void FUN_0043d7c0(struct Ride *hut, unsigned int tile, int flag) {
+void DetachWorkersFromRemovedHome(struct Ride *hut, unsigned int tile, int flag) {
     struct RideNode *node;
     struct RideNode *next;
     struct Bloke *bloke;

@@ -8,111 +8,111 @@
 #include "sound_music.h"
 
 // FUNCTION: LEGOLAND 0x00452990
-void FUN_00452990(void) {
+void LoadFountainSFX(struct Element *head) {
     unsigned int counter;
 
-    counter = DAT_00667114;
-    DAT_00667114++;
+    counter = FountainSFXRefCount;
+    FountainSFXRefCount++;
     if (counter == 0) {
-        Load_FXList(DAT_004b8710, 5);
+        Load_FXList(FountainSFX, 5);
     }
 }
 
 // FUNCTION: LEGOLAND 0x004529c0
-void FUN_004529c0(void) {
-    DAT_00667114--;
-    if (DAT_00667114 == 0) {
-        Kill_FXList(DAT_004b8710, 5);
+void KillFountainSFX(void) {
+    FountainSFXRefCount--;
+    if (FountainSFXRefCount == 0) {
+        Kill_FXList(FountainSFX, 5);
     }
 }
 
 // FUNCTION: LEGOLAND 0x004529e0
-void FUN_004529e0(unsigned int param_1, int *param_2) {
-    struct SampleParams params;
-    AddBasicObject(param_1, (unsigned int)param_2);
-    params.field_8 = param_2[0];
-    params.field_0 = 2;
-    params.field_c = param_2[1];
-    PlayInstanceOfSample(*(void **)&DAT_004b8710[8], 1, 1, &params);
+void FountainAddObject(struct Element *param_1, int *param_2) {
+    struct SampleSource params;
+    AddBasicObject(param_1, param_2);
+    params.x = param_2[0];
+    params.type = 2;
+    params.y = param_2[1];
+    PlayInstanceOfSample(FountainSFX[0].sample, 1, 1, &params);
 }
 
 // FUNCTION: LEGOLAND 0x00452a30
-LEGO_EXPORT void RemoveSoundObject(unsigned int a, unsigned int b, unsigned int c) {
+LEGO_EXPORT void RemoveSoundObject(struct Element *a, unsigned int b, struct Cursor *c) {
     unsigned char *bb = (unsigned char *)&b;
-    struct SampleParams params;
+    struct SampleSource params;
     StandardRemoveObject(a, *(TileId *)&b, c);
-    params.field_0 = 2;
-    params.field_8 = bb[0];
-    params.field_c = bb[1];
+    params.type = 2;
+    params.x = bb[0];
+    params.y = bb[1];
     UnSourceAndFadeAllSamplesFromSource(&params, 0xffffff38);
 }
 
 // FUNCTION: LEGOLAND 0x00452a80
-void FUN_00452a80(void) {
+void LoadPowerStationSFX(struct Element *head) {
     unsigned int counter;
 
-    counter = DAT_00667118;
-    DAT_00667118++;
+    counter = PowerStationSFXRefCount;
+    PowerStationSFXRefCount++;
     if (counter == 0) {
-        Load_FXList(DAT_004b8750, 2);
+        Load_FXList(PowerStationSFX, 2);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00452ab0
-void FUN_00452ab0(void) {
-    DAT_00667118--;
-    if (DAT_00667118 == 0) {
-        Kill_FXList(DAT_004b8750, 2);
+void KillPowerStationSFX(void) {
+    PowerStationSFXRefCount--;
+    if (PowerStationSFXRefCount == 0) {
+        Kill_FXList(PowerStationSFX, 2);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00452ad0
-void FUN_00452ad0(unsigned int param_1, int *param_2) {
-    struct SampleParams params;
-    AddBasicObject(param_1, (unsigned int)param_2);
-    params.field_8 = param_2[0];
-    params.field_0 = 2;
-    params.field_c = param_2[1];
-    PlayInstanceOfSample(*(void **)&DAT_004b8750[0x14], 1, 1, &params);
+void SmallPowerStationAddObject(struct Element *param_1, int *param_2) {
+    struct SampleSource params;
+    AddBasicObject(param_1, param_2);
+    params.x = param_2[0];
+    params.type = 2;
+    params.y = param_2[1];
+    PlayInstanceOfSample(PowerStationSFX[1].sample, 1, 1, &params);
 }
 
 // FUNCTION: LEGOLAND 0x00452b20
-void FUN_00452b20(unsigned int param_1, int *param_2) {
-    struct SampleParams params;
-    AddBasicObject(param_1, (unsigned int)param_2);
-    params.field_8 = param_2[0];
-    params.field_0 = 2;
-    params.field_c = param_2[1];
-    PlayInstanceOfSample(*(void **)&DAT_004b8750[8], 1, 1, &params);
+void CrystalPowerStationAddObject(struct Element *param_1, int *param_2) {
+    struct SampleSource params;
+    AddBasicObject(param_1, param_2);
+    params.x = param_2[0];
+    params.type = 2;
+    params.y = param_2[1];
+    PlayInstanceOfSample(PowerStationSFX[0].sample, 1, 1, &params);
 }
 
 // FUNCTION: LEGOLAND 0x00452b70
-void FUN_00452b70(void) {
+void LoadDinoSFX(struct Element *head) {
     unsigned int counter;
 
-    counter = DAT_0066711c;
-    DAT_0066711c++;
+    counter = DinoSFXRefCount;
+    DinoSFXRefCount++;
     if (counter == 0) {
         Load_FXList(DINO_SFX, 5);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00452ba0
-void FUN_00452ba0(void) {
-    DAT_0066711c--;
-    if (DAT_0066711c == 0) {
+void KillDinoSFX(void) {
+    DinoSFXRefCount--;
+    if (DinoSFXRefCount == 0) {
         Kill_FXList(DINO_SFX, 5);
     }
 }
 
 // FUNCTION: LEGOLAND 0x00452bc0
-void FUN_00452bc0(unsigned int param_1, int *param_2) {
-    struct SampleParams params;
+void DinoAddObject(struct Element *param_1, int *param_2) {
+    struct SampleSource params;
     unsigned int r;
-    AddBasicObject(param_1, (unsigned int)param_2);
-    params.field_0 = 2;
-    params.field_8 = param_2[0];
-    params.field_c = param_2[1];
+    AddBasicObject(param_1, param_2);
+    params.type = 2;
+    params.x = param_2[0];
+    params.y = param_2[1];
     r = (unsigned int)rand() % 5;
-    PlayInstanceOfSample(PTR_004b8770[r * 3], 1, 1, &params);
+    PlayInstanceOfSample(DINO_SFX[r].sample, 1, 1, &params);
 }

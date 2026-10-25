@@ -1,24 +1,29 @@
 #pragma once
 
-struct CallbackTable;
-struct ClassNode;
+struct Element;
+struct RideNode;
 
 struct BarrelNode {
     struct BarrelNode *next;
-    unsigned short field_4;
-    unsigned char field_6;
-    unsigned char field_7;
-    unsigned char field_8;
+    unsigned short tile_id;
+    unsigned char seated_count;
+    unsigned char leaving_count;
+    signed char frame;
     unsigned char pad_9[3];
-    unsigned int field_c;
-    unsigned char field_10;
+    unsigned int flags;
+    unsigned char cycles_left;
     unsigned char pad_11[3];
-    unsigned int field_14;
-    unsigned char field_18;
-    unsigned char pad_19[0x34 - 0x19];
+    int frame_ticks;
+    unsigned char boarding_count;
+    unsigned char pad_19[3];
+    unsigned int boarding_timer;
+    signed char layer2_frame;
+    signed char slots[0x34 - 0x21];
 };
 
-void FUN_0043c2f0(struct BarrelNode *node);
-void FUN_0043c950(void);
+void ResetBarrelRide(struct BarrelNode *node);
+void SpinningBarrelsUpdate(struct Element *elem);
+unsigned int PickBarrelSeat(struct RideNode *rn, struct BarrelNode *node, signed char n);
 
-void FUN_0043c760(struct ClassNode *str, struct CallbackTable *ride);
+struct Ride;
+void SpinningBarrelsGetInterfaces(struct Element *str, struct Ride *ride);

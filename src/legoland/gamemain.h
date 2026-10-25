@@ -1,27 +1,39 @@
 #pragma once
 
-struct EventNode;
+struct GameMainNode;
 struct Point;
-struct QueryNode;
+struct ResFile;
 
-int FUN_00477680(int a, int b);
-void FUN_004776c0(struct QueryNode *node);
-void FUN_004776e0(struct EventNode *node);
-struct QueryNode *FUN_00477730(struct QueryNode *ctx);
-void FUN_00477760(struct QueryNode *ctx);
-void FUN_00477790(struct EventNode *param_1);
+/* A level script command line: the command name and its arguments. */
+struct CommandArgs {
+    char *name;
+    char *arg1;
+    char *arg2;
+    char *arg3;
+};
 
-void FUN_004779d0(struct Point *p);
-void FUN_00477bd0(int x, int y, int a, int b);
-int FUN_004781b0(const char *param_1, const void *param_2, int param_3);
-int FUN_004781f0(int param_1, const void *param_2, int param_3, int param_4);
-void FUN_004784c0(void);
-void FUN_004785d0(char *param_1, unsigned int param_2);
-void FUN_00478610(unsigned int param_1);
-void FUN_00478650(unsigned int param_1, unsigned int param_2);
-int FUN_00478690(unsigned int param_1, unsigned int param_2, unsigned int param_3);
-int FUN_004786a0(unsigned int param_1, unsigned int param_2, unsigned int param_3);
-void FUN_00478700(int *param_1, char **param_2, int param_3);
-unsigned int FUN_004786c0(unsigned int param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4);
-void FUN_00478770(int *param_1, char **param_2, int param_3);
-unsigned int FUN_004787a0(unsigned int param_1, unsigned int param_2);
+int IsInMapBounds(int a, int b);
+void AddToClosedList(struct GameMainNode *node);
+void InsertOpenListSorted(struct GameMainNode *node);
+struct GameMainNode *FindClosedPathNode(struct Point *ctx);
+struct GameMainNode *FindOpenPathNode(struct Point *arg);
+struct GameMainNode *GetPathNodeAt(struct Point *pos, int *result);
+void RemoveFromClosedList(struct GameMainNode *ctx);
+void RemoveFromOpenList(struct GameMainNode *param_1);
+
+void RemoveObjectAtPoint(struct Point *p);
+void FindMapPathAStar(int x, int y, int a, int b);
+int FindStringNoCase(const char *param_1, const void *param_2, int param_3);
+struct ScriptCommand;
+int ParseScriptFile(const char *name, struct ScriptCommand *commands, int count, int flags);
+int ParseScriptResFile(struct ResFile *file, struct ScriptCommand *commands, int count, int flags);
+void ResetLevelScriptState(void);
+void SetScriptSectionType(char *param_1, unsigned int param_2);
+void SetScriptObjectiveKind(unsigned int param_1);
+void SetScriptObjectivePurgeFlag(struct CommandArgs *param_1, unsigned int param_2);
+int HasEnoughScriptArgs(void *param_1, unsigned int param_2, unsigned int param_3);
+int IsScriptCommandAllowed(void *param_1, unsigned int param_2, unsigned int param_3);
+void ParseRect(int *param_1, char **param_2, int param_3);
+unsigned int CheckScriptCommand(void *param_1, unsigned int param_2, unsigned int param_3, unsigned int param_4);
+void ParseIntPair(int *param_1, char **param_2, int param_3);
+char *GetScriptArg1(struct CommandArgs *param_1, unsigned int param_2);

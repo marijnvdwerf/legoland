@@ -43,14 +43,6 @@ struct LayerOwner {
     unsigned int flags;
 };
 
-struct ILFTable {
-    unsigned char pad_0[4];
-    int count;
-    struct Sprite **sprites;
-    int *xoffs;
-    int *yoffs;
-};
-
 // GLOBAL: LEGOLAND 0x0079a7c0
 struct Sprite *sprite_list;
 // GLOBAL: LEGOLAND 0x0079a7c4
@@ -62,19 +54,19 @@ unsigned int detail_images_count;
 
 // FUNCTION: LEGOLAND 0x00496f20
 LEGO_EXPORT void **GetVRAMAddress(struct Sprite *sprite) {
-    return &sprite->surface;
+    return (void **)&sprite->surface;
 }
 
 // FUNCTION: LEGOLAND 0x00496f30
-struct Image **FUN_00496f30(void) {
+struct Image **GetFreeDetailImageSlot(void) {
     struct Image **new_array;
     int i;
 
     if (detail_images_count == detail_images_capacity) {
         if (detail_images == NULL) {
-            new_array = (struct Image **)calloc(0x80, 4);
+            new_array = (struct Image **)calloc(0x80, sizeof(struct Image *));
         } else {
-            new_array = (struct Image **)realloc(detail_images, detail_images_capacity * 4 + 0x200);
+            new_array = (struct Image **)realloc(detail_images, detail_images_capacity * sizeof(struct Image *) + 0x80 * sizeof(struct Image *));
             if (new_array == NULL) {
                 return NULL;
             }
@@ -102,10 +94,10 @@ struct Image **FUN_00496f30(void) {
 }
 
 // FUNCTION: LEGOLAND 0x00496fc0
-int FUN_00496fc0(struct Image *image) {
+int AddDetailImage(struct Image *image) {
     struct Image **slot;
 
-    slot = (struct Image **)FUN_00496f30();
+    slot = (struct Image **)GetFreeDetailImageSlot();
     if (slot != NULL) {
         *slot = image;
         detail_images_count++;
@@ -115,7 +107,7 @@ int FUN_00496fc0(struct Image *image) {
 }
 
 // FUNCTION: LEGOLAND 0x00496ff0
-struct Image **FUN_00496ff0(struct Image *image) {
+struct Image **FindDetailImage(struct Image *image) {
     int count;
     struct Image **array;
     int i;
@@ -144,10 +136,10 @@ struct Image **FUN_00496ff0(struct Image *image) {
 }
 
 // FUNCTION: LEGOLAND 0x00497020
-int FUN_00497020(struct Image *image) {
+int RemoveDetailImage(struct Image *image) {
     struct Image **entry;
 
-    entry = FUN_00496ff0(image);
+    entry = FindDetailImage(image);
     if (entry != NULL) {
         *entry = NULL;
         detail_images_count--;
@@ -190,7 +182,7 @@ LEGO_EXPORT void ReloadAllDetailDependentImagesAndBuildSprites(void) {
     node = sprite_list;
     while (node != NULL) {
         if ((node->flags & 0x400) == 0) {
-            struct LayerHost *host = node->surface;
+            struct LayerHost *host = (struct LayerHost *)node->surface;
             if (host != NULL) {
                 host->vtable->func_8(host);
             }
@@ -240,55 +232,50 @@ LEGO_EXPORT void MarkSpriteResized(struct Sprite *sprite) {
 LEGO_EXPORT void RemakeAllDetailDependentSprites(void) {
     struct Sprite *sprite;
     struct Sprite *node;
-    const unsigned int mask = 0x400;
 
     sprite = sprite_list;
-    sprite = (struct Sprite *)((unsigned int)sprite | (mask & 0));
     node = sprite_list;
-    if (sprite != NULL) {
+    if (sprite_list != NULL) {
         do {
-            if ((node->flags & mask) == 0) {
-                struct LayerHost *host = node->surface;
-                if (host != NULL) {
-                    host->vtable->func_8(host);
-                    sprite = sprite_list;
-                }
+            if ((node->flags & 0x400) == 0 && node->surface != NULL) {
+                node->surface->lpVtbl->Release(node->surface);
+                sprite = sprite_list;
             }
             node = node->next;
         } while (node != NULL);
-        for (; sprite != NULL; sprite = sprite->next) {
-            if ((sprite->flags & mask) == 0) {
-                *(short *)&sprite->src_x >>= 1;
-                *(short *)&sprite->width >>= 1;
-                *(short *)&sprite->height >>= 1;
-                *(short *)&sprite->src_y >>= 1;
-                if ((short)sprite->src_x < 0) {
-                    sprite->width = sprite->width + sprite->src_x;
-                    sprite->src_x = 0;
-                }
-                if ((int)(short)sprite->src_x + (int)(short)sprite->width > (int)sprite->image->width) {
-                    if ((int)(short)sprite->src_x > (int)sprite->image->width - 1) {
-                        sprite->src_x = sprite->image->width - 1;
-                    }
-                    sprite->width = sprite->image->width - sprite->src_x;
-                }
-                if ((short)sprite->src_y < 0) {
-                    sprite->height = sprite->height + sprite->src_y;
-                    sprite->src_y = 0;
-                }
-                if ((int)(short)sprite->src_y + (int)(short)sprite->height > (int)sprite->image->height) {
-                    if ((int)(short)sprite->src_y > (int)sprite->image->height - 1) {
-                        sprite->src_y = sprite->image->height - 1;
-                    }
-                    sprite->height = sprite->image->height - sprite->src_y;
-                }
-                if (sprite->surface != 0) {
-                    sprite->surface = 0;
-                    FUN_00499500(sprite);
-                }
+    }
+    for (; sprite != NULL; sprite = sprite->next) {
+        if ((sprite->flags & 0x400) == 0) {
+            *(short *)&sprite->src_x >>= 1;
+            *(short *)&sprite->width >>= 1;
+            *(short *)&sprite->height >>= 1;
+            *(short *)&sprite->src_y >>= 1;
+            if ((short)sprite->src_x < 0) {
+                sprite->width = sprite->width + sprite->src_x;
+                sprite->src_x = 0;
             }
-            MarkSpriteResized(sprite);
+            if ((int)(short)sprite->src_x + (int)(short)sprite->width > (int)sprite->image->width) {
+                if ((int)(short)sprite->src_x > (int)sprite->image->width - 1) {
+                    sprite->src_x = sprite->image->width - 1;
+                }
+                sprite->width = sprite->image->width - sprite->src_x;
+            }
+            if ((short)sprite->src_y < 0) {
+                sprite->height = sprite->height + sprite->src_y;
+                sprite->src_y = 0;
+            }
+            if ((int)(short)sprite->src_y + (int)(short)sprite->height > (int)sprite->image->height) {
+                if ((int)(short)sprite->src_y > (int)sprite->image->height - 1) {
+                    sprite->src_y = sprite->image->height - 1;
+                }
+                sprite->height = sprite->image->height - sprite->src_y;
+            }
+            if (sprite->surface != 0) {
+                sprite->surface = 0;
+                EnsureSpriteSurface(sprite);
+            }
         }
+        MarkSpriteResized(sprite);
     }
 }
 
@@ -307,7 +294,7 @@ LEGO_EXPORT struct Image *CreateSourceImage(const char *str, unsigned char type)
     image->name = (char *)(image + 1);
     strcpy(image->name, str);
     if (type == 1) {
-        FUN_00496fc0(image);
+        AddDetailImage(image);
     }
     return image;
 }
@@ -348,7 +335,7 @@ LEGO_EXPORT int ReloadImageBitmapAndBuildSprites(struct Image *image) {
 
     bVar4 = 0;
     if ((image->field_14 == 2 || image->field_14 == 3) &&
-        LLSStop((unsigned int)image->data) != 0) {
+        LLSStop((struct LLS *)image->data) != 0) {
         bVar4 = 1;
         memcpy(local_buf, image->data, 24);
     }
@@ -364,7 +351,7 @@ LEGO_EXPORT int ReloadImageBitmapAndBuildSprites(struct Image *image) {
         lls->frame = (short)local_buf[0];
         lls->loop_delay = *(short *)((char *)local_buf + 18);
         lls->flags |= local_buf[5] & 4;
-        LLSPlay(lls, (unsigned int)image);
+        LLSPlay(lls, image);
     }
     sprite = sprite_list;
     while (sprite->image != image) {
@@ -395,7 +382,7 @@ LEGO_EXPORT int ReloadImageBitmapAndBuildSprites(struct Image *image) {
             }
             sprite->height = sprite->image->height - sprite->src_y;
         }
-        FUN_00499500(sprite);
+        EnsureSpriteSurface(sprite);
         MarkSpriteResized(sprite);
     }
     return 1;
@@ -412,7 +399,7 @@ LEGO_EXPORT int KillImage(struct Image *image) {
     image->refcount--;
     if (image->refcount == 0) {
         if (image->field_14 == 2 || image->field_14 == 3) {
-            LLSStop((unsigned int)image->data);
+            LLSStop((struct LLS *)image->data);
         }
         if (image->data != 0) {
             free(image->data);
@@ -421,7 +408,7 @@ LEGO_EXPORT int KillImage(struct Image *image) {
             free(image->aux);
         }
         if (image->type == 1) {
-            FUN_00497020(image);
+            RemoveDetailImage(image);
         }
         free(image);
         return 1;
@@ -430,7 +417,7 @@ LEGO_EXPORT int KillImage(struct Image *image) {
 }
 
 // FUNCTION: LEGOLAND 0x00497580
-struct Sprite *FUN_00497580(void) {
+struct Sprite *AllocAndLinkSprite(void) {
     struct Sprite *sprite;
 
     sprite = (struct Sprite *)malloc(sizeof(struct Sprite));
@@ -442,7 +429,7 @@ struct Sprite *FUN_00497580(void) {
 }
 
 // FUNCTION: LEGOLAND 0x004975b0
-void FUN_004975b0(struct Sprite *sprite) {
+void UnlinkAndFreeSprite(struct Sprite *sprite) {
     struct Sprite *current;
     struct Sprite *prev;
 
@@ -468,7 +455,7 @@ void FUN_004975b0(struct Sprite *sprite) {
 // FUNCTION: LEGOLAND 0x00497610
 LEGO_EXPORT void FreeBitmapResources(struct Image *image) {
     if (image->data != 0) {
-        LLSStop((unsigned int)image->data);
+        LLSStop((struct LLS *)image->data);
         free(image->data);
         image->data = 0;
     }
@@ -478,7 +465,7 @@ LEGO_EXPORT void FreeBitmapResources(struct Image *image) {
 LEGO_EXPORT struct Sprite *CreateSprite(struct Image *image) {
     struct Sprite *sprite;
 
-    sprite = FUN_00497580();
+    sprite = AllocAndLinkSprite();
     if (sprite == NULL) {
         return NULL;
     }
@@ -488,7 +475,7 @@ LEGO_EXPORT struct Sprite *CreateSprite(struct Image *image) {
     sprite->src_x = 0;
     sprite->src_y = 0;
     sprite->flags = 0;
-    sprite->field_c = DAT_008119a4 - 1;
+    sprite->field_c = FrameCounter - 1;
     if (image != NULL) {
         image->refcount += 1;
         if (image->data == 0) {
@@ -499,7 +486,7 @@ LEGO_EXPORT struct Sprite *CreateSprite(struct Image *image) {
         }
         sprite->width = image->width;
         sprite->height = image->height;
-        FUN_00499500(sprite);
+        EnsureSpriteSurface(sprite);
     }
     return sprite;
 }
@@ -508,7 +495,7 @@ LEGO_EXPORT struct Sprite *CreateSprite(struct Image *image) {
 LEGO_EXPORT struct Sprite *CreateFunctionBasedSprite(int (*source)(struct Sprite *), unsigned short a, unsigned short b) {
     struct Sprite *sprite;
 
-    sprite = FUN_00497580();
+    sprite = AllocAndLinkSprite();
     if (sprite == NULL) {
         return NULL;
     }
@@ -518,7 +505,7 @@ LEGO_EXPORT struct Sprite *CreateFunctionBasedSprite(int (*source)(struct Sprite
     sprite->src_x = 0;
     sprite->src_y = 0;
     sprite->flags = 0x30;
-    sprite->field_c = DAT_008119a4 - 1;
+    sprite->field_c = FrameCounter - 1;
     sprite->width = a;
     sprite->height = b;
     return sprite;
@@ -528,7 +515,7 @@ LEGO_EXPORT struct Sprite *CreateFunctionBasedSprite(int (*source)(struct Sprite
 LEGO_EXPORT struct Sprite *CreateSysmemSprite(struct Image *image) {
     struct Sprite *sprite;
 
-    sprite = FUN_00497580();
+    sprite = AllocAndLinkSprite();
     if (sprite == NULL) {
         return NULL;
     }
@@ -539,7 +526,7 @@ LEGO_EXPORT struct Sprite *CreateSysmemSprite(struct Image *image) {
     sprite->src_x = 0;
     sprite->src_y = 0;
     sprite->flags = 0x10;
-    sprite->field_c = DAT_008119a4 - 1;
+    sprite->field_c = FrameCounter - 1;
     if (image->data == 0) {
         if (__BMPLoader(image) == 0) {
             KillSprite(sprite);
@@ -555,7 +542,7 @@ LEGO_EXPORT struct Sprite *CreateSysmemSprite(struct Image *image) {
 LEGO_EXPORT struct Sprite *CreatePartialSprite(struct Image *image, unsigned short a, unsigned short b, unsigned short c, unsigned short d) {
     struct Sprite *sprite;
 
-    sprite = FUN_00497580();
+    sprite = AllocAndLinkSprite();
     if (sprite == NULL) {
         return NULL;
     }
@@ -566,7 +553,7 @@ LEGO_EXPORT struct Sprite *CreatePartialSprite(struct Image *image, unsigned sho
     sprite->refcount = 1;
     sprite->src_y = b;
     sprite->flags = 0;
-    sprite->field_c = DAT_008119a4 - 1;
+    sprite->field_c = FrameCounter - 1;
     if (image->data == 0) {
         if (__BMPLoader(image) == 0) {
             KillSprite(sprite);
@@ -585,7 +572,7 @@ LEGO_EXPORT int RecreatePartialSprite(struct Sprite *sprite, struct Image *image
 
     ReferenceImage(image);
     KillImage(sprite->image);
-    host = sprite->surface;
+    host = (struct LayerHost *)sprite->surface;
     if (host != NULL) {
         host->vtable->func_8(host);
         had_host = 1;
@@ -605,14 +592,14 @@ LEGO_EXPORT int RecreatePartialSprite(struct Sprite *sprite, struct Image *image
         }
     }
     if (had_host != 0) {
-        FUN_00499500(sprite);
+        EnsureSpriteSurface(sprite);
     }
     return 1;
 }
 
 // FUNCTION: LEGOLAND 0x004978b0
-int FUN_004978b0(struct Sprite *sprite, const char *name, unsigned int flags) {
-    struct ILFTable *table;
+int LoadCompSprite(struct Sprite *sprite, const char *name, unsigned int flags) {
+    struct SpriteSet *table;
     struct ResFile *file;
     struct Image *image;
     struct Sprite *element;
@@ -633,20 +620,20 @@ int FUN_004978b0(struct Sprite *sprite, const char *name, unsigned int flags) {
     if (file == NULL) {
         return 0;
     }
-    table = (struct ILFTable *)malloc(0x24);
+    table = (struct SpriteSet *)malloc(sizeof(struct SpriteSet));
     if (table != NULL) {
         RES_ReadFile(file, &count, 2);
         RES_ReadFile(file, tag, 2);
-        table->xoffs = (int *)malloc(count * sizeof(int));
-        table->yoffs = (int *)malloc(count * sizeof(int));
+        table->offset_x = (int *)malloc(count * sizeof(int));
+        table->offset_y = (int *)malloc(count * sizeof(int));
         table->sprites = (struct Sprite **)malloc(count * sizeof(struct Sprite *));
         table->count = count;
-        if (table->xoffs != NULL && table->yoffs != NULL && table->sprites != NULL) {
+        if (table->offset_x != NULL && table->offset_y != NULL && table->sprites != NULL) {
             RES_ReadFile(file, &length, 4);
             RES_ReadFile(file, element_name, length);
             for (i = 0; i < count; i++) {
-                RES_ReadFile(file, &table->xoffs[i], 4);
-                RES_ReadFile(file, &table->yoffs[i], 4);
+                RES_ReadFile(file, &table->offset_x[i], 4);
+                RES_ReadFile(file, &table->offset_y[i], 4);
             }
             for (i = 0; i < count; i++) {
                 RES_ReadFile(file, &length, 4);
@@ -657,17 +644,17 @@ int FUN_004978b0(struct Sprite *sprite, const char *name, unsigned int flags) {
                 if (element != NULL) {
                     image = element->image;
                     if (image->field_14 == 2 || image->field_14 == 3) {
-                        LLSPlay((struct LLS *)image->data, (unsigned int)image);
+                        LLSPlay((struct LLS *)image->data, image);
                     }
                 }
             }
             RES_CloseFile(file);
-            sprite->image = (struct Image *)table;
+            sprite->image = (struct Image *)table; /* an image list (.ilf) sprite */
             sprite->flags |= 0x8000;
             return 1;
         }
     }
-    LLIDB_FreeILFTable((struct ILFTable *)table);
+    LLIDB_FreeILFTable((struct SpriteSet *)table);
     RES_CloseFile(file);
     return 0;
 }
@@ -685,7 +672,7 @@ LEGO_EXPORT struct Sprite *LoadSprite(const char *name, int flags) {
     if (_stricmp(ext, ".csp") == 0) {
         sprite = CreateSprite(NULL);
         if (sprite != NULL) {
-            if (FUN_004978b0(sprite, name, flags & 0xff) == 0) {
+            if (LoadCompSprite(sprite, name, flags & 0xff) == 0) {
                 KillSprite(sprite);
                 return NULL;
             }
@@ -733,18 +720,18 @@ LEGO_EXPORT int KillSprite(struct Sprite *sprite) {
     if (sprite != NULL) {
         sprite->refcount--;
         if (sprite->refcount == 0) {
-            host = sprite->surface;
+            host = (struct LayerHost *)sprite->surface;
             if (host != NULL) {
                 host->vtable->func_8(host);
             }
             if ((sprite->flags & 0x20) == 0) {
                 if ((sprite->flags & 0x8000) != 0) {
-                    LLIDB_FreeILFTable((struct ILFTable *)sprite->image);
+                    LLIDB_FreeILFTable((struct SpriteSet *)sprite->image);
                 } else if (sprite->image != NULL) {
                     KillImage(sprite->image);
                 }
             }
-            FUN_004975b0(sprite);
+            UnlinkAndFreeSprite(sprite);
             return 1;
         }
     }
@@ -752,55 +739,51 @@ LEGO_EXPORT int KillSprite(struct Sprite *sprite) {
 }
 
 // FUNCTION: LEGOLAND 0x00497c30
-LEGO_EXPORT int GetSprite(unsigned int *param_1, struct Sprite *param_2) {
+LEGO_EXPORT int GetSprite(struct VideoArg *param_1, struct Sprite *param_2) {
     int iVar1;
-    unsigned int locals[4];
-    unsigned char surfDesc[0x6c];
+    RECT locals;
+    DDSURFACEDESC surfDesc;
 
-    locals[0] = 0;
-    locals[1] = 0;
-    locals[2] = 0;
-    locals[3] = 0;
-    *(unsigned int *)surfDesc = 0x6c;
+    locals.left = 0;
+    locals.top = 0;
+    locals.right = 0;
+    locals.bottom = 0;
+    surfDesc.dwSize = sizeof(surfDesc);
     if (param_2 != NULL) {
-        locals[2] = (unsigned int)(short)param_2->width;
-        param_1[1] = locals[2];
-        locals[3] = (unsigned int)(short)param_2->height;
-        param_1[2] = locals[3];
-        param_1[4] = (unsigned int)param_2->surface;
-        iVar1 = (*(int(__stdcall **)(void *, unsigned int *, unsigned char *, int, int))(*(unsigned int *)param_2->surface + 0x64))(
-            param_2->surface, locals, surfDesc, 1, 0);
+        locals.right = (short)param_2->width;
+        param_1->width = locals.right;
+        locals.bottom = (short)param_2->height;
+        param_1->height = locals.bottom;
+        param_1->surface = param_2->surface;
+        iVar1 = param_2->surface->lpVtbl->Lock(param_2->surface, &locals, &surfDesc, 1, 0);
         if (iVar1 == (int)0x887601c2) {
-            (*(void(__stdcall **)(void *))(*(unsigned int *)param_2->surface + 0x6c))(param_2->surface);
-            iVar1 = (*(int(__stdcall **)(void *, unsigned int *, unsigned char *, int, int))(*(unsigned int *)param_2->surface + 0x64))(
-                param_2->surface, locals, surfDesc, 1, 0);
+            param_2->surface->lpVtbl->Restore(param_2->surface);
+            iVar1 = param_2->surface->lpVtbl->Lock(param_2->surface, &locals, &surfDesc, 1, 0);
         }
         if (iVar1 != 0) {
             return 0;
         }
     } else {
-        locals[2] = (unsigned int)*(unsigned short *)lpConfig;
-        param_1[1] = locals[2];
-        locals[3] = (unsigned int)*((unsigned short *)lpConfig + 1);
-        param_1[2] = locals[3];
-        param_1[4] = (unsigned int)DAT_00668078;
-        iVar1 = (*(int(__stdcall **)(void *, unsigned int *, unsigned char *, int, int))(*(unsigned int *)DAT_00668078 + 0x64))(
-            (void *)DAT_00668078, locals, surfDesc, 1, 0);
+        locals.right = *(unsigned short *)lpConfig;
+        param_1->width = locals.right;
+        locals.bottom = *((unsigned short *)lpConfig + 1);
+        param_1->height = locals.bottom;
+        param_1->surface = OffscreenSurface;
+        iVar1 = OffscreenSurface->lpVtbl->Lock(OffscreenSurface, &locals, &surfDesc, 1, 0);
         if (iVar1 == (int)0x887601c2) {
-            (*(void(__stdcall **)(void *))(*(unsigned int *)DAT_00668078 + 0x6c))((void *)DAT_00668078);
-            iVar1 = (*(int(__stdcall **)(void *, unsigned int *, unsigned char *, int, int))(*(unsigned int *)DAT_00668078 + 0x64))(
-                (void *)DAT_00668078, locals, surfDesc, 1, 0);
+            OffscreenSurface->lpVtbl->Restore(OffscreenSurface);
+            iVar1 = OffscreenSurface->lpVtbl->Lock(OffscreenSurface, &locals, &surfDesc, 1, 0);
         }
         if (iVar1 != 0) {
             return 0;
         }
     }
-    *param_1 = *(unsigned int *)(surfDesc + 0x10);
-    param_1[3] = *(unsigned int *)(surfDesc + 0x24);
-    if (DAT_00668088 == 0) {
-        param_1[5] = 1;
+    param_1->pitch = surfDesc.lPitch;
+    param_1->bits = surfDesc.lpSurface;
+    if (DisplayPixelFormat == 0) {
+        param_1->format = 1;
     } else {
-        param_1[5] = 2;
+        param_1->format = 2;
     }
     return 1;
 }
@@ -814,13 +797,13 @@ LEGO_EXPORT void SetSubSpriteSource(struct Sprite *sprite, unsigned short a, uns
 }
 
 // FUNCTION: LEGOLAND 0x00497dc0
-LEGO_EXPORT void ReleaseSprite(struct Sprite *sprite) {
-    struct LayerHost *host;
-    unsigned int arg;
+LEGO_EXPORT void ReleaseSprite(struct VideoArg *sprite) {
+    struct IDirectDrawSurface *host;
+    void *arg;
 
-    host = sprite->host;
-    arg = sprite->field_c;
-    ((void(__stdcall *)(struct LayerHost *, unsigned int))(*(void **)((char *)host->vtable + 0x80)))(host, arg);
+    host = sprite->surface;
+    arg = sprite->bits;
+    host->lpVtbl->Unlock(host, arg);
 }
 
 // FUNCTION: LEGOLAND 0x00497de0

@@ -4,14 +4,22 @@
 #include "objclass.h"
 
 struct SpiderNode {
-    unsigned short field_0;
-    unsigned char pad_2[0x2a];
+    unsigned short tile_id;
+    unsigned char pad_2[2];
+    char frame;
+    unsigned char pad_5[0x27];
     struct SpiderNode *next;
 };
 
-int FUN_00415a90(struct SpiderNode *node);
-void FUN_00416330(void);
-LEGO_EXPORT int SaveSpider(void);
-LEGO_EXPORT int LoadSpider(void);
+int ResetSpiderRide(struct SpiderNode *node);
+void UpdateSpiderNode(struct SpiderNode *node);
+struct SpiderNode *FindSpiderNode(TileId *key);
+void SpiderRideUpdate(Element *obj);
+LEGO_EXPORT int SaveSpider(struct Element *element);
+LEGO_EXPORT int LoadSpider(struct Element *element);
 
-void SpiderRide(struct ClassNode *head, struct CallbackTable *iface);
+struct Ride;
+void SpiderRide(struct Element *head, struct Ride *iface);
+struct SlotOwner;
+struct SlotArray;
+int ReserveSpiderRideSeat(struct RideNode *owner, struct SlotArray *arr, signed char count);

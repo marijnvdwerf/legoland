@@ -307,7 +307,7 @@ address,symbol,type
 0x004a9334,__setmode,function
 0x004a93b0,_strcmp,function
 0x004a9434,_getenv,function
-0x004a94b1,__tell,function
+0x004a94b1,__ismbbkalnum,function
 0x004a94c2,__ismbbkprint,function
 0x004a94d3,__ismbbkpunct,function
 0x004a94e4,__ismbbalnum,function
